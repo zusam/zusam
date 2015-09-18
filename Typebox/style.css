@@ -1,0 +1,312 @@
+.dynamicBox{padding:0px;position:relative;min-height:66px;max-width:530px;margin:0px auto;cursor:text;text-align:left}
+.viewerBox{min-height:22px !important;}
+.dynamicBox > span > img { margin:0px 0px; max-width: 100%}
+.dynamicBox > span > video { margin:0px 0px; max-width: 100%}
+/* INLINE-BLOCK IS NECESSARY TO PREVENT DIVS FROM CHROME */
+.dynamicBox > div {display:inline-block;padding:2px; margin:0px; min-height:18px;width:calc(100% - 10px)}
+.dynamicBox > div:focus { border:none; outline:none }
+.dynamicBox > span > a, .dynamicBox > span > a:focus, .dynamicBox > span > a:hover {
+	text-decoration: none;
+}
+.embed-responsive {
+	position: relative;
+	display: block;
+	height: 0;
+	padding: 0;
+	overflow: hidden;
+}
+.embed-responsive .embed-responsive-item,
+.embed-responsive iframe,
+.embed-responsive embed,
+.embed-responsive object,
+.embed-responsive video {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+.embed-responsive-16by9 {
+	padding-bottom: 56.25%;
+}
+.embed-responsive-4by3 {
+	padding-bottom: 75%;
+}
+.embed-responsive-square {
+	padding-bottom: 100%;
+}
+.b-link {
+	width: 100%;
+	height: 80px;
+	display: block;
+	position: relative;
+	overflow: hidden;
+}
+.b-link > div {
+	width: 130%;
+	height: 100%;
+	display: block;
+	position: relative;
+	margin: 0px;
+	overflow: hidden;
+	text-align: left;
+}
+.b-link span {
+	position: absolute;
+	top: calc(50% - 14px);
+	left: 0;
+	width: 100%;
+	text-align:center;
+	color: whitesmoke;
+	font-size: 28px;
+	line-height: 21px;
+	font-weight: bolder;
+	z-index: 10;
+}
+.article_small, .article_big {
+	display: block;
+	overflow: hidden;
+	position: relative;
+	border: 1px solid #CCC;
+}
+.article_small > .preview{
+	width: 150px;
+	height: 150px;
+	overflow:hidden;
+	float: left;
+	margin-right: 10px;
+	border-right: 1px solid #A9A9A9;
+}
+.article_small > .preview img { 
+	margin:0px 0px; 
+	height: 100%;
+	transform: translate(-50%,0%);
+	-webkit-transform: translate(-50%,0%);
+	position: relative;
+	left: 50%;
+}
+.article_small > .title {
+	width: calc(100% - 25px);
+	color: #444;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 18px;
+	padding: 10px 25px 5px 25px;
+	text-align: left;
+	max-height: 75px;
+}
+.article_small > .description {
+	width: calc(100% - 25px);
+	color: #444;
+	font-size: 14px;
+	line-height: 15px;
+	padding: 0px 25px 0px 25px;
+	text-align: left;
+	max-height: 100px;
+}
+.article_small > .base_url {
+	color: #444;
+	font-size: 10px;
+	padding: 0px 15px 5px 10px;
+	text-align: right;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+}
+.article_big > .preview{
+	width: 100%;
+	max-height: 250px;
+	position: relative;
+	overflow: hidden;
+}
+.article_big > .preview img { 
+	margin:0px 0px; 
+	width: 100%; 
+	position: relative;
+	left: 50%;
+	transform: translate(-50%,0%);
+	-webkit-transform: translate(-50%,0%);
+}
+.article_big > .title {
+	width: calc(100% - 50px);
+	color: #444;
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 20px;
+	padding: 10px 25px 5px 25px;
+	text-align:left;
+}
+.article_big > .description {
+	width: calc(100% - 50px);
+	color: #444;
+	font-size: 14px;
+	line-height: 18px;
+	padding: 0px 25px 0px 25px;
+	text-align:left;
+}
+.article_big > .base_url {
+	width: calc(100% - 25px);
+	color: #444;
+	font-size: 10px;
+	padding: 0px 15px 5px 10px;
+	text-align: right;
+}
+.hashtag, .hashtag:focus, .hashtag:hover {
+	color: orange;
+	font-weight: bolder;
+	cursor: pointer;
+}
+.link, .link:focus, .link:hover{
+	color: blue;
+	font-weight: bolder;
+	cursor: pointer;
+}
+.deletable {
+	display: block;
+	position: relative;
+	width: 100%;
+	text-align: center;
+}
+.delete-btn {
+	display: block;
+	background: orangered; 
+	width: 22px;
+	color: white;
+	height: 22px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 200;
+	cursor: pointer;
+}
+.delete-btn i {
+	text-align: center;
+	vertical-align: middle;
+	line-height: 22px; 
+}
+.parent-post .post-menu {
+	width: 530px;
+	max-width: calc(100% - 10px);
+	height: 45px;
+	padding: 5px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	display: -webkit-flex;
+	-webkit-justify-content: space-between;
+	-webkit-align-items: center;
+}
+.child-post .post-menu {
+	width: 530px;
+	max-width: calc(100% - 10px);
+	height: 30px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	display: -webkit-flex;
+	-webkit-justify-content: space-between;
+	-webkit-align-items: center;
+	background: none;
+	color: black;
+	padding: 0px 5px;
+}
+.op {
+	display: flex;
+	display: -webkit-flex;
+	margin: 0px;
+	padding: 0px;
+	align-content: center;
+	-webkit-align-content: center;
+}
+.parent-post .avatar {
+	height: 45px;
+	width: 45px;
+	transition: transform 0.2s;
+	z-index: 50;
+	position: relative;
+}
+.child-post .avatar {
+	height: 30px;
+	width: 30px;
+	transition: transform 0.2s;
+	z-index: 50;
+	position: relative;
+}
+.avatar:hover {
+	transform: translate(100%, 100%) scale(3);
+	-webkit-transform: translate(100%, 100%) scale(3);
+	z-index: 51;
+}
+.avatar img {
+	width: 100%;
+	height: 100%;
+}
+.parent-post .author {
+	height: 20px;
+	line-height: 22px;
+	font-weight: bold;
+}
+.child-post .author {
+	height: 15px;
+	line-height: 12px;
+	font-weight: bold;
+}
+.options {
+	width: 30px;
+	text-align:center;
+	cursor: pointer;
+	position: relative;
+}
+.options .options-menu {
+	display: none;
+	position: absolute;
+	top: 150%;
+	left: calc(100% - 110px);
+	width: 100px;
+	background: #FFF none repeat scroll 0% 0%;
+	z-index: 60;
+	border: 1px solid grey;
+	box-shadow: 0px 0px 5px black;
+}
+.options .options-menu > a {
+	display: block;
+	margin: 8px 2px;
+}
+.options .options-menu > a:hover {
+	color :red;
+}
+.parent-post .date {
+	font-size: 14px;
+	line-height: 22px;
+	color: grey;
+}
+.child-post .date {
+	font-size: 12px;
+	line-height: 16px;
+	color: grey;
+}
+.post-info {
+	padding-left: 10px;
+}
+.parent-post {
+	background: white;
+	margin-bottom: 10px;
+}
+.child-post {
+	background: #F0F0F0;
+	padding: 8px 5px 2px 5px;
+}
+.post-com-text {
+	margin-left: 43px;
+	margin-top: 2px;
+}
+.post-parent-text {
+	/*
+	padding-bottom: 10px;
+	*/
+}
+#commentBox {
+	background: white;
+}

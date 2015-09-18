@@ -1,0 +1,470 @@
+.hidden {
+	display: none;
+}
+body {
+	margin: 0px;
+	max-width: 100%;
+	overflow-x: hidden;
+	font-size: 15px;
+}
+nav {
+	display: flex;
+	justify-content: space-between;
+	display: -webkit-flex;
+	-webkit-justify-content: space-between;
+	/*border-bottom: 1px solid white;*/
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index:25;
+	background: #333;
+	height: 50px;
+}
+nav > * {
+	margin: 5px;
+	min-height: 40px;
+	border-radius: 0px;
+	-webkit-border-radius: 0px;
+	-webkit-appearance: none;
+}
+nav > button {
+	cursor: pointer;
+}
+#logo {
+	font-size: 30px;
+	color: white;
+}
+#name {
+	display: inline-block;
+	vertical-align: top;
+	padding: 12px;
+	cursor: pointer;
+}
+#avatar {
+	display: inline-block;
+	cursor: pointer;
+	height: 50px;
+	width: 50px;
+	overflow: hidden;
+	margin: 0px;
+}
+#avatar img {
+	height: 100%;
+	width: 100%;
+}
+#post-viewer {
+	display: none;
+	/*
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	*/
+	width: 530px;
+	max-width: 100%;
+	z-index: 10;
+}
+section {
+	position: relative;
+	top: 80px;
+	transition: all 0.5s;
+	width: 100%;
+	max-width: 2048;
+}
+#container {
+	display: flex;
+	flex-flow: wrap;
+	justify-content: center;
+	align-items: center;
+	display: -webkit-flex;
+	-webkit-flex-wrap: wrap;
+	-webkit-justify-content: center;
+	-webkit-align-items: center;
+	position: relative;
+	width: 100%;
+	filter: blur(0px);
+	-webkit-filter: blur(0px);
+	transition: all 0.4s;
+	max-width: 1020px;
+	margin: 0 auto;
+}
+.post-mini {
+	display: block;
+	overflow: hidden;
+	margin: 10px;
+	cursor: pointer;
+	width: 320px;
+}
+.post-mini img {
+	width: 100%;
+}
+.slide {
+	position: fixed;
+	max-width: calc(100% - 10px);
+	margin: 0px;
+	transition: all 0.5s;
+	max-height: 100%;
+	min-width: 200px;
+}
+.slide-over {
+	height: 100%;
+	top: 0px;
+	z-index: 50;
+	margin: 0px;
+	padding: 0px 5px;
+	overflow: auto;
+	background: #D0D0D0;
+}
+.slide-menu {
+	top: 0px;
+	border: 1px solid #ddd;
+	background: white;
+	height: 100%;
+	z-index: 50;
+	font-size: 20px;
+	padding: 0px;
+	margin: 0px;
+}
+.slidefromleft {
+	left: 0px;
+	transform: translateX(-100%);
+	-webkit-transform: translateX(-100%);
+}
+.slidefromright {
+	right: 0px;
+	transform: translateX(100%);
+	-webkit-transform: translateX(100%);
+}
+.slide-menu .separator {
+	border-bottom: 1px solid grey;
+	padding: 0;
+	width: 100%;
+	cursor: default;
+}
+.slide-menu > * {
+	display: block;
+	text-align: left;
+	text-decoration: none;
+	color: black;
+	cursor: pointer;
+}
+.newpost {
+	display: block;
+	max-width: 100%;
+	width: 530px;
+	z-index: 10;
+	text-align: center;
+	cursor: text;
+	background: white;
+	color: black;
+}
+.newpost .menu {
+	display: block;
+	width: 100%;
+	background: #eee;
+	margin: 0;
+	padding: 0;
+}
+.newpost .menu-cell {
+	display: inline-block;
+	width: 49%;
+	margin: 0;
+	padding: 5px 0px;
+	text-align: cell;
+}
+.newavatar .menu {
+	width: 100%;
+	  position: absolute;
+	    top: 100%;
+}
+.newavatar .menu-cell {
+	display: inline-block;
+	width: 50%;
+	text-align: center;
+}
+.sendit, .cancelit { 
+	display: inline-block;
+	border-radius: 0;
+	cursor: pointer;
+}
+*[data-placeholder]:empty:not(:focus):before {
+	content: attr(data-placeholder);
+	float: left;
+	margin-left: 2px;
+	color: #b3b3b3;
+}
+#newavatar {
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	-webkit-transform: translate(-50%,-50%);
+	z-index: 50;
+	max-width: 100%;
+	height: 512px;
+	max-height: 70%;
+	width: 512px;
+}
+.mask {
+	position: fixed;
+	top: 0px;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	transition: background 0.35s;
+	z-index: 30;
+}
+.bg-color {
+	width: 100%;
+	height: 100%;
+	transition: all 0.8s;
+	background: lightgrey;
+}
+.fake-comment {
+	color: black;
+	background: white;
+	padding: 5px;
+	height: 20px;
+	cursor: text;
+	margin-bottom: 10px;
+}
+.commentator {
+	position: absolute;
+	width: 32px;
+	height: 32px;
+	left: 5px;
+	z-index: 15;
+	display: none;
+}
+.commentator > img {
+	width: 100%;
+	height: 100%;
+}
+.close-post {
+	font-size: 30px;
+	cursor: pointer;
+	height: 45px;
+	padding-top: 10px;
+	padding-right: 5px;
+}
+.post-separator {
+	display: block;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	height: 5px;
+}
+.post-footer {
+	display: block;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	height: 150px;
+}
+.button-newpost {
+	padding: 0px 20px;
+	font-size: 20px;
+	border: none;
+	background-color: lightgrey;
+}
+#main_page {
+	display: block;
+	position: relative;
+	width: 100%;
+}
+#notification {
+	cursor: pointer;
+	position: relative;
+	color: white;
+}
+#notification i {
+	font-size: 25px;
+	line-height: 41px;
+}
+.menu-highlight {
+	padding: 5px;
+	width: calc(100% - 10px);
+}
+.menu-highlight:hover {
+	background: #F0F0F0;
+}
+.invitation {
+	margin: 0px;
+	width: calc(100% - 10px);
+	color: black;
+	cursor: default;
+	padding: 5px;
+	position: relative;
+	border-bottom: 1px solid black;
+}
+.invitation .title {
+	width: 100%;
+	text-align: center;
+	padding-bottom: 5px;
+}
+.invitation .action-menu {
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	align-items: center;
+	-webkit-justify-content: space-between;
+	-webkit-align-items: center;
+}
+.invitation .action {
+	cursor: pointer;
+	padding: 5px;
+	border-radius: 0px;
+	background: white;
+	border: 1px solid black;
+	flex-grow: 2;
+	-webkit-flex-grow: 2;
+	margin: 0px 3px;
+}
+.invitation .action:hover {
+	background: lightgrey;
+}
+.forum-menu {
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	align-items: center;
+	-webkit-justify-content: space-between;
+	-webkit-align-items: center;
+	width: 100%;
+}
+.forum-link {
+	text-decoration: none;
+	color: black;
+	flex-grow: 2;
+	-webkit-flex-grow: 2;
+	padding: 5px;
+	border: none;
+	background: none;
+	margin: 0px;
+	cursor: pointer;
+}
+.forum-link input {
+	border: none;
+	background: none;
+	margin: 0px;
+	font-size: 18px;
+	padding: 0px;
+	cursor: pointer;
+	width: 100%;
+	text-align: left;
+}
+.forum-link:hover {
+	background: #F0F0F0;
+}
+.forum-settings {
+	border-left: 1px solid grey;
+	padding: 5px;
+	color: black;
+	text-decoration: none;
+}
+.forum-settings:hover {
+	background: #F0F0F0;
+}
+#ask {
+	width: 200px;
+	max-width: 80%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 9001;
+	background-color: white;
+	padding: 10px;
+	border-radius: 4px;
+	display: flex;
+	display: -webkit-flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	align-items: center;
+	-webkit-flex-flow: row wrap;
+	-webkit-justify-content: space-between;
+	-webkit-align-items: center;
+}
+#ask span {
+	width: 100%;
+}
+#ask input {
+	width: 100%;
+	margin: 10px 0px;
+}
+#ask button {
+	flex-grow: 2;
+	-webkit-flex-grow: 2;
+	margin: 0px 2px;
+}
+.post-options {
+	display: flex;
+	display: -webkit-flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	align-items: center;
+	-webkit-flex-flow: row wrap;
+	-webkit-justify-content: space-between;
+	-webkit-align-items: center;
+}
+.post-options > div {
+	font-size: 25px;
+	text-align: center;
+	background-color: black;
+	color: white;
+	flex-grow: 2;
+	-webkit-flex-grow: 2;
+	cursor: pointer;
+}
+.change-profile {
+	display: block;
+	margin: 7px 20px;
+	width: 256px;
+	max-width: 100%;
+	padding: 15px;
+	border: 1px solid rgba(0,0,0,0.2);
+	text-align: center;
+}
+.change-profile label {
+	margin: 2px;
+}
+.change-profile input {
+	margin: 2px;
+	width: 100%;
+}
+.change-avatar {
+	display: block;
+	margin: 5px 33px;
+	cursor: pointer;
+	border: 1px solid rgba(0, 0, 0, 0.45);
+	padding: 4px;
+	border-radius: 20px;
+	transition: all 1s;
+	width: 256px;
+	max-width: 100%;
+}
+.change-avatar:hover {
+	filter: sepia(100%);
+	-webkit-filter: sepia(100%);
+	transition: all 0s;
+}
+.fa-spin-hover:hover {
+	-webkit-animation: fa-spin 2s infinite linear;
+	animation: fa-spin 2s infinite linear;
+}
+.forum-mini {
+	display: block;
+	overflow: hidden;
+	margin: 10px;
+	cursor: pointer;
+	width: 256px;
+	text-decoration: none;
+	color: black;
+	text-align: center;
+}
+.forum-mini img {
+	width: 100%;
+}

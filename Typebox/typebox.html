@@ -1,0 +1,29 @@
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+<title>typeBox</title>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+</head>
+
+<body style="background: darkgray">
+<div style="text-align:center;margin-top:50px"><input id="title" type="text" style="width:532px" placeholder="title"></input></div>
+<div id="typeBox">
+<div contenteditable="true"></div>
+</div>
+<div style="text-align:center"><button onclick="sendIt()">Send it</button></div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="http://connect.soundcloud.com/sdk.js"></script>
+<script src="../JS/utils.js?4"></script>
+<script src="searchFilter.js?4"></script>
+<script src="control.js?4"></script>
+<script src="typebox.js?4"></script>
+<script src="send.js?4"></script>
+<script>
+	start_typebox();
+</script>
+</body>
+</html>
