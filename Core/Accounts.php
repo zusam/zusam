@@ -11,6 +11,7 @@ function account_initialize($mail, $password) {
 	$ac['name'] = $mail;
 	$ac['password'] = password_hash($password, PASSWORD_BCRYPT);
 	$ac['forums'] = [];
+	$ac['default_avatar'] = rand(0, 65535);
 	return $ac;
 }
 
@@ -32,10 +33,16 @@ function account_load($array) {
 }
 
 function account_getAvatar(&$ac) {
-	if(file_exists(pathTo($ac['_id'], "avatar", "jpg"))) {
-		$avatar = p2l(pathTo($ac['_id'], "avatar", "jpg"));
+	$loc = array("url"=>$ac['_id'], "param"=>"avatar", "ext"=>"jpg");
+	if(file_exists(pathTo2($loc))) {
+		$avatar = p2l(pathTo2($loc));
 	} else {
-		$avatar = p2l(pathTo("avatar", "assets", "jpg"));
+		//$avatar = p2l(pathTo("avatar", "assets", "jpg"));
+		// get random default avatar 
+		$av = scanDir(pathTo2(array("param"=>"default_avatar", "dir"=>true)));
+		array_shift($av); array_shift($av);
+		$i = $ac['default_avatar'] % count($av);
+		$avatar = p2l(pathTo2(array("url"=>$av[$i], "param"=>"default_avatar", "dir"=>false)));
 	}
 	return $avatar;
 }

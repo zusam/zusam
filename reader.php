@@ -1,4 +1,7 @@
 <?php
+
+// THIS IS A SIDE PROJECT FOR NOW.
+
 include('Ganon/ganon.php');
 //include('Simple_html_dom/simple_html_dom.php');
 

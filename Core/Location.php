@@ -1,11 +1,11 @@
 <?php
 
 function p2l($path) {
-	$link = preg_replace("/\/srv\/http/","http://www.nibou.eu",$path);
+	$link = preg_replace("/\/srv\/http/","http://localhost/",$path);
 	return $link;
 }
 
-function pathTo($url, $param, $ext, $forum) {
+function pathTo($url, $param, $ext) {
 
 	if($param == "" || $url == "") {
 		return false;
@@ -17,37 +17,74 @@ function pathTo($url, $param, $ext, $forum) {
 			$ext = ".".$ext;
 		}
 	}
-	if($forum == "") {
-		$loc = "web";
-	} else {
-		$loc = "forum";
-	}
+	$loc = "Data";
 	if($param == "assets") {
-		$path = $loc."/assets/".$url.$ext; 
+		$path = "Assets/".$url.$ext; 
+		return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
 	}
-	//if($param == "upload") {
-	//	$path = $loc."/".$forum."/upload/".hash("md5", $url).$ext; 
-	//}
 	if($param == "mini") {
-		$path = $loc."/".$forum."/mini/".hash("md5", $url)."_mini".$ext; 
+		$path = $loc."/miniature/".hash("md5", $url).$ext; 
+		return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
 	}
-	//if($param == "original") {
-	//	$path = $loc."/".$forum."/original/".hash("md5", $url).$ext; 
-	//}
-	//if($param == "video") {
-	//	$path = $loc."/".$forum."/video/".hash("md5", $url).$ext; 
-	//}
 	if($param == "tmp") {
 		$path = "/tmp/".hash("md5", $url); 
 		return $path;
 	}
-	if($param == "data") {
-		$path = $loc."/".$forum."/".$url.$ext; 
-	}
+	//if($param == "data") {
+	//	$path = $loc."/".$forum."/".$url.$ext; 
+	//	return $path;
+	//}
 	if($param == "avatar") {
-		$path = "accounts/uploads/avatars/".$url.$ext; 
+		$path = $loc."/avatar/".$url.$ext; 
+		return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
 	}
-	return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+}
+
+function pathTo2($args) {
+
+	$url = $args['url'];
+	$param = $args['param'];
+	$ext = $args['ext'];
+	$dir = $args['dir'];
+
+	if(!$dir && ($param == "" || $url == "")) {
+		return false;
+	}
+	if($ext == "") {
+		$ext = ".".pathinfo($url, PATHINFO_EXTENSION);
+	} else {
+		if($ext{0} != ".") {
+			$ext = ".".$ext;
+		}
+	}
+	$loc = "Data";
+	if(!$dir) {
+		if($param == "assets") {
+			$path = "Assets/".$url.$ext; 
+			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+		}
+		if($param == "mini") {
+			$path = $loc."/miniature/".hash("md5", $url).$ext; 
+			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+		}
+		if($param == "avatar") {
+			$path = $loc."/avatar/".$url.$ext; 
+			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+		}
+		if($param == "tmp") {
+			$path = "/tmp/".hash("md5", $url); 
+			return $path;
+		}
+		if($param == "default_avatar") {
+			$path = "Assets/avatar/".$url; 
+			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+		}
+	} else {
+		if($param == "default_avatar") {
+			$path = "Assets/avatar"; 
+			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+		}
+	}
 }
 
 ?>
