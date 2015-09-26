@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cd ../
 loc=`pwd`
 
 # TEST EXISTENCE OF SOME PACKAGES
@@ -8,33 +7,24 @@ P=(ffmpeg mongodb php-mcrypt php-imagick php-gd php-mongo)
 for p in "${P[@]}";
 do
 	x=`pacman -Qs $p`
-	if [ -n "$x" ]
+	if [ -z "$x" ]
 	then
-		echo "$p ok";
-	else
 		echo "$p missing";
-		exit 1;
 	fi
 done
 
 # TEST DIRECTORY TREE
-if [ -d "/srv/http" ] 
+if [ ! -d "/srv/http" ] 
 then 
-	echo "root tree ok"
-else
 	echo "/srv/http should exists and be the root directory of apache"
-	exit 1;
 fi
 
 A=(Data Data/avatar Data/miniature Assets Assets/avatar)
 for p in "${A[@]}";
 do
-	if [ -d "$p" ]
-	then 
-		echo "$p directory ok"
-	else 
+	if [ ! -d "$p" ]
+	then
 		echo "$p directory should exists"
-		exit 1;
 	fi
 done
 
@@ -52,7 +42,6 @@ function test_perm {
 				echo "`pwd`"
 				echo "$f permissions should be 775"
 				echo "they are $p"
-				exit 1
 			fi
 		else
 			filename=$(basename "$f")
@@ -65,7 +54,6 @@ function test_perm {
 					echo "`pwd`"
 					echo "$f permissions should be 770"
 					echo "they are $p"
-					exit 1
 				fi
 			fi
 			if [ "$ext" == "js" ] || [ "$ext" == "css" ]
@@ -76,7 +64,6 @@ function test_perm {
 					echo "`pwd`"
 					echo "$f permissions should be 775"
 					echo "they are $p"
-					exit 1
 				fi
 			fi
 		fi

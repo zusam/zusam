@@ -3,6 +3,18 @@
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Core/Location.php');
 
+function acount_getDummy() {
+	$ac = [];
+	$ac['_id'] = -1;
+	$ac['date'] = -1;
+	$ac['mail'] = "";
+	$ac['name'] = "Utilisateur inconnu";
+	$ac['password'] = "";
+	$ac['forums'] = [];
+	$ac['default_avatar'] = -1;
+	return $ac;
+}
+
 function account_initialize($mail, $password) {
 	$ac = [];
 	$ac['_id'] = new MongoId();
@@ -33,6 +45,11 @@ function account_load($array) {
 }
 
 function account_getAvatar(&$ac) {
+	//dummy
+	if($ac['_id'] == -1) {
+		$avatar = p2l(pathTo2(array("url"=>"avatar", "param"=>"assets", "dir"=>false)));
+		return $avatar;
+	}
 	$loc = array("url"=>$ac['_id'], "param"=>"avatar", "ext"=>"jpg");
 	if(file_exists(pathTo2($loc))) {
 		$avatar = p2l(pathTo2($loc));

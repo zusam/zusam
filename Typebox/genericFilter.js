@@ -51,7 +51,7 @@ function open_graph_build(data) {
 function searchGenericImage(inner) {
 	r1 = /[\s]*https?:\/\/[\w\/=?~,.%&+\-#\!]+$/gi;
 	substitution = function(str) {
-		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="'+window.dir+'ajax-loader.gif"/></span>';
+		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 		return output;
 	};
 	callback = function(json) {
@@ -73,7 +73,7 @@ function searchGenericImage(inner) {
 function endingLink(inner) {
 	r1 = /[\s]*https?:\/\/[\w\/=?~,.%&+\-#\!]+$/gi;
 	substitution = function(str) {
-		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="'+window.dir+'ajax-loader.gif"/></span>';
+		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 		return output;
 	};
 	ajax_url = "gen_preview.php";
@@ -95,7 +95,7 @@ function endingLink(inner) {
 function searchLink(inner) {
 	r1 = /[\s]*https?:\/\/[\w\/=?~,.%&+\-#]+[\s]/gi;
 	substitution = function(str) {
-		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="'+window.dir+'ajax-loader.gif"/></span>';
+		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 		return output;
 	};
 	ajax_url = "gen_preview.php";

@@ -68,7 +68,7 @@ nav > button {
 }
 section {
 	position: relative;
-	top: 80px;
+	top: 100px;
 	transition: all 0.5s;
 	width: 100%;
 	max-width: 2048;
@@ -467,4 +467,19 @@ section {
 }
 .forum-mini img {
 	width: 100%;
+}
+.left-module-nav {
+	margin: 0px;
+	display: flex;
+	display: -webkit-flex;
+	align-items: center;
+	-webkit-align-items: center;
+}
+.forum-options {
+	display: inline-block;
+	margin-left: 5px;
+	font-size: 18px;
+	color: white;
+}
+
 }

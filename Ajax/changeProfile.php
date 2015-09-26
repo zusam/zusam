@@ -3,7 +3,6 @@
 chdir(realpath(dirname(__FILE__)."/../"));
 include('Core/Location.php');
 include('Core/Accounts.php');
-include('Reduc/ReducImage.php');
 
 $name = $_POST['name'];
 //$mail = $_POST['mail'];

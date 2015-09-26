@@ -9,11 +9,9 @@ function page_nav_forum(&$u, &$forum) {
 
 	$html = "";
 
+	$html .= '<div class="left-module-nav">';
 	$html .= '<div id="avatar" class="my_avatar" onclick="toggleslidefromleft(\'#mainmenu\')"><img src="'.account_getAvatar($u).'"/></div>';
-	$html .= '<div class="forum-options">';
-	if($forum != null && $forum != "" && $forum != false) {
-		$html .= '<div id="logo">'.$forum['name'].'</div>';
-	}
+	$html .= '<div class="forum-options">'.$u['name'].'</div>';
 	$html .= '</div>';
 	if($forum != null && $forum != "" && $forum != false) {
 		$html .= '<button class="button-newpost" onclick="togglenewpost()"><i class="fa fa-pencil"></i></button>';
@@ -52,7 +50,7 @@ function page_section_forum(&$u, &$forum) {
 						$inside = '<img src="'.p2l(pathTo("placeholder", "assets", "jpg")).'"/>';
 					}
 				} else {
-					$inside = '<img src="'.get_miniature($p['preview']).'"/>';
+					$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
 				}
 				//$id = preg_replace("/\.json/","",$e);
 				$html .= '<div class="post-mini" data-id="'.$p['_id'].'">'.$inside.'</div>';
@@ -70,16 +68,16 @@ function page_section_forum_settings(&$u, &$forum) {
 
 	$html .= '
 		<div class="profile_wrapper">
-			<div class="my_avatar"><img class="change-avatar" onclick="togglenewavatar()" src="'.forum_getAvatar($forum).'" /></div>
+			<div class="my_avatar"><img class="change-avatar" onclick="loadRetoucheBox(320,180,\'Ajax/changeForum.php\')" src="'.forum_getAvatar($forum).'" /></div>
 			<form class="change-profile">
 				<label for="name">Nom du forum:</label><br>
 				<input name="name" type="text" placeholder="'.$forum['name'].'"><br>
-				<input type="submit" value="Enregistrer">
+				<input type="submit" value="Enregistrer" onclick="changeforumname(\'input[name=name]\'); return false;">
 			</form>
 			<form class="change-profile">
 				<label for="mail">Mail de la personne à inviter:</label><br>
 				<input name="mail" type="email"><br>
-				<input type="submit" value="Envoyer">
+				<input type="submit" onclick="inviteUser(\'input[name=mail]\'); return false;" value="Envoyer">
 			</form>
 		</div>
 	';

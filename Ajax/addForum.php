@@ -15,8 +15,10 @@ $uid = $_POST['uid'];
 $name = htmlentities($name);
 
 $u = account_load(array('_id' => $uid));
-$f = forum_initialize($name, $uid);
-forum_addUser_andSave($f, $u);
+if($u != null && $u != false) {
+	$f = forum_initialize($name);
+	forum_addUser_andSave($f, $u);
+}
 
 // TODO transmit something ?
 ?>

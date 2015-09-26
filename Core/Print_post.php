@@ -13,6 +13,9 @@ function print_full_post($id, $uid, &$p) {
 
 	// get the user
 	$u = account_load(array('_id' => $uid));
+	if($u == null || $u == false) {
+		$u = account_getDummy();
+	}
 	
 	// load the post if not provided
 	if($p == null) {
@@ -26,7 +29,6 @@ function print_full_post($id, $uid, &$p) {
 	// TODO we want to assure that the order of the coms is kept intact
 	foreach($p['children'] as $cid) {
 		$child_html = print_post($cid, $uid);
-		//echo($child_html);
 		if($child_html != "") {
 			//$html_data .= $child_html.'<div class="post-separator"></div>';
 			$html_data .= $child_html;
@@ -43,6 +45,9 @@ function print_post($id, $uid, &$p) {
 
 	// get the user
 	$u = account_load(array('_id' => $uid));
+	if($u == null || $u == false) {
+		$u = account_getDummy();
+	}
 	
 	// load the post if not provided
 	if($p == null) {

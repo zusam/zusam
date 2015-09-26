@@ -41,9 +41,9 @@ function loadImage(file, id) {
 	img = new Image();
 	img.onload = function() {
 		canvas = document.createElement('canvas');
-		w = Math.min(img.width, 1024);
-		h = Math.min(img.height, 1024);
-		g = Math.min(w/img.width, h/img.height);
+		var wi = Math.min(img.width, 1024);
+		var hi = Math.min(img.height, 1024);
+		var g = Math.min(wi/img.width, hi/img.height);
 		canvas.width = img.width*g;
 		canvas.height = img.height*g;
 		ctx = canvas.getContext('2d');
@@ -78,7 +78,12 @@ function loadImage(file, id) {
 		setAsType(z,"movable",null,id);
 		x = document.querySelector(id).offsetHeight;
 		y = document.querySelector(id).offsetWidth;
-		setZone(z, x/2-64, y/2-64, 128, 128);
+		w = parseInt($(id).attr('data-w'));
+		h = parseInt($(id).attr('data-h'));
+		if(w == null || h == null) {
+			w = h = 128;
+		}
+		setZone(z, (x-h)/2, (y-w)/2, w, h);
 
 		z = $(id+' > .handletl')[0];
 		setAsType(z,"resizeHandletl",id+" > .zone",id);
@@ -90,7 +95,7 @@ function loadImage(file, id) {
 		setAsType(z,"resizeHandlebr",id+" > .zone",id);
 
 
-		menu = $('<div class="menu"><div class="menu-cell"><button class="cancelit" onclick="togglenewavatar()">Cancel</button></div><div class="menu-cell"><button class="sendit" onclick="sendCanvas(\'#retoucheBox\')">Submit</button></div></div>');
+		menu = $('<div class="menu"><div class="menu-cell"><button class="cancelit" onclick="togglenewavatar()">Cancel</button></div><div class="menu-cell"><button class="sendit" onclick="sendCanvas(\''+id+'\')">Submit</button></div></div>');
 		$(id).parent().append(menu);
 	};
 	img.src = URL.createObjectURL(file);
@@ -99,7 +104,7 @@ function loadImage(file, id) {
 function handleFileSelect(evt) {
 	id = evt.data;
 	var file = evt.target.files[0];
-	if (file.type.match('image.*')) {
+	if(file.type.match('image.*')) {
 		$(id+' > i').removeClass('fa-photo').addClass('fa-cog fa-spin').css({'top':'calc(50% - 25px)','left':'calc(50% - 25px)'});	
 		loadImage(file, id);
 	}
@@ -294,7 +299,7 @@ function start_retouche(id) {
 
 	// block unwanted scrolling
 	$(window).on('touchmove', function(e) {
-		if (window.blockScroll) {
+		if(window.blockScroll) {
 			e.preventDefault();
 		}
 	});
@@ -312,7 +317,7 @@ function restart_retouche(id) {
 // CANVAS
 
 function sendCanvas(id) {
-	console.log(id);
+	//console.log(id);
 	canvas = document.querySelector(id+' canvas');
 	var ctx = canvas.getContext('2d');
 	g = canvas.offsetWidth/parseInt(canvas.dataset.w);
@@ -325,27 +330,41 @@ function sendCanvas(id) {
 	data = ctx.getImageData(l, t, w, h);
 
 	g = Math.min(Math.min(w, 256)/w, Math.min(h, 256)/h);
-	c = document.createElement('canvas');
-	c.width = parseInt(w*g);
-	c.height = parseInt(h*g);
-	ctx2 = c.getContext('2d');
-	ctx2.putImageData(data, 0, 0, 0, 0, parseInt(w*g), parseInt(h*g));
-	imgURL = c.toDataURL("image/png");
+	c2 = document.createElement('canvas');
+	c2.width = parseInt(w);
+	c2.height = parseInt(h);
+	ctx2 = c2.getContext('2d');
+	ctx2.putImageData(data, 0, 0);
+	imgURL = c2.toDataURL("image/png");
+	htmlImage = $('<img>').attr('src',imgURL)[0];
+	delete c2; delete ctx2; delete imgURL;
+	c3 = document.createElement('canvas');
+	c3.width = parseInt(w*g);
+	c3.height = parseInt(h*g);
+	ctx3 = c3.getContext('2d');
+	ctx3.transform(g,0,0,g,0,0);
+	ctx3.drawImage(htmlImage, 0, 0);
+	imgURL = c3.toDataURL("image/png");
+	delete c3; delete ctx3; delete htmlImage;
 	f = new FormData();
-	console.log(dataURItoBlob(imgURL));
+	//console.log(dataURItoBlob(imgURL));
 	f.append("avatar",dataURItoBlob(imgURL));
 	var uid = $('#info').attr('data-uid');
+	var fid = $('#info').attr('data-forum');
+	var url = $(id).attr('data-url');
 	f.append("uid",uid);
-	console.log(f);
+	f.append("fid",fid);
+	//console.log(f);
 	$.ajax({
-		url: "Ajax/changeAvatar.php",
+		url: url,
 		type: "POST",
 		data: f,
 		success: function(data){ 
-				src = $('.my_avatar img').attr("src").replace(/\?.*/,'');
-				//TODO change image dynamically for the first time too
-				$('.my_avatar img').attr("src",src+"?"+Date.now());
 				console.log(data); 
+				location.reload();
+				//src = $('.my_avatar img').attr("src").replace(/\?.*/,'');
+				////TODO change image dynamically for the first time too
+				//$('.my_avatar img').attr("src",src+"?"+Date.now());
 			},
 		error: function(){ console.log("fail"); },
 		processData: false,

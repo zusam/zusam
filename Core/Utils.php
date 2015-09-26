@@ -1,5 +1,14 @@
 <?php
 
+function isIn($e, $a) {
+	foreach($a as $m) {
+		if($m == $e) {
+			return true;
+		}
+	}
+	return false;
+}
+
 
 // rot(n) ...
 function str_rot($s, $n) {

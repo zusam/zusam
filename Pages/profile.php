@@ -12,7 +12,7 @@ function page_section_profile(&$u) {
 
 	$html .= '
 		<div class="profile_wrapper">
-			<div class="my_avatar"><img class="change-avatar" onclick="togglenewavatar()" src="'.account_getAvatar($u).'" /></div>
+			<div class="my_avatar"><img class="change-avatar" onclick="loadRetoucheBox(128,128,\'Ajax/changeAvatar.php\')" src="'.account_getAvatar($u).'?'.time().'" /></div>
 			<form class="change-profile">
 				<label for="name">Nom:</label><br>
 				<input name="name" type="text" placeholder="'.$u['name'].'"><br>
@@ -24,6 +24,11 @@ function page_section_profile(&$u) {
 				<label for="new_password">Nouveau mot de passe:</label><br>
 				<input name="new_password" type="password"><br>
 				<input type="submit" onclick="changepassword(\'input[name=old_password]\',\'input[name=new_password]\'); return false;" value="Enregistrer">
+			</form>
+			<form class="change-profile">
+				<label for="password">Mot de passe :</label><br>
+				<input name="password" type="password"><br>
+				<input type="submit" onclick="destroyAccount(\'input[name=password]\'); return false;" value="Supprimer ce compte">
 			</form>
 		</div>
 	';

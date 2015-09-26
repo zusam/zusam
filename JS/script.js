@@ -1,6 +1,48 @@
+function loadRetoucheBox(w,h,url) {
+	r = $('#retoucheBox');
+	r.attr('data-w',w);
+	r.attr('data-h',h);
+	r.attr('data-url',url);
+	togglenewavatar();
+}
+
+
+function destroyAccount(id) {
+	password = $(id).val();
+	if(password == null || password.match(/^\s*$/)) {
+		return false;
+	}
+	var uid = $('#info').attr('data-uid');
+	$.ajax({
+		url: "Ajax/destroyAccount.php",
+		type: "POST",
+		data: {"uid":uid, "password":password},
+		success: function(data) {
+			console.log(data);
+			disconnect();
+		}
+	});
+}
+
+function changeforumname(id) {
+	name = $(id).val();
+	if(name == null || name.match(/^\s*$/)) {
+		return false;
+	}
+	var uid = $('#info').attr('data-uid');
+	var fid = $('#info').attr('data-forum');
+	$.ajax({
+		url: "Ajax/changeForum.php",
+		type: "POST",
+		data: {"uid":uid, "fid":fid, "name":name},
+		success: function(data) {
+			console.log(data);
+			location.reload();
+		}
+	});
+}
 
 function changename(id) {
-	//nz = $('#mainmenu .myname');
 	name = $(id).val();
 	if(name == null || name.match(/^\s*$/)) {
 		return false;
@@ -15,7 +57,22 @@ function changename(id) {
 			location.reload();
 		}
 	});
-	//nz.html(name);
+}
+
+function inviteUser(id) {
+	mail = $(id).val();
+	uid = $('#info').attr('data-uid');
+	forum = $('#info').attr('data-forum');
+	$.ajax({
+		url: "Ajax/inviteUser.php",
+		type: "POST",
+		data: {'uid':uid, 'mail':mail, 'forum':forum},
+		success: function(data) {
+				console.log(data);
+				console.log("success!");
+			},
+		error: function(){console.log('fail!');}
+	});
 }
 
 function changepassword(old_id,new_id) {
@@ -242,23 +299,6 @@ function removeNotification(t) {
 		error: function(){console.log('fail!');}
 	});
 	$(t).parent().parent().remove();
-}
-
-function inviteUser(mail, forum) {
-	if(mail == null) {
-		return false;
-	}
-	uid = $('#info').attr('data-uid');
-	$.ajax({
-		url: "Ajax/inviteUser.php",
-		type: "POST",
-		data: {'uid':uid, 'mail':mail, 'forum':forum},
-		success: function(data) {
-				console.log(data);
-				console.log("success!");
-			},
-		error: function(){console.log('fail!');}
-	});
 }
 
 function loadPage(page, fid) {

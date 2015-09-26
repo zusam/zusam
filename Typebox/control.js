@@ -1,9 +1,22 @@
 window.dir = "Typebox/";
 
+function mergeEditableNodes(e) {
+	for(i = 0; i<e.childNodes.length; i++) {
+		if(e.childNodes[i].tagName == 'DIV') {
+			if(e.childNodes[i-1] != null && e.childNodes[i-1].tagName == 'DIV') {
+				e.childNodes[i-1].innerHTML += "<br>"+e.childNodes[i].innerHTML;
+				e.removeChild(e.childNodes[i]);
+			}
+		}
+	}
+}
+
+
 //generic search function
 function searchFilter(e, filter, viewer) {
 
-	
+	mergeEditableNodes(e);
+
 	toProcess = [];
 	// gather the nodes to process
 	for(i = 0; i<e.childNodes.length; i++) {
@@ -146,7 +159,7 @@ function refreshContent(viewer, t) {
 		// activating deletable content
 		t.find('.deletable').off();
 		t.find('.deletable').on('mouseenter', function(event){
-				$(event.currentTarget).append('<div onclick="$(this).parent().remove()" class="delete-btn"><i class="fa fa-times"></i></div>');
+				$(event.currentTarget).append('<div onclick="$(this).parent().remove();" class="delete-btn"><i class="fa fa-times"></i></div>');
 				//window.setTimeout(function() {$('.delete-btn').addClass('grow-btn');}, 10);
 				});
 		t.find('.deletable').on('mouseleave', function(event){
@@ -189,33 +202,13 @@ function refocus(t) {
 function start() {
 
 	// INITIALISATION OF EXTERNAL LIBRARIES
-	SC.initialize({
-		// zusam client ID
-		client_id: '01af1b3315ad8177aefecab596621e09'
-	});
-
-// moved to start_typebox
-/*
-	if(viewer == null || viewer == false) {
-		document.execCommand("enableObjectResizing", false, false);
-
-		// prevent pasting HTML for typeBox
-		ce = document.querySelector("*[contenteditable]");
-			console.log(ce);
-		if(ce != null) {
-			ce.addEventListener("paste", function(e) {
-				e.preventDefault();
-				//var text = $(this).text();
-				//$(this).text(text);
-				var text = e.clipboardData.getData("text/plain");
-				text.replace(/\<div\>/,'').replace(/\<\/div\>/,'<br/>');
-				console.log(text);
-				document.execCommand("insertHTML", false, text);
-			});
-		}
-		refreshContent();
+	// SOUNDCLOUD
+	if( typeof(SC) != "undefined" ) {
+		SC.initialize({
+			// zusam client ID
+			client_id: '01af1b3315ad8177aefecab596621e09'
+		});
 	}
-	*/
 }
 
 function decode(input) {
@@ -291,7 +284,9 @@ function searchMatch(args) {
 			if(fail != null) {
 				settings.error = function(){ fail(m[j]); };
 			}
-			$.ajax(settings);
+			if(callback != null) {
+				$.ajax(settings);
+			}
 		}
 
 	} else {

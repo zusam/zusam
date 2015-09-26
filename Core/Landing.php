@@ -6,7 +6,8 @@ function landing() {
 			<title>Zusam</title>
 			<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 			<meta charset="utf-8"/>
-			<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+			<!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">-->
+			<link href="CSS/font-awesome.min.css" rel="stylesheet">
 		<style>
 			#login-form {
 				text-align: center;
@@ -69,7 +70,8 @@ function landing() {
 				</button>
 				</form>
 				</div>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
+		<script src="JS/jquery.2.1.4.min.js"></script>
 		<script>
 			$("#login-form").on("submit", function(e) {
 				e.preventDefault();	

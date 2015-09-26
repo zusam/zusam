@@ -2,12 +2,11 @@
 
 require_once(realpath(dirname(__FILE__).'/Accounts.php'));
 
-function forum_initialize($name, $aid) {
+function forum_initialize($name) {
 	$forum = [];
 	$forum['_id'] = new MongoId();
 	$forum['date'] = new MongoDate();
 	$forum['name'] = $name;
-	$forum['admin'] = new MongoId($aid);
 	$forum['users'] = [];
 	$forum['news'] = [];
 	return $forum;
@@ -60,7 +59,8 @@ function forum_getAvatar(&$forum) {
 	if(file_exists(pathTo($forum['_id'], "avatar", "jpg"))) {
 		$avatar = p2l(pathTo($forum['_id'], "avatar", "jpg"));
 	} else {
-		$avatar = p2l(pathTo("avatar", "assets", "jpg"));
+		//$avatar = p2l(pathTo2("avatar", "assets", "jpg"));
+		$avatar = p2l(pathTo2(array("url"=>"no_image", "ext"=>"png", "param"=>"assets", "dir"=>false)));
 	}
 	return $avatar;
 }

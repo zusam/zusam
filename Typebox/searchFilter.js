@@ -31,14 +31,16 @@ function endingSoundcloud(inner) {
 	r1 = /[\s]*(https?:\/\/soundcloud.com\/)([\w\-]+)\/([\w\-]+)(\/[\w\-]+)?$/gi;
 	substitution = function(str) {
 		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img src="'+window.dir+'ajax-loader.gif"/></span>';
-		setTimeout( function() {
-			SC.oEmbed(str, { auto_play: true }, function(oEmbed) {
-				song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,'$1');
-				song_url = song_url.replace(/auto_play=true/,"auto_play=false");
-				output = '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" scrolling="no" frameborder="0" src="'+song_url+'"></iframe></div>';
-				$('#'+str2md5(str)).html(output);
-			});
-		}, 50);
+		if( typeof(SC) != "undefined" ) {
+			setTimeout( function() {
+				SC.oEmbed(str, { auto_play: true }, function(oEmbed) {
+					song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,'$1');
+					song_url = song_url.replace(/auto_play=true/,"auto_play=false");
+					output = '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" scrolling="no" frameborder="0" src="'+song_url+'"></iframe></div>';
+					$('#'+str2md5(str)).html(output);
+				});
+			}, 50);
+		}
 		return output;
 	}
 	output = searchMatch({"callerName":"endingSoundcloud", "inner":inner, "regex":r1, "substitution":substitution});

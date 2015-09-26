@@ -1,6 +1,6 @@
 <?php
 
-	facebook($url) {
+	function facebook($url) {
 
 		// facebook image
 		if($flag == 0 && preg_match("/https?:\/\/www\.facebook\.com\/.*\/photos\/.*/",$word) == 1) {

@@ -1,9 +1,5 @@
 <?php
 	function saveImage($from, $to, $w, $h, $q) {
-		//var_dump($from);
-		//var_dump($to);
-		//var_dump($w);
-		//var_dump($h);
 		if($q == null) {
 			$q = 100;
 		}
@@ -14,10 +10,8 @@
 				throw new Exception("");
 			}
 		} catch(Exception $e) {
-			//var_dump($e);
 			return false;
 		}
-		//echo("image read successful");
 
 		$width = $im->getImageWidth();
 		$height = $im->getImageHeight();

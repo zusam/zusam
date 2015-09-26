@@ -45,7 +45,8 @@ echo('
 		<title>Zusam</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 		<meta charset="utf-8"/>
-		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+		<!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">-->
+		<link href="CSS/font-awesome.min.css" rel="stylesheet">
 		<link href="CSS/style.css?12" rel="stylesheet">
 		<link href="Typebox/style.css?11" rel="stylesheet">
 		<link href="Retouche/style.css?11" rel="stylesheet">
@@ -64,7 +65,7 @@ echo(page_mainmenu($u));
 // NEW AVATAR
 echo('
 <div id="newavatar" class="newavatar">
-	<div id="retoucheBox">
+	<div id="retoucheBox" data-w="128" data-h="128" data-url="Ajax/changeAvatar.php">
 	<i class="label fa fa-photo"></i>
 	<span class="underLabel">Click to upload a photo</span>
 	<input type="file"></input>
@@ -133,15 +134,16 @@ echo('</div>');
 
 // FOOTER
 echo('
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="http://connect.soundcloud.com/sdk.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
+<!--<script src="http://connect.soundcloud.com/sdk.js"></script>-->
+<script src="JS/jquery.2.1.4.min.js"></script>
 <script src="JS/fastclick.js"></script>
 <script src="JS/utils.js?11"></script>
 <script src="Typebox/searchFilter.js?11"></script>
 <script src="Typebox/genericFilter.js?11"></script>
 <script src="Typebox/control.js?11"></script>
 <script src="Typebox/typebox.js?11"></script>
-<script src="Retouche/script.js?11"></script>
+<script src="Retouche/script.js?12"></script>
 <script src="JS/ui.js?11"></script>
 <script src="JS/script.js?11"></script>
 <script src="JS/start.js?11"></script>
