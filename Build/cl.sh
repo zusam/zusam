@@ -3,22 +3,25 @@
 loc=`pwd`
 
 function SLOC {
-	cd $loc
-	cd $1
+	cd "$loc"
+	cd "$1"
 	for f in *
 	do
-		if [ -f "$f" ] 
+		if [ -d "$f" ] 
 		then
+			SLOC "$1/$f"
+		else
 			#filename=$(basename "$f")
 			#ext="${filename##*.}"
-			tmp=`cat "$f" | wc -l`
-			n=$(($n + $tmp))
-		else
-			SLOC "$f"
+			if [ -f "$f" ]
+			then
+				tmp=`cat "$f" | wc -l`
+				n=$(($n + $tmp))
+			fi
 		fi
 	done
 }
-A=(Core Ajax Filtre Reduc Typebox Retouche Pages Build)
+A=(`find . -mindepth 1 -maxdepth 1 -type d -print0 | xargs -0`)
 n=0
 for p in "${A[@]}";
 do

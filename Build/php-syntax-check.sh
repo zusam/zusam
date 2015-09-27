@@ -18,7 +18,7 @@ function php-check-syntax {
 		fi
 	done
 }
-A=(Core Ajax Filtre Reduc Typebox Retouche Pages)
+A=(`find . -mindepth 1 -maxdepth 1 -type d -print0 | xargs -0`)
 for p in "${A[@]}";
 do
 	php-check-syntax "$p"

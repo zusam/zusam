@@ -19,15 +19,6 @@ then
 	echo "/srv/http should exists and be the root directory of apache"
 fi
 
-A=(Data Data/avatar Data/miniature Assets Assets/avatar)
-for p in "${A[@]}";
-do
-	if [ ! -d "$p" ]
-	then
-		echo "$p directory should exists"
-	fi
-done
-
 # TEST PERMISSIONS
 function test_perm {
 	cd $loc
@@ -69,7 +60,7 @@ function test_perm {
 		fi
 	done
 }
-A=(Core Ajax Filtre Reduc Typebox CSS JS Retouche Pages)
+A=(`find . -mindepth 1 -maxdepth 1 -type d -print0 | xargs -0`)
 for p in "${A[@]}";
 do
 	test_perm "$p"
