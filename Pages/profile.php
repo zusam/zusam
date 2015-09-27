@@ -12,7 +12,7 @@ function page_section_profile(&$u) {
 
 	$html .= '
 		<div class="profile_wrapper">
-			<div class="my_avatar"><img class="change-avatar" onclick="loadRetoucheBox(128,128,\'Ajax/changeAvatar.php\')" src="'.account_getAvatar($u).'?'.time().'" /></div>
+			<div class="my_avatar"><img class="change-avatar" onclick="loadRetoucheBox(128,128,\'changeAvatar\')" src="'.account_getAvatar($u).'?'.time().'" /></div>
 			<form class="change-profile">
 				<label for="name">Nom:</label><br>
 				<input name="name" type="text" placeholder="'.$u['name'].'"><br>

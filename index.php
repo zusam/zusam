@@ -65,7 +65,7 @@ echo(page_mainmenu($u));
 // NEW AVATAR
 echo('
 <div id="newavatar" class="newavatar">
-	<div id="retoucheBox" data-w="128" data-h="128" data-url="Ajax/changeAvatar.php">
+	<div id="retoucheBox">
 	<i class="label fa fa-photo"></i>
 	<span class="underLabel">Click to upload a photo</span>
 	<input type="file"></input>

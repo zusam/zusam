@@ -11,9 +11,10 @@ function page_nav_forum(&$u, &$forum) {
 
 	$html .= '<div class="left-module-nav">';
 	$html .= '<div id="avatar" class="my_avatar" onclick="toggleslidefromleft(\'#mainmenu\')"><img src="'.account_getAvatar($u).'"/></div>';
-	$html .= '<div class="forum-options">'.$u['name'].'</div>';
+	//$html .= '<div class="my_name">'.$u['name'].'</div>';
 	$html .= '</div>';
 	if($forum != null && $forum != "" && $forum != false) {
+		$html .= '<div class="forum-name">'.$forum['name'].'</div>';
 		$html .= '<button class="button-newpost" onclick="togglenewpost()"><i class="fa fa-pencil"></i></button>';
 	} else {
 		$html .= '<div class="placeholder-div"></div>';
@@ -66,9 +67,11 @@ function page_section_forum_settings(&$u, &$forum) {
 
 	$html = "";
 
+	$html .= '<div class="settings-container">';
+
 	$html .= '
 		<div class="profile_wrapper">
-			<div class="my_avatar"><img class="change-avatar" onclick="loadRetoucheBox(320,180,\'Ajax/changeForum.php\')" src="'.forum_getAvatar($forum).'" /></div>
+			<div class="my_avatar"><img class="change-avatar" onclick="loadRetoucheBox(320,180,\'changeForum\')" src="'.forum_getAvatar($forum).'" /></div>
 			<form class="change-profile">
 				<label for="name">Nom du forum:</label><br>
 				<input name="name" type="text" placeholder="'.$forum['name'].'"><br>
@@ -81,8 +84,15 @@ function page_section_forum_settings(&$u, &$forum) {
 			</form>
 		</div>
 	';
+	$html .= '<div class="users-resume">';
+	foreach($forum['users'] as $userId) {
+		$user = account_load(array('_id'=>$userId));
+		$html .= '<div><img title="'.$user['name'].'" src="'.account_getAvatar($user).'"/><span>'.$user['name'].'</span></div>';
+	}
+	$html .= '</div>';
 
-
+	$html .= '</div>';
+	
 	return $html;
 }
 

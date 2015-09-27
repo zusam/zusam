@@ -351,12 +351,13 @@ function sendCanvas(id) {
 	f.append("avatar",dataURItoBlob(imgURL));
 	var uid = $('#info').attr('data-uid');
 	var fid = $('#info').attr('data-forum');
-	var url = $(id).attr('data-url');
+	var action = $(id).attr('data-action');
 	f.append("uid",uid);
 	f.append("fid",fid);
+	f.append("action",action);
 	//console.log(f);
 	$.ajax({
-		url: url,
+		url: 'Ajax/post.php',
 		type: "POST",
 		data: f,
 		success: function(data){ 

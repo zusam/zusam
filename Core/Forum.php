@@ -9,7 +9,12 @@ function forum_initialize($name) {
 	$forum['name'] = $name;
 	$forum['users'] = [];
 	$forum['news'] = [];
+	$forum['link'] = sha1(rand().$forum['_id'].time());
 	return $forum;
+}
+
+function forum_changeLink(&$forum) {
+	$forum['link'] = sha1(rand().$forum['_id'].time());
 }
 
 function forum_save(&$forum) {

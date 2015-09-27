@@ -216,7 +216,7 @@ function showpostviewer(id) {
 	pv.addClass('active');
 	pv.css('display','block');
 	console.log("show: "+id);
-	$.get("Ajax/getPost.php?id="+id, function(data) {
+	$.get("Ajax/get.php?action=getPost&id="+id, function(data) {
 
 		$('#mask').addClass('dark-mask');
 		pv.append('<div class="post-separator"></div>');

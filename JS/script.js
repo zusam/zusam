@@ -1,8 +1,8 @@
-function loadRetoucheBox(w,h,url) {
+function loadRetoucheBox(w,h,action) {
 	r = $('#retoucheBox');
 	r.attr('data-w',w);
 	r.attr('data-h',h);
-	r.attr('data-url',url);
+	r.attr('data-action',action);
 	togglenewavatar();
 }
 
@@ -14,9 +14,9 @@ function destroyAccount(id) {
 	}
 	var uid = $('#info').attr('data-uid');
 	$.ajax({
-		url: "Ajax/destroyAccount.php",
+		url: "Ajax/post.php",
 		type: "POST",
-		data: {"uid":uid, "password":password},
+		data: {"action":"destroyAccount", "uid":uid, "password":password},
 		success: function(data) {
 			console.log(data);
 			disconnect();
@@ -32,9 +32,9 @@ function changeforumname(id) {
 	var uid = $('#info').attr('data-uid');
 	var fid = $('#info').attr('data-forum');
 	$.ajax({
-		url: "Ajax/changeForum.php",
+		url: "Ajax/post.php",
 		type: "POST",
-		data: {"uid":uid, "fid":fid, "name":name},
+		data: {"action":"changeForum", "uid":uid, "fid":fid, "name":name},
 		success: function(data) {
 			console.log(data);
 			location.reload();
@@ -49,9 +49,9 @@ function changename(id) {
 	}
 	var uid = $('#info').attr('data-uid');
 	$.ajax({
-		url: "Ajax/changeProfile.php",
+		url: "Ajax/post.php",
 		type: "POST",
-		data: {"uid":uid, "name":name},
+		data: {"action":"changeProfile", "uid":uid, "name":name},
 		success: function(data) {
 			console.log(data);
 			location.reload();
@@ -64,9 +64,9 @@ function inviteUser(id) {
 	uid = $('#info').attr('data-uid');
 	forum = $('#info').attr('data-forum');
 	$.ajax({
-		url: "Ajax/inviteUser.php",
+		url: "Ajax/post.php",
 		type: "POST",
-		data: {'uid':uid, 'mail':mail, 'forum':forum},
+		data: {'action':'inviteUser', 'uid':uid, 'mail':mail, 'forum':forum},
 		success: function(data) {
 				console.log(data);
 				console.log("success!");
@@ -86,9 +86,9 @@ function changepassword(old_id,new_id) {
 	}
 	var uid = $('#info').attr('data-uid');
 	$.ajax({
-		url: "Ajax/changeProfile.php",
+		url: "Ajax/post.php",
 		type: "POST",
-		data: {"uid":uid, "old_password":old_password, "new_password":new_password},
+		data: {"action":"changeProfile", "uid":uid, "old_password":old_password, "new_password":new_password},
 		success: function(data) {
 			console.log(data);
 			location.reload();
@@ -163,9 +163,9 @@ function deletePost(t) {
 	console.log("delete:"+id);
 	forum = $('#info').attr('data-forum');
 	$.ajax({
-		url: "Ajax/deletePost.php",
+		url: "Ajax/post.php",
 		type: "POST",
-		data: {"id":id,"forum":forum},
+		data: {"action":"deletePost", "id":id,"forum":forum},
 		success: function(data) {
 				if(p.hasClass('parent-post')) {
 					hidepostviewer();
@@ -181,7 +181,7 @@ function editPost(t) {
 	var p = $(t).parent().parent().parent().parent();
 	var pid = p.attr('data-id');
 	var forum = $('#info').attr('data-forum');
-		$.get("Ajax/getRaw.php?pid="+pid, function(data) {
+		$.get("Ajax/get.php?action=getRaw&pid="+pid, function(data) {
 			//console.log(data);
 			box = '<div id="editBox" class="dynamicBox">';
 			box += '<div contenteditable="true" data-placeholder="Share something...">'+data['raw']+'</div>';
@@ -258,9 +258,9 @@ function addForum(name) {
 	} 
 	uid = $('#info').attr('data-uid');
 	$.ajax({
-		url: "Ajax/addForum.php",
+		url: "Ajax/post.php",
 		type: "POST",
-		data: {'uid':uid, 'name':name},
+		data: {'action':'addForum', 'uid':uid, 'name':name},
 		success: function(data) {
 				console.log(data);
 				console.log("success!");
@@ -273,9 +273,9 @@ function addUserToForum(t) {
 	nid = $(t).parent().parent().attr('data-id');
 	uid = $('#info').attr('data-uid');
 	$.ajax({
-		url: "Ajax/addUserToForum.php",
+		url: "Ajax/post.php",
 		type: "POST",
-		data: {'uid':uid, 'nid':nid},
+		data: {'action':'addUserToForum', 'uid':uid, 'nid':nid},
 		success: function(data) {
 				console.log(data);
 				console.log("success!");
@@ -289,9 +289,9 @@ function removeNotification(t) {
 	nid = $(t).parent().parent().attr('data-id');
 	uid = $('#info').attr('data-uid');
 	$.ajax({
-		url: "Ajax/removeNotification.php",
+		url: "Ajax/post.php",
 		type: "POST",
-		data: {'uid':uid, 'nid':nid},
+		data: {'action':'removeNotification', 'uid':uid, 'nid':nid},
 		success: function(data) {
 				console.log(data);
 				console.log("success!");
@@ -301,28 +301,28 @@ function removeNotification(t) {
 	$(t).parent().parent().remove();
 }
 
-function loadPage(page, fid) {
-	if(fid != null) {
-		queryData = {'page':page, 'fid':fid};
-	} else {
-		queryData = {'page':page};
-	}
-	$.ajax({
-		url: "Ajax/load_page.php",
-		type: "POST",
-		data: queryData,
-		success: function(data) {
-				hideAll();
-				console.log(data);
-				console.log("success!");
-				if(data['section'] != null) {
-					$('section').html(data['section']);	
-					setpostsviewable();
-				}
-				if(data['nav'] != null) {
-					$('nav').html(data['nav']);	
-				}
-			},
-		error: function(){console.log('fail!');}
-	});
-}
+//function loadPage(page, fid) {
+//	if(fid != null) {
+//		queryData = {'page':page, 'fid':fid};
+//	} else {
+//		queryData = {'page':page};
+//	}
+//	$.ajax({
+//		url: "Ajax/load_page.php",
+//		type: "POST",
+//		data: queryData,
+//		success: function(data) {
+//				hideAll();
+//				console.log(data);
+//				console.log("success!");
+//				if(data['section'] != null) {
+//					$('section').html(data['section']);	
+//					setpostsviewable();
+//				}
+//				if(data['nav'] != null) {
+//					$('nav').html(data['nav']);	
+//				}
+//			},
+//		error: function(){console.log('fail!');}
+//	});
+//}

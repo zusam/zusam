@@ -1,3 +1,7 @@
 *~
+
 #ignore Data files
 Data
+
+#ignore TODO file
+TODO

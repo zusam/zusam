@@ -14,7 +14,6 @@ if($mail == "" || $password == "") {
 	session_unset();
 	exit();
 }
-var_dump($_POST);
 // TODO do both verifications in one swipe.
 if(mailAlreadyExists($mail)) {
 	echo("already exists");
