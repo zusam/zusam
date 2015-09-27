@@ -19,7 +19,7 @@ function sendIt() {
 	console.log(prev);
 
 	xhr = new XMLHttpRequest();
-	xhr.open("POST", window.dir+"save_msg.php");
+	xhr.open("POST", "Ajax/save_msg.php");
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.onreadystatechange = function() { 	
 		if (this.readyState == 4 && this.status == 200) { 

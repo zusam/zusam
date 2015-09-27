@@ -30,7 +30,7 @@ function searchDeezer(inner) {
 function endingSoundcloud(inner) {
 	r1 = /[\s]*(https?:\/\/soundcloud.com\/)([\w\-]+)\/([\w\-]+)(\/[\w\-]+)?$/gi;
 	substitution = function(str) {
-		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img src="'+window.dir+'ajax-loader.gif"/></span>';
+		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img src="'+'Assets/ajax-loader.gif"/></span>';
 		if( typeof(SC) != "undefined" ) {
 			setTimeout( function() {
 				SC.oEmbed(str, { auto_play: true }, function(oEmbed) {
@@ -51,7 +51,7 @@ function endingSoundcloud(inner) {
 function searchSoundcloud(inner) {
 	r1 = /[\s]*(https?:\/\/soundcloud.com\/)([\w\-]+)\/([\w\-]+)(\/[\w\-]+)?[\s]/gi;
 	substitution = function(str) {
-		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img src="'+window.dir+'ajax-loader.gif"/></span>';
+		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img src="'+'Assets/ajax-loader.gif"/></span>';
 		setTimeout( function() {
 			SC.oEmbed(str, { auto_play: true }, function(oEmbed) {
 				song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,'$1');

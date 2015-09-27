@@ -76,7 +76,7 @@ function endingLink(inner) {
 		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 		return output;
 	};
-	ajax_url = "gen_preview.php";
+	ajax_url = "Ajax/gen_preview.php";
 	callback = function(data) {
 		e = open_graph_build(data);
 		balise = $('#'+str2md5(decodeURI(data['url'])));
@@ -98,7 +98,7 @@ function searchLink(inner) {
 		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 		return output;
 	};
-	ajax_url = "gen_preview.php";
+	ajax_url = "Ajax/gen_preview.php";
 	callback = function(data) {
 		e = open_graph_build(data);
 		balise = $('#'+str2md5(decodeURI(data['url'])));

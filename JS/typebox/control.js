@@ -1,5 +1,3 @@
-window.dir = "Typebox/";
-
 function mergeEditableNodes(e) {
 	for(i = 0; i<e.childNodes.length; i++) {
 		if(e.childNodes[i].tagName == 'DIV') {
@@ -271,7 +269,7 @@ function searchMatch(args) {
 
 		for(j=0;j<m.length;j++) {
 			settings = new Object();
-			settings.url = window.dir+ajax_url+"?url="+encodeURI(m[j]);
+			settings.url = ajax_url+"?url="+encodeURI(m[j]);
 			if(callback != null) {
 				settings.success = function(data){ 
 					callback(data); 

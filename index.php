@@ -46,10 +46,7 @@ echo('
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 		<meta charset="utf-8"/>
 		<!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">-->
-		<link href="CSS/font-awesome.min.css" rel="stylesheet">
-		<link href="CSS/style.css?12" rel="stylesheet">
-		<link href="Typebox/style.css?11" rel="stylesheet">
-		<link href="Retouche/style.css?11" rel="stylesheet">
+		<link href="style.css" rel="stylesheet">
 	</head>
 	<body>
 ');
@@ -138,15 +135,15 @@ echo('
 <!--<script src="http://connect.soundcloud.com/sdk.js"></script>-->
 <script src="JS/jquery.2.1.4.min.js"></script>
 <script src="JS/fastclick.js"></script>
-<script src="JS/utils.js?11"></script>
-<script src="Typebox/searchFilter.js?11"></script>
-<script src="Typebox/genericFilter.js?11"></script>
-<script src="Typebox/control.js?11"></script>
-<script src="Typebox/typebox.js?11"></script>
-<script src="Retouche/script.js?12"></script>
-<script src="JS/ui.js?11"></script>
-<script src="JS/script.js?11"></script>
-<script src="JS/start.js?11"></script>
+<script src="JS/utils.js"></script>
+<script src="JS/typebox/searchFilter.js"></script>
+<script src="JS/typebox/genericFilter.js"></script>
+<script src="JS/typebox/control.js"></script>
+<script src="JS/typebox/typebox.js"></script>
+<script src="JS/retouche.js"></script>
+<script src="JS/ui.js"></script>
+<script src="JS/script.js"></script>
+<script src="JS/start.js"></script>
 </body>
 </html>
 ');
