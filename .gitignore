@@ -1,7 +1,5 @@
 *~
-
-#ignore Data files
-Data
-
-#ignore TODO file
+*.css
+Data/
 TODO
+SCSS/.sass-cache/
