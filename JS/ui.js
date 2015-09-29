@@ -130,7 +130,7 @@ function togglenewavatar() {
 		pv.addClass('active');
 		pv.css('display','block');
 		addMask("togglenewavatar()",0.6);
-		restart_retouche("#retoucheBox");
+		retouche.restart("#retoucheBox");
 	}
 }
 
@@ -159,7 +159,7 @@ function shownewpost() {
 	e = $('#newpost');
 	hideAll();
 	showslidefromright('#slidenewpost');
-	start_typebox('#typeBox');
+	typebox.start('#typeBox');
 	invite = $('<div contenteditable="true" data-placeholder="Partagez quelquechose..."></div>')
 	$('#typeBox').html(invite);
 	e.addClass('active');
@@ -172,7 +172,7 @@ function hidenewpost() {
 	$('#newpost').removeClass('active');	
 	invite = $('<div contenteditable="true" data-placeholder="Partagez quelquechose..."></div>')
 	$('#typeBox').html(invite);
-	stop_typebox('#typeBox');
+	typebox.stop('#typeBox');
 	removeMask();
 }
 
@@ -203,7 +203,7 @@ function shownewcommentsection(id) {
 		np_cell.append('<button id="sendit" onclick="sendIt(\'#commentBox\')">Send</button>');
 		np_menu.append(np_cell);
 		t.append(c).append(cb).append(np_menu);
-		start_typebox('#commentBox');
+		typebox.start('#commentBox');
 		// require Typebox/typebox.js
 		niceFocus('#commentBox');
 	}
@@ -238,7 +238,7 @@ function hidepostviewer() {
 	removeMask();
 	pv.attr('data-id','');
 	pv.html('');
-	stop_typebox('#commentBox');
+	typebox.stop('#commentBox');
 }
 
 function addMask(func, darkness, zindex, id) {

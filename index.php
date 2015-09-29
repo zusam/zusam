@@ -133,17 +133,9 @@ echo('</div>');
 echo('
 <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
 <!--<script src="http://connect.soundcloud.com/sdk.js"></script>-->
-<script src="JS/jquery.2.1.4.min.js"></script>
-<script src="JS/fastclick.js"></script>
-<script src="JS/utils.js"></script>
-<script src="JS/typebox/searchFilter.js"></script>
-<script src="JS/typebox/genericFilter.js"></script>
-<script src="JS/typebox/control.js"></script>
-<script src="JS/typebox/typebox.js"></script>
-<script src="JS/retouche.js"></script>
-<script src="JS/ui.js"></script>
-<script src="JS/script.js"></script>
-<script src="JS/start.js"></script>
+<script src="LibJS/jquery.2.1.4.min.js"></script>
+<script src="LibJS/fastclick.min.js"></script>
+<script src="zusam.min.js"></script>
 </body>
 </html>
 ');

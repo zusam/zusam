@@ -69,7 +69,7 @@ function landing() {
 				</form>
 				</div>
 		<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
-		<script src="JS/jquery.2.1.4.min.js"></script>
+		<script src="LibJS/jquery.2.1.4.min.js"></script>
 		<script>
 			$("#login-form").on("submit", function(e) {
 				e.preventDefault();	

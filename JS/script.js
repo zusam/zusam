@@ -180,7 +180,7 @@ function deletePost(t) {
 function editPost(t) {
 	var p = $(t).parent().parent().parent().parent();
 	var pid = p.attr('data-id');
-	var forum = $('#info').attr('data-forum');
+	//var forum = $('#info').attr('data-forum');
 		$.get("Ajax/get.php?action=getRaw&pid="+pid, function(data) {
 			//console.log(data);
 			box = '<div id="editBox" class="dynamicBox">';
