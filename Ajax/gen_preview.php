@@ -4,7 +4,7 @@ chdir(realpath(dirname(__FILE__).'/../'));
 require_once('Core/Filtre.php');
 require_once('Core/Location.php');
 require_once('Core/Utils.php');
-require_once('Core/Preview_v2.php');
+require_once('Core/Preview.php');
 require_once('Core/Miniature.php');
 
 // TODO acl ?

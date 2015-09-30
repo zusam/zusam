@@ -1,6 +1,8 @@
 *~
 *.css
+*.map
 Data/
 TODO
 SCSS/.sass-cache/
 .sass-cache/
+*.min.js

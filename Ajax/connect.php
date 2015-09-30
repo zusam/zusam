@@ -16,14 +16,11 @@ if($mail == "" || $password == "") {
 }
 // TODO do both verifications in one swipe.
 if(mailAlreadyExists($mail)) {
-	echo("already exists");
 	if(verifyACL($mail, $password)) {
 		$_SESSION['connected'] = true;
 		$_SESSION['mail'] = $mail;
 		$_SESSION['password'] = $password;
-		echo('ok');
 	} else {
-		echo("false password");
 		session_unset();
 	}
 } else {
@@ -34,7 +31,6 @@ if(mailAlreadyExists($mail)) {
 	$_SESSION['connected'] = true;
 	$_SESSION['mail'] = $mail;
 	$_SESSION['password'] = $password;
-	echo("new!");
 }
 
 ?>

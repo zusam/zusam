@@ -45,8 +45,4 @@ function page_mainmenu(&$u) {
 
 	return $html;
 }
-
-
-
-
 ?>

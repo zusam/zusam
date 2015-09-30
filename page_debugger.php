@@ -1,6 +1,6 @@
 <?php
 
-require_once('Core/Preview_v2.php');
+require_once('Core/Preview.php');
 
 
 $url = $_GET['url'];

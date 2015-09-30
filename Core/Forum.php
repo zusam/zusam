@@ -10,6 +10,7 @@ function forum_initialize($name) {
 	$forum['users'] = [];
 	$forum['news'] = [];
 	$forum['link'] = sha1(rand().$forum['_id'].time());
+	$ac['salt'] = bin2hex(openssl_random_pseudo_bytes(6));
 	return $forum;
 }
 
@@ -65,13 +66,9 @@ function forum_getAvatar(&$forum) {
 		$avatar = p2l(pathTo($forum['_id'], "avatar", "jpg"));
 	} else {
 		//$avatar = p2l(pathTo2("avatar", "assets", "jpg"));
-		$avatar = p2l(pathTo2(array("url"=>"no_image", "ext"=>"png", "param"=>"assets", "dir"=>false)));
+		$avatar = p2l(pathTo2(array("url"=>"no_image", "ext"=>"jpg", "param"=>"assets", "dir"=>false)));
 	}
 	return $avatar;
 }
-
-
-
-
 
 ?>

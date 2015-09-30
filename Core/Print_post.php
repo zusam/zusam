@@ -71,7 +71,7 @@ function print_post($id, $uid, &$p) {
 		" data-id="'.$id.'">
 		<div class="post-menu">
 		<div class="op">
-			<div class="avatar"><img src="'.account_getAvatar($op).'"/></div>
+			<div class="avatar">'.account_getAvatarHTML($op).'</div>
 			<div class="post-info">
 				<div class="author">'.$op['name'].'</div>
 				<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->sec)).'</div>

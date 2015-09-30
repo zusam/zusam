@@ -26,7 +26,4 @@ function page_section_home(&$u) {
 	return $html;
 }
 
-
-
-
 ?>

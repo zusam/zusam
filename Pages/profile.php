@@ -5,14 +5,17 @@ require_once('Core/Accounts.php');
 require_once('Core/Forum.php');	
 require_once('Core/Notification.php');	
 
-
 function page_section_profile(&$u) {
 
 	$html = "";
 
+	$html .= '<div class="profile_wrapper">';
 	$html .= '
-		<div class="profile_wrapper">
-			<div class="my_avatar"><img class="change-avatar" onclick="loadRetoucheBox(128,128,\'changeAvatar\')" src="'.account_getAvatar($u).'?'.time().'" /></div>
+		<div class="change-avatar" onclick="loadRetoucheBox(128,128,\'changeAvatar\')">
+			'.account_getAvatarHTML($u).'
+		</div>
+	';
+	$html .= '
 			<form class="change-profile">
 				<label for="name">Nom:</label><br>
 				<input name="name" type="text" placeholder="'.$u['name'].'"><br>
@@ -36,8 +39,4 @@ function page_section_profile(&$u) {
 	return $html;
 	echo($html);
 }
-
-
-
-
 ?>

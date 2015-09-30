@@ -10,7 +10,7 @@ function page_nav_forum(&$u, &$forum) {
 	$html = "";
 
 	$html .= '<div class="left-module-nav">';
-	$html .= '<div id="avatar" class="my_avatar" onclick="toggleslidefromleft(\'#mainmenu\')"><img src="'.account_getAvatar($u).'"/></div>';
+	$html .= '<div class="my_avatar" onclick="toggleslidefromleft(\'#mainmenu\')">'.account_getAvatarHTML($u).'</div>';
 	//$html .= '<div class="my_name">'.$u['name'].'</div>';
 	$html .= '</div>';
 	if($forum != null && $forum != "" && $forum != false) {
@@ -28,10 +28,7 @@ function page_section_forum(&$u, &$forum) {
 
 	$html = "";
 
-	// SI ON EST SUR UN FORUM :
 	if($forum != null && $forum != "" && $forum != false) {
-
-		// MAIN SECTION, POSTS
 
 		$html .='<div id="container">';
 
@@ -41,9 +38,7 @@ function page_section_forum(&$u, &$forum) {
 		for($i=0;$i<min(3000,count($list));$i++) {
 			$p = post_load($list[$i]);
 			if($p != false && ($p['parent'] == null || $p['parent'] == 0)) {
-			//var_dump(get_miniature($p['preview']));
 				if(!file_exists(get_miniature_path($p['preview']))) {
-					//$link = gen_miniature($p['preview']);
 					$link = "";
 					if($link != false && $link != "") {
 						$inside = '<img src="'.$link.'"/>';
@@ -53,7 +48,6 @@ function page_section_forum(&$u, &$forum) {
 				} else {
 					$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
 				}
-				//$id = preg_replace("/\.json/","",$e);
 				$html .= '<div class="post-mini" data-id="'.$p['_id'].'">'.$inside.'</div>';
 			}
 		}
@@ -71,7 +65,7 @@ function page_section_forum_settings(&$u, &$forum) {
 
 	$html .= '
 		<div class="profile_wrapper">
-			<div class="my_avatar"><img class="change-avatar" onclick="loadRetoucheBox(320,180,\'changeForum\')" src="'.forum_getAvatar($forum).'" /></div>
+			<img class="change-avatar" onclick="loadRetoucheBox(320,180,\'changeForum\')" src="'.forum_getAvatar($forum).'" />
 			<form class="change-profile">
 				<label for="name">Nom du forum:</label><br>
 				<input name="name" type="text" placeholder="'.$forum['name'].'"><br>

@@ -23,7 +23,4 @@ function verifyACL($mail, $pass) {
 	return false;
 }
 
-
-
-
 ?>

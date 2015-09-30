@@ -30,17 +30,7 @@ nav > * {
 nav > button {
 	cursor: pointer;
 }
-#logo {
-	font-size: 30px;
-	color: white;
-}
-#name {
-	display: inline-block;
-	vertical-align: top;
-	padding: 12px;
-	cursor: pointer;
-}
-#avatar {
+.my_avatar {
 	display: inline-block;
 	cursor: pointer;
 	height: 50px;
@@ -48,7 +38,7 @@ nav > button {
 	overflow: hidden;
 	margin: 0px;
 }
-#avatar img {
+.my_avatar > * {
 	height: 100%;
 	width: 100%;
 }
@@ -88,9 +78,10 @@ section {
 	margin: 10px;
 	cursor: pointer;
 	width: 320px;
-}
-.post-mini img {
-	width: 100%;
+
+	img {
+		width: 100%
+	}
 }
 .slide {
 	position: fixed;
@@ -118,6 +109,13 @@ section {
 	font-size: 20px;
 	padding: 0px;
 	margin: 0px;
+
+	.separator {
+		border-bottom: 1px solid grey;
+		padding: 0;
+		width: 100%;
+		cursor: default;
+	}
 }
 .slidefromleft {
 	left: 0px;
@@ -128,12 +126,6 @@ section {
 	right: 0px;
 	transform: translateX(100%);
 	-webkit-transform: translateX(100%);
-}
-.slide-menu .separator {
-	border-bottom: 1px solid grey;
-	padding: 0;
-	width: 100%;
-	cursor: default;
 }
 .slide-menu > * {
 	display: block;
@@ -151,30 +143,33 @@ section {
 	cursor: text;
 	background: white;
 	color: black;
+	
+	.menu {
+		display: block;
+		width: 100%;
+		background: #eee;
+		margin: 0;
+		padding: 0;
+	}
+	.menu-cell {
+		display: inline-block;
+		width: 49%;
+		margin: 0;
+		padding: 5px 0px;
+		text-align: cell;
+	}
 }
-.newpost .menu {
-	display: block;
-	width: 100%;
-	background: #eee;
-	margin: 0;
-	padding: 0;
-}
-.newpost .menu-cell {
-	display: inline-block;
-	width: 49%;
-	margin: 0;
-	padding: 5px 0px;
-	text-align: cell;
-}
-.newavatar .menu {
-	width: 100%;
-	  position: absolute;
-	    top: 100%;
-}
-.newavatar .menu-cell {
-	display: inline-block;
-	width: 50%;
-	text-align: center;
+.newavatar {
+	.menu {
+		width: 100%;
+		  position: absolute;
+			top: 100%;
+	}
+	.menu-cell {
+		display: inline-block;
+		width: 50%;
+		text-align: center;
+	}
 }
 .sendit, .cancelit { 
 	display: inline-block;
@@ -271,10 +266,11 @@ section {
 	cursor: pointer;
 	position: relative;
 	color: white;
-}
-#notification i {
-	font-size: 25px;
-	line-height: 41px;
+
+	i {
+		font-size: 25px;
+		line-height: 41px;
+	}
 }
 .menu-highlight {
 	padding: 5px;
@@ -291,32 +287,33 @@ section {
 	padding: 5px;
 	position: relative;
 	border-bottom: 1px solid black;
-}
-.invitation .title {
-	width: 100%;
-	text-align: center;
-	padding-bottom: 5px;
-}
-.invitation .action-menu {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: space-between;
-	align-items: center;
-	-webkit-justify-content: space-between;
-	-webkit-align-items: center;
-}
-.invitation .action {
-	cursor: pointer;
-	padding: 5px;
-	border-radius: 0px;
-	background: white;
-	border: 1px solid black;
-	flex-grow: 2;
-	-webkit-flex-grow: 2;
-	margin: 0px 3px;
-}
-.invitation .action:hover {
-	background: lightgrey;
+
+	.title {
+		width: 100%;
+		text-align: center;
+		padding-bottom: 5px;
+	}
+	.action-menu {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: space-between;
+		align-items: center;
+		-webkit-justify-content: space-between;
+		-webkit-align-items: center;
+	}
+	.action {
+		cursor: pointer;
+		padding: 5px;
+		border-radius: 0px;
+		background: white;
+		border: 1px solid black;
+		flex-grow: 2;
+		-webkit-flex-grow: 2;
+		margin: 0px 3px;
+	}
+	.action:hover {
+		background: lightgrey;
+	}
 }
 .forum-menu {
 	display: flex;
@@ -337,16 +334,17 @@ section {
 	background: none;
 	margin: 0px;
 	cursor: pointer;
-}
-.forum-link input {
-	border: none;
-	background: none;
-	margin: 0px;
-	font-size: 18px;
-	padding: 0px;
-	cursor: pointer;
-	width: 100%;
-	text-align: left;
+
+	input {
+		border: none;
+		background: none;
+		margin: 0px;
+		font-size: 18px;
+		padding: 0px;
+		cursor: pointer;
+		width: 100%;
+		text-align: left;
+	}
 }
 .forum-link:hover {
 	background: #F0F0F0;
@@ -360,38 +358,38 @@ section {
 .forum-settings:hover {
 	background: #F0F0F0;
 }
-#ask {
-	width: 200px;
-	max-width: 80%;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	z-index: 9001;
-	background-color: white;
-	padding: 10px;
-	border-radius: 4px;
-	display: flex;
-	display: -webkit-flex;
-	flex-flow: row wrap;
-	justify-content: space-between;
-	align-items: center;
-	-webkit-flex-flow: row wrap;
-	-webkit-justify-content: space-between;
-	-webkit-align-items: center;
-}
-#ask span {
-	width: 100%;
-}
-#ask input {
-	width: 100%;
-	margin: 10px 0px;
-}
-#ask button {
-	flex-grow: 2;
-	-webkit-flex-grow: 2;
-	margin: 0px 2px;
-}
+//#ask {
+//	width: 200px;
+//	max-width: 80%;
+//	position: absolute;
+//	top: 50%;
+//	left: 50%;
+//	transform: translate(-50%, -50%);
+//	z-index: 9001;
+//	background-color: white;
+//	padding: 10px;
+//	border-radius: 4px;
+//	display: flex;
+//	display: -webkit-flex;
+//	flex-flow: row wrap;
+//	justify-content: space-between;
+//	align-items: center;
+//	-webkit-flex-flow: row wrap;
+//	-webkit-justify-content: space-between;
+//	-webkit-align-items: center;
+//}
+//#ask span {
+//	width: 100%;
+//}
+//#ask input {
+//	width: 100%;
+//	margin: 10px 0px;
+//}
+//#ask button {
+//	flex-grow: 2;
+//	-webkit-flex-grow: 2;
+//	margin: 0px 2px;
+//}
 .post-options {
 	display: flex;
 	display: -webkit-flex;
@@ -419,24 +417,25 @@ section {
 	padding: 15px;
 	border: 1px solid rgba(0,0,0,0.2);
 	text-align: center;
-}
-.change-profile label {
-	margin: 2px;
-}
-.change-profile input {
-	margin: 2px;
-	width: 100%;
+
+	label {
+		margin: 2px;
+	}
+	input {
+		margin: 2px;
+		width: 100%;
+	}
 }
 .change-avatar {
 	display: block;
 	margin: 5px 33px;
 	cursor: pointer;
-	border: 1px solid rgba(0, 0, 0, 0.45);
 	padding: 4px;
 	border-radius: 20px;
 	transition: all 1s;
 	width: 256px;
-	max-width: 100%;
+	height: 256px;
+	overflow: hidden;
 }
 .change-avatar:hover {
 	filter: sepia(100%);
@@ -456,10 +455,11 @@ section {
 	text-decoration: none;
 	color: black;
 	text-align: center;
-}
-.forum-mini img {
-	width: 100%;
-	border-radius: 4px;
+
+	img {
+		width: 100%;
+		border-radius: 4px;
+	}
 }
 .left-module-nav {
 	margin: 0px;

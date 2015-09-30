@@ -30,10 +30,6 @@ function pathTo($url, $param, $ext) {
 		$path = "/tmp/".hash("md5", $url); 
 		return $path;
 	}
-	//if($param == "data") {
-	//	$path = $loc."/".$forum."/".$url.$ext; 
-	//	return $path;
-	//}
 	if($param == "avatar") {
 		$path = $loc."/avatar/".$url.$ext; 
 		return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);

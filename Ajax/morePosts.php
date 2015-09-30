@@ -19,9 +19,6 @@ array_shift($posts);
 array_shift($posts);
 natsort($posts);
 $posts = array_reverse($posts);
-//var_dump($start);
-//var_dump($forum);
-//var_dump($posts);
 for($i=$start; $i < (30+$start) && $i < count($posts);$i++) {
 	$e = $posts[$i];
 	$p = post_load($location.$e);

@@ -11,7 +11,7 @@ function acount_getDummy() {
 	$ac['name'] = "Utilisateur inconnu";
 	$ac['password'] = "";
 	$ac['forums'] = [];
-	$ac['default_avatar'] = -1;
+	$ac['salt'] = "888888";
 	return $ac;
 }
 
@@ -20,10 +20,10 @@ function account_initialize($mail, $password) {
 	$ac['_id'] = new MongoId();
 	$ac['date'] = new MongoDate();
 	$ac['mail'] = $mail;
-	$ac['name'] = $mail;
+	$ac['name'] = preg_replace("/^(.*)@.*$/","$1",$mail);
 	$ac['password'] = password_hash($password, PASSWORD_BCRYPT);
 	$ac['forums'] = [];
-	$ac['default_avatar'] = rand(0, 65535);
+	$ac['salt'] = bin2hex(openssl_random_pseudo_bytes(6));
 	return $ac;
 }
 
@@ -47,21 +47,52 @@ function account_load($array) {
 function account_getAvatar(&$ac) {
 	//dummy
 	if($ac['_id'] == -1) {
-		$avatar = p2l(pathTo2(array("url"=>"avatar", "param"=>"assets", "dir"=>false)));
-		return $avatar;
+		return "";
 	}
 	$loc = array("url"=>$ac['_id'], "param"=>"avatar", "ext"=>"jpg");
 	if(file_exists(pathTo2($loc))) {
 		$avatar = p2l(pathTo2($loc));
 	} else {
-		//$avatar = p2l(pathTo("avatar", "assets", "jpg"));
-		// get random default avatar 
-		$av = scanDir(pathTo2(array("param"=>"default_avatar", "dir"=>true)));
-		array_shift($av); array_shift($av);
-		$i = $ac['default_avatar'] % count($av);
-		$avatar = p2l(pathTo2(array("url"=>$av[$i], "param"=>"default_avatar", "dir"=>false)));
+		return "";
 	}
 	return $avatar;
+}
+
+function account_genIdenticon(&$ac) {
+
+	if($ac['salt'] == null || $ac['salt'] == 0) {
+		$ac['salt'] = "888888";
+	}
+
+	list($r,$g,$b) = sscanf(substr($ac['salt'],0,6), "%02x%02x%02x");
+	$rl = floor((255+$r)/2);
+	$gl = floor((255+$g)/2);
+	$bl = floor((255+$b)/2);
+	$rd = floor((0+$r)/2);
+	$gd = floor((0+$g)/2);
+	$bd = floor((0+$b)/2);
+
+	$html = '';
+	$html .= '
+		<div class="identicon" style="background:rgb('."$rd,$gd,$bd".')">
+			<div style="background:rgb('."$rl,$gl,$bl".')" class="head"></div>
+			<div class="shoulder" style="background:rgb('."$rd,$gd,$bd".')" ></div>
+			<div style="background:rgb('."$rl,$gl,$bl".')" class="body"></div>
+		</div>
+	';
+
+	return $html;
+}
+
+function account_getAvatarHTML(&$ac) {
+	$html = "";
+	$avatar = account_getAvatar($ac);
+	if($avatar == "") {
+		$html = account_genIdenticon($ac);	
+	} else {
+		$html = '<img src="'.$avatar.'"/>';
+	}
+	return $html;
 }
 
 function account_destroy($id) {

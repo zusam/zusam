@@ -18,9 +18,4 @@ function get_miniature_path($url) {
 	return $link;
 }
 
-
-
-
-
-
 ?>

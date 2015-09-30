@@ -20,7 +20,7 @@ do
 		then
 			libname=$(basename "$p")
 			a=`echo "JS/"`
-			b=`echo ".js"`
+			b=`echo ".min.js"`
 			uglifyjs JS/$libname/*.js --compress --mangle --wrap=$libname --export-all > $a$libname$b
 			B=$B$D$a$libname$b
 		fi

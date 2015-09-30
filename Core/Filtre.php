@@ -123,10 +123,7 @@ function filtre($url) {
 		// open graph
 		$prev = json_decode(preview_v2($url), true);
 		$link = $prev['image']['url'];
-		//var_dump($link);
 		$ret = get_mini_from_link($url, $link);
-		//var_dump($ret);
-		//echo("<br><br>");
 		return $ret;
 	}
 

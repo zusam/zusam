@@ -32,20 +32,21 @@
 	transform: translate(-50%, -50%);
 	-webkit-transform: translate(-50%, -50%);
 	overflow: hidden;
-}
-#retoucheBox input {
-	display: block;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	opacity: 0;
-	cursor: pointer;
-	z-index: 10;
-}
-#retoucheBox img, #retoucheBox canvas {
-	width: 100%;
+
+	input {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		cursor: pointer;
+		z-index: 10;
+	}
+	img, canvas {
+		width: 100%;
+	}
 }
 .unselectable {
 	-moz-user-select: none; /* These user-select properties are inheritable, used to prevent text selection */
