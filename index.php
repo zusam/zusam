@@ -6,10 +6,10 @@ chdir(realpath(dirname(__FILE__)));
 require_once('Core/Post.php');
 require_once('Core/Location.php');
 require_once('Core/Connect.php');
-require_once('Core/Landing.php');	
 require_once('Core/Accounts.php');
 require_once('Core/Forum.php');	
 require_once('Core/Notification.php');	
+require_once('Core/Landing.php');
 
 require_once('Pages/forum.php');
 require_once('Pages/mainmenu.php');
@@ -17,6 +17,18 @@ require_once('Pages/profile.php');
 require_once('Pages/home.php');
 
 
+// HTML
+echo('<html>');
+
+// HEAD
+echo('
+	<head>
+		<title>Zusam</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+		<meta charset="utf-8"/>
+		<link href="style.css" rel="stylesheet">
+	</head>
+');
 
 if($_SESSION['connected'] != true) {
 	unset($_SESSION);
@@ -38,18 +50,8 @@ if($_SESSION['forum'] != "" && $_SESSION['forum'] != null && in_array($_SESSION[
 	}
 }
 
-// HEAD
-echo('
-<html>
-	<head>
-		<title>Zusam</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-		<meta charset="utf-8"/>
-		<!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">-->
-		<link href="style.css" rel="stylesheet">
-	</head>
-	<body>
-');
+// BODY
+echo('<body>');
 
 // SOME INFOS FOR JAVASCRIPT 
 echo('

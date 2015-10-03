@@ -1,3 +1,15 @@
+@font-face {
+  font-family: 'RobotoThin';
+  src: url('Fonts/Roboto-Thin.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'RobotoRegular';
+  src: url('Fonts/Roboto-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
 .hidden {
 	display: none;
 }
@@ -6,6 +18,7 @@ body {
 	max-width: 100%;
 	overflow-x: hidden;
 	font-size: 15px;
+	font-family: Roboto;
 }
 nav {
 	display: flex;
