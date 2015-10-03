@@ -6,3 +6,4 @@ TODO
 SCSS/.sass-cache/
 .sass-cache/
 *.min.js
+!LibJS/*.min.js
