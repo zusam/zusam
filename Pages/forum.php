@@ -65,7 +65,7 @@ function page_section_forum_settings(&$u, &$forum) {
 
 	$html .= '
 		<div class="profile_wrapper">
-			<img class="change-avatar" onclick="loadRetoucheBox(320,180,\'changeForum\')" src="'.forum_getAvatar($forum).'" />
+			<div class="change-avatar" onclick="loadRetoucheBox(256,256,\'changeForum\')">'.forum_getAvatarHTML($forum).'</div>
 			<form class="change-profile">
 				<label for="name">Nom du forum:</label><br>
 				<input name="name" type="text" placeholder="'.$forum['name'].'"><br>
@@ -81,7 +81,7 @@ function page_section_forum_settings(&$u, &$forum) {
 	$html .= '<div class="users-resume">';
 	foreach($forum['users'] as $userId) {
 		$user = account_load(array('_id'=>$userId));
-		$html .= '<div><img title="'.$user['name'].'" src="'.account_getAvatar($user).'"/><span>'.$user['name'].'</span></div>';
+		$html .= '<div><div title="'.$user['name'].'">'.account_getAvatarHTML($user).'</div><span>'.$user['name'].'</span></div>';
 	}
 	$html .= '</div>';
 

@@ -3,6 +3,7 @@ function landing() {
 	echo('
 		<body>
 			<div id="landing" class="landing">
+
 				<div class="background"></div>
 			
 				<div class="head">
@@ -22,6 +23,7 @@ function landing() {
 						<button type="submit" name="submit" class="submit"><i class="fa fa-paper-plane"></i></button>
 					</form>
 				</div>
+
 			</div>
 
 		<script src="LibJS/jquery.2.1.4.min.js"></script>

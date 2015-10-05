@@ -95,7 +95,7 @@ if($POST['action'] != null && $POST['action'] != "") {
 
 		// avatar change
 		if($f != null && $f != false && $_FILES["avatar"]["size"] < 1048576 && $_FILES["avatar"]["type"] == "image/png") {
-			$r = saveImage($_FILES["avatar"]["tmp_name"], pathTo($fid, "avatar", "jpg"), 320, 180);
+			$r = saveImage($_FILES["avatar"]["tmp_name"], pathTo($fid, "avatar", "jpg"), 256, 256);
 		}
 
 		exit;

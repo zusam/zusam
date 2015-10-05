@@ -11,7 +11,7 @@ function acount_getDummy() {
 	$ac['name'] = "Utilisateur inconnu";
 	$ac['password'] = "";
 	$ac['forums'] = [];
-	$ac['salt'] = "888888";
+	$ac['salt'] = "888888888888";
 	return $ac;
 }
 
@@ -59,10 +59,6 @@ function account_getAvatar(&$ac) {
 }
 
 function account_genIdenticon(&$ac) {
-
-	if($ac['salt'] == null || $ac['salt'] == 0) {
-		$ac['salt'] = "888888";
-	}
 
 	list($r,$g,$b) = sscanf(substr($ac['salt'],0,6), "%02x%02x%02x");
 	$rl = floor((255+$r)/2);

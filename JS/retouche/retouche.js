@@ -119,7 +119,15 @@ function setZone(d, x, y, w, h) {
 	h = Math.max(h,64);
 	w = Math.min(w, p.offsetWidth);
 	h = Math.min(h, p.offsetHeight);
+
+	// keep the same format
+	g = p.dataset.w/p.dataset.h;
+	if(w/h != g) {
+		w = g*h;
+	}
 	//h = w = Math.min(w,h); //square
+
+
 	x = Math.max(x,0);
 	y = Math.max(y,0);
 	x = Math.min(x, p.offsetHeight - h);
@@ -372,7 +380,7 @@ function sendCanvas(id) {
 				////TODO change image dynamically for the first time too
 				//$('.my_avatar img').attr("src",src+"?"+Date.now());
 			},
-		error: function(){ console.log("fail"); },
+		error: function(){ console.log(uid,fid,action); },
 		processData: false,
 		contentType: false
 	});

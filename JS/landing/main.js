@@ -1,7 +1,8 @@
 
 function start() {
-	$("#landing > .login-form").on("submit", function(e) {
+	$("#landing .login-form").on("submit", function(e) {
 		e.preventDefault();	
+		console.log("submitted");
 		action = $(this).children(".action").val();
 		mail = $(this).children(".mail").val();
 		password = $(this).children(".password").val();
@@ -36,12 +37,12 @@ function switchForm() {
 function switchToLogin() {
 	$('#landing .signin').html('S\'inscrire');
 	$('#landing .center-form .title-form').html('Se connecter');
-	$('#landing .background').css('background-image','url("Assets/Backgrounds/pre5.jpg")');
+	$('#landing .background').css('background-image','url("Assets/Backgrounds/pre5.jpg"), url("Assets/Backgrounds/small/pre5.jpg")');
 	$('#landing .login-form').attr('data-action','login');
 }
 function switchToSignup() {
 	$('#landing .signin').html('Se connecter');
 	$('#landing .center-form .title-form').html('S\'inscrire');
-	$('#landing .background').css('background-image','url("Assets/Backgrounds/pre2.jpg")');
+	$('#landing .background').css('background-image','url("Assets/Backgrounds/pre2.jpg"), url("Assets/Backgrounds/small/pre2.jpg")');
 	$('#landing .login-form').attr('data-action','signup');
 }

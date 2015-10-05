@@ -279,7 +279,7 @@ var Filter = {
 				e = $('<a class="article_big" href="'+decodeURI(data['url'])+'" target="_blank">'+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
 			}
 		} else {
-			e = fail_request(data['url']);
+			e = Filter.fail_request(data['url']);
 		}
 		return e;
 	},
@@ -315,12 +315,12 @@ var Filter = {
 		};
 		ajax_url = "Ajax/gen_preview.php";
 		callback = function(data) {
-			e = open_graph_build(data);
+			e = Filter.open_graph_build(data);
 			balise = $('#'+str2md5(decodeURI(data['url'])));
 			balise.html(e);
 		};
 		fail = function(url) {
-				e = fail_request(url);
+				e = Filter.fail_request(url);
 				balise = $('#'+str2md5(url));
 				balise.html(e);
 
@@ -337,12 +337,12 @@ var Filter = {
 		};
 		ajax_url = "Ajax/gen_preview.php";
 		callback = function(data) {
-			e = open_graph_build(data);
+			e = Filter.open_graph_build(data);
 			balise = $('#'+str2md5(decodeURI(data['url'])));
 			balise.html(e);
 		};
 		fail = function(url) {
-			e = fail_request(url);
+			e = Filter.fail_request(url);
 			balise = $('#'+str2md5(url));
 			balise.html(e);
 		}

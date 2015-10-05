@@ -264,6 +264,7 @@ function addForum(name) {
 		success: function(data) {
 				console.log(data);
 				console.log("success!");
+				window.location.reload(true); 
 			},
 		error: function(){console.log('fail!');}
 	});

@@ -13,20 +13,6 @@ function hideAll() {
 	}
 }
 
-//function togglenotification() {
-//	g = $('#notification');
-//	nm = $('#notification-menu');
-//	if(!g.hasClass('active')) {
-//		nm.css("display","block");
-//		g.addClass('active');
-//		g.css("color","red");
-//	} else {
-//		nm.css("display","none");
-//		g.removeClass('active');
-//		g.css("color","white");
-//	}
-//}
-
 function toggleoptionsmenu(id) {
 	g = $(id).find('.options-menu');
 	if(!g.hasClass('active')) {
@@ -88,38 +74,6 @@ function hideslidefromright(id) {
 	g.css({"transform":"translateX(100%)"});
 	g.removeClass('active');
 }
-
-//function togglechangename() {
-//	nz = $('#mainmenu .myname');
-//	if(nz.hasClass('active')) {
-//		name = nz.children('input').val();
-//		if(name == null || name == false || name.match(/^\s*$/)) {
-//			name = nz.children('input').attr('data-original');
-//		} else {
-//			var uid = $('#info').attr('data-uid');
-//			$.ajax({
-//				url: "Ajax/changeProfile.php",
-//				type: "POST",
-//				data: {"uid":uid, "name":name},
-//				success: function(data) {
-//					console.log(data);
-//					}
-//			});
-//		}
-//		nz.html(name);
-//		nz.off();
-//		nz.attr('onclick','togglechangename()');
-//		nz.removeClass('active');
-//	} else {
-//		name = nz.html();
-//		nz.attr('onclick','');
-//		nz.html('');
-//		nz.html('<input style="width:100%" type="text" placeholder="Choose a cool name!" data-original="'+name+'"></input>');
-//		nz.addClass('active');
-//		nz.children('input').focus();
-//		nz.focusout(togglechangename);
-//	}
-//}
 
 function togglenewavatar() {
 	pv = $('#newavatar');

@@ -10,7 +10,7 @@ function forum_initialize($name) {
 	$forum['users'] = [];
 	$forum['news'] = [];
 	$forum['link'] = sha1(rand().$forum['_id'].time());
-	$ac['salt'] = bin2hex(openssl_random_pseudo_bytes(6));
+	$forum['salt'] = bin2hex(openssl_random_pseudo_bytes(6));
 	return $forum;
 }
 
@@ -64,11 +64,46 @@ function forum_addUser_andSave(&$forum, &$user) {
 function forum_getAvatar(&$forum) {
 	if(file_exists(pathTo($forum['_id'], "avatar", "jpg"))) {
 		$avatar = p2l(pathTo($forum['_id'], "avatar", "jpg"));
+		return $avatar;
 	} else {
 		//$avatar = p2l(pathTo2("avatar", "assets", "jpg"));
-		$avatar = p2l(pathTo2(array("url"=>"no_image", "ext"=>"jpg", "param"=>"assets", "dir"=>false)));
+		//$avatar = p2l(pathTo2(array("url"=>"no_image", "ext"=>"jpg", "param"=>"assets", "dir"=>false)));
+		return "";
 	}
-	return $avatar;
+}
+
+function forum_genIdenticon(&$forum) {
+
+	list($r,$g,$b) = sscanf(substr($forum['salt'],0,6), "%02x%02x%02x");
+	$rl = floor((255+$r)/2);
+	$gl = floor((255+$g)/2);
+	$bl = floor((255+$b)/2);
+	$rd = floor((0+$r)/2);
+	$gd = floor((0+$g)/2);
+	$bd = floor((0+$b)/2);
+
+	$html = '';
+	$html .= '
+		<div data-color="'.substr($forum['salt'],0,6).'" class="identicon" style="background:rgb('."$rd,$gd,$bd".')">
+			<i class="fa fa-camera-retro" style="color:rgb('."$rl,$gl,$bl".')"></i>
+		</div>
+	';
+
+	return $html;
+
+}
+
+function forum_getAvatarHTML(&$forum) {
+	
+	$html = "";
+
+	$avatar = forum_getAvatar($forum);
+	if($avatar == "") {
+		$html = forum_genIdenticon($forum);
+	} else {
+		$html = '<img src="'.$avatar.'"/>';
+	}
+	return $html;
 }
 
 ?>

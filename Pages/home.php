@@ -15,8 +15,9 @@ function page_section_home(&$u) {
 	for($i=0;$i<count($list);$i++) {
 		$f = forum_load($list[$i]);
 		$html .= '
-			<a class="forum-mini" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum" data-id="'.$f['_id'].'">
-				<img title="'.$f['name'].'" src="'.forum_getAvatar($f).'"/>
+			<a title="'.$f['name'].'" class="forum-mini" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum" data-id="'.$f['_id'].'">
+				'.forum_getAvatarHTML($f).'
+				<!--<img title="'.$f['name'].'" src="'.forum_getAvatar($f).'"/>-->
 				<span>'.$f['name'].'</span>
 			</a>
 		';

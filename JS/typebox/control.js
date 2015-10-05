@@ -56,7 +56,7 @@ var Control = {
 		}
 		if(viewer == null || viewer == false) {
 			if(hasChanged) {
-				refocus(e);
+				Control.refocus(e);
 			}
 		}
 		Control.refreshContent(viewer, e);
@@ -175,7 +175,7 @@ var Control = {
 		t = $(t);
 		if(!t.children().last().is('div')) {
 			t.append('<div contenteditable="true"> </div>');
-			refreshContent(t);
+			Control.refreshContent(t);
 		}
 		// place cursor at the end of last div
 		e = t.children().last()[0];
@@ -265,16 +265,16 @@ var Control = {
 				}
 				// TODO this is necessary because the first output is not processed like the others...
 				if(j==0) {
-					output.push(encode(before));
+					output.push(Control.encode(before));
 				} else {
-					output.push('<div contenteditable="true">'+encode(before)+'</div>');
+					output.push('<div contenteditable="true">'+Control.encode(before)+'</div>');
 				}
 				output.push(substitution(m[j]));
 				str = str.slice(pos+m[j].length);
 			}
 			//report the rest in a new p element only if it matters
 			if(!str.match(/^\s*$/)) {
-				output.push('<div contenteditable="true">'+encode(str)+'</div>');
+				output.push('<div contenteditable="true">'+Control.encode(str)+'</div>');
 			}
 
 			for(j=0;j<m.length;j++) {
