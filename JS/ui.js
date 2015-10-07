@@ -178,7 +178,7 @@ function showpostviewer(id) {
 		pv.append('<div class="post-separator"></div>');
 		pv.append(data['html']);
 		pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Write a comment..."></div></div>');
-		view();
+		typebox.view();
 	});
 	addMask("togglepostviewer()",0.6);
 	pv.attr('data-id',id);

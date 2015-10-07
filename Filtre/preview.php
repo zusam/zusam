@@ -17,7 +17,7 @@ function preview($url) {
 			$file = pathTo($url, "tmp");
 			$ret = create_post_preview($url, $file);
 		}
-		$ret = fixBadUnicode(json_encode($p));
+		$ret = json_encode($p);
 		return $ret;
 	} else {
 		$tmp = file_get_contents($src);
@@ -28,7 +28,7 @@ function preview($url) {
 		}
 		$p = preview_initialize($url);
 		preview_save($p);
-		$ret = fixBadUnicode(json_encode($p));
+		$ret = json_encode($p);
 		return $ret;
 	}
 }
