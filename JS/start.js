@@ -27,7 +27,7 @@ $(window).ready(function() {
 	});
 	
 	retouche.start("#retoucheBox");
-	//setpostsviewable();
+	setpostsviewable();
 	
 	// INITIALISATION OF EXTERNAL LIBRARIES
 	// SOUNDCLOUD

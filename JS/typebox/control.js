@@ -219,14 +219,6 @@ var Control = {
 		Control.filter_out_search(t, viewer);
 	},
 
-	decode : function(input) {
-		return br2nl(html_entity_decode(input, "ENT_NOQUOTES"));
-	},
-
-	encode : function(input) {
-		return nl2br(htmlentities(input, "ENT_NOQUOTES"))
-	},
-
 	searchMatch : function(args) {
 
 		var callerName = args['callerName'];
@@ -238,7 +230,7 @@ var Control = {
 		var ajax_url = args['ajax_url'];
 
 
-		inner = Control.decode(inner);
+		inner = decode(inner);
 		var output = [];
 		var prem = inner.match(regex);
 		m = [];
@@ -265,16 +257,16 @@ var Control = {
 				}
 				// TODO this is necessary because the first output is not processed like the others...
 				if(j==0) {
-					output.push(Control.encode(before));
+					output.push(encode(before));
 				} else {
-					output.push('<div contenteditable="true">'+Control.encode(before)+'</div>');
+					output.push('<div contenteditable="true">'+encode(before)+'</div>');
 				}
 				output.push(substitution(m[j]));
 				str = str.slice(pos+m[j].length);
 			}
 			//report the rest in a new p element only if it matters
 			if(!str.match(/^\s*$/)) {
-				output.push('<div contenteditable="true">'+Control.encode(str)+'</div>');
+				output.push('<div contenteditable="true">'+encode(str)+'</div>');
 			}
 
 			for(j=0;j<m.length;j++) {
@@ -298,7 +290,7 @@ var Control = {
 			}
 
 		} else {
-			output[0] = Control.encode(inner);
+			output[0] = encode(inner);
 		}
 		return output;
 	}

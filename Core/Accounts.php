@@ -3,7 +3,7 @@
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Core/Location.php');
 
-function acount_getDummy() {
+function account_getDummy() {
 	$ac = [];
 	$ac['_id'] = -1;
 	$ac['date'] = -1;

@@ -715,3 +715,9 @@ function br2nl(input) {
 function nl2br(input) {
 	return input.replace(/\n|\r|\n\r|\r\n/g,"<br>");
 }
+function decode(input) {
+	return br2nl(html_entity_decode(input, "ENT_NOQUOTES"));
+}
+function encode(input) {
+	return nl2br(htmlentities(input, "ENT_NOQUOTES"))
+}

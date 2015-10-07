@@ -2,6 +2,13 @@
 
 loc=`pwd`
 
+if [[ "$1" == "compress" ]]
+then
+	opt="--compress --mangle"
+else
+	opt="--beautify"
+fi
+
 D=" "
 i=0
 A=(`echo JS/*`)
@@ -21,10 +28,10 @@ do
 			libname=$(basename "$p")
 			a=`echo "JS/"`
 			b=`echo ".min.js"`
-			uglifyjs JS/$libname/*.js --compress --mangle --wrap=$libname --export-all > $a$libname$b
+			uglifyjs JS/$libname/*.js $opt --wrap=$libname --export-all > $a$libname$b
 			B=$B$D$a$libname$b
 		fi
 	fi
 done
 
-uglifyjs $B --compress --mangle > zusam.min.js
+uglifyjs $B $opt > zusam.min.js

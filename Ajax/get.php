@@ -8,6 +8,7 @@ require_once('Core/Landing.php');
 require_once('Core/Accounts.php');
 require_once('Core/Forum.php');	
 require_once('Core/Notification.php');	
+require_once('Core/Print_post.php');	
 
 require_once('Pages/forum.php');
 require_once('Pages/mainmenu.php');
@@ -39,6 +40,7 @@ if($GET['action'] != null && $GET['action'] != "") {
 	}
 
 	if($GET['action'] == "getPost") {
+
 
 		$id = $_GET['id'];
 

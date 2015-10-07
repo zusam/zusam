@@ -1,8 +1,8 @@
 <?php
+
 chdir(realpath(dirname(__FILE__).'/../'));
 require_once('Core/Post.php');
 require_once('Core/Location.php');
-require_once('Core/Configuration.php');
 require_once('Core/Utils.php');
 require_once('Core/Print_post.php');
 require_once('Core/Forum.php');
@@ -35,6 +35,7 @@ if($preview != "") {
 if($url_prev == "" || $url_prev == null) {
 	$url_prev = p2l(pathTo("placeholder", "assets", "jpg"));
 }
+
 
 if($pid == null || $pid == 0) {
 	if($parent == null || $parent == 0) {

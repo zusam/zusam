@@ -74,11 +74,11 @@ function preview_getHTML(&$p) {
 	$p['html_t'] = microtime(true) - $t;
 }
 
-//function to_utf8($str) {
-//	$str = mb_convert_encoding($str, "UTF-8");
-//	$str = fixBadUnicode($str);
-//	return $str;
-//}
+function to_utf8($str) {
+	$str = mb_convert_encoding($str, "UTF-8");
+	$str = fixBadUnicode($str);
+	return $str;
+}
 
 function fixBadUnicode($str) {
 	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2")).chr(hexdec("$3")).chr(hexdec("$4"))', $str);
@@ -97,11 +97,11 @@ function preview_getTitle(&$p) {
 	}
 	$title = $p['html']('meta[property="og:title"]');
 	if($title != null) {
-		$title = utf8_encode($title[0]->content);
+		$title = $title[0]->content;
 	} else {
 		$tmp = $p['html']('title');
 		if(count($tmp) > 0) {
-			$title = utf8_encode($tmp[0]->getPlainText());
+			$title = $tmp[0]->getPlainText();
 		} else {
 			$title = null;
 		}
@@ -114,7 +114,7 @@ function preview_getTitle(&$p) {
 	if(abs(strlen($replace) - strlen($title)) > 3) {
 		$replace = $replace . "...";
 	}
-	$p['title'] = $replace;
+	$p['title'] = to_utf8(utf8_decode($replace));
 }
 
 function preview_getDescription(&$p) {
@@ -124,7 +124,7 @@ function preview_getDescription(&$p) {
 
 	$description = $p['html']('meta[property="og:description"]');
 	if($description != null) {
-		$description = utf8_encode($description[0]->content);
+		$description = $description[0]->content;
 	} else {
 		$value = 0;
 		$description = "";
@@ -143,7 +143,7 @@ function preview_getDescription(&$p) {
 	if(abs(strlen($replace) - strlen($description)) > 3) {
 		$replace = $replace . "...";
 	}
-	$p['description'] = $replace;
+	$p['description'] = to_utf8(utf8_decode($replace));
 }
 
 function ranger($url) {

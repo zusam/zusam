@@ -257,6 +257,7 @@ var Filter = {
 	},
 
 	open_graph_build : function(data) {
+		console.log(data);
 		//base_url = decodeURI(data['url']).replace(/https?:\/\/(www\.)?([^\/\?\#]+).*/i,"$1$2");
 		base_url = data['base_url'];
 		console.log(data['image']['url']);

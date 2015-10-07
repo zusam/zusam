@@ -22,7 +22,7 @@ if(count($_GET) > 1) {
 }
 	// GENERAL LINKS & OPEN GRAPH //
 	if(preg_match("/https?:\/\/[\w\/=?~.%&+\-#]+/",$url)==1) {
-		$ret = preview_v2($url);
+		$ret = preview($url);
 		gen_miniature($url);
 	}
 

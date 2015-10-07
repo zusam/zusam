@@ -66,8 +66,6 @@ function forum_getAvatar(&$forum) {
 		$avatar = p2l(pathTo($forum['_id'], "avatar", "jpg"));
 		return $avatar;
 	} else {
-		//$avatar = p2l(pathTo2("avatar", "assets", "jpg"));
-		//$avatar = p2l(pathTo2(array("url"=>"no_image", "ext"=>"jpg", "param"=>"assets", "dir"=>false)));
 		return "";
 	}
 }

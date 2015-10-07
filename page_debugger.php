@@ -7,7 +7,7 @@ $url = $_GET['url'];
 
 if($url != "") {
 	$p = preview_initialize($url);
-	$ret = fixBadUnicode(json_encode($p));
+	$ret = json_encode($p, JSON_UNESCAPED_UNICODE);
 	$p = json_decode($ret, true);
 }
 
@@ -15,9 +15,7 @@ echo('
 <html>
 <head>
 	<meta charset="utf-8"/>
-	<link href="CSS/style.css?12" rel="stylesheet">
-	<link href="Typebox/style.css?11" rel="stylesheet">
-	<link href="Retouche/style.css?11" rel="stylesheet">
+	<link href="style.css" rel="stylesheet">
 	<style>
 	.debug_info {
 		width: 540px;
@@ -32,6 +30,7 @@ echo('
 
 	</style>
 </head>
+<body style="background:white">
 ');
 
 echo('<form class="debug_info" action="'.$_SERVER['PHP_SELF'].'" method="GET">
@@ -94,6 +93,8 @@ if($url != "" && $url != null) {
 	echo('<br>');
 	var_dump($p);
 }
+
+echo('</body></html>');
 
 
 ?>
