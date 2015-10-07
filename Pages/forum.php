@@ -13,11 +13,12 @@ function page_nav_forum(&$u, &$forum) {
 	$html .= '<div class="my_avatar" onclick="toggleslidefromleft(\'#mainmenu\')">'.account_getAvatarHTML($u).'</div>';
 	//$html .= '<div class="my_name">'.$u['name'].'</div>';
 	$html .= '</div>';
+	$html .= '<a href="'.$_SERVER['PHP_SELF'].'"><img class="logo" src="Assets/logo.png"/></a>';
 	if($forum != null && $forum != "" && $forum != false) {
-		$html .= '<div class="forum-name">'.$forum['name'].'</div>';
-		$html .= '<button class="button-newpost" onclick="togglenewpost()"><i class="fa fa-pencil"></i></button>';
+		//$html .= '<div class="forum-name">'.$forum['name'].'</div>';
+		$html .= '<button class="action" onclick="togglenewpost()"><i class="fa fa-pencil"></i></button>';
 	} else {
-		$html .= '<div class="placeholder-div"></div>';
+		$html .= '<button class="action" onclick="ask(\'Nom du forum :\',25,addForum)"><i class="fa fa-plus"></i></button>';
 	}
 
 	return $html;
@@ -30,6 +31,7 @@ function page_section_forum(&$u, &$forum) {
 
 	if($forum != null && $forum != "" && $forum != false) {
 
+		$html .= '<div class="big-title">'.$forum['name'].'</div>';
 		$html .='<div id="container">';
 
 		$list = array_reverse($forum['news']);
@@ -48,7 +50,7 @@ function page_section_forum(&$u, &$forum) {
 				} else {
 					$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
 				}
-				$html .= '<div class="post-mini" data-id="'.$p['_id'].'">'.$inside.'</div>';
+				$html .= '<div class="material-shadow post-mini" data-id="'.$p['_id'].'">'.$inside.'</div>';
 			}
 		}
 		$html .= '</div>';

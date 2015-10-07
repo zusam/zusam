@@ -142,7 +142,7 @@ function sendIt(id) {
 					$('.new-comment-section').before(data['html']);				
 					//$('.new-comment-section').before('<div class="post-separator"></div>');				
 					hidenewcommentsection($('.new-comment-section'));
-					view();
+					typebox.view();
 				}
 			},
 		error: function(){ console.log("fail") }

@@ -142,7 +142,7 @@ function togglepostviewer(e) {
 
 function hidenewcommentsection(id) {
 	t = $(id);
-	t.html('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Write a comment..."></div></div>');
+	t.html('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 }
 
 function shownewcommentsection(id) {
@@ -158,8 +158,8 @@ function shownewcommentsection(id) {
 		np_menu.append(np_cell);
 		t.append(c).append(cb).append(np_menu);
 		typebox.start('#commentBox');
-		// require Typebox/typebox.js
-		niceFocus('#commentBox');
+		// require typebox module
+		typebox.Control.niceFocus('#commentBox');
 	}
 }
 
@@ -177,7 +177,7 @@ function showpostviewer(id) {
 		pv.append('<div class="post-options"><div onclick="hidepostviewer()"><i class="fa fa-long-arrow-right"></i></div></div>');
 		pv.append('<div class="post-separator"></div>');
 		pv.append(data['html']);
-		pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Write a comment..."></div></div>');
+		pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 		typebox.view();
 	});
 	addMask("togglepostviewer()",0.6);

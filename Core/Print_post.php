@@ -98,6 +98,10 @@ function print_post($id, $uid, &$p) {
 	$html_data .= 'dynamicBox viewerBox" data-id="'.$id.'"><div>'.$p['text'].'</div></div>
 	</div>
 	';
+	// parent ?
+	if($p['parent'] != null || $p['parent'] == 0) {
+		$html_data .= '<div class="post-separator"></div>';
+	}
 
 	return $html_data;
 }
