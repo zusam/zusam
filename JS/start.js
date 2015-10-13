@@ -9,6 +9,10 @@ $(document).on('scroll', function() {
 });
 */
 
+// usefull variables
+URL = window.URL || window.webkitURL;
+sending = false;
+
 $(window).ready(function() {
 
 	// start fastclick

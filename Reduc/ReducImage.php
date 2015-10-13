@@ -1,7 +1,7 @@
 <?php
 	function saveImage($from, $to, $w, $h, $q) {
 		if($q == null) {
-			$q = 100;
+			$q = 90;
 		}
 		
 		$im = new \Imagick();
@@ -59,7 +59,7 @@
 	function createPreview($new_width, $url, $to, $format, $quality) {
 		
 		if($quality == null) {
-			$quality = 100;
+			$quality = 90;
 		}
 
 		$im = new \Imagick();

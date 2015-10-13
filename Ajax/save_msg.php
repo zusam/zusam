@@ -17,10 +17,15 @@ $parent = (String) $_POST['parent'];
 
 // look for a preview
 $ret = preg_match("/https?:\/\/[\w\/=?~,.%&+\-#\!]+/i",$text,$matches);
+$ret2 = preg_match("/\{\:[A-Za-z0-9]+\:\}/i",$text,$matches2);
 if($ret != false && count($matches) > 0) {
 	$preview = $matches[0];
 } else {
-	$preview = "";
+	if($ret2 != false && count($matches2) > 0) {
+		$preview = $matches2[0];
+	} else {
+		$preview = "";
+	}
 }
 
 // building response...

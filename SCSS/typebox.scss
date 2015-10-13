@@ -3,11 +3,10 @@
 .dynamicBox > span > img { margin:0px 0px; max-width: 100%}
 .dynamicBox > span > video { margin:0px 0px; max-width: 100%}
 /* INLINE-BLOCK IS NECESSARY TO PREVENT DIVS FROM CHROME */
-.dynamicBox > div {display:inline-block;padding:2px; margin:0px; min-height:18px;width:calc(100% - 10px)}
+.dynamicBox > div {display:inline-block;padding:2px; margin:0px; min-height:18px;/*width:calc(100% - 10px)*/}
 .dynamicBox > div:focus { border:none; outline:none }
-.dynamicBox > span > a, .dynamicBox > span > a:focus, .dynamicBox > span > a:hover {
-	text-decoration: none;
-}
+.dynamicBox > span > a, .dynamicBox > span > a:focus, .dynamicBox > span > a:hover {text-decoration: none;}
+.dynamicBox > span > canvas { max-width: 100%; }
 .embed-responsive {
 	position: relative;
 	display: block;

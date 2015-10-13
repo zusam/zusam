@@ -1,9 +1,10 @@
 <?php
 
-require_once(realpath(dirname(__FILE__).'/Post.php'));
-require_once(realpath(dirname(__FILE__).'/Accounts.php'));
-require_once(realpath(dirname(__FILE__).'/Location.php'));
-require_once(realpath(dirname(__FILE__).'/Utils.php'));
+chdir(realpath(dirname(__FILE__))."/../");
+require_once('Core/Post.php');
+require_once('Core/Accounts.php');
+require_once('Core/Location.php');
+require_once('Core/Utils.php');
 
 
 function print_full_post($id, $uid, &$p) {

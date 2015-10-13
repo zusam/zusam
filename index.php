@@ -9,6 +9,7 @@ require_once('Core/Connect.php');
 require_once('Core/Accounts.php');
 require_once('Core/Forum.php');	
 require_once('Core/Notification.php');	
+require_once('Core/File.php');	
 require_once('Core/Landing.php');
 
 require_once('Pages/forum.php');
@@ -90,10 +91,13 @@ echo('
 		<div id="typeBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Share something..."></div></div>
 		<div class="menu">
 			<div class="menu-cell">
-				<button id="cancelit" onclick="hidenewpost()">Annuler</button>
+				<button onclick="hidenewpost()">Annuler</button>
 			</div>
 			<div class="menu-cell">
-				<button id="sendit" onclick="sendIt(\'#typeBox\')">Envoyer</button>
+				<button onclick="inputFile(\'#typeBox\')" class="action"><i class="fa fa-paperclip"></i></button>
+			</div>
+			<div class="menu-cell">
+				<button onclick="sendIt(\'#typeBox\')">Envoyer</button>
 			</div>
 		</div>
 	</div>

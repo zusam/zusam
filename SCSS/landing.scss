@@ -4,21 +4,21 @@
 	.landing {
 		.center-form {
 			.title-form {
-				font-size: 20px !important;
+				font-size: 22px !important;
 			}
 			.login-form {
 				.mail {
-					font-size: 15px !important;
+					font-size: 17px !important;
 				}
 				.password {
-					font-size: 15px !important;
+					font-size: 17px !important;
 				}
 			}
 		}
 		.head {
 			.menu {
 				.signin {
-					font-size: 15px !important;
+					font-size: 17px !important;
 				}
 			}
 		}
@@ -127,7 +127,6 @@
 	}
 
 	.head {
-		position: relative;
 		width: 100%;
 		z-index: 10;
 
@@ -150,14 +149,14 @@
 		}
 		.buffer-top {
 			width: 100%;
-			height: 20vmax;
+			height: 20%;
 			min-height: 70px;
 			max-height: 200px;
 		}
 		.logo2 {
 			position: relative;
 			left: 50%;
-			width: 45vmax;
+			width: 45%;
 			min-width: 250px;
 			max-width: 500px;
 			transform: translate(-50%,-50%);

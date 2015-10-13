@@ -35,24 +35,31 @@ nav {
 	height: 50px;
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 
+	.left-module-nav, .right-module-nav {
+		width: 100px;
+	}
+	.right-module-nav {
+		margin: 0;
+		text-align: right;
+
+		.action {
+			font-size: 15px;
+			border: none;
+			background-color: #F7A71B;
+			border-radius: 100%;
+			height: 30px;
+			width: 30px;
+			margin: 10px;
+			transition: all 0.2s;
+		}
+		.action:hover {
+			background-color: rgb(255,175,35);
+		}
+	}
 	.logo {
 	    width: 40px;
 		height: 40px;
 		cursor: pointer;
-	}
-
-	.action {
-		font-size: 15px;
-		border: none;
-		background-color: #F7A71B;
-		border-radius: 100%;
-		height: 30px;
-		width: 30px;
-		margin: 10px;
-		transition: all 0.2s;
-	}
-	.action:hover {
-		background-color: rgb(255,175,35);
 	}
 	button {
 		cursor: pointer;
@@ -116,7 +123,7 @@ section {
 		filter: blur(0px);
 		-webkit-filter: blur(0px);
 		transition: all 0.4s;
-		max-width: 1020px;
+		max-width: 1200px;
 		margin: 0 auto;
 	}
 	.post-mini {
@@ -192,20 +199,35 @@ section {
 	cursor: text;
 	background: white;
 	color: black;
+}
+.menu {
+	display: flex;
+	display: -webkit-flex;
+	align-items: center;
+	-webkit-align-items: center;
+	justify-content: space-between;
+	-webkit-justify-content: space-between;
+	width: 100%;
+	background: #eee;
+	margin: 0;
+	padding: 0;
 	
-	.menu {
-		display: block;
-		width: 100%;
-		background: #eee;
-		margin: 0;
-		padding: 0;
-	}
 	.menu-cell {
-		display: inline-block;
-		width: 49%;
 		margin: 0;
-		padding: 5px 0px;
-		text-align: cell;
+		padding: 5px 10px;
+		text-align: center;
+
+		.action {
+			border: none;
+			width: 30px;
+			height: 30px;
+			background: none;
+			font-size: 25px;
+			cursor: pointer;
+		}
+		.action:hover {
+			background: lightgrey;
+		}
 	}
 }
 .newavatar {
@@ -224,6 +246,12 @@ section {
 	display: inline-block;
 	border-radius: 0;
 	cursor: pointer;
+	border: 1px solid black;
+	box-shadow: 1px 1px 3px black;
+	background-color: white;
+}
+.sendit:hover, .cancelit:hover {
+	box-shadow: 0px 0px 1px black;
 }
 *[data-placeholder]:empty:not(:focus):before {
 	content: attr(data-placeholder);
@@ -522,25 +550,52 @@ section {
 .settings-container {
 	display: flex;
 	display: -webkit-flex;
-}
-.users-resume {
-	display: flex;
-	display: -webkit-flex;
-	border-left: 1px solid lightgrey;
-	height: auto;
-	padding: 5px;
-}
-.users-resume > div {
-	width: 96px;
-	height: 96px;
-	margin: 5px;
-	padding: 5px;
-	position: relative;
-	text-align: center;
-}
-.users-resume > div > div {
-	width: 100%;
-	border-radius: 4px;
+	flex-flow: row wrap;
+	-webkit-flex-flow: row wrap;
+
+	.profile_wrapper {
+		width: 100%;
+		max-width: 340px;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-around;
+		display: -webkit-flex;
+		-webkit-flex-flow: row wrap;
+		-webkit-justify-content: space-around;
+	}
+	
+	.users-resume, .invitations-resume {
+		display: flex;
+		display: -webkit-flex;
+		border-left: 1px solid lightgrey;
+		height: auto;
+		padding: 15px;
+		max-width: 256px;
+		width: 100%;
+		margin: 25px;
+		position: relative;
+
+		.title {
+			display: block;
+			width: 100%;
+			text-align: center;
+			margin-bottom: 5px;
+			position: absolute;
+			top: 0; left: 0;
+		}
+		.user {
+			width: 96px;
+			height: 96px;
+			margin: 5px;
+			padding: 5px;
+			position: relative;
+			text-align: center;
+		}
+		.user > div {
+			width: 100%;
+			border-radius: 4px;
+		}
+	}
 }
 .forum-name {
 	color: white;

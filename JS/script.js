@@ -60,7 +60,14 @@ function changename(id) {
 }
 
 function inviteUser(id) {
-	mail = $(id).val();
+	if(id.match(/.+@.+/)) {
+		mail = id;
+	} else {
+		mail = $(id).val();
+	}
+	if(mail == "" || typeof(mail) == 'undefined') {
+		return false;
+	}
 	uid = $('#info').attr('data-uid');
 	forum = $('#info').attr('data-forum');
 	$.ajax({
@@ -129,10 +136,10 @@ function sendIt(id) {
 			console.log(data);
 				if(data['parent'] == 0 || data['parent'] == null) {
 					if(data['pid'] == 0 || data['pid'] == null) {
-						$('#container').prepend('<div class="post-mini" data-id="'+data['id']+'"><img src="'+data['preview']+'"/></div>');
+						$('#container').prepend('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['preview']+'"/></div>');
 					} else {
 						var p = $('#container .post-mini[data-id='+data['pid']+']');
-						p.after('<div class="post-mini" data-id="'+data['id']+'"><img src="'+data['preview']+'"/></div>');
+						p.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['preview']+'"/></div>');
 						p.remove();
 					}
 					setpostsviewable();
@@ -280,6 +287,7 @@ function addUserToForum(t) {
 		success: function(data) {
 				console.log(data);
 				console.log("success!");
+				window.location.reload(true); 
 			},
 		error: function(){console.log('fail!');}
 	});
@@ -302,28 +310,75 @@ function removeNotification(t) {
 	$(t).parent().parent().remove();
 }
 
-//function loadPage(page, fid) {
-//	if(fid != null) {
-//		queryData = {'page':page, 'fid':fid};
-//	} else {
-//		queryData = {'page':page};
-//	}
-//	$.ajax({
-//		url: "Ajax/load_page.php",
-//		type: "POST",
-//		data: queryData,
-//		success: function(data) {
-//				hideAll();
-//				console.log(data);
-//				console.log("success!");
-//				if(data['section'] != null) {
-//					$('section').html(data['section']);	
-//					setpostsviewable();
-//				}
-//				if(data['nav'] != null) {
-//					$('nav').html(data['nav']);	
-//				}
-//			},
-//		error: function(){console.log('fail!');}
-//	});
-//}
+function inputFile(id) {
+	input = $('<input class="hidden" data-id="'+id+'" type="file"></input>');
+	input.on('change', handleFileSelect);
+	$('body').append(input);
+	input.click();
+}
+
+function handleFileSelect(evt) {
+	var files = evt.target.files;
+	var id = evt.target.dataset.id;
+	console.log("change!");
+	file = files[0];
+	evt.target.value = null;
+	if(!window.sending) {
+		window.sending = true;
+		if(file.type.match('image.*')) {
+			loadImage(file,id);
+		}
+	}
+}
+function loadImage(file,id) {
+	console.log("load image "+file.name);
+	var img = new Image();
+	img.onload = function() {
+		console.log("img:"+img);
+		canvas = document.createElement('canvas');
+		w = Math.min(this.width, 1024);
+		h = Math.min(this.height, 1024);
+		g = Math.min(w/img.width, h/img.height);
+		canvas.width = this.width*g;
+		canvas.height = this.height*g;
+		ctx = canvas.getContext('2d');
+		ctx.drawImage(img,0,0,this.width*g,this.height*g);
+		delete img;
+		$('*[data-id='+id+']').remove();
+		var fileId = Math.random().toString(36).slice(2)+Date.now().toString(36); 
+		showImage(canvas,id, fileId);
+		sendImage(canvas, fileId);
+	};
+	img.src = URL.createObjectURL(file);
+}
+
+function showImage(canvas, id, fileId) {
+	var content = $('<span data-src="{:'+fileId+':}" class="deletable" contenteditable="false"></span>');
+	content.append(canvas);
+	$(id).append(content);	
+}
+
+function sendImage(canvas, fileId) {
+	console.log("send image "+name);
+	var imgURL = canvas.toDataURL("image/png");
+	delete canvas;
+	var f = new FormData();
+	var uid = $('#info').attr('data-uid');
+	f.append("image",dataURItoBlob(imgURL));
+	f.append("fileId",fileId);
+	f.append("uid",uid);
+	f.append("action","addImage");
+	$.ajax({
+		url: "Ajax/post.php",
+		type: "POST",
+		data: f,
+		success: function(data){ 
+				console.log(data);
+			},
+		error: function(){ 
+				console.log("fail"); 
+			},
+		processData: false,
+		contentType: false
+	});
+}
