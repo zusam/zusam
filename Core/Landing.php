@@ -1,20 +1,17 @@
 <?php
 function landing() {
 	echo('
-		<body>
-			<div id="landing" class="landing">
-
-				<div class="background"></div>
+		<body id="landing">
 			
-				<div class="head">
-					<div class="menu">
-						<button class="signin" onclick="landing.switchForm()">Se connecter</button>
-					</div>
-					<div class="buffer-top"></div>
-					<img class="logo2" src="Assets/zusam.png"/>
-					<div class="buffer-bottom"></div>
-				</div>
-
+			<div class="background"></div>
+		
+			<div class="menu">
+				<button class="signin" onclick="landing.switchForm()">Se connecter</button>
+			</div>
+			<div class="top-div">
+				<img class="logo2" src="Assets/zusam.png"/>
+			</div>
+			<div class="bottom-div">
 				<div class="center-form">
 					<div class="title-form">S\'inscrire</div>
 					<form class="login-form" data-action="signup">
@@ -23,7 +20,6 @@ function landing() {
 						<button type="submit" name="submit" class="submit"><i class="fa fa-paper-plane"></i></button>
 					</form>
 				</div>
-
 			</div>
 
 		<script src="LibJS/jquery.2.1.4.min.js"></script>

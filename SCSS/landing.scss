@@ -1,7 +1,5 @@
-
-
 @media (min-width: 650px) {
-	.landing {
+	body {
 		.center-form {
 			.title-form {
 				font-size: 22px !important;
@@ -15,19 +13,16 @@
 				}
 			}
 		}
-		.head {
-			.menu {
-				.signin {
-					font-size: 17px !important;
-				}
+		.menu {
+			.signin {
+				font-size: 17px !important;
 			}
 		}
 	}
 }
 
 
-.landing {
-	overflow: hidden;
+#landing {
 	max-height: 100%;
 	position: absolute;
 	top: 0;
@@ -50,121 +45,121 @@
 		width: 100%;
 		height: 100%;
 	}
-	
-	.center-form {
-		text-align: center;
-		width: calc(100% - 50px);
-		max-width: 425px;
-		position: relative;
-		top: 5%;
-		left: 50%;
-		transform: translateX(-50%);
+
+	.menu {
+		position: absolute;
 		z-index: 10;
-		background: rgba(0, 0, 0, 0.7) none repeat scroll 0% 0%;
-		border-radius: 5px;
-		padding: 0px 0px 20px 0px;
+		width: 100%;
+		text-align: right;
+		background-color: rgba(0,0,0,0.7);
+		box-shadow: 0px 0px 10px black;
 
-		.title-form {
-			font-family: RobotoThin;
+		.signin {
+			border: none;
+			background: none;
 			color: white;
-			font-size: 5vmax;
+			font-family: RobotoRegular;
+			font-size: 3vmax;
+			cursor: pointer;
 			padding: 10px;
-		}
-
-		.login-form {
-			position: relative;
-			
-			.mail {
-				width: 80%;
-				padding: 5px;
-				font-size: 3vmax;
-				border: none;
-				margin: 0;
-				border-bottom: lightgrey solid 1px;
-				border-top-left-radius: 2px;
-				border-top-right-radius: 2px;
-				border-bottom-left-radius: 0px;
-				border-bottom-right-radius: 0px;
-			}
-			.password {
-				width: 80%;
-				padding: 5px;
-				margin: 0;
-				font-size: 3vmax;
-				border: none;
-				border-bottom-left-radius: 2px;
-				border-bottom-right-radius: 2px;
-				border-top-left-radius: 0px;
-				border-top-right-radius: 0px;
-			}
-			.submit {
-				background-color: #F7A71B;
-				font-size: 15px;
-				color: #FFF;
-				border-radius: 100%;
-				cursor: pointer;
-				display: block;
-				width: 45px;
-				height: 45px;
-				position: absolute;
-				border: medium none;
-				top: 50%;
-				transform: translate(-50%, -50%);
-				left: 90%;
-				transition: all 0.2s;
-				
-				i {
-					position: relative;
-					right: 2px;
-					bottom: 1px;
-				}
-			}
-			.submit:hover {
-				background-color: rgb(255,175,35);
-				box-shadow: 0px 0px 25px black;
-			}
 		}
 	}
 
-	.head {
+	.top-div {
+		display: block;
 		width: 100%;
-		z-index: 10;
-
-		.menu {
-			position: absolute;
-			width: 100%;
-			text-align: right;
-			background-color: rgba(0,0,0,0.7);
-			box-shadow: 0px 0px 10px black;
-
-			.signin {
-				border: none;
-				background: none;
-				color: white;
-				font-family: RobotoRegular;
-				font-size: 3vmax;
-				cursor: pointer;
-				padding: 10px;
-			}
-		}
-		.buffer-top {
-			width: 100%;
-			height: 20%;
-			min-height: 70px;
-			max-height: 200px;
-		}
+		position: relative;
+		height: 50%;
+		
 		.logo2 {
-			position: relative;
+			position: absolute;
+			top: 50%;
 			left: 50%;
-			width: 45%;
-			min-width: 250px;
-			max-width: 500px;
+			width: calc(320px + 20%);
+			max-width: calc(100% - 40px);
 			transform: translate(-50%,-50%);
 			opacity: 1;
 		}
-		.buffer-bottom {
-			width: 100%;
-			height: 40px;
+	}
+	
+	.bottom-div {
+		display: block;
+		width: 100%;
+		position: relative;
+		height: 50%;
+		
+		.center-form {
+			text-align: center;
+			width: calc(100% - 50px);
+			max-width: 425px;
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 10;
+			background: rgba(0, 0, 0, 0.7) none repeat scroll 0% 0%;
+			border-radius: 5px;
+			padding: 0px 0px 20px 0px;
+
+			.title-form {
+				font-family: RobotoThin;
+				color: white;
+				font-size: 5vmax;
+				padding: 10px;
+			}
+
+			.login-form {
+				position: relative;
+				
+				.mail {
+					width: 80%;
+					padding: 5px;
+					font-size: 3vmax;
+					border: none;
+					margin: 0;
+					border-bottom: lightgrey solid 1px;
+					border-top-left-radius: 2px;
+					border-top-right-radius: 2px;
+					border-bottom-left-radius: 0px;
+					border-bottom-right-radius: 0px;
+				}
+				.password {
+					width: 80%;
+					padding: 5px;
+					margin: 0;
+					font-size: 3vmax;
+					border: none;
+					border-bottom-left-radius: 2px;
+					border-bottom-right-radius: 2px;
+					border-top-left-radius: 0px;
+					border-top-right-radius: 0px;
+				}
+				.submit {
+					background-color: #F7A71B;
+					font-size: 15px;
+					color: #FFF;
+					border-radius: 100%;
+					cursor: pointer;
+					display: block;
+					width: 45px;
+					height: 45px;
+					position: absolute;
+					border: medium none;
+					top: 50%;
+					transform: translate(-50%, -50%);
+					left: 90%;
+					transition: all 0.2s;
+					
+					i {
+						position: relative;
+						right: 2px;
+						bottom: 1px;
+					}
+				}
+				.submit:hover {
+					background-color: rgb(255,175,35);
+					box-shadow: 0px 0px 25px black;
+				}
+			}
 		}
 	}
 }

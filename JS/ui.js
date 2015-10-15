@@ -44,7 +44,7 @@ function showslidefromleft(id) {
 	console.log(g);
 	g.css({"transform":"translateX(0)"});
 	g.addClass('active');
-	addMask("hideslidefromleft(\'"+id+"\')",0.6);
+	addMask("hideslidefromleft(\'"+id+"\')",0.75);
 }
 
 function hideslidefromleft(id) {
@@ -84,7 +84,7 @@ function togglenewavatar() {
 		hideAll();
 		pv.addClass('active');
 		pv.css('display','block');
-		addMask("togglenewavatar()",0.6);
+		addMask("togglenewavatar()",0.75);
 		retouche.restart("#retoucheBox");
 	}
 }
@@ -118,7 +118,7 @@ function shownewpost() {
 	invite = $('<div contenteditable="true" data-placeholder="Partagez quelquechose..."></div>')
 	$('#typeBox').html(invite);
 	e.addClass('active');
-	addMask("hidenewpost()",0.6);
+	addMask("hidenewpost()",0.75);
 }
 
 function hidenewpost() {
@@ -187,7 +187,7 @@ function showpostviewer(id) {
 		pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 		typebox.view();
 	});
-	addMask("hideAll()",0.6);
+	addMask("hideAll()",0.75);
 	pv.attr('data-id',id);
 }
 
