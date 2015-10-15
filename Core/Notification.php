@@ -2,13 +2,15 @@
 
 require_once(realpath(dirname(__FILE__).'/Accounts.php'));
 
-function notification_initialize($type, $text, $data) {
+function notification_initialize($type, $text, $data, $source, $target) {
 	$n = [];
 	$n['_id'] = new MongoId();
 	$n['date'] = new MongoDate();
 	$n['type'] = $type;
 	$n['text'] = $text;
 	$n['data'] = $data;
+	$n['source'] = $source; 
+	$n['target'] = $target;
 	return $n;
 }
 
@@ -26,18 +28,21 @@ function notification_destroy($id) {
 	$notifications->remove(array('_id' => $mid));
 }
 
-function notification_load($id) {
-	if(MongoId::isValid($id)) {
-		$mid = new MongoId($id);
-	} else {
-		echo("fail");
-		return null;
+function notification_load($array) {
+	if($array['_id'] != null && $array['_id'] != "") {
+		$array['_id'] = new MongoId($array['_id']);
 	}
 	$m = new MongoClient();
 	$notifications = $m->selectDB("zusam")->selectCollection("notifications");
-	$n = $notifications->findOne(array('_id' => $mid));
+	$n = $notifications->findOne($array);
 	return $n;
+}
 
+function notification_bulkLoad($array) {
+	$m = new MongoClient();
+	$notifications = $m->selectDB("zusam")->selectCollection("notifications");
+	$n = $notifications->find($array);
+	return $n;
 }
 
 function notification_erase_andSave(&$n, &$u) {
@@ -68,7 +73,7 @@ function notification_addNotif_andSave(&$n, &$u) {
 function notification_print_full(&$u) {
 	$html = "";
 	foreach($u['notifications'] as $nid) {
-		$n = notification_load($nid);
+		$n = notification_load(array('_id' => new MongoId($nid)));
 		$html .= notification_print($n);
 	}
 	return $html;

@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 chdir(realpath(dirname(__FILE__)."/../"));
 require_once('Core/Post.php');
@@ -8,6 +9,7 @@ require_once('Core/Landing.php');
 require_once('Core/Accounts.php');
 require_once('Core/Forum.php');	
 require_once('Core/Notification.php');	
+require_once('Core/File.php');	
 require_once('Core/Print_post.php');	
 
 require_once('Pages/forum.php');
@@ -27,9 +29,29 @@ foreach($_GET as $K=>$V) {
 
 if($GET['action'] != null && $GET['action'] != "") {
 
+	if($GET['action'] == "getFile") {
+
+
+		$fileId = preg_replace("/\{\:([a-zA-Z0-9]+)\:\}/","$1",$GET['url']);
+		$url = $GET['url'];
+
+		$file = file_load(array("fileId" => $fileId));	
+		$html = file_print($file);
+
+		$response = new StdClass();
+		$response->url = $url;
+		$response->html = $html;
+
+		header('Content-Type: text/json; charset=UTF-8');
+		echo(json_encode($response));
+		exit;
+
+	}
+
+
 	if($GET['action'] == "getAvatar") {
 
-		$uid = intval($GET['uid']);
+		$uid = $GET['uid'];
 
 		$response = new StdClass();
 		$response->avatar = p2l(pathTo($uid,"avatar","jpg"));
@@ -42,7 +64,7 @@ if($GET['action'] != null && $GET['action'] != "") {
 	if($GET['action'] == "getPost") {
 
 
-		$id = $_GET['id'];
+		$id = $GET['id'];
 
 		$u = account_load(array('mail' => $_SESSION['mail']));
 		$html_data = print_full_post($id, $u['_id']);
@@ -55,7 +77,7 @@ if($GET['action'] != null && $GET['action'] != "") {
 
 	if($GET['action'] == "getRaw") {
 
-		$pid = $_GET['pid'];
+		$pid = $GET['pid'];
 
 		$u = new User();
 		$u->loadFromDB("mail='".$_SESSION['login']."'");

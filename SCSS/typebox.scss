@@ -3,11 +3,10 @@
 .dynamicBox > span > img { margin:0px 0px; max-width: 100%}
 .dynamicBox > span > video { margin:0px 0px; max-width: 100%}
 /* INLINE-BLOCK IS NECESSARY TO PREVENT DIVS FROM CHROME */
-.dynamicBox > div {display:inline-block;padding:2px; margin:0px; min-height:18px;width:calc(100% - 10px)}
+.dynamicBox > div {display:inline-block;padding:2px; margin:0px; min-height:18px;/*width:calc(100% - 10px)*/}
 .dynamicBox > div:focus { border:none; outline:none }
-.dynamicBox > span > a, .dynamicBox > span > a:focus, .dynamicBox > span > a:hover {
-	text-decoration: none;
-}
+.dynamicBox > span > a, .dynamicBox > span > a:focus, .dynamicBox > span > a:hover {text-decoration: none;}
+.dynamicBox > span > canvas { max-width: 100%; }
 .embed-responsive {
 	position: relative;
 	display: block;
@@ -68,6 +67,7 @@
 	overflow: hidden;
 	position: relative;
 	border-bottom: 1px solid #CCC;
+	background-color: white;
 }
 .article_small > .preview{
 	width: 150px;
@@ -186,6 +186,8 @@
 	}
 }
 .parent-post {
+	background: white;
+	
 	.post-menu {
 		width: 530px;
 		max-width: calc(100% - 10px);
@@ -294,10 +296,6 @@
 .post-info {
 	padding-left: 10px;
 }
-.parent-post {
-	background: white;
-	margin-bottom: 10px;
-}
 .child-post {
 	background: #F0F0F0;
 	padding: 8px 5px 2px 5px;
@@ -306,9 +304,6 @@
 	margin-left: 43px;
 	margin-top: 2px;
 }
-//.post-parent-text {
-//	padding-bottom: 10px;
-//}
 #commentBox {
 	background: white;
 }

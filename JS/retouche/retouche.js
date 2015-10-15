@@ -13,7 +13,7 @@
 //	});
 //}
 
-function dataURItoBlob(dataURI) {
+function old_dataURItoBlob(dataURI) {
 	// convert base64/URLEncoded data component to raw binary data held in a string
 	var byteString;
 	if (dataURI.split(',')[0].indexOf('base64') >= 0) {
@@ -34,11 +34,23 @@ function dataURItoBlob(dataURI) {
 	return new Blob([ia], {type:mimeString});
 }
 
+function dataURItoBlob(dataURI) {
+
+	var byteString = atob(dataURI.split(",")[1]);
+	var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+	var ab = new ArrayBuffer(byteString.length);
+	var ia = new Uint8Array(ab);
+	for (var i = 0; i < byteString.length; i++) {
+		ia[i] = byteString.charCodeAt(i);
+	}
+	return new Blob([ia], {type:mimeString});
+}
 
 
 URL = window.URL || window.webkitURL;
 
 function loadImage(file, id) {
+console.log("retouche");
 	img = new Image();
 	img.onload = function() {
 		canvas = document.createElement('canvas');
@@ -330,7 +342,6 @@ function stop(id) {
 // CANVAS
 
 function sendCanvas(id) {
-	//console.log(id);
 	canvas = document.querySelector(id+' canvas');
 	var ctx = canvas.getContext('2d');
 	g = canvas.offsetWidth/parseInt(canvas.dataset.w);
@@ -341,7 +352,6 @@ function sendCanvas(id) {
 	h = parseInt(z.style.height)/g;
 
 	data = ctx.getImageData(l, t, w, h);
-
 	g = Math.min(Math.min(w, 256)/w, Math.min(h, 256)/h);
 	c2 = document.createElement('canvas');
 	c2.width = parseInt(w);
@@ -349,41 +359,43 @@ function sendCanvas(id) {
 	ctx2 = c2.getContext('2d');
 	ctx2.putImageData(data, 0, 0);
 	imgURL = c2.toDataURL("image/png");
-	htmlImage = $('<img>').attr('src',imgURL)[0];
-	delete c2; delete ctx2; delete imgURL;
+	delete c2; delete ctx2; 
+	
 	c3 = document.createElement('canvas');
 	c3.width = parseInt(w*g);
 	c3.height = parseInt(h*g);
 	ctx3 = c3.getContext('2d');
 	ctx3.transform(g,0,0,g,0,0);
-	ctx3.drawImage(htmlImage, 0, 0);
-	imgURL = c3.toDataURL("image/png");
-	delete c3; delete ctx3; delete htmlImage;
-	f = new FormData();
-	//console.log(dataURItoBlob(imgURL));
-	f.append("avatar",dataURItoBlob(imgURL));
-	var uid = $('#info').attr('data-uid');
-	var fid = $('#info').attr('data-forum');
-	var action = $(id).attr('data-action');
-	f.append("uid",uid);
-	f.append("fid",fid);
-	f.append("action",action);
-	//console.log(f);
-	$.ajax({
-		url: 'Ajax/post.php',
-		type: "POST",
-		data: f,
-		success: function(data){ 
-				console.log(data); 
-				location.reload();
-				//src = $('.my_avatar img').attr("src").replace(/\?.*/,'');
-				////TODO change image dynamically for the first time too
-				//$('.my_avatar img').attr("src",src+"?"+Date.now());
-			},
-		error: function(){ console.log(uid,fid,action); },
-		processData: false,
-		contentType: false
-	});
-	togglenewavatar(id);
-}
 
+	var htmlImage = new Image();
+	htmlImage.onload = function() {
+		ctx3.drawImage(htmlImage, 0, 0);
+		delete imgURL;
+		imgURL = c3.toDataURL("image/png");
+		delete c3; delete ctx3; delete htmlImage;
+		
+		f = new FormData();
+		f.append("avatar",dataURItoBlob(imgURL));
+		var uid = $('#info').attr('data-uid');
+		var fid = $('#info').attr('data-forum');
+		var action = $(id).attr('data-action');
+		f.append("uid",uid);
+		f.append("fid",fid);
+		f.append("action",action);
+		$.ajax({
+			url: 'Ajax/post.php',
+			type: "POST",
+			data: f,
+			success: function(data){ 
+					console.log(data); 
+					console.log("sent!");
+					location.reload();
+				},
+			error: function(){ console.log(uid,fid,action); },
+			processData: false,
+			contentType: false
+		});
+		togglenewavatar(id);
+	};
+	htmlImage.src = imgURL;
+}

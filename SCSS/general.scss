@@ -16,7 +16,7 @@
 body {
 	margin: 0px;
 	max-width: 100%;
-	overflow-x: hidden;
+	overflow: auto;
 	font-size: 15px;
 	font-family: RobotoRegular;
 	background-color: rgba(0,0,0,0.1);
@@ -31,18 +31,42 @@ nav {
 	top: 0;
 	left: 0;
 	z-index:25;
-	background: #333;
+	background: #2C2C2C;
 	height: 50px;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+
+	.left-module-nav, .right-module-nav {
+		width: 100px;
+	}
+	.right-module-nav {
+		margin: 0;
+		text-align: right;
+
+		.action {
+			font-size: 15px;
+			border: none;
+			background-color: #F7A71B;
+			border-radius: 100%;
+			height: 30px;
+			width: 30px;
+			margin: 10px;
+			transition: all 0.2s;
+		}
+		.action:hover {
+			background-color: rgb(255,175,35);
+		}
+	}
+	.logo {
+	    width: 40px;
+		height: 40px;
+		cursor: pointer;
+	}
+	button {
+		cursor: pointer;
+	}
 }
 nav > * {
 	margin: 5px;
-	min-height: 40px;
-	border-radius: 0px;
-	-webkit-border-radius: 0px;
-	-webkit-appearance: none;
-}
-nav > button {
-	cursor: pointer;
 }
 .my_avatar {
 	display: inline-block;
@@ -64,44 +88,62 @@ nav > button {
 }
 section {
 	position: relative;
-	top: 90px;
+	top: 60px;
 	transition: all 0.5s;
 	width: 100%;
 	max-width: 2048;
-}
-#container {
-	display: flex;
-	flex-flow: wrap;
-	justify-content: center;
-	align-items: center;
-	display: -webkit-flex;
-	-webkit-flex-wrap: wrap;
-	-webkit-justify-content: center;
-	-webkit-align-items: center;
-	position: relative;
-	width: 100%;
-	filter: blur(0px);
-	-webkit-filter: blur(0px);
-	transition: all 0.4s;
-	max-width: 1020px;
-	margin: 0 auto;
-}
-.post-mini {
-	display: block;
-	overflow: hidden;
-	margin: 10px;
-	cursor: pointer;
-	width: 320px;
+	
+	.material-shadow {
+		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+		transition: all 0.2s ease-in-out;
+	}
+	.material-shadow:hover {
+		box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)
+	}
+	.big-title {
+		display: block;
+		color: grey;
+		font-family: RobotoThin;
+		font-size: 30px;
+		width: 100%;
+		text-align: center;
+		margin-bottom: 20px;
+	}
+	#container {
+		display: flex;
+		flex-flow: wrap;
+		justify-content: center;
+		align-items: center;
+		display: -webkit-flex;
+		-webkit-flex-wrap: wrap;
+		-webkit-justify-content: center;
+		-webkit-align-items: center;
+		position: relative;
+		width: 100%;
+		filter: blur(0px);
+		-webkit-filter: blur(0px);
+		transition: all 0.4s;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+	.post-mini {
+		display: block;
+		overflow: hidden;
+		margin: 25px;
+		cursor: pointer;
+		width: 320px;
+		border-radius: 4px;
 
-	img {
-		width: 100%
+		img {
+			width: 100%
+		}
 	}
 }
 .slide {
 	position: fixed;
 	max-width: calc(100% - 10px);
 	margin: 0px;
-	transition: all 0.5s;
+	transition: all 0.2s;
 	max-height: 100%;
 	min-width: 200px;
 }
@@ -157,20 +199,35 @@ section {
 	cursor: text;
 	background: white;
 	color: black;
+}
+.menu {
+	display: flex;
+	display: -webkit-flex;
+	align-items: center;
+	-webkit-align-items: center;
+	justify-content: space-between;
+	-webkit-justify-content: space-between;
+	width: 100%;
+	background: #eee;
+	margin: 0;
+	padding: 0;
 	
-	.menu {
-		display: block;
-		width: 100%;
-		background: #eee;
-		margin: 0;
-		padding: 0;
-	}
 	.menu-cell {
-		display: inline-block;
-		width: 49%;
 		margin: 0;
-		padding: 5px 0px;
-		text-align: cell;
+		padding: 5px 10px;
+		text-align: center;
+
+		.action {
+			border: none;
+			width: 30px;
+			height: 30px;
+			background: none;
+			font-size: 25px;
+			cursor: pointer;
+		}
+		.action:hover {
+			background: lightgrey;
+		}
 	}
 }
 .newavatar {
@@ -189,6 +246,12 @@ section {
 	display: inline-block;
 	border-radius: 0;
 	cursor: pointer;
+	border: 1px solid black;
+	box-shadow: 1px 1px 3px black;
+	background-color: white;
+}
+.sendit:hover, .cancelit:hover {
+	box-shadow: 0px 0px 1px black;
 }
 *[data-placeholder]:empty:not(:focus):before {
 	content: attr(data-placeholder);
@@ -264,12 +327,6 @@ section {
 	margin: 0px;
 	padding: 0px;
 	height: 150px;
-}
-.button-newpost {
-	padding: 0px 20px;
-	font-size: 20px;
-	border: none;
-	background-color: lightgrey;
 }
 #main_page {
 	display: block;
@@ -462,21 +519,18 @@ section {
 .forum-mini {
 	display: block;
 	overflow: hidden;
-	margin: 10px;
+	margin: 20px;
 	cursor: pointer;
 	width: 192px;
 	height: 192px;
 	text-decoration: none;
 	color: black;
 	text-align: center;
-	transition: all 0.2s;
+	border-radius: 4px;
 
 	img {
 		width: 100%;
 	}
-}
-.forum-mini:hover {
-	box-shadow: 0px 0px 20px black;
 }
 .left-module-nav {
 	margin: 0px;
@@ -496,25 +550,52 @@ section {
 .settings-container {
 	display: flex;
 	display: -webkit-flex;
-}
-.users-resume {
-	display: flex;
-	display: -webkit-flex;
-	border-left: 1px solid lightgrey;
-	height: auto;
-	padding: 5px;
-}
-.users-resume > div {
-	width: 96px;
-	height: 96px;
-	margin: 5px;
-	padding: 5px;
-	position: relative;
-	text-align: center;
-}
-.users-resume > div > div {
-	width: 100%;
-	border-radius: 4px;
+	flex-flow: row wrap;
+	-webkit-flex-flow: row wrap;
+
+	.profile_wrapper {
+		width: 100%;
+		max-width: 340px;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-around;
+		display: -webkit-flex;
+		-webkit-flex-flow: row wrap;
+		-webkit-justify-content: space-around;
+	}
+	
+	.users-resume, .invitations-resume {
+		display: flex;
+		display: -webkit-flex;
+		border-left: 1px solid lightgrey;
+		height: auto;
+		padding: 15px;
+		max-width: 256px;
+		width: 100%;
+		margin: 25px;
+		position: relative;
+
+		.title {
+			display: block;
+			width: 100%;
+			text-align: center;
+			margin-bottom: 5px;
+			position: absolute;
+			top: 0; left: 0;
+		}
+		.user {
+			width: 96px;
+			height: 96px;
+			margin: 5px;
+			padding: 5px;
+			position: relative;
+			text-align: center;
+		}
+		.user > div {
+			width: 100%;
+			border-radius: 4px;
+		}
+	}
 }
 .forum-name {
 	color: white;

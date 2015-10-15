@@ -11,6 +11,7 @@ function hideAll() {
 	if($('#newpost').hasClass('active')) {
 		hidenewpost();
 	}
+	lightbox.darken();
 }
 
 function toggleoptionsmenu(id) {
@@ -43,7 +44,7 @@ function showslidefromleft(id) {
 	console.log(g);
 	g.css({"transform":"translateX(0)"});
 	g.addClass('active');
-	addMask("hideslidefromleft(\'"+id+"\')",0.6);
+	addMask("hideslidefromleft(\'"+id+"\')",0.75);
 }
 
 function hideslidefromleft(id) {
@@ -83,7 +84,7 @@ function togglenewavatar() {
 		hideAll();
 		pv.addClass('active');
 		pv.css('display','block');
-		addMask("togglenewavatar()",0.6);
+		addMask("togglenewavatar()",0.75);
 		retouche.restart("#retoucheBox");
 	}
 }
@@ -117,7 +118,7 @@ function shownewpost() {
 	invite = $('<div contenteditable="true" data-placeholder="Partagez quelquechose..."></div>')
 	$('#typeBox').html(invite);
 	e.addClass('active');
-	addMask("hidenewpost()",0.6);
+	addMask("hidenewpost()",0.75);
 }
 
 function hidenewpost() {
@@ -142,7 +143,7 @@ function togglepostviewer(e) {
 
 function hidenewcommentsection(id) {
 	t = $(id);
-	t.html('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Write a comment..."></div></div>');
+	t.html('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 }
 
 function shownewcommentsection(id) {
@@ -151,15 +152,21 @@ function shownewcommentsection(id) {
 	if(fc.hasClass('fake-comment')) {
 		fc.remove();
 		var c = $('<div class="commentator"><img src="'+$('#info').attr('data-avatar')+'"/></div>');
-		var cb = $('<div id="commentBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Comment..."></div></div>');
-		var np_menu = $('<div class="newpost-menu"></div>');
-		var np_cell = $('<div class="newpost-menu-cell"></div>');
-		np_cell.append('<button id="sendit" onclick="sendIt(\'#commentBox\')">Send</button>');
-		np_menu.append(np_cell);
+		var cb = $('<div id="commentBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Ecrire un commentaire..."></div></div>');
+		var np_menu = $('<div class="menu"></div>');
+		var np_cell1 = $('<div class="menu-cell"></div>');
+		np_cell1.append('<button onclick="hidenewcommentsection($(\'.new-comment-section\'))">Annuler</button>');
+		var np_cell2 = $('<div class="menu-cell"></div>');
+		np_cell2.append('<button onclick="inputFile(\'#commentBox\')" class="action"><i class="fa fa-paperclip"></i></button>');
+		var np_cell3 = $('<div class="menu-cell"></div>');
+		np_cell3.append('<button onclick="sendIt(\'#commentBox\')">Envoyer</button>');
+		np_menu.append(np_cell1);
+		np_menu.append(np_cell2);
+		np_menu.append(np_cell3);
 		t.append(c).append(cb).append(np_menu);
 		typebox.start('#commentBox');
-		// require Typebox/typebox.js
-		niceFocus('#commentBox');
+		// require typebox module
+		typebox.Control.niceFocus('#commentBox');
 	}
 }
 
@@ -177,10 +184,10 @@ function showpostviewer(id) {
 		pv.append('<div class="post-options"><div onclick="hidepostviewer()"><i class="fa fa-long-arrow-right"></i></div></div>');
 		pv.append('<div class="post-separator"></div>');
 		pv.append(data['html']);
-		pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Write a comment..."></div></div>');
+		pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 		typebox.view();
 	});
-	addMask("togglepostviewer()",0.6);
+	addMask("hideAll()",0.75);
 	pv.attr('data-id',id);
 }
 

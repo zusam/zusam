@@ -1,6 +1,8 @@
 <?php
 
-require_once(realpath(dirname(__FILE__).'/Accounts.php'));
+chdir(realpath(dirname(__FILE__))."/../");
+require_once('Core/Accounts.php');
+require_once('Core/Location.php');
 
 function forum_initialize($name) {
 	$forum = [];

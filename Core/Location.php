@@ -1,7 +1,9 @@
 <?php
 
 function p2l($path) {
-	$link = preg_replace("/\/srv\/http/","http://nibou.eu/",$path);
+	$link = preg_replace("/\/srv\/http/","nibou.eu/",$path);
+	$link = preg_replace("/\/+/","/",$link);
+	$link = "http://".$link;
 	return $link;
 }
 
@@ -65,6 +67,10 @@ function pathTo2($args) {
 		}
 		if($param == "avatar") {
 			$path = $loc."/avatar/".$url.$ext; 
+			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+		}
+		if($param == "file") {
+			$path = $loc."/file/".$url.$ext; 
 			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
 		}
 		if($param == "tmp") {

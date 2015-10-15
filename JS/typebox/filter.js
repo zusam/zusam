@@ -199,7 +199,7 @@ var Filter = {
 	},
 
 	endingVideo : function(inner) {
-		r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#]+(\.mp4|\.webm)(\?\w*)?$/gi;
+		r1 = /[\s]*https?:\/\/[^\s]+(\.mp4|\.webm)(\?\w*)?$/gi;
 		substitution = function(str) {
 				return '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><video autoplay loop><source src="'+str+'"></video></span>';
 		}
@@ -209,7 +209,7 @@ var Filter = {
 	},
 
 	searchVideo : function(inner) {
-		r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#]+(\.mp4|\.webm)(\?\w*)?[\s]/gi;
+		r1 = /[\s]*https?:\/\/[^\s]+(\.mp4|\.webm)(\?\w*)?[\s]/gi;
 		substitution = function(str) {
 				return '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><video autoplay loop><source src="'+str+'"></video></span>';
 		}
@@ -218,20 +218,67 @@ var Filter = {
 	},
 
 	endingImage : function(inner) {
-		r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#]+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)(\?\w*)?$/gi;
+		r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#\'\!]+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)(\?\w*)?$/gi;
 		substitution = function(str) {
-				return '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img onerror="this.src=\'http://www.nibou.eu/zusam/web/assets/no_image.png\'" src="'+str+'"/></span>';
+				return '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+str+'"/></span>';
 		}
 		output = Control.searchMatch({"callerName":"endingImage", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
 
 	searchImage : function(inner) {
-		r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#\!]+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)(\?\w*)?[\s]/gi;
+		r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)(\?\w*)?[\s]/gi;
 		substitution = function(str) {
-				return '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img onerror="this.src=\'http://www.nibou.eu/zusam/web/assets/no_image.png\'" src="'+str+'"/></span>';
+				return '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+str+'"/></span>';
 		}
 		output = Control.searchMatch({"callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});
+		return output;
+	},
+	
+	// TODO XXX
+	endingFile : function(inner) {
+		r1 = /[\s]*\{\:[a-zA-Z0-9]+\:\}$/gi;
+		substitution = function(str) {
+			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
+			return output;
+		};
+		var ajax_url = "Ajax/get.php";
+		var ajax_var = {"action":"getFile"};
+		callback = function(data) {
+			console.log(data);
+			console.log(data['html']);
+			balise = $('#'+str2md5(decodeURI(data['url'])));
+			balise.html(data['html']);
+		};
+		fail = function(url) {
+				balise = $('#'+str2md5(url));
+				balise.html("error");
+
+		}
+		output = Control.searchMatch({"callerName":"endingFile", "inner":inner, "regex":r1, "substitution":substitution, "ajax_url":ajax_url, "ajax_var":ajax_var, "callback":callback, "fail":fail});
+		return output;
+	},
+
+	searchFile : function(inner) {
+		r1 = /[\s]*\{\:[a-zA-Z0-9]+\:\}[\s]/gi;
+		substitution = function(str) {
+			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
+			return output;
+		};
+		var ajax_url = "Ajax/get.php";
+		var ajax_var = {"action":"getFile"};
+		callback = function(data) {
+			console.log(data);
+			console.log(data['html']);
+			balise = $('#'+str2md5(decodeURI(data['url'])));
+			balise.html(data['html']);
+		};
+		fail = function(url) {
+				balise = $('#'+str2md5(url));
+				balise.html("error");
+
+		}
+		output = Control.searchMatch({"callerName":"endingFile", "inner":inner, "regex":r1, "substitution":substitution, "ajax_url":ajax_url, "ajax_var":ajax_var, "callback":callback, "fail":fail});
 		return output;
 	},
 
@@ -262,7 +309,7 @@ var Filter = {
 		base_url = data['base_url'];
 		console.log(data['image']['url']);
 		if(data['image']['url'].match(/https?:\/\/.+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)/i)) {
-			preview = '<div class="preview"><img src="'+data['image']['url']+'"/></div>';
+			preview = '<div class="preview"><img src="'+data['image']['url']+'" onerror="error_im(this)"/></div>';
 		} else { 
 			console.log("nope");
 			preview = ""; 
@@ -309,7 +356,7 @@ var Filter = {
 	*/
 
 	endingLink : function(inner) {
-		r1 = /[\s]*https?:\/\/[\w\/=?~,.%&+\-#\!]+$/gi;
+		r1 = /[\s]*https?:\/\/[^\s]+$/gi;
 		substitution = function(str) {
 			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 			return output;
@@ -331,7 +378,7 @@ var Filter = {
 	},
 
 	searchLink : function(inner) {
-		r1 = /[\s]*https?:\/\/[\w\/=?~,.%&+\-#]+[\s]/gi;
+		r1 = /[\s]*https?:\/\/[^\s]+[\s]/gi;
 		substitution = function(str) {
 			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 			return output;

@@ -8,6 +8,7 @@ require_once('Core/Landing.php');
 require_once('Core/Accounts.php');
 require_once('Core/Forum.php');	
 require_once('Core/Notification.php');	
+require_once('Core/File.php');	
 require_once('Core/Utils.php');	
 
 require_once('Pages/forum.php');
@@ -26,6 +27,29 @@ foreach($_POST as $K=>$V) {
 }
 
 if($POST['action'] != null && $POST['action'] != "") {
+
+	if($POST['action'] == "addImage") {
+
+		$uid = $POST['uid'];
+		$fileId = $POST['fileId'];
+		var_dump($POST);
+		var_dump($_FILES);
+	
+		if($_FILES["image"]["size"] < 1048576*10 && $_FILES["image"]["type"] == "image/png") {
+			$u = account_load(array('_id' => $uid));
+			if($u != null && $u != false) {
+				$file = file_initialize($fileId, "jpg", $u['_id']);
+				var_dump($file);
+				$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'jpg', 'param' => 'file')), 1024, 1024);
+				var_dump($r);
+				if($r) {
+					file_save($file);
+				}
+			}
+		}
+
+		exit;
+	}
 
 	if($POST['action'] == "addForum") {
 		
@@ -48,7 +72,7 @@ if($POST['action'] != null && $POST['action'] != "") {
 		$nid = $POST['nid'];
 
 		$user = account_load(array('_id' => $uid));
-		$notif = notification_load($nid);
+		$notif = notification_load(array('_id' => $nid));
 
 		if($user != null && $user != false && $notif != null && $notif != false) {
 			$forum = forum_load($notif['data']);
@@ -156,7 +180,7 @@ if($POST['action'] != null && $POST['action'] != "") {
 		$forum = forum_load($fid);
 
 		if($forum != null && $forum != false && $cible != null && $cible != false) {
-			$n = notification_initialize("invitation", $forum['name'], $forum['_id']);	
+			$n = notification_initialize("invitation", $forum['name'], $forum['_id'], $forum['_id'], $cible['_id']);	
 			notification_addNotif_andSave($n, $cible);
 		}
 		exit;
@@ -168,7 +192,7 @@ if($POST['action'] != null && $POST['action'] != "") {
 		$nid = $POST['notification'];
 
 		$user = account_load(array('_id' => $uid));
-		$notif = notification_load($nid);
+		$notif = notification_load(array('_id' => $nid));
 
 		if($user != null && $user != false && $notif != null && $notif != false) {
 			notification_erase_andSave($notif, $user);

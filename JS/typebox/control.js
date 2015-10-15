@@ -136,9 +136,22 @@ var Control = {
 	refreshContent : function(viewer, t) {
 		t = $(t);
 		if(viewer == null || viewer == false) {
+			// flush eventListeners
+			t.find('*[contenteditable]').off();
+			t.find('.deletable').off();
+
 			//if(supportPlaintextonly()) {
 			//	$('*[contenteditable=true').attr('contenteditable','plaintext-only');
 			//}
+
+			//debug XXX
+			t.find('*[contenteditable]').on('mouseenter', function(event){
+				$(event.currentTarget).css('outline','1px solid red');	
+			});
+			t.find('*[contenteditable]').on('mouseleave', function(event){
+				$(event.currentTarget).css('outline','none');	
+			});
+
 			//prevent drag and drop into contentEditable
 			t.find('*[contenteditable]').on('dragover drop', function(event){
 					event.preventDefault();
@@ -146,7 +159,6 @@ var Control = {
 					});
 
 			// activating deletable content
-			t.find('.deletable').off();
 			t.find('.deletable').on('mouseenter', function(event){
 					$(event.currentTarget).append('<div onclick="$(this).parent().remove();" class="delete-btn"><i class="fa fa-times"></i></div>');
 					//window.setTimeout(function() {$('.delete-btn').addClass('grow-btn');}, 10);
@@ -199,6 +211,7 @@ var Control = {
 		Control.searchFilter(t, Filter.endingImage, viewer);
 		Control.searchFilter(t, Filter.endingVideo, viewer);
 		Control.searchFilter(t, Filter.endingLink, viewer);
+		Control.searchFilter(t, Filter.endingFile, viewer);
 	},
 
 	filter_out_search : function(t, viewer) {
@@ -212,6 +225,7 @@ var Control = {
 		Control.searchFilter(t, Filter.searchImage, viewer);
 		Control.searchFilter(t, Filter.searchVideo, viewer);
 		Control.searchFilter(t, Filter.searchLink, viewer);
+		Control.searchFilter(t, Filter.searchFile, viewer);
 	},
 	
 	filter_out_all : function(t, viewer) {
@@ -228,6 +242,7 @@ var Control = {
 		var callback = args['callback'];
 		var fail = args['fail'];
 		var ajax_url = args['ajax_url'];
+		var ajax_var = args['ajax_var'];
 
 
 		inner = decode(inner);
@@ -271,7 +286,15 @@ var Control = {
 
 			for(j=0;j<m.length;j++) {
 				settings = new Object();
-				settings.url = ajax_url+"?url="+encodeURI(m[j]);
+				if(typeof(ajax_var) != "undefined") {
+					var param = Object.keys(ajax_var).reduce(function(p,k){
+						return p+"&"+k+"="+ajax_var[k];
+					}, "");
+				} else {
+					var param = "";
+				}
+				settings.url = ajax_url+"?url="+encodeURI(m[j])+param;
+				console.log(settings.url);
 				if(callback != null) {
 					settings.success = function(data){ 
 						callback(data); 

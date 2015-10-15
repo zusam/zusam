@@ -10,10 +10,18 @@ function gen_miniature($url) {
 }
 
 function get_miniature($url) {
+	//if it's a file
+	if(preg_match("/\{\:[a-zA-Z0-9]+\:\}/",$url)==1) {
+		$url = preg_replace("/\{\:([a-zA-Z0-9]+)\:\}/","$1",$url);
+	}
 	$link = p2l(pathTo($url, "mini", "jpg"));
 	return $link;
 }
 function get_miniature_path($url) {
+	//if it's a file
+	if(preg_match("/\{\:[a-zA-Z0-9]+\:\}/",$url)==1) {
+		$url = preg_replace("/\{\:([a-zA-Z0-9]+)\:\}/","$1",$url);
+	}
 	$link = pathTo($url, "mini", "jpg");
 	return $link;
 }
