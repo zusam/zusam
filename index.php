@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-
 chdir(realpath(dirname(__FILE__)));
 require_once('Core/Post.php');
 require_once('Core/Location.php');
+require_once('Core/Utils.php');
 require_once('Core/Connect.php');
 require_once('Core/Accounts.php');
 require_once('Core/Forum.php');	

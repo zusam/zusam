@@ -637,4 +637,17 @@ section {
 		margin: 0px 2px;
 	}
 }
+.progressBar {
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 25px;
 
+	.progress {
+		display: block;
+		height: calc(100% - 0px);
+		background-color: #F7A71B;
+		margin: 0;
+		padding: 0;
+	}
+}

@@ -235,9 +235,8 @@ var Filter = {
 		return output;
 	},
 	
-	// TODO XXX
 	endingFile : function(inner) {
-		r1 = /[\s]*\{\:[a-zA-Z0-9]+\:\}$/gi;
+		r1 = /\{\:[a-zA-Z0-9]+\:\}/gi;
 		substitution = function(str) {
 			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 			return output;
@@ -260,7 +259,7 @@ var Filter = {
 	},
 
 	searchFile : function(inner) {
-		r1 = /[\s]*\{\:[a-zA-Z0-9]+\:\}[\s]/gi;
+		r1 = /\{\:[a-zA-Z0-9]+\:\}/gi;
 		substitution = function(str) {
 			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 			return output;

@@ -18,31 +18,22 @@ if [ ! -d "/srv/http" ]
 then 
 	echo "/srv/http should exists and be the root directory of apache"
 fi
-if [ ! -d "Data/avatar" ] 
-then 
-	if [[ "$1" != "correct" ]]
-	then
-		echo "Data/avatar directory is missing"
-	else 
-		mkdir -p Data/avatar
-		sudo chown -R niels:http Data
-		chmod -R 775 Data
-		echo "Data/avatar added"
+P=(Data/avatar Data/miniature Data/file)
+for p in "${P[@]}";
+do
+	if [ ! -d "$p" ] 
+	then 
+		if [[ "$1" != "correct" ]]
+		then
+			echo "$p directory is missing"
+		else 
+			mkdir -p "$p"
+			sudo chown -R niels:http "$p"
+			chmod -R 775 "$p"
+			echo "$p added"
+		fi
 	fi
-fi
-if [ ! -d "Data/miniature" ] 
-then 
-	if [[ "$1" != "correct" ]]
-	then
-		echo "Data/miniature directory is missing"
-	else 
-		mkdir -p Data/miniature
-		sudo chown -R niels:http Data
-		chmod -R 775 Data
-		echo "Data/miniature added"
-	fi
-fi
-	
+done
 
 # TEST PERMISSIONS
 function test_perm {

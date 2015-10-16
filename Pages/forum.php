@@ -41,13 +41,13 @@ function page_section_forum(&$u, &$forum) {
 		$html .='<div id="container">';
 
 		$list = array_reverse($forum['news']);
-
 		//TODO (300) -> infinite scrolling
 		for($i=0;$i<min(3000,count($list));$i++) {
 			$p = post_load($list[$i]);
 			if($p != false && ($p['parent'] == null || $p['parent'] == 0)) {
 				if(!file_exists(get_miniature_path($p['preview']))) {
 					$inside = '<img src="'.p2l(pathTo("placeholder", "assets", "jpg")).'"/>';
+
 				} else {
 					$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
 				}
