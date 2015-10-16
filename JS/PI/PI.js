@@ -55,13 +55,16 @@ function sendImage(canvas, fileId) {
 		xhr: function(){
 			var xhr = $.ajaxSettings.xhr();
 			xhr.upload.onprogress = function(evt){ 
-				console.log('progress', evt.loaded/evt.total*100);
-				$('#progressBar progress').css('width', (100*evt.loaded/evt.total)+"%");
+				var p = parseInt(evt.loaded/evt.total*100);
+				console.log('progress', p);
+				$('#progressBar .progress').css('width', p+"%");
 
 			};
 			xhr.upload.onload = function(){ 
 				console.log('done !');
-				//$('#progressBar').remove();
+				setTimeout(function() {
+					$('#progressBar').remove();
+				}, 1000);
 			}
 			return xhr;
 		}
