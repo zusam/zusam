@@ -36,11 +36,10 @@ function filtre($url) {
 		if($file['type'] == "webm") {
 			$ret = videoThumbnail(
 					pathTo2(array('url' => $file['location'], 'ext' => 'webm', 'param' => 'file')), 
-					pathTo2(array('url' => $link, 'ext' => 'jpg', 'param' => 'file')),
-					320, 180
+					pathTo2(array('url' => $link, 'ext' => 'jpg', 'param' => 'mini'))
 				);
 			if($ret) {
-				$ret = pathTo2(array('url' => $link, 'ext' => 'jpg', 'param' => 'file'));
+				$ret = pathTo2(array('url' => $link, 'ext' => 'jpg', 'param' => 'mini'));
 			}
 		}
 		return $ret;

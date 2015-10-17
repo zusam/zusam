@@ -121,6 +121,7 @@
 
 	}
 
+	// TODO is it still used ?
 	function gifPreview($new_width, $url, $to, $format, $quality) {
 		//echo("gif preview");
 

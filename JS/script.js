@@ -325,10 +325,10 @@ function handleFileSelect(evt) {
 	evt.target.value = null;
 	if(!window.sending) {
 		console.log(file.type);
-		if(file.type.match('image.*')) {
+		if(file.type.match('image')) {
 			PF.loadImage(file,id);
 		}
-		if(file.type.match('video.*')) {
+		if(file.type.match('video')) {
 			PF.loadVideo(file,id);
 		}
 	}

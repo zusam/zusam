@@ -34,6 +34,7 @@ function sendVideo(vidBlob, fileId) {
 		data: f,
 		success: function(data){ 
 				console.log(data);
+				console.log("sent !");
 				window.sending = false;
 			},
 		error: function(){ 

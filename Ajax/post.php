@@ -59,7 +59,7 @@ if($POST['action'] != null && $POST['action'] != "") {
 		var_dump($POST);
 		var_dump($_FILES);
 	
-		if($_FILES["video"]["size"] < 1048576*20) {
+		if($_FILES["video"]["size"] < 1048576*2000) {
 			$u = account_load(array('_id' => $uid));
 			if($u != null && $u != false) {
 				$file = file_initialize($fileId, "webm", $u['_id']);

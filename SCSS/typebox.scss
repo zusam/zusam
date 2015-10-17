@@ -1,7 +1,7 @@
 .dynamicBox{padding:0px;position:relative;min-height:66px;max-width:530px;margin:0px auto;cursor:text;text-align:left}
 .viewerBox{min-height:22px !important;}
 .dynamicBox > span > img { margin:0px 0px; max-width: 100%}
-.dynamicBox > span > video { margin:0px 0px; max-width: 100%}
+.dynamicBox > span > video { margin:0px 0px; width: 100%}
 /* INLINE-BLOCK IS NECESSARY TO PREVENT DIVS FROM CHROME */
 .dynamicBox > div {display:inline-block;padding:2px; margin:0px; min-height:18px;/*width:calc(100% - 10px)*/}
 .dynamicBox > div:focus { border:none; outline:none }
