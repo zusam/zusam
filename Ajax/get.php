@@ -29,8 +29,32 @@ foreach($_GET as $K=>$V) {
 
 if($GET['action'] != null && $GET['action'] != "") {
 
-	if($GET['action'] == "getFile") {
+	if($GET['action'] == "getProgress") {
 
+		$fileId = $GET['fileId'];
+
+		$response = new StdClass();
+		if(file_exists('tmp/'.$fileId)) {
+			$p = file('tmp/'.$fileId);
+			$pc = count($p);
+			for($i=0;$i<$pc;$i++) {
+				if(preg_match("/^out_time_ms/",$p[$pc-$i])==1) {
+					$out_time_ms = preg_replace("/^out_time_ms=(\d+)/","$1",$p[$pc-$i]);
+					break;
+				}
+			}
+			$response->progress = $out_time_ms;
+		} else {
+			$response->progress = false;
+		}
+
+		header('Content-Type: text/json; charset=UTF-8');
+		echo(json_encode($response));
+		exit;
+
+	}
+
+	if($GET['action'] == "getFile") {
 
 		$fileId = preg_replace("/\{\:([a-zA-Z0-9]+)\:\}/","$1",$GET['url']);
 		$url = $GET['url'];

@@ -17,6 +17,7 @@ require_once('Pages/profile.php');
 require_once('Pages/home.php');
 
 require_once('Reduc/ReducImage.php');
+require_once('Reduc/ReducVideo.php');
 
 // TODO acl
 
@@ -41,6 +42,29 @@ if($POST['action'] != null && $POST['action'] != "") {
 				$file = file_initialize($fileId, "jpg", $u['_id']);
 				var_dump($file);
 				$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'jpg', 'param' => 'file')), 1024, 1024);
+				var_dump($r);
+				if($r) {
+					file_save($file);
+				}
+			}
+		}
+
+		exit;
+	}
+
+	if($POST['action'] == "addVideo") {
+
+		$uid = $POST['uid'];
+		$fileId = $POST['fileId'];
+		var_dump($POST);
+		var_dump($_FILES);
+	
+		if($_FILES["video"]["size"] < 1048576*20) {
+			$u = account_load(array('_id' => $uid));
+			if($u != null && $u != false) {
+				$file = file_initialize($fileId, "webm", $u['_id']);
+				var_dump($file);
+		$r = saveVideo($_FILES["video"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'webm', 'param' => 'file')), $fileId);
 				var_dump($r);
 				if($r) {
 					file_save($file);

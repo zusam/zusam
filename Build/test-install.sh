@@ -2,6 +2,12 @@
 
 loc=`pwd`
 
+# ERASE GENERATED JS
+if [[ "$1" != "correct" ]]
+then
+	/usr/bin/find JS/ -name "*.min.js"
+fi
+
 # TEST EXISTENCE OF SOME PACKAGES
 P=(nodejs npm ruby ffmpeg mongodb php-mcrypt php-imagick php-gd php-mongo)
 for p in "${P[@]}";
@@ -18,7 +24,7 @@ if [ ! -d "/srv/http" ]
 then 
 	echo "/srv/http should exists and be the root directory of apache"
 fi
-P=(Data/avatar Data/miniature Data/file)
+P=(tmp Data/avatar Data/miniature Data/file)
 for p in "${P[@]}";
 do
 	if [ ! -d "$p" ] 
@@ -105,6 +111,13 @@ for p in "${A[@]}";
 do
 	test_perm "$p" "$1"
 done
+
+# CHANGE OWNERSHIP
+if [[ "$1" != "correct" ]]
+then
+	sudo chown -R niels:http *
+fi
+
 echo ""
 echo "everything is ok"
 	

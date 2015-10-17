@@ -21,6 +21,9 @@ function file_locate(&$file) {
 	if($file['type'] == 'jpg') {
 		$file['location'] = $file['fileId'];
 	}
+	if($file['type'] == 'webm') {
+		$file['location'] = $file['fileId'];
+	}
 }
 
 function file_save(&$file) {
@@ -54,6 +57,9 @@ function file_print(&$file) {
 
 	if($file['type'] == "jpg") {
 		$html .= '<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.p2l(pathTo2(array("url" => $file['location'], "ext" => "jpg", "param" => "file"))).'"/>';
+	}
+	if($file['type'] == "webm") {
+		$html .= '<video autoplay="true" controls="true" src="'.p2l(pathTo2(array("url" => $file['location'], "ext" => "webm", "param" => "file"))).'"></video>';
 	}
 
 	return $html;

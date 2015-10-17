@@ -14,7 +14,6 @@ $forum = (String) $_POST['forum'];
 $uid = (String) $_POST['uid'];
 $parent = (String) $_POST['parent'];
 
-
 // look for a preview
 $ret = preg_match("/https?:\/\/[\w\/=?~,.%&+\-#\!]+/i",$text,$matches);
 $ret2 = preg_match("/\{\:[A-Za-z0-9]+\:\}/i",$text,$matches2);
@@ -40,7 +39,6 @@ if($preview != "") {
 if($url_prev == "" || $url_prev == null) {
 	$url_prev = p2l(pathTo("placeholder", "assets", "jpg"));
 }
-
 
 if($pid == null || $pid == 0) {
 	if($parent == null || $parent == 0) {

@@ -6,6 +6,7 @@ require_once('Filtre/web_video.php');
 require_once('Filtre/preview.php');
 require_once('Filtre/soundcloud.php');
 require_once('Core/Location.php');
+require_once('Core/File.php');
 
 function get_mini_from_link($url, $link) {
 	if(!file_exists(pathTo($url, "mini", "jpg"))) {
@@ -28,7 +29,20 @@ function filtre($url) {
 	// FILE //
 	if(preg_match("/(\{\:)([A-Za-z0-9]+)(\:\})/",$url)==1) {
 		$link = preg_replace("/(\{\:)([A-Za-z0-9]+)(\:\})/","$2",$url);
-		$ret = create_post_preview($link, pathTo2(array('url' => $link, 'ext' => 'jpg', 'param' => 'file')));
+		$file = file_load(array("fileId" => $link));
+		if($file['type'] == "jpg") {
+			$ret = create_post_preview($link, pathTo2(array('url' => $link, 'ext' => 'jpg', 'param' => 'file')));
+		}
+		if($file['type'] == "webm") {
+			$ret = videoThumbnail(
+					pathTo2(array('url' => $file['location'], 'ext' => 'webm', 'param' => 'file')), 
+					pathTo2(array('url' => $link, 'ext' => 'jpg', 'param' => 'file')),
+					320, 180
+				);
+			if($ret) {
+				$ret = pathTo2(array('url' => $link, 'ext' => 'jpg', 'param' => 'file'));
+			}
+		}
 		return $ret;
 	}
 

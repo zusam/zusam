@@ -152,7 +152,7 @@ function sendIt(id) {
 					typebox.view();
 				}
 			},
-		error: function(){ console.log("fail") }
+		error: function(a,b,c){ console.log(a,b,c) }
 	});
 }
 
@@ -326,7 +326,10 @@ function handleFileSelect(evt) {
 	if(!window.sending) {
 		console.log(file.type);
 		if(file.type.match('image.*')) {
-			PI.loadImage(file,id);
+			PF.loadImage(file,id);
+		}
+		if(file.type.match('video.*')) {
+			PF.loadVideo(file,id);
 		}
 	}
 }

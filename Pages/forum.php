@@ -41,6 +41,7 @@ function page_section_forum(&$u, &$forum) {
 		$html .='<div id="container">';
 
 		$list = array_reverse($forum['news']);
+		
 		//TODO (300) -> infinite scrolling
 		for($i=0;$i<min(3000,count($list));$i++) {
 			$p = post_load($list[$i]);
