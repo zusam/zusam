@@ -171,6 +171,7 @@ function shownewcommentsection(id) {
 }
 
 function showpostviewer(id) {
+//TODO load more posts if we are at the end (for next button)
 	hideAll();
 	showslidefromright('#slidepostviewer');
 	pv = $('#post-viewer');
@@ -181,7 +182,17 @@ function showpostviewer(id) {
 
 		$('#mask').addClass('dark-mask');
 		pv.append('<div class="post-separator"></div>');
-		pv.append('<div class="post-options"><div onclick="hidepostviewer()"><i class="fa fa-long-arrow-right"></i></div></div>');
+		var prev = $('.post-mini[data-id='+id+']').prev().attr('data-id');
+		var next = $('.post-mini[data-id='+id+']').next().attr('data-id');
+		var opt = $('<div class="post-options"></div>');
+		if(prev!=null) {
+			opt.append('<div class="material-shadow cell" onclick="showpostviewer(\''+prev+'\')"><i class="fa fa-long-arrow-left"></i></div>');
+		}
+		if(next!=null) {
+			opt.append('<div class="material-shadow cell" onclick="showpostviewer(\''+next+'\')"><i class="fa fa-long-arrow-right"></i></div>');
+		}
+		opt.append('<div class="material-shadow cell" onclick="hidepostviewer()"><i class="fa fa-close"></i></div>');
+		pv.append(opt);
 		pv.append('<div class="post-separator"></div>');
 		pv.append(data['html']);
 		pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');

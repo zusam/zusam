@@ -20,98 +20,99 @@ require_once('Pages/home.php');
 require_once('Reduc/ReducImage.php');
 
 // TODO acl
+if($_SESSION['connected']) {
 
-// secure post variables for mongodb
-$GET = [];
-foreach($_GET as $K=>$V) {
-	$GET[$K] = (String) $V;
-}
+	// secure post variables for mongodb
+	$GET = [];
+	foreach($_GET as $K=>$V) {
+		$GET[$K] = (String) $V;
+	}
 
-if($GET['action'] != null && $GET['action'] != "") {
+	if($GET['action'] != null && $GET['action'] != "") {
 
-	if($GET['action'] == "getProgress") {
+		if($GET['action'] == "getProgress") {
 
-		$fileId = $GET['fileId'];
+			$fileId = $GET['fileId'];
 
-		$response = new StdClass();
-		if(file_exists('tmp/'.$fileId)) {
-			$p = file('tmp/'.$fileId);
-			$pc = count($p);
-			for($i=0;$i<$pc;$i++) {
-				if(preg_match("/^out_time_ms/",$p[$pc-$i])==1) {
-					$out_time_ms = preg_replace("/^out_time_ms=(\d+)/","$1",$p[$pc-$i]);
-					break;
+			$response = new StdClass();
+			if(file_exists('tmp/'.$fileId)) {
+				$p = file('tmp/'.$fileId);
+				$pc = count($p);
+				for($i=0;$i<$pc;$i++) {
+					if(preg_match("/^out_time_ms/",$p[$pc-$i])==1) {
+						$out_time_ms = preg_replace("/^out_time_ms=(\d+)/","$1",$p[$pc-$i]);
+						break;
+					}
 				}
+				$response->progress = $out_time_ms;
+			} else {
+				$response->progress = false;
 			}
-			$response->progress = $out_time_ms;
-		} else {
-			$response->progress = false;
+
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($response));
+			exit;
+
 		}
 
-		header('Content-Type: text/json; charset=UTF-8');
-		echo(json_encode($response));
-		exit;
+		if($GET['action'] == "getFile") {
 
+			$fileId = preg_replace("/\{\:([a-zA-Z0-9]+)\:\}/","$1",$GET['url']);
+			$url = $GET['url'];
+
+			$file = file_load(array("fileId" => $fileId));	
+			$html = file_print($file);
+
+			$response = new StdClass();
+			$response->url = $url;
+			$response->html = $html;
+
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($response));
+			exit;
+
+		}
+
+
+		if($GET['action'] == "getAvatar") {
+
+			$uid = $GET['uid'];
+
+			$response = new StdClass();
+			$response->avatar = p2l(pathTo($uid,"avatar","jpg"));
+
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($response));
+			exit;
+		}
+
+		if($GET['action'] == "getPost") {
+
+
+			$id = $GET['id'];
+
+			$u = account_load(array('mail' => $_SESSION['mail']));
+			$html_data = print_full_post($id, $u['_id']);
+			$r = new StdClass();
+			$r->html = $html_data;
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($r));
+			exit;
+		}
+
+		if($GET['action'] == "getRaw") {
+
+			$pid = $GET['pid'];
+
+			$u = new User();
+			$u->loadFromDB("mail='".$_SESSION['login']."'");
+			$p = post_load($pid);
+			$raw = $p['text'];
+			$r = new StdClass();
+			$r->raw = $raw;
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($r));
+			exit;
+		}
 	}
-
-	if($GET['action'] == "getFile") {
-
-		$fileId = preg_replace("/\{\:([a-zA-Z0-9]+)\:\}/","$1",$GET['url']);
-		$url = $GET['url'];
-
-		$file = file_load(array("fileId" => $fileId));	
-		$html = file_print($file);
-
-		$response = new StdClass();
-		$response->url = $url;
-		$response->html = $html;
-
-		header('Content-Type: text/json; charset=UTF-8');
-		echo(json_encode($response));
-		exit;
-
-	}
-
-
-	if($GET['action'] == "getAvatar") {
-
-		$uid = $GET['uid'];
-
-		$response = new StdClass();
-		$response->avatar = p2l(pathTo($uid,"avatar","jpg"));
-
-		header('Content-Type: text/json; charset=UTF-8');
-		echo(json_encode($response));
-		exit;
-	}
-
-	if($GET['action'] == "getPost") {
-
-
-		$id = $GET['id'];
-
-		$u = account_load(array('mail' => $_SESSION['mail']));
-		$html_data = print_full_post($id, $u['_id']);
-		$r = new StdClass();
-		$r->html = $html_data;
-		header('Content-Type: text/json; charset=UTF-8');
-		echo(json_encode($r));
-		exit;
-	}
-
-	if($GET['action'] == "getRaw") {
-
-		$pid = $GET['pid'];
-
-		$u = new User();
-		$u->loadFromDB("mail='".$_SESSION['login']."'");
-		$p = post_load($pid);
-		$raw = $p['text'];
-		$r = new StdClass();
-		$r->raw = $raw;
-		header('Content-Type: text/json; charset=UTF-8');
-		echo(json_encode($r));
-		exit;
-	}
-
 }

@@ -113,8 +113,8 @@ function loadImage(file,id) {
 		delete img;
 		$('*[data-id='+id+']').remove();
 		var fileId = Math.random().toString(36).slice(2)+Date.now().toString(36); 
-		PI.showImage(canvas,id, fileId);
-		PI.sendImage(canvas, fileId);
+		PF.showImage(canvas,id, fileId);
+		PF.sendImage(canvas, fileId);
 	};
 	img.src = URL.createObjectURL(file);
 }
