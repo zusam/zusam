@@ -51,12 +51,10 @@ function forum_post2news(&$forum, $pid) {
 }
 
 function forum_addUser_andSave(&$forum, &$user) {
-	$fu = array_flip($forum['users']);
-	if(!isset($fu[$user['_id']])) {
+	if(!isIn($user['_id'], $forum['users'])) {
 		array_push($forum['users'], $user['_id']);
 	}
-	$uf = array_flip($user['forums']);
-	if(!isset($uf[$forum['_id']])) {
+	if(!isIn($forum['_id'], $user['forums'])) {
 		array_push($user['forums'], $forum['_id']);
 	}
 	forum_save($forum);

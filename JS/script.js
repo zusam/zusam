@@ -93,6 +93,7 @@ function inviteUser(id) {
 		success: function(data) {
 				console.log(data);
 				console.log("success!");
+				window.location.reload(true); 
 			},
 		error: function(){console.log('fail!');}
 	});
@@ -312,6 +313,8 @@ function addUserToForum(t) {
 
 function removeNotification(t) {
 	nid = $(t).parent().parent().attr('data-id');
+	console.log(nid);
+	console.log(t);
 	uid = $('#info').attr('data-uid');
 	$.ajax({
 		url: "Ajax/post.php",
@@ -320,10 +323,11 @@ function removeNotification(t) {
 		success: function(data) {
 				console.log(data);
 				console.log("success!");
+				//window.location.reload(true); 
 			},
 		error: function(){console.log('fail!');}
 	});
-	$(t).parent().parent().remove();
+	$('*[data-id="'+nid+'"]').remove();
 }
 
 function inputFile(id) {

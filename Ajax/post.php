@@ -120,7 +120,7 @@ if($_SESSION['connected']) {
 					if($forum != null && $forum != false) {
 						forum_addUser_andSave($forum, $user);
 					}
-					notification_destroy($notif);
+					notification_destroy($nid);
 					//notification_erase_andSave($notif, $user);
 				}
 			} else {
@@ -272,14 +272,14 @@ if($_SESSION['connected']) {
 		if($POST['action'] == "removeNotification") {
 
 			$uid = $POST['uid'];
-			$nid = $POST['notification'];
+			$nid = $POST['nid'];
 
 			$user = account_load(array('_id' => $uid));
 			$notif = notification_load(array('_id' => $nid));
 
 			if($_SESSION['uid'] == $uid && $notif['target'] == $uid) {  
 				if($user != null && $user != false && $notif != null && $notif != false) {
-					notification_destroy($notif);
+					notification_destroy($nid);
 					//notification_erase_andSave($notif, $user);
 				}
 			} else {

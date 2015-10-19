@@ -72,30 +72,33 @@ function notification_bulkLoad($array) {
 
 // INVITATION SPECIFIC
 
-function invitation_print_full(&$u) {
-	$html = "";
+function load_invitations(&$u) {
+	
+	$notifications = [];
+
 	// search by id
-	$notifications = notification_bulkLoad(array(
+	$n1 =  notification_bulkLoad(array(
 						'type' => 'invitation', 
 						'target' => new MongoId($u['_id']), 
 					));
-	foreach($notifications as $n) {
-		$html .= invitation_print($n);
+	foreach($n1 as $n) {
+		array_push($notifications, $n);
 	}
 	// search by mail
-	$notifications = notification_bulkLoad(array(
+	$n2 = notification_bulkLoad(array(
 						'type' => 'invitation', 
 						'target' => $u['mail'], 
 					));
-	foreach($notifications as $n) {
+	foreach($n2 as $n) {
 		// correct target to be an id
 		$n['target'] = new MongoId($u['_id']);
 		notification_save($n);
-		$html .= invitation_print($n);
+		array_push($notifications, $n);
 	}
-	return $html;
+	return $notifications;
 }
 
+/*
 function invitation_print(&$n) {
 	if($n['type'] == "invitation") {
 		$html = '	
@@ -111,3 +114,4 @@ function invitation_print(&$n) {
 	}
 	return "";
 }
+*/

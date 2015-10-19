@@ -40,7 +40,18 @@ function page_mainmenu(&$u) {
 		<div class="separator"></div>
 		<div class="separator"></div>
 	';
-	$html .= invitation_print_full($u);
+	$notifications = load_invitations($u);
+	foreach($notifications as $n) {
+		$html .= '	
+			<div class="menu-highlight invitation" data-id="'.$n['_id'].'">
+				<div class="title">'.$n['text'].'</div>
+				<div class="action-menu">
+					<button class="action" onclick="addUserToForum(this)" >Rejoindre le forum</button>
+					<button class="action" onclick="removeNotification(this)"><i class="fa fa-remove"></i></button>
+				</div>
+			</div>
+		';
+	}
 	$html .= '</div>';
 
 	return $html;
