@@ -1,3 +1,19 @@
+function removeUserFromForum() {
+	var uid = $('#info').attr('data-uid');
+	var fid = $('#info').attr('data-forum');
+
+	$.ajax({
+		url: "Ajax/post.php",
+		type: "POST",
+		data: {"action":"removeUserFromForum", "uid":uid, "fid":fid},
+		success: function(data) {
+			console.log(data);
+			window.location = location.protocol + "//" + location.host + location.pathname;
+		}
+	});
+}
+
+
 function loadRetoucheBox(w,h,action) {
 	r = $('#retoucheBox');
 	r.attr('data-w',w);

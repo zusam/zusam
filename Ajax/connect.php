@@ -19,34 +19,23 @@ if($action == "logout" || $mail == "" || $password == "") {
 if($action == "signup") {
 	// TODO do both verifications in one swipe.
 	if(mailAlreadyExists($mail)) {
-		if(verifyACL($mail, $password)) {
-			$_SESSION['connected'] = true;
-			$_SESSION['mail'] = $mail;
-			$_SESSION['password'] = $password;
-		} else {
-			session_unset();
-		}
+		verifyACL($mail, $password);
 	} else {
 		//create account !
 		$mail = htmlentities($mail);
 		$ac = account_initialize($mail, $password);
-		account_save($ac);
 		$_SESSION['connected'] = true;
 		$_SESSION['mail'] = $mail;
 		$_SESSION['password'] = $password;
+		$_SESSION['uid'] = $ac['_id'];
+		account_save($ac);
 	}
 	exit;
 }
 
 if($action == "login") {
 	if(mailAlreadyExists($mail)) {
-		if(verifyACL($mail, $password)) {
-			$_SESSION['connected'] = true;
-			$_SESSION['mail'] = $mail;
-			$_SESSION['password'] = $password;
-		} else {
-			session_unset();
-		}
+		verifyACL($mail, $password);
 	}
 }
 

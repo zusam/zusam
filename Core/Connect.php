@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Core/Accounts.php');
@@ -19,8 +20,13 @@ function verifyACL($mail, $pass) {
 	}
 	$ac = account_load(array('mail' => $mail));
 	if(password_verify($pass, $ac['password'])) {
+		$_SESSION['connected'] = true;
+		$_SESSION['mail'] = $mail;
+		$_SESSION['password'] = $password;
+		$_SESSION['uid'] = $ac['_id'];
 		return true;
 	}
+	session_unset();
 	return false;
 }
 

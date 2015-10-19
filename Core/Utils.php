@@ -1,12 +1,21 @@
 <?php
 
-function isIn($e, $a) {
+function isIn(&$e, &$a) {
 	foreach($a as $m) {
 		if($m == $e) {
 			return true;
 		}
 	}
 	return false;
+}
+
+function deleteValue(&$e, &$a) {
+	foreach($a as $k=>$v) {
+		if($v == $e) {
+			unset($a[$k]);
+			break;
+		}
+	}
 }
 
 

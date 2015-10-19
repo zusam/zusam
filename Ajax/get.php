@@ -11,6 +11,7 @@ require_once('Core/Forum.php');
 require_once('Core/Notification.php');	
 require_once('Core/File.php');	
 require_once('Core/Print_post.php');	
+require_once('Core/Utils.php');	
 
 require_once('Pages/forum.php');
 require_once('Pages/mainmenu.php');
@@ -18,6 +19,7 @@ require_once('Pages/profile.php');
 require_once('Pages/home.php');
 
 require_once('Reduc/ReducImage.php');
+require_once('Reduc/ReducVideo.php');
 
 // TODO acl
 if($_SESSION['connected']) {

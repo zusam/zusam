@@ -63,6 +63,13 @@ function forum_addUser_andSave(&$forum, &$user) {
 	account_save($user);
 }
 
+function forum_removeUser_andSave(&$forum, &$user) {
+	deleteValue($user['_id'], $forum['users']);
+	deleteValue($forum['_id'], $user['forums']);
+	forum_save($forum);
+	account_save($user);
+}
+
 function forum_getAvatar(&$forum) {
 	if(file_exists(pathTo($forum['_id'], "avatar", "jpg"))) {
 		$avatar = p2l(pathTo($forum['_id'], "avatar", "jpg"));

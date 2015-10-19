@@ -81,8 +81,13 @@ function page_section_forum_settings(&$u, &$forum) {
 				<input name="mail" type="email"><br>
 				<input type="submit" onclick="inviteUser(\'input[name=mail]\'); return false;" value="Envoyer">
 			</form>
+			<form class="change-profile">
+				<input type="submit" onclick="removeUserFromForum(); return false;" value="Se désinscrire de ce forum">
+			</form>
 		</div>
 	';
+	
+	
 	$html .= '<div class="users-resume">';
 	$html .= '<div class="title">Utilisateurs :</div>';
 	foreach($forum['users'] as $userId) {
@@ -92,7 +97,7 @@ function page_section_forum_settings(&$u, &$forum) {
 	$html .= '</div>';
 
 
-$notifications = notification_bulkLoad(array('type' => 'invitation', 'source' => new MongoId($forum['_id'])));
+	$notifications = notification_bulkLoad(array('type' => 'invitation', 'source' => new MongoId($forum['_id'])));
 
 	$html .= '<div class="invitations-resume">';
 	$html .= '<div class="title">Invitations :</div>';
