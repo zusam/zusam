@@ -116,11 +116,12 @@ if($_SESSION['connected']) {
 
 			if($_SESSION['uid'] == $uid) { 
 				if($user != null && $user != false && $notif != null && $notif != false) {
-					$forum = forum_load($notif['data']);
+					$forum = forum_load($notif['source']);
 					if($forum != null && $forum != false) {
 						forum_addUser_andSave($forum, $user);
 					}
-					notification_erase_andSave($notif, $user);
+					notification_destroy($notif);
+					//notification_erase_andSave($notif, $user);
 				}
 			} else {
 				echo('no credentials');
@@ -242,12 +243,25 @@ if($_SESSION['connected']) {
 
 			$u = account_load(array('_id' => $uid));
 			$cible = account_load(array('mail' => $mail));
+			if($cible != false && $cible != "") {
+				$cible = $cible['_id'];
+			} else {
+				$cible = $mail;
+			}
 			$forum = forum_load($fid);
 
 			if($_SESSION['uid'] == $uid && isIn($fid, $u['forums'])) {
-				if($forum != null && $forum != false && $cible != null && $cible != false) {
-					$n = notification_initialize("invitation", $forum['name'], $forum['_id'], $forum['_id'], $cible['_id']);	
-					notification_addNotif_andSave($n, $cible);
+				if($forum != null && $forum != false && $mail != "") {
+					$n = notification_initialize(array(
+							"type" => "invitation", 
+							"text" => $forum['name'], 
+							"data" => array("forum"=>$forum['_id'],"mail"=>$mail),
+							"source" => $forum['_id'], 
+							"target" => $cible
+						));	
+					notification_save($n);
+					echo("ok");
+					//notification_addNotif_andSave($n, $cible);
 				}
 			} else {
 				echo('no credentials');
@@ -263,9 +277,10 @@ if($_SESSION['connected']) {
 			$user = account_load(array('_id' => $uid));
 			$notif = notification_load(array('_id' => $nid));
 
-			if($_SESSION['uid'] == $uid && $notif['target'] == $uid && isIn($nid, $user['notifications'])) {  
+			if($_SESSION['uid'] == $uid && $notif['target'] == $uid) {  
 				if($user != null && $user != false && $notif != null && $notif != false) {
-					notification_erase_andSave($notif, $user);
+					notification_destroy($notif);
+					//notification_erase_andSave($notif, $user);
 				}
 			} else {
 				echo('no credentials');

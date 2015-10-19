@@ -17,6 +17,11 @@ require_once('Pages/mainmenu.php');
 require_once('Pages/profile.php');
 require_once('Pages/home.php');
 
+// secure post variables for mongodb
+$GET = [];
+foreach($_GET as $K=>$V) {
+	$GET[$K] = (String) $V;
+}
 
 // HTML
 echo('<html>');
@@ -39,8 +44,15 @@ if($_SESSION['connected'] != true) {
 }
 
 $u = account_load(array("mail" => $_SESSION['mail']));
-$_SESSION['page'] = $_GET['page'];
-$_SESSION['forum'] = $_GET['fid'];
+$_SESSION['page'] = $GET['page'];
+if($GET['fid'] != "") {
+	if(isIn($GET['fid'], $u['forums'])) {
+		$_SESSION['forum'] = $GET['fid'];
+	} else {
+		$_SESSION['forum'] = "";
+		$_SESSION['page'] = "";
+	}
+}
 
 if($_SESSION['forum'] != "" && $_SESSION['forum'] != null && in_array($_SESSION['forum'], $u['forums'])) {
 	$forum = forum_load($_SESSION['forum']);	

@@ -102,7 +102,14 @@ function page_section_forum_settings(&$u, &$forum) {
 	$html .= '<div class="invitations-resume">';
 	$html .= '<div class="title">Invitations :</div>';
 	foreach($notifications as $n) {
-		$user = account_load(array('_id'=> new MongoId($n['target'])));
+		if(MongoId::isValid($n['target'])) {
+			$user = account_load(array('_id'=> new MongoId($n['target'])));
+		} else {
+			$user = account_load(array('mail'=> $n['target']));
+		}
+		if($user == false || $user == null) {
+			$user = account_getDummy(array('mail'=>$n['data']['mail'], 'name'=>$n['data']['mail']));
+		}
 		$html .= '<div class="user"><div title="'.$user['name'].'">'.account_getAvatarHTML($user).'</div><span>'.$user['name'].'</span></div>';
 	}
 	$html .= '</div>';

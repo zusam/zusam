@@ -40,7 +40,7 @@ function page_mainmenu(&$u) {
 		<div class="separator"></div>
 		<div class="separator"></div>
 	';
-	$html .= notification_print_full($u);
+	$html .= invitation_print_full($u);
 	$html .= '</div>';
 
 	return $html;

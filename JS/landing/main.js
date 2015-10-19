@@ -12,7 +12,7 @@ function start() {
 			data: {"action":action, "mail":mail, "password":password},
 			success: function(data) {
 					console.log(data);
-					window.location.reload(true); 
+					window.location = location.protocol + "//" + location.host + location.pathname;
 				},
 			error: function() {
 					console.log("fail");

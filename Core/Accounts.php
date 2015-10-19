@@ -3,12 +3,12 @@
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Core/Location.php');
 
-function account_getDummy() {
+function account_getDummy($default) {
 	$ac = [];
 	$ac['_id'] = -1;
 	$ac['date'] = -1;
-	$ac['mail'] = "";
-	$ac['name'] = "Utilisateur inconnu";
+	$ac['mail'] = $default['mail'];
+	$ac['name'] = $default['name'];
 	$ac['password'] = "";
 	$ac['forums'] = [];
 	$ac['salt'] = "888888888888";

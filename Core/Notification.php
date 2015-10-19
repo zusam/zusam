@@ -2,15 +2,15 @@
 
 require_once(realpath(dirname(__FILE__).'/Accounts.php'));
 
-function notification_initialize($type, $text, $data, $source, $target) {
+function notification_initialize($a) {
 	$n = [];
 	$n['_id'] = new MongoId();
 	$n['date'] = new MongoDate();
-	$n['type'] = $type;
-	$n['text'] = $text;
-	$n['data'] = $data;
-	$n['source'] = $source; 
-	$n['target'] = $target;
+	$n['type'] = $a['type'];
+	$n['text'] = $a['text'];
+	$n['data'] = $a['data'];
+	$n['source'] = $a['source']; 
+	$n['target'] = $a['target'];
 	return $n;
 }
 
@@ -45,41 +45,58 @@ function notification_bulkLoad($array) {
 	return $n;
 }
 
-function notification_erase_andSave(&$n, &$u) {
-	if($u['notifications'] == null) {
-		$u['notifications'] = [];
-	}
-	$un = array_flip($u['notifications']);
-	$i = $un[$n['_id']];
-	if($i != null) {
-		unset($u['notifications'][$i]);
-	}
-	notification_destroy($n['_id']);
-	account_save($u);
-}
+//function notification_erase_andSave(&$n, &$u) {
+//	if($u['notifications'] == null) {
+//		$u['notifications'] = [];
+//	}
+//	$un = array_flip($u['notifications']);
+//	$i = $un[$n['_id']];
+//	if($i != null) {
+//		unset($u['notifications'][$i]);
+//	}
+//	notification_destroy($n['_id']);
+//	account_save($u);
+//}
 
-function notification_addNotif_andSave(&$n, &$u) {
-	if($u['notifications'] == null) {
-		$u['notifications'] = [];
-	}
-	$un = array_flip($u['notifications']);
-	if(!isset($un[$n['_id']])) {
-		array_push($u['notifications'], $n['_id']);
-	}
-	notification_save($n);
-	account_save($u);
-}
+//function notification_addNotif_andSave(&$n, &$u) {
+//	if($u['notifications'] == null) {
+//		$u['notifications'] = [];
+//	}
+//	$un = array_flip($u['notifications']);
+//	if(!isset($un[$n['_id']])) {
+//		array_push($u['notifications'], $n['_id']);
+//	}
+//	notification_save($n);
+//	account_save($u);
+//}
 
-function notification_print_full(&$u) {
+// INVITATION SPECIFIC
+
+function invitation_print_full(&$u) {
 	$html = "";
-	foreach($u['notifications'] as $nid) {
-		$n = notification_load(array('_id' => new MongoId($nid)));
-		$html .= notification_print($n);
+	// search by id
+	$notifications = notification_bulkLoad(array(
+						'type' => 'invitation', 
+						'target' => new MongoId($u['_id']), 
+					));
+	foreach($notifications as $n) {
+		$html .= invitation_print($n);
+	}
+	// search by mail
+	$notifications = notification_bulkLoad(array(
+						'type' => 'invitation', 
+						'target' => $u['mail'], 
+					));
+	foreach($notifications as $n) {
+		// correct target to be an id
+		$n['target'] = new MongoId($u['_id']);
+		notification_save($n);
+		$html .= invitation_print($n);
 	}
 	return $html;
 }
 
-function notification_print(&$n) {
+function invitation_print(&$n) {
 	if($n['type'] == "invitation") {
 		$html = '	
 			<div class="menu-highlight invitation" data-id="'.$n['_id'].'">

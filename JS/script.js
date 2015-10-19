@@ -246,7 +246,7 @@ function disconnect() {
 		type: "POST",
 		data: {"mail":"", "password":""},
 		success: function(data) {
-				window.location.reload(true); 
+				window.location = location.protocol + "//" + location.host + location.pathname;
 			}
 	})
 }
