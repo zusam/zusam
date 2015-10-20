@@ -6,7 +6,7 @@ require_once('Core/Forum.php');
 require_once('Core/Notification.php');	
 require_once('Core/Miniature.php');	
 
-function page_nav_forum(&$u, &$forum) {
+function page_nav_forum($u, $forum) {
 
 	$html = "";
 
@@ -15,7 +15,7 @@ function page_nav_forum(&$u, &$forum) {
 	//$html .= '<div class="my_name">'.$u['name'].'</div>';
 	$html .= '</div>';
 	$html .= '<a href="'.$_SERVER['PHP_SELF'].'"><img class="logo" src="Assets/logo.png"/></a>';
-	if($forum != null && $forum != "" && $forum != false) {
+	if($_SESSION['forum'] != "" && $forum != null && $forum != "" && $forum != false) {
 		//$html .= '<div class="forum-name">'.$forum['name'].'</div>';
 		$html .= '<div class="right-module-nav">';
 		$html .= '<button class="action" onclick="ask(\'Mail de la personne à inviter :\',55,inviteUser)"><i class="fa fa-user-plus"></i></button>';

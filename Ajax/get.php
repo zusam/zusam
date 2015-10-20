@@ -105,9 +105,9 @@ if($_SESSION['connected']) {
 		if($GET['action'] == "getRaw") {
 
 			$pid = $GET['pid'];
+			$uid = $GET['uid'];
 
-			$u = new User();
-			$u->loadFromDB("mail='".$_SESSION['login']."'");
+			$u = account_load(array('_id' => new MongoId($uid)));
 			$p = post_load($pid);
 			$raw = $p['text'];
 			$r = new StdClass();

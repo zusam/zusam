@@ -54,6 +54,7 @@ if($GET['fid'] != "") {
 	}
 }
 
+$_SESSION['forum'] = $GET['fid'];
 if($_SESSION['forum'] != "" && $_SESSION['forum'] != null && in_array($_SESSION['forum'], $u['forums'])) {
 	$forum = forum_load($_SESSION['forum']);	
 	if($forum != null) {
@@ -97,7 +98,7 @@ echo('
 echo('
 <div id="slidenewpost" class="slide slide-over slidefromright">
 	<div class="post-separator"></div>
-	<div class="post-options"><div onclick="hidenewpost()"><i class="fa fa-long-arrow-right"></i></div></div>
+	<div class="post-options"><div class="cell" onclick="hidenewpost()"><i class="fa fa-close"></i></div></div>
 	<div class="post-separator"></div>
 	<div id="newpost" class="newpost">
 		<div id="typeBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Share something..."></div></div>
@@ -124,7 +125,7 @@ echo('<nav>');
 if($_SESSION['page'] == "forum" || $_SESSION['page'] == "forum_settings") {
 	echo(page_nav_forum($u, $forum));
 } else {
-	echo(page_nav_forum($u, $forum));
+	echo(page_nav_forum($u));
 }
 echo('</nav>');
 
@@ -150,7 +151,7 @@ echo('</div>');
 // FOOTER
 echo('
 <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
-<!--<script src="http://connect.soundcloud.com/sdk.js"></script>-->
+<script src="http://connect.soundcloud.com/sdk.js"></script>
 <script src="LibJS/jquery.2.1.4.min.js"></script>
 <script src="LibJS/fastclick.min.js"></script>
 <script src="zusam.min.js"></script>

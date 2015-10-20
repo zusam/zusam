@@ -13,7 +13,7 @@ var Control = {
 	//generic search function
 	searchFilter : function(e, filter, viewer) {
 
-		Control.mergeEditableNodes(e);
+		//Control.mergeEditableNodes(e);
 
 		toProcess = [];
 		// gather the nodes to process
@@ -44,8 +44,14 @@ var Control = {
 				hasChanged = false;
 			}
 			if(output.length > 1) {
+				console.log(output);
+				//console.log(output.length);
+				//console.log(node);
 				for(j = (output.length-1); j > 0; j--) {
-					$(node).after(output[j]);
+					//console.log(output[j]);
+					//$(node).after(output[j]);
+					//console.log(node.parentNode.innerHTML);
+					node.insertAdjacentHTML('afterend', output[j]);
 				}
 			}
 			if(output[0] == "") {
@@ -145,12 +151,12 @@ var Control = {
 			//}
 
 			//debug XXX
-			t.find('*[contenteditable]').on('mouseenter', function(event){
-				$(event.currentTarget).css('outline','1px solid red');	
-			});
-			t.find('*[contenteditable]').on('mouseleave', function(event){
-				$(event.currentTarget).css('outline','none');	
-			});
+			//t.find('*[contenteditable]').on('mouseenter', function(event){
+			//	$(event.currentTarget).css('outline','1px solid red');	
+			//});
+			//t.find('*[contenteditable]').on('mouseleave', function(event){
+			//	$(event.currentTarget).css('outline','none');	
+			//});
 
 			//prevent drag and drop into contentEditable
 			t.find('*[contenteditable]').on('dragover drop', function(event){
@@ -201,13 +207,13 @@ var Control = {
 	},
 
 	filter_out_ending : function(t, viewer) {
+		Control.searchFilter(t, Filter.endingSoundcloud, viewer);
 		Control.searchFilter(t, Filter.endingYoutube, viewer);
 		Control.searchFilter(t, Filter.endingYoutube2, viewer);
 		Control.searchFilter(t, Filter.endingVimeo, viewer);
 		Control.searchFilter(t, Filter.endingDailymotion, viewer);
 		Control.searchFilter(t, Filter.endingVine, viewer);
 		Control.searchFilter(t, Filter.endingDeezer, viewer);
-		Control.searchFilter(t, Filter.endingSoundcloud, viewer);
 		Control.searchFilter(t, Filter.endingImage, viewer);
 		Control.searchFilter(t, Filter.endingVideo, viewer);
 		Control.searchFilter(t, Filter.endingLink, viewer);
@@ -215,13 +221,13 @@ var Control = {
 	},
 
 	filter_out_search : function(t, viewer) {
+		Control.searchFilter(t, Filter.searchSoundcloud, viewer);
 		Control.searchFilter(t, Filter.searchYoutube, viewer);
 		Control.searchFilter(t, Filter.searchYoutube2, viewer);
 		Control.searchFilter(t, Filter.searchVimeo, viewer);
 		Control.searchFilter(t, Filter.searchDailymotion, viewer);
 		Control.searchFilter(t, Filter.searchVine, viewer);
 		Control.searchFilter(t, Filter.searchDeezer, viewer);
-		Control.searchFilter(t, Filter.searchSoundcloud, viewer);
 		Control.searchFilter(t, Filter.searchImage, viewer);
 		Control.searchFilter(t, Filter.searchVideo, viewer);
 		Control.searchFilter(t, Filter.searchLink, viewer);
@@ -261,6 +267,7 @@ var Control = {
 		if(m.length > 0) {
 			console.log(args);
 			console.log("from inner:'"+inner+"'");
+			console.log(m);
 		}
 		if(m.length != 0) {
 			var str = inner;
@@ -293,22 +300,24 @@ var Control = {
 				} else {
 					var param = "";
 				}
-				settings.url = ajax_url+"?url="+encodeURI(m[j])+param;
-				console.log(settings.url);
-				if(callback != null) {
-					settings.success = function(data){ 
-						callback(data); 
-					};
-				} else {
-					settings.success = function(data){ 
-						console.log(data); 
-					};
-				}
-				if(fail != null) {
-					settings.error = function(){ fail(m[j]); };
-				}
-				if(callback != null) {
-					$.ajax(settings);
+				if(typeof(ajax_url) != "undefined") {
+					settings.url = ajax_url+"?url="+encodeURI(m[j])+param;
+					console.log(settings.url);
+					if(callback != null) {
+						settings.success = function(data){ 
+							callback(data); 
+						};
+					} else {
+						settings.success = function(data){ 
+							console.log(data); 
+						};
+					}
+					if(fail != null) {
+						settings.error = function(){ fail(m[j]); };
+					}
+					if(callback != null) {
+						$.ajax(settings);
+					}
 				}
 			}
 

@@ -41,13 +41,8 @@ function forum_load($fid) {
 
 function forum_post2news(&$forum, $pid) {
 	$pid = (String) $pid;
-	$a = array_flip($forum['news']);
-	if(isset($a[$pid])) {
-		unset($forum['news'][$a[$pid]]);
-		array_push($forum['news'], $pid);
-	} else {
-		array_push($forum['news'], $pid);
-	}
+	deleteValue($pid, $forum['news']); 	
+	array_push($forum['news'], $pid);
 }
 
 function forum_addUser_andSave(&$forum, &$user) {

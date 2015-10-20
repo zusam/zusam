@@ -208,7 +208,7 @@ function editPost(t) {
 		$.get("Ajax/get.php?action=getRaw&pid="+pid, function(data) {
 			//console.log(data);
 			box = '<div id="editBox" class="dynamicBox">';
-			box += '<div contenteditable="true" data-placeholder="Share something...">'+data['raw']+'</div>';
+			box += '<div contenteditable="true" data-placeholder="Ecrivez quelquechose...">'+data['raw']+'</div>';
 			box += '</div>';
 			box += '<div class="menu">';
 			box += '<div class="menu-cell">';
@@ -219,7 +219,7 @@ function editPost(t) {
 			box += '</div>';
 			box += '</div>';
 			p.html(box);
-			start_typebox("#editBox");
+			typebox.start("#editBox");
 		});
 }
 

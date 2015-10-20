@@ -29,7 +29,7 @@ var Filter = {
 	},
 
 	endingSoundcloud : function(inner) {
-		r1 = /[\s]*(https?:\/\/soundcloud.com\/)([\w\-]+)\/([\w\-]+)(\/[\w\-]+)?$/gi;
+		r1 = /[\s]*(https?:\/\/soundcloud.com\/)([\w\-]+)\/([\w\-]+)(\/[\w\-]+)?(\?[^\s]+)?$/gi;
 		substitution = function(str) {
 			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img src="'+'Assets/ajax-loader.gif"/></span>';
 			if( typeof(SC) != "undefined" ) {
@@ -50,7 +50,7 @@ var Filter = {
 	},
 
 	searchSoundcloud : function(inner) {
-		r1 = /[\s]*(https?:\/\/soundcloud.com\/)([\w\-]+)\/([\w\-]+)(\/[\w\-]+)?[\s]/gi;
+		r1 = /[\s]*(https?:\/\/soundcloud.com\/)([\w\-]+)\/([\w\-]+)(\/[\w\-]+)?(\?[^\s]+)?[\s]/gi;
 		substitution = function(str) {
 			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img src="'+'Assets/ajax-loader.gif"/></span>';
 			setTimeout( function() {
