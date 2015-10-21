@@ -7,10 +7,11 @@ require_once('Filtre/preview.php');
 require_once('Filtre/soundcloud.php');
 require_once('Core/Location.php');
 require_once('Core/File.php');
+require_once('Core/Utils.php');
 
 function get_mini_from_link($url, $link) {
 	if(!file_exists(pathTo($url, "mini", "jpg"))) {
-		$tmp = file_get_contents($link);
+		$tmp = fgc($link);
 		file_put_contents(pathTo($url,"tmp"), $tmp);
 		if(file_exists(pathTo($url, "tmp"))) {
 			$file = pathTo($url, "tmp");

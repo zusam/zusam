@@ -145,6 +145,7 @@ function sendIt(id) {
 	uid = $('#info').eq(0).attr('data-uid');
 	forum = $('#info').eq(0).attr('data-forum');
 	console.log("text:"+msg+",forum:"+forum+",uid:"+uid+",parent:"+parentID+",pid:"+pid);
+	var baliseId = Date.now().toString(36)+Math.random().toString(16);
 	$.ajax({
 		url: "Ajax/save_msg.php",
 		type: "POST",
@@ -153,16 +154,21 @@ function sendIt(id) {
 			console.log(data);
 				if(data['parent'] == 0 || data['parent'] == null) {
 					if(data['pid'] == 0 || data['pid'] == null) {
-						$('#container').prepend('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['preview']+'"/></div>');
+						console.log("new post");
+						var balise = $('#container div[data-balise="'+baliseId+'"]');
+						balise.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
+						balise.remove();
 					} else {
+						console.log("edit post");
 						var p = $('#container .post-mini[data-id='+data['pid']+']');
-						p.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['preview']+'"/></div>');
+						p.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
 						p.remove();
+						hidenewpost();
 					}
 					setpostsviewable();
-					hidenewpost();
 					hidepostviewer();
 				} else {
+					console.log("new com");
 					$('.new-comment-section').before(data['html']);				
 					//$('.new-comment-section').before('<div class="post-separator"></div>');				
 					hidenewcommentsection($('.new-comment-section'));
@@ -171,13 +177,19 @@ function sendIt(id) {
 			},
 		error: function(a,b,c){ console.log(a,b,c) }
 	});
+	if(parentID == 0 || parentID == null) {
+		if(pid == 0 || pid == null) {
+			var post_loading = $('<div data-balise="'+baliseId+'" class="material-shadow post-mini"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
+			$('#container').prepend(post_loading);
+			hidenewpost();
+		}
+	}
 }
 
 function setpostsviewable() {
 	$('.post-mini').off();
 	$('.post-mini').on("click",function(e) {
 		togglepostviewer(e);
-		return false;
 	});
 }
 

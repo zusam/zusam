@@ -211,6 +211,7 @@ function hidepostviewer() {
 	pv.attr('data-id','');
 	pv.html('');
 	typebox.stop('#commentBox');
+	window.history.pushState("", "", window.location.href.replace(/\#.*/,""));
 }
 
 function addMask(func, darkness, zindex, id) {

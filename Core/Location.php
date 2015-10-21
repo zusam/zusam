@@ -1,11 +1,11 @@
 <?php
 
 function p2l($path) {
-	$path = preg_replace("/\/srv\/http/","nibou.eu/",$path);
-	//$path = preg_replace("/\/srv\/http/","localhost/",$path);
-	$link = preg_replace("/\/+/","/",$path);
-	$link = "http://".$link;
-	return $link;
+	//$path = preg_replace("/\/srv\/http/","nibou.eu/",$path);
+	$path = preg_replace("/\/srv\/http/","http://localhost",$path);
+	//$link = preg_replace("/\/+/","/",$path);
+	//$link = "http://".$link;
+	return $path;
 }
 
 function pathTo($url, $param, $ext) {

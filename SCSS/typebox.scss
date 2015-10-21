@@ -35,33 +35,33 @@
 }
 .b-link {
 	width: 100%;
-	height: 80px;
 	display: block;
 	position: relative;
-	overflow: hidden;
-
-	span {
-		position: absolute;
-		top: calc(50% - 14px);
-		left: 0;
-		width: 100%;
-		text-align:center;
-		color: whitesmoke;
-		font-size: 28px;
-		line-height: 21px;
-		font-weight: bolder;
-		z-index: 10;
-	}
-}
-.b-link > div {
-	width: 130%;
-	height: 100%;
-	display: block;
-	position: relative;
-	margin: 0px;
 	overflow: hidden;
 	text-align: left;
+
+	//span {
+	//	position: absolute;
+	//	top: calc(50% - 14px);
+	//	left: 0;
+	//	width: 100%;
+	//	text-align:center;
+	//	color: whitesmoke;
+	//	font-size: 28px;
+	//	line-height: 21px;
+	//	font-weight: bolder;
+	//	z-index: 10;
+	//}
 }
+//.b-link > div {
+//	width: 130%;
+//	height: 100%;
+//	display: block;
+//	position: relative;
+//	margin: 0px;
+//	overflow: hidden;
+//	text-align: left;
+//}
 .article_small, .article_big {
 	display: block;
 	overflow: hidden;

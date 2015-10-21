@@ -52,7 +52,7 @@ function page_section_forum(&$u, &$forum) {
 				} else {
 					$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
 				}
-				$html .= '<div class="material-shadow post-mini" data-id="'.$p['_id'].'">'.$inside.'</div>';
+				$html .= '<a class="material-shadow post-mini" href="#'.$p['_id'].'" data-id="'.$p['_id'].'">'.$inside.'</a>';
 			}
 		}
 		$html .= '</div>';

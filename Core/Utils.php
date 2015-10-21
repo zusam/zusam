@@ -1,5 +1,29 @@
 <?php
 
+function fgc($url, $bytes) {
+	$ch = curl_init($url);
+	curl_setopt($ch, CURLOPT_HEADER, false);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_ENCODING, "");
+	curl_setopt($ch, CURLOPT_USERAGENT, "");
+	curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+	curl_setopt($ch, CURLOPT_MAXREDIR, 10);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_COOKIEFILE, "tmp/cookie.txt");
+	curl_setopt($ch, CURLOPT_COOKIEJAR, "tmp/cookie.txt");
+	curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+	if($bytes != "" && intval($bytes) != 0) {
+	var_dump($bytes);
+		$headers = array("Range: bytes=0-"+intval($bytes));
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+	}
+	$data = curl_exec($ch);
+	curl_close($ch);
+	return $data;
+}
+
 function isIn(&$e, &$a) {
 	foreach($a as $m) {
 		if($m == $e) {

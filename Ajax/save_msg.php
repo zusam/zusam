@@ -23,7 +23,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 	if($_SESSION['forum'] == $f['_id'] && isIn($f['_id'], $u['forums'])) {
 
 		// look for a preview
-		$ret = preg_match("/https?:\/\/[\w\/=?~,.%&+\-#\!]+/i",$text,$matches);
+		$ret = preg_match("/https?:\/\/[^\s]+/i",$text,$matches);
 		$ret2 = preg_match("/\{\:[A-Za-z0-9]+\:\}/i",$text,$matches2);
 		if($ret != false && count($matches) > 0) {
 			$preview = $matches[0];
@@ -44,7 +44,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 			}
 		} 
 		// default placeholder image
-		if($url_prev == "" || $url_prev == null) {
+		if(preg_match("/.*miniature\/.*\.jpg/",$url_prev) != 1) {
 			$url_prev = p2l(pathTo("placeholder", "assets", "jpg"));
 		}
 
@@ -73,7 +73,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 		}
 
 		$r = new stdClass();
-		$r->preview = $url_prev;
+		$r->link = $link;
 		$r->miniature = $url_prev;
 		$r->prev = $preview;
 		$r->id = (String) $p['_id'];

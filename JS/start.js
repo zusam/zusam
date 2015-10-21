@@ -42,4 +42,13 @@ $(window).ready(function() {
 		});
 	}
 
+	// view post if url says so
+	if(window.location.href.match(/\#[a-z0-9]+$/)) {
+		var pid = window.location.href.replace(/.*\#([a-z0-9]+)/,"$1");
+		console.log("show:"+pid);
+		showpostviewer(pid);
+	}
+
+
+
 });

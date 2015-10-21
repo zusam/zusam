@@ -15,35 +15,30 @@ function web_video($url, $file) {
 	if(file_exists(pathTo($url, "mini", "jpg"))) {
 		return $url;
 	} else {
-		$tmp = file_get_contents($source);
-		file_put_contents(pathTo($url,"tmp"), $tmp);
-		if(file_exists(pathTo($url, "tmp"))) {
 
-			// GENERATION
-			$source = pathTo($url, "tmp");
+		videoThumbnail($source, pathTo($url, "mini", "jpg"));
+		if(file_exists(pathTo($url, "mini", "jpg"))) {
+			return $url;
+		} else {
+			// if it failed, try to download the file separately
+			$tmp = fgc($source, 65536);
+			file_put_contents(pathTo($url,"tmp"), $tmp);
+			if(file_exists(pathTo($url, "tmp"))) {
 
-			if(file_exists(pathTo($url, "mini", "jpg"))) {
-				$path = pathTo($url, "mini", "jpg");
-			} else {
-				videoThumbnail($source, pathTo($url, "mini", "jpg"), 320, 180);
-			}
-			/*
-			if(preg_match("/\.mp4$/", $url)==1) {
-				if(!file_exists(pathTo($url, "video", "webm"))) {
-					saveVideo($source, pathTo($url, "video", "webm"), "plop");
+				// GENERATION
+				$source = pathTo($url, "tmp");
+
+				if(file_exists(pathTo($url, "mini", "jpg"))) {
+					$path = pathTo($url, "mini", "jpg");
+				} else {
+					videoThumbnail($source, pathTo($url, "mini", "jpg"));
 				}
-			}
-			if(preg_match("/\.webm$/", $url)==1) {
-				if(!file_exists(pathTo($url, "video", "mp4"))) {
-					saveVideo($source, pathTo($url, "video", "mp4"), "plop");
-				}
-			}
-			*/
-			unlink(pathTo($url, "tmp"));
+				unlink(pathTo($url, "tmp"));
 
-			// RETURN
-			if(file_exists(pathTo($url, "mini", "jpg"))) {
-				return $url;
+				// RETURN
+				if(file_exists(pathTo($url, "mini", "jpg"))) {
+					return $url;
+				}
 			}
 		}
 	}

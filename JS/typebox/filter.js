@@ -284,6 +284,12 @@ var Filter = {
 	fail_request : function(url) {
 		base_url = decodeURI(url).replace(/https?:\/\/(www\.)?([^\/\?\#]+).*/i,"$1$2");
 		e = $('<a class="b-link" href="'+decodeURI(url).replace(/\s/," ")+'" target="_blank"></a>');
+		return e;
+	},
+	
+	fail_request_old : function(url) {
+		base_url = decodeURI(url).replace(/https?:\/\/(www\.)?([^\/\?\#]+).*/i,"$1$2");
+		e = $('<a class="b-link" href="'+decodeURI(url).replace(/\s/," ")+'" target="_blank"></a>');
 		container = $('<div>');
 		total_width = 0;
 		for(i = 0; i < 100; i++) {
@@ -307,7 +313,7 @@ var Filter = {
 		//base_url = decodeURI(data['url']).replace(/https?:\/\/(www\.)?([^\/\?\#]+).*/i,"$1$2");
 		base_url = data['base_url'];
 		console.log(data['image']['url']);
-		if(data['image']['url'].match(/https?:\/\/.+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)/i)) {
+		if(typeof(data['image']['url'])!= "undefined" && data['image']['url'].match(/https?:\/\/.+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)/i)) {
 			preview = '<div class="preview"><img src="'+data['image']['url']+'" onerror="error_im(this)"/></div>';
 		} else { 
 			console.log("nope");
