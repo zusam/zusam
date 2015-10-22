@@ -1,5 +1,20 @@
 <?php
 
+function post_initialize($text, $uid, $preview, $forum, $parent) {
+	$post = [];
+	$post['_id'] = new MongoId();
+	$post['date'] = new MongoDate(); 
+	$post['children'] = [];
+	$post['text'] = $text;
+	$post['uid'] = $uid;
+	$post['preview'] = $preview;
+	$post['forum'] = $forum;
+	if($parent != null) {
+		$post['parent'] = new MongoId($parent);
+	}
+	return $post;
+}
+
 function post_load($id) {
 	$m = new MongoClient();
 	$posts = $m->selectDB("zusam")->selectCollection("posts");
@@ -40,21 +55,6 @@ function post_save(&$post) {
 	$posts = $m->selectDB("zusam")->selectCollection("posts");
 	$mid = new MongoId($post['_id']);
 	$posts->update(array('_id' => $mid), $post, array('upsert' => true));
-}
-
-function post_initialize($text, $uid, $preview, $forum, $parent) {
-	$post = [];
-	$post['_id'] = new MongoId();
-	$post['date'] = new MongoDate(); 
-	$post['children'] = [];
-	$post['text'] = $text;
-	$post['uid'] = $uid;
-	$post['preview'] = $preview;
-	$post['forum'] = $forum;
-	if($parent != null) {
-		$post['parent'] = new MongoId($parent);
-	}
-	return $post;
 }
 
 ?>

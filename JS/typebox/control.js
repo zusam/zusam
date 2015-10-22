@@ -11,7 +11,7 @@ var Control = {
 	},
 
 	//generic search function
-	searchFilter : function(e, filter, viewer) {
+	searchFilter : function(e, filter, viewer, ending) {
 
 		//Control.mergeEditableNodes(e);
 
@@ -35,7 +35,7 @@ var Control = {
 			inner = node.innerHTML.trim();
 			//console.log(filter);
 			//console.log(typeof(filter));
-			output = filter(inner);
+			output = filter(inner, ending);
 			//console.log(filter.name);
 			//console.log(output);
 			if(output.length > 1 || output[0] != node.innerHTML) {
@@ -207,31 +207,21 @@ var Control = {
 	},
 
 	filter_out_ending : function(t, viewer) {
-		Control.searchFilter(t, Filter.endingSoundcloud, viewer);
-		Control.searchFilter(t, Filter.endingYoutube, viewer);
-		Control.searchFilter(t, Filter.endingYoutube2, viewer);
-		Control.searchFilter(t, Filter.endingVimeo, viewer);
-		Control.searchFilter(t, Filter.endingDailymotion, viewer);
-		Control.searchFilter(t, Filter.endingVine, viewer);
-		Control.searchFilter(t, Filter.endingDeezer, viewer);
-		Control.searchFilter(t, Filter.endingImage, viewer);
-		Control.searchFilter(t, Filter.endingVideo, viewer);
-		Control.searchFilter(t, Filter.endingLink, viewer);
-		Control.searchFilter(t, Filter.endingFile, viewer);
+		Control.filter_out_search(t, viewer, true);
 	},
 
-	filter_out_search : function(t, viewer) {
-		Control.searchFilter(t, Filter.searchSoundcloud, viewer);
-		Control.searchFilter(t, Filter.searchYoutube, viewer);
-		Control.searchFilter(t, Filter.searchYoutube2, viewer);
-		Control.searchFilter(t, Filter.searchVimeo, viewer);
-		Control.searchFilter(t, Filter.searchDailymotion, viewer);
-		Control.searchFilter(t, Filter.searchVine, viewer);
-		Control.searchFilter(t, Filter.searchDeezer, viewer);
-		Control.searchFilter(t, Filter.searchImage, viewer);
-		Control.searchFilter(t, Filter.searchVideo, viewer);
-		Control.searchFilter(t, Filter.searchLink, viewer);
-		Control.searchFilter(t, Filter.searchFile, viewer);
+	filter_out_search : function(t, viewer, ending) {
+		Control.searchFilter(t, Filter.searchSoundcloud, viewer, ending);
+		Control.searchFilter(t, Filter.searchYoutube, viewer, ending);
+		Control.searchFilter(t, Filter.searchYoutube2, viewer, ending);
+		Control.searchFilter(t, Filter.searchVimeo, viewer, ending);
+		Control.searchFilter(t, Filter.searchDailymotion, viewer, ending);
+		Control.searchFilter(t, Filter.searchVine, viewer, ending);
+		Control.searchFilter(t, Filter.searchDeezer, viewer, ending);
+		Control.searchFilter(t, Filter.searchImage, viewer, ending);
+		Control.searchFilter(t, Filter.searchVideo, viewer, ending);
+		Control.searchFilter(t, Filter.searchLink, viewer, ending);
+		Control.searchFilter(t, Filter.searchFile, viewer, ending);
 	},
 	
 	filter_out_all : function(t, viewer) {

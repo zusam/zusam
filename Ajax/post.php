@@ -50,8 +50,7 @@ if($_SESSION['connected']) {
 			var_dump($POST);
 			var_dump($_FILES);
 		
-			// TODO ajuster la taille limite
-			if($_FILES["image"]["size"] < 1048576*10 && $_FILES["image"]["type"] == "image/png") {
+			if($_FILES["image"]["size"] < 1024*1024*10 && $_FILES["image"]["type"] == "image/png") {
 				$u = account_load(array('_id' => $uid));
 				if($u != null && $u != false) {
 					$file = file_initialize($fileId, "jpg", $u['_id']);
@@ -74,8 +73,7 @@ if($_SESSION['connected']) {
 			var_dump($POST);
 			var_dump($_FILES);
 		
-			// TODO ajuster la taille limite
-			if($_FILES["video"]["size"] < 1048576*2000) {
+			if($_FILES["video"]["size"] < 1024*1024*300) {
 				$u = account_load(array('_id' => $uid));
 				if($u != null && $u != false) {
 					$file = file_initialize($fileId, "webm", $u['_id']);
@@ -135,7 +133,7 @@ if($_SESSION['connected']) {
 			$uid = $POST['uid'];
 
 			if($_SESSION['uid'] == $uid) {
-				if($_FILES["avatar"]["size"] < 1048576 && $_FILES["avatar"]["type"] == "image/png") {
+				if($_FILES["avatar"]["size"] < 1024*1024*2 && $_FILES["avatar"]["type"] == "image/png") {
 					$r = saveImage($_FILES["avatar"]["tmp_name"], pathTo($uid, "avatar", "jpg"), 256, 256);
 				}
 			} else {
@@ -165,9 +163,8 @@ if($_SESSION['connected']) {
 					}
 				}
 
-				// TODO ajuster la taille max
 				// avatar change
-				if($f != null && $f != false && $_FILES["avatar"]["size"] < 1048576*5 && $_FILES["avatar"]["type"] == "image/png") {
+				if($f != null && $f != false && $_FILES["avatar"]["size"] < 1024*1024*2 && $_FILES["avatar"]["type"] == "image/png") {
 					$r = saveImage($_FILES["avatar"]["tmp_name"], pathTo($fid, "avatar", "jpg"), 256, 256);
 				}
 			} else {

@@ -21,7 +21,6 @@ require_once('Pages/home.php');
 require_once('Reduc/ReducImage.php');
 require_once('Reduc/ReducVideo.php');
 
-// TODO acl
 if($_SESSION['connected']) {
 
 	// secure post variables for mongodb
@@ -32,6 +31,7 @@ if($_SESSION['connected']) {
 
 	if($GET['action'] != null && $GET['action'] != "") {
 
+		// TODO protect ?
 		if($GET['action'] == "getProgress") {
 
 			$fileId = $GET['fileId'];
@@ -57,6 +57,7 @@ if($_SESSION['connected']) {
 
 		}
 
+		// TODO protect file
 		if($GET['action'] == "getFile") {
 
 			$fileId = preg_replace("/\{\:([a-zA-Z0-9]+)\:\}/","$1",$GET['url']);
@@ -75,7 +76,7 @@ if($_SESSION['connected']) {
 
 		}
 
-
+		// TODO protect
 		if($GET['action'] == "getAvatar") {
 
 			$uid = $GET['uid'];
@@ -88,8 +89,8 @@ if($_SESSION['connected']) {
 			exit;
 		}
 
+		// TODO protect
 		if($GET['action'] == "getPost") {
-
 
 			$id = $GET['id'];
 
@@ -109,11 +110,14 @@ if($_SESSION['connected']) {
 
 			$u = account_load(array('_id' => new MongoId($uid)));
 			$p = post_load($pid);
-			$raw = $p['text'];
-			$r = new StdClass();
-			$r->raw = $raw;
-			header('Content-Type: text/json; charset=UTF-8');
-			echo(json_encode($r));
+			
+			if($_SESSION['uid'] == $uid && $p['uid'] == $uid) {
+				$raw = $p['text'];
+				$r = new StdClass();
+				$r->raw = $raw;
+				header('Content-Type: text/json; charset=UTF-8');
+				echo(json_encode($r));
+			}
 			exit;
 		}
 	}

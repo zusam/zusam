@@ -2,6 +2,7 @@
 
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Core/Location.php');
+require_once('Core/Utils.php');
 
 function file_initialize($fileId, $type, $uid) {
 	$file = [];
@@ -11,6 +12,7 @@ function file_initialize($fileId, $type, $uid) {
 	$file['owner'] = new MongoId($uid);
 	$file['links'] = 1;
 	$file['fileId'] = $fileId;
+	$file['forums'] = [];
 
 	file_locate($file);
 
