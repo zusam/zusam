@@ -49,6 +49,16 @@ $(window).ready(function() {
 		showpostviewer(pid);
 	}
 
+	// prevent exiting while download
+
+	window.addEventListener("beforeunload", function (e) {
+		console.log("beforeunload");
+		if(sending) {
+			return "plop";
+		}
+	});
+
+
 
 
 });

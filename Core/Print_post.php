@@ -20,7 +20,7 @@ function print_full_post($id, $uid, &$p) {
 	
 	// load the post if not provided
 	if($p == null) {
-		$p = post_load($id);
+		$p = post_load(array('_id'=>$id));
 	}
 	if($p == null) {
 		return "";
@@ -52,7 +52,7 @@ function print_post($id, $uid, &$p) {
 	
 	// load the post if not provided
 	if($p == null) {
-		$p = post_load($id);
+		$p = post_load(array('_id'=>$id));
 	}
 	if($p == null) {
 		return "";

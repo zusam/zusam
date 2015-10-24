@@ -109,7 +109,7 @@ if($_SESSION['connected']) {
 			$uid = $GET['uid'];
 
 			$u = account_load(array('_id' => new MongoId($uid)));
-			$p = post_load($pid);
+			$p = post_load(array('_id'=>$pid));
 			
 			if($_SESSION['uid'] == $uid && $p['uid'] == $uid) {
 				$raw = $p['text'];

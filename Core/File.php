@@ -35,22 +35,53 @@ function file_save(&$file) {
 	$files->update(array('_id' => $mid), $file, array('upsert' => true));
 }
 
+function file_destroy($fid) {
+	$mid = new MongoId($fid);
+	$f = file_load(array('_id'=>$fid));
+	if($f != false && $f != null) {
+		unlink(file_getPath($f));	
+		$m = new MongoClient();
+		$files = $m->selectDB("zusam")->selectCollection("files");
+		$files->remove(array('_id' => $mid));
+	}
+}
+
 function file_unlink(&$file) {
 	$file['links'] = $file['links'] - 1;
-	if($file['links'] <= 0) {
-		unlink($file['location']);	
-	}
 	file_save($file);
+	if($file['links'] <= 0) {
+		file_destroy($file['_id']);
+	}
+}
+
+function file_bulkLoad($array) {
+	if($array['_id'] != null && $array['_id'] != "") {
+		$array['_id'] = new MongoId($array['_id']);
+	}
+	if($array['owner'] != null && $array['owner'] != "") {
+		$array['owner'] = new MongoId($array['owner']);
+	}
+	$m = new MongoClient();
+	$files = $m->selectDB("zusam")->selectCollection("files");
+	$file = $files->find($array);
+	return $file;
 }
 
 function file_load($array) {
 	if($array['_id'] != null && $array['_id'] != "") {
 		$array['_id'] = new MongoId($array['_id']);
 	}
+	if($array['owner'] != null && $array['owner'] != "") {
+		$array['owner'] = new MongoId($array['owner']);
+	}
 	$m = new MongoClient();
 	$files = $m->selectDB("zusam")->selectCollection("files");
 	$file = $files->findOne($array);
 	return $file;
+}
+
+function file_getPath(&$file) {
+	return pathTo2(array("url" => $file['location'], "ext" => $file['type'], "param" => "file"));
 }
 
 function file_print(&$file) {

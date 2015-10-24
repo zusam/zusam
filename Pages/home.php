@@ -15,7 +15,7 @@ function page_section_home(&$u) {
 
 	$notifs = load_invitations($u);
 	foreach($notifs as $n) {
-		$f = forum_load($n['source']);
+		$f = forum_load(array('_id'=>$n['source']));
 		if($f != false) {
 			$html .= '
 				<div title="'.$f['name'].'" class="material-shadow invit-mini" data-id="'.$n['_id'].'">
@@ -34,7 +34,7 @@ function page_section_home(&$u) {
 	$list = array_reverse($u['forums']);
 
 	for($i=0;$i<count($list);$i++) {
-		$f = forum_load($list[$i]);
+		$f = forum_load(array('_id'=>$list[$i]));
 		$html .= '
 			<a title="'.$f['name'].'" class="material-shadow forum-mini" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum" data-id="'.$f['_id'].'">
 				'.forum_getAvatarHTML($f).'

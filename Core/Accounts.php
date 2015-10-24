@@ -2,6 +2,9 @@
 
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Core/Location.php');
+require_once('Core/File.php');
+require_once('Core/Post.php');
+require_once('Core/Notification.php');
 
 function account_getDummy($default) {
 	$ac = [];
@@ -32,6 +35,16 @@ function account_save(&$ac) {
 	$accounts = $m->selectDB("zusam")->selectCollection("accounts");
 	$mid = new MongoId($ac['_id']);
 	$accounts->update(array('_id' => $mid), $ac, array('upsert' => true));
+}
+
+function account_bulkLoad($array) {
+	if($array['_id'] != null && $array['_id'] != "") {
+		$array['_id'] = new MongoId($array['_id']);
+	}
+	$m = new MongoClient();
+	$accounts = $m->selectDB("zusam")->selectCollection("accounts");
+	$ac = $accounts->find($array);
+	return $ac;
 }
 
 function account_load($array) {
@@ -92,10 +105,43 @@ function account_getAvatarHTML(&$ac) {
 }
 
 function account_destroy($id) {
-	$m = new MongoClient();
+
+	//$ac = account_load(array('_id'=>$id));
 	$mid = new MongoId($id);
-	$accounts = $m->selectDB("zusam")->selectCollection("accounts");
-	$accounts->remove(array('_id' => $mid));
+
+	$ac = account_load(array('_id'=>$id));
+	if($ac != null && $ac != false) {
+		
+		// unsubscribe from forums
+		foreach($ac['forums'] as $fid) {
+			$f = forum_load(array('_id'=>$fid));
+			if($f != null && $f != false) {
+				forum_removeUser_andSave($f, $ac);	
+			}
+		}
+
+		// destroy notifications
+		$notifications = file_bulkLoad(array('target'=>$mid));
+		foreach($notifications as $n) {
+			notification_destroy($n['_id']);
+		}
+
+		// destroy posts
+		$posts = post_bulkLoad(array('uid'=>$mid));
+		foreach($posts as $p) {
+			post_destroy($p['_id']);
+		}
+
+		// destroy files
+		$files = file_bulkLoad(array('owner'=>$mid));
+		foreach($files as $f) {
+			file_destroy($f['_id']);
+		}
+
+		$m = new MongoClient();
+		$accounts = $m->selectDB("zusam")->selectCollection("accounts");
+		$accounts->remove(array('_id' => $mid));
+	}
 }
 
 ?>

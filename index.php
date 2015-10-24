@@ -23,6 +23,16 @@ foreach($_GET as $K=>$V) {
 	$GET[$K] = (String) $V;
 }
 
+//apply secret link
+if($GET['il'] != null && $_SESSION['connected']) {
+	$f = forum_load(array('link'=>$GET['il']));
+	$u = account_load(array('_id'=>$_SESSION['uid']));
+	if($f != null && $f != false && $u != null && $u != false) {
+		forum_addUser_andSave($f, $u);	
+	}
+}
+
+
 // HTML
 echo('<html>');
 
@@ -56,7 +66,7 @@ if($GET['fid'] != "") {
 
 $_SESSION['forum'] = $GET['fid'];
 if($_SESSION['forum'] != "" && $_SESSION['forum'] != null && in_array($_SESSION['forum'], $u['forums'])) {
-	$forum = forum_load($_SESSION['forum']);	
+	$forum = forum_load(array('_id'=>$_SESSION['forum']));	
 	if($forum != null) {
 		$_SESSION['forum'] = $forum['_id'];
 	} else {

@@ -3,6 +3,8 @@
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Core/Accounts.php');
 require_once('Core/Location.php');
+require_once('Core/Post.php');
+require_once('Core/Notification.php');
 
 function forum_initialize($name) {
 	$forum = [];
@@ -27,15 +29,23 @@ function forum_save(&$forum) {
 	$forums->update(array('_id' => $mid), $forum, array('upsert' => true));
 }
 
-function forum_load($fid) {
-	if(MongoId::isValid($fid)) {
-		$mid = new MongoId($fid);
-	} else {
-		return null;
+function forum_bulkLoad($array) {
+	if($array['_id'] != null && $array['_id'] != "") {
+		$array['_id'] = new MongoId($array['_id']);
 	}
 	$m = new MongoClient();
 	$forums = $m->selectDB("zusam")->selectCollection("forums");
-	$forum = $forums->findOne(array('_id' => $mid));
+	$forum = $forums->find($array);
+	return $forum;
+}
+
+function forum_load($array) {
+	if($array['_id'] != null && $array['_id'] != "") {
+		$array['_id'] = new MongoId($array['_id']);
+	}
+	$m = new MongoClient();
+	$forums = $m->selectDB("zusam")->selectCollection("forums");
+	$forum = $forums->findOne($array);
 	return $forum;
 }
 
@@ -61,6 +71,9 @@ function forum_removeUser_andSave(&$forum, &$user) {
 	deleteValue($forum['_id'], $user['forums']);
 	forum_save($forum);
 	account_save($user);
+	if(count($forum['users']) <= 0) {
+		forum_destroy($forum['_id']);
+	}
 }
 
 function forum_getAvatar(&$forum) {
@@ -90,7 +103,6 @@ function forum_genIdenticon(&$forum) {
 	';
 
 	return $html;
-
 }
 
 function forum_getAvatarHTML(&$forum) {
@@ -104,6 +116,25 @@ function forum_getAvatarHTML(&$forum) {
 		$html = '<img src="'.$avatar.'"/>';
 	}
 	return $html;
+}
+
+function forum_destroy($fid) {
+	$mid = new MongoId($fid);
+	
+	$f = forum_load(array('_id'=>$fid));
+	if($f != null && $f != false) {
+		$posts = post_bulkLoad(array('forum'=>$mid));	
+		foreach($posts as $p) {
+			post_destroy($p['_id']);
+		}
+		$notifications = notification_bulkLoad(array('source'=>$fid));
+		foreach($notifications as $n) {
+			notification_destroy($n['_id']);
+		}
+		$m = new MongoClient();
+		$forums = $m->selectDB("zusam")->selectCollection("forums");
+		$forums->remove(array('_id' => $mid));
+	}
 }
 
 ?>

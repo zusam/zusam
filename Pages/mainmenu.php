@@ -16,7 +16,7 @@ function page_mainmenu(&$u) {
 		<div class="separator"></div>
 	';
 	foreach($u['forums'] as $fid) {
-		$f = forum_load($fid);
+		$f = forum_load(array('_id'=>$fid));
 		$html .= '<div class="forum-menu">';
 		$html .= '
 			<a class="forum-link" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum">'.$f['name'].'</a>

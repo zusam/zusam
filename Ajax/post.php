@@ -29,13 +29,28 @@ if($_SESSION['connected']) {
 	}
 
 	if($POST['action'] != null && $POST['action'] != "") {
+
+		if($POST['action'] == "changeSecretLink") {
+			$uid = $POST['uid'];
+			$fid = $POST['fid'];
+			
+			$u = account_load(array('_id' => $uid));
+			$f = forum_load(array('_id'=>$fid));
+
+			if($_SESSION['uid'] == $uid && isIn($uid, $f['users']) && isIn($fid, $u['forums'])) {
+				forum_changeLink($f);
+				forum_save($f);
+			}
+			exit;
+		}
+
 		
 		if($POST['action'] == "removeUserFromForum") {
 			$uid = $POST['uid'];
 			$fid = $POST['fid'];
 			
 			$u = account_load(array('_id' => $uid));
-			$f = forum_load($fid);
+			$f = forum_load(array('_id'=>$fid));
 
 			if($_SESSION['uid'] == $uid) {
 				forum_removeUser_andSave($f, $u);
@@ -114,7 +129,7 @@ if($_SESSION['connected']) {
 
 			if($_SESSION['uid'] == $uid) { 
 				if($user != null && $user != false && $notif != null && $notif != false) {
-					$forum = forum_load($notif['source']);
+					$forum = forum_load(array('_id'=>$notif['source']));
 					if($forum != null && $forum != false) {
 						forum_addUser_andSave($forum, $user);
 					}
@@ -150,7 +165,7 @@ if($_SESSION['connected']) {
 			$fid = $POST['fid'];
 			
 			$u = account_load(array('_id' => $uid));
-			$f = forum_load($fid);
+			$f = forum_load(array('_id'=>$fid));
 
 			if($_SESSION['uid'] == $uid && isIn($fid, $u['forums'])) {
 				// name change
@@ -205,7 +220,7 @@ if($_SESSION['connected']) {
 
 		if($POST['action'] == "deletePost") {
 			$id = $POST['id'];
-			$p = post_load($id);
+			$p = post_load(array('_id'=>$id));
 			if($p != false && $p != null && $p['uid'] == $_SESSION['uid']) {
 				post_destroy($id);
 			} else {
@@ -245,7 +260,7 @@ if($_SESSION['connected']) {
 			} else {
 				$cible = $mail;
 			}
-			$forum = forum_load($fid);
+			$forum = forum_load(array('_id'=>$fid));
 
 			if($_SESSION['uid'] == $uid && isIn($fid, $u['forums'])) {
 				if($forum != null && $forum != false && $mail != "") {

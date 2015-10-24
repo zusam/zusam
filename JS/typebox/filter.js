@@ -95,7 +95,7 @@ var Filter = {
 		substitution = function(str) {
 			var v = str.replace(/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/,"$2");
 			var w = 'http://www.youtube.com/embed/'+v+'?wmode=opaque';
-			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" seamless src="'+w+'"/><iframe></div></span>';
+			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" seamless allowfullscreen src="'+w+'"/><iframe></div></span>';
 			return o;
 		}
 		output = Control.searchMatch({"callerName":"searchYoutube2", "inner":inner, "regex":r1, "substitution":substitution});
@@ -111,7 +111,7 @@ var Filter = {
 		substitution = function(str) {
 			var v = str.replace(/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/,"$4");
 			var w = 'http://www.youtube.com/embed/'+v+'?wmode=opaque';
-			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" seamless  src="'+w+'"/><iframe></div></span>';
+			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" seamless allowfullscreen src="'+w+'"/><iframe></div></span>';
 			return o;
 		}
 		output = Control.searchMatch({"callerName":"searchYoutube", "inner":inner, "regex":r1, "substitution":substitution});

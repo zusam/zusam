@@ -44,7 +44,7 @@ function page_section_forum(&$u, &$forum) {
 		
 		//TODO (300) -> infinite scrolling
 		for($i=0;$i<min(3000,count($list));$i++) {
-			$p = post_load($list[$i]);
+			$p = post_load(array('_id'=>$list[$i]));
 			if($p != false && ($p['parent'] == null || $p['parent'] == 0)) {
 				if(!file_exists(get_miniature_path($p['preview']))) {
 					$inside = '<img src="'.p2l(pathTo("placeholder", "assets", "jpg")).'"/>';
@@ -80,6 +80,10 @@ function page_section_forum_settings(&$u, &$forum) {
 				<label for="mail">Mail de la personne à inviter:</label><br>
 				<input name="mail" type="email"><br>
 				<input type="submit" onclick="inviteUser(\'input[name=mail]\'); return false;" value="Envoyer">
+			</form>
+			<form class="change-profile">
+				<input type="text" onclick="this.setSelectionRange(0, this.value.length); return false;" value="'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?il='.$forum['link'].'" readonly="readonly">
+				<input type="submit" onclick="changeSecretLink(); return false;" value="Changer le lien secret">
 			</form>
 			<form class="change-profile">
 				<input type="submit" onclick="removeUserFromForum(); return false;" value="Se désinscrire de ce forum">

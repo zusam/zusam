@@ -17,7 +17,7 @@ $parent = (String) $_POST['parent'];
 
 if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 			
-	$f = forum_load($forum);
+	$f = forum_load(array('_id'=>$forum));
 	$u = account_load(array('_id' => new MongoId($uid)));
 
 	if($_SESSION['forum'] == $f['_id'] && isIn($f['_id'], $u['forums'])) {
@@ -57,7 +57,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				forum_save($f);
 			} else {
 				// new com
-				$p = post_load($parent);
+				$p = post_load(array('_id'=>$parent));
 				$c = post_initialize($text, $uid, $preview, $forum, $p['_id']);
 				post_addChild($p, $c['_id']);
 				post_save($c);
@@ -67,7 +67,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 			}
 		} else {
 			// editing post or com
-			$p = post_load($pid);
+			$p = post_load(array('_id'=>$pid));
 			post_update($p, array('text'=>$text,'preview'=>$preview));
 			post_save($p);
 		}

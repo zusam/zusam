@@ -39,36 +39,14 @@ function notification_load($array) {
 }
 
 function notification_bulkLoad($array) {
+	if($array['_id'] != null && $array['_id'] != "") {
+		$array['_id'] = new MongoId($array['_id']);
+	}
 	$m = new MongoClient();
 	$notifications = $m->selectDB("zusam")->selectCollection("notifications");
 	$n = $notifications->find($array);
 	return $n;
 }
-
-//function notification_erase_andSave(&$n, &$u) {
-//	if($u['notifications'] == null) {
-//		$u['notifications'] = [];
-//	}
-//	$un = array_flip($u['notifications']);
-//	$i = $un[$n['_id']];
-//	if($i != null) {
-//		unset($u['notifications'][$i]);
-//	}
-//	notification_destroy($n['_id']);
-//	account_save($u);
-//}
-
-//function notification_addNotif_andSave(&$n, &$u) {
-//	if($u['notifications'] == null) {
-//		$u['notifications'] = [];
-//	}
-//	$un = array_flip($u['notifications']);
-//	if(!isset($un[$n['_id']])) {
-//		array_push($u['notifications'], $n['_id']);
-//	}
-//	notification_save($n);
-//	account_save($u);
-//}
 
 // INVITATION SPECIFIC
 
