@@ -51,11 +51,12 @@ $(window).ready(function() {
 
 	// prevent exiting while download
 
-	window.addEventListener("beforeunload", function (e) {
+	$(window).on("beforeunload", function (e) {
 		console.log("beforeunload");
-		if(sending) {
-			return "plop";
-		}
+		console.log(window.sending);
+		if(window.sending) {
+			return 'Upload en cours !';
+		} 
 	});
 
 

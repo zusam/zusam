@@ -7,7 +7,7 @@ $url = $_GET['url'];
 
 if($url != "") {
 	$p = preview_initialize($url);
-	$ret = json_encode($p, JSON_UNESCAPED_UNICODE);
+	$ret = json_encode($p);
 	$p = json_decode($ret, true);
 }
 

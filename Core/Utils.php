@@ -1,5 +1,60 @@
 <?php
 
+function ranger($url) {
+	$t = microtime(true);
+	$headers = array("Range: bytes=0-65536");
+	
+	$curl = curl_init($url);
+	curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+	$data = curl_exec($curl);
+	curl_close($curl);
+
+	$im = imagecreatefromstring($data);
+	if($im) {
+		$width = imagesx($im);
+		$height = imagesy($im);
+	} else {
+		$tmp = getimagesize($url);
+		$width = $tmp[0];
+		$height = $tmp[1];
+	}
+	$info[0] = $width;
+	$info[1] = $height;
+	$info['width'] = $width;
+	$info['height'] = $height;
+	$info['time'] = round(microtime(true) - $t, 5);
+	return $info;
+}
+
+function to_utf8($str) {
+	$encoding = mb_detect_encoding($str);
+	if($encoding != "UTF-8") {
+		$str = iconv($encoding, "UTF-8", $str);
+	} else {
+		$str = utf8_encode($str);
+	}
+	//$str = mb_convert_encoding($str, "UTF-8");
+	//$str = fixBadUnicode($str);
+	return $str;
+}
+
+function fixBadUnicode($str) {
+	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2")).chr(hexdec("$3")).chr(hexdec("$4"))', $str);
+	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2")).chr(hexdec("$3"))', $str);
+	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2"))', $str);
+	$str = preg_replace("/\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1"))', $str);
+	return $str;
+}
+
+function cutIfTooLong($str, $n) {
+	$replace = trim(mb_substr($str,0,$n));
+	if(abs(mb_strlen($replace) - mb_strlen($str)) > 3) {
+		$replace = $replace . "...";
+	}
+	return $replace;
+}
+
 function fgc($url, $bytes) {
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_HEADER, false);

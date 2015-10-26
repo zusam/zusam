@@ -18,7 +18,8 @@ var Filter = {
 	},
 
 	searchSoundcloud : function(inner, ending) {
-		var r1 = /[\s]*(https?:\/\/soundcloud.com\/)([\w\-]+)\/([\w\-]+)(\/[\w\-]+)?(\?[^\s]+)?/gi;
+		var r1 = /[\s]*(https?:\/\/soundcloud.com\/)([^\s]+)/gi;
+		//var r1 = /[\s]*(https?:\/\/soundcloud.com\/)([\w\-]+)\/([\w\-]+)(\/[\w\-]+)?(\?[^\s]+)?/gi;
 		if(!ending) {
 			r1 = new RegExp(r1+'[\s]','gi');
 		}

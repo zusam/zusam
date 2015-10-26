@@ -7,6 +7,7 @@ require_once('Core/Location.php');
 require_once('Core/Utils.php');
 require_once('Core/Preview.php');
 require_once('Core/Miniature.php');
+require_once('Filtre/preview.php');
 
 // TODO acl ?
 if($_SESSION['connected']) {

@@ -1,6 +1,8 @@
 <?php
 
-require_once(realpath(dirname(__FILE__)).'/../Ganon/ganon.php');
+chdir(realpath(dirname(__FILE__).'/../'));
+require_once('Ganon/ganon.php');
+require_once('Core/Utils.php');
 
 function preview_initialize($url) {
 	$p = [];
@@ -74,20 +76,6 @@ function preview_getHTML(&$p) {
 	$p['html_t'] = microtime(true) - $t;
 }
 
-function to_utf8($str) {
-	$str = mb_convert_encoding($str, "UTF-8");
-	$str = fixBadUnicode($str);
-	return $str;
-}
-
-function fixBadUnicode($str) {
-	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2")).chr(hexdec("$3")).chr(hexdec("$4"))', $str);
-	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2")).chr(hexdec("$3"))', $str);
-	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2"))', $str);
-	$str = preg_replace("/\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1"))', $str);
-	return $str;
-}
-
 function preview_getTitle(&$p) {
 	if(!isset($p['html'])) {
 		return false;
@@ -109,12 +97,9 @@ function preview_getTitle(&$p) {
 			$title = $p['url'];
 		}
 	}
-	
-	$replace = trim(substr($title,0,150));
-	if(abs(strlen($replace) - strlen($title)) > 3) {
-		$replace = $replace . "...";
-	}
-	$p['title'] = to_utf8(utf8_decode($replace));
+
+	$title = to_utf8($title);
+	$p['title'] = cutIfTooLong($title, 150);
 }
 
 function preview_getDescription(&$p) {
@@ -131,7 +116,7 @@ function preview_getDescription(&$p) {
 		foreach($p['html']('p') as $d) {
 			$str = $d->getPlainText();
 			$v = 0;
-			$v += min(floor(strlen($str)/100), 5);
+			$v += min(floor(mb_strlen($str)/100), 5);
 			$v += count(preg_match_all("/[,]/",$str));
 			if($v > $value) {
 				$description = $str;
@@ -139,38 +124,8 @@ function preview_getDescription(&$p) {
 			}
 		}
 	}
-	$replace = trim(substr($description,0,335));
-	if(abs(strlen($replace) - strlen($description)) > 3) {
-		$replace = $replace . "...";
-	}
-	$p['description'] = to_utf8(utf8_decode($replace));
-}
-
-function ranger($url) {
-	$t = microtime(true);
-	$headers = array("Range: bytes=0-65536");
-	
-	$curl = curl_init($url);
-	curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-	$data = curl_exec($curl);
-	curl_close($curl);
-
-	$im = imagecreatefromstring($data);
-	if($im) {
-		$width = imagesx($im);
-		$height = imagesy($im);
-	} else {
-		$tmp = getimagesize($url);
-		$width = $tmp[0];
-		$height = $tmp[1];
-	}
-	$info[0] = $width;
-	$info[1] = $height;
-	$info['width'] = $width;
-	$info['height'] = $height;
-	$info['time'] = round(microtime(true) - $t, 5);
-	return $info;
+	$description = to_utf8($description);
+	$p['description'] = cutIfTooLong($description, 335); 
 }
 
 function preview_imageInit($url) {

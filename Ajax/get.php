@@ -103,21 +103,22 @@ if($_SESSION['connected']) {
 			exit;
 		}
 
+		// TODO protect
 		if($GET['action'] == "getRaw") {
 
 			$pid = $GET['pid'];
 			$uid = $GET['uid'];
 
 			$u = account_load(array('_id' => new MongoId($uid)));
-			$p = post_load(array('_id'=>$pid));
-			
-			if($_SESSION['uid'] == $uid && $p['uid'] == $uid) {
+			$p = post_load(array('_id'=>new MongoId($pid)));
+			//
+			//if($_SESSION['uid'] == $uid && $p['uid'] == $uid) {
 				$raw = $p['text'];
 				$r = new StdClass();
 				$r->raw = $raw;
 				header('Content-Type: text/json; charset=UTF-8');
 				echo(json_encode($r));
-			}
+			//}
 			exit;
 		}
 	}
