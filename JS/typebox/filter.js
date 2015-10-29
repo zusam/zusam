@@ -133,7 +133,7 @@ var Filter = {
 	},
 
 	searchImage : function(inner, ending) {
-		var r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)(\?\w*)?/gi;
+		var r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)(\?\w+)?/gi;
 		if(!ending) {
 			r1 = new RegExp(r1+'[\s]','gi');
 		}
@@ -150,7 +150,7 @@ var Filter = {
 			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 			return output;
 		};
-		var ajax_url = "Ajax/get.php";
+		var ajax_url = "Ajax/post.php";
 		var ajax_var = {"action":"getFile"};
 		callback = function(data) {
 			console.log(data);
@@ -172,33 +172,10 @@ var Filter = {
 		e = $('<a class="b-link" href="'+url.replace(/\s/," ")+'" target="_blank">'+url+'</a>');
 		return e;
 	},
-	
-	//fail_request : function(url) {
-	//	base_url = decodeURI(url).replace(/https?:\/\/(www\.)?([^\/\?\#]+).*/i,"$1$2");
-	//	e = $('<a class="b-link" href="'+decodeURI(url).replace(/\s/," ")+'" target="_blank"></a>');
-	//	container = $('<div>');
-	//	total_width = 0;
-	//	for(i = 0; i < 100; i++) {
-	//		if(total_width > 100) {
-	//			break;
-	//		}
-	//		c = parseInt(Math.random()*100+30);
-	//		w = Math.random()*10;
-	//		total_width += w;
-	//		h = '80px'; 
-	//		d = $('<div>').css({'margin':'0px','display':'inline-block','width':w+'%','padding-bottom':h,'background':'rgba('+c+','+c+','+c+',1)'});
-	//		container.append(d);
-	//	}
-	//	e.append(container);
-	//	e.append('<span><i class="fa fa-external-link-square"></i> '+base_url+'</span>');
-	//	return e;
-	//},
 
 	open_graph_build : function(data) {
-		console.log(data);
 		//base_url = decodeURI(data['url']).replace(/https?:\/\/(www\.)?([^\/\?\#]+).*/i,"$1$2");
 		base_url = data['base_url'];
-		console.log(data['image']['url']);
 		if(typeof(data['image']['url'])!= "undefined" && data['image']['url'].match(/https?:\/\/.+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)/i)) {
 			preview = '<div class="preview"><img src="'+data['image']['url']+'" onerror="error_im(this)"/></div>';
 		} else { 
@@ -255,18 +232,40 @@ var Filter = {
 			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 			return output;
 		};
-		ajax_url = "Ajax/gen_preview.php";
+		var ajax_url = "Ajax/post.php";
+		var ajax_var = {"action":"gen_preview"};
 		callback = function(data) {
-			e = Filter.open_graph_build(data);
-			balise = $('#'+str2md5(decodeURI(data['url'])));
-			balise.html(e);
+			console.log(data);
+			if(typeof(data['info']) != "undefined" && data['info'] == "extensionless") {
+				switch(data['type']) {
+					case "imge" :
+						e = '<img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+data['url']+'"/>';
+						balise = $('#'+str2md5(decodeURI(data['url'])));
+						balise.html(e);
+						break;
+					case "video" :
+						e = '<video autoplay loop><source src="'+str+'"></video>';
+						balise = $('#'+str2md5(decodeURI(data['url'])));
+						balise.html(e);
+						break;
+					default :
+						e = Filter.fail_request(url);
+						balise = $('#'+str2md5(url));
+						balise.html(e);
+						break;
+				}
+			} else {
+				e = Filter.open_graph_build(data);
+				balise = $('#'+str2md5(decodeURI(data['url'])));
+				balise.html(e);
+			}
 		};
 		fail = function(url) {
 			e = Filter.fail_request(url);
 			balise = $('#'+str2md5(url));
 			balise.html(e);
 		}
-		output = Control.searchMatch({"callerName":"searchLink", "inner":inner, "regex":r1, "substitution":substitution, "ajax_url":ajax_url,"callback":callback, "fail":fail});
+		output = Control.searchMatch({"callerName":"searchLink", "inner":inner, "regex":r1, "substitution":substitution, "ajax_var":ajax_var, "ajax_url":ajax_url, "callback":callback, "fail":fail});
 		return output;
 	}
 }

@@ -89,9 +89,11 @@ echo(page_mainmenu($u));
 echo('
 <div id="newavatar" class="newavatar">
 	<div id="retoucheBox">
-	<i class="label fa fa-photo"></i>
-	<span class="underLabel">Click to upload a photo</span>
-	<input type="file"></input>
+		<div class="placeholder">
+			<i class="label fa fa-photo"></i>
+			<span class="underLabel">Click to upload a photo</span>
+			<input type="file"></input>
+		</div>
 	</div>
 </div>
 ');

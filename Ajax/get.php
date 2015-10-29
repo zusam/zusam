@@ -12,6 +12,11 @@ require_once('Core/Notification.php');
 require_once('Core/File.php');	
 require_once('Core/Print_post.php');	
 require_once('Core/Utils.php');	
+require_once('Core/Filtre.php');
+require_once('Core/Preview.php');
+require_once('Core/Miniature.php');
+
+require_once('Filtre/preview.php');
 
 require_once('Pages/forum.php');
 require_once('Pages/mainmenu.php');
@@ -30,6 +35,7 @@ if($_SESSION['connected']) {
 	}
 
 	if($GET['action'] != null && $GET['action'] != "") {
+
 
 		// TODO protect ?
 		if($GET['action'] == "getProgress") {
@@ -50,25 +56,6 @@ if($_SESSION['connected']) {
 			} else {
 				$response->progress = false;
 			}
-
-			header('Content-Type: text/json; charset=UTF-8');
-			echo(json_encode($response));
-			exit;
-
-		}
-
-		// TODO protect file
-		if($GET['action'] == "getFile") {
-
-			$fileId = preg_replace("/\{\:([a-zA-Z0-9]+)\:\}/","$1",$GET['url']);
-			$url = $GET['url'];
-
-			$file = file_load(array("fileId" => $fileId));	
-			$html = file_print($file);
-
-			$response = new StdClass();
-			$response->url = $url;
-			$response->html = $html;
 
 			header('Content-Type: text/json; charset=UTF-8');
 			echo(json_encode($response));

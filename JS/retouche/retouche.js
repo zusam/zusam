@@ -54,9 +54,12 @@ console.log("retouche");
 	img = new Image();
 	img.onload = function() {
 		canvas = document.createElement('canvas');
-		var wi = Math.min(img.width, 1024);
-		var hi = Math.min(img.height, 1024);
+		var wi = Math.min(img.width, Math.min(1024,window.innerWidth*0.8));
+		var hi = Math.min(img.height, Math.min(1024,window.innerHeight*0.8));
+		console.log(img.height,img.width);
+		console.log(hi,wi);
 		var g = Math.min(wi/img.width, hi/img.height);
+		console.log(g);
 		canvas.width = img.width*g;
 		canvas.height = img.height*g;
 		ctx = canvas.getContext('2d');
@@ -65,7 +68,7 @@ console.log("retouche");
 		canvas.dataset.h = img.height*g;
 		URL.revokeObjectURL(img.src);
 		img = null;
-		$(id).append(canvas);
+		$(id).html(canvas);
 
 		stopInput(id);
 		zone = $('<div data-movable="true" class="zone"></div>');
@@ -117,6 +120,7 @@ console.log("retouche");
 
 function handleFileSelect(evt) {
 	id = evt.data;
+	console.log(id);
 	var file = evt.target.files[0];
 	if(file.type.match('image.*')) {
 		$(id+' > i').removeClass('fa-photo').addClass('fa-cog fa-spin').css({'top':'calc(50% - 25px)','left':'calc(50% - 25px)'});	
@@ -228,7 +232,6 @@ function stopInput(id) {
 	$(id+' .label').remove();
 	$(id+' .underLabel').remove();
 	$(id+' input').remove();
-	$(id).css('height','auto');
 }
 
 function moveEvent(e) {
@@ -330,8 +333,8 @@ function start(id) {
 }
 
 function restart(id) {
-	$(id+' > input').off();
-	$(id+' > input').on('change', null, id, handleFileSelect);
+	$(id+' input').off();
+	$(id+' input').on('change', null, id, handleFileSelect);
 }
 
 function stop(id) {

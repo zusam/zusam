@@ -97,7 +97,7 @@ function hidenewavatar() {
 	$('#container').css("-webkit-filter","none");
 	$('#mask').remove();
 	$('body').css('overflow','auto');
-	pv.html('<div id="retoucheBox"><i class="label fa fa-photo"></i><span class="underLabel">Click to upload a photo</span><input type="file"></input></div>');
+	pv.html('<div id="retoucheBox"><div class="placeholder"><i class="label fa fa-photo"></i><span class="underLabel">Click to upload a photo</span><input type="file"></input></div></div>');
 	removeMask();
 }
 

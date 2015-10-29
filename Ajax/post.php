@@ -20,6 +20,7 @@ require_once('Pages/home.php');
 require_once('Reduc/ReducImage.php');
 require_once('Reduc/ReducVideo.php');
 
+
 if($_SESSION['connected']) {
 
 	// secure post variables for mongodb
@@ -29,6 +30,64 @@ if($_SESSION['connected']) {
 	}
 
 	if($POST['action'] != null && $POST['action'] != "") {
+		
+		// TODO protect file
+		if($POST['action'] == "getFile") {
+
+			$fileId = preg_replace("/\{\:([a-zA-Z0-9]+)\:\}/","$1",$POST['url']);
+			$url = $POST['url'];
+
+			$file = file_load(array("fileId" => $fileId));	
+			$html = file_print($file);
+
+			$response = new StdClass();
+			$response->url = $url;
+			$response->html = $html;
+
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($response));
+			exit;
+
+		}
+
+		// TODO protect ?
+		if($POST['action'] == "gen_preview") {
+		
+			$url = $POST['url'];
+			
+			// First we check if the preview doesn't exist (to be as fast as possible)	
+			$p = preview_load(array('url' => $url));
+			if($p != null) {
+				$ret = json_encode($p,JSON_UNESCAPED_UNICODE);
+				header('Content-Type: text/json; charset=UTF-8');
+				echo($ret);
+				exit;
+			}
+			
+			// EXTENSION LESS IMAGES
+			$type = contentType($url);
+			if($type == 'image/jpeg' || $type == 'image/png' || $type == 'image/bmp' || $type == 'image/gif') {
+				create_post_preview($url);
+				$data = [];
+				$data['url'] = $url;
+				$data['type'] = "image";
+				$data['info'] = "extensionless";
+				header('Content-Type: text/json; charset=UTF-8');
+				echo(json_encode($data, JSON_UNESCAPED_UNICODE));
+				exit;
+			}
+
+			// GENERAL LINKS & OPEN GRAPH //
+			if(preg_match("/https?:\/\/[\w\/=?~.%&+\-#]+/",$url)==1) {
+				$ret = preview($url);
+				gen_miniature($url);
+			}
+
+			header('Content-Type: text/json; charset=UTF-8');
+			echo($ret);
+			exit;
+		}
+
 
 		if($POST['action'] == "changeSecretLink") {
 			$uid = $POST['uid'];

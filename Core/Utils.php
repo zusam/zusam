@@ -73,9 +73,37 @@ function cutIfTooLong($str, $n) {
 	return $replace;
 }
 
-function fgc($url, $bytes) {
+function contentType($url) {
 	$ch = curl_init($url);
-	curl_setopt($ch, CURLOPT_HEADER, false);
+	curl_setopt($ch, CURLOPT_HEADER, true);
+	curl_setopt($curl, CURLOPT_NOBODY, true);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_ENCODING, "");
+	curl_setopt($ch, CURLOPT_USERAGENT, "");
+	curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+	curl_setopt($ch, CURLOPT_MAXREDIR, 10);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_COOKIEFILE, "tmp/cookie.txt");
+	curl_setopt($ch, CURLOPT_COOKIEJAR, "tmp/cookie.txt");
+	curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+	$data = curl_exec($ch);
+	//$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+	$data = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+	//$data = substr($data, 0, $header_size);
+	curl_close($ch);
+	return $data;
+}
+
+function fgc($url, $bytes, $header) {
+	$ch = curl_init($url);
+	if($header == true) {
+		curl_setopt($ch, CURLOPT_HEADER, true);
+		curl_setopt($curl, CURLOPT_NOBODY, true);
+	} else {
+		curl_setopt($ch, CURLOPT_HEADER, false);
+	}
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 	curl_setopt($ch, CURLOPT_ENCODING, "");
 	curl_setopt($ch, CURLOPT_USERAGENT, "");
@@ -93,6 +121,10 @@ function fgc($url, $bytes) {
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 	}
 	$data = curl_exec($ch);
+	if($header == true) {
+		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+		$data = substr($data, 0, $header_size);
+	}
 	curl_close($ch);
 	return $data;
 }
@@ -192,7 +224,7 @@ function convertDate($d) {
 
 		$month_conversion = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 
 						'août', 'septembre', 'octobre', 'novembre', 'décembre'];
-		return $day." ".$month_conversion[intval($month)];
+		return $day." ".$month_conversion[intval($month)-1];
 	}
 }
 

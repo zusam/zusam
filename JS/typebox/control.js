@@ -90,7 +90,6 @@ var Control = {
 			preCaretTextRange.setEndPoint("EndToEnd", textRange);
 			caretOffset = preCaretTextRange.text.length;
 		}
-		console.log("get : "+caretOffset);
 		return caretOffset;
 	},
 
@@ -285,15 +284,22 @@ var Control = {
 			for(j=0;j<m.length;j++) {
 				settings = new Object();
 				if(typeof(ajax_var) != "undefined") {
-					var param = Object.keys(ajax_var).reduce(function(p,k){
-						return p+"&"+k+"="+ajax_var[k];
-					}, "");
+					//var param = Object.keys(ajax_var).reduce(function(p,k){
+					//	return p+"&"+k+"="+ajax_var[k];
+					//}, "");
+					var param = ajax_var;
+					console.log(param);
+					param['url'] = m[j];
+					console.log(m[j]);
 				} else {
 					var param = "";
 				}
+				console.log(param);
 				if(typeof(ajax_url) != "undefined") {
-					settings.url = ajax_url+"?url="+encodeURI(m[j])+param;
-					console.log(settings.url);
+					//settings.url = ajax_url+"?url="+encodeURI(m[j])+param;
+					settings.url = ajax_url;
+					settings.data = param;
+					settings.method = "post";
 					if(callback != null) {
 						settings.success = function(data){ 
 							callback(data); 
@@ -307,6 +313,7 @@ var Control = {
 						settings.error = function(){ fail(m[j]); };
 					}
 					if(callback != null) {
+						console.log(settings);
 						$.ajax(settings);
 					}
 				}

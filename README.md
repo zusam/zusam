@@ -5,12 +5,13 @@ You can use the server-install repo to create a clean environnement for Zusam.
 
 requirements :
 - the repo should be place in the /srv/http folder which should be the root of the apache server.
-- it needs : php-mycrypt, php-imagick, php-mongodb to be installed and activated in the php.ini file.
+- it needs : php-mycrypt, php-imagick, php-mongo to be installed and activated in the php.ini file.
 - ffmpeg is important part of Zusam and should be installed (in /usr/bin).
 - the owner of the non-data files should be user:http where user is a non root user created to push new code on the server.
 - if not specified, all directories should be 775 and php code should be 770.
 - you will need ruby and the sass compiler to build the css files : "gem install sass".
 - nodejs is required to use uglifyJS2 (don't forget to install it : "sudo npm install -g uglify-js".
+- don't forget to start httpd and mongodb services
 
 scripts :
 - test-install.sh is a basic script that checks some of the requirements for Zusam.
