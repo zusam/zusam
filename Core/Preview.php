@@ -55,6 +55,8 @@ function preview_getHTML(&$p) {
 	
 	//remove script/style tags
 	$dom = new DOMDocument();
+	$html_string = to_utf8($html_string);
+	$html_string = mb_convert_encoding($html_string, 'HTML-ENTITIES', "UTF-8"); 
 	$dom->loadHTML($html_string);
 	$remove = [];
 	$script = $dom->getElementsByTagName('script');
@@ -99,6 +101,7 @@ function preview_getTitle(&$p) {
 	}
 
 	$title = to_utf8($title);
+	$title = html_entity_decode($title);
 	$p['title'] = cutIfTooLong($title, 150);
 }
 
@@ -116,8 +119,10 @@ function preview_getDescription(&$p) {
 		foreach($p['html']('p') as $d) {
 			$str = $d->getPlainText();
 			$v = 0;
-			$v += min(floor(mb_strlen($str)/100), 5);
-			$v += count(preg_match_all("/[,]/",$str));
+			$v = $v + min(floor(mb_strlen($str)/100), 8);
+			$v = $v + min(preg_match_all("/[,\.]/",$str), 8);
+			$v = $v - min(floor(preg_match_all("/[\%\^\{\}\(\)\[\]\-\/\_\#\~\§]/",$str)/4), 2);
+			//$v -= min(floor(count(preg_match_all("/[0-9]/",$str))), 2);
 			if($v > $value) {
 				$description = $str;
 				$value = $v;
@@ -125,6 +130,7 @@ function preview_getDescription(&$p) {
 		}
 	}
 	$description = to_utf8($description);
+	$description = html_entity_decode($description);
 	$p['description'] = cutIfTooLong($description, 335); 
 }
 

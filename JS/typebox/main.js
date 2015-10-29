@@ -9,7 +9,8 @@ function start(id) {
 
 	tt.off();
 
-	Control.filter_out_all(t);
+	// causes bug in firefox with the first charcter. Is it really needed ?
+	//Control.filter_out_all(t);
 
 	// track pasting events
 	tt.on("paste", function(e) {

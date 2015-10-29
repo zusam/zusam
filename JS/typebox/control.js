@@ -90,6 +90,7 @@ var Control = {
 			preCaretTextRange.setEndPoint("EndToEnd", textRange);
 			caretOffset = preCaretTextRange.text.length;
 		}
+		console.log("get : "+caretOffset);
 		return caretOffset;
 	},
 

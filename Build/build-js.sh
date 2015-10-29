@@ -4,7 +4,7 @@ loc=`pwd`
 
 if [[ "$1" == "compress" ]]
 then
-	opt="--compress --mangle"
+	opt="--compress drop_console --mangle"
 else
 	opt="--beautify"
 fi
@@ -35,3 +35,9 @@ do
 done
 
 uglifyjs $B $opt > zusam.min.js
+
+#if [[ "$1" == "compress" ]]
+#then
+#	sed -E 's/console.log\([^\)]*\);//g' <zusam.min.js > zusam_2.min.js
+#	mv zusam_2.min.js zusam.min.js
+#fi

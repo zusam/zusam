@@ -1,5 +1,7 @@
 <?php
 
+chdir(realpath(dirname(__FILE__).'/../'));
+
 function ranger($url) {
 	$t = microtime(true);
 	$headers = array("Range: bytes=0-65536");
@@ -28,14 +30,30 @@ function ranger($url) {
 }
 
 function to_utf8($str) {
-	$encoding = mb_detect_encoding($str);
-	if($encoding != "UTF-8") {
-		$str = iconv($encoding, "UTF-8", $str);
+		//$str = htmlentities($str);
+		//$str = utf8_encode($str);
+		//$str = utf8_decode($str);
+	$encoding = mb_detect_encoding($str, 'UTF-8', true);
+	//var_dump($encoding);
+	if(!$encoding) {
+		$e = mb_detect_encoding($str);
+		//var_dump($e);
+		if($e != "UTF-8") {
+			//echo("f1");
+			$str = iconv($e, "UTF-8", $str);
+		} else {
+			//echo("f2");
+			$str = utf8_encode($str);
+
+		}
 	} else {
-		$str = utf8_encode($str);
+		//echo("f3");
+		//$str = iconv(mb_detect_encoding($str, mb_detect_order(), true), "UTF-8", $str);
+		//$str = iconv("WINDOWS-1252", "UTF-8", $str);
+		//$str = Encoding::fixUTF8($str);
 	}
+	//$str = utf8_encode($str);
 	//$str = mb_convert_encoding($str, "UTF-8");
-	//$str = fixBadUnicode($str);
 	return $str;
 }
 

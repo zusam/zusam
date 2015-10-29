@@ -1,4 +1,5 @@
 <?php
+	header('Content-type: text/html; charset=utf-8');
 
 require_once('Core/Preview.php');
 
@@ -14,7 +15,7 @@ if($url != "") {
 echo('
 <html>
 <head>
-	<meta charset="utf-8"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link href="style.css" rel="stylesheet">
 	<style>
 	.debug_info {

@@ -168,8 +168,8 @@ var Filter = {
 	},
 
 	fail_request : function(url) {
-		base_url = decodeURI(url).replace(/https?:\/\/(www\.)?([^\/\?\#]+).*/i,"$1$2");
-		e = $('<a class="b-link" href="'+decodeURI(url).replace(/\s/," ")+'" target="_blank"></a>');
+		//base_url = decodeURI(url).replace(/https?:\/\/(www\.)?([^\/\?\#]+).*/i,"$1$2");
+		e = $('<a class="b-link" href="'+url.replace(/\s/," ")+'" target="_blank">'+url+'</a>');
 		return e;
 	},
 	

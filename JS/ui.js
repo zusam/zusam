@@ -115,7 +115,7 @@ function shownewpost() {
 	hideAll();
 	showslidefromright('#slidenewpost');
 	typebox.start('#typeBox');
-	invite = $('<div contenteditable="true" data-placeholder="Partagez quelquechose..."></div>')
+	invite = $('<div contenteditable="true" data-placeholder="Partagez quelque chose..."></div>')
 	$('#typeBox').html(invite);
 	e.addClass('active');
 	addMask("hidenewpost()",0.75);
@@ -125,7 +125,7 @@ function hidenewpost() {
 	e = $('#newpost');
 	hideslidefromright('#slidenewpost');
 	$('#newpost').removeClass('active');	
-	invite = $('<div contenteditable="true" data-placeholder="Partagez quelquechose..."></div>')
+	invite = $('<div contenteditable="true" data-placeholder="Partagez quelque chose..."></div>')
 	$('#typeBox').html(invite);
 	typebox.stop('#typeBox');
 	removeMask();

@@ -135,15 +135,16 @@ function filtre($url) {
 	// GENERAL LINKS & OPEN GRAPH //
 	if(preg_match("/https?:\/\/[\w\/=?~.%&+\-#]+/",$url)==1) {
 		// verify that it's not an image (even if it doesn't have a image extension)
-		$r = getimagesize($url);
-		if($r != false) {
-			if($r['mime'] == 'image/jpeg' || $r['mime'] == 'image/png' || $r['mime'] == 'image/bmp') {
-				$ret = create_post_preview($url);
-				return $ret;
-			}
-		} 
+		// very slowing down the process, is it still necessary ?
+		//$r = getimagesize($url);
+		//if($r != false) {
+		//	if($r['mime'] == 'image/jpeg' || $r['mime'] == 'image/png' || $r['mime'] == 'image/bmp') {
+		//		$ret = create_post_preview($url);
+		//		return $ret;
+		//	}
+		//} 
 		// open graph
-		$prev = json_decode(preview_v2($url), true);
+		$prev = json_decode(preview($url), true);
 		$link = $prev['image']['url'];
 		$ret = get_mini_from_link($url, $link);
 		return $ret;
