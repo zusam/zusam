@@ -139,7 +139,7 @@ function changepassword(old_id,new_id) {
 
 function sendIt(id) {
 	msg = "";
-	if(id == "#commentBox") {
+	if(id == "#commentBox" || id == "#editBox") {
 		parentID = $('#post-viewer').attr('data-id');
 	} else {
 		parentID = 0;
@@ -184,11 +184,27 @@ function sendIt(id) {
 					setpostsviewable();
 					hidepostviewer();
 				} else {
-					console.log("new com");
-					$('.new-comment-section').before(data['html']);				
-					//$('.new-comment-section').before('<div class="post-separator"></div>');				
-					hidenewcommentsection($('.new-comment-section'));
-					typebox.view();
+					if(data['pid'] == 0 || data['pid'] == null) {
+						console.log("new com");
+						$('.new-comment-section').before(data['html']);				
+						//$('.new-comment-section').before('<div class="post-separator"></div>');				
+						hidenewcommentsection($('.new-comment-section'));
+						typebox.view();
+						var p = $('#container .post-mini[data-id='+data['pid']+']');
+						p.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
+						p.remove();
+					} else {
+						console.log("edit com");
+						var balise = $('.child-post[data-id='+data['pid']+']');
+						balise.after(data['html']);
+						balise.remove();
+						//var p = $('#container .post-mini[data-id='+data['pid']+']');
+						//p.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
+						//p.remove();
+						//hidenewpost();
+						//setpostsviewable();
+						//hidepostviewer();
+					}
 				}
 			},
 		error: function(a,b,c){ console.log(a,b,c) }

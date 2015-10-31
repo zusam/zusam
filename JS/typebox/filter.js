@@ -176,23 +176,24 @@ var Filter = {
 	open_graph_build : function(data) {
 		//base_url = decodeURI(data['url']).replace(/https?:\/\/(www\.)?([^\/\?\#]+).*/i,"$1$2");
 		base_url = data['base_url'];
-		if(typeof(data['image']['url'])!= "undefined" && data['image']['url'].match(/https?:\/\/.+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)/i)) {
-			preview = '<div class="preview"><img src="'+data['image']['url']+'" onerror="error_im(this)"/></div>';
-		} else { 
-			console.log("nope");
-			preview = ""; 
+		var preview = ""; 
+		if(typeof(data['image']) != "undefined") {
+			if(typeof(data['image']['url'])!= "undefined" && data['image']['url'].match(/https?:\/\/.+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)/i)) {
+				preview = '<div class="preview"><img src="'+data['image']['url']+'" onerror="error_im(this)"/></div>';
+			}
 		}
-		if(data['title'] != null && data['title'] != "") {
+		if(typeof(data['title']) != "undefined" && data['title'] != "") {
 			title = '<div class="title">'+html_entity_decode(data['title'])+'</div>'
 		} else { title = ""; }
-		if(data['description'] != null && data['description'] != "") {
+		if(typeof(data['description']) != "undefined" && data['description'] != "") {
 			description = '<div class="description">'+html_entity_decode(data['description'])+'</div>';
 		} else { description = ""; }
 		if(preview != "" || (title != "" && description != "")) {
-			if(data['image']['url'] != "" && data['w'] != null && data['h'] != null && parseInt(data['w']) < 380) {
-				e = $('<a class="article_small" href="'+decodeURI(data['url'])+'" target="_blank">'+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
-			} else {
-				e = $('<a class="article_big" href="'+decodeURI(data['url'])+'" target="_blank">'+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
+			e = $('<a class="article_big" href="'+decodeURI(data['url'])+'" target="_blank">'+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
+			if(typeof(data['image']) != "undefined") {
+				if(data['image']['url'] != "" && data['w'] != null && data['h'] != null && parseInt(data['w']) < 380) {
+					e = $('<a class="article_small" href="'+decodeURI(data['url'])+'" target="_blank">'+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
+				} 
 			}
 		} else {
 			e = Filter.fail_request(data['url']);
@@ -200,69 +201,50 @@ var Filter = {
 		return e;
 	},
 
-	/*
-	function searchGenericImage(inner) {
-		r1 = /[\s]*https?:\/\/[\w\/=?~,.%&+\-#\!]+$/gi;
-		substitution = function(str) {
-			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
-			return output;
-		};
-		callback = function(json) {
-			json = JSON.parse(json);
-			balise = $('#'+str2md5(decodeURI(json['url'])));
-			e = $('<img src="'+decodeURI(json['url'])+'"/>');
-			balise.html(e);
-		};
-		fail = function(url) {
-				e = fail_request(url);
-				balise = $('#'+str2md5(url));
-				balise.html(e);
-		}
-		output = Control.searchMatch("searchGenericImage", inner, r1, substitution, callback, fail);
-		return output;
-	}
-	*/
-
 	searchLink : function(inner, ending) {
+		var baliseId = Math.random().toString(36).slice(2)+Date.now().toString(36); 
 		var r1 = /[\s]*https?:\/\/[^\s]+/gi;
 		if(!ending) {
 			r1 = new RegExp(r1+'[\s]','gi');
 		}
 		substitution = function(str) {
-			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
+			//output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
+			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+baliseId+'"><img src="Assets/ajax-loader.gif"/></span>';
 			return output;
 		};
 		var ajax_url = "Ajax/post.php";
 		var ajax_var = {"action":"gen_preview"};
 		callback = function(data) {
+			//console.log("coucou");
 			console.log(data);
 			if(typeof(data['info']) != "undefined" && data['info'] == "extensionless") {
 				switch(data['type']) {
-					case "imge" :
+					case "image" :
 						e = '<img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+data['url']+'"/>';
-						balise = $('#'+str2md5(decodeURI(data['url'])));
+						balise = $('#'+baliseId);
 						balise.html(e);
 						break;
 					case "video" :
 						e = '<video autoplay loop><source src="'+str+'"></video>';
-						balise = $('#'+str2md5(decodeURI(data['url'])));
+						balise = $('#'+baliseId);
 						balise.html(e);
 						break;
 					default :
 						e = Filter.fail_request(url);
-						balise = $('#'+str2md5(url));
+						balise = $('#'+baliseId);
 						balise.html(e);
 						break;
 				}
 			} else {
 				e = Filter.open_graph_build(data);
-				balise = $('#'+str2md5(decodeURI(data['url'])));
+				balise = $('#'+baliseId);
 				balise.html(e);
 			}
 		};
 		fail = function(url) {
+			console.log("fail");
 			e = Filter.fail_request(url);
-			balise = $('#'+str2md5(url));
+			balise = $('#'+baliseId);
 			balise.html(e);
 		}
 		output = Control.searchMatch({"callerName":"searchLink", "inner":inner, "regex":r1, "substitution":substitution, "ajax_var":ajax_var, "ajax_url":ajax_url, "callback":callback, "fail":fail});

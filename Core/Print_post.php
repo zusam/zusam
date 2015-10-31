@@ -100,7 +100,7 @@ function print_post($id, $uid, &$p) {
 	</div>
 	';
 	// parent ?
-	if($p['parent'] != null || $p['parent'] == 0) {
+	if($p['parent'] == null || $p['parent'] == 0) {
 		$html_data .= '<div class="post-separator"></div>';
 	}
 

@@ -288,13 +288,13 @@ var Control = {
 					//	return p+"&"+k+"="+ajax_var[k];
 					//}, "");
 					var param = ajax_var;
-					console.log(param);
+					//console.log(param);
 					param['url'] = m[j];
-					console.log(m[j]);
+					//console.log(m[j]);
 				} else {
 					var param = "";
 				}
-				console.log(param);
+				//console.log(param);
 				if(typeof(ajax_url) != "undefined") {
 					//settings.url = ajax_url+"?url="+encodeURI(m[j])+param;
 					settings.url = ajax_url;
@@ -313,7 +313,7 @@ var Control = {
 						settings.error = function(){ fail(m[j]); };
 					}
 					if(callback != null) {
-						console.log(settings);
+						//console.log(settings);
 						$.ajax(settings);
 					}
 				}

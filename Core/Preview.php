@@ -149,16 +149,16 @@ function preview_imageInit($url) {
 		$im['score'] = 0;
 	} else {
 		if($width > 270) {
-			$score += 10;
+			$score += 8;
 		}
 		if($height > 270) {
-			$score += 10;
+			$score += 8;
 		}
 		if($width/$height >= 1) {
-			$score += 10;
+			$score += 2;
 		}
 		$score += floor(min($width, max($width, 1024))*min($height, max($height, 1024))/(256*256));
-		$score += floor(max(5 - $im['time'], 0)*5);
+		$score += floor(max(5 - $im['time'], 0)*2);
 	}
 	$im['score'] = intval($score);
 	$im['size'] = intval($im['width'])*intval($im['height']);
@@ -258,7 +258,9 @@ function preview_getImage(&$p) {
 		}
 	}
 			
-	$p['image'] = $best_candidate;
+	if($best_candidate['score'] > 16) {
+		$p['image'] = $best_candidate;
+	}
 	$p['candidates'] = $candidates;
 	if($p['image'] != null && $p['image'] != []) {
 		return true;

@@ -8,6 +8,7 @@ require_once('Core/Utils.php');
 //$url = "http://i.imgur.com/JUoTWhO.gifv";
 //$url = "http://www.nibou.eu/plop";
 //$url = "https://www.facebook.com/niels.robinaubertin/videos/1088167737867606/?l=8670996102014707065";
+$url = "https://lh3.googleusercontent.com/G0BI1WB-eJNjnl4pYl1-AtXoT8Y_Tv5i9pAWW6rM8N4k-S-pdPOlKfNVcYUJDCP737_0_euOWJs91z2zzSicNs_p7U-L6ZGR4k-MzqF_u6-jiacBjs6R50SNV8yT03MIgJVgcYP8CzuSXW4646wCN_hmxxKrTtLhQJq-A19cvjOmgpuBUcUwKJPZuhqtyeEmloaYwoXNjfIARx2fMMU3bbjMiEkGZ8vaUfMHQvCO4TT5KPX2s9-uStr0xs0jK07BxWj2zI0hv7wItl-uuIATaafmvQdChkQhRSRU0xCdzUBG-GJoJTxbiDyW0d85cYH58JotEMUo-2_pKptZ3h2EK7LdablXbeV05rNEa0jD79DVMWUz0g54y_5_qfDzvvbhsNSVVs3Ee1kqbDT4moslj8-n4TLruUZ7pT-29ELl_RwjHl2hLprykJTL4Yf4P3j84dJHcIN1QsDicfn1QotI1QQ-lopCEPzKqDal2fd97C6JuDJdQP0083hQ_LWs5sWGKN5UJlGP30pygfJqVMNIf7pFawjGbPtc4COT2w5yv4TI=w1222-h687-no";
 $t1 = microtime(true);
 for($i=0;$i<50;$i++) {
 	//$r = get_headers($url);

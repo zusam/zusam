@@ -66,10 +66,17 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				forum_save($f);
 			}
 		} else {
-			// editing post or com
-			$p = post_load(array('_id'=>$pid));
-			post_update($p, array('text'=>$text,'preview'=>$preview));
-			post_save($p);
+			if($parent == null || $parent == 0) {
+				// editing post
+				$p = post_load(array('_id'=>$pid));
+				post_update($p, array('text'=>$text,'preview'=>$preview));
+				post_save($p);
+			} else {
+				// editing com
+				$c = post_load(array('_id'=>$pid));
+				post_update($c, array('text'=>$text,'preview'=>$preview));
+				post_save($c);
+			}
 		}
 
 		$r = new stdClass();

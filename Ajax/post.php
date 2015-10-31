@@ -67,22 +67,19 @@ if($_SESSION['connected']) {
 			// EXTENSION LESS IMAGES
 			$type = contentType($url);
 			if($type == 'image/jpeg' || $type == 'image/png' || $type == 'image/bmp' || $type == 'image/gif') {
-				create_post_preview($url);
 				$data = [];
+				$data['ret'] = create_post_preview($url);
 				$data['url'] = $url;
 				$data['type'] = "image";
 				$data['info'] = "extensionless";
 				header('Content-Type: text/json; charset=UTF-8');
-				echo(json_encode($data, JSON_UNESCAPED_UNICODE));
+				echo(json_encode($data));
 				exit;
 			}
 
 			// GENERAL LINKS & OPEN GRAPH //
-			if(preg_match("/https?:\/\/[\w\/=?~.%&+\-#]+/",$url)==1) {
-				$ret = preview($url);
-				gen_miniature($url);
-			}
-
+			$ret = preview($url);
+			gen_miniature($url);
 			header('Content-Type: text/json; charset=UTF-8');
 			echo($ret);
 			exit;
