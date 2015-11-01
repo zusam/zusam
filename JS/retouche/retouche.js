@@ -1,18 +1,3 @@
-//// POLYFILL FOR toBlob()
-//if (!HTMLCanvasElement.prototype.toBlob) {
-//	Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
-//		value: function (callback, type, quality) {
-//			var binStr = atob( this.toDataURL(type, quality).split(',')[1] ),
-//			len = binStr.length,
-//			arr = new Uint8Array(len);
-//			for (var i=0; i<len; i++ ) {
-//				arr[i] = binStr.charCodeAt(i);
-//			}
-//			callback( new Blob( [arr], {type: type || 'image/png'} ) );
-//		}
-//	});
-//}
-
 function old_dataURItoBlob(dataURI) {
 	// convert base64/URLEncoded data component to raw binary data held in a string
 	var byteString;
@@ -49,13 +34,39 @@ function dataURItoBlob(dataURI) {
 
 URL = window.URL || window.webkitURL;
 
+function turn(id, rotation) {
+	var img = new Image();
+	var canvas = $(id).find('canvas')[0];
+	var ctx = canvas.getContext("2d");
+	var imgURL = canvas.toDataURL("image/png");
+	img.onload = function() {
+		delete imgURL;
+		var canvas2 = document.createElement('canvas');
+		// rotation of values
+		canvas2.height = img.width;
+		canvas2.width = img.height;
+		canvas2.dataset.h = img.width;
+		canvas2.dataset.w = img.height;
+		var ctx2 = canvas2.getContext('2d');
+		ctx2.translate(canvas2.width/2,canvas2.height/2);
+		ctx2.rotate(rotation);
+		ctx2.translate(-canvas2.height/2,-canvas2.width/2);
+		ctx2.drawImage(img,0,0,img.width,img.height);
+		$(canvas).after(canvas2);
+		$(canvas).remove();
+		delete img;
+	};
+	img.src = imgURL;
+}
+
 function loadImage(file, id) {
 console.log("retouche");
 	img = new Image();
 	img.onload = function() {
+		window.retouche.img = img;
 		canvas = document.createElement('canvas');
-		var wi = Math.min(img.width, Math.min(1024,window.innerWidth*0.8));
-		var hi = Math.min(img.height, Math.min(1024,window.innerHeight*0.8));
+		var wi = Math.min(img.width, Math.min(1024,window.innerWidth*0.75));
+		var hi = Math.min(img.height, Math.min(1024,window.innerHeight*0.75));
 		console.log(img.height,img.width);
 		console.log(hi,wi);
 		var g = Math.min(wi/img.width, hi/img.height);
@@ -68,6 +79,7 @@ console.log("retouche");
 		canvas.dataset.h = img.height*g;
 		URL.revokeObjectURL(img.src);
 		img = null;
+		delete img;
 		$(id).html(canvas);
 
 		stopInput(id);
@@ -111,8 +123,15 @@ console.log("retouche");
 		setAsType(z,"resizeHandlebr",id+" > .zone",id);
 
 
-		menu = $('<div class="menu"><div class="menu-cell"><button class="cancelit" onclick="togglenewavatar()">Cancel</button></div><div class="menu-cell"><button class="sendit">Submit</button></div></div>');
-		menu.on("click", function(){sendCanvas(id)});
+		var menu = $('<div class="menu"></div>');
+		var cancelit = $('<div class="menu-cell"><button onclick="togglenewavatar()" class="material-button">Annuler</button></div>');
+		var turnleft = $('<div class="menu-cell"><button onclick="retouche.turn(\''+id+'\',-Math.PI/2)" class="material-button"><i class="fa fa-rotate-left"></i></button></div>');
+		var turnright = $('<div class="menu-cell"><button onclick="retouche.turn(\''+id+'\',Math.PI/2)" class="material-button"><i class="fa fa-rotate-right"></i></button></div>');
+		var sendit = $('<div class="menu-cell"><button onclick="retouche.sendCanvas(\''+id+'\')" class="material-button">Envoyer</button></div>');
+		menu.append(cancelit);
+		menu.append(turnleft);
+		menu.append(turnright);
+		menu.append(sendit);
 		$(id).parent().append(menu);
 	};
 	img.src = URL.createObjectURL(file);
@@ -355,7 +374,7 @@ function sendCanvas(id) {
 	h = parseInt(z.style.height)/g;
 
 	data = ctx.getImageData(l, t, w, h);
-	g = Math.min(Math.min(w, 256)/w, Math.min(h, 256)/h);
+	g = Math.min(Math.max(w, 256)/w, Math.max(h, 256)/h);
 	c2 = document.createElement('canvas');
 	c2.width = parseInt(w);
 	c2.height = parseInt(h);

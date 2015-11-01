@@ -230,6 +230,17 @@ section {
 		.action:hover {
 			background: lightgrey;
 		}
+		.material-button { 
+			display: inline-block;
+			border-radius: 0;
+			cursor: pointer;
+			border: 1px solid black;
+			box-shadow: 1px 1px 3px black;
+			background-color: white;
+		}
+		.material-button:hover {
+			box-shadow: 0px 0px 1px black;
+		}
 	}
 }
 .newavatar {
@@ -253,17 +264,6 @@ section {
 		width: 50%;
 		text-align: center;
 	}
-}
-.sendit, .cancelit { 
-	display: inline-block;
-	border-radius: 0;
-	cursor: pointer;
-	border: 1px solid black;
-	box-shadow: 1px 1px 3px black;
-	background-color: white;
-}
-.sendit:hover, .cancelit:hover {
-	box-shadow: 0px 0px 1px black;
 }
 *[data-placeholder]:empty:not(:focus):before {
 	content: attr(data-placeholder);
