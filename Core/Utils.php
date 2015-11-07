@@ -200,7 +200,11 @@ function ago($d) {
 			$str = $hour."h";
 		}
 	} else {
-		$str = $days." jours";
+		if($days != 1) {
+			$str = $days." jours";
+		} else {
+			$str = $days." jour";
+		}
 	}
 	$str = "Il y a ".$str;
 	return $str;

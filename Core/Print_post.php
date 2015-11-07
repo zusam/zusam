@@ -71,7 +71,7 @@ function print_post($id, $uid, &$p) {
 	$html_data .= '
 		" data-id="'.$id.'">
 		<div class="post-menu">
-		<div class="op">
+		<div class="op" data-uid="'.$p['uid'].'">
 			<div class="avatar">'.account_getAvatarHTML($op).'</div>
 			<div class="post-info">
 				<div class="author">'.$op['name'].'</div>

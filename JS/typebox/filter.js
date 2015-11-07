@@ -133,7 +133,7 @@ var Filter = {
 	},
 
 	searchImage : function(inner, ending) {
-		var r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)(\?\w+)?/gi;
+		var r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)(\?[\w\/=?~.%&+\-#\!\']+)?/gi;
 		if(!ending) {
 			r1 = new RegExp(r1+'[\s]','gi');
 		}

@@ -98,6 +98,7 @@ if($_SESSION['connected']) {
 
 			$u = account_load(array('_id' => new MongoId($uid)));
 			$p = post_load(array('_id'=>new MongoId($pid)));
+			//var_dump($p);
 			//
 			//if($_SESSION['uid'] == $uid && $p['uid'] == $uid) {
 				$raw = $p['text'];

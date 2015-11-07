@@ -47,8 +47,15 @@ function page_section_forum(&$u, &$forum) {
 			$p = post_load(array('_id'=>$list[$i]));
 			if($p != false && ($p['parent'] == null || $p['parent'] == 0)) {
 				if(!file_exists(get_miniature_path($p['preview']))) {
-					$inside = '<img src="'.p2l(pathTo("placeholder", "assets", "jpg")).'"/>';
-
+					if($p['preview'] != "") {
+						$link = gen_miniature($p['preview']);
+					}
+					if($link != false && $link != "") {
+						$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
+					} else {
+						//var_dump($p['preview']);
+						$inside = '<img src="'.p2l(pathTo("placeholder", "assets", "jpg")).'"/>';
+					}
 				} else {
 					$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
 				}

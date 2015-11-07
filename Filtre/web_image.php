@@ -12,6 +12,8 @@ function create_post_preview($url, $file) {
 	}
 	if(!file_exists(pathTo($url, "mini", "jpg"))) {
 		if(exif_imagetype($source) != IMAGETYPE_GIF) {
+			//var_dump(is_writable(pathTo($url, "mini", "jpg")));
+			//var_dump(pathTo($url, "mini", "jpg"));
 			createPreview(320, $source, pathTo($url, "mini", "jpg"), 9/16, 70);
 		} else {
 			gifPreview(320, $source, pathTo($url, "mini", "jpg"), 9/16, 70);
