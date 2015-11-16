@@ -8,3 +8,4 @@ SCSS/.sass-cache/
 *.min.js
 !LibJS/*.min.js
 tmp/
+BACKUP/

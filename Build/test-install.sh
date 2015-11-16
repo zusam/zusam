@@ -67,7 +67,7 @@ function test_perm {
 		else
 			filename=$(basename "$f")
 			ext="${filename##*.}"
-			if [ "$ext" == "php" ]
+			if [ "$ext" == "php" ] || [ "$ext" == "sh" ]
 			then
 				p=`stat -c "%a" "$f"`
 				if [ "$p" != "770" ]
