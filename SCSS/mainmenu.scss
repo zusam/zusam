@@ -1,0 +1,91 @@
+
+.slide-menu {
+	top: 0px;
+	border: 1px solid #ddd;
+	background: white;
+	height: 100%;
+	z-index: 50;
+	font-size: 20px;
+	padding: 0px;
+	margin: 0px;
+
+	.separator {
+		border-bottom: 1px solid grey;
+		padding: 0;
+		width: 100%;
+		cursor: default;
+	}
+}
+.slide-menu > * {
+	display: block;
+	text-align: left;
+	text-decoration: none;
+	color: black;
+	cursor: pointer;
+}
+#mainmenu {
+	.forum-menu {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: space-between;
+		align-items: center;
+		-webkit-justify-content: space-between;
+		-webkit-align-items: center;
+		width: 100%;
+	}
+	.menu-highlight {
+		padding: 5px;
+		width: calc(100% - 10px);
+	}
+	.menu-highlight:hover {
+		background: #F0F0F0;
+	}
+	.invitation {
+		margin: 0px;
+		width: calc(100% - 10px);
+		color: black;
+		cursor: default;
+		padding: 5px;
+		position: relative;
+		border-bottom: 1px solid black;
+
+		.title {
+			width: 100%;
+			text-align: center;
+			padding-bottom: 5px;
+		}
+		.action-menu {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: space-between;
+			align-items: center;
+			-webkit-justify-content: space-between;
+			-webkit-align-items: center;
+		}
+		.action {
+			cursor: pointer;
+			padding: 5px;
+			border-radius: 0px;
+			background: white;
+			border: 1px solid black;
+			flex-grow: 2;
+			-webkit-flex-grow: 2;
+			margin: 0px 3px;
+		}
+		.action:hover {
+			background: lightgrey;
+		}
+	}
+}
+.forum-link:hover {
+	background: #F0F0F0;
+}
+.forum-settings {
+	border-left: 1px solid grey;
+	padding: 5px;
+	color: black;
+	text-decoration: none;
+}
+.forum-settings:hover {
+	background: #F0F0F0;
+}

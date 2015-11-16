@@ -1,0 +1,50 @@
+.forum-mini {
+	display: block;
+	overflow: hidden;
+	margin: 20px;
+	cursor: pointer;
+	width: 192px;
+	height: 192px;
+	text-decoration: none;
+	color: black;
+	text-align: center;
+	border-radius: 4px;
+
+	img {
+		width: 100%;
+	}
+}
+.invit-mini {
+	display: block;
+	overflow: hidden;
+	margin: 20px;
+	width: 192px;
+	height: 192px;
+	text-decoration: none;
+	color: black;
+	text-align: center;
+	border-radius: 4px;
+	position: relative;
+
+	img {
+		width: 100%;
+	}
+
+	.title {
+		position: absolute;
+		color: white;
+		background: linear-gradient(0deg,rgba(0, 0, 0, 0),rgb(0, 0, 0));
+		width: 100%;
+		top: 0;
+		font-size: 25px;
+		height: 35px;
+	}
+
+	.action-menu {
+		position: absolute;
+		top: calc(100% - 30px);
+		z-index: 1;
+		width: 100%;
+		text-align: center;
+	}
+}

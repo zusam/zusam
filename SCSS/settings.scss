@@ -1,0 +1,56 @@
+.settings-container {
+	display: flex;
+	display: -webkit-flex;
+	flex-flow: row wrap;
+	-webkit-flex-flow: row wrap;
+
+	.profile_wrapper {
+		width: 100%;
+		max-width: 340px;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-around;
+		display: -webkit-flex;
+		-webkit-flex-flow: row wrap;
+		-webkit-justify-content: space-around;
+	}
+	
+	.invitations-resume, .users-resume {
+		display: flex;
+		display: -webkit-flex;
+		flex-flow: row wrap;
+		-webkit-flex-flow: row wrap;
+		border-left: 1px solid lightgrey;
+		height: auto;
+		padding: 15px;
+		max-width: 256px;
+		min-width: 100px;
+		margin: 25px;
+		position: relative;
+
+		.title {
+			display: block;
+			width: 100%;
+			text-align: center;
+			margin-bottom: 5px;
+			position: absolute;
+			top: 0; left: 0;
+		}
+		.user {
+			width: 96px;
+			height: 96px;
+			margin: 5px;
+			padding: 5px;
+			position: relative;
+			text-align: center;
+
+			img {
+				width: 100%;
+			}
+		}
+		.user > div {
+			width: 100%;
+			border-radius: 4px;
+		}
+	}
+}

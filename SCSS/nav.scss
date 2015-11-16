@@ -1,0 +1,59 @@
+nav {
+	display: flex;
+	justify-content: space-between;
+	display: -webkit-flex;
+	-webkit-justify-content: space-between;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index:25;
+	background: #2C2C2C;
+	height: 50px;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+
+	.left-module-nav, .right-module-nav {
+		width: 100px;
+	}
+	.right-module-nav {
+		margin: 0;
+		text-align: right;
+
+		.action {
+			font-size: 15px;
+			border: none;
+			background-color: #F7A71B;
+			border-radius: 100%;
+			height: 30px;
+			width: 30px;
+			margin: 10px;
+			transition: all 0.2s;
+		}
+		.action:hover {
+			background-color: rgb(255,175,35);
+		}
+	}
+	.logo {
+	    width: 40px;
+		height: 40px;
+		cursor: pointer;
+	}
+	button {
+		cursor: pointer;
+	}
+}
+nav > * {
+	margin: 5px;
+}
+.my_avatar {
+	display: inline-block;
+	cursor: pointer;
+	height: 50px;
+	width: 50px;
+	overflow: hidden;
+	margin: 0px;
+}
+.my_avatar > * {
+	height: 100%;
+	width: 100%;
+}
