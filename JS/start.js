@@ -1,13 +1,3 @@
-// start infinite scrolling
-/*
-$(document).on('scroll', function() {
-//console.log(window.pageYOffset, document.body.scrollHeight);
-	if(window.pageYOffset > document.body.scrollHeight/3) {
-		//console.log("loadmore!");
-		loadMorePosts();
-	}
-});
-*/
 
 // usefull variables
 URL = window.URL || window.webkitURL;
@@ -19,6 +9,18 @@ $(window).ready(function() {
 	$(function() {
 		FastClick.attach(document.body);
 	});
+
+
+	// start infinite scrolling
+	if($('#info').attr('data-fid') != "") {
+		$(document).on('scroll', function() {
+		//console.log(window.pageYOffset, document.body.scrollHeight);
+			if(window.pageYOffset > document.body.scrollHeight/2) {
+				//console.log("loadmore!");
+				loadMorePosts();
+			}
+		});
+	}
 
 	//small code to permit keyboard shortcuts with ctrlKey
 	window.ctrl = false

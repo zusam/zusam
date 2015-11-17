@@ -36,7 +36,6 @@ if($_SESSION['connected']) {
 
 	if($GET['action'] != null && $GET['action'] != "") {
 
-
 		// TODO protect ?
 		if($GET['action'] == "getProgress") {
 

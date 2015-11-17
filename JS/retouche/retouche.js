@@ -399,7 +399,7 @@ function sendCanvas(id) {
 		f = new FormData();
 		f.append("avatar",dataURItoBlob(imgURL));
 		var uid = $('#info').attr('data-uid');
-		var fid = $('#info').attr('data-forum');
+		var fid = $('#info').attr('data-fid');
 		var action = $(id).attr('data-action');
 		f.append("uid",uid);
 		f.append("fid",fid);

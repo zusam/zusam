@@ -11,6 +11,7 @@ require_once('Core/Forum.php');
 require_once('Core/Notification.php');	
 require_once('Core/File.php');	
 require_once('Core/Utils.php');	
+require_once('Core/Print_post.php');	
 
 require_once('Pages/forum.php');
 require_once('Pages/mainmenu.php');
@@ -31,6 +32,47 @@ if($_SESSION['connected']) {
 
 	if($POST['action'] != null && $POST['action'] != "") {
 		
+		// TODO protect ?
+		if($POST['action'] == "morePost") {
+
+			$list = json_decode($POST['list'], true);
+			
+			$fid = $POST['fid'];
+			$f = forum_load(array('_id'=>$fid));
+			if($f != null && $f != false && isIn($_SESSION['uid'], $f['users'])) {
+				$news = array_reverse($f['news']);
+				$n = intval($POST['n']);
+				if(!$n || $n == 0) {
+					$n = 30;
+				}
+				$j = 0;
+				$i = 0;
+				$html = "";
+				$newlist = [];
+				while($i < $n && $j < count($news) && $j < 100) {
+					if(!isIn($news[$j], $list)) {
+						$p = post_load(array('_id'=>$news[$j]));
+						if($p != null && $p != false) {
+							$i++;
+							$html .= print_post_mini($p);
+							$newlist[] = $news[$j];
+						}
+					}
+					$j++;
+				}
+				
+				$response = new StdClass();
+				$response->html = $html;
+				$response->list = $newlist;
+				$response->count = $i;
+				$response->load = $j;
+				header('Content-Type: text/json; charset=UTF-8');
+				echo(json_encode($response));
+				exit;
+			}
+			exit;
+		}
+
 		// TODO protect file
 		if($POST['action'] == "getFile") {
 

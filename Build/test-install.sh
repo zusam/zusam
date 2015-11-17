@@ -106,7 +106,7 @@ function test_perm {
 		fi
 	done
 }
-A=(`find . -mindepth 1 -maxdepth 1 -type d -print0 | xargs -0`)
+A=(`find . -mindepth 1 -maxdepth 2 -type d -not -path '*/\.*' -print0 | xargs -0`)
 for p in "${A[@]}";
 do
 	test_perm "$p" "$1"

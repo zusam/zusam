@@ -23,6 +23,7 @@ foreach($_GET as $K=>$V) {
 	$GET[$K] = (String) $V;
 }
 
+
 //apply secret link
 if($GET['il'] != null && $_SESSION['connected']) {
 	$f = forum_load(array('link'=>$GET['il']));
@@ -51,6 +52,14 @@ if($_SESSION['connected'] != true) {
 	session_destroy();
 	landing();
 	exit();
+} else {
+	$u = account_load(array('_id'=>$_SESSION['uid']));
+	if($u == null || $u == false) {
+		unset($_SESSION);
+		session_destroy();
+		landing();
+		exit();
+	}
 }
 
 $u = account_load(array("mail" => $_SESSION['mail']));
@@ -79,7 +88,7 @@ echo('<body>');
 
 // SOME INFOS FOR JAVASCRIPT 
 echo('
-<div class="hidden" id="info" data-uid="'.$u['_id'].'" data-avatar="'.account_getAvatar($u).'" data-name="'.$u['name'].'" data-forum="'.$_SESSION['forum'].'"></div>
+<div class="hidden" id="info" data-uid="'.$u['_id'].'" data-avatar="'.account_getAvatar($u).'" data-fid="'.$_SESSION['forum'].'"></div>
 ');
 
 // MAIN MENU

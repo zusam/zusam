@@ -5,6 +5,7 @@ require_once('Core/Accounts.php');
 require_once('Core/Forum.php');	
 require_once('Core/Notification.php');	
 require_once('Core/Miniature.php');	
+require_once('Core/Print_post.php');	
 
 function page_nav_forum($u, $forum) {
 
@@ -16,7 +17,6 @@ function page_nav_forum($u, $forum) {
 	$html .= '</div>';
 	$html .= '<a href="'.$_SERVER['PHP_SELF'].'"><img class="logo" src="Assets/logo.png"/></a>';
 	if($_SESSION['forum'] != "" && $forum != null && $forum != "" && $forum != false) {
-		//$html .= '<div class="forum-name">'.$forum['name'].'</div>';
 		$html .= '<div class="right-module-nav">';
 		$html .= '<button class="action" onclick="ask(\'Mail de la personne à inviter :\',55,inviteUser)"><i class="fa fa-user-plus"></i></button>';
 		$html .= '<button class="action" onclick="togglenewpost()"><i class="fa fa-pencil"></i></button>';
@@ -42,24 +42,10 @@ function page_section_forum(&$u, &$forum) {
 
 		$list = array_reverse($forum['news']);
 		
-		//TODO (300) -> infinite scrolling
-		for($i=0;$i<min(3000,count($list));$i++) {
+		for($i=0;$i<min(30,count($list));$i++) {
 			$p = post_load(array('_id'=>$list[$i]));
-			if($p != false && ($p['parent'] == null || $p['parent'] == 0)) {
-				if(!file_exists(get_miniature_path($p['preview']))) {
-					if($p['preview'] != "") {
-						$link = gen_miniature($p['preview']);
-					}
-					if($link != false && $link != "") {
-						$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
-					} else {
-						//var_dump($p['preview']);
-						$inside = '<img src="'.p2l(pathTo("placeholder", "assets", "jpg")).'"/>';
-					}
-				} else {
-					$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
-				}
-				$html .= '<a class="material-shadow post-mini" href="#'.$p['_id'].'" data-id="'.$p['_id'].'">'.$inside.'</a>';
+			if($p != null && $p != false) {
+				$html .= print_post_mini($p);
 			}
 		}
 		$html .= '</div>';

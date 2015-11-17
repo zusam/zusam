@@ -5,6 +5,7 @@ require_once('Core/Post.php');
 require_once('Core/Accounts.php');
 require_once('Core/Location.php');
 require_once('Core/Utils.php');
+require_once('Core/Miniature.php');
 
 
 function print_full_post($id, $uid, &$p) {
@@ -107,6 +108,26 @@ function print_post($id, $uid, &$p) {
 	return $html_data;
 }
 
+function print_post_mini(&$p) {
+	$html = "";
+	if($p != false && ($p['parent'] == null || $p['parent'] == 0)) {
+		if(!file_exists(get_miniature_path($p['preview']))) {
+			if($p['preview'] != "") {
+				$link = gen_miniature($p['preview']);
+			}
+			if($link != false && $link != "") {
+				$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
+			} else {
+				//var_dump($p['preview']);
+				$inside = '<img src="'.p2l(pathTo("placeholder", "assets", "jpg")).'"/>';
+			}
+		} else {
+			$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
+		}
+		$html .= '<a class="material-shadow post-mini" href="#'.$p['_id'].'" data-id="'.$p['_id'].'">'.$inside.'</a>';
+	}
+	return $html;
+}
 
 
 ?>

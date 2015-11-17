@@ -1,7 +1,7 @@
 function changeSecretLink() {
 
 	var uid = $('#info').attr('data-uid');
-	var fid = $('#info').attr('data-forum');
+	var fid = $('#info').attr('data-fid');
 
 	$.ajax({
 		url: "Ajax/post.php",
@@ -16,7 +16,7 @@ function changeSecretLink() {
 
 function removeUserFromForum() {
 	var uid = $('#info').attr('data-uid');
-	var fid = $('#info').attr('data-forum');
+	var fid = $('#info').attr('data-fid');
 
 	$.ajax({
 		url: "Ajax/post.php",
@@ -62,7 +62,7 @@ function changeforumname(id) {
 		return false;
 	}
 	var uid = $('#info').attr('data-uid');
-	var fid = $('#info').attr('data-forum');
+	var fid = $('#info').attr('data-fid');
 	$.ajax({
 		url: "Ajax/post.php",
 		type: "POST",
@@ -101,7 +101,7 @@ function inviteUser(id) {
 		return false;
 	}
 	uid = $('#info').attr('data-uid');
-	forum = $('#info').attr('data-forum');
+	forum = $('#info').attr('data-fid');
 	$.ajax({
 		url: "Ajax/post.php",
 		type: "POST",
@@ -159,7 +159,7 @@ function sendIt(id) {
 		}
 	}
 	uid = $('#info').eq(0).attr('data-uid');
-	forum = $('#info').eq(0).attr('data-forum');
+	forum = $('#info').eq(0).attr('data-fid');
 	console.log("text:"+msg+",forum:"+forum+",uid:"+uid+",parent:"+parentID+",pid:"+pid);
 	var baliseId = Date.now().toString(36)+Math.random().toString(16);
 	$.ajax({
@@ -229,7 +229,7 @@ function deletePost(t) {
 	p = $(t).parent().parent().parent().parent();
 	id = p.attr('data-id');
 	console.log("delete:"+id);
-	forum = $('#info').attr('data-forum');
+	forum = $('#info').attr('data-fid');
 	$.ajax({
 		url: "Ajax/post.php",
 		type: "POST",
@@ -248,7 +248,7 @@ function deletePost(t) {
 function editPost(t) {
 	var p = $(t).parent().parent().parent().parent();
 	var pid = p.attr('data-id');
-	//var forum = $('#info').attr('data-forum');
+	//var forum = $('#info').attr('data-fid');
 		$.get("Ajax/get.php?action=getRaw&pid="+pid, function(data) {
 			//console.log(data);
 			box = '<div id="editBox" class="dynamicBox">';
@@ -269,22 +269,39 @@ function editPost(t) {
 
 function loadMorePosts() {
 	if(!window.loading) {
+		console.log("trying to load posts");
 		window.loading = true;
-		forum = $('#info').attr('data-forum');
-		$.get('Ajax/morePosts.php?start='+window.n+'&forum='+forum, function(data) {
-			$('#container').append(data['html']);
-			if(data['entries'] < 30) {
-				window.stop = true;
-				$(document).unbind('scroll');
-			} else {
-				window.n = window.n + 30;
+		var list = $('#container .post-mini').map(function(){ var t = this.dataset.id; return t; }).get();
+		list = JSON.stringify(list);
+		var fid = $('#info').attr('data-fid');
+		$.ajax({
+			url: 'Ajax/post.php',
+			type: 'POST',
+			data: {'action':'morePost','fid':fid,'list':list},
+			success: function(data) {
+				console.log(data);
+				if(typeof(data) != 'undefined' && data != "") {
+					if(data['count'] > 0) {
+						$('#container').append(data['html']);
+					}
+					console.log('loaded ('+data['count']+')');
+					if(data['count'] < 30) {
+						console.log('all posts are here !');
+						window.stop = true;
+						$(document).unbind('scroll');
+					}
+					setpostsviewable();
+					window.loading = false;
+				}
+			},
+			error: function() {
+				console.log("fail to load more posts");
 				window.loading = false;
 			}
-			setpostsviewable();
 		});
 	}
 }
-
+	
 function disconnect() {
 	$.ajax({
 		url: "Ajax/connect.php",
