@@ -27,12 +27,10 @@ function print_full_post($id, $uid, &$p) {
 		return "";
 	}
 	$html_data .= print_post($id, $uid, $p);
-	//$html_data .= '<div class="post-separator"></div>';
-	// TODO we want to assure that the order of the coms is kept intact
+	$html_data .= '<div class="post-separator"></div>';
 	foreach($p['children'] as $cid) {
 		$child_html = print_post($cid, $uid);
 		if($child_html != "") {
-			//$html_data .= $child_html.'<div class="post-separator"></div>';
 			$html_data .= $child_html;
 		}
 	}
@@ -100,10 +98,6 @@ function print_post($id, $uid, &$p) {
 	$html_data .= 'dynamicBox viewerBox" data-id="'.$id.'"><div>'.$p['text'].'</div></div>
 	</div>
 	';
-	// parent ?
-	if($p['parent'] == null || $p['parent'] == 0) {
-		$html_data .= '<div class="post-separator"></div>';
-	}
 
 	return $html_data;
 }
@@ -115,10 +109,9 @@ function print_post_mini(&$p) {
 			if($p['preview'] != "") {
 				$link = gen_miniature($p['preview']);
 			}
-			if($link != false && $link != "") {
+			if($link != null && $link != false && $link != "") {
 				$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
 			} else {
-				//var_dump($p['preview']);
 				$inside = '<img src="'.p2l(pathTo("placeholder", "assets", "jpg")).'"/>';
 			}
 		} else {

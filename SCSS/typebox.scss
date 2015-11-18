@@ -219,6 +219,11 @@
 	}
 }
 .child-post {
+	background: #F0F0F0;
+	padding: 8px 5px 2px 5px;
+	position: relative;
+	min-height: 40px;
+
 	.post-menu {
 		width: 530px;
 		max-width: calc(100% - 10px);
@@ -295,10 +300,6 @@
 }
 .post-info {
 	padding-left: 10px;
-}
-.child-post {
-	background: #F0F0F0;
-	padding: 8px 5px 2px 5px;
 }
 .post-com-text {
 	word-break: break-word;

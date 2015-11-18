@@ -169,41 +169,41 @@ function sendIt(id) {
 		success: function(data) {
 			console.log(data);
 				if(data['parent'] == 0 || data['parent'] == null) {
-					if(data['pid'] == 0 || data['pid'] == null) {
-						console.log("new post");
-						var balise = $('#container div[data-balise="'+baliseId+'"]');
-						balise.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
-						balise.remove();
-					} else {
-						console.log("edit post");
-						var p = $('#container .post-mini[data-id='+data['pid']+']');
-						p.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
-						p.remove();
-						hidenewpost();
-					}
+					console.log("new post");
+					var balise = $('#container div[data-balise="'+baliseId+'"]');
+					balise.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
+					balise.remove();
 					setpostsviewable();
 					hidepostviewer();
 				} else {
 					if(data['pid'] == 0 || data['pid'] == null) {
 						console.log("new com");
-						$('.new-comment-section').before(data['html']);				
-						//$('.new-comment-section').before('<div class="post-separator"></div>');				
-						hidenewcommentsection($('.new-comment-section'));
-						typebox.view();
-						var p = $('#container .post-mini[data-id='+data['pid']+']');
-						p.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
-						p.remove();
-					} else {
-						console.log("edit com");
-						var balise = $('.child-post[data-id='+data['pid']+']');
+						var balise = $('.child-post[data-balise="'+baliseId+'"]');
 						balise.after(data['html']);
 						balise.remove();
-						//var p = $('#container .post-mini[data-id='+data['pid']+']');
-						//p.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
-						//p.remove();
-						//hidenewpost();
-						//setpostsviewable();
-						//hidepostviewer();
+						typebox.view();
+						var p = $('#container .post-mini[data-id='+data['pid']+']');
+						p.remove();
+						$('#container').prepend('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
+					} else {
+						if(data['parent'] == data['pid']) {
+							console.log("edit post");
+							var pp = $('.parent-post');
+							pp.after(data['html']);
+							pp.remove();
+							typebox.view();
+							var p = $('#container .post-mini[data-id='+data['pid']+']');
+							p.after('<div class="material-shadow post-mini" data-id="'+data['pid']+'"><img src="'+data['miniature']+'"/></div>');
+							p.remove();
+							setpostsviewable();
+							//hidenewpost();
+							//hidepostviewer();
+						} else {
+							console.log("edit com");
+							var balise = $('.child-post[data-id='+data['pid']+']');
+							balise.after(data['html']);
+							balise.remove();
+						}
 					}
 				}
 			},
@@ -214,6 +214,12 @@ function sendIt(id) {
 			var post_loading = $('<div data-balise="'+baliseId+'" class="material-shadow post-mini"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
 			$('#container').prepend(post_loading);
 			hidenewpost();
+		}
+	} else {
+		if(pid == 0 || pid == null) {
+			var com_loading = $('<div class="post child-post" data-balise="'+baliseId+'"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
+			hidenewcommentsection($('.new-comment-section'));
+			$('#post-viewer .fake-comment').before(com_loading);
 		}
 	}
 }
@@ -248,18 +254,16 @@ function deletePost(t) {
 function editPost(t) {
 	var p = $(t).parent().parent().parent().parent();
 	var pid = p.attr('data-id');
-	//var forum = $('#info').attr('data-fid');
 		$.get("Ajax/get.php?action=getRaw&pid="+pid, function(data) {
-			//console.log(data);
 			box = '<div id="editBox" class="dynamicBox">';
 			box += '<div contenteditable="true" data-placeholder="Ecrivez quelque chose...">'+data['raw']+'</div>';
 			box += '</div>';
 			box += '<div class="menu">';
 			box += '<div class="menu-cell">';
-			box += '<button id="cancelit" onclick="hidepostviewer()">Cancel</button>';
+			box += '<button id="cancelit" onclick="hidepostviewer()">Annuler</button>';
 			box += '</div>';
 			box += '<div class="menu-cell">';
-			box += '<button id="sendit" onclick="sendIt(\'#editBox\')">Send</button>';
+			box += '<button id="sendit" onclick="sendIt(\'#editBox\')">Envoyer</button>';
 			box += '</div>';
 			box += '</div>';
 			p.html(box);

@@ -151,7 +151,7 @@ function shownewcommentsection(id) {
 	fc = t.children(':first-child');
 	if(fc.hasClass('fake-comment')) {
 		fc.remove();
-		var c = $('<div class="commentator"><img src="'+$('#info').attr('data-avatar')+'"/></div>');
+		//var c = $('<div class="commentator"><img src="'+$('#info').attr('data-avatar')+'"/></div>');
 		var cb = $('<div id="commentBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Ecrire un commentaire..."></div></div>');
 		var np_menu = $('<div class="menu"></div>');
 		var np_cell1 = $('<div class="menu-cell"></div>');
@@ -163,7 +163,7 @@ function shownewcommentsection(id) {
 		np_menu.append(np_cell1);
 		np_menu.append(np_cell2);
 		np_menu.append(np_cell3);
-		t.append(c).append(cb).append(np_menu);
+		t.append(cb).append(np_menu);
 		typebox.start('#commentBox');
 		// require typebox module
 		typebox.Control.niceFocus('#commentBox');
