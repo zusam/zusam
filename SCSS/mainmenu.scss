@@ -1,29 +1,40 @@
-
 .slide-menu {
 	top: 0px;
-	border: 1px solid #ddd;
 	background: white;
 	height: 100%;
-	z-index: 50;
+	z-index: 25;
 	font-size: 20px;
 	padding: 0px;
 	margin: 0px;
 
 	.separator {
-		border-bottom: 1px solid grey;
 		padding: 0;
 		width: 100%;
 		cursor: default;
+		height: 20px;
 	}
 }
 .slide-menu > * {
 	display: block;
 	text-align: left;
 	text-decoration: none;
-	color: black;
 	cursor: pointer;
 }
+@media (min-width: 680px) {
+	#mainmenu {
+		transform: none !important;
+		-webkit-transform: none !important;
+	}
+}
+#mainmenu * {
+	color: lightgrey;
+}
 #mainmenu {
+    background-color: #6F6F6E;
+	color: lightgrey;
+	padding: 10px;
+	width: calc(200px - 20px);
+	
 	.forum-menu {
 		display: flex;
 		display: -webkit-flex;
@@ -35,15 +46,18 @@
 	}
 	.menu-highlight {
 		padding: 5px;
-		width: calc(100% - 10px);
+		border-radius: 4px;
 	}
 	.menu-highlight:hover {
 		background: #F0F0F0;
+		color: black;
+	}
+	.menu-highlight:hover * {
+		color: black;
 	}
 	.invitation {
 		margin: 0px;
 		width: calc(100% - 10px);
-		color: black;
 		cursor: default;
 		padding: 5px;
 		position: relative;
@@ -77,15 +91,32 @@
 		}
 	}
 }
-.forum-link:hover {
-	background: #F0F0F0;
+.forum-link {
+	text-decoration: none;
+	flex-grow: 2;
+	-webkit-flex-grow: 2;
+	padding: 5px;
+	border: none;
+	background: none;
+	margin: 0px;
+	cursor: pointer;
+
+	input {
+		border: none;
+		background: none;
+		margin: 0px;
+		font-size: 18px;
+		padding: 0px;
+		cursor: pointer;
+		width: 100%;
+		text-align: left;
+	}
 }
 .forum-settings {
-	border-left: 1px solid grey;
 	padding: 5px;
-	color: black;
 	text-decoration: none;
 }
-.forum-settings:hover {
-	background: #F0F0F0;
+.forum-settings:hover i {
+	-webkit-animation: fa-spin 2s infinite linear;
+	animation: fa-spin 2s infinite linear;
 }

@@ -62,6 +62,7 @@ if($_SESSION['connected'] != true) {
 	}
 }
 
+// TODO Is $_SESSION['page'] still needed ?
 $u = account_load(array("mail" => $_SESSION['mail']));
 $_SESSION['page'] = $GET['page'];
 if($GET['fid'] != "") {
@@ -82,6 +83,19 @@ if($_SESSION['forum'] != "" && $_SESSION['forum'] != null && in_array($_SESSION[
 		$_SESSION['forum'] = "";
 	}
 }
+
+// Force selection of a forum
+if($_SESSION['forum'] == "") {
+	$fid = $u['forums'][0];
+	if($fid != null) {
+		$_SESSION['forum'] = $fid;
+		$forum = forum_load(array('_id'=>$_SESSION['forum']));	
+	} else {
+		// TODO the user don't have any forum yet. Propose to create/join one !
+		$_SESSION['forum'] = "";
+	}
+}
+
 
 // BODY
 echo('<body>');
@@ -143,7 +157,7 @@ echo('<div id="main_page">');
 
 // NAVBAR
 echo('<nav>');
-if($_SESSION['page'] == "forum" || $_SESSION['page'] == "forum_settings") {
+if($GET['page'] == "forum" || $GET['page'] == "forum_settings") {
 	echo(page_nav_forum($u, $forum));
 } else {
 	echo(page_nav_forum($u));
@@ -152,17 +166,18 @@ echo('</nav>');
 
 // MAIN SECTION
 echo('<section>');
-if($_SESSION['page'] == "profile") {
+if($GET['page'] == "profile") {
 	echo(page_section_profile($u));
 } 
-if($_SESSION['page'] == "forum") {
+if($GET['page'] == "forum") {
 	echo(page_section_forum($u, $forum));
 }
-if($_SESSION['page'] == "forum_settings") {
+if($GET['page'] == "forum_settings") {
 	echo(page_section_forum_settings($u, $forum));
 }
-if($_SESSION['page'] == "") {
-	echo(page_section_home($u));
+if($GET['page'] == "") {
+	//echo(page_section_home($u));
+	echo(page_section_forum($u, $forum));
 }
 echo('</section>');
 

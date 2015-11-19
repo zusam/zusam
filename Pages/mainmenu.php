@@ -11,7 +11,7 @@ function page_mainmenu(&$u) {
 
 	$html .= '
 		<div id="mainmenu" class="slide slide-menu slidefromleft">
-		<a class="menu-highlight" href="'.$_SERVER['PHP_SELF'].'">Accueil</a>
+		<!--<a class="menu-highlight" href="'.$_SERVER['PHP_SELF'].'">Accueil</a>-->
 		<a class="menu-highlight" href="'.$_SERVER['PHP_SELF'].'?page=profile">Profil</a>
 		<div class="separator"></div>
 	';
@@ -19,10 +19,10 @@ function page_mainmenu(&$u) {
 		$f = forum_load(array('_id'=>$fid));
 		$html .= '<div class="forum-menu">';
 		$html .= '
-			<a class="forum-link" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum">'.$f['name'].'</a>
+			<a class="menu-highlight forum-link" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum">'.$f['name'].'</a>
 		';
 		$html .= '
-			<a class="forum-settings" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum_settings">
+			<a class="menu-highlight forum-settings" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum_settings">
 				<i class="fa fa-gear fa-spin-hover">
 				</i>
 			</a>
@@ -31,15 +31,10 @@ function page_mainmenu(&$u) {
 	}
 	$html .= '
 		<div class="separator"></div>
-		<a class="menu-highlight" onclick="ask(\'Nom du forum :\',25,addForum)">Nouveau forum</a>
+		<a class="menu-highlight" onclick="ask(\'Nom du forum :\',25,addForum)">Nouveau groupe</a>
 		<a class="menu-highlight" onclick="disconnect()">Se déconnecter</a>
 	';
-	$html .= '
-		<div class="separator"></div>
-		<div class="separator"></div>
-		<div class="separator"></div>
-		<div class="separator"></div>
-	';
+	$html .= '<div class="separator"></div>';
 	$notifications = load_invitations($u);
 	foreach($notifications as $n) {
 		$html .= '	

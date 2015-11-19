@@ -44,7 +44,7 @@ function showslidefromleft(id) {
 	console.log(g);
 	g.css({"transform":"translateX(0)"});
 	g.addClass('active');
-	addMask("hideslidefromleft(\'"+id+"\')",0.75);
+	addMask("hideslidefromleft(\'"+id+"\')",0.75,20);
 }
 
 function hideslidefromleft(id) {

@@ -7,7 +7,7 @@ require_once('Core/Notification.php');
 require_once('Core/Miniature.php');	
 require_once('Core/Print_post.php');	
 
-function page_nav_forum($u, $forum) {
+function page_nav_forum(&$u, &$forum) {
 
 	$html = "";
 
@@ -15,10 +15,10 @@ function page_nav_forum($u, $forum) {
 	$html .= '<div class="my_avatar" onclick="toggleslidefromleft(\'#mainmenu\')">'.account_getAvatarHTML($u).'</div>';
 	//$html .= '<div class="my_name">'.$u['name'].'</div>';
 	$html .= '</div>';
-	$html .= '<a href="'.$_SERVER['PHP_SELF'].'"><img class="logo" src="Assets/logo.png"/></a>';
+	$html .= '<a href="'.$_SERVER['REQUEST_URI'].'"><img class="logo" src="Assets/logo.png"/></a>';
 	if($_SESSION['forum'] != "" && $forum != null && $forum != "" && $forum != false) {
 		$html .= '<div class="right-module-nav">';
-		$html .= '<button class="action" onclick="ask(\'Mail de la personne à inviter :\',55,inviteUser)"><i class="fa fa-user-plus"></i></button>';
+		//$html .= '<button class="action" onclick="ask(\'Mail de la personne à inviter :\',55,inviteUser)"><i class="fa fa-user-plus"></i></button>';
 		$html .= '<button class="action" onclick="togglenewpost()"><i class="fa fa-pencil"></i></button>';
 		$html .= '</div>';
 	} else {
@@ -65,13 +65,13 @@ function page_section_forum_settings(&$u, &$forum) {
 		<div class="profile_wrapper">
 			<div class="change-avatar" onclick="loadRetoucheBox(256,256,\'changeForum\')">'.forum_getAvatarHTML($forum).'</div>
 			<form class="change-profile">
-				<label for="name">Nom du forum:</label><br>
+				<label for="name">Nom du groupe:</label><br>
 				<input name="name" type="text" placeholder="'.$forum['name'].'"><br>
 				<input type="submit" value="Enregistrer" onclick="changeforumname(\'input[name=name]\'); return false;">
 			</form>
 			<form class="change-profile">
-				<label for="mail">Mail de la personne à inviter:</label><br>
-				<input name="mail" type="email"><br>
+				<label for="mail">Inviter quelqu\'un dans le groupe :</label><br>
+				<input name="mail" type="email" placeholder="mail de la personne à inviter"><br>
 				<input type="submit" onclick="inviteUser(\'input[name=mail]\'); return false;" value="Envoyer">
 			</form>
 			<form class="change-profile">
@@ -79,7 +79,7 @@ function page_section_forum_settings(&$u, &$forum) {
 				<input type="submit" onclick="changeSecretLink(); return false;" value="Changer le lien secret">
 			</form>
 			<form class="change-profile">
-				<input type="submit" onclick="removeUserFromForum(); return false;" value="Se désinscrire de ce forum">
+				<input type="submit" onclick="removeUserFromForum(); return false;" value="Quitter le groupe">
 			</form>
 		</div>
 	';

@@ -9,7 +9,7 @@ function page_section_home(&$u) {
 	
 	$html = "";
 
-	$html .= '<div class="big-title">Vos forums</div>';
+	$html .= '<div class="big-title">Vos groupes</div>';
 	$html .='<div id="container">';
 
 
@@ -22,7 +22,7 @@ function page_section_home(&$u) {
 					'.forum_getAvatarHTML($f).'
 					<div class="title">'.$n['text'].'</div>
 					<div class="action-menu">
-						<button class="action" onclick="addUserToForum(this)">Rejoindre le forum</button>
+						<button class="action" onclick="addUserToForum(this)">Rejoindre le groupe</button>
 						<button class="action" onclick="removeNotification(this)"><i class="fa fa-remove"></i></button>
 					</div>
 				</div>

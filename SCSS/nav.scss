@@ -7,10 +7,11 @@ nav {
 	position: fixed;
 	top: 0;
 	left: 0;
-	z-index:25;
+	z-index: 15;
 	background: #2C2C2C;
 	height: 50px;
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	transition: all 0.2s;
 
 	.left-module-nav, .right-module-nav {
 		width: 100px;
@@ -42,6 +43,12 @@ nav {
 		cursor: pointer;
 	}
 }
+@media (min-width: 680px) {
+	nav {
+		width: calc(100% - 200px);
+		left: 200px;
+	}
+}
 nav > * {
 	margin: 5px;
 }
@@ -56,4 +63,9 @@ nav > * {
 .my_avatar > * {
 	height: 100%;
 	width: 100%;
+}
+@media (min-width: 680px) {
+	.my_avatar {
+		display: none;
+	}
 }
