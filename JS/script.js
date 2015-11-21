@@ -173,7 +173,6 @@ function sendIt(id) {
 					var balise = $('#container div[data-balise="'+baliseId+'"]');
 					balise.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
 					balise.remove();
-					setpostsviewable();
 					hidepostviewer();
 				} else {
 					if(data['pid'] == 0 || data['pid'] == null) {
@@ -182,9 +181,9 @@ function sendIt(id) {
 						balise.after(data['html']);
 						balise.remove();
 						typebox.view();
-						var p = $('#container .post-mini[data-id='+data['pid']+']');
+						var p = $('#container .post-mini[data-id='+data['parent']+']');
 						p.remove();
-						$('#container').prepend('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
+						$('#container').prepend(p);
 					} else {
 						if(data['parent'] == data['pid']) {
 							console.log("edit post");
@@ -195,7 +194,6 @@ function sendIt(id) {
 							var p = $('#container .post-mini[data-id='+data['pid']+']');
 							p.after('<div class="material-shadow post-mini" data-id="'+data['pid']+'"><img src="'+data['miniature']+'"/></div>');
 							p.remove();
-							setpostsviewable();
 							//hidenewpost();
 							//hidepostviewer();
 						} else {
@@ -206,6 +204,7 @@ function sendIt(id) {
 						}
 					}
 				}
+				setpostsviewable();
 			},
 		error: function(a,b,c){ console.log(a,b,c) }
 	});

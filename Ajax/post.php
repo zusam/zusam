@@ -135,7 +135,7 @@ if($_SESSION['connected']) {
 			$u = account_load(array('_id' => $uid));
 			$f = forum_load(array('_id'=>$fid));
 
-			if($_SESSION['uid'] == $uid && isIn($uid, $f['users']) && isIn($fid, $u['forums'])) {
+			if($_SESSION['uid'] == $uid && isIn($uid, $f['users']) && $u['forums'][$fid] != null) {
 				forum_changeLink($f);
 				forum_save($f);
 			}
@@ -268,7 +268,7 @@ if($_SESSION['connected']) {
 			$u = account_load(array('_id' => $uid));
 			$f = forum_load(array('_id'=>$fid));
 
-			if($_SESSION['uid'] == $uid && isIn($fid, $u['forums'])) {
+			if($_SESSION['uid'] == $uid && $u['forums'][$fid] != null) {
 				// name change
 				if($f != null && $f != false && $u != null && $u != false) {
 					if(!preg_match("/^\s*$/",$name)) {
@@ -363,7 +363,7 @@ if($_SESSION['connected']) {
 			}
 			$forum = forum_load(array('_id'=>$fid));
 
-			if($_SESSION['uid'] == $uid && isIn($fid, $u['forums'])) {
+			if($_SESSION['uid'] == $uid && $u['forums'][$fid] != null) {
 				if($forum != null && $forum != false && $mail != "") {
 					$n = notification_initialize(array(
 							"type" => "invitation", 

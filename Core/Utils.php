@@ -129,13 +129,15 @@ function fgc($url, $bytes, $header) {
 	return $data;
 }
 
+// TODO : replace every isIn with in_array...
 function isIn(&$e, &$a) {
-	foreach($a as $m) {
-		if($m == $e) {
-			return true;
-		}
-	}
-	return false;
+	return in_array($e, $a);
+	//foreach($a as $m) {
+	//	if($m == $e) {
+	//		return true;
+	//	}
+	//}
+	//return false;
 }
 
 function deleteValue(&$e, &$a) {

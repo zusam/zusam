@@ -5,24 +5,36 @@ require_once('Core/Accounts.php');
 require_once('Core/Forum.php');	
 require_once('Core/Notification.php');	
 
-function page_mainmenu(&$u) {
+function page_mainmenu(&$u, $page) {
 
 	$html = "";
-
 	$html .= '
 		<div id="mainmenu" class="slide slide-menu slidefromleft">
-		<!--<a class="menu-highlight" href="'.$_SERVER['PHP_SELF'].'">Accueil</a>-->
-		<a class="menu-highlight" href="'.$_SERVER['PHP_SELF'].'?page=profile">Profil</a>
+		<a class="menu-action ';
+	if($page == "profile") {
+		$html .= 'selected';
+	}
+	$html .= '" href="'.$_SERVER['PHP_SELF'].'?page=profile">Profil</a>
 		<div class="separator"></div>
 	';
-	foreach($u['forums'] as $fid) {
+	foreach($u['forums'] as $fid=>$v) {
 		$f = forum_load(array('_id'=>$fid));
-		$html .= '<div class="forum-menu">';
+		$html .= '<div class="forum-menu ';
+		if($_SESSION['forum'] == $fid) {
+			$html .= 'selected';
+		}
+		$html .= '">';
+		$html .= ' <a class="menu-highlight forum-link ';
+		//if($f['timestamp'] != null && $v['timestamp'] < $f['timestamp']) {
+	//		$html .= 'news-highlight';
+	//	}
+		$html .= '" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum">'.$f['name'];
+		if($f['timestamp'] != null && $v['timestamp'] < $f['timestamp']) {
+			$html .= ' <i class="fa fa-circle notif"></i>';
+		}
+		$html .= '</a>';
 		$html .= '
-			<a class="menu-highlight forum-link" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum">'.$f['name'].'</a>
-		';
-		$html .= '
-			<a class="menu-highlight forum-settings" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum_settings">
+			<a class="forum-settings" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum_settings">
 				<i class="fa fa-gear fa-spin-hover">
 				</i>
 			</a>
@@ -31,8 +43,8 @@ function page_mainmenu(&$u) {
 	}
 	$html .= '
 		<div class="separator"></div>
-		<a class="menu-highlight" onclick="ask(\'Nom du forum :\',25,addForum)">Nouveau groupe</a>
-		<a class="menu-highlight" onclick="disconnect()">Se déconnecter</a>
+		<a class="menu-action" onclick="ask(\'Nom du forum :\',25,addForum)">Nouveau groupe</a>
+		<a class="menu-action" onclick="disconnect()">Se déconnecter</a>
 	';
 	$html .= '<div class="separator"></div>';
 	$notifications = load_invitations($u);

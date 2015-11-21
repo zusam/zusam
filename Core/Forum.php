@@ -18,6 +18,10 @@ function forum_initialize($name) {
 	return $forum;
 }
 
+function forum_updateTimestamp(&$forum) {
+	$forum['timestamp'] = time();
+}
+
 function forum_changeLink(&$forum) {
 	$forum['link'] = sha1(rand().$forum['_id'].time());
 }
@@ -59,9 +63,7 @@ function forum_addUser_andSave(&$forum, &$user) {
 	if(!isIn($user['_id'], $forum['users'])) {
 		array_push($forum['users'], $user['_id']);
 	}
-	if(!isIn($forum['_id'], $user['forums'])) {
-		array_push($user['forums'], $forum['_id']);
-	}
+	account_addForum($user, $forum);
 	forum_save($forum);
 	account_save($user);
 }

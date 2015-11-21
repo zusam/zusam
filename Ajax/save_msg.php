@@ -20,7 +20,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 	$f = forum_load(array('_id'=>$forum));
 	$u = account_load(array('_id' => new MongoId($uid)));
 
-	if($_SESSION['forum'] == $f['_id'] && isIn($f['_id'], $u['forums'])) {
+	if($_SESSION['forum'] == $f['_id'] && $u['forums'][$forum] != null) {
 
 		// look for a preview
 		$ret = preg_match("/https?:\/\/[^\s]+/i",$text,$matches);
@@ -54,6 +54,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				$p = post_initialize($text, $uid, $preview, $forum);
 				post_save($p);
 				forum_post2news($f, $p['_id']);
+				forum_updateTimestamp($f);
 				forum_save($f);
 			} else {
 				// new com
@@ -63,6 +64,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				post_save($c);
 				post_save($p);
 				forum_post2news($f, $p['_id']);
+				forum_updateTimestamp($f);
 				forum_save($f);
 			}
 		} else {

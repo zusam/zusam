@@ -75,18 +75,19 @@ if($GET['fid'] != "") {
 }
 
 $_SESSION['forum'] = $GET['fid'];
-if($_SESSION['forum'] != "" && $_SESSION['forum'] != null && in_array($_SESSION['forum'], $u['forums'])) {
+if($_SESSION['forum'] != "" && $_SESSION['forum'] != null && $u['forums'][$_SESSION['forum']] != null) {
 	$forum = forum_load(array('_id'=>$_SESSION['forum']));	
 	if($forum != null) {
-		$_SESSION['forum'] = $forum['_id'];
+		$_SESSION['forum'] = (String) $forum['_id'];
 	} else {
 		$_SESSION['forum'] = "";
 	}
 }
 
 // Force selection of a forum
-if($_SESSION['forum'] == "") {
-	$fid = $u['forums'][0];
+if($_SESSION['forum'] == "" && $GET['page'] != "profile") {
+	reset($u['forums']);
+	$fid = key($u['forums']);
 	if($fid != null) {
 		$_SESSION['forum'] = $fid;
 		$forum = forum_load(array('_id'=>$_SESSION['forum']));	
@@ -94,6 +95,13 @@ if($_SESSION['forum'] == "") {
 		// TODO the user don't have any forum yet. Propose to create/join one !
 		$_SESSION['forum'] = "";
 	}
+}
+
+
+// update timestamp of visited forum
+if($_SESSION['forum'] != "") {
+	$u['forums'][$_SESSION['forum']]['timestamp'] = time();
+	account_save($u);
 }
 
 
@@ -106,7 +114,7 @@ echo('
 ');
 
 // MAIN MENU
-echo(page_mainmenu($u));
+echo(page_mainmenu($u, $GET['page']));
 
 // NEW AVATAR
 echo('
@@ -160,7 +168,7 @@ echo('<nav>');
 if($GET['page'] == "forum" || $GET['page'] == "forum_settings") {
 	echo(page_nav_forum($u, $forum));
 } else {
-	echo(page_nav_forum($u));
+	echo(page_nav_forum($u, $forum));
 }
 echo('</nav>');
 

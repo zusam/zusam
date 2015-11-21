@@ -63,7 +63,7 @@ function page_section_forum_settings(&$u, &$forum) {
 
 	$html .= '
 		<div class="profile_wrapper">
-			<div class="change-avatar" onclick="loadRetoucheBox(256,256,\'changeForum\')">'.forum_getAvatarHTML($forum).'</div>
+			<!--<div class="change-avatar" onclick="loadRetoucheBox(256,256,\'changeForum\')">'.forum_getAvatarHTML($forum).'</div>-->
 			<form class="change-profile">
 				<label for="name">Nom du groupe:</label><br>
 				<input name="name" type="text" placeholder="'.$forum['name'].'"><br>
