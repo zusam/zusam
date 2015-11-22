@@ -117,6 +117,10 @@ function print_post_mini(&$p) {
 		} else {
 			$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
 		}
+		$c = count($p['children']);
+		if($c > 0) {
+			$inside .= '<div class="comments-indicator"><div>'.$c.' <i class="fa fa-comment"></i></div></div>';
+		}
 		$html .= '<a class="material-shadow post-mini" href="#'.$p['_id'].'" data-id="'.$p['_id'].'">'.$inside.'</a>';
 	}
 	return $html;

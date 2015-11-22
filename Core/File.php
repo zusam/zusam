@@ -92,7 +92,7 @@ function file_print(&$file) {
 		$html .= '<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.p2l(pathTo2(array("url" => $file['location'], "ext" => "jpg", "param" => "file"))).'"/>';
 	}
 	if($file['type'] == "webm") {
-		$html .= '<video autoplay="true" controls="true" src="'.p2l(pathTo2(array("url" => $file['location'], "ext" => "webm", "param" => "file"))).'"></video>';
+		$html .= '<video autoplay="false" controls="true" src="'.p2l(pathTo2(array("url" => $file['location'], "ext" => "webm", "param" => "file"))).'"></video>';
 	}
 
 	return $html;

@@ -13,11 +13,17 @@ function post_initialize($text, $uid, $preview, $forum, $parent) {
 	$post['uid'] = new MongoId($uid);
 	$post['preview'] = $preview;
 	$post['forum'] = new MongoId($forum);
+	$post['timestamp'] = time();
 	if($parent != null) {
 		$post['parent'] = new MongoId($parent);
 	}
 	return $post;
 }
+
+function post_updateTimestamp(&$post) {
+	$post['timestamp'] = time();
+}
+
 
 function post_bulkLoad($array) {
 	if($array['_id'] != null && $array['_id'] != "") {

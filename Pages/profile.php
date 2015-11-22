@@ -33,6 +33,9 @@ function page_section_profile(&$u) {
 				<input name="password" type="password"><br>
 				<input type="submit" onclick="destroyAccount(\'input[name=password]\'); return false;" value="Supprimer ce compte">
 			</form>
+			<form class="change-profile">
+				<input type="submit" onclick="disconnect(); return false;" value="Se déconnecter">
+			</form>
 		</div>
 	';
 

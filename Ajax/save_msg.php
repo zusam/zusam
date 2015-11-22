@@ -62,6 +62,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				$c = post_initialize($text, $uid, $preview, $forum, $p['_id']);
 				post_addChild($p, $c['_id']);
 				post_save($c);
+				post_updateTimestamp($p);
 				post_save($p);
 				forum_post2news($f, $p['_id']);
 				forum_updateTimestamp($f);

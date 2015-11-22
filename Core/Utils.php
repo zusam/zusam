@@ -2,6 +2,19 @@
 
 chdir(realpath(dirname(__FILE__).'/../'));
 
+function isEmpty($var) {
+	if($var == null) {
+		return true;
+	}
+	if($var == "") {
+		return true;
+	}
+	if($var == false) {
+		return true;
+	}
+	return false;
+}
+
 function ranger($url) {
 	$t = microtime(true);
 	$headers = array("Range: bytes=0-65536");
@@ -149,6 +162,15 @@ function deleteValue(&$e, &$a) {
 	}
 }
 
+function deleteKey(&$e, &$a) {
+	$ee = (String) $e;
+	foreach($a as $k=>$v) {
+		if($k == $ee) {
+			unset($a[$k]);
+			break;
+		}
+	}
+}
 
 // rot(n) ...
 function str_rot($s, $n) {

@@ -73,12 +73,36 @@ section {
 		margin: 25px;
 		cursor: pointer;
 		width: 320px;
+		height: 180px;
 		border-radius: 4px;
 		position: relative;
 		background-color: #F7A71B;
 
 		img {
 			width: 100%
+		}
+		.comments-indicator {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			z-index: 10;
+			background-color: rgba(0, 0, 0, 0.75);
+			height: 30px;
+			width: 60px;
+			box-shadow: 0px 0px 10px rgba(0,0,0,0.75);
+			border-top-left-radius: 4px;
+
+			div {
+				color: white;
+				font-family: Roboto;
+				font-weight: bold;
+				font-size: 16px;
+				position: relative;
+				top: 5px;
+				width: 100%;
+				text-align: center;
+				overflow: hidden;
+			}
 		}
 	}
 }

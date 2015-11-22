@@ -43,7 +43,11 @@ function account_bulkLoad($array) {
 	}
 	$m = new MongoClient();
 	$accounts = $m->selectDB("zusam")->selectCollection("accounts");
-	$ac = $accounts->find($array);
+	if(count($array) < 1) {
+		$ac = $accounts->find();
+	} else {
+		$ac = $accounts->find($array);
+	}
 	return $ac;
 }
 

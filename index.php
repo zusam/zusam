@@ -17,7 +17,7 @@ require_once('Pages/mainmenu.php');
 require_once('Pages/profile.php');
 require_once('Pages/home.php');
 
-// secure post variables for mongodb
+// secure variables
 $GET = [];
 foreach($_GET as $K=>$V) {
 	$GET[$K] = (String) $V;

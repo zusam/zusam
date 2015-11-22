@@ -1,6 +1,7 @@
 <?php
 
-require_once(realpath(dirname(__FILE__).'/Accounts.php'));
+chdir(realpath(dirname(__FILE__))."/../");
+require_once('Core/Accounts.php');
 
 function notification_initialize($a) {
 	$n = [];
@@ -48,48 +49,26 @@ function notification_bulkLoad($array) {
 	return $n;
 }
 
-// INVITATION SPECIFIC
+function notification_print(&$n) {
 
-function load_invitations(&$u) {
+	$html = "";
 	
-	$notifications = [];
-
-	// search by id
-	$n1 =  notification_bulkLoad(array(
-						'type' => 'invitation', 
-						'target' => new MongoId($u['_id']), 
-					));
-	foreach($n1 as $n) {
-		array_push($notifications, $n);
-	}
-	// search by mail
-	$n2 = notification_bulkLoad(array(
-						'type' => 'invitation', 
-						'target' => $u['mail'], 
-					));
-	foreach($n2 as $n) {
-		// correct target to be an id
-		$n['target'] = new MongoId($u['_id']);
-		notification_save($n);
-		array_push($notifications, $n);
-	}
-	return $notifications;
-}
-
-/*
-function invitation_print(&$n) {
 	if($n['type'] == "invitation") {
-		$html = '	
-			<div class="menu-highlight invitation" data-id="'.$n['_id'].'">
-				<div class="title">'.$n['text'].'</div>
-				<div class="action-menu">
-					<button class="action" onclick="addUserToForum(this)" >Rejoindre le forum</button>
-					<button class="action"><i class="fa fa-remove" onclick="removeNotification(this)"></i></button>
-				</div>
+		$html .= '	
+			<div class="notification" data-id="'.$n['_id'].'">
+				<div onclick="addUserToForum(this)" class="menu-highlight title">Rejoindre le groupe "'.$n['text'].'"</div>
+				<div onclick="removeNotification(this)" class="remove"><i class="fa fa-remove"></i></div>
 			</div>
 		';
 		return $html;
 	}
-	return "";
+	if($n['type'] == "blog_update") {
+		$html .= '
+			<div class="notification" data-id="'.$n['_id'].'">
+				<a href="'.$n['data'].'" target="_blank" class="menu-highlight title">'.$n['text'].'</a>
+				<div onclick="removeNotification(this)" class="remove"><i class="fa fa-remove"></i></div>
+			</div>
+		';
+		return $html;
+	}
 }
-*/

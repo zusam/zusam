@@ -70,7 +70,7 @@ function forum_addUser_andSave(&$forum, &$user) {
 
 function forum_removeUser_andSave(&$forum, &$user) {
 	deleteValue($user['_id'], $forum['users']);
-	deleteValue($forum['_id'], $user['forums']);
+	deleteKey($forum['_id'], $user['forums']);
 	forum_save($forum);
 	account_save($user);
 	if(count($forum['users']) <= 0) {

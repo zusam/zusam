@@ -34,12 +34,54 @@
 	width: 200px; 
 	box-shadow: inset -10px 0px 10px -8px rgba(0,0,0,0.8);
 	font-size: 16px;
+	overflow: auto;
 
+	.forum-settings {
+		padding: 5px;
+		text-decoration: none;
+		margin: 0px 5px;
+	}
+	.forum-settings:hover i {
+		-webkit-animation: fa-spin 2s infinite linear;
+		animation: fa-spin 2s infinite linear;
+		color: white;
+	}
+	.section-title {
+		width: calc(100% - 20px);
+		margin: 7px 10px;
+		color: #F7A71B;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		display: -webkit-flex;
+		-webkit-align-items: center;
+		-webkit-justify-content: space-between;
+	}
+
+	.section-separator {
+		display: block;
+		width: 40%;
+		height: 3px;
+		background-color: #F9B004;
+		margin: 0px auto;
+	}
+	.menu-profil {
+		display: flex;
+		align-items: center;
+		display: -webkit-flex;
+		-webkit-align-items: center;
+
+		.identicon, img {
+			height: 26px;
+			width: 26px;
+			margin-right: 10px;
+		}
+	}
 	.forum-link {
 		text-decoration: none;
 		flex-grow: 2;
 		-webkit-flex-grow: 2;
-		padding: 5px;
+		padding: 5px 5px;
 		border: none;
 		background: none;
 		margin: 0px 5px;
@@ -67,7 +109,7 @@
 	}
 	.menu-action {
 		width: calc(100% - 20px);
-		padding: 15px 10px;
+		padding: 12px 10px;
 		font-weight: bolder;
 		cursor: pointer;
 	}
@@ -93,49 +135,40 @@
 	.menu-highlight:hover {
 		border-bottom: 1px solid #F0F0F0;
 		margin-bottom: -1px;
+		color: white;
 	}
-	.invitation {
+	.notification {
+		display: flex;
+		align-items: stretch;
+		display: -webkit-flex;
+		-webkit-align-items: stretch;
 		margin: 0px;
-		width: calc(100% - 10px);
-		cursor: default;
-		padding: 5px;
+		width: 100%;
 		position: relative;
-		border-bottom: 1px solid black;
+
+		a {
+			display: block;
+			text-decoration: none;
+		}
 
 		.title {
-			width: 100%;
-			text-align: center;
-			padding-bottom: 5px;
+			width: 80%;
+			padding: 6px 10px;
+			cursor: pointer;
 		}
-		//.action-menu {
-		//	display: flex;
-		//	display: -webkit-flex;
-		//	justify-content: space-between;
-		//	align-items: center;
-		//	-webkit-justify-content: space-between;
-		//	-webkit-align-items: center;
-		//}
-		//.action {
-		//	cursor: pointer;
-		//	padding: 5px;
-		//	border-radius: 0px;
-		//	background: white;
-		//	border: 1px solid black;
-		//	flex-grow: 2;
-		//	-webkit-flex-grow: 2;
-		//	margin: 0px 3px;
-		//}
-		//.action:hover {
-		//	background: lightgrey;
-		//}
+		.remove:hover i {
+			color: white;
+		}
+		.remove {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			display: -webkit-flex;
+			-webkit-flex-direction: column;
+			-webkit-justify-content: center;
+			width: 20%;
+			text-align: center;
+			cursor: pointer;
+		}
 	}
-}
-.forum-settings {
-	padding: 5px;
-	text-decoration: none;
-	margin: 0px 5px;
-}
-.forum-settings:hover i {
-	-webkit-animation: fa-spin 2s infinite linear;
-	animation: fa-spin 2s infinite linear;
 }

@@ -148,11 +148,13 @@ if($_SESSION['connected']) {
 			$fid = $POST['fid'];
 			
 			$u = account_load(array('_id' => $uid));
-			$f = forum_load(array('_id'=>$fid));
+			$f = forum_load(array('_id'=> $fid));
+			var_dump($u);
 
 			if($_SESSION['uid'] == $uid) {
 				forum_removeUser_andSave($f, $u);
 			}
+			var_dump($u);
 			exit;
 		}
 
@@ -374,7 +376,6 @@ if($_SESSION['connected']) {
 						));	
 					notification_save($n);
 					echo("ok");
-					//notification_addNotif_andSave($n, $cible);
 				}
 			} else {
 				echo('no credentials');
@@ -393,7 +394,6 @@ if($_SESSION['connected']) {
 			if($_SESSION['uid'] == $uid && $notif['target'] == $uid) {  
 				if($user != null && $user != false && $notif != null && $notif != false) {
 					notification_destroy($nid);
-					//notification_erase_andSave($notif, $user);
 				}
 			} else {
 				echo('no credentials');

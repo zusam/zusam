@@ -9,33 +9,18 @@ function enlighten(id) {
 
 	var width = Math.min(nw,window.innerWidth*0.9);
 	nh = width/nw * nh;
-	//console.log(width/nw);
 	var height = Math.min(nh,window.innerHeight*0.9);
 	width = height/nh * width;
 
-	//var r = e.getBoundingClientRect();
-	//console.log(r);
-	//var dtop = (window.innerHeight - height)/2 - r.y;
-	//var dleft = (window.innerWidth - width)/2 - r.x;
-
-
-	//console.log(width, height, dtop, dleft);
-	//$(id).css({
-	//	'width' : width+"px",
-	//	'height' : height+"px",
-	//	'position' : 'relative',
-	//	'top' : dtop+"px",
-	//	'left' : dleft+"px"
-	//});
-
-	//$(id).on("blur",function(){console.log("coucou");darken(id);});
-
+	mask = $('<div class="lightbox-mask" onclick="lightbox.darken()"></div>');
+	$('body').append(mask);
+	$('body').css({'overflow':'hidden','max-height':'100%'});
 	var img = $('<img class="zoomedImage" src="'+e.src+'"/>');
 	img.css({
 		"top" : (window.innerHeight-height)/2 + "px",
 		"left" : (window.innerWidth-width)/2 + "px",
 		"width" : width + "px",
-		"height" : height + "px"
+		"height" : height + "px",
 	});
 	$(img).on("click",function(){darken()});
 	$('body').append(img);
@@ -43,4 +28,5 @@ function enlighten(id) {
 
 function darken() {
 	$('.zoomedImage').remove();
+	$('.lightbox-mask').remove();
 }

@@ -25,6 +25,9 @@ function removeUserFromForum() {
 		success: function(data) {
 			console.log(data);
 			window.location = location.protocol + "//" + location.host + location.pathname;
+		},
+		error: function() {
+			console.log("fail to remove forum");
 		}
 	});
 }
@@ -140,9 +143,9 @@ function changepassword(old_id,new_id) {
 function sendIt(id) {
 	msg = "";
 	if(id == "#commentBox" || id == "#editBox") {
-		parentID = $('#post-viewer').attr('data-id');
+		var parentID = $('#post-viewer').attr('data-id');
 	} else {
-		parentID = 0;
+		var parentID = 0;
 	}
 	if(id == "#editBox") {
 		var pid = $(id).parent().attr('data-id');
@@ -359,7 +362,7 @@ function addForum(name) {
 }
 
 function addUserToForum(t) {
-	nid = $(t).parent().parent().attr('data-id');
+	nid = $(t).parent().attr('data-id');
 	uid = $('#info').attr('data-uid');
 	$.ajax({
 		url: "Ajax/post.php",
@@ -372,11 +375,11 @@ function addUserToForum(t) {
 			},
 		error: function(){console.log('fail!');}
 	});
-	$(t).parent().parent().remove();
+	$(t).parent().remove();
 }
 
 function removeNotification(t) {
-	nid = $(t).parent().parent().attr('data-id');
+	nid = $(t).parent().attr('data-id');
 	console.log(nid);
 	console.log(t);
 	uid = $('#info').attr('data-uid');

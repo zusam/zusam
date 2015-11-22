@@ -215,7 +215,6 @@ var Filter = {
 		var ajax_url = "Ajax/post.php";
 		var ajax_var = {"action":"gen_preview"};
 		callback = function(data) {
-			//console.log("coucou");
 			console.log(data);
 			if(typeof(data['info']) != "undefined" && data['info'] == "extensionless") {
 				switch(data['type']) {
@@ -237,7 +236,7 @@ var Filter = {
 				}
 			} else {
 				e = Filter.open_graph_build(data);
-				balise = $('#'+baliseId);
+				balise = $('#'+baliseId+'[data-src="'+data['url']+'"]');
 				balise.html(e);
 			}
 		};
