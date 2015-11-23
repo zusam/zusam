@@ -29,10 +29,19 @@ function print_full_post($id, $uid, &$p) {
 	$html_data .= print_post($id, $uid, $p);
 	$html_data .= '<div class="post-separator"></div>';
 	foreach($p['children'] as $cid) {
-		$child_html = print_post($cid, $uid);
-		if($child_html != "") {
-			$html_data .= $child_html;
+
+		// TODO correct removing child posts in order to not do this
+		// loading the child to see if he exists
+		$c = post_load(array('_id'=>$cid));
+		if($c == false || $c == null) {
+			deleteValue($cid, $p['children']);
+		} else {
+			$child_html = print_post($cid, $uid);
+			if($child_html != "") {
+				$html_data .= $child_html;
+			}
 		}
+		post_save($p);
 	}
 	return $html_data;
 

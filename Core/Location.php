@@ -1,8 +1,8 @@
 <?php
 
 function p2l($path) {
-	//$path = preg_replace("/\/srv\/http/","http://nibou.eu",$path);
-	$path = preg_replace("/\/srv\/http/","http://localhost",$path);
+	$path = preg_replace("/\/srv\/http/","http://nibou.eu",$path);
+	//$path = preg_replace("/\/srv\/http/","http://localhost",$path);
 	return $path;
 }
 
