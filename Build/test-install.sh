@@ -85,7 +85,7 @@ function test_perm {
 					fi
 				fi
 			fi
-			if [ "$ext" == "js" ] || [ "$ext" == "css" ] || [ "$ext" == "jpg" ]
+			if [ "$ext" == "js" ] || [ "$ext" == "css" ] || [ "$ext" == "jpg" ] || [ "$ext" == "png" ]
 			then
 				p=`stat -c "%a" "$f"`
 				if [ "$p" != "775" ]
@@ -106,7 +106,7 @@ function test_perm {
 		fi
 	done
 }
-A=(`find . -mindepth 1 -maxdepth 2 -type d -not -path '*/\.*' -print0 | xargs -0`)
+A=(`find . -mindepth 1 -maxdepth 3 -type d -not -path '*/\.*' -print0 | xargs -0`)
 for p in "${A[@]}";
 do
 	test_perm "$p" "$1"

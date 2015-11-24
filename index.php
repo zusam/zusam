@@ -41,9 +41,17 @@ echo('<html>');
 echo('
 	<head>
 		<title>Zusam</title>
+		<meta name="description" content="Zusam est un service de discussions et de partages moderne et réellement privé"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 		<meta charset="utf-8"/>
 		<link href="style.css" rel="stylesheet">
+		<link href="Assets/icons/apple-touch-icon.png" rel="apple-touch-icon" />
+		<link href="Assets/icons/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
+		<link href="Assets/icons/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
+		<link href="Assets/icons/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
+		<link href="Assets/icons/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180" />
+		<link href="Assets/icons/icon-hires.png" rel="icon" sizes="192x192" />
+		<link href="Assets/icons/icon-normal.png" rel="icon" sizes="128x128" />
 	</head>
 ');
 
