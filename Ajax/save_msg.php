@@ -22,27 +22,54 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 
 	if($_SESSION['forum'] == $f['_id'] && $u['forums'][$forum] != null) {
 
-		// look for a preview
-		$ret = preg_match("/https?:\/\/[^\s]+/i",$text,$matches);
-		$ret2 = preg_match("/\{\:[A-Za-z0-9]+\:\}/i",$text,$matches2);
-		if($ret != false && count($matches) > 0) {
-			$preview = $matches[0];
-		} else {
-			if($ret2 != false && count($matches2) > 0) {
-				$preview = $matches2[0];
-			} else {
-				$preview = "";
-			}
+		// look for a potential previews
+		$ret = preg_match_all("/https?:\/\/[^\s]+/i",$text,$matches);
+		$ret2 = preg_match_all("/\{\:[A-Za-z0-9]+\:\}/i",$text,$matches2);
+		//if($ret != false && count($matches) > 0) {
+		//	$preview = $matches[0];
+		//} else {
+		//	if($ret2 != false && count($matches2) > 0) {
+		//		$preview = $matches2[0];
+		//	} else {
+		//		$preview = "";
+		//	}
+		//}
+		
+		if($ret != false) {
+			$matches = $matches[0];
+		}
+		if($ret2 != false) {
+			$matches2 = $matches2[0];
 		}
 
-		// building response...
-		if($preview != "") {
-			// generating the miniature if it's not already done
+
+		// look for a image that we can render
+		foreach($matches as $preview) {
 			$link = gen_miniature($preview);
 			if($link != false && $link != "") {
 				$url_prev = $link;
+				break;
 			}
-		} 
+		}
+		if($url_prev == "") {
+			foreach($matches2 as $preview) {
+				$link = gen_miniature($preview);
+				if($link != false && $link != "") {
+					$url_prev = $link;
+					break;
+				}
+			}
+		}
+
+		//// building response...
+		//if($preview != "") {
+		//	// generating the miniature if it's not already done
+		//	$link = gen_miniature($preview);
+		//	if($link != false && $link != "") {
+		//		$url_prev = $link;
+		//	}
+		//} 
+		
 		// default placeholder image
 		if(preg_match("/.*miniature\/.*\.jpg/",$url_prev) != 1) {
 			$url_prev = p2l(pathTo("placeholder", "assets", "jpg"));
@@ -56,6 +83,8 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				forum_post2news($f, $p['_id']);
 				forum_updateTimestamp($f);
 				forum_save($f);
+				$u['forums'][$forum]['timestamp'] = time();
+				account_save($u);
 			} else {
 				// new com
 				$p = post_load(array('_id'=>$parent));
@@ -67,6 +96,8 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				forum_post2news($f, $p['_id']);
 				forum_updateTimestamp($f);
 				forum_save($f);
+				$u['forums'][$forum]['timestamp'] = time();
+				account_save($u);
 			}
 		} else {
 			if($parent == null || $parent == 0) {
