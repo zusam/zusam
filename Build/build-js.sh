@@ -26,10 +26,16 @@ do
 		if [[ -d "$p" ]]
 		then
 			libname=$(basename "$p")
-			a=`echo "JS/"`
+			a=`echo "JS"`
 			b=`echo ".min.js"`
-			uglifyjs JS/$libname/*.js $opt --wrap=$libname --export-all > $a$libname$b
-			B=$B$D$a$libname$b
+			if [[ -f "$p/uglify.order" ]]
+			then
+				cat $(cat "$p/uglify.order" | sed -r "s/[a-zA-Z0-9_.]+/js\/${libname}\/&/g") | uglifyjs - $opt > $a'/'$libname$b
+			else
+				uglifyjs js/$libname/*.js $opt > $a'/'$libname$b
+			fi
+			uglifyjs JS/$libname/*.js $opt --wrap=$libname --export-all > $a'/'$libname$b
+			B=$B$D$a'/'$libname$b
 		fi
 	fi
 done

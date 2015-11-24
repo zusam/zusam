@@ -17,6 +17,7 @@ function preview_initialize($url) {
 	preview_getImage($p);
 	$p['total_time'] = round(microtime(true) - $t, 5);
 	unset($p['html']);
+	$p['raw_html'] = to_utf8($p['raw_html']);
 	return $p;
 }
 
@@ -71,6 +72,7 @@ function preview_getHTML(&$p) {
 		$item->parentNode->removeChild($item); 
 	}
 	$html_string = $dom->saveHTML();
+	$p['raw_html'] = $html_string;
 	$html = str_get_dom($html_string);
 
 	$p['html'] = $html;

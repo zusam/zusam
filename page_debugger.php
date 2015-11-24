@@ -92,8 +92,11 @@ if($url != "" && $url != null) {
 	}
 	
 	echo('<br>');
-	var_dump($p);
+	//var_dump($p);
 }
+
+echo('<br>');
+echo('<textarea style="width:100%;height:600px">'.$p['raw_html'].'</textarea>');
 
 echo('</body></html>');
 
