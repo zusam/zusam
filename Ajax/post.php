@@ -203,6 +203,37 @@ if($_SESSION['connected']) {
 
 			exit;
 		}
+		
+		if($POST['action'] == "addSGF") {
+
+			$uid = $POST['uid'];
+			$fileId = $POST['fileId'];
+			var_dump($POST);
+			var_dump($_FILES);
+		
+			if($_FILES["sgf"]["size"] < 1024*1024*5) {
+				$u = account_load(array('_id' => $uid));
+				if($u != null && $u != false) {
+					$file = file_initialize($fileId, "sgf", $u['_id']);
+					// TODO verify that's a sgf an not something else...
+	$r = copy($_FILES["sgf"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'sgf', 'param' => 'file')));
+	//$r2 = copy($_FILES["sgf"]["tmp_name"], "/srv/http/zusam/Data/file/plop.sgf");
+	$hello = pathTo2(array('url' => $file['location'], 'ext' => 'sgf', 'param' => 'file'));
+	var_dump($hello);
+	var_dump($file);
+	$coucou = is_writable("/srv/http/zusam/Data/file");
+	var_dump($coucou);
+	$plop = file_get_contents($_FILES["sgf"]["tmp_name"]);
+	var_dump($plop);
+	var_dump($r);
+	//var_dump($r2);
+					if($r) {
+						file_save($file);
+					}
+				}
+			}
+			exit;
+		}
 
 		if($POST['action'] == "addForum") {
 			

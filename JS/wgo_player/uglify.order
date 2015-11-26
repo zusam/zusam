@@ -1,0 +1,10 @@
+kifu.js
+sgfparser.js
+player.js
+basicplayer.js
+basicplayer.component.js
+basicplayer.infobox.js
+basicplayer.commentbox.js
+basicplayer.control.js
+player.editable.js
+scoremode.js

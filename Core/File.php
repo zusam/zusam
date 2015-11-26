@@ -26,6 +26,9 @@ function file_locate(&$file) {
 	if($file['type'] == 'webm') {
 		$file['location'] = $file['fileId'];
 	}
+	if($file['type'] == 'sgf') {
+		$file['location'] = $file['fileId'];
+	}
 }
 
 function file_save(&$file) {
@@ -93,6 +96,10 @@ function file_print(&$file) {
 	}
 	if($file['type'] == "webm") {
 		$html .= '<video controls="true" src="'.p2l(pathTo2(array("url" => $file['location'], "ext" => "webm", "param" => "file"))).'"></video>';
+	}
+	if($file['type'] == "sgf") {
+		$html .= '<div class="sgf-viewer" id="sgf-viewer-'.$file['fileId'].'"></div>';
+		$html .= '<script>new WGo.BasicPlayer(document.getElementById("sgf-viewer-'.$file['fileId'].'"), {sgfFile : "'.p2l(pathTo2(array("url" => $file['location'], "ext" => "sgf", "param" => "file"))).'", enableKeys : false})</script>';
 	}
 
 	return $html;

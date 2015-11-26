@@ -418,5 +418,9 @@ function handleFileSelect(evt) {
 		if(file.type.match('video')) {
 			PF.loadVideo(file,id);
 		}
+		if(file.type.match('sgf')) {
+			console.log("SGF DETECTED");
+			PF.loadSGF(file,id);
+		}
 	}
 }
