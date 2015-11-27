@@ -29,11 +29,27 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
+
+	.warning {
+		text-align: center;
+		width: calc(100% - 50px);
+		max-width: 425px;
+		position: absolute;
+		left: 50%;
+		top: 170px;
+		transform: translateX(-50%);
+		z-index: 10;
+		background: rgba(255, 255, 255, 0.7) none repeat scroll 0% 0%;
+		border-radius: 5px;
+		padding: 10px;
+		color: red;
+		font-size: 20px;
+	}
 	
 	.background {
 		filter: grayscale(1);
 		-webkit-filter: grayscale(1);
-		background-image: url('Assets/Backgrounds/pre2.jpg'), url('Assets/Backgrounds/small/pre2.jpg');
+		background-image: url('Assets/Backgrounds/1.jpg'), url('Assets/Backgrounds/small/1.jpg');
 		background-repeat: no-repeat;
 		background-position: 50% 50%;
 		background-size: cover;
@@ -163,3 +179,4 @@
 		}
 	}
 }
+

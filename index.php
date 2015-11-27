@@ -23,17 +23,6 @@ foreach($_GET as $K=>$V) {
 	$GET[$K] = (String) $V;
 }
 
-
-//apply secret link
-if($GET['il'] != null && $_SESSION['connected']) {
-	$f = forum_load(array('link'=>$GET['il']));
-	$u = account_load(array('_id'=>$_SESSION['uid']));
-	if($f != null && $f != false && $u != null && $u != false) {
-		forum_addUser_andSave($f, $u);	
-	}
-}
-
-
 // HTML
 echo('<html>');
 
@@ -54,6 +43,22 @@ echo('
 		<link href="Assets/icons/icon-normal.png" rel="icon" sizes="128x128" />
 	</head>
 ');
+
+//apply secret link
+if($GET['il'] != null) {
+	if($_SESSION['connected']) {
+		$f = forum_load(array('link'=>$GET['il']));
+		$u = account_load(array('_id'=>$_SESSION['uid']));
+		if($f != null && $f != false && $u != null && $u != false) {
+			forum_addUser_andSave($f, $u);	
+		}
+	} else {
+		unset($_SESSION);
+		session_destroy();
+		landing("Connectez-vous ou inscrivez-vous pour accéder à cette ressource");
+		exit();
+	}
+}
 
 if($_SESSION['connected'] != true) {
 	unset($_SESSION);

@@ -1,5 +1,5 @@
 <?php
-function landing() {
+function landing($warning, $redirect_url) {
 	echo('
 		<body id="landing">
 			
@@ -20,8 +20,16 @@ function landing() {
 						<button type="submit" name="submit" class="submit"><i class="fa fa-paper-plane"></i></button>
 					</form>
 				</div>
+	');
+	if($warning != "") {
+		echo('<div class="warning">');
+		echo($warning);
+		echo('</div>');
+	}
+	echo('
 			</div>
-
+	');
+	echo('
 		<script src="LibJS/jquery.2.1.4.min.js"></script>
 		<script src="LibJS/fastclick.min.js"></script>
 		<script src="zusam.min.js"></script>
@@ -32,4 +40,5 @@ function landing() {
 		</html>
 	');
 }
+
 ?>

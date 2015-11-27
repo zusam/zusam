@@ -1,4 +1,4 @@
-function start() {
+function start(redirect_url) {
 	$("#landing .login-form").on("submit", function(e) {
 		e.preventDefault();	
 		console.log("submitted");
@@ -11,8 +11,7 @@ function start() {
 			type: "POST",
 			data: {"action":action, "mail":mail, "password":password},
 			success: function(data) {
-					console.log(data);
-					window.location = location.protocol + "//" + location.host + location.pathname;
+					window.location.reload();
 				},
 			error: function() {
 					console.log("fail");
@@ -36,12 +35,12 @@ function switchForm() {
 function switchToLogin() {
 	$('#landing .signin').html('S\'inscrire');
 	$('#landing .center-form .title-form').html('Se connecter');
-	$('#landing .background').css('background-image','url("Assets/Backgrounds/pre5.jpg"), url("Assets/Backgrounds/small/pre5.jpg")');
+	$('#landing .background').css('background-image','url("Assets/Backgrounds/16.jpg"), url("Assets/Backgrounds/small/16.jpg")');
 	$('#landing .login-form').attr('data-action','login');
 }
 function switchToSignup() {
 	$('#landing .signin').html('Se connecter');
 	$('#landing .center-form .title-form').html('S\'inscrire');
-	$('#landing .background').css('background-image','url("Assets/Backgrounds/pre2.jpg"), url("Assets/Backgrounds/small/pre2.jpg")');
+	$('#landing .background').css('background-image','url("Assets/Backgrounds/1.jpg"), url("Assets/Backgrounds/small/1.jpg")');
 	$('#landing .login-form').attr('data-action','signup');
 }
