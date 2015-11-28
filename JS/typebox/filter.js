@@ -236,7 +236,8 @@ var Filter = {
 				}
 			} else {
 				e = Filter.open_graph_build(data);
-				balise = $('#'+baliseId+'[data-src="'+data['url']+'"]');
+				//balise = $('#'+baliseId+'[data-src="'+data['url']+'"]');
+				balise = $('*[data-src="'+data['url']+'"]');
 				balise.html(e);
 			}
 		};

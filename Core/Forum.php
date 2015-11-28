@@ -18,6 +18,16 @@ function forum_initialize($name) {
 	return $forum;
 }
 
+function forum_addUnread(&$forum, $pid) {
+	foreach($forum['users'] as $uid) {
+		$u = account_load(array('_id'=>$uid));
+		if($u != null && $u != false) {
+			account_addUnread($u, $pid);
+			account_save($u);
+		}
+	}
+}
+
 function forum_updateTimestamp(&$forum) {
 	$forum['timestamp'] = time();
 }

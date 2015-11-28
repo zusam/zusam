@@ -18,6 +18,7 @@ $(window).ready(function() {
 			if(window.pageYOffset > document.body.scrollHeight/2) {
 				//console.log("loadmore!");
 				loadMorePosts();
+				updatePosts();
 			}
 		});
 	}
@@ -34,6 +35,7 @@ $(window).ready(function() {
 	
 	retouche.start("#retoucheBox");
 	setpostsviewable();
+	updatePosts();
 	
 	// INITIALISATION OF EXTERNAL LIBRARIES
 	// SOUNDCLOUD

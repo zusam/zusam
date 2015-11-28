@@ -88,10 +88,13 @@ section {
 			z-index: 10;
 			background-color: rgba(0, 0, 0, 0.75);
 			height: 25px;
-			width: 40px;
+			width: 45px;
 			box-shadow: 0px 0px 10px rgba(0,0,0,0.75);
 			border-top-left-radius: 4px;
 
+			.newcom {
+				color: #F7A71B !important;
+			}
 			div {
 				color: white;
 				font-family: Roboto;

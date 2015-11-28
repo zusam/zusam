@@ -76,11 +76,27 @@ if($_SESSION['connected']) {
 		}
 
 		// TODO protect
+		if($GET['action'] == "getUnread") {
+			
+			$uid = $GET['uid'];
+			$u = account_load(array('_id' => $uid));
+			$r = new StdClass();
+			$r->unread = $u['unread'];
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($r));
+			exit;
+
+		}
+
+		// TODO protect
 		if($GET['action'] == "getPost") {
 
 			$id = $GET['id'];
 
+			// TODO why using mail ?
 			$u = account_load(array('mail' => $_SESSION['mail']));
+			account_readPost($u, $id);
+			account_save($u);
 			$html_data = print_full_post($id, $u['_id']);
 			$r = new StdClass();
 			$r->html = $html_data;

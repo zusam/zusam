@@ -18,6 +18,21 @@ function account_getDummy($default) {
 	return $ac;
 }
 
+function account_addUnread(&$ac, $pid) {
+	if($ac['unread'] == null) {
+		$ac['unread'] = [];
+	}
+	$pid = (String) $pid;
+	if(!in_array($pid, $ac['unread'])) {
+		array_push($ac['unread'], $pid);		
+	}
+}
+
+function account_readPost(&$ac, $pid) {
+	$pid = (String) $pid;
+	deleteValue($pid, $ac['unread']);
+}
+
 function account_initialize($mail, $password) {
 	$ac = [];
 	$ac['_id'] = new MongoId();
