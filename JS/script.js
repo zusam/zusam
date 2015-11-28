@@ -432,13 +432,14 @@ function handleFileSelect(evt) {
 	evt.target.value = null;
 	if(!window.sending) {
 		console.log(file.type);
-		if(file.type.match('image')) {
+		console.log(file);
+		if(file.type.match(/image/)) {
 			PF.loadImage(file,id);
 		}
-		if(file.type.match('video')) {
+		if(file.type.match(/video/)) {
 			PF.loadVideo(file,id);
 		}
-		if(file.type.match('sgf')) {
+		if(file.type.match(/sgf/) || file.name.match(/sgf/)) {
 			console.log("SGF DETECTED");
 			PF.loadSGF(file,id);
 		}

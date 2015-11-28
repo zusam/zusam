@@ -2,7 +2,8 @@
 
 function p2l($path) {
 	//$path = preg_replace("/\/srv\/http/","http://nibou.eu",$path);
-	$path = preg_replace("/\/srv\/http/","http://localhost",$path);
+	$path = preg_replace("/\/srv\/http\/zusam/","http://zus.am",$path);
+	//$path = preg_replace("/\/srv\/http/","http://localhost",$path);
 	return $path;
 }
 
@@ -31,19 +32,19 @@ function pathTo2($args) {
 	if(!$dir) {
 		if($param == "assets") {
 			$path = "Assets/".$url.$ext; 
-			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/".$path);
 		}
 		if($param == "mini") {
 			$path = $loc."/miniature/".hash("md5", $url).$ext; 
-			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/".$path);
 		}
 		if($param == "avatar") {
 			$path = $loc."/avatar/".$url.$ext; 
-			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/".$path);
 		}
 		if($param == "file") {
 			$path = $loc."/file/".$url.$ext; 
-			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/".$path);
 		}
 		if($param == "tmp") {
 			$path = "tmp/".hash("md5", $url); 
@@ -51,12 +52,12 @@ function pathTo2($args) {
 		}
 		if($param == "default_avatar") {
 			$path = "Assets/avatar/".$url; 
-			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/".$path);
 		}
 	} else {
 		if($param == "default_avatar") {
 			$path = "Assets/avatar"; 
-			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/zusam/".$path);
+			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT']."/".$path);
 		}
 	}
 }

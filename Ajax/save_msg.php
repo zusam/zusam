@@ -84,6 +84,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				forum_updateTimestamp($f);
 				forum_save($f);
 				$u['forums'][$forum]['timestamp'] = time();
+				account_save($u);
 				forum_addUnread($f, $p['_id']);
 			} else {
 				// new com
@@ -97,6 +98,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				forum_updateTimestamp($f);
 				forum_save($f);
 				$u['forums'][$forum]['timestamp'] = time();
+				account_save($u);
 				forum_addUnread($f, $p['_id']);
 			}
 		} else {
