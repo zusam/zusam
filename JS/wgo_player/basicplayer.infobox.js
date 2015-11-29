@@ -33,7 +33,7 @@ var prepare_dom_box = function(type) {
 	t.info.time = prepare_dom_info("time");
 	t.info.time.val.innerHTML = "--:--";
 	info_wrapper.appendChild(t.info.rank.wrapper);
-	//info_wrapper.appendChild(t.info.caps.wrapper);
+	info_wrapper.appendChild(t.info.caps.wrapper);
 	info_wrapper.appendChild(t.info.time.wrapper);
 }
 

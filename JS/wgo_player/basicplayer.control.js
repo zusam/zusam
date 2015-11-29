@@ -383,37 +383,34 @@ Control.menu = [{
  * }
 */
 
-Control.widgets = [ 
-//{
-//	constructor: control.Group,
-//	args: {
-//		name: "left",
-//		widgets: [{
-//			constructor: control.Button,
-//			args: {
-//				name: "menu",
-//				togglable: true,
-//				click: player_menu,
-//			}
-//		}]
-//	}
-//}, 
-//{
-//	constructor: control.Group,
-//	args: {
-//		name: "right",
-//		widgets: [{
-//			constructor: control.Button,
-//			args: {
-//				name: "about",
-//				click: function(player) {
-//					player.showMessage(WGo.t("about-text"));
-//				},
-//			}
-//		}]
-//	}
-//}, 
-{
+Control.widgets = [ {
+	constructor: control.Group,
+	args: {
+		name: "left",
+		widgets: [{
+			constructor: control.Button,
+			args: {
+				name: "menu",
+				togglable: true,
+				click: player_menu,
+			}
+		}]
+	}
+}, {
+	constructor: control.Group,
+	args: {
+		name: "right",
+		widgets: [{
+			constructor: control.Button,
+			args: {
+				name: "about",
+				click: function(player) {
+					player.showMessage(WGo.t("about-text"));
+				},
+			}
+		}]
+	}
+}, {
 	constructor: control.Group,
 	args: {
 		name: "control",
@@ -523,15 +520,15 @@ bp_layouts["no_comment"].bottom.push("Control");
 bp_layouts["minimal"].bottom.push("Control");
 
 var player_terms = {
-//	"about": "About",
+	"about": "About",
 	"first": "First",
 	"multiprev": "10 moves back",
 	"previous": "Previous",
 	"next": "Next",
 	"multinext": "10 moves forward",
 	"last": "Last",
-//  "switch-coo": "Display coordinates",
-//	"menu": "Menu",
+	"switch-coo": "Display coordinates",
+	"menu": "Menu",
 };
 
 for(var key in player_terms) WGo.i18n.en[key] = player_terms[key];

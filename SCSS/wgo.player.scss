@@ -84,10 +84,8 @@
 
 .wgo-board {
 	margin: 0 auto;
-	canvas {
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
+	canvas:nth-child(3) {
+		position: relative !important;
 	}
 }
 
@@ -543,6 +541,9 @@ a.wgo-move-link {
 	content: '\e80f';
 	font-size: 30px;
 	font-weight: normal;
+}
+.wgo-button-menu, .wgo-button-about {
+	display: none;
 }
 
 /* move number widget */

@@ -259,8 +259,6 @@ Player.prototype = {
 		this.element.addEventListener("click", this.focus.bind(this));
 		
 		this.focus();
-		// add coordinates
-		this.setCoordinates(true);
 	},
 	
 	initGame: function() {
@@ -320,6 +318,14 @@ Player.prototype = {
 			target: this,
 			kifu: this.kifu,
 		});
+		
+		// handle permalink
+		/*if(this.config.permalinks) {
+			if(!permalinks.active) init_permalinks();
+			if(permalinks.query.length && permalinks.query[0] == this.view.element.id) {
+				handle_hash(this);
+			}
+		}*/
 		
 		if(path) {
 			this.goTo(path);
