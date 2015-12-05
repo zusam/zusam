@@ -35,12 +35,12 @@ function switchForm() {
 function switchToLogin() {
 	$('#landing .signin').html('S\'inscrire');
 	$('#landing .center-form .title-form').html('Se connecter');
-	$('#landing .background').css('background-image','url("Assets/Backgrounds/16.jpg"), url("Assets/Backgrounds/small/16.jpg")');
+	$('#landing .background').css('background-image','url("Assets/Backgrounds/16b.jpg"), url("Assets/Backgrounds/small/16b.jpg")');
 	$('#landing .login-form').attr('data-action','login');
 }
 function switchToSignup() {
 	$('#landing .signin').html('Se connecter');
 	$('#landing .center-form .title-form').html('S\'inscrire');
-	$('#landing .background').css('background-image','url("Assets/Backgrounds/1.jpg"), url("Assets/Backgrounds/small/1.jpg")');
+	$('#landing .background').css('background-image','url("Assets/Backgrounds/1b.jpg"), url("Assets/Backgrounds/small/1b.jpg")');
 	$('#landing .login-form').attr('data-action','signup');
 }

@@ -1,4 +1,15 @@
-.dynamicBox{padding:0px;position:relative;min-height:66px;max-width:530px;margin:0px auto;cursor:text;text-align:left}
+.dynamicBox{
+	display: block;
+	padding:0px;
+	position:relative;
+	min-height:66px;
+	max-width:530px;
+	margin:0px auto;
+	cursor:text;
+	text-align:left;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
 .viewerBox{min-height:22px !important;}
 .dynamicBox > span > img { margin:0px 0px; max-width: 100%}
 .dynamicBox > span > video { margin:0px 0px; width: 100%}
@@ -39,29 +50,7 @@
 	position: relative;
 	overflow: hidden;
 	text-align: left;
-
-	//span {
-	//	position: absolute;
-	//	top: calc(50% - 14px);
-	//	left: 0;
-	//	width: 100%;
-	//	text-align:center;
-	//	color: whitesmoke;
-	//	font-size: 28px;
-	//	line-height: 21px;
-	//	font-weight: bolder;
-	//	z-index: 10;
-	//}
 }
-//.b-link > div {
-//	width: 130%;
-//	height: 100%;
-//	display: block;
-//	position: relative;
-//	margin: 0px;
-//	overflow: hidden;
-//	text-align: left;
-//}
 .article_small, .article_big {
 	display: block;
 	overflow: hidden;
@@ -302,7 +291,8 @@
 	padding-left: 10px;
 }
 .post-com-text {
-	word-break: break-word;
+	word-wrap: break-word;
+	white-space: pre-wrap;
 	margin-left: 43px;
 	margin-top: 2px;
 }

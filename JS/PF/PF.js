@@ -6,6 +6,7 @@ function loadSGF(file,id) {
 	var content = $('<span data-src="{:'+fileId+':}" class="deletable" contenteditable="false"><div class="sgf-viewer" id="sgf-viewer-'+fileId+'"></div></span>');
 	$(id).append(content);
 	var wgo = new WGo.BasicPlayer(document.getElementById("sgf-viewer-"+fileId), { sgfFile: URL.createObjectURL(file), enableKeys: false, enableWheel: false, layout: {top: ["InfoBox", "Control"],bottom: ["CommentBox"]}});
+	wgo.setCoordinates(true);
 	PF.sendSGF(file, fileId);
 }
 

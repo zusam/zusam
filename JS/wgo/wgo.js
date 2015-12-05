@@ -643,13 +643,28 @@ var getMousePos = function(e) {
 		x, y;
     
 	while (obj && obj.tagName != 'BODY') {
+		//console.log(obj,obj.offsetTop);
         top += obj.offsetTop;
         left += obj.offsetLeft;
         obj = obj.offsetParent;
     }
+		//if(obj != null) {
+		//	console.log(obj,obj.offsetTop);
+		//} else {
+		//	console.log(obj);
+		//}
 	
+	console.log("----------");
+	console.log(this);
+	console.log(e.pageX, e.pageY);
+	console.log(this.left,this.top);
+	console.log(left,top);
+	console.log("_________________________________");
 	x = Math.round((e.pageX-left-this.left)/this.fieldWidth);
-	y = Math.round((e.pageY-top-this.top)/this.fieldHeight);
+	//y = Math.round((e.pageY-top-this.top)/this.fieldHeight);
+	//hardcoding patch for now // TODO modify wgo to be smarter
+	y = Math.round((e.pageY-top-this.top+$('#slidepostviewer').scrollTop())/this.fieldHeight);
+	console.log(x,y);
 
     return {
         x: x >= this.size ? -1 : x,

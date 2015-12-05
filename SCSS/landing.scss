@@ -47,9 +47,9 @@
 	}
 	
 	.background {
-		filter: grayscale(1);
-		-webkit-filter: grayscale(1);
-		background-image: url('Assets/Backgrounds/1.jpg'), url('Assets/Backgrounds/small/1.jpg');
+		//filter: grayscale(1);
+		//-webkit-filter: grayscale(1);
+		background-image: url('Assets/Backgrounds/1b.jpg'), url('Assets/Backgrounds/small/1b.jpg');
 		background-repeat: no-repeat;
 		background-position: 50% 50%;
 		background-size: cover;

@@ -32,25 +32,16 @@ var Control = {
 			// generate output
 			node = toProcess[i];
 			
-			inner = node.innerHTML.trim();
-			//console.log(filter);
-			//console.log(typeof(filter));
+			//inner = node.innerHTML.trim();
+			inner = node.innerHTML;
 			output = filter(inner, ending);
-			//console.log(filter.name);
-			//console.log(output);
 			if(output.length > 1 || output[0] != node.innerHTML) {
 				hasChanged = true;
 			} else {
 				hasChanged = false;
 			}
 			if(output.length > 1) {
-				console.log(output);
-				//console.log(output.length);
-				//console.log(node);
 				for(j = (output.length-1); j > 0; j--) {
-					//console.log(output[j]);
-					//$(node).after(output[j]);
-					//console.log(node.parentNode.innerHTML);
 					node.insertAdjacentHTML('afterend', output[j]);
 				}
 			}
@@ -90,30 +81,43 @@ var Control = {
 			preCaretTextRange.setEndPoint("EndToEnd", textRange);
 			caretOffset = preCaretTextRange.text.length;
 		}
+		var lignes = $(element).find("br").length
+		caretOffset = caretOffset + lignes;
+		console.log("getpos:"+caretOffset);
 		return caretOffset;
 	},
 
 	// set cursor
 	setCpos : function(e, c) {
 		
+		console.log("-----");
+		var placed = false;
 		c = parseInt(c);
 		if(c < 0) { c = 0; }
 		count = 0;
 		for(i=0; i<e.childNodes.length; i++) {
 			var node = e.childNodes[i];
-			if(node.tagName == null) {
+			//console.log("node:"+node);
+			console.log("node tagname:"+node.tagName);
+			if(typeof(node.tagName) == "undefined") {
+			console.log(c,count)
 				if(node.length >= (c-count)) {
 					var range = document.createRange();
 					range.setStart(node, c-count);
 					range.setEnd(node, c-count);
+					console.log(range)
 					var sel = window.getSelection();
 					sel.removeAllRanges();
 					sel.addRange(range);
+			//		console.log(sel);
+					placed = true;
 					break;
 				} else {
+					console.log("coucou");
 					count = parseInt(count) + parseInt(node.length);
 				}
 			} else {
+			console.log(c,count)
 				if(c-count <= 1) {
 					$(node).after(document.createTextNode(' '));
 					var range = document.createRange();
@@ -122,10 +126,26 @@ var Control = {
 					var sel = window.getSelection();
 					sel.removeAllRanges();
 					sel.addRange(range);
+					placed = true;
 					break;
+				} else {
+					count++;
 				}
 			}
 		} 
+		if(!placed) {
+			console.log("non placé");
+			node = e.childNodes[e.childNodes.length-1];
+			var range = document.createRange();
+			range.setStart(node, node.length);
+			range.setEnd(node, node.length);
+			//console.log(range)
+			var sel = window.getSelection();
+			sel.removeAllRanges();
+			sel.addRange(range);
+			//console.log(sel);
+
+		}
 	},
 
 	////replace true with plaintext-only if the browser permits it
@@ -167,7 +187,6 @@ var Control = {
 			// activating deletable content
 			t.find('.deletable').on('mouseenter', function(event){
 					$(event.currentTarget).append('<div onclick="$(this).parent().remove();" class="delete-btn"><i class="fa fa-times"></i></div>');
-					//window.setTimeout(function() {$('.delete-btn').addClass('grow-btn');}, 10);
 					});
 			t.find('.deletable').on('mouseleave', function(event){
 					$(event.currentTarget).children('.delete-btn').remove();

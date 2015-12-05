@@ -97,9 +97,10 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				forum_post2news($f, $p['_id']);
 				forum_updateTimestamp($f);
 				forum_save($f);
-				$u['forums'][$forum]['timestamp'] = time();
-				account_save($u);
 				forum_addUnread($f, $p['_id']);
+				$u['forums'][$forum]['timestamp'] = time();
+				account_readPost($u, $id);
+				account_save($u);
 			}
 		} else {
 			if($parent == null || $parent == 0) {

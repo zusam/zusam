@@ -99,7 +99,7 @@ function file_print(&$file) {
 	}
 	if($file['type'] == "sgf") {
 		$html .= '<div class="sgf-viewer" id="sgf-viewer-'.$file['fileId'].'"></div>';
-		$html .= '<script>new WGo.BasicPlayer(document.getElementById("sgf-viewer-'.$file['fileId'].'"), {sgfFile : "'.p2l(pathTo2(array("url" => $file['location'], "ext" => "sgf", "param" => "file"))).'", enableKeys: false, enableWheel: false, layout: {top: ["InfoBox", "Control"],bottom: ["CommentBox"]}})</script>';
+		$html .= '<script>var wgo = new WGo.BasicPlayer(document.getElementById("sgf-viewer-'.$file['fileId'].'"), {sgfFile : "'.p2l(pathTo2(array("url" => $file['location'], "ext" => "sgf", "param" => "file"))).'", enableKeys: false, enableWheel: false, layout: {top: ["InfoBox", "Control"],bottom: ["CommentBox"]}}); wgo.setCoordinates(true);</script>';
 	}
 
 	return $html;

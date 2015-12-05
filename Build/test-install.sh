@@ -50,16 +50,16 @@ function test_perm {
 		if [ -d "$f" ] 
 		then
 			p=`stat -c "%a" "$f"`
-			if [ "$p" != "775" ]
+			if [ "$p" != "770" ]
 			then
 				if [[ "$2" != "correct" ]]
 				then
 					echo "`pwd`"
-					echo "$f permissions should be 775"
+					echo "$f permissions should be 770"
 					echo "they are $p"
 				else
 					pa=`pwd`
-					chmod 775 "$pa/$f"
+					chmod 770 "$pa/$f"
 					echo "`pwd`"
 					echo "$f corrected"
 				fi
