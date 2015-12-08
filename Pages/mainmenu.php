@@ -20,28 +20,29 @@ function page_mainmenu(&$u, $page) {
 	$html .= '<div class="section-title">Groupes';
 	$html .= '</div>';
 	foreach($u['forums'] as $fid=>$v) {
-		$f = forum_load(array('_id'=>$fid));
-		$html .= '<div class="forum-menu ';
-		if($_SESSION['forum'] == $fid) {
-			$html .= 'selected';
+		if($fid != "") {
+			$f = forum_load(array('_id'=>$fid));
+			if($f != null && $f != false) {
+				$html .= '<div class="forum-menu ';
+				if($_SESSION['forum'] == $fid) {
+					$html .= 'selected';
+				}
+				$html .= '">';
+				$html .= ' <a class="menu-highlight forum-link ';
+				$html .= '" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum">'.$f['name'];
+				if($f['timestamp'] != null && $v['timestamp'] < $f['timestamp']) {
+					$html .= ' <i class="fa fa-circle notif"></i>';
+				}
+				$html .= '</a>';
+				$html .= '
+					<a class="forum-settings" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum_settings">
+						<i class="fa fa-gear fa-spin-hover">
+						</i>
+					</a>
+				';
+				$html .= '</div>';
+			}
 		}
-		$html .= '">';
-		$html .= ' <a class="menu-highlight forum-link ';
-		//if($f['timestamp'] != null && $v['timestamp'] < $f['timestamp']) {
-	//		$html .= 'news-highlight';
-	//	}
-		$html .= '" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum">'.$f['name'];
-		if($f['timestamp'] != null && $v['timestamp'] < $f['timestamp']) {
-			$html .= ' <i class="fa fa-circle notif"></i>';
-		}
-		$html .= '</a>';
-		$html .= '
-			<a class="forum-settings" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum_settings">
-				<i class="fa fa-gear fa-spin-hover">
-				</i>
-			</a>
-		';
-		$html .= '</div>';
 	}
 	$html .= '<div class="separator"></div>';
 	$notifications = array_reverse(load_notifications($u));

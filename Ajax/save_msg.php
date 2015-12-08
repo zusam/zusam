@@ -22,44 +22,46 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 
 	if($_SESSION['forum'] == $f['_id'] && $u['forums'][$forum] != null) {
 
-		// look for a potential previews
-		$ret = preg_match_all("/https?:\/\/[^\s]+/i",$text,$matches);
-		$ret2 = preg_match_all("/\{\:[A-Za-z0-9]+\:\}/i",$text,$matches2);
-		//if($ret != false && count($matches) > 0) {
-		//	$preview = $matches[0];
-		//} else {
-		//	if($ret2 != false && count($matches2) > 0) {
-		//		$preview = $matches2[0];
-		//	} else {
-		//		$preview = "";
+		//// look for a potential previews
+		//$ret = preg_match_all("/https?:\/\/[^\s]+/i",$text,$matches);
+		//$ret2 = preg_match_all("/\{\:[A-Za-z0-9]+\:\}/i",$text,$matches2);
+		////if($ret != false && count($matches) > 0) {
+		////	$preview = $matches[0];
+		////} else {
+		////	if($ret2 != false && count($matches2) > 0) {
+		////		$preview = $matches2[0];
+		////	} else {
+		////		$preview = "";
+		////	}
+		////}
+		//
+		//if($ret != false) {
+		//	$matches = $matches[0];
+		//}
+		//if($ret2 != false) {
+		//	$matches2 = $matches2[0];
+		//}
+
+
+		//// look for a image that we can render
+		//foreach($matches as $preview) {
+		//	$link = gen_miniature($preview);
+		//	if($link != false && $link != "") {
+		//		$url_prev = $link;
+		//		break;
 		//	}
 		//}
-		
-		if($ret != false) {
-			$matches = $matches[0];
-		}
-		if($ret2 != false) {
-			$matches2 = $matches2[0];
-		}
+		//if($url_prev == "") {
+		//	foreach($matches2 as $preview) {
+		//		$link = gen_miniature($preview);
+		//		if($link != false && $link != "") {
+		//			$url_prev = $link;
+		//			break;
+		//		}
+		//	}
+		//}
 
-
-		// look for a image that we can render
-		foreach($matches as $preview) {
-			$link = gen_miniature($preview);
-			if($link != false && $link != "") {
-				$url_prev = $link;
-				break;
-			}
-		}
-		if($url_prev == "") {
-			foreach($matches2 as $preview) {
-				$link = gen_miniature($preview);
-				if($link != false && $link != "") {
-					$url_prev = $link;
-					break;
-				}
-			}
-		}
+		$url_prev = search_miniature($text);
 
 		//// building response...
 		//if($preview != "") {
@@ -117,7 +119,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 		}
 
 		$r = new stdClass();
-		$r->link = $link;
+		//$r->link = $link;
 		$r->miniature = $url_prev;
 		$r->prev = $preview;
 		$r->id = (String) $p['_id'];

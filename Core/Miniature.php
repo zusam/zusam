@@ -4,6 +4,36 @@ chdir(realpath(dirname(__FILE__))."/../");
 require_once('Core/Location.php');
 require_once('Core/Filtre.php');
 
+function search_miniature($text) {
+	// look for a potential previews
+	$ret = preg_match_all("/https?:\/\/[^\s]+/i",$text,$matches);
+	$ret2 = preg_match_all("/\{\:[A-Za-z0-9]+\:\}/i",$text,$matches2);
+	if($ret != false) {
+		$matches = $matches[0];
+	}
+	if($ret2 != false) {
+		$matches2 = $matches2[0];
+	}
+	// look for a image that we can render
+	foreach($matches as $preview) {
+		$link = gen_miniature($preview);
+		if($link != false && $link != "") {
+			$url_prev = $link;
+			break;
+		}
+	}
+	if($url_prev == "") {
+		foreach($matches2 as $preview) {
+			$link = gen_miniature($preview);
+			if($link != false && $link != "") {
+				$url_prev = $link;
+				break;
+			}
+		}
+	}
+	return $url_prev;
+}
+
 function gen_miniature($url) {
 	$link = p2l(filtre($url));
 	return $link;

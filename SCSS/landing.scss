@@ -66,9 +66,10 @@
 		position: absolute;
 		z-index: 10;
 		width: 100%;
-		text-align: right;
 		background-color: rgba(0,0,0,0.7);
 		box-shadow: 0px 0px 10px black;
+		flex-flow: row-reverse wrap;
+		-webkit-flex-flow: row-reverse wrap;
 
 		.signin {
 			border: none;

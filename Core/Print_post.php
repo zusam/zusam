@@ -114,6 +114,16 @@ function print_post($id, $uid, &$p) {
 function print_post_mini(&$p) {
 	$html = "";
 	if($p != false && ($p['parent'] == null || $p['parent'] == 0)) {
+		if($p['preview'] == null) {
+			//var_dump($p['preview']);
+			$link = search_miniature($p['text']);
+			if($link != "") {
+				$p['preview'] = $link;
+			}
+			//var_dump($p['preview']);
+			post_save($p);
+			//echo('<br>');
+		}
 		if(!file_exists(get_miniature_path($p['preview']))) {
 			if($p['preview'] != "") {
 				$link = gen_miniature($p['preview']);
@@ -121,7 +131,11 @@ function print_post_mini(&$p) {
 			if($link != null && $link != false && $link != "") {
 				$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
 			} else {
-				$inside = '<img src="'.p2l(pathTo("placeholder", "assets", "jpg")).'"/>';
+				//$inside = '<img src="'.p2l(pathTo("placeholder", "assets", "jpg")).'"/>';
+				$inside = '<div class="text-container">';
+				$text = cutIfTooLong($p['text'], 180);
+				$inside .= '<div>'.$text.'</div>';
+				$inside .= '</div>';
 			}
 		} else {
 			$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';

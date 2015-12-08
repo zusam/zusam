@@ -1,13 +1,18 @@
 #!/bin/bash
 #RESTORE
 
-if [[ -f $1 ]]
+if [[ -d $1 ]]
 then
-	echo "must be a file !"
+	echo "must be a tar.gz file !"
 	exit;
 fi
 
+
 read -p "this will erase all current data, are you sure to continue ?" yn
+
+tar -xzvf "$1"
+dir=$(echo $1 | sed 's/\.tar\.gz//');
+
 case $yn in 
 	[Yy]* ) 
 		rm -rf Data/;
@@ -16,6 +21,6 @@ case $yn in
 	[Nn]* ) exit;;
 esac
 
-mongorestore --host 127.0.0.1 --port 27017 --dir "$1"
-mv "$1/Data" Data
-
+mongorestore --host 127.0.0.1 --port 27017 --dir "$dir"
+mv "$dir/Data" Data
+rm -rf "$dir"

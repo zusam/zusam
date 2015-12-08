@@ -77,12 +77,12 @@ function start(id) {
 			// is the focus on the typebox ?
 			if($(":focus").parent().is(id)) {
 
-				//prevent deselecting when erasing the last character (with backspace) // TODO still needed ?
-				//if(e.keyCode == 8 && $(":focus").html() == "") {
-				//	e.preventDefault();
-				//	e.stopPropagation();
-				//	return false;
-				//}
+				//prevent deselecting when erasing the last character (with backspace) // TODO still needed ? -- yes
+				if(e.keyCode == 8 && $(":focus").html() == "") {
+					e.preventDefault();
+					e.stopPropagation();
+					return false;
+				}
 				
 				// window.typed is the last state of the typebox (if it did not change, do nothing)
 				if(window.typed == null || window.typed != $(id).html()) {

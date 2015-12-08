@@ -1,12 +1,11 @@
 function updatePosts() {
-	
 	var uid = $('#info').attr('data-uid');
 	$.ajax({
 		url: "Ajax/get.php",
 		type: "GET",
 		data: {"action":"getUnread", "uid":uid},
 		success: function(data) {
-			console.log(data);
+			//console.log(data);
 			$('.post-mini .comments-indicator div').removeClass('newcom');
 			if(data['unread'] != null) {
 				for(i=0;i<data['unread'].length;i++) {

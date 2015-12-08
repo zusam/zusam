@@ -49,8 +49,9 @@ if($_SESSION['connected']) {
 				$i = 0;
 				$html = "";
 				$newlist = [];
-				while($i < $n && $j < count($news) && $j < 100) {
-					if(!isIn($news[$j], $list)) {
+				// max 300 posts backwards
+				while($i < $n && $j < count($news) && $j < 300) {
+					if(!in_array($news[$j], $list)) {
 						$p = post_load(array('_id'=>$news[$j]));
 						if($p != null && $p != false) {
 							$i++;
@@ -282,6 +283,7 @@ if($_SESSION['connected']) {
 				if($_FILES["avatar"]["size"] < 1024*1024*2 && $_FILES["avatar"]["type"] == "image/png") {
 					//var_dump(pathTo($uid, "avatar", "jpg"));
 					//var_dump(is_writeable(pathTo($uid, "avatar", "jpg")));
+					//var_dump(is_writeable("/srv/http/zusam/Data/avatar/"));
 					//exit;
 					$r = saveImage($_FILES["avatar"]["tmp_name"], pathTo($uid, "avatar", "jpg"), 256, 256);
 				}

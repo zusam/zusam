@@ -136,7 +136,7 @@ function togglepostviewer(e) {
 	if(pv.hasClass('active') || e == null) {
 		hidepostviewer();
 	} else {
-		var id = $(e.target).parent().attr('data-id');
+		var id = $(e.currentTarget).attr('data-id');
 		showpostviewer(id);
 	}
 }

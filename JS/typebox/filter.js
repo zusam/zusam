@@ -191,7 +191,7 @@ var Filter = {
 		if(preview != "" || (title != "" && description != "")) {
 			e = $('<a class="article_big" href="'+decodeURI(data['url'])+'" target="_blank">'+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
 			if(typeof(data['image']) != "undefined") {
-				if(data['image']['url'] != "" && data['w'] != null && data['h'] != null && parseInt(data['w']) < 380) {
+				if(data['image']['url'] != "" && data['image']['width'] != null && data['image']['height'] != null && parseInt(data['image']['width']) < 380) {
 					e = $('<a class="article_small" href="'+decodeURI(data['url'])+'" target="_blank">'+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
 				} 
 			}

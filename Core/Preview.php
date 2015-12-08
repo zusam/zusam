@@ -260,7 +260,7 @@ function preview_getImage(&$p) {
 		}
 	}
 			
-	if($best_candidate['score'] > 16) {
+	if($best_candidate['score'] > 10) {
 		$p['image'] = $best_candidate;
 	}
 	$p['candidates'] = $candidates;

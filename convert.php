@@ -27,18 +27,18 @@ require_once('Core/Landing.php');
 //}
 
 // forums
-$m = new MongoClient();
-$plop = $m->selectDB("zusam")->selectCollection("forums");
-$p = $plop->find();
-foreach($p as $pp) {
-	foreach($pp['users'] as $uid) {
-		$u = account_load(array('_id'=>$uid));
-		account_addForum($u, $pp);
-		forum_save($pp);
-		account_save($u);
-		echo($pp['_id']." added to users<br>");
-	}
-}
+//$m = new MongoClient();
+//$plop = $m->selectDB("zusam")->selectCollection("forums");
+//$p = $plop->find();
+//foreach($p as $pp) {
+//	foreach($pp['users'] as $uid) {
+//		$u = account_load(array('_id'=>$uid));
+//		account_addForum($u, $pp);
+//		forum_save($pp);
+//		account_save($u);
+//		echo($pp['_id']." added to users<br>");
+//	}
+//}
 
 // accounts
 //$m = new MongoClient();
