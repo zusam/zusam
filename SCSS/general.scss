@@ -207,18 +207,22 @@ section {
 .newavatar {
 	display: none;
 	position: fixed;
-	top: 50%;
+	margin: 0px;
+	top: calc(50% - 10px);
 	left: 50%;
-	transform: translate(-50%,-50%);
-	-webkit-transform: translate(-50%,-50%);
-	z-index: 50;
-	max-width: 90%;
-	max-height: 90%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	z-index: 700;
+	max-width: calc(90% - 20px);
+	max-height: calc(90% - 20px);
+	padding: 10px;
+	background: #f6f6f6;
 	
 	.menu {
 		width: 100%;
 		position: absolute;
 		top: 100%;
+		left: 0px;
 	}
 	.menu-cell {
 		display: inline-block;

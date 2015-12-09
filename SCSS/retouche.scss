@@ -21,10 +21,12 @@
 	color: grey;
 }
 #retoucheBox {
-	max-width: 100%;
-	max-height: 100%;
+	max-width: calc(90% - 20px);
 	position: relative;
+	left: 50%;
+	transform: translate(-50%, 0%);
 	overflow: hidden;
+	max-height: calc(90% - 20px);
 
 	.placeholder {
 		width: 512px;

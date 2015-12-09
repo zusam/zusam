@@ -1,5 +1,5 @@
 var Filter = {
-
+	
 	searchDeezer : function(inner, ending) {
 		var r1 = /[\s]*(https?:\/\/www.deezer.com\/)(playlist)\/(\d+)$/gi;
 		if(!ending) {
@@ -144,14 +144,14 @@ var Filter = {
 		return output;
 	},
 
-	searchFile : function(inner) {
+	searchFile : function(inner, ending, viewer) {
 		r1 = /\{\:[a-zA-Z0-9]+\:\}/gi;
 		substitution = function(str) {
 			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 			return output;
 		};
 		var ajax_url = "Ajax/post.php";
-		var ajax_var = {"action":"getFile"};
+		var ajax_var = {"action":"getFile", "viewer":viewer};
 		callback = function(data) {
 			console.log(data);
 			console.log(data['html']);

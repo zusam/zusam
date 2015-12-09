@@ -84,9 +84,19 @@ function togglenewavatar() {
 		hideAll();
 		pv.addClass('active');
 		pv.css('display','block');
-		addMask("togglenewavatar()",0.75);
+		addMask("hidenewavatar()",0.75, 699, "imageeditormask");
 		retouche.restart("#retoucheBox");
 	}
+}
+
+function showimageeditor(id, t) {
+	pv = $('#newavatar');
+	pv.addClass('active');
+	pv.css('display','block');
+	addMask("hidenewavatar()",0.75, 699, "imageeditormask");
+	var src = $(t).parent().find('img').attr('src');
+	console.log(src);
+	retouche.set("#retoucheBox", src);
 }
 
 function hidenewavatar() {
@@ -95,10 +105,9 @@ function hidenewavatar() {
 	pv.css('display','none');
 	$('#container').css("filter","none");
 	$('#container').css("-webkit-filter","none");
-	$('#mask').remove();
 	$('body').css('overflow','auto');
 	pv.html('<div id="retoucheBox"><div class="placeholder"><i class="label fa fa-photo"></i><span class="underLabel">Click to upload a photo</span><input type="file"></input></div></div>');
-	removeMask();
+	removeMask("imageeditormask");
 }
 
 function togglenewpost() {

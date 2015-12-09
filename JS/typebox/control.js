@@ -34,7 +34,7 @@ var Control = {
 			
 			//inner = node.innerHTML.trim();
 			inner = node.innerHTML;
-			output = filter(inner, ending);
+			output = filter(inner, ending, viewer);
 			if(output.length > 1 || output[0] != node.innerHTML) {
 				hasChanged = true;
 			} else {

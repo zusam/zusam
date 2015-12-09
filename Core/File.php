@@ -87,12 +87,22 @@ function file_getPath(&$file) {
 	return pathTo2(array("url" => $file['location'], "ext" => $file['type'], "param" => "file"));
 }
 
-function file_print(&$file) {
+function file_print(&$file, $viewer) {
 
 	$html = "";
 
 	if($file['type'] == "jpg") {
-		$html .= '<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.p2l(pathTo2(array("url" => $file['location'], "ext" => "jpg", "param" => "file"))).'"/>';
+		$imgsrc = p2l(pathTo2(array("url" => $file['location'], "ext" => "jpg", "param" => "file")));
+		if($viewer == "false" || $viewer == false) {
+			$html .= '
+				<div contentditable="false">
+					<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.$imgsrc.'"/>
+					<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="editIMG">Editer l\'image</button>
+				</div>
+			';
+		} else {
+			$html .= '<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.$imgsrc.'"/>';
+		}
 	}
 	if($file['type'] == "webm") {
 		$html .= '<video controls="true" src="'.p2l(pathTo2(array("url" => $file['location'], "ext" => "webm", "param" => "file"))).'"></video>';

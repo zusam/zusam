@@ -59,10 +59,7 @@ function turn(id, rotation) {
 	img.src = imgURL;
 }
 
-function loadImage(file, id) {
-console.log("retouche");
-	img = new Image();
-	img.onload = function() {
+function loadCanvas(img, id) {
 		window.retouche.img = img;
 		canvas = document.createElement('canvas');
 		var wi = Math.min(img.width, Math.min(1024,window.innerWidth*0.75));
@@ -133,6 +130,13 @@ console.log("retouche");
 		menu.append(turnright);
 		menu.append(sendit);
 		$(id).parent().append(menu);
+}
+
+function loadImage(file, id) {
+	console.log("retouche");
+	img = new Image();
+	img.onload = function() {
+		retouche.loadCanvas(img, id);
 	};
 	img.src = URL.createObjectURL(file);
 }
@@ -360,6 +364,14 @@ function stop(id) {
 	$(id+' > input').off();
 }
 
+function set(id, src) {
+	var img = new Image();
+	img.onload = function() {
+		loadCanvas(img, id);
+	};
+	img.src = src;
+}
+
 
 // CANVAS
 
@@ -401,9 +413,11 @@ function sendCanvas(id) {
 		var uid = $('#info').attr('data-uid');
 		var fid = $('#info').attr('data-fid');
 		var action = $(id).attr('data-action');
+		var arg = $(id).attr('data-arg');
 		f.append("uid",uid);
 		f.append("fid",fid);
 		f.append("action",action);
+		f.append("arg",arg);
 		$.ajax({
 			url: 'Ajax/post.php',
 			type: "POST",

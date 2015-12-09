@@ -289,6 +289,7 @@ function editPost(t) {
 			box += '</div>';
 			p.html(box);
 			typebox.start("#editBox");
+			typebox.evaluate("#editBox");
 		});
 }
 

@@ -73,7 +73,7 @@ if($_SESSION['connected']) {
 			}
 			exit;
 		}
-
+		
 		// TODO protect file
 		if($POST['action'] == "getFile") {
 
@@ -81,7 +81,7 @@ if($_SESSION['connected']) {
 			$url = $POST['url'];
 
 			$file = file_load(array("fileId" => $fileId));	
-			$html = file_print($file);
+			$html = file_print($file, $POST['viewer']);
 
 			$response = new StdClass();
 			$response->url = $url;

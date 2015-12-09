@@ -1,3 +1,8 @@
+function evaluate(id) {
+	var t = $(id)[0];
+	Control.filter_out_all(t);
+}
+
 function stop(id) {
 	$(id).off();
 }
@@ -58,13 +63,13 @@ function start(id) {
 		
 		// TODO evaluate if necessary, &nbsp; causes word wrap issues
 
-		if(e.keyCode === 32) {
-			//document.execCommand('insertHTML', false, '&nbsp;');
-			//typebox.pasteHtmlAtCaret('  ', false);
-			//typebox.pasteHtmlAtCaret(' ', false);
-			// prevent the default behaviour of return key pressed
-			//return false;
-		}
+		//if(e.keyCode === 32) {
+		//	//document.execCommand('insertHTML', false, '&nbsp;');
+		//	//typebox.pasteHtmlAtCaret('  ', false);
+		//	//typebox.pasteHtmlAtCaret(' ', false);
+		//	// prevent the default behaviour of return key pressed
+		//	//return false;
+		//}
 
 	});
 
@@ -119,7 +124,9 @@ function start(id) {
 	});
 
 	$(id).on('click', function(e) {
-		Control.niceFocus(e.target);
+		if(e.currentTarget == e.target) {
+			Control.niceFocus(e.currentTarget);
+		}
 	});
 }
 
