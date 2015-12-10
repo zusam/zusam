@@ -152,7 +152,8 @@ function togglepostviewer(e) {
 
 function hidenewcommentsection(id) {
 	t = $(id);
-	t.html('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
+	t.after('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
+	t.remove();
 }
 
 function shownewcommentsection(id) {

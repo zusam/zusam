@@ -238,9 +238,9 @@ function sendIt(id) {
 		}
 	} else {
 		if(pid == 0 || pid == null) {
-			var com_loading = $('<div class="post child-post" data-balise="'+baliseId+'"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
 			hidenewcommentsection($('.new-comment-section'));
-			$('#post-viewer .fake-comment').before(com_loading);
+			var com_loading = $('<div class="post child-post" data-balise="'+baliseId+'"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
+			$('.new-comment-section').before(com_loading);
 		}
 	}
 }
