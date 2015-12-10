@@ -96,12 +96,12 @@ function file_print(&$file, $viewer) {
 		if($viewer == "false" || $viewer == false) {
 			$html .= '
 				<div contentditable="false">
-					<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.$imgsrc.'"/>
+					<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.$imgsrc.'?'.time().'"/>
 					<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="editIMG">Editer l\'image</button>
 				</div>
 			';
 		} else {
-			$html .= '<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.$imgsrc.'"/>';
+			$html .= '<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.$imgsrc.'?'.time().'"/>';
 		}
 	}
 	if($file['type'] == "webm") {

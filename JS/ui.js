@@ -109,15 +109,16 @@ function showimageeditor(id, t) {
 	addMask("hideimageeditor()",0.75, 699, "imageeditormask");
 	// t is provided when we edit an existing image
 	if(t != null) {
-		var src = $(t).parent().find('img').attr('src');
+		var img = $(t).parent().find('img');
+		var src = img.attr('src');
 		console.log(src);
 		var fileId = $(t).parent().parent().attr('data-src').replace(/[{:}]/g,'');
 		console.log(fileId);
 		r = $('#retoucheBox');
-		r.attr('data-action',"editImage");
+		r.attr('data-action',"addImage");
 		r.attr('data-arg',fileId);
-		r.attr('data-w',1024);
-		r.attr('data-h',1024);
+		r.attr('data-w',img.attr('naturalWidth'));
+		r.attr('data-h',img.attr('naturalHeight'));
 		retouche.set(id, src);
 	} else {
 		retouche.restart("#retoucheBox");

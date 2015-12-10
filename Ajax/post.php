@@ -169,7 +169,10 @@ if($_SESSION['connected']) {
 			if($_FILES["image"]["size"] < 1024*1024*10 && $_FILES["image"]["type"] == "image/png") {
 				$u = account_load(array('_id' => $uid));
 				if($u != null && $u != false) {
-					$file = file_initialize($fileId, "jpg", $u['_id']);
+					$file = file_load(array("fileId"=>$fileId));
+					if($file == null || $file == false) {
+						$file = file_initialize($fileId, "jpg", $u['_id']);
+					}
 					var_dump($file);
 					$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'jpg', 'param' => 'file')), 1024, 1024);
 					var_dump($r);
@@ -280,12 +283,12 @@ if($_SESSION['connected']) {
 			$uid = $POST['uid'];
 
 			if($_SESSION['uid'] == $uid) {
-				if($_FILES["avatar"]["size"] < 1024*1024*2 && $_FILES["avatar"]["type"] == "image/png") {
+				if($_FILES["image"]["size"] < 1024*1024*2 && $_FILES["image"]["type"] == "image/png") {
 					//var_dump(pathTo($uid, "avatar", "jpg"));
 					//var_dump(is_writeable(pathTo($uid, "avatar", "jpg")));
 					//var_dump(is_writeable("/srv/http/zusam/Data/avatar/"));
 					//exit;
-					$r = saveImage($_FILES["avatar"]["tmp_name"], pathTo($uid, "avatar", "jpg"), 256, 256);
+					$r = saveImage($_FILES["image"]["tmp_name"], pathTo($uid, "avatar", "jpg"), 256, 256);
 				}
 			} else {
 				echo('no credentials');

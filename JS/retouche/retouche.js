@@ -47,6 +47,8 @@ function turn(id, rotation) {
 		canvas2.width = img.height;
 		canvas2.dataset.h = img.width;
 		canvas2.dataset.w = img.height;
+		canvas2.style.width = canvas.style.height;
+		canvas2.style.height = canvas.style.width;
 		var ctx2 = canvas2.getContext('2d');
 		ctx2.translate(canvas2.width/2,canvas2.height/2);
 		ctx2.rotate(rotation);
@@ -63,6 +65,7 @@ function turn(id, rotation) {
 }
 
 function initHandles(id) {
+	z = $(id+' > .zone')[0];
 	x = document.querySelector(id).offsetHeight;
 	y = document.querySelector(id).offsetWidth;
 	w = parseInt($(id).attr('data-w'));
@@ -111,18 +114,23 @@ function addHandles(id) {
 function loadCanvas(img, id) {
 		window.retouche.img = img;
 		canvas = document.createElement('canvas');
+		var realw = Math.min(img.width, 1024);
+		var realh = Math.min(img.height, 1024);
 		var wi = Math.min(img.width, Math.min(1024,Math.min(window.innerWidth,window.innerHeight)-100));
 		var hi = Math.min(img.height, Math.min(1024,Math.min(window.innerWidth,window.innerHeight)-100));
 		console.log(img.height,img.width);
 		console.log(hi,wi);
 		var g = Math.min(wi/img.width, hi/img.height);
+		var realg = Math.min(realw/img.width, realh/img.height);
 		console.log(g);
-		canvas.width = img.width*g;
-		canvas.height = img.height*g;
+		canvas.width = img.width*realg;
+		canvas.height = img.height*realg;
+		canvas.style.width = img.width*g;
+		canvas.style.height = img.height*g;
 		ctx = canvas.getContext('2d');
-		ctx.drawImage(img,0,0,img.width*g,img.height*g);
-		canvas.dataset.w = img.width*g;
-		canvas.dataset.h = img.height*g;
+		ctx.drawImage(img,0,0,img.width*realg,img.height*realg);
+		canvas.dataset.w = img.width*realg;
+		canvas.dataset.h = img.height*realg;
 		URL.revokeObjectURL(img.src);
 		img = null;
 		delete img;
@@ -390,23 +398,36 @@ function set(id, src) {
 // CANVAS
 
 function sendCanvas(id) {
+	console.log("coucou");
 	canvas = document.querySelector(id+' canvas');
 	var ctx = canvas.getContext('2d');
-	g = canvas.offsetWidth/parseInt(canvas.dataset.w);
-	z = document.querySelector(id+' > .zone');
-	l = parseInt(z.style.left)/g;
-	t = parseInt(z.style.top)/g;
-	w = parseInt(z.style.width)/g;
-	h = parseInt(z.style.height)/g;
+	var action = $(id).attr('data-action');
+	var arg = $(id).attr('data-arg');
 
-	data = ctx.getImageData(l, t, w, h);
-	var nw = $(id).attr('data-w');
-	var nh = $(id).attr('data-h');
-	if(nw != null && nh != null) {
-		g = Math.min(Math.max(w, nw)/w, Math.max(h, nh)/h);
+	if(action == "changeAvatar") {
+		g = canvas.offsetWidth/parseInt(canvas.dataset.w);
+		z = document.querySelector(id+' > .zone');
+		l = parseInt(z.style.left)/g;
+		t = parseInt(z.style.top)/g;
+		w = parseInt(z.style.width)/g;
+		h = parseInt(z.style.height)/g;
+
+		data = ctx.getImageData(l, t, w, h);
+		var nw = $(id).attr('data-w');
+		var nh = $(id).attr('data-h');
+		if(nw != null && nh != null) {
+			g = Math.min(Math.max(w, nw)/w, Math.max(h, nh)/h);
+		} else {
+			g = Math.min(Math.max(w, 1024)/w, Math.max(h, 1024)/h);
+		}
 	} else {
-		g = Math.min(Math.max(w, 1024)/w, Math.max(h, 1024)/h);
+		g = 1;
+		w = $(id).find('canvas').attr('data-w');
+		h = $(id).find('canvas').attr('data-h');
+		data = ctx.getImageData(0, 0, canvas.dataset.w, canvas.dataset.h);
+		console.log("plop");
 	}
+	console.log(w,h);
 	c2 = document.createElement('canvas');
 	c2.width = parseInt(w);
 	c2.height = parseInt(h);
@@ -422,22 +443,31 @@ function sendCanvas(id) {
 	ctx3.transform(g,0,0,g,0,0);
 
 	var htmlImage = new Image();
+		console.log("f1");
 	htmlImage.onload = function() {
+		
+		console.log("f3");
 		ctx3.drawImage(htmlImage, 0, 0);
 		delete imgURL;
 		imgURL = c3.toDataURL("image/png");
 		delete c3; delete ctx3; delete htmlImage;
 		
+		//var plop = new Image()
+		//plop.onload = function () {
+		//	$('body').html(plop);	
+		//	throw new Error("Something went badly wrong!");
+		//}
+		//plop.src = imgURL;
+		
 		f = new FormData();
-		f.append("avatar",dataURItoBlob(imgURL));
+		f.append("image",dataURItoBlob(imgURL));
 		var uid = $('#info').attr('data-uid');
 		var fid = $('#info').attr('data-fid');
-		var action = $(id).attr('data-action');
-		var arg = $(id).attr('data-arg');
 		f.append("uid",uid);
 		f.append("fid",fid);
 		f.append("action",action);
-		f.append("arg",arg);
+		console.log(action);
+		f.append("fileId",arg);
 		$.ajax({
 			url: 'Ajax/post.php',
 			type: "POST",
@@ -451,7 +481,10 @@ function sendCanvas(id) {
 			processData: false,
 			contentType: false
 		});
-		togglenewavatar(id);
+		//togglenewavatar(id);
+		hideimageeditor();
 	};
 	htmlImage.src = imgURL;
+	console.log(imgURL);
+		console.log("f2");
 }
