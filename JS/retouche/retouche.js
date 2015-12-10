@@ -55,15 +55,64 @@ function turn(id, rotation) {
 		$(canvas).after(canvas2);
 		$(canvas).remove();
 		delete img;
+		if($(id).find('.zone').length != 0) {
+			retouche.initHandles(id);
+		}
 	};
 	img.src = imgURL;
+}
+
+function initHandles(id) {
+	x = document.querySelector(id).offsetHeight;
+	y = document.querySelector(id).offsetWidth;
+	w = parseInt($(id).attr('data-w'));
+	h = parseInt($(id).attr('data-h'));
+	if(w == null || h == null) {
+		w = h = 128;
+	}
+	setZone(z, (x-h)/2, (y-w)/2, w, h);
+}
+
+function addHandles(id) {
+	zone = $('<div data-movable="true" class="zone"></div>');
+	cachetop = $('<div class="cachetop cache"></div>');
+	cachebottom = $('<div class="cachebottom cache"></div>');
+	cacheleft = $('<div class="cacheleft cache"></div>');
+	cacheright = $('<div class="cacheright cache"></div>');
+	handletl = $('<div class="unselectable handlecontainer handletl"><div class="handle"></div></div>');
+	handletr = $('<div class="unselectable handlecontainer handletr"><div class="handle"></div></div>');
+	handlebl = $('<div class="unselectable handlecontainer handlebl"><div class="handle"></div></div>');
+	handlebr = $('<div class="unselectable handlecontainer handlebr"><div class="handle"></div></div>');
+
+	$(id).append(zone);
+	$(id).append(cachetop);
+	$(id).append(cachebottom);
+	$(id).append(cacheleft);
+	$(id).append(cacheright);
+	$(id).append(handletl);
+	$(id).append(handletr);
+	$(id).append(handlebl);
+	$(id).append(handlebr);
+	z = $(id+' > .zone')[0];
+	setAsType(z,"movable",null,id);
+	
+	retouche.initHandles(id);
+
+	z = $(id+' > .handletl')[0];
+	setAsType(z,"resizeHandletl",id+" > .zone",id);
+	z = $(id+' > .handletr')[0];
+	setAsType(z,"resizeHandletr",id+" > .zone",id);
+	z = $(id+' > .handlebl')[0];
+	setAsType(z,"resizeHandlebl",id+" > .zone",id);
+	z = $(id+' > .handlebr')[0];
+	setAsType(z,"resizeHandlebr",id+" > .zone",id);
 }
 
 function loadCanvas(img, id) {
 		window.retouche.img = img;
 		canvas = document.createElement('canvas');
-		var wi = Math.min(img.width, Math.min(1024,window.innerWidth*0.75));
-		var hi = Math.min(img.height, Math.min(1024,window.innerHeight*0.75));
+		var wi = Math.min(img.width, Math.min(1024,Math.min(window.innerWidth,window.innerHeight)-100));
+		var hi = Math.min(img.height, Math.min(1024,Math.min(window.innerWidth,window.innerHeight)-100));
 		console.log(img.height,img.width);
 		console.log(hi,wi);
 		var g = Math.min(wi/img.width, hi/img.height);
@@ -80,45 +129,10 @@ function loadCanvas(img, id) {
 		$(id).html(canvas);
 
 		stopInput(id);
-		zone = $('<div data-movable="true" class="zone"></div>');
-		cachetop = $('<div class="cachetop cache"></div>');
-		cachebottom = $('<div class="cachebottom cache"></div>');
-		cacheleft = $('<div class="cacheleft cache"></div>');
-		cacheright = $('<div class="cacheright cache"></div>');
-		handletl = $('<div class="unselectable handlecontainer handletl"><div class="handle"></div></div>');
-		handletr = $('<div class="unselectable handlecontainer handletr"><div class="handle"></div></div>');
-		handlebl = $('<div class="unselectable handlecontainer handlebl"><div class="handle"></div></div>');
-		handlebr = $('<div class="unselectable handlecontainer handlebr"><div class="handle"></div></div>');
-
-		$(id).append(zone);
-		$(id).append(cachetop);
-		$(id).append(cachebottom);
-		$(id).append(cacheleft);
-		$(id).append(cacheright);
-		$(id).append(handletl);
-		$(id).append(handletr);
-		$(id).append(handlebl);
-		$(id).append(handlebr);
-		z = $(id+' > .zone')[0];
-		setAsType(z,"movable",null,id);
-		x = document.querySelector(id).offsetHeight;
-		y = document.querySelector(id).offsetWidth;
-		w = parseInt($(id).attr('data-w'));
-		h = parseInt($(id).attr('data-h'));
-		if(w == null || h == null) {
-			w = h = 128;
+		
+		if($(id).attr('data-action') == "changeAvatar") {
+			retouche.addHandles(id);
 		}
-		setZone(z, (x-h)/2, (y-w)/2, w, h);
-
-		z = $(id+' > .handletl')[0];
-		setAsType(z,"resizeHandletl",id+" > .zone",id);
-		z = $(id+' > .handletr')[0];
-		setAsType(z,"resizeHandletr",id+" > .zone",id);
-		z = $(id+' > .handlebl')[0];
-		setAsType(z,"resizeHandlebl",id+" > .zone",id);
-		z = $(id+' > .handlebr')[0];
-		setAsType(z,"resizeHandlebr",id+" > .zone",id);
-
 
 		var menu = $('<div class="menu"></div>');
 		var cancelit = $('<div class="menu-cell"><button onclick="togglenewavatar()" class="material-button">Annuler</button></div>');
@@ -386,7 +400,13 @@ function sendCanvas(id) {
 	h = parseInt(z.style.height)/g;
 
 	data = ctx.getImageData(l, t, w, h);
-	g = Math.min(Math.max(w, 256)/w, Math.max(h, 256)/h);
+	var nw = $(id).attr('data-w');
+	var nh = $(id).attr('data-h');
+	if(nw != null && nh != null) {
+		g = Math.min(Math.max(w, nw)/w, Math.max(h, nh)/h);
+	} else {
+		g = Math.min(Math.max(w, 1024)/w, Math.max(h, 1024)/h);
+	}
 	c2 = document.createElement('canvas');
 	c2.width = parseInt(w);
 	c2.height = parseInt(h);

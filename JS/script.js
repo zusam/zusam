@@ -57,7 +57,7 @@ function loadRetoucheBox(w,h,action) {
 	r.attr('data-w',w);
 	r.attr('data-h',h);
 	r.attr('data-action',action);
-	togglenewavatar();
+	showimageeditor("#retoucheBox");
 }
 
 
