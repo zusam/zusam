@@ -1,17 +1,34 @@
 function hideAll() {
-	if($('#mainmenu').hasClass('active')) {
-		hideslidefromleft('#mainmenu');
-	}
-	if($('#newavatar').hasClass('active')) {
-		hidenewavatar();
-	}
-	if($('#post-viewer').hasClass('active')) {
-		hidepostviewer();
-	}
-	if($('#newpost').hasClass('active')) {
-		hidenewpost();
-	}
+	hideslidefromleft('#mainmenu');
+	hideimageeditor();
+	hidepostviewer();
+	hidenewpost();
 	lightbox.darken();
+}
+
+function blockBody() {
+	var locks = parseInt($('body').attr('data-locks'));
+	if(!locks) {
+		locks = 0;
+	}
+	var locks = locks+1;
+	console.log(locks);
+	$('body').attr('data-locks',locks);
+	$('body').css({'overflow':'hidden','max-height':'100%'});
+}
+function unblockBody() {
+	var locks = parseInt($('body').attr('data-locks'));
+	if(!locks) {
+		locks = 0;
+	}
+	var locks = locks-1;
+	console.log(locks);
+	if(locks < 1) {
+		$('body').attr('data-locks',0);
+		$('body').css({'overflow':'auto','max-height':'none'});
+	} else {
+		$('body').attr('data-locks',locks);
+	}
 }
 
 function toggleoptionsmenu(id) {
@@ -79,7 +96,7 @@ function hideslidefromright(id) {
 function togglenewavatar() {
 	pv = $('#newavatar');
 	if(pv.hasClass('active')) {
-		hidenewavatar();
+		hideimageeditor();
 	} else {
 		showimageeditor("#retouchebox");
 	}
@@ -89,7 +106,7 @@ function showimageeditor(id, t) {
 	pv = $('#newavatar');
 	pv.addClass('active');
 	pv.css('display','block');
-	addMask("hidenewavatar()",0.75, 699, "imageeditormask");
+	addMask("hideimageeditor()",0.75, 699, "imageeditormask");
 	// t is provided when we edit an existing image
 	if(t != null) {
 		var src = $(t).parent().find('img').attr('src');
@@ -113,14 +130,13 @@ function hideimageeditor() {
 	pv.css('display','none');
 	$('#container').css("filter","none");
 	$('#container').css("-webkit-filter","none");
-	$('body').css('overflow','auto');
 	pv.html('<div id="retoucheBox"><div class="placeholder"><i class="label fa fa-photo"></i><span class="underLabel">Click to upload a photo</span><input type="file"></input></div></div>');
 	removeMask("imageeditormask");
 }
 
-function hidenewavatar() {
-	hideimageeditor();
-}
+//function hidenewavatar() {
+//	hideimageeditor();
+//}
 
 function togglenewpost() {
 	e = $('#newpost');
@@ -227,7 +243,7 @@ function showpostviewer(id) {
 }
 
 function hidepostviewer() {
-	$('body').css({'overflow':'auto','max-height':'none'});
+	unblockBody();
 	hideslidefromright('#slidepostviewer');
 	pv = $('#post-viewer');
 	pv.removeClass('active');
@@ -244,7 +260,7 @@ function addMask(func, darkness, zindex, id) {
 	}
 	mask = $('<div class="mask" id="'+id+'" onclick="'+func+'"></div>');
 	$('body').append(mask);
-	$('body').css({'overflow':'hidden','max-height':'100%'});
+	blockBody();
 	$('#'+id).css('background','rgba(0,0,0,'+darkness+')');
 	if(zindex != null) {
 		$('#'+id).css('z-index',zindex);
@@ -256,4 +272,5 @@ function removeMask(id) {
 		id = "mask";
 	}
 	$('#'+id).remove();
+	unblockBody();
 }
