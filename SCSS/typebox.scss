@@ -3,7 +3,7 @@
 	padding:0px;
 	position:relative;
 	min-height:66px;
-	max-width:530px;
+//	max-width:530px;
 	margin:0px auto;
 	cursor:text;
 	text-align:left;
@@ -194,12 +194,14 @@
 }
 .parent-post {
 	background: white;
-	width: 530px;
-	max-width: 100%;
+	//width: 530px;
+	//max-width: 100%;
+	width: 100%;
 	
 	.post-menu {
-		width: 530px;
-		max-width: calc(100% - 10px);
+		//width: 530px;
+		width: calc(100% - 10px);
+		//max-width: calc(100% - 10px);
 		height: 45px;
 		padding: 5px;
 		display: flex;
@@ -239,11 +241,13 @@
 		margin-left: 43px;
 		margin-top: 2px;
 		width: 450px;
-		max-width: calc(100% - 43px);
+		//max-width: calc(100% - 43px);
+		width: calc(100% - 43px);
 	}
 	.post-menu {
-		width: 530px;
-		max-width: calc(100% - 10px);
+		//width: 530px;
+		width: calc(100% - 10px);
+		//max-width: calc(100% - 10px);
 		height: 30px;
 		display: flex;
 		justify-content: space-between;

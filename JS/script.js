@@ -1,4 +1,21 @@
-function updatePosts() {
+
+// TODO TODO TODO postStats retrieval (nb coms and butterflies)
+function updatePostStats(id) {
+
+	var uid = $('#info').attr('data-uid');
+	var fid = $('#info').attr('data-fid');
+	$.ajax({
+		url: "Ajax/get.php",
+		type: "GET",
+		data: {"action":"getPostStats", "uid":uid, "fid":fid},
+		success: function(data) {
+			console.log(data);
+		}
+	});
+
+}
+
+function updateUnreadPosts() {
 	var uid = $('#info').attr('data-uid');
 	$.ajax({
 		url: "Ajax/get.php",
@@ -15,7 +32,6 @@ function updatePosts() {
 		}
 	});
 }
-
 
 function changeSecretLink() {
 

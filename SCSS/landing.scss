@@ -11,10 +11,13 @@
 				.password {
 					font-size: 17px !important;
 				}
+				.password-confirmation {
+					font-size: 17px !important;
+				}
 			}
 		}
 		.menu {
-			.signin {
+			.action {
 				font-size: 17px !important;
 			}
 		}
@@ -68,10 +71,12 @@
 		width: 100%;
 		background-color: rgba(0,0,0,0.7);
 		box-shadow: 0px 0px 10px black;
-		flex-flow: row-reverse wrap;
-		-webkit-flex-flow: row-reverse wrap;
+		flex-flow: row wrap;
+		-webkit-flex-flow: row wrap;
+		justify-content: flex-end;
+		-webkit-justify-content: flex-end;
 
-		.signin {
+		.action {
 			border: none;
 			background: none;
 			color: white;
@@ -79,6 +84,10 @@
 			font-size: 3vmax;
 			cursor: pointer;
 			padding: 10px;
+			text-decoration: none;
+		}
+		.action:hover {
+			color: #F7A71B;
 		}
 	}
 
@@ -97,6 +106,16 @@
 			transform: translate(-50%,-50%);
 			opacity: 1;
 		}
+		.baseline {
+			font-family: RobotoThin;
+			width: 80%;
+			text-align: center;
+			color: white;
+			font-size: 25px;
+			position: absolute;
+			top: calc(50% + 50px);
+			left: 10%;
+		}
 	}
 	
 	.bottom-div {
@@ -114,7 +133,7 @@
 			transform: translateX(-50%);
 			z-index: 10;
 			background: rgba(0, 0, 0, 0.7) none repeat scroll 0% 0%;
-			border-radius: 5px;
+			border-radius: 2px;
 			padding: 0px 0px 20px 0px;
 
 			.title-form {
@@ -123,7 +142,10 @@
 				font-size: 5vmax;
 				padding: 10px;
 			}
-
+			.form-notif {
+				color: #F7A71B;
+				height: 0;
+			}
 			.login-form {
 				position: relative;
 				
@@ -145,6 +167,19 @@
 					margin: 0;
 					font-size: 3vmax;
 					border: none;
+				}
+				.password-confirmation {
+					width: 80%;
+					padding: 5px;
+					margin: 0;
+					font-size: 3vmax;
+					border: none;
+				}
+				.borderMiddle {
+					border-bottom: lightgrey solid 1px;
+					border-radius: 0px;
+				}
+				.borderBottom {
 					border-bottom-left-radius: 2px;
 					border-bottom-right-radius: 2px;
 					border-top-left-radius: 0px;
@@ -161,7 +196,8 @@
 					height: 45px;
 					position: absolute;
 					border: medium none;
-					top: 50%;
+					//top: 50%;
+					top: 30px;
 					transform: translate(-50%, -50%);
 					left: 90%;
 					transition: all 0.2s;

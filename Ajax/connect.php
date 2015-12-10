@@ -8,6 +8,7 @@ require_once('Core/Connect.php');
 
 $mail = (String) $_POST['mail'];
 $password = (String) $_POST['password'];
+$password_conf = (String) $_POST['password_conf'];
 $action = (String) $_POST['action'];
 
 
@@ -22,20 +23,29 @@ if($action == "signup") {
 		verifyACL($mail, $password);
 	} else {
 		//create account !
-		$mail = htmlentities($mail);
-		$ac = account_initialize($mail, $password);
-		$_SESSION['connected'] = true;
-		$_SESSION['mail'] = $mail;
-		$_SESSION['password'] = $password;
-		$_SESSION['uid'] = $ac['_id'];
-		account_save($ac);
+		if($password == $password_conf) {
+			$mail = htmlentities($mail);
+			$ac = account_initialize($mail, $password);
+			$_SESSION['connected'] = true;
+			$_SESSION['mail'] = $mail;
+			$_SESSION['password'] = $password;
+			$_SESSION['uid'] = $ac['_id'];
+			account_save($ac);
+		} else {
+			echo("fail");
+		}
 	}
 	exit;
 }
 
 if($action == "login") {
 	if(mailAlreadyExists($mail)) {
-		verifyACL($mail, $password);
+		$ret = verifyACL($mail, $password);
+		if(!$ret) {
+			echo("fail");
+		}
+	} else {
+		echo("fail");
 	}
 }
 
