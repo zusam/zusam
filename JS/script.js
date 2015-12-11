@@ -1,37 +1,47 @@
 
-// TODO TODO TODO postStats retrieval (nb coms and butterflies)
-function updatePostStats(id) {
+function updatePostStats(pid) {
 
 	var uid = $('#info').attr('data-uid');
 	var fid = $('#info').attr('data-fid');
 	$.ajax({
 		url: "Ajax/get.php",
 		type: "GET",
-		data: {"action":"getPostStats", "uid":uid, "fid":fid},
+		data: {"action":"getPostStats", "uid":uid, "fid":fid, "pid":pid},
 		success: function(data) {
 			console.log(data);
-		}
-	});
-
-}
-
-function updateUnreadPosts() {
-	var uid = $('#info').attr('data-uid');
-	$.ajax({
-		url: "Ajax/get.php",
-		type: "GET",
-		data: {"action":"getUnread", "uid":uid},
-		success: function(data) {
-			//console.log(data);
-			$('.post-mini .comments-indicator div').removeClass('newcom');
-			if(data['unread'] != null) {
-				for(i=0;i<data['unread'].length;i++) {
-					$('.post-mini[data-id="'+data['unread'][i]+'"] .comments-indicator div').addClass('newcom');
+			if(typeof(data) != "undefined" && typeof(data['coms']) != "undefined") {
+				if(data['coms'] != 0) {
+			$('#container .post-mini[data-id="'+pid+'"]').find('.comments-indicator').remove();
+			$('#container .post-mini[data-id="'+pid+'"]').append('<div class="comments-indicator"><div>'+data['coms']+' <i class="fa fa-comment"></i></div></div>');
+					if(data['unread'] == true) {
+						$('.post-mini[data-id="'+pid+'"] .comments-indicator div').addClass('newcom');
+					}
+				} else {
+			$('#container .post-mini[data-id="'+pid+'"]').find('.comments-indicator').remove();
 				}
 			}
 		}
 	});
+
 }
+
+//function updateUnreadPosts() {
+//	var uid = $('#info').attr('data-uid');
+//	$.ajax({
+//		url: "Ajax/get.php",
+//		type: "GET",
+//		data: {"action":"getUnread", "uid":uid},
+//		success: function(data) {
+//			//console.log(data);
+//			$('.post-mini .comments-indicator div').removeClass('newcom');
+//			if(data['unread'] != null) {
+//				for(i=0;i<data['unread'].length;i++) {
+//					$('.post-mini[data-id="'+data['unread'][i]+'"] .comments-indicator div').addClass('newcom');
+//				}
+//			}
+//		}
+//	});
+//}
 
 function changeSecretLink() {
 
@@ -222,6 +232,7 @@ function sendIt(id) {
 						var p = $('#container .post-mini[data-id='+data['parent']+']');
 						p.remove();
 						$('#container').prepend(p);
+						updatePostStats(data['parent']);
 					} else {
 						if(data['parent'] == data['pid']) {
 							console.log("edit post");
@@ -280,10 +291,12 @@ function deletePost(t) {
 		success: function(data) {
 				if(p.hasClass('parent-post')) {
 					hidepostviewer();
-					$('.post-mini[data-id='+id+']').remove();
+					$('#container .post-mini[data-id='+id+']').remove();
 				} else {
 					$('.post[data-id='+id+']').remove();
 				}
+				var ppid = $('#post-viewer').attr('data-id');
+				updatePostStats(ppid);
 			}
 	});
 }

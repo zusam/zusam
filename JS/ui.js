@@ -240,7 +240,6 @@ function showpostviewer(id) {
 	addMask("hideAll()",0.75);
 	pv.attr('data-id',id);
 	window.history.pushState("", "", window.location.href.replace(/\#.*/,"") + "#" + id);
-	updateUnreadPosts();
 }
 
 function hidepostviewer() {

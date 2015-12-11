@@ -36,6 +36,45 @@ if($_SESSION['connected']) {
 
 	if($GET['action'] != null && $GET['action'] != "") {
 
+		// TODO protect
+		if($GET['action'] == "getPostStats") {
+			$uid = $GET['uid'];
+			//$fid = $GET['fid'];
+			$pid = $GET['pid'];
+			$r = new StdClass();
+
+			$u = account_load(array('_id' => $uid));
+			//$f = forum_load(array('_id'=>$fid));
+			$p = post_load(array('_id'=>$pid));
+			if($p != null && $p != false) {
+				$coms = 0;
+				foreach($p['children'] as $cid) {
+					$c = post_load(array('_id'=>$cid));
+					if($c != null && $c != false) {
+						$coms++;
+					} else {
+						post_removeChild($p, $cid);
+					}
+				}
+				post_save($p);
+				$r->coms = $coms;
+			
+				if(in_array($pid,$u['unread'])) {
+					$r->unread = true;
+				} else {
+					$r->unread = false;
+				}
+				
+				header('Content-Type: text/json; charset=UTF-8');
+				echo(json_encode($r));
+			}
+
+
+			exit;
+
+		}
+
+
 		// TODO protect ?
 		if($GET['action'] == "getProgress") {
 
@@ -75,18 +114,18 @@ if($_SESSION['connected']) {
 			exit;
 		}
 
-		// TODO protect
-		if($GET['action'] == "getUnread") {
-			
-			$uid = $GET['uid'];
-			$u = account_load(array('_id' => $uid));
-			$r = new StdClass();
-			$r->unread = $u['unread'];
-			header('Content-Type: text/json; charset=UTF-8');
-			echo(json_encode($r));
-			exit;
+		//// TODO protect
+		//if($GET['action'] == "getUnread") {
+		//	
+		//	$uid = $GET['uid'];
+		//	$u = account_load(array('_id' => $uid));
+		//	$r = new StdClass();
+		//	$r->unread = $u['unread'];
+		//	header('Content-Type: text/json; charset=UTF-8');
+		//	echo(json_encode($r));
+		//	exit;
 
-		}
+		//}
 
 		// TODO protect
 		if($GET['action'] == "getPost") {

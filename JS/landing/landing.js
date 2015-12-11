@@ -9,7 +9,7 @@ function start(redirect_url) {
 		action = $(this).attr('data-action');
 		
 		
-		if($(".password-confirmation").hasClass("hidden") || password == password_conf) {
+		if($(".password-confirmation").hasClass("hidden") || password == password_conf || password_conf == "") {
 			console.log("submitted");
 			$.ajax({
 				url: "Ajax/connect.php",

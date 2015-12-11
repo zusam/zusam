@@ -35,7 +35,7 @@ $(window).ready(function() {
 	
 	retouche.start("#retoucheBox");
 	setpostsviewable();
-	updateUnreadPosts();
+	//updateUnreadPosts();
 	
 	// INITIALISATION OF EXTERNAL LIBRARIES
 	// SOUNDCLOUD

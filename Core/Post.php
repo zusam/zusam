@@ -59,9 +59,11 @@ function post_update(&$p, $a) {
 
 function post_removeChild(&$p, $id) {
 	$mid = new MongoId($id);
-	for($i = 0; $i < count($p['children']); $i++) {
-		if($p['children'][$i] == $mid) {
-			unset($p['children'][$i]);
+	//for($i = 0; $i < count($p['children']); $i++) {
+	foreach($p['children'] as $key=>$cid) {
+		//if($p['children'][$i] == $mid || $p['children'][$i] == $id) {
+		if($cid == $mid || $cid == $id) {
+			unset($p['children'][$key]);
 		}
 	}
 }
