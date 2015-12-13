@@ -21,10 +21,10 @@
 }
 /* INLINE-BLOCK IS NECESSARY TO PREVENT DIVS FROM CHROME */
 .dynamicBox > div {
-	display:inline-block;
-	padding:2px; 
-	margin:0px; 
-	min-height:18px;
+	display: inline-block;
+	padding: 2px; 
+	margin: 0px; 
+	min-height: 18px;
 }
 .dynamicBox > div:focus { 
 	border:none; 

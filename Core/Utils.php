@@ -14,25 +14,31 @@ function isEmpty($var) {
 	}
 	return false;
 }
-
 function ranger($url) {
 	$t = microtime(true);
 	$headers = array("Range: bytes=0-65536");
-	
-	$curl = curl_init($url);
-	curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-	$data = curl_exec($curl);
-	curl_close($curl);
 
-	$im = imagecreatefromstring($data);
-	if($im) {
-		$width = imagesx($im);
-		$height = imagesy($im);
-	} else {
+	// TODO see why we have to do this for png... imagecreatefromstring seems to fail randomly
+	if(preg_match("/\.png/", $url) == 1) {
 		$tmp = getimagesize($url);
 		$width = $tmp[0];
 		$height = $tmp[1];
+	} else {
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$data = curl_exec($curl);
+		curl_close($curl);
+
+		$im = imagecreatefromstring($data);
+		if($im) {
+			$width = imagesx($im);
+			$height = imagesy($im);
+		} else {
+			$tmp = getimagesize($url);
+			$width = $tmp[0];
+			$height = $tmp[1];
+		}
 	}
 	$info[0] = $width;
 	$info[1] = $height;

@@ -22,6 +22,7 @@ function landing($warning, $redirect_url) {
 						<input class="password-confirmation borderBottom" name="password-confirmation" type="password" placeholder="confirmez votre mot de passe"/>
 						<p class="form-notif hidden">Les mots de passe ne correspondent pas</p>
 						<button type="submit" name="submit" class="submit"><i class="fa fa-paper-plane"></i></button>
+						<a class="action hidden" onclick="landing.switchToPasswordReset()">Mot de passe oublié ?</a>
 					</form>
 				</div>
 	');

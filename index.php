@@ -11,6 +11,7 @@ require_once('Core/Forum.php');
 require_once('Core/Notification.php');	
 require_once('Core/File.php');	
 require_once('Core/Landing.php');
+require_once('Core/PasswordReset.php');
 
 require_once('Pages/forum.php');
 require_once('Pages/mainmenu.php');
@@ -21,6 +22,10 @@ require_once('Pages/home.php');
 $GET = [];
 foreach($_GET as $K=>$V) {
 	$GET[$K] = (String) $V;
+}
+$POST = [];
+foreach($_POST as $K=>$V) {
+	$POST[$K] = (String) $V;
 }
 
 // HTML
@@ -58,6 +63,28 @@ if($GET['il'] != null) {
 		landing("Connectez-vous ou inscrivez-vous pour accéder à cette ressource");
 		exit();
 	}
+}
+
+// reset password
+if($GET['action'] == "reset") {
+	$html = pr_printPage($GET['id'], $GET['key']);
+	echo($html);
+	exit();
+}
+if($POST['action'] == "passwordReset") {
+	if($POST['password'] == $POST['password_conf']) {
+		$pr = pr_load(array('_id'=>$POST['id']));
+		if($pr != false && $pr != null) {
+			$u = account_load(array('_id'=>$pr['uid']));
+			if($u != false && $u != null) {
+				account_setPassword($u, $POST['password']);
+				account_save($u);
+				pr_destroy($POST['id']);
+				//TODO add pop-up to say that it's ok
+			}
+		}
+	}
+	//TODO say that the passwords were not the same
 }
 
 if($_SESSION['connected'] != true) {

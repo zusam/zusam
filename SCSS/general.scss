@@ -11,7 +11,7 @@
   font-style: normal;
 }
 .hidden {
-	display: none;
+	display: none !important;
 }
 body {
 	margin: 0px;
@@ -74,9 +74,9 @@ section {
 		cursor: pointer;
 		width: 320px;
 		max-height: 180px;
+		min-height: 80px;
 		border-radius: 4px;
 		position: relative;
-		background-color: #F7A71B;
 		text-decoration: none;
 
 

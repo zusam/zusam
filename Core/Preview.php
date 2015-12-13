@@ -1,7 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__).'/../'));
-require_once('Ganon/ganon.php');
+require_once('LibPHP/Ganon/ganon.php');
 require_once('Core/Utils.php');
 
 function preview_initialize($url) {

@@ -33,13 +33,18 @@ function account_readPost(&$ac, $pid) {
 	deleteValue($pid, $ac['unread']);
 }
 
+function account_setPassword(&$ac, $password) {
+	$ac['password'] = password_hash($password, PASSWORD_BCRYPT);
+}
+
 function account_initialize($mail, $password) {
 	$ac = [];
 	$ac['_id'] = new MongoId();
 	$ac['date'] = new MongoDate();
 	$ac['mail'] = $mail;
 	$ac['name'] = preg_replace("/^(.*)@.*$/","$1",$mail);
-	$ac['password'] = password_hash($password, PASSWORD_BCRYPT);
+	//$ac['password'] = password_hash($password, PASSWORD_BCRYPT);
+	account_setPassword($ac, $password);
 	$ac['forums'] = [];
 	$ac['salt'] = bin2hex(openssl_random_pseudo_bytes(6));
 	return $ac;

@@ -12,6 +12,9 @@ require_once('Core/Notification.php');
 require_once('Core/File.php');	
 require_once('Core/Utils.php');	
 require_once('Core/Print_post.php');	
+require_once('Core/Preview.php');	
+require_once('Core/PasswordReset.php');	
+require_once('Core/Mail.php');	
 
 require_once('Pages/forum.php');
 require_once('Pages/mainmenu.php');
@@ -22,16 +25,17 @@ require_once('Reduc/ReducImage.php');
 require_once('Reduc/ReducVideo.php');
 
 
-if($_SESSION['connected']) {
+// secure post variables for mongodb
+$POST = [];
+foreach($_POST as $K=>$V) {
+	$POST[$K] = (String) $V;
+}
 
-	// secure post variables for mongodb
-	$POST = [];
-	foreach($_POST as $K=>$V) {
-		$POST[$K] = (String) $V;
-	}
+if($_SESSION['connected']) {
 
 	if($POST['action'] != null && $POST['action'] != "") {
 		
+
 		// TODO protect ?
 		if($POST['action'] == "morePost") {
 
@@ -438,6 +442,29 @@ if($_SESSION['connected']) {
 		}
 
 	}
+
+// NOT CONNECTED
+} else {
+	
+	if($POST['action'] != null && $POST['action'] != "") {
+
+		if($POST['action'] == "passwordReset") {
+
+			$mail = $POST['mail'];
+			$u = account_load(array('mail'=>$mail));
+			if($u != false && $u != null) {
+				$uid = (String) $u['_id'];
+				$pr = pr_initialize($uid);
+				mail_resetPassword($u['mail'], "http://zus.am?action=reset&id=".$pr['_id']."&key=".$pr['key'], $u['name']);
+				// reset the key for security reasons
+				$pr['key'] == "";
+				pr_save($pr);
+				echo('ok');
+				exit;
+			}
+		}
+	}
+
 }
 
 ?>

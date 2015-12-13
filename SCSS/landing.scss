@@ -1,5 +1,5 @@
 @media (min-width: 650px) {
-	body {
+	#landing {
 		.center-form {
 			.title-form {
 				font-size: 22px !important;
@@ -50,8 +50,6 @@
 	}
 	
 	.background {
-		//filter: grayscale(1);
-		//-webkit-filter: grayscale(1);
 		background-image: url('Assets/Backgrounds/1b.jpg'), url('Assets/Backgrounds/small/1b.jpg');
 		background-repeat: no-repeat;
 		background-position: 50% 50%;
@@ -136,6 +134,14 @@
 			border-radius: 2px;
 			padding: 0px 0px 20px 0px;
 
+			.action {
+				display: block;
+				color: white;
+				margin-top: 25px;
+				height: 0;
+				text-decoration: underline;
+				cursor: pointer;
+			}
 			.title-form {
 				font-family: RobotoThin;
 				color: white;
@@ -196,11 +202,9 @@
 					height: 45px;
 					position: absolute;
 					border: medium none;
-					//top: 50%;
-					top: 30px;
 					transform: translate(-50%, -50%);
+					top: 48px;
 					left: 90%;
-					transition: all 0.2s;
 					
 					i {
 						position: relative;

@@ -8,30 +8,46 @@ function start(redirect_url) {
 		password_conf = $(this).children(".password-confirmation").val();
 		action = $(this).attr('data-action');
 		
-		
-		if($(".password-confirmation").hasClass("hidden") || password == password_conf || password_conf == "") {
-			console.log("submitted");
-			$.ajax({
-				url: "Ajax/connect.php",
-				type: "POST",
-				data: {"action":action, "mail":mail, "password":password, "password_conf":password_conf},
-				success: function(data) {
-					console.log(data);
-						if(data != "fail") {	
-							window.location.reload();
-						} else {
-							$('.form-notif').html("Mauvais mot de passe ou identifiant");
-							$('.form-notif').removeClass('hidden');
+		if($(this).attr('data-action') != "passwordReset") {	
+			if($(".password-confirmation").hasClass("hidden") || password == password_conf || password_conf == "") {
+				console.log("submitted");
+				$.ajax({
+					url: "Ajax/connect.php",
+					type: "POST",
+					data: {"action":action, "mail":mail, "password":password, "password_conf":password_conf},
+					success: function(data) {
+						console.log(data);
+							if(data != "fail") {	
+								window.location.reload();
+							} else {
+								$('.form-notif').html("Mauvais mot de passe ou identifiant");
+								$('.form-notif').removeClass('hidden');
+							}
+						},
+					error: function() {
+							console.log("fail");
 						}
+				})
+			} else {
+				console.log("passwords do not match");
+				$('.form-notif').html("Les mots de passe ne correspondent pas");
+				$('.form-notif').removeClass('hidden');
+			}
+		} else {
+			console.log(action, mail);
+			$.ajax({
+				url: "Ajax/post.php",
+				type: "POST",
+				data: {"action":action, "mail":mail},
+				success: function(data) {
+						console.log(data);
+						window.location.reload();
 					},
 				error: function() {
 						console.log("fail");
 					}
 			})
-		} else {
-			console.log("passwords do not match");
-			$('.form-notif').html("Les mots de passe ne correspondent pas");
-			$('.form-notif').removeClass('hidden');
+			
 		}
 	});
 }
@@ -51,20 +67,38 @@ function switchForm() {
 function switchToLogin() {
 	$('.form-notif').addClass('hidden');
 	$('#landing .signin').html('S\'inscrire');
+	$('#landing .login-form .submit').css('top','31px');
 	$('#landing .center-form .title-form').html('Se connecter');
-	$('#landing .background').css('background-image','url("Assets/Backgrounds/16b.jpg"), url("Assets/Backgrounds/small/16b.jpg")');
 	$('#landing .login-form').attr('data-action','login');
-	
-	$('*[name="password"]').addClass("borderBottom").removeClass("borderMiddle");
+
+	$('*[name="password"]').addClass("borderBottom").removeClass("borderMiddle").removeClass('hidden');
 	$('*[name="password-confirmation"]').addClass("hidden");
+	$('#landing .center-form .action').removeClass('hidden');
+	$('#landing .background').css('background-image','url("Assets/Backgrounds/16b.jpg"), url("Assets/Backgrounds/small/16b.jpg")');
 }
+
 function switchToSignup() {
 	$('.form-notif').addClass('hidden');
+	$('#landing .login-form .submit').css('top','48px');
 	$('#landing .signin').html('Se connecter');
 	$('#landing .center-form .title-form').html('S\'inscrire');
-	$('#landing .background').css('background-image','url("Assets/Backgrounds/1b.jpg"), url("Assets/Backgrounds/small/1b.jpg")');
 	$('#landing .login-form').attr('data-action','signup');
 
-	$('*[name="password"]').removeClass("borderBottom").addClass("borderMiddle");
+	$('*[name="password"]').removeClass("borderBottom").addClass("borderMiddle").removeClass('hidden');
 	$('*[name="password-confirmation"]').removeClass("hidden");
+	$('#landing .center-form .action').addClass('hidden');
+	$('#landing .background').css('background-image','url("Assets/Backgrounds/1b.jpg"), url("Assets/Backgrounds/small/1b.jpg")');
+}
+
+function switchToPasswordReset() {
+	$('.form-notif').addClass('hidden');
+	$('#landing .login-form .submit').css('top','16px');
+	$('#landing .signin').html('Se connecter');
+	$('#landing .center-form .title-form').html('Réinitialiser votre mot de passe');
+	$('#landing .login-form').attr('data-action','passwordReset');
+
+	$('*[name="password"]').addClass("hidden");
+	$('*[name="password-confirmation"]').addClass("hidden");
+	$('#landing .center-form .action').addClass('hidden');
+	$('#landing .background').css('background-image','url("Assets/Backgrounds/1.jpg"), url("Assets/Backgrounds/small/1.jpg")');
 }

@@ -43,6 +43,7 @@ if($url != "" && $url != null) {
 
 	echo('<p class="debug_info"> Preview générée en '.$p['total_time'].'s</p>');
 
+	echo('<div style="width:530px;margin:0 auto;">');
 	echo('<div class="post-parent-text dynamicBox">');
 	echo('<span class="deletable">');
 	if($p['image']['url'] != null) {
@@ -91,8 +92,9 @@ if($url != "" && $url != null) {
 		echo('<br>');
 	}
 	
+	echo('</div>');
 	echo('<br>');
-	var_dump($p);
+	//var_dump($p);
 }
 
 echo('<br>');

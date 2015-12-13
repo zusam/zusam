@@ -47,17 +47,19 @@ $(window).ready(function() {
 	}
 
 	// view post if url says so
-	if(window.location.href.match(/\#[a-z0-9]+$/)) {
-		var pid = window.location.href.replace(/.*\#([a-z0-9]+)/,"$1");
-		console.log("show:"+pid);
-		showpostviewer(pid);
+	if($('#info').length != 0) {
+		if(window.location.href.match(/\#[a-z0-9]+$/)) {
+			var pid = window.location.href.replace(/.*\#([a-z0-9]+)/,"$1");
+			console.log("show:"+pid);
+			showpostviewer(pid);
+		}
 	}
 
 	// prevent exiting while download
 
 	$(window).on("beforeunload", function (e) {
-		console.log("beforeunload");
-		console.log(window.sending);
+		//console.log("beforeunload");
+		//console.log(window.sending);
 		if(window.sending) {
 			return 'Upload en cours !';
 		} 
