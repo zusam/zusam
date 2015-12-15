@@ -32,7 +32,7 @@ function updatePostStats(pid) {
 			if(typeof(data) != "undefined" && typeof(data['coms']) != "undefined") {
 				if(data['coms'] != 0) {
 			$('#container .post-mini[data-id="'+pid+'"]').find('.comments-indicator').remove();
-			$('#container .post-mini[data-id="'+pid+'"]').append('<div class="comments-indicator"><div>'+data['coms']+' <i class="fa fa-comment"></i></div></div>');
+			$('#container .post-mini[data-id="'+pid+'"] .stats').append('<div class="comments-indicator"><div>'+data['coms']+' <i class="fa fa-comment"></i></div></div>');
 					if(data['unread'] == true) {
 						$('.post-mini[data-id="'+pid+'"] .comments-indicator div').addClass('newcom');
 					}
@@ -282,10 +282,11 @@ function setpostsviewable() {
 }
 
 function deletePost(t) {
-	p = $(t).parent().parent().parent().parent();
-	id = p.attr('data-id');
+	//p = $(t).parent().parent().parent().parent();
+	var p = $(t).closest('.post');
+	var id = p.attr('data-id');
 	console.log("delete:"+id);
-	forum = $('#info').attr('data-fid');
+	var forum = $('#info').attr('data-fid');
 	$.ajax({
 		url: "Ajax/post.php",
 		type: "POST",
@@ -304,7 +305,8 @@ function deletePost(t) {
 }
 
 function editPost(t) {
-	var p = $(t).parent().parent().parent().parent();
+	//var p = $(t).parent().parent().parent().parent();
+	var p = $(t).closest('.post');
 	var pid = p.attr('data-id');
 		$.get("Ajax/get.php?action=getRaw&pid="+pid, function(data) {
 			box = '<div id="editBox" class="dynamicBox">';

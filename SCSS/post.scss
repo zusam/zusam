@@ -123,11 +123,9 @@
 						top: 1px;
 					}
 					.butterfly {
-						height: 15px;
 						cursor: pointer;
 						margin: 0px 2px;
 						display: inline;
-						width: 15px;
 						svg {
 							width: 100%;
 							height: 100%;
@@ -189,6 +187,11 @@
 				}
 				.second-line {
 					height: 21px;
+					
+					.butterfly {
+						height: 15px;
+						width: 15px;
+					}
 
 					.date {
 						font-size: 14px;
@@ -229,6 +232,11 @@
 			}
 			.second-line {
 				height: 16px;
+
+				.butterfly {
+					height: 12px;
+					width: 12px;
+				}
 			
 				.date {
 					font-size: 12px;

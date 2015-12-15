@@ -154,10 +154,16 @@ function print_post_mini(&$p) {
 			$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
 		}
 		$c = count($p['children']);
+		//$b = count($p['butterflies']);
 		if($c > 0) {
+			$inside .= '<div class="stats">';
+			//$inside .= '<div class="butterflies-indicator"><div>'.$b.' '.file_get_contents('Assets/pap7.svg').'</div></div>';
 			$inside .= '<div class="comments-indicator"><div>'.$c.' <i class="fa fa-comment"></i></div></div>';
+			$inside .= '</div>';
 		}
-		$html .= '<a class="material-shadow post-mini" href="#'.$p['_id'].'" data-id="'.$p['_id'].'">'.$inside.'</a>';
+		$html .= '<a class="material-shadow post-mini" href="#'.$p['_id'].'" data-id="'.$p['_id'].'">';
+		$html .= '<div class="post-start">'.cutIfTooLong($p['text'],50).'</div>';
+		$html .= '<div class="post-preview">'.$inside.'</div></a>';
 	}
 	return $html;
 }
