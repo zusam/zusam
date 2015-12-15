@@ -1,3 +1,10 @@
+.post-separator {
+	display: block;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	height: 5px;
+}
 .post-options {
 	display: flex;
 	display: -webkit-flex;
@@ -25,32 +32,210 @@
 		background-color: rgba(255, 255, 255, 0.85);
 	}
 }
-.progressBar {
-	display: block;
-	position: relative;
-	width: 100%;
-	height: 15px;
-
-	.progress, .conversion {
-		position:absolute;
-		top: 0;
-		left: 0;
-		display: block;
-		width: 0;
-		height: calc(100% - 0px);
-		margin: 0;
-		padding: 0;
-		transition: all 1s linear;
-	}
-	.progress {
-		background-color: #F7A71B;
-	}
-	.conversion {
-		background-color: red;
-		z-index: 2;
-	}
-}
 .sgf-viewer {
 	max-height: 750px;
 	cursor: default;
+}
+.post {
+	.progressBar {
+		display: block;
+		position: relative;
+		width: 100%;
+		height: 15px;
+
+		.progress, .conversion {
+			position:absolute;
+			top: 0;
+			left: 0;
+			display: block;
+			width: 0;
+			height: calc(100% - 0px);
+			margin: 0;
+			padding: 0;
+			transition: all 1s linear;
+		}
+		.progress {
+			background-color: #F7A71B;
+		}
+		.conversion {
+			background-color: red;
+			z-index: 2;
+		}
+	}
+	.post-menu {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		display: -webkit-flex;
+		-webkit-justify-content: space-between;
+		-webkit-align-items: center;
+		background: none;
+		color: black;
+		
+		.op {
+			display: flex;
+			display: -webkit-flex;
+			margin: 0px;
+			padding: 0px;
+			align-content: center;
+			-webkit-align-content: center;
+
+			.avatar {
+				transition: transform 0.2s;
+				z-index: 50;
+				position: relative;
+			}
+			.avatar:hover {
+				transform: translate(100%, 100%) scale(3);
+				-webkit-transform: translate(100%, 100%) scale(3);
+				z-index: 51;
+			}
+			.avatar > * {
+				width: 100%;
+				height: 100%;
+			}
+			.post-info {
+				padding-left: 10px;
+				
+				.first-line {
+					.author {
+						font-weight: bold;
+					}
+				}
+				.second-line {
+					position: relative;
+					margin: 0px;
+					padding: 0px;
+					display: flex;
+					align-items: center;
+					display: -webkit-flex;
+					-webkit-align-items: center;
+
+					.date {
+						font-size: 14px;
+						line-height: 22px;
+						color: grey;
+					}
+					.circle-separator {
+						font-size: 5px;
+						margin: 0px 5px;
+						position: relative;
+						top: 1px;
+					}
+					.butterfly {
+						height: 15px;
+						cursor: pointer;
+						margin: 0px 2px;
+						display: inline;
+						width: 15px;
+						svg {
+							width: 100%;
+							height: 100%;
+						}
+					}
+				}
+			}
+		}
+		.right-menu {
+			display: flex;
+			align-items: center;
+			
+			.options {
+				width: 30px;
+				text-align:center;
+				cursor: pointer;
+				position: relative;
+
+				.options-menu {
+					display: none;
+					position: absolute;
+					top: 150%;
+					left: calc(100% - 110px);
+					width: 100px;
+					background: #FFF none repeat scroll 0% 0%;
+					z-index: 600;
+					border: 1px solid grey;
+					box-shadow: 0px 0px 5px black;
+				}
+				.options-menu > a {
+					display: block;
+					margin: 8px 2px;
+				}
+				.options-menu > a:hover {
+					color :red;
+				}
+			}
+		}
+	}
+}
+.parent-post {
+	background: white;
+	width: 100%;
+
+	.post-menu {
+		width: calc(100% - 10px);
+		height: 45px;
+		padding: 5px;
+
+		.op {
+			.avatar {
+				height: 45px;
+				width: 45px;
+			}
+			.post-info {
+				.author {
+					height: 20px;
+					line-height: 22px;
+				}
+				.second-line {
+					height: 21px;
+
+					.date {
+						font-size: 14px;
+						line-height: 22px;
+						color: grey;
+					}
+				}
+			}
+		}
+	}
+}
+.child-post {
+	background: #F0F0F0;
+	padding: 8px 5px 2px 5px;
+	position: relative;
+	min-height: 40px;
+	max-width: 100%;
+
+	.post-com-text {
+		margin-left: 43px;
+		margin-top: 2px;
+		width: 450px;
+		width: calc(100% - 43px);
+	}
+	.post-menu {
+		width: calc(100% - 10px);
+		height: 30px;
+		padding: 0px 5px;
+
+		.op {
+			.avatar {
+				height: 30px;
+				width: 30px;
+			}
+			.author {
+				height: 15px;
+				line-height: 12px;
+			}
+			.second-line {
+				height: 16px;
+			
+				.date {
+					font-size: 12px;
+					line-height: 16px;
+					color: grey;
+				}
+			}
+		}
+	}
 }

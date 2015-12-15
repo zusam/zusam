@@ -70,7 +70,7 @@ function forum_post2news(&$forum, $pid) {
 }
 
 function forum_addUser_andSave(&$forum, &$user) {
-	if(!isIn($user['_id'], $forum['users'])) {
+	if(!in_array($user['_id'], $forum['users'])) {
 		array_push($forum['users'], $user['_id']);
 	}
 	account_addForum($user, $forum);

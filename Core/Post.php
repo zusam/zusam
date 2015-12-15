@@ -24,6 +24,22 @@ function post_updateTimestamp(&$post) {
 	$post['timestamp'] = time();
 }
 
+function post_addButterfly(&$post, $uid) {
+	if($post['butterflies'] == null) {
+		$post['butterflies'] = [];
+	}
+	if($post['butterflies'][$uid] == null) {
+		$post['butterflies'][$uid]['timestamp'] = time();
+	}
+}
+
+function post_removeButterfly(&$post, $uid) {
+	if($post['butterflies'] == null) {
+		$post['butterflies'] = [];
+	} else {
+		unset($post['butterflies'][$uid]);
+	}
+}
 
 function post_bulkLoad($array) {
 	if($array['_id'] != null && $array['_id'] != "") {

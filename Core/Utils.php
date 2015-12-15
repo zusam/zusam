@@ -2,6 +2,7 @@
 
 chdir(realpath(dirname(__FILE__).'/../'));
 
+// TODO review and use !
 function isEmpty($var) {
 	if($var == null) {
 		return true;
@@ -108,9 +109,7 @@ function contentType($url) {
 	curl_setopt($ch, CURLOPT_COOKIEJAR, "tmp/cookie.txt");
 	curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
 	$data = curl_exec($ch);
-	//$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 	$data = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-	//$data = substr($data, 0, $header_size);
 	curl_close($ch);
 	return $data;
 }
@@ -148,17 +147,7 @@ function fgc($url, $bytes, $header) {
 	return $data;
 }
 
-// TODO : replace every isIn with in_array...
-function isIn(&$e, &$a) {
-	return in_array($e, $a);
-	//foreach($a as $m) {
-	//	if($m == $e) {
-	//		return true;
-	//	}
-	//}
-	//return false;
-}
-
+// TODO still used ? is unset alone not better ?
 function deleteValue(&$e, &$a) {
 	foreach($a as $k=>$v) {
 		if($v == $e) {
@@ -168,6 +157,7 @@ function deleteValue(&$e, &$a) {
 	}
 }
 
+// TODO still used ? is unset alone not better ?
 function deleteKey(&$e, &$a) {
 	$ee = (String) $e;
 	foreach($a as $k=>$v) {
@@ -178,6 +168,7 @@ function deleteKey(&$e, &$a) {
 	}
 }
 
+// TODO not used... I hope.
 // rot(n) ...
 function str_rot($s, $n) {
 	static $letters = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';

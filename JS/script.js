@@ -1,4 +1,24 @@
 
+function toggleButterfly(t) {
+	var pid = $(t).closest('.post').attr('data-id');
+	var uid = $('#info').attr('data-uid');
+	var fid = $('#info').attr('data-fid');
+	$.ajax({
+		url: "Ajax/post.php",
+		type: "POST",
+		data: {"action":"toggleButterfly", "uid":uid, "fid":fid, "pid":pid},
+		success: function(data) {
+			console.log(data);
+			var butterflies = $(t).parent()[0].childNodes[3].textContent;
+			$(t).parent()[0].childNodes[3].textContent = data['count'];
+			t.style.fill = data['color'];
+		},
+		error: function() {
+			console.log('fail butterfly');
+		}
+	});
+}
+
 function updatePostStats(pid) {
 
 	var uid = $('#info').attr('data-uid');
@@ -24,24 +44,6 @@ function updatePostStats(pid) {
 	});
 
 }
-
-//function updateUnreadPosts() {
-//	var uid = $('#info').attr('data-uid');
-//	$.ajax({
-//		url: "Ajax/get.php",
-//		type: "GET",
-//		data: {"action":"getUnread", "uid":uid},
-//		success: function(data) {
-//			//console.log(data);
-//			$('.post-mini .comments-indicator div').removeClass('newcom');
-//			if(data['unread'] != null) {
-//				for(i=0;i<data['unread'].length;i++) {
-//					$('.post-mini[data-id="'+data['unread'][i]+'"] .comments-indicator div').addClass('newcom');
-//				}
-//			}
-//		}
-//	});
-//}
 
 function changeSecretLink() {
 

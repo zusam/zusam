@@ -106,7 +106,7 @@ if($_SESSION['connected'] != true) {
 $u = account_load(array("mail" => $_SESSION['mail']));
 $_SESSION['page'] = $GET['page'];
 if($GET['fid'] != "") {
-	if(isIn($GET['fid'], $u['forums'])) {
+	if(in_array($GET['fid'], $u['forums'])) {
 		$_SESSION['forum'] = $GET['fid'];
 	} else {
 		$_SESSION['forum'] = "";

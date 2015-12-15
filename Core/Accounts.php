@@ -172,7 +172,6 @@ function account_destroy($id) {
 function account_addForum(&$ac, &$f) {
 	$fid = (String) $f['_id'];
 	if($ac['forums'][$fid] == null) {
-		//array_push($user['forums'], $forum['_id']);
 		$ac['forums'][$fid]['timestamp'] = time();
 	}
 }

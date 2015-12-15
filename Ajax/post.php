@@ -35,6 +35,31 @@ if($_SESSION['connected']) {
 
 	if($POST['action'] != null && $POST['action'] != "") {
 		
+		// TODO protect
+		if($POST['action'] == "toggleButterfly") {
+			$uid = $POST['uid'];
+			$fid = $POST['fid'];
+			$pid = $POST['pid'];
+			$u = account_load(array('_id'=>$uid));
+			$f = forum_load(array('_id'=>$fid));
+			$p = post_load(array('_id'=>$pid));
+
+			if($u != null && $u != false && $p != null && $p != false && $f != null && $f != false) {
+				$r = new StdClass();
+				if(array_key_exists($uid, $p['butterflies'])) {
+					post_removeButterfly($p, $uid);	
+					$r->color = "black";
+				} else {
+					post_addButterfly($p, $uid);	
+					$r->color = "red";
+				}
+				post_save($p);
+				$r->count = count($p['butterflies']);
+				header('Content-Type: text/json; charset=UTF-8');
+				echo(json_encode($r));
+			}
+			exit;
+		}
 
 		// TODO protect ?
 		if($POST['action'] == "morePost") {
@@ -43,7 +68,7 @@ if($_SESSION['connected']) {
 			
 			$fid = $POST['fid'];
 			$f = forum_load(array('_id'=>$fid));
-			if($f != null && $f != false && isIn($_SESSION['uid'], $f['users'])) {
+			if($f != null && $f != false && in_array($_SESSION['uid'], $f['users'])) {
 				$news = array_reverse($f['news']);
 				$n = intval($POST['n']);
 				if(!$n || $n == 0) {
@@ -66,14 +91,13 @@ if($_SESSION['connected']) {
 					$j++;
 				}
 				
-				$response = new StdClass();
-				$response->html = $html;
-				$response->list = $newlist;
-				$response->count = $i;
-				$response->load = $j;
+				$r = new StdClass();
+				$r->html = $html;
+				$r->list = $newlist;
+				$r->count = $i;
+				$r->load = $j;
 				header('Content-Type: text/json; charset=UTF-8');
-				echo(json_encode($response));
-				exit;
+				echo(json_encode($r));
 			}
 			exit;
 		}
@@ -140,7 +164,7 @@ if($_SESSION['connected']) {
 			$u = account_load(array('_id' => $uid));
 			$f = forum_load(array('_id'=>$fid));
 
-			if($_SESSION['uid'] == $uid && isIn($uid, $f['users']) && $u['forums'][$fid] != null) {
+			if($_SESSION['uid'] == $uid && in_array($uid, $f['users']) && $u['forums'][$fid] != null) {
 				forum_changeLink($f);
 				forum_save($f);
 			}
@@ -314,7 +338,7 @@ if($_SESSION['connected']) {
 				// name change
 				if($f != null && $f != false && $u != null && $u != false) {
 					if(!preg_match("/^\s*$/",$name)) {
-						if(isIn($uid, $f['users'])) {
+						if(in_array($uid, $f['users'])) {
 							$f['name'] = $name;
 							forum_save($f);
 						}

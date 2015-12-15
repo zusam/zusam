@@ -77,37 +77,49 @@ function print_post($id, $uid, &$p) {
 	} else {
 		$html_data .= 'parent-post';
 	}
+	$html_data .= ' " data-id="'.$id.'">';
 	$html_data .= '
-		" data-id="'.$id.'">
 		<div class="post-menu">
 		<div class="op" data-uid="'.$p['uid'].'">
 			<div class="avatar">'.account_getAvatarHTML($op).'</div>
 			<div class="post-info">
-				<div class="author">'.$op['name'].'</div>
-				<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->sec)).'</div>
-			</div>
-		</div>
 	';
-	if($p['uid'] == $u['_id']) {
-		$html_data .= '
-				<div onclick="toggleoptionsmenu(this)" class="options">
-					<i class="fa fa-caret-down"></i>
-					<div class="options-menu">
-						<a onclick="editPost(this)">Editer</a>
-						<a onclick="deletePost(this)">Supprimer</a>
+	$html_data .= '<div class="first-line">';
+	$html_data .= '<div class="author">'.$op['name'].'</div>';
+	$html_data .= '</div>';
+	$html_data .= '<div class="second-line">';
+	$html_data .= '<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->sec)).'</div>';
+	//$html_data .= '<i class="fa fa-circle circle-separator"></i><img onclick="addButterfly(this)" class="butterfly" src="Assets/pap7.svg"/>'.count($p['butterflies']);
+	$html_data .= '<i class="fa fa-circle circle-separator"></i>';
+	if(array_key_exists((String) $u['_id'], $p['butterflies'])) {
+		$html_data .= '<div onclick="toggleButterfly(this)" class="butterfly" style="fill:red">'.file_get_contents('Assets/pap7.svg').'</div>';
+	} else {
+		$html_data .= '<div onclick="toggleButterfly(this)" class="butterfly">'.file_get_contents('Assets/pap7.svg').'</div>';
+	}
+	$html_data .= count($p['butterflies']);
+	$html_data .= '</div>';
+	$html_data .= '</div></div>';
+	$html_data .= '<div class="right-menu">';
+		if($p['uid'] == $u['_id']) {
+			$html_data .= '
+					<div onclick="toggleoptionsmenu(this)" class="options">
+						<i class="fa fa-caret-down"></i>
+						<div class="options-menu">
+							<a onclick="editPost(this)">Editer</a>
+							<a onclick="deletePost(this)">Supprimer</a>
+						</div>
 					</div>
-				</div>
-		';
-	} 
+			';
+		} 
+	$html_data .= '</div>';
 	$html_data .= ' </div> <div class="';
 	if($p['parent'] != null && $p['parent'] != 0) {
 		$html_data .= 'post-com-text ';
 	} else {
 		$html_data .= 'post-parent-text ';
 	}
-	$html_data .= 'dynamicBox viewerBox" data-id="'.$id.'"><div>'.$p['text'].'</div></div>
-	</div>
-	';
+	$html_data .= 'dynamicBox viewerBox" data-id="'.$id.'"><div>'.$p['text'].'</div></div>';
+	$html_data .= '</div>';
 
 	return $html_data;
 }
