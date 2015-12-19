@@ -1,5 +1,9 @@
 @media (min-width: 650px) {
 	#landing {
+		.baseline {
+			font-size: 25px !important;
+			top: calc(50% + 50px) !important;
+		}
 		.center-form {
 			.title-form {
 				font-size: 22px !important;
@@ -109,9 +113,9 @@
 			width: 80%;
 			text-align: center;
 			color: white;
-			font-size: 25px;
+			font-size: 22px;
 			position: absolute;
-			top: calc(50% + 50px);
+			top: calc(50% + 30px);
 			left: 10%;
 		}
 	}
@@ -154,11 +158,12 @@
 			}
 			.login-form {
 				position: relative;
+				margin-bottom: 12px;
 				
 				.mail {
 					width: 80%;
-					padding: 5px;
-					font-size: 3vmax;
+					padding: 10px;
+					font-size: 3.5vmax;
 					border: none;
 					margin: 0;
 					border-bottom: lightgrey solid 1px;
@@ -169,16 +174,16 @@
 				}
 				.password {
 					width: 80%;
-					padding: 5px;
+					padding: 10px;
 					margin: 0;
-					font-size: 3vmax;
+					font-size: 3.5vmax;
 					border: none;
 				}
 				.password-confirmation {
 					width: 80%;
-					padding: 5px;
+					padding: 10px;
 					margin: 0;
-					font-size: 3vmax;
+					font-size: 3.5vmax;
 					border: none;
 				}
 				.borderMiddle {
@@ -195,17 +200,15 @@
 					background-color: #F7A71B;
 					font-size: 15px;
 					color: #FFF;
-					border-radius: 100%;
+					border-radius: 2px;
 					cursor: pointer;
 					display: block;
-					width: 45px;
-					height: 45px;
-					position: absolute;
-					border: medium none;
-					transform: translate(-50%, -50%);
-					top: 48px;
-					left: 90%;
-					
+					width: 80%;
+					height: 35px;
+					border: none;
+					margin: 0px auto;
+					position: relative;
+					top: 10px;
 					i {
 						position: relative;
 						right: 2px;

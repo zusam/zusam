@@ -67,7 +67,6 @@ function switchForm() {
 function switchToLogin() {
 	$('.form-notif').addClass('hidden');
 	$('#landing .signin').html('S\'inscrire');
-	$('#landing .login-form .submit').css('top','31px');
 	$('#landing .center-form .title-form').html('Se connecter');
 	$('#landing .login-form').attr('data-action','login');
 
@@ -79,7 +78,6 @@ function switchToLogin() {
 
 function switchToSignup() {
 	$('.form-notif').addClass('hidden');
-	$('#landing .login-form .submit').css('top','48px');
 	$('#landing .signin').html('Se connecter');
 	$('#landing .center-form .title-form').html('S\'inscrire');
 	$('#landing .login-form').attr('data-action','signup');
@@ -92,7 +90,6 @@ function switchToSignup() {
 
 function switchToPasswordReset() {
 	$('.form-notif').addClass('hidden');
-	$('#landing .login-form .submit').css('top','16px');
 	$('#landing .signin').html('Se connecter');
 	$('#landing .center-form .title-form').html('Réinitialiser votre mot de passe');
 	$('#landing .login-form').attr('data-action','passwordReset');

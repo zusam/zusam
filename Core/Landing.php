@@ -10,7 +10,7 @@ function landing($warning, $redirect_url) {
 				<button class="signin action" onclick="landing.switchForm()">Se connecter</button>
 			</div>
 			<div class="top-div">
-				<img class="logo2" src="Assets/zusam.png"/>
+				<img class="logo2" src="Assets/zusam.svg"/>
 				<div class="baseline"><p>Un espace réellement privé pour vous et votre famille.</p></div>
 			</div>
 			<div class="bottom-div">

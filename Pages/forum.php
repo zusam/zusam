@@ -45,7 +45,11 @@ function page_section_forum(&$u, &$forum) {
 		for($i=0;$i<min(30,count($list));$i++) {
 			$p = post_load(array('_id'=>$list[$i]));
 			if($p != null && $p != false) {
-				$html .= print_post_mini($p);
+				if(in_array((String) $p['_id'], $u['unread'])) {
+					$html .= print_post_mini($p, true);
+				} else {
+					$html .= print_post_mini($p, false);
+				}
 			}
 		}
 		$html .= '</div>';

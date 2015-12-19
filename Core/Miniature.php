@@ -16,7 +16,9 @@ function search_miniature($text) {
 	}
 	// look for a image that we can render
 	foreach($matches as $preview) {
+		//var_dump($preview);
 		$link = gen_miniature($preview);
+		//var_dump($link);
 		if($link != false && $link != "") {
 			$url_prev = $link;
 			break;
@@ -35,6 +37,9 @@ function search_miniature($text) {
 }
 
 function gen_miniature($url) {
+	if(empty($url)) {
+		return "";
+	}
 	$link = p2l(filtre($url));
 	return $link;
 }

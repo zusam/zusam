@@ -130,14 +130,13 @@ function account_getAvatarHTML(&$ac) {
 
 function account_destroy($id) {
 
-	//$ac = account_load(array('_id'=>$id));
 	$mid = new MongoId($id);
 
 	$ac = account_load(array('_id'=>$id));
 	if($ac != null && $ac != false) {
 		
 		// unsubscribe from forums
-		foreach($ac['forums'] as $fid) {
+		foreach($ac['forums'] as $fid=>$value) {
 			$f = forum_load(array('_id'=>$fid));
 			if($f != null && $f != false) {
 				forum_removeUser_andSave($f, $ac);	

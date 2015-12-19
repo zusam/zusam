@@ -91,33 +91,38 @@ function start(id) {
 				
 				// window.typed is the last state of the typebox (if it did not change, do nothing)
 				if(window.typed == null || window.typed != $(id).html()) {
+
+					// if there's nothing to do, do nothing
+					console.log(e.target.textContent);
+					if(e.target.textContent.match(/https?:\/\/[^\s]+/i) || e.target.textContent.match(/\{\:[A-Za-z0-9]+\:\}/i)) {
 					
-					// TODO is this line still needed ? (the definition is made at the start)
-					t = $(id)[0];
-					// we get the cursor position (in order to control it)
-					cpos = Control.getCpos(document.activeElement);
+						// TODO is this line still needed ? (the definition is made at the start)
+						t = $(id)[0];
+						// we get the cursor position (in order to control it)
+						cpos = Control.getCpos(document.activeElement);
 
-					// we decide here what type of filters we use
-					if(e.keyCode == 13) {
-						//document.execCommand('insertHTML', false, '<br>');
-						Control.filter_out_ending(t)
-						//return false;
-					} else {
-							Control.filter_out_search(t);
-					}
-
-					if(cpos != false) {
-						//re-set the cursor position to the right place
+						// we decide here what type of filters we use
 						if(e.keyCode == 13) {
-							bias = 1;
+							//document.execCommand('insertHTML', false, '<br>');
+							Control.filter_out_ending(t)
+							//return false;
 						} else {
-							bias = 0;
+								Control.filter_out_search(t);
 						}
-						bias = 0;
-						Control.setCpos(document.activeElement, parseInt(cpos+bias));
+
+						if(cpos != false) {
+							//re-set the cursor position to the right place
+							if(e.keyCode == 13) {
+								bias = 1;
+							} else {
+								bias = 0;
+							}
+							bias = 0;
+							Control.setCpos(document.activeElement, parseInt(cpos+bias));
+						}
+						//save the state of the typeBox
+						window.typed = $(id).html();
 					}
-					//save the state of the typeBox
-					window.typed = $(id).html();
 				}
 			}
 		}

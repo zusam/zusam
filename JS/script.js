@@ -90,11 +90,12 @@ function loadRetoucheBox(w,h,action) {
 
 
 function destroyAccount(id) {
-	password = $(id).val();
+	var password = $(id).val();
 	if(password == null || password.match(/^\s*$/)) {
 		return false;
 	}
 	var uid = $('#info').attr('data-uid');
+	console.log(password,uid);
 	$.ajax({
 		url: "Ajax/post.php",
 		type: "POST",

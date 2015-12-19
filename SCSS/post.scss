@@ -110,11 +110,12 @@
 					align-items: center;
 					display: -webkit-flex;
 					-webkit-align-items: center;
+					color: grey;
+					font-size: 12px;
 
 					.date {
 						font-size: 14px;
 						line-height: 22px;
-						color: grey;
 					}
 					.circle-separator {
 						font-size: 5px;
@@ -126,6 +127,7 @@
 						cursor: pointer;
 						margin: 0px 2px;
 						display: inline;
+						fill: grey;
 						svg {
 							width: 100%;
 							height: 100%;

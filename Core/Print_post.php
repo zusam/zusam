@@ -92,7 +92,7 @@ function print_post($id, $uid, &$p) {
 	//$html_data .= '<i class="fa fa-circle circle-separator"></i><img onclick="addButterfly(this)" class="butterfly" src="Assets/pap7.svg"/>'.count($p['butterflies']);
 	$html_data .= '<i class="fa fa-circle circle-separator"></i>';
 	if(array_key_exists((String) $u['_id'], $p['butterflies'])) {
-		$html_data .= '<div onclick="toggleButterfly(this)" class="butterfly" style="fill:red">'.file_get_contents('Assets/pap7.svg').'</div>';
+		$html_data .= '<div onclick="toggleButterfly(this)" class="butterfly" style="fill:#F7A71B">'.file_get_contents('Assets/pap7.svg').'</div>';
 	} else {
 		$html_data .= '<div onclick="toggleButterfly(this)" class="butterfly">'.file_get_contents('Assets/pap7.svg').'</div>';
 	}
@@ -124,10 +124,10 @@ function print_post($id, $uid, &$p) {
 	return $html_data;
 }
 
-function print_post_mini(&$p) {
+function print_post_mini(&$p, $unread) {
 	$html = "";
 	if($p != false && ($p['parent'] == null || $p['parent'] == 0)) {
-		if($p['preview'] == null) {
+		if(empty($p['preview'])) {
 			//var_dump($p['preview']);
 			$link = search_miniature($p['text']);
 			if($link != "") {
@@ -151,14 +151,19 @@ function print_post_mini(&$p) {
 				$inside .= '</div>';
 			}
 		} else {
-			$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
+			//$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
+			$inside = '<img src="'.get_miniature($p['preview']).'"/>';
 		}
 		$c = count($p['children']);
 		//$b = count($p['butterflies']);
 		if($c > 0) {
 			$inside .= '<div class="stats">';
 			//$inside .= '<div class="butterflies-indicator"><div>'.$b.' '.file_get_contents('Assets/pap7.svg').'</div></div>';
-			$inside .= '<div class="comments-indicator"><div>'.$c.' <i class="fa fa-comment"></i></div></div>';
+			if($unread) {
+				$inside .= '<div class="comments-indicator"><div class="newcom">'.$c.' <i class="fa fa-comment"></i></div></div>';
+			} else {
+				$inside .= '<div class="comments-indicator"><div>'.$c.' <i class="fa fa-comment"></i></div></div>';
+			}
 			$inside .= '</div>';
 		}
 		$html .= '<a class="material-shadow post-mini" href="#'.$p['_id'].'" data-id="'.$p['_id'].'">';

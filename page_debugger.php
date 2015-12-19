@@ -42,6 +42,7 @@ echo('<form class="debug_info" action="'.$_SERVER['PHP_SELF'].'" method="GET">
 if($url != "" && $url != null) {
 
 	echo('<p class="debug_info"> Preview générée en '.$p['total_time'].'s</p>');
+	echo('<p class="debug_info"> Page récupérée en '.$p['html_t'].'s</p>');
 
 	echo('<div style="width:530px;margin:0 auto;">');
 	echo('<div class="post-parent-text dynamicBox">');

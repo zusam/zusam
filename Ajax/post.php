@@ -48,10 +48,10 @@ if($_SESSION['connected']) {
 				$r = new StdClass();
 				if(array_key_exists($uid, $p['butterflies'])) {
 					post_removeButterfly($p, $uid);	
-					$r->color = "black";
+					$r->color = "grey";
 				} else {
 					post_addButterfly($p, $uid);	
-					$r->color = "red";
+					$r->color = "#F7A71B";
 				}
 				post_save($p);
 				$r->count = count($p['butterflies']);
@@ -405,7 +405,8 @@ if($_SESSION['connected']) {
 			if($uid == $_SESSION['uid']) {
 				if($u != null && $u != false && preg_match("/^\s*$/",$password) != 1) {
 					if(password_verify($password, $u['password'])) {
-						account_destroy($u['_id']);
+						account_destroy($uid);
+						echo('ok');
 					}
 				}
 			} else {

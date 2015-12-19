@@ -12,7 +12,7 @@ function blockBody() {
 		locks = 0;
 	}
 	var locks = locks+1;
-	console.log(locks);
+	//console.log(locks);
 	$('body').attr('data-locks',locks);
 	$('body').css({'overflow':'hidden','max-height':'100%'});
 }
@@ -22,7 +22,7 @@ function unblockBody() {
 		locks = 0;
 	}
 	var locks = locks-1;
-	console.log(locks);
+	//console.log(locks);
 	if(locks < 1) {
 		$('body').attr('data-locks',0);
 		$('body').css({'overflow':'auto','max-height':'none'});
@@ -131,7 +131,7 @@ function hideimageeditor() {
 	pv.css('display','none');
 	$('#container').css("filter","none");
 	$('#container').css("-webkit-filter","none");
-	pv.html('<div id="retoucheBox"><div class="placeholder"><i class="label fa fa-photo"></i><span class="underLabel">Click to upload a photo</span><input type="file"></input></div></div>');
+	pv.html('<div id="retoucheBox"><div class="placeholder"><i class="label fa fa-photo"></i><span class="underLabel">Cliquez pour choisir une photo</span><input type="file"></input></div></div>');
 	removeMask("imageeditormask");
 }
 
@@ -236,6 +236,7 @@ function showpostviewer(id) {
 		pv.append(data['html']);
 		pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 		typebox.view();
+		updatePostStats(id);
 	});
 	addMask("hideAll()",0.75);
 	pv.attr('data-id',id);

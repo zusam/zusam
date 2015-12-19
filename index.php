@@ -162,7 +162,7 @@ echo('
 	<div id="retoucheBox">
 		<div class="placeholder">
 			<i class="label fa fa-photo"></i>
-			<span class="underLabel">Click to upload a photo</span>
+			<span class="underLabel">Cliquez pour choisir une photo</span>
 			<input type="file"></input>
 		</div>
 	</div>
@@ -184,7 +184,7 @@ echo('
 	<div class="post-options"><div class="cell" onclick="hidenewpost()"><i class="fa fa-close"></i></div></div>
 	<div class="post-separator"></div>
 	<div id="newpost" class="newpost">
-		<div id="typeBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Share something..."></div></div>
+		<div id="typeBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Partagez quelque chose..."></div></div>
 		<div class="menu">
 			<div class="menu-cell">
 				<button onclick="hidenewpost()">Annuler</button>
