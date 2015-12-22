@@ -1,7 +1,12 @@
 
-// usefull variables
+//// usefull global variables /////
+
+// albums
+albumFiles = window.albumFiles = [];
+// canvas conversions
 URL = window.URL || window.webkitURL;
-sending = false;
+// sending state
+sending = 0;
 
 $(window).ready(function() {
 
@@ -10,7 +15,6 @@ $(window).ready(function() {
 		FastClick.attach(document.body);
 	});
 
-
 	// start infinite scrolling
 	if($('#info').attr('data-fid') != "") {
 		$(document).on('scroll', function() {
@@ -18,12 +22,12 @@ $(window).ready(function() {
 			if(window.pageYOffset > document.body.scrollHeight/2) {
 				//console.log("loadmore!");
 				loadMorePosts();
-				updatePosts();
 			}
 		});
 	}
 
 	//small code to permit keyboard shortcuts with ctrlKey
+	// necessary to not intefere with typebox. (see typebox code)
 	window.ctrl = false
 	$(window).keydown(function(e) {
 		if(e.keyCode != 17 && e.ctrlKey) {
@@ -33,9 +37,11 @@ $(window).ready(function() {
 		}
 	});
 	
+	// start retouche
 	retouche.start("#retoucheBox");
+
+	// set post-mini clickable
 	setpostsviewable();
-	//updateUnreadPosts();
 	
 	// INITIALISATION OF EXTERNAL LIBRARIES
 	// SOUNDCLOUD
@@ -56,16 +62,14 @@ $(window).ready(function() {
 	}
 
 	// prevent exiting while download
-
 	$(window).on("beforeunload", function (e) {
 		//console.log("beforeunload");
 		//console.log(window.sending);
-		if(window.sending) {
+		if(window.sending > 0) {
 			return 'Upload en cours !';
 		} 
 	});
 
-
-
-
+	// start album
+	album.start();
 });

@@ -160,13 +160,20 @@ function shownewpost() {
 }
 
 function hidenewpost() {
-	e = $('#newpost');
-	hideslidefromright('#slidenewpost');
-	$('#newpost').removeClass('active');	
-	invite = $('<div contenteditable="true" data-placeholder="Partagez quelque chose..."></div>')
-	$('#typeBox').html(invite);
-	typebox.stop('#typeBox');
-	removeMask();
+	if(document.getElementById('typeBox').innerHTML.hashCode() != 654843154) {
+		var answer = confirm('Voulez-vous vraiment annuler le message ?');
+	} else {
+		var answer = true;
+	}
+	if(answer == true) {
+		e = $('#newpost');
+		hideslidefromright('#slidenewpost');
+		$('#newpost').removeClass('active');	
+		invite = $('<div contenteditable="true" data-placeholder="Partagez quelque chose..."></div>')
+		$('#typeBox').html(invite);
+		typebox.stop('#typeBox');
+		removeMask();
+	}
 }
 
 function togglepostviewer(e) {
@@ -236,6 +243,7 @@ function showpostviewer(id) {
 		pv.append(data['html']);
 		pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 		typebox.view();
+		//slideshow.init();
 		updatePostStats(id);
 	});
 	addMask("hideAll()",0.75);

@@ -212,7 +212,7 @@ function sendIt(id) {
 	uid = $('#info').eq(0).attr('data-uid');
 	forum = $('#info').eq(0).attr('data-fid');
 	console.log("text:"+msg+",forum:"+forum+",uid:"+uid+",parent:"+parentID+",pid:"+pid);
-	var baliseId = Date.now().toString(36)+Math.random().toString(16);
+	var baliseId = createId();
 	$.ajax({
 		url: "Ajax/save_msg.php",
 		type: "POST",
@@ -222,7 +222,11 @@ function sendIt(id) {
 				if(data['parent'] == 0 || data['parent'] == null) {
 					console.log("new post");
 					var balise = $('#container div[data-balise="'+baliseId+'"]');
-					balise.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><img src="'+data['miniature']+'"/></div>');
+					if(data['miniature'] != null) {
+						balise.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><div class="post-preview"><img src="'+data['miniature']+'"/></div></div>');
+					} else {
+						balise.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><div class="post-preview">'+data['html_preview']+'</div></div>');
+					}
 					balise.remove();
 					hidepostviewer();
 				} else {
@@ -244,7 +248,11 @@ function sendIt(id) {
 							pp.remove();
 							typebox.view();
 							var p = $('#container .post-mini[data-id='+data['pid']+']');
-							p.after('<div class="material-shadow post-mini" data-id="'+data['pid']+'"><img src="'+data['miniature']+'"/></div>');
+							if(data['miniature'] != null) {
+								p.after('<div class="material-shadow post-mini" data-id="'+data['pid']+'"><img src="'+data['miniature']+'"/></div>');
+							} else {
+								p.after('<div class="material-shadow post-mini" data-id="'+data['pid']+'">'+data['html_preview']+'</div>');
+							}
 							p.remove();
 							//hidenewpost();
 							//hidepostviewer();

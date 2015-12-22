@@ -23,7 +23,7 @@ function page_nav_forum(&$u, &$forum) {
 		$html .= '</div>';
 	} else {
 		$html .= '<div class="right-module-nav">';
-		$html .= '<button class="action" onclick="ask(\'Nom du forum :\',25,addForum)"><i class="fa fa-plus"></i></button>';
+		//$html .= '<button class="action" onclick="ask(\'Nom du forum :\',25,addForum)"><i class="fa fa-plus"></i></button>';
 		$html .= '</div>';
 	}
 

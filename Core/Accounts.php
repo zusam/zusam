@@ -6,6 +6,7 @@ require_once('Core/File.php');
 require_once('Core/Post.php');
 require_once('Core/Notification.php');
 
+//TODO necessary ?
 function account_getDummy($default) {
 	$ac = [];
 	$ac['_id'] = -1;

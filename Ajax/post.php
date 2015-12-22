@@ -15,6 +15,7 @@ require_once('Core/Print_post.php');
 require_once('Core/Preview.php');	
 require_once('Core/PasswordReset.php');	
 require_once('Core/Mail.php');	
+require_once('Core/Album.php');	
 
 require_once('Pages/forum.php');
 require_once('Pages/mainmenu.php');
@@ -35,6 +36,40 @@ if($_SESSION['connected']) {
 
 	if($POST['action'] != null && $POST['action'] != "") {
 		
+		// TODO protect
+		if($POST['action'] == "addFileToAlbum") {
+			$uid = $POST['uid'];
+			$fid = $POST['fid'];
+			$albumId = $POST['albumId'];
+			$fileId = $POST['fileId'];
+
+			$u = account_load(array('_id'=>$uid));
+			$f = forum_load(array('_id'=>$fid));
+
+			if($u != false && $u != null && $f != false && $f != null) {
+				
+				$a = album_load(array('albumId'=>$albumId));
+				// create album if there isn't one
+				if($a == false || $a == null) {
+					$a = album_initialize($albumId);
+				}
+
+				if($_FILES["image"]["size"] < 1024*1024*10 && $_FILES["image"]["type"] == "image/png") {
+					$file = file_load(array("fileId"=>$fileId));
+					if($file == null || $file == false) {
+						$file = file_initialize($fileId, "jpg", $u['_id']);
+					}
+		$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'jpg', 'param' => 'file')), 1024, 1024);
+					if($r) {
+						file_save($file);
+						album_addFile($a, $file);
+						album_save($a);
+					}
+				}
+			}
+		}
+
+
 		// TODO protect
 		if($POST['action'] == "toggleButterfly") {
 			$uid = $POST['uid'];
@@ -120,6 +155,25 @@ if($_SESSION['connected']) {
 			exit;
 
 		}
+		
+		// TODO protect album
+		if($POST['action'] == "getAlbum") {
+
+			$albumId = preg_replace("/\{\:\:([a-zA-Z0-9]+)\:\:\}/","$1",$POST['url']);
+			$url = $POST['url'];
+
+			$album = album_load(array("albumId" => $albumId));	
+			$html = album_print($album, $POST['viewer']);
+
+			$response = new StdClass();
+			$response->url = $url;
+			$response->html = $html;
+
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($response));
+			exit;
+
+		}
 
 		// TODO protect ?
 		if($POST['action'] == "gen_preview") {
@@ -191,8 +245,6 @@ if($_SESSION['connected']) {
 
 			$uid = $POST['uid'];
 			$fileId = $POST['fileId'];
-			var_dump($POST);
-			var_dump($_FILES);
 		
 			if($_FILES["image"]["size"] < 1024*1024*10 && $_FILES["image"]["type"] == "image/png") {
 				$u = account_load(array('_id' => $uid));
@@ -201,11 +253,10 @@ if($_SESSION['connected']) {
 					if($file == null || $file == false) {
 						$file = file_initialize($fileId, "jpg", $u['_id']);
 					}
-					var_dump($file);
 					$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'jpg', 'param' => 'file')), 1024, 1024);
-					var_dump($r);
 					if($r) {
 						file_save($file);
+						echo($file['fileId']);
 					}
 				}
 			}
@@ -217,16 +268,12 @@ if($_SESSION['connected']) {
 
 			$uid = $POST['uid'];
 			$fileId = $POST['fileId'];
-			var_dump($POST);
-			var_dump($_FILES);
 		
 			if($_FILES["video"]["size"] < 1024*1024*300) {
 				$u = account_load(array('_id' => $uid));
 				if($u != null && $u != false) {
 					$file = file_initialize($fileId, "webm", $u['_id']);
-					var_dump($file);
 			$r = saveVideo($_FILES["video"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'webm', 'param' => 'file')), $fileId);
-					var_dump($r);
 					if($r) {
 						file_save($file);
 					}
@@ -240,8 +287,6 @@ if($_SESSION['connected']) {
 
 			$uid = $POST['uid'];
 			$fileId = $POST['fileId'];
-			var_dump($POST);
-			var_dump($_FILES);
 		
 			if($_FILES["sgf"]["size"] < 1024*1024*5) {
 				$u = account_load(array('_id' => $uid));
@@ -249,16 +294,7 @@ if($_SESSION['connected']) {
 					$file = file_initialize($fileId, "sgf", $u['_id']);
 					// TODO verify that's a sgf an not something else...
 	$r = copy($_FILES["sgf"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'sgf', 'param' => 'file')));
-	//$r2 = copy($_FILES["sgf"]["tmp_name"], "/srv/http/zusam/Data/file/plop.sgf");
-	$hello = pathTo2(array('url' => $file['location'], 'ext' => 'sgf', 'param' => 'file'));
-	var_dump($hello);
-	var_dump($file);
-	$coucou = is_writable("/srv/http/zusam/Data/file");
-	var_dump($coucou);
 	$plop = file_get_contents($_FILES["sgf"]["tmp_name"]);
-	var_dump($plop);
-	var_dump($r);
-	//var_dump($r2);
 					if($r) {
 						file_save($file);
 					}

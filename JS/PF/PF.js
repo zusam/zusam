@@ -2,7 +2,7 @@
 function loadSGF(file,id) {
 	console.log("load sgf "+file.name);
 	$('*[data-id='+id+']').remove();
-	var fileId = Math.random().toString(36).slice(2)+Date.now().toString(36); 
+	var fileId = createId(); //Math.random().toString(36).slice(2)+Date.now().toString(36); 
 	var content = $('<span data-src="{:'+fileId+':}" class="deletable" contenteditable="false"><div class="sgf-viewer" id="sgf-viewer-'+fileId+'"></div></span>');
 	$(id).append(content);
 	var wgo = new WGo.BasicPlayer(document.getElementById("sgf-viewer-"+fileId), { sgfFile: URL.createObjectURL(file), enableKeys: false, enableWheel: false, layout: {top: ["InfoBox", "Control"],bottom: ["CommentBox"]}});
@@ -26,11 +26,11 @@ function sendSGF(sgfBlob, fileId) {
 		success: function(data){ 
 				console.log(data);
 				console.log("sent !");
-				window.sending = false;
+				window.sending = window.sending - 1;
 			},
 		error: function(){ 
 				console.log("fail"); 
-				window.sending = false;
+				window.sending = window.sending - 1;
 			},
 		processData: false,
 		contentType: false,
@@ -51,7 +51,7 @@ function sendSGF(sgfBlob, fileId) {
 			return xhr;
 		}
 	});
-	window.sending = true;
+	window.sending = window.sending + 1;
 }
 
 function loadVideo(file,id) {
@@ -61,7 +61,7 @@ function loadVideo(file,id) {
 	vid.autoplay = true;
 	vid.onloadeddata = function() {
 		$('*[data-id='+id+']').remove();
-		var fileId = Math.random().toString(36).slice(2)+Date.now().toString(36); 
+		var fileId = createId(); //Math.random().toString(36).slice(2)+Date.now().toString(36); 
 		PF.showVideo(vid, id, fileId);
 		PF.sendVideo(file, fileId);
 	};
@@ -90,11 +90,11 @@ function sendVideo(vidBlob, fileId) {
 		success: function(data){ 
 				console.log(data);
 				console.log("sent !");
-				window.sending = false;
+				window.sending = window.sending - 1;
 			},
 		error: function(){ 
 				console.log("fail"); 
-				window.sending = false;
+				window.sending = window.sending - 1;
 			},
 		processData: false,
 		contentType: false,
@@ -115,7 +115,7 @@ function sendVideo(vidBlob, fileId) {
 			return xhr;
 		}
 	});
-	window.sending = true;
+	window.sending = window.sending + 1;
 }
 
 function trackProgress(fileId) {
@@ -167,7 +167,7 @@ function loadImage(file,id) {
 		ctx.drawImage(img,0,0,this.width*g,this.height*g);
 		delete img;
 		$('*[data-id='+id+']').remove();
-		var fileId = Math.random().toString(36).slice(2)+Date.now().toString(36); 
+		var fileId = createId(); //Math.random().toString(36).slice(2)+Date.now().toString(36); 
 		PF.showImage(canvas,id, fileId);
 		PF.sendImage(canvas, fileId);
 	};
@@ -198,11 +198,11 @@ function sendImage(canvas, fileId) {
 		data: f,
 		success: function(data){ 
 				console.log(data);
-				window.sending = false;
+				window.sending = window.sending - 1;
 			},
 		error: function(){ 
 				console.log("fail"); 
-				window.sending = false;
+				window.sending = window.sending - 1;
 			},
 		processData: false,
 		contentType: false,
@@ -225,5 +225,5 @@ function sendImage(canvas, fileId) {
 			return xhr;
 		}
 	});
-	window.sending = true;
+	window.sending = window.sending + 1;
 }

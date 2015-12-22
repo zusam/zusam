@@ -743,3 +743,30 @@ function decode(input) {
 function encode(input) {
 	return nl2br(htmlentities(input, "ENT_NOQUOTES"))
 }
+function dataURItoBlob(dataURI) {
+	var byteString = atob(dataURI.split(",")[1]);
+	var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+	var ab = new ArrayBuffer(byteString.length);
+	var ia = new Uint8Array(ab);
+	for (var i = 0; i < byteString.length; i++) {
+		ia[i] = byteString.charCodeAt(i);
+	}
+	return new Blob([ia], {type:mimeString});
+}
+// adding hashCode function to string
+String.prototype.hashCode = function() {
+	var hash = 0, i, chr, len;
+	if(this.length === 0) return hash;
+	for(i=0, len = this.length; i<len; i++) {
+		chr = this.charCodeAt(i);
+		hash = ((hash << 5) - hash) + chr;
+		hash |= 0;
+	}
+	return hash;
+}
+function createId() {
+	var dateId = Date.now().toString(36);
+	var randomId = Math.random().toString(36).slice(2);
+	var htmlId = document.documentElement.innerHTML.hashCode().toString(36).slice(1);
+	return dateId+randomId+htmlId;
+}

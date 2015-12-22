@@ -143,6 +143,29 @@ var Filter = {
 		output = Control.searchMatch({"callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
+	
+	searchAlbum : function(inner, ending, viewer) {
+		r1 = /\{\:\:[a-zA-Z0-9]+\:\:\}/gi;
+		substitution = function(str) {
+			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
+			return output;
+		};
+		var ajax_url = "Ajax/post.php";
+		var ajax_var = {"action":"getAlbum", "viewer":viewer};
+		callback = function(data) {
+			//console.log(data);
+			//console.log(data['html']);
+			balise = $('#'+str2md5(decodeURI(data['url'])));
+			balise.html(data['html']);
+			slideshow.init();
+		};
+		fail = function(url) {
+			balise = $('#'+str2md5(url));
+			balise.html("error");
+		}
+		output = Control.searchMatch({"callerName":"searchAlbum", "inner":inner, "regex":r1, "substitution":substitution, "ajax_url":ajax_url, "ajax_var":ajax_var, "callback":callback, "fail":fail});
+		return output;
+	},
 
 	searchFile : function(inner, ending, viewer) {
 		r1 = /\{\:[a-zA-Z0-9]+\:\}/gi;
@@ -163,7 +186,7 @@ var Filter = {
 				balise.html("error");
 
 		}
-		output = Control.searchMatch({"callerName":"endingFile", "inner":inner, "regex":r1, "substitution":substitution, "ajax_url":ajax_url, "ajax_var":ajax_var, "callback":callback, "fail":fail});
+		output = Control.searchMatch({"callerName":"searchFile", "inner":inner, "regex":r1, "substitution":substitution, "ajax_url":ajax_url, "ajax_var":ajax_var, "callback":callback, "fail":fail});
 		return output;
 	},
 
@@ -202,7 +225,7 @@ var Filter = {
 	},
 
 	searchLink : function(inner, ending) {
-		var baliseId = Math.random().toString(36).slice(2)+Date.now().toString(36); 
+		var baliseId = createId();
 		var r1 = /[\s]*https?:\/\/[^\s]+/gi;
 		if(!ending) {
 			r1 = new RegExp(r1+'[\s]','gi');

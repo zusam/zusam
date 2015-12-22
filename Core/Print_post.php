@@ -112,13 +112,15 @@ function print_post($id, $uid, &$p) {
 			';
 		} 
 	$html_data .= '</div>';
-	$html_data .= ' </div> <div class="';
+	$html_data .= '</div>';
+	$html_data .= '<div class="';
 	if($p['parent'] != null && $p['parent'] != 0) {
 		$html_data .= 'post-com-text ';
 	} else {
 		$html_data .= 'post-parent-text ';
 	}
 	$html_data .= 'dynamicBox viewerBox" data-id="'.$id.'"><div>'.$p['text'].'</div></div>';
+
 	$html_data .= '</div>';
 
 	return $html_data;
@@ -144,7 +146,6 @@ function print_post_mini(&$p, $unread) {
 			if($link != null && $link != false && $link != "") {
 				$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
 			} else {
-				//$inside = '<img src="'.p2l(pathTo("placeholder", "assets", "jpg")).'"/>';
 				$inside = '<div class="text-container">';
 				$text = cutIfTooLong($p['text'], 180);
 				$inside .= '<div>'.$text.'</div>';

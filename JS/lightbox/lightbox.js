@@ -1,4 +1,3 @@
-
 function enlighten(id) {
 
 	lightbox.darken();

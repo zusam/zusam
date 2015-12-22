@@ -190,6 +190,9 @@ echo('
 				<button onclick="hidenewpost()">Annuler</button>
 			</div>
 			<div class="menu-cell">
+				<button onclick="album.start(\'#typeBox\')" id="create-album" class="action"><i class="fa fa-camera"></i></button>
+			</div>
+			<div class="menu-cell">
 				<button onclick="inputFile(\'#typeBox\')" class="action"><i class="fa fa-paperclip"></i></button>
 			</div>
 			<div class="menu-cell">
@@ -231,6 +234,9 @@ echo('</section>');
 
 // MAIN_PAGE
 echo('</div>');
+
+// ALBUMS
+echo('<span class="send-notification" id="send-notification"></span>');
 
 // FOOTER
 echo('

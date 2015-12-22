@@ -12,7 +12,6 @@ function file_initialize($fileId, $type, $uid) {
 	$file['owner'] = new MongoId($uid);
 	$file['links'] = 1;
 	$file['fileId'] = $fileId;
-	$file['forums'] = [];
 
 	file_locate($file);
 

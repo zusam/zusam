@@ -2,20 +2,21 @@
 
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Core/Location.php');
+require_once('Core/Utils.php');
 require_once('Core/File.php');
 
-function post_initialize($text, $uid, $preview, $forum, $parent) {
+function post_initialize($array) {
 	$post = [];
 	$post['_id'] = new MongoId();
 	$post['date'] = new MongoDate(); 
 	$post['children'] = [];
-	$post['text'] = $text;
-	$post['uid'] = new MongoId($uid);
-	$post['preview'] = $preview;
-	$post['forum'] = new MongoId($forum);
+	$post['text'] = $array['text'];
+	$post['uid'] = new MongoId($array['uid']);
+	$post['preview'] = $array['preview'];
+	$post['forum'] = new MongoId($array['forum']);
 	$post['timestamp'] = time();
 	if($parent != null) {
-		$post['parent'] = new MongoId($parent);
+		$post['parent'] = new MongoId($array['parent']);
 	}
 	return $post;
 }
@@ -111,6 +112,12 @@ function post_destroy($id) {
 		$files = post_getFiles($p);
 		foreach($files as $f) {
 			file_unlink($f);
+		}
+		foreach($p['files'] as $fid) {
+			$f = file_load(array('_id'=>$fid));
+			if($f != false && $f = null) {
+				post_removeFile($p, $f);
+			}
 		}
 		// destroy children
 		foreach($p['children'] as $cid) {

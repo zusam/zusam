@@ -22,65 +22,13 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 
 	if($_SESSION['forum'] == $f['_id'] && $u['forums'][$forum] != null) {
 
-		//// look for a potential previews
-		//$ret = preg_match_all("/https?:\/\/[^\s]+/i",$text,$matches);
-		//$ret2 = preg_match_all("/\{\:[A-Za-z0-9]+\:\}/i",$text,$matches2);
-		////if($ret != false && count($matches) > 0) {
-		////	$preview = $matches[0];
-		////} else {
-		////	if($ret2 != false && count($matches2) > 0) {
-		////		$preview = $matches2[0];
-		////	} else {
-		////		$preview = "";
-		////	}
-		////}
-		//
-		//if($ret != false) {
-		//	$matches = $matches[0];
-		//}
-		//if($ret2 != false) {
-		//	$matches2 = $matches2[0];
-		//}
-
-
-		//// look for a image that we can render
-		//foreach($matches as $preview) {
-		//	$link = gen_miniature($preview);
-		//	if($link != false && $link != "") {
-		//		$url_prev = $link;
-		//		break;
-		//	}
-		//}
-		//if($url_prev == "") {
-		//	foreach($matches2 as $preview) {
-		//		$link = gen_miniature($preview);
-		//		if($link != false && $link != "") {
-		//			$url_prev = $link;
-		//			break;
-		//		}
-		//	}
-		//}
-
 		$url_prev = search_miniature($text);
-
-		//// building response...
-		//if($preview != "") {
-		//	// generating the miniature if it's not already done
-		//	$link = gen_miniature($preview);
-		//	if($link != false && $link != "") {
-		//		$url_prev = $link;
-		//	}
-		//} 
 		
-		// default placeholder image
-		if(preg_match("/.*miniature\/.*\.jpg/",$url_prev) != 1) {
-			$url_prev = p2l(pathTo("placeholder", "assets", "jpg"));
-		}
 
 		if($pid == null || $pid == 0) {
 			if($parent == null || $parent == 0) {
 				// new post
-				$p = post_initialize($text, $uid, $preview, $forum);
+				$p = post_initialize(array('text'=>$text, 'uid'=>$uid, 'preview'=>$preview, 'forum'=>$forum));
 				post_save($p);
 				forum_post2news($f, $p['_id']);
 				forum_updateTimestamp($f);
@@ -91,7 +39,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 			} else {
 				// new com
 				$p = post_load(array('_id'=>$parent));
-				$c = post_initialize($text, $uid, $preview, $forum, $p['_id']);
+				$c = post_initialize(array('text'=>$text, 'uid'=>$uid, 'preview'=>$preview, 'forum'=>$forum, 'parent'=>$p['_id']));
 				post_addChild($p, $c['_id']);
 				post_save($c);
 				post_updateTimestamp($p);
@@ -119,8 +67,15 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 		}
 
 		$r = new stdClass();
-		//$r->link = $link;
-		$r->miniature = $url_prev;
+		if(preg_match("/.*miniature\/.*\.jpg/",$url_prev) != 1) {
+			$inside = '<div class="text-container">';
+			$text = cutIfTooLong($p['text'], 180);
+			$inside .= '<div>'.$text.'</div>';
+			$inside .= '</div>';
+			$r->html_preview = $inside;
+		} else {
+			$r->miniature = $url_prev;
+		}
 		$r->prev = $preview;
 		$r->id = (String) $p['_id'];
 		$r->text = $text;

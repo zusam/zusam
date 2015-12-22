@@ -16,8 +16,7 @@ dir=$(echo $1 | sed 's/\.tar\.gz//');
 case $yn in 
 	[Yy]* ) 
 		rm -rf Data/;
-		mongo --quiet --eval 'db.getMongo().getDBNames().forEach(function(i){db.getSiblingDB(i).dropDatabase()})';
-		break;;
+		mongo --quiet --eval 'db.getMongo().getDBNames().forEach(function(i){db.getSiblingDB(i).dropDatabase()})';;
 	[Nn]* ) exit;;
 esac
 

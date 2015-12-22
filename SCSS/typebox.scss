@@ -17,7 +17,9 @@
 	margin:0px 0px; max-width: 100%
 }
 .dynamicBox > span > video { 
-	margin:0px 0px; width: 100%
+	margin:0px 0px; 
+	width: 100%;
+	max-height: 80vh;
 }
 /* INLINE-BLOCK IS NECESSARY TO PREVENT DIVS FROM CHROME */
 .dynamicBox > div {

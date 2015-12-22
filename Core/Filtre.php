@@ -8,6 +8,7 @@ require_once('Filtre/soundcloud.php');
 require_once('Core/Location.php');
 require_once('Core/File.php');
 require_once('Core/Utils.php');
+require_once('Core/Album.php');
 
 function get_mini_from_link($url, $link) {
 	if(!file_exists(pathTo($url, "mini", "jpg"))) {
@@ -26,6 +27,20 @@ function get_mini_from_link($url, $link) {
 
 
 function filtre($url) {
+
+	// ALBUM //
+	if(preg_match("/(\{\:\:)([A-Za-z0-9]+)(\:\:\})/",$url)==1) {
+		$link = preg_replace("/(\{\:\:)([A-Za-z0-9]+)(\:\:\})/","$2",$url);
+		$album = album_load(array("albumId" => $link));
+		if($album != false && $album != null) {
+			$file = file_load(array('_id'=>$album['files'][0]));
+			if($file != null && $file != false) {
+				$ret = create_post_preview($file['fileId'], pathTo2(array('url' => $file['fileId'], 'ext' => 'jpg', 'param' => 'file')));
+				return $ret;
+			}
+		}
+		return false;
+	}
 
 	// FILE //
 	if(preg_match("/(\{\:)([A-Za-z0-9]+)(\:\})/",$url)==1) {
