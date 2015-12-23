@@ -50,8 +50,11 @@ function page_section_forum(&$u, &$forum) {
 				} else {
 					$html .= print_post_mini($p, false);
 				}
+			} else {
+				forum_removeFromNews($forum, $list[$i]);
 			}
 		}
+		forum_save($forum);
 		$html .= '</div>';
 	}
 
@@ -93,7 +96,9 @@ function page_section_forum_settings(&$u, &$forum) {
 	$html .= '<div class="title">Utilisateurs :</div>';
 	foreach($forum['users'] as $userId) {
 		$user = account_load(array('_id'=>$userId));
-		$html .= '<div class="user"><div title="'.$user['name'].'">'.account_getAvatarHTML($user).'</div><span>'.$user['name'].'</span></div>';
+		if($user != false && $user != null) {
+			$html .= '<div class="user"><div title="'.$user['name'].'">'.account_getAvatarHTML($user).'</div><span>'.$user['name'].'</span></div>';
+		}
 	}
 	$html .= '</div>';
 

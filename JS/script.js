@@ -254,8 +254,6 @@ function sendIt(id) {
 								p.after('<div class="material-shadow post-mini" data-id="'+data['pid']+'">'+data['html_preview']+'</div>');
 							}
 							p.remove();
-							//hidenewpost();
-							//hidepostviewer();
 						} else {
 							console.log("edit com");
 							var balise = $('.child-post[data-id='+data['pid']+']');
@@ -272,7 +270,7 @@ function sendIt(id) {
 		if(pid == 0 || pid == null) {
 			var post_loading = $('<div data-balise="'+baliseId+'" class="post-mini"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
 			$('#container').prepend(post_loading);
-			hidenewpost();
+			hidenewpost(true);
 		}
 	} else {
 		if(pid == 0 || pid == null) {
@@ -301,6 +299,7 @@ function deletePost(t) {
 		type: "POST",
 		data: {"action":"deletePost", "id":id,"forum":forum},
 		success: function(data) {
+				console.log(data);
 				if(p.hasClass('parent-post')) {
 					hidepostviewer();
 					$('#container .post-mini[data-id='+id+']').remove();

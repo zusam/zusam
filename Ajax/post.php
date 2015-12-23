@@ -61,8 +61,8 @@ if($_SESSION['connected']) {
 					}
 		$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'jpg', 'param' => 'file')), 1024, 1024);
 					if($r) {
-						file_save($file);
 						album_addFile($a, $file);
+						file_save($file);
 						album_save($a);
 					}
 				}
@@ -92,6 +92,8 @@ if($_SESSION['connected']) {
 				$r->count = count($p['butterflies']);
 				header('Content-Type: text/json; charset=UTF-8');
 				echo(json_encode($r));
+				$url_prev = search_miniature($text);
+				account_save($u);
 			}
 			exit;
 		}
@@ -481,6 +483,8 @@ if($_SESSION['connected']) {
 			} else {
 				echo('no credentials');
 			}
+			$url_prev = search_miniature($text);
+			account_save($u);
 			exit;
 		}
 

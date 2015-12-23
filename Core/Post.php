@@ -4,6 +4,7 @@ chdir(realpath(dirname(__FILE__))."/../");
 require_once('Core/Location.php');
 require_once('Core/Utils.php');
 require_once('Core/File.php');
+require_once('Core/Album.php');
 
 function post_initialize($array) {
 	$post = [];
@@ -76,9 +77,7 @@ function post_update(&$p, $a) {
 
 function post_removeChild(&$p, $id) {
 	$mid = new MongoId($id);
-	//for($i = 0; $i < count($p['children']); $i++) {
 	foreach($p['children'] as $key=>$cid) {
-		//if($p['children'][$i] == $mid || $p['children'][$i] == $id) {
 		if($cid == $mid || $cid == $id) {
 			unset($p['children'][$key]);
 		}
@@ -90,18 +89,27 @@ function post_addChild(&$p, $id) {
 	array_push($p['children'], $mid);
 }
 
-function post_getFiles(&$p) {
-
-	$files = [];
-	preg_match_all("/(\{\:)([A-Za-z0-9]+)(\:\})/",$p['text'],$matches);
-	foreach($matches as $m) {
-		$fileId = preg_replace("/(\{\:)([A-Za-z0-9]+)(\:\})/","$2",$m);
+function post_removeFiles(&$p) {
+	preg_match_all("/(\{\:)([\w\-]+)(\:\})/",$p['text'],$matches);
+	foreach($matches[0] as $m) {
+		$fileId = preg_replace("/(\{\:)([\w\-]+)(\:\})/","$2",$m);
 		$file = file_load(array('fileId'=>$fileId));
 		if($file != null && $file != false) {
-			array_push($files, $file);
+			file_unlink($file);
 		}
 	}
-	return $files;
+}
+
+function post_removeAlbums(&$p) {
+	preg_match_all("/(\{\:\:)([\w\-]+)(\:\:\})/",$p['text'],$matches);
+	foreach($matches[0] as $m) {
+		$albumId = preg_replace("/(\{\:\:)([\w\-]+)(\:\:\})/","$2",$m);
+		$album = album_load(array('albumId'=>$albumId));
+		if($album != false && $album != null) {
+			echo('album targeted');
+			album_destroy($album);
+		}
+	}
 }
 
 function post_destroy($id) {
@@ -109,16 +117,8 @@ function post_destroy($id) {
 	$p = post_load(array('_id'=>$id));
 	if($p != null && $p != false) {
 		// unlink files
-		$files = post_getFiles($p);
-		foreach($files as $f) {
-			file_unlink($f);
-		}
-		foreach($p['files'] as $fid) {
-			$f = file_load(array('_id'=>$fid));
-			if($f != false && $f = null) {
-				post_removeFile($p, $f);
-			}
-		}
+		post_removeFiles($p);
+		post_removeAlbums($p);
 		// destroy children
 		foreach($p['children'] as $cid) {
 			post_destroy($cid);

@@ -69,6 +69,11 @@ function forum_post2news(&$forum, $pid) {
 	array_push($forum['news'], $pid);
 }
 
+function forum_removeFromNews(&$forum, $pid) {
+	$pid = (String) $pid;
+	deleteValue($pid, $forum['news']); 	
+}
+
 function forum_addUser_andSave(&$forum, &$user) {
 	if(!in_array($user['_id'], $forum['users'])) {
 		array_push($forum['users'], $user['_id']);

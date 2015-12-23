@@ -22,8 +22,10 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 
 	if($_SESSION['forum'] == $f['_id'] && $u['forums'][$forum] != null) {
 
+		account_updateTimestamp($u);
+
 		$url_prev = search_miniature($text);
-		
+		account_save($u);
 
 		if($pid == null || $pid == 0) {
 			if($parent == null || $parent == 0) {

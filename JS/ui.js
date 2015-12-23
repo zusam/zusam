@@ -159,11 +159,15 @@ function shownewpost() {
 	addMask("hidenewpost()",0.75);
 }
 
-function hidenewpost() {
-	if(document.getElementById('typeBox').innerHTML.hashCode() != 654843154) {
-		var answer = confirm('Voulez-vous vraiment annuler le message ?');
-	} else {
+function hidenewpost(sent) {
+	if(sent) {
 		var answer = true;
+	} else {
+		if(document.getElementById('typeBox').innerHTML.hashCode() != 654843154) {
+			var answer = confirm('Voulez-vous vraiment annuler le message ?');
+		} else {
+			var answer = true;
+		}
 	}
 	if(answer == true) {
 		e = $('#newpost');

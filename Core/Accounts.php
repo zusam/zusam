@@ -19,6 +19,10 @@ function account_getDummy($default) {
 	return $ac;
 }
 
+function account_updateTimestamp(&$ac) {
+	$ac['timestamp'] = time();
+}
+
 function account_addUnread(&$ac, $pid) {
 	if($ac['unread'] == null) {
 		$ac['unread'] = [];

@@ -50,9 +50,10 @@ function file_destroy($fid) {
 
 function file_unlink(&$file) {
 	$file['links'] = $file['links'] - 1;
-	file_save($file);
 	if($file['links'] <= 0) {
 		file_destroy($file['_id']);
+	} else {
+		file_save($file);
 	}
 }
 
@@ -91,10 +92,10 @@ function file_print(&$file, $viewer) {
 	$html = "";
 
 	if($file['type'] == "jpg") {
-		$imgsrc = p2l(pathTo2(array("url" => $file['location'], "ext" => "jpg", "param" => "file")));
+		$imgsrc = p2l(file_getPath($file));
 		if($viewer == "false" || $viewer == false) {
 			$html .= '
-				<div contentditable="false">
+				<div contenteditable="false">
 					<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.$imgsrc.'?'.time().'"/>
 					<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="editIMG">Editer l\'image</button>
 				</div>
@@ -104,13 +105,12 @@ function file_print(&$file, $viewer) {
 		}
 	}
 	if($file['type'] == "webm") {
-		$html .= '<video controls="true" src="'.p2l(pathTo2(array("url" => $file['location'], "ext" => "webm", "param" => "file"))).'"></video>';
+		$html .= '<video controls="true" src="'.p2l(file_getPath($file)).'"></video>';
 	}
 	if($file['type'] == "sgf") {
 		$html .= '<div class="sgf-viewer" id="sgf-viewer-'.$file['fileId'].'"></div>';
-		$html .= '<script>var wgo = new WGo.BasicPlayer(document.getElementById("sgf-viewer-'.$file['fileId'].'"), {sgfFile : "'.p2l(pathTo2(array("url" => $file['location'], "ext" => "sgf", "param" => "file"))).'", enableKeys: false, enableWheel: false, layout: {top: ["InfoBox", "Control"],bottom: ["CommentBox"]}}); wgo.setCoordinates(true);</script>';
+		$html .= '<script>var wgo = new WGo.BasicPlayer(document.getElementById("sgf-viewer-'.$file['fileId'].'"), {sgfFile : "'.p2l(file_getPath($file)).'", enableKeys: false, enableWheel: false, layout: {top: ["InfoBox", "Control"],bottom: ["CommentBox"]}}); wgo.setCoordinates(true);</script>';
 	}
-
 	return $html;
 }
 

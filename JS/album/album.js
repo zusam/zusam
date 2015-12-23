@@ -1,5 +1,10 @@
 function start(id) {
-	var aid = createNewAlbum();
+	var aid = $(id).find('.slideshow').attr('data-src');
+	if(aid == null || aid == "") {
+		var aid = createNewAlbum();
+	} else {
+		aid = aid.replace(/[\{\:\}]/g,'');
+	}
 	input = $('<input class="hidden" multiple="multiple" type="file" data-id="'+id+'" data-aid="'+aid+'"></input>');
 	input.on('change', album.handleFileSelect);
 	$('body').append(input);
@@ -25,13 +30,19 @@ function handleFileSelect(evt) {
 	var files = evt.target.files;
 	var id = evt.target.dataset.id;
 	var aid = evt.target.dataset.aid;
-	album.showAlbum(id, aid, files.length);
-	//console.log("change!");
-	//console.log("nb files : "+files.length);
+	var max = $('*[data-src="{::'+aid+'::}"] .progression').attr('data-max');
+	if(max == null || max == "") {
+		album.showAlbum(id, aid, files.length);
+	} else {
+		max = parseInt(max)+files.length;
+		$('*[data-src="{::'+aid+'::}"] .progression').attr('data-max',max);
+	}
 	for(i=0;i<files.length;i++) {
 		file = files[i];
-		//console.log("added : "+file.name);
 		if(file.type.match('image.*')) {
+			if(window.albumFiles[aid] == null) {
+				window.albumFiles[aid] = [];
+			}
 			window.albumFiles[aid].push(file);
 		}
 	}

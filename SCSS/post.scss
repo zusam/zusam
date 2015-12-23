@@ -37,31 +37,6 @@
 	cursor: default;
 }
 .post {
-	.progressBar {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 15px;
-
-		.progress, .conversion {
-			position:absolute;
-			top: 0;
-			left: 0;
-			display: block;
-			width: 0;
-			height: calc(100% - 0px);
-			margin: 0;
-			padding: 0;
-			transition: all 1s linear;
-		}
-		.progress {
-			background-color: #F7A71B;
-		}
-		.conversion {
-			background-color: red;
-			z-index: 2;
-		}
-	}
 	.post-menu {
 		display: flex;
 		justify-content: space-between;

@@ -32,14 +32,12 @@ function album_addFile(&$a, &$f) {
 	$fid = (String) $f['_id'];
 	if(!in_array($fid, $a['files'])) {
 		array_push($a['files'], $fid);
-		$f['links'] = $f['links'] + 1;
 	}
 }
 
 function album_removeFile(&$a, &$f) {
 	$fid = (String) $f['_id'];
 	if(in_array($fid, $a['files'])) {
-		array_push($a['files'], $fid);
 		file_unlink($f);
 	}
 }
@@ -54,7 +52,7 @@ function album_save(&$a) {
 function album_destroy(&$a) {
 	foreach($a['files'] as $fid) {
 		$f = file_load(array('_id'=>$fid));
-		if($f != false && $f = null) {
+		if($f != false && $f != null) {
 			album_removeFile($a, $f);
 		}
 	}
