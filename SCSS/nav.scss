@@ -35,9 +35,9 @@ nav {
 		}
 	}
 	.logo {
-	    width: 40px;
-		height: 40px;
+		height: calc(100% - 10px);
 		cursor: pointer;
+		margin: 5px;
 	}
 	button {
 		cursor: pointer;
@@ -50,7 +50,7 @@ nav {
 	}
 }
 nav > * {
-	margin: 5px;
+	text-align: center;
 }
 .my_avatar {
 	display: inline-block;

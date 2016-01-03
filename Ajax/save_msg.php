@@ -41,7 +41,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 			} else {
 				// new com
 				$p = post_load(array('_id'=>$parent));
-				$c = post_initialize(array('text'=>$text, 'uid'=>$uid, 'preview'=>$preview, 'forum'=>$forum, 'parent'=>$p['_id']));
+				$c = post_initialize(array('text'=>$text, 'uid'=>$uid, 'preview'=>$preview, 'forum'=>$forum, 'parent'=>$parent));
 				post_addChild($p, $c['_id']);
 				post_save($c);
 				post_updateTimestamp($p);

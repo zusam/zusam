@@ -13,13 +13,16 @@
 .hidden {
 	display: none !important;
 }
+.robotothin {
+	font-family: RobotoThin;
+}
 body {
 	margin: 0px;
 	max-width: 100%;
 	overflow: auto;
 	font-size: 15px;
 	font-family: RobotoRegular;
-	background-color: rgba(0,0,0,0.1);
+	background-color: rgba(0,0,0,0.05);
 }
 #post-viewer {
 	display: none;

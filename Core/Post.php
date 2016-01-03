@@ -16,7 +16,7 @@ function post_initialize($array) {
 	$post['preview'] = $array['preview'];
 	$post['forum'] = new MongoId($array['forum']);
 	$post['timestamp'] = time();
-	if($parent != null) {
+	if($array['parent'] != null && $array['parent'] != 0) {
 		$post['parent'] = new MongoId($array['parent']);
 	}
 	return $post;

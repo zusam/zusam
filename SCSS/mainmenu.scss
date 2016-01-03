@@ -36,16 +36,6 @@
 	font-size: 16px;
 	overflow: auto;
 
-	.forum-settings {
-		padding: 5px;
-		text-decoration: none;
-		margin: 0px 5px;
-	}
-	.forum-settings:hover i {
-		-webkit-animation: fa-spin 2s infinite linear;
-		animation: fa-spin 2s infinite linear;
-		color: white;
-	}
 	.section-title {
 		width: calc(100% - 20px);
 		margin: 7px 10px;
@@ -93,19 +83,9 @@
 			position: relative;
 			bottom: 2px;
 		}
-		//input {
-		//	border: none;
-		//	background: none;
-		//	margin: 0px;
-		//	font-size: 18px;
-		//	padding: 0px;
-		//	cursor: pointer;
-		//	width: 100%;
-		//	text-align: left;
-		//}
 	}
-	.selected {
-		background-color: rgba(0,0,0,0.5);
+	.fontgrey {
+		color: grey;
 	}
 	.menu-action {
 		width: calc(100% - 20px);
@@ -124,18 +104,30 @@
 		-webkit-justify-content: space-between;
 		-webkit-align-items: center;
 		width: 100%;
+	
+		.menu-highlight:hover {
+			color: white;
+		}
+		.forum-settings {
+			padding: 5px;
+			text-decoration: none;
+			margin: 0px 5px;
+		}
+		.forum-settings:hover i {
+			-webkit-animation: fa-spin 2s infinite linear;
+			animation: fa-spin 2s infinite linear;
+			color: white;
+		}
+	}
+	.selected {
+		background-color: rgba(0,0,0,0.5) !important;
+	}
+	.forum-menu:hover {
+		background-color: rgba(0,0,0,0.1);
 	}
 	.news-highlight {
 		color: white;
 		font-weight: bold;
-	}
-	.menu-highlight {
-		border-radius: 1px;
-	}
-	.menu-highlight:hover {
-		border-bottom: 1px solid #F0F0F0;
-		margin-bottom: -1px;
-		color: white;
 	}
 	.notification {
 		display: flex;

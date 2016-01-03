@@ -52,6 +52,7 @@
 	padding: 2px; 
 	margin: 0px; 
 	min-height: 18px;
+	width: calc(100% - 4px);
 }
 .dynamicBox > div:focus { 
 	border:none; 

@@ -18,6 +18,7 @@ function preview_initialize($url) {
 	$p['total_time'] = round(microtime(true) - $t, 5);
 	unset($p['html']);
 	$p['raw_html'] = to_utf8($p['raw_html']);
+	unset($p['raw_html']);
 	return $p;
 }
 
@@ -192,6 +193,7 @@ function preview_getImage(&$p) {
 	// first get the meta-images (we maybe don't need to look further)
 	$meta[] = 'meta[property="og:image"]';
 	$meta[] = 'meta[property="og:image:url"]';
+	$meta[] = 'meta[name="twitter:image"]';
 	$meta[] = 'meta[property="twitter:image"]';
 
 	$score_max = 0;
@@ -235,8 +237,11 @@ function preview_getImage(&$p) {
 			}
 			if($element->src != null) {
 
-				if(preg_match("/\.bmp|\.jpg|\.jpeg|\.png|\.gif/i",$img)==1) {
-					$img = preg_replace("/(.*\.jpg|\.jpeg|\.png|\.gif).*/i","$1",$img);
+				$img = getImageFromSource($element->src,$p['url'],$p['base_url']);
+				//var_dump($img);
+
+				///if(preg_match("/\.bmp|\.jpg|\.jpeg|\.png|\.gif/i",$img)==1) {
+				//	$img = preg_replace("/(.*\.jpg|\.jpeg|\.png|\.gif).*/i","$1",$img);
 					if(!array_search($img, $repeat)) {
 						$i++;
 						$im = preview_imageInit($img);
@@ -249,7 +254,7 @@ function preview_getImage(&$p) {
 							return true;
 						}
 					}
-				}
+				//}
 			}
 		}
 	}
@@ -273,38 +278,39 @@ function preview_getImage(&$p) {
 
 }
 
-function getImageFromSource($src) {
+function getImageFromSource($src,$url,$base_url) {
 
-	if(preg_match("/(https?:\/\/www.youtube.com\/embed\/)([\w\-]+)(.*)/",$element->src)==1) {
+
+	if(preg_match("/(https?:\/\/www.youtube.com\/embed\/)([\w\-]+)(.*)/",$src)==1) {
 		$img = preg_replace("/(https?:\/\/www.youtube.com\/embed\/)([\w\-]+)([^\s]*)/","http://img.youtube.com/vi/$2/maxresdefault.jpg",$element->src);
 		return $img;
 	} 
 	
-	if(preg_match("/(https?:\/\/player.vimeo.com\/video\/)([0-9]+)/",$url)==1) {
-		$id = preg_replace("/(https?:\/\/player.vimeo.com\/video\/)([0-9]+)/","$2",$url);
+	if(preg_match("/(https?:\/\/player.vimeo.com\/video\/)([0-9]+)/",$src)==1) {
+		$id = preg_replace("/(https?:\/\/player.vimeo.com\/video\/)([0-9]+)/","$2",$src);
 		$hash = unserialize(file_get_contents("http://vimeo.com/api/v2/video/$id.php"));
 		$img = $hash[0]['thumbnail_large'];  
 		return $img;
 	}
 	
-	if(preg_match("/(http:\/\/www.dailymotion.com\/embed\/video\/)([\w\-]+)([^\s]*)/",$url)==1) {
-		$img = preg_replace("/(http:\/\/www.dailymotion\.com\/embed\/video\/)([\w\-]+)([^\s]*)/","http://www.dailymotion.com/thumbnail/video/$2",$url);
+	if(preg_match("/(http:\/\/www.dailymotion.com\/embed\/video\/)([\w\-]+)([^\s]*)/",$src)==1) {
+		$img = preg_replace("/(http:\/\/www.dailymotion\.com\/embed\/video\/)([\w\-]+)([^\s]*)/","http://www.dailymotion.com/thumbnail/video/$2",$src);
 		return $img;
 	}
 
-	if(preg_match("/^https?:\/\//",$element->src) != 1) {
-		if(preg_match("/^\/\//",$element->src) == 1) {
-			$img = 'http:'.$element->src;
+	if(preg_match("/^https?:\/\//",$src) != 1) {
+		if(preg_match("/^\/\//",$src) == 1) {
+			$img = 'http:'.$src;
 		} else {
-			if(preg_match("/^\.\./",$element->src) == 1) {
+			if(preg_match("/^\.\./",$src) == 1) {
 				$url = preg_replace("/\/([^\/]+)$/","/",$url);
-				$img = $url.$element->src;
+				$img = $url.$src;
 			} else {
-				$img = 'http://'.$base_url.'/'.$element->src;
+				$img = 'http://'.$base_url.'/'.$src;
 			}
 		}
 	} else {
-		$img = $element->src;
+		$img = $src;
 	}
 	return $img;
 

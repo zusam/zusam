@@ -15,7 +15,6 @@ function page_mainmenu(&$u, $page) {
 		$html .= 'selected';
 	}
 	$html .= '" href="'.$_SERVER['PHP_SELF'].'?page=profile">'.account_getAvatarHTML($u).$u['name'].'</a>';
-	$html .= '<a class="menu-action" onclick="ask(\'Nom du forum :\',25,addForum)">Nouveau groupe</a>';
 	$html .= '<div class="separator"></div>';
 	$html .= '<div class="section-title">Groupes';
 	$html .= '</div>';
@@ -44,6 +43,7 @@ function page_mainmenu(&$u, $page) {
 			}
 		}
 	}
+	$html .= '<div class="forum-menu" onclick="ask(\'Nom du forum :\',25,addForum)"><span class="fontgrey menu-highlight forum-link">+ Nouveau groupe</span></div>';
 	$html .= '<div class="separator"></div>';
 	$notifications = array_reverse(load_notifications($u));
 	if(count($notifications) > 0) {

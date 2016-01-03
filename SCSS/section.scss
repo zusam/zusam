@@ -67,11 +67,11 @@ section {
 			}
 			img {
 				width: 100%;
-				transition: all 0.2s;
+				//transition: all 0.2s;
 			}
-			img:hover {
-				transform: scale(1.1);
-			}
+			//img:hover {
+			//	transform: scale(1.1);
+			//}
 		}
 		.stats {
 			position: absolute;

@@ -135,10 +135,6 @@ function hideimageeditor() {
 	removeMask("imageeditormask");
 }
 
-//function hidenewavatar() {
-//	hideimageeditor();
-//}
-
 function togglenewpost() {
 	e = $('#newpost');
 	if(e.hasClass('active')) {
@@ -163,10 +159,14 @@ function hidenewpost(sent) {
 	if(sent) {
 		var answer = true;
 	} else {
-		if(document.getElementById('typeBox').innerHTML.hashCode() != 654843154) {
-			var answer = confirm('Voulez-vous vraiment annuler le message ?');
-		} else {
+		var nbc = document.getElementById('typeBox').childNodes.length;
+		var fc = document.getElementById('typeBox').childNodes[0].innerHTML.replace(/\<br\>/,'');
+		if(nbc == 1 && fc == "") {
+			console.log("okay!");
 			var answer = true;
+		} else {
+			console.log(fc);
+			var answer = confirm('Voulez-vous vraiment annuler le message ?');
 		}
 	}
 	if(answer == true) {
@@ -198,6 +198,7 @@ function hidenewcommentsection(id) {
 
 function shownewcommentsection(id) {
 	t = $(id);
+	//t.attr('onclick','');
 	fc = t.children(':first-child');
 	if(fc.hasClass('fake-comment')) {
 		fc.remove();
@@ -217,6 +218,23 @@ function shownewcommentsection(id) {
 		typebox.start('#commentBox');
 		// require typebox module
 		typebox.Control.niceFocus('#commentBox');
+		// scroll to bottom
+		//var cb = document.getElementById('commentBox').childNodes[0];
+		//cb.addEventListener('focus', function(e) {
+		//	document.getElementById('post-viewer').scrollIntoView(false);
+		//	cb.removeEventListener('focus');
+		//});
+		//setTimeout(function(){
+		//	//pv.scrollTop = pv.scrollHeight;
+		//}, 100);
+		//setTimeout(function(){
+		//	document.getElementById('post-viewer').scrollIntoView(false);
+		//	//pv.scrollTop = pv.scrollHeight;
+		//}, 700);
+		//setTimeout(function(){
+		//	document.getElementById('post-viewer').scrollIntoView(false);
+		//	//pv.scrollTop = pv.scrollHeight;
+		//}, 3000);
 	}
 }
 

@@ -95,7 +95,7 @@ if($url != "" && $url != null) {
 	
 	echo('</div>');
 	echo('<br>');
-	//var_dump($p);
+	var_dump($p);
 }
 
 echo('<br>');

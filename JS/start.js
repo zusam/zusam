@@ -71,5 +71,5 @@ $(window).ready(function() {
 	});
 
 	// start album
-	album.start();
+	//album.start();
 });

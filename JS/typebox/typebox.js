@@ -56,7 +56,20 @@ function start(id) {
 		// trap the return key being pressed
 		if(e.keyCode === 13) {
 			//document.execCommand('insertHTML', false, '<br><br>');
-			typebox.pasteHtmlAtCaret('<br>', false);
+			//console.log(e);
+			cpos = Control.getCpos(document.activeElement);
+			console.log("cpos before :"+cpos);
+			if(e.target.innerHTML.trim().match(/\<br\>$/)) {
+				typebox.pasteHtmlAtCaret('<br>', false);
+			} else {
+				console.log(e.target.innerHTML.trim().match(/\<br\>$/));
+				console.log(e.target.innerHTML);
+				typebox.pasteHtmlAtCaret('<br>', false);
+				e.target.innerHTML = e.target.innerHTML+'<br>';
+			}
+			Control.setCpos(document.activeElement, parseInt(cpos+1));
+			cpos = Control.getCpos(document.activeElement);
+			console.log("cpos after :"+cpos);
 			// prevent the default behaviour of return key pressed
 			return false;
 		}
@@ -82,7 +95,7 @@ function start(id) {
 			// is the focus on the typebox ?
 			if($(":focus").parent().is(id)) {
 
-				//prevent deselecting when erasing the last character (with backspace) // TODO still needed ? -- yes
+				//prevent deselecting when erasing nothing (with backspace) // TODO still needed ? -- yes
 				if(e.keyCode == 8 && $(":focus").html() == "") {
 					e.preventDefault();
 					e.stopPropagation();
@@ -93,7 +106,7 @@ function start(id) {
 				if(window.typed == null || window.typed != $(id).html()) {
 
 					// if there's nothing to do, do nothing
-					console.log(e.target.textContent);
+					//console.log(e.target.textContent);
 					if(e.target.textContent.match(/https?:\/\/[^\s]+/i) || e.target.textContent.match(/\{\:[A-Za-z0-9]+\:\}/i)) {
 					
 						// TODO is this line still needed ? (the definition is made at the start)
@@ -112,6 +125,7 @@ function start(id) {
 
 						if(cpos != false) {
 							//re-set the cursor position to the right place
+							// TODO still necessary ? (when we pass a line, everything was already evaluated right ?)
 							if(e.keyCode == 13) {
 								bias = 1;
 							} else {

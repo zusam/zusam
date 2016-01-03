@@ -12,6 +12,7 @@ require_once('Core/Notification.php');
 require_once('Core/File.php');	
 require_once('Core/Landing.php');
 require_once('Core/PasswordReset.php');
+require_once('Core/HTML.php');
 
 require_once('Pages/forum.php');
 require_once('Pages/mainmenu.php');
@@ -32,22 +33,8 @@ foreach($_POST as $K=>$V) {
 echo('<html>');
 
 // HEAD
-echo('
-	<head>
-		<title>Zusam</title>
-		<meta name="description" content="Zusam est un service de discussions et de partages moderne et réellement privé"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-		<meta charset="utf-8"/>
-		<link href="style.css" rel="stylesheet">
-		<link href="Assets/icons/apple-touch-icon.png" rel="apple-touch-icon" />
-		<link href="Assets/icons/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
-		<link href="Assets/icons/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
-		<link href="Assets/icons/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
-		<link href="Assets/icons/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180" />
-		<link href="Assets/icons/icon-hires.png" rel="icon" sizes="192x192" />
-		<link href="Assets/icons/icon-normal.png" rel="icon" sizes="128x128" />
-	</head>
-');
+$head = html_head();
+echo($head);
 
 //apply secret link
 if($GET['il'] != null) {
@@ -189,9 +176,15 @@ echo('
 			<div class="menu-cell">
 				<button onclick="hidenewpost()">Annuler</button>
 			</div>
+			');
+			/*
+			echo('
 			<div class="menu-cell">
 				<button onclick="album.start(\'#typeBox\')" id="create-album" class="action"><i class="fa fa-camera"></i></button>
 			</div>
+			');
+			*/
+			echo('
 			<div class="menu-cell">
 				<button onclick="inputFile(\'#typeBox\')" class="action"><i class="fa fa-paperclip"></i></button>
 			</div>
@@ -239,14 +232,7 @@ echo('</div>');
 echo('<span class="send-notification" id="send-notification"></span>');
 
 // FOOTER
-echo('
-<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
-<script src="http://connect.soundcloud.com/sdk.js"></script>
-<script src="LibJS/jquery.2.1.4.min.js"></script>
-<script src="LibJS/fastclick.min.js"></script>
-<script src="zusam.min.js"></script>
-</body>
-</html>
-');
+$footer = html_footer();
+echo($footer);
 
 ?>

@@ -31,13 +31,13 @@ function updatePostStats(pid) {
 			console.log(data);
 			if(typeof(data) != "undefined" && typeof(data['coms']) != "undefined") {
 				if(data['coms'] != 0) {
-			$('#container .post-mini[data-id="'+pid+'"]').find('.comments-indicator').remove();
-			$('#container .post-mini[data-id="'+pid+'"] .stats').append('<div class="comments-indicator"><div>'+data['coms']+' <i class="fa fa-comment"></i></div></div>');
+			$('#container .post-mini[data-id="'+pid+'"]').find('.stats').remove();
+			$('#container .post-mini[data-id="'+pid+'"]').append('<div class="stats"><div class="comments-indicator"><div>'+data['coms']+' <i class="fa fa-comment"></i></div></div></div>');
 					if(data['unread'] == true) {
 						$('.post-mini[data-id="'+pid+'"] .comments-indicator div').addClass('newcom');
 					}
 				} else {
-			$('#container .post-mini[data-id="'+pid+'"]').find('.comments-indicator').remove();
+			$('#container .post-mini[data-id="'+pid+'"]').find('.stats').remove();
 				}
 			}
 		}
@@ -474,15 +474,34 @@ function handleFileSelect(evt) {
 	if(!window.sending) {
 		console.log(file.type);
 		console.log(file);
+		var fileTypeHandled = false;
 		if(file.type.match(/image/)) {
-			PF.loadImage(file,id);
+			fileTypeHandled = true;
+			if(file.size > 1024*1024*30) {
+				alert("fichier image trop lourd (max 30Mo)");
+			} else {
+				PF.loadImage(file,id);
+			}
 		}
 		if(file.type.match(/video/)) {
-			PF.loadVideo(file,id);
+			fileTypeHandled = true;
+			if(file.size > 1024*1024*300) {
+				alert("fichier vidéo trop lourd (max 300Mo)");
+			} else {
+				PF.loadVideo(file,id);
+			}
 		}
 		if(file.type.match(/sgf/) || file.name.match(/sgf/)) {
-			console.log("SGF DETECTED");
-			PF.loadSGF(file,id);
+			fileTypeHandled = true;
+			if(file.size > 1024*1024*3) {
+				alert("fichier SGF trop lourd (max 3Mo)");
+			} else {
+				console.log("SGF DETECTED");
+				PF.loadSGF(file,id);
+			}
+		}
+		if(!fileTypeHandled) {
+			alert("Le format du fichier n'est pas supporté");
 		}
 	}
 }

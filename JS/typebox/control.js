@@ -46,7 +46,11 @@ var Control = {
 				}
 			}
 			if(output[0] == "") {
-				$(node).remove();
+				if(viewer) {
+					$(node).remove();
+				} else {
+					$(node).attr('data-placeholder','').html("");
+				}
 			} else {
 				node.innerHTML = output[0];
 			}
@@ -83,14 +87,14 @@ var Control = {
 		}
 		var lignes = $(element).find("br").length
 		caretOffset = caretOffset + lignes;
-		console.log("getpos:"+caretOffset);
+		//console.log("getpos:"+caretOffset);
 		return caretOffset;
 	},
 
 	// set cursor
 	setCpos : function(e, c) {
 		
-		console.log("-----");
+		//console.log("-----");
 		var placed = false;
 		c = parseInt(c);
 		if(c < 0) { c = 0; }
@@ -98,14 +102,14 @@ var Control = {
 		for(i=0; i<e.childNodes.length; i++) {
 			var node = e.childNodes[i];
 			//console.log("node:"+node);
-			console.log("node tagname:"+node.tagName);
+			//console.log("node tagname:"+node.tagName);
 			if(typeof(node.tagName) == "undefined") {
-			console.log(c,count)
+			//console.log(c,count)
 				if(node.length >= (c-count)) {
 					var range = document.createRange();
 					range.setStart(node, c-count);
 					range.setEnd(node, c-count);
-					console.log(range)
+					//console.log(range)
 					var sel = window.getSelection();
 					sel.removeAllRanges();
 					sel.addRange(range);
@@ -113,11 +117,11 @@ var Control = {
 					placed = true;
 					break;
 				} else {
-					console.log("coucou");
+					//console.log("coucou");
 					count = parseInt(count) + parseInt(node.length);
 				}
 			} else {
-			console.log(c,count)
+			//console.log(c,count)
 				if(c-count <= 1) {
 					$(node).after(document.createTextNode(' '));
 					var range = document.createRange();
@@ -134,7 +138,7 @@ var Control = {
 			}
 		} 
 		if(!placed) {
-			console.log("non placé");
+			//console.log("non placé");
 			node = e.childNodes[e.childNodes.length-1];
 			var range = document.createRange();
 			range.setStart(node, node.length);

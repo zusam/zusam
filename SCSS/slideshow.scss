@@ -12,13 +12,12 @@
 		z-index: 10;
 		height: 100%;
 		transition: all 0.2s;
+		cursor: pointer;
 	}
 	.next {
-		cursor: e-resize;
 		right: 0px;
 	}
 	.previous {
-		cursor: w-resize;
 		left: 0px;
 	}
 	.action:hover {

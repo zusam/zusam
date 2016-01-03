@@ -201,7 +201,7 @@ var Filter = {
 		base_url = data['base_url'];
 		var preview = ""; 
 		if(typeof(data['image']) != "undefined") {
-			if(typeof(data['image']['url'])!= "undefined" && data['image']['url'].match(/https?:\/\/.+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)/i)) {
+			if(typeof(data['image']['url']) != "undefined" && !data['image']['url'].match(/^\s*$/)) {
 				preview = '<div class="preview"><img src="'+data['image']['url']+'" onerror="error_im(this)"/></div>';
 			}
 		}
