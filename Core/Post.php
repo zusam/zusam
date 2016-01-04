@@ -1,6 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
+require_once('Core/MongoDriver.php');
 require_once('Core/Location.php');
 require_once('Core/Utils.php');
 require_once('Core/File.php');
@@ -8,16 +9,16 @@ require_once('Core/Album.php');
 
 function post_initialize($array) {
 	$post = [];
-	$post['_id'] = new MongoId();
-	$post['date'] = new MongoDate(); 
+	$post['_id'] = mongo_id();
+	$post['date'] = mongo_date(); 
 	$post['children'] = [];
 	$post['text'] = $array['text'];
-	$post['uid'] = new MongoId($array['uid']);
+	$post['uid'] = mongo_id($array['uid']);
 	$post['preview'] = $array['preview'];
-	$post['forum'] = new MongoId($array['forum']);
+	$post['forum'] = mongo_id($array['forum']);
 	$post['timestamp'] = time();
 	if($array['parent'] != null && $array['parent'] != 0) {
-		$post['parent'] = new MongoId($array['parent']);
+		$post['parent'] = mongo_id($array['parent']);
 	}
 	return $post;
 }
@@ -44,28 +45,12 @@ function post_removeButterfly(&$post, $uid) {
 }
 
 function post_bulkLoad($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	if($array['uid'] != null && $array['uid'] != "") {
-		$array['uid'] = new MongoId($array['uid']);
-	}
-	$m = new MongoClient();
-	$posts = $m->selectDB("zusam")->selectCollection("posts");
-	$p = $posts->find($array);
+	$p = mongo_bulkLoad("posts",$array);
 	return $p;
 }
 
 function post_load($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	if($array['uid'] != null && $array['uid'] != "") {
-		$array['uid'] = new MongoId($array['uid']);
-	}
-	$m = new MongoClient();
-	$posts = $m->selectDB("zusam")->selectCollection("posts");
-	$p = $posts->findOne($array);
+	$p = mongo_load("posts", $array);
 	return $p;
 }
 
@@ -76,7 +61,7 @@ function post_update(&$p, $a) {
 }
 
 function post_removeChild(&$p, $id) {
-	$mid = new MongoId($id);
+	$mid = mongo_id($id);
 	foreach($p['children'] as $key=>$cid) {
 		if($cid == $mid || $cid == $id) {
 			unset($p['children'][$key]);
@@ -85,7 +70,7 @@ function post_removeChild(&$p, $id) {
 }
 
 function post_addChild(&$p, $id) {
-	$mid = new MongoId($id);
+	$mid = mongo_id($id);
 	array_push($p['children'], $mid);
 }
 
@@ -113,7 +98,6 @@ function post_removeAlbums(&$p) {
 }
 
 function post_destroy($id) {
-	$mid = new MongoId($id);
 	$p = post_load(array('_id'=>$id));
 	if($p != null && $p != false) {
 		// unlink files
@@ -123,17 +107,12 @@ function post_destroy($id) {
 		foreach($p['children'] as $cid) {
 			post_destroy($cid);
 		}
-		$m = new MongoClient();
-		$posts = $m->selectDB("zusam")->selectCollection("posts");
-		$posts->remove(array('_id' => $mid));
+		mongo_destroy("posts",$id);
 	}
 }
 
 function post_save(&$post) {
-	$m = new MongoClient();
-	$posts = $m->selectDB("zusam")->selectCollection("posts");
-	$mid = new MongoId($post['_id']);
-	$posts->update(array('_id' => $mid), $post, array('upsert' => true));
+	mongo_save("posts",$post);
 }
 
 ?>

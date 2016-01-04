@@ -2,6 +2,7 @@
 session_start();
 
 chdir(realpath(dirname(__FILE__)."/../"));
+require_once('Core/MongoDriver.php');
 require_once('Core/Post.php');
 require_once('Core/Location.php');
 require_once('Core/Connect.php');
@@ -150,8 +151,8 @@ if($_SESSION['connected']) {
 			$pid = $GET['pid'];
 			$uid = $GET['uid'];
 
-			$u = account_load(array('_id' => new MongoId($uid)));
-			$p = post_load(array('_id'=>new MongoId($pid)));
+			$u = account_load(array('_id' => mongo_id($uid)));
+			$p = post_load(array('_id'=>mongo_id($pid)));
 			//var_dump($p);
 			//
 			//if($_SESSION['uid'] == $uid && $p['uid'] == $uid) {

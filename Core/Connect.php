@@ -22,7 +22,8 @@ function verifyACL($mail, $pass) {
 	if(password_verify($pass, $ac['password'])) {
 		$_SESSION['connected'] = true;
 		$_SESSION['mail'] = $mail;
-		$_SESSION['password'] = $password;
+		// TODO security problem to save the password ?
+		$_SESSION['password'] = $pass;
 		$_SESSION['uid'] = $ac['_id'];
 		return true;
 	}

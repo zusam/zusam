@@ -1,12 +1,13 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
+require_once('Core/MongoDriver.php');
 require_once('Core/Accounts.php');
 
 function notification_initialize($a) {
 	$n = [];
-	$n['_id'] = new MongoId();
-	$n['date'] = new MongoDate();
+	$n['_id'] = mongo_id();
+	$n['date'] = mongo_date();
 	$n['type'] = $a['type'];
 	$n['text'] = $a['text'];
 	$n['data'] = $a['data'];
@@ -16,36 +17,20 @@ function notification_initialize($a) {
 }
 
 function notification_save(&$n) {
-	$m = new MongoClient();
-	$notifications = $m->selectDB("zusam")->selectCollection("notifications");
-	$mid = new MongoId($n['_id']);
-	$notifications->update(array('_id' => $mid), $n, array('upsert' => true));
+	mongo_save("notififications",$n);
 }
 
 function notification_destroy($id) {
-	$m = new MongoClient();
-	$mid = new MongoId($id);
-	$notifications = $m->selectDB("zusam")->selectCollection("notifications");
-	$notifications->remove(array('_id' => $mid));
+	mongo_destroy("notifications", $id);
 }
 
 function notification_load($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	$m = new MongoClient();
-	$notifications = $m->selectDB("zusam")->selectCollection("notifications");
-	$n = $notifications->findOne($array);
+	$n = mongo_load("notifications", $array);
 	return $n;
 }
 
 function notification_bulkLoad($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	$m = new MongoClient();
-	$notifications = $m->selectDB("zusam")->selectCollection("notifications");
-	$n = $notifications->find($array);
+	$n = mongo_bulkLoad("notifications", $array);
 	return $n;
 }
 

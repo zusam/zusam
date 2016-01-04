@@ -1,6 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
+require_once('Core/MongoDriver.php');
 require_once('Core/Accounts.php');
 require_once('Core/Location.php');
 require_once('Core/Post.php');
@@ -8,8 +9,8 @@ require_once('Core/Notification.php');
 
 function forum_initialize($name) {
 	$forum = [];
-	$forum['_id'] = new MongoId();
-	$forum['date'] = new MongoDate();
+	$forum['_id'] = mongo_id();
+	$forum['date'] = mongo_date();
 	$forum['name'] = $name;
 	$forum['users'] = [];
 	$forum['news'] = [];
@@ -37,29 +38,16 @@ function forum_changeLink(&$forum) {
 }
 
 function forum_save(&$forum) {
-	$m = new MongoClient();
-	$forums = $m->selectDB("zusam")->selectCollection("forums");
-	$mid = new MongoId($forum['_id']);
-	$forums->update(array('_id' => $mid), $forum, array('upsert' => true));
+	mongo_save("forums",$forum);
 }
 
 function forum_bulkLoad($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	$m = new MongoClient();
-	$forums = $m->selectDB("zusam")->selectCollection("forums");
-	$forum = $forums->find($array);
+	$forum = mongo_bulkLoad("forums",$array);
 	return $forum;
 }
 
 function forum_load($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	$m = new MongoClient();
-	$forums = $m->selectDB("zusam")->selectCollection("forums");
-	$forum = $forums->findOne($array);
+	$forum = mongo_load("forums", $array);
 	return $forum;
 }
 
@@ -136,8 +124,8 @@ function forum_getAvatarHTML(&$forum) {
 }
 
 function forum_destroy($fid) {
-	$mid = new MongoId($fid);
 	
+	$mid = new MongoId($fid);
 	$f = forum_load(array('_id'=>$fid));
 	if($f != null && $f != false) {
 		$posts = post_bulkLoad(array('forum'=>$mid));	
@@ -148,9 +136,7 @@ function forum_destroy($fid) {
 		foreach($notifications as $n) {
 			notification_destroy($n['_id']);
 		}
-		$m = new MongoClient();
-		$forums = $m->selectDB("zusam")->selectCollection("forums");
-		$forums->remove(array('_id' => $mid));
+		mongo_destroy("forums",$fid);
 	}
 }
 

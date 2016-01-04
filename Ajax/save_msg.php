@@ -2,6 +2,7 @@
 session_start();
 
 chdir(realpath(dirname(__FILE__).'/../'));
+require_once('Core/MongoDriver.php');
 require_once('Core/Post.php');
 require_once('Core/Location.php');
 require_once('Core/Utils.php');
@@ -18,7 +19,7 @@ $parent = (String) $_POST['parent'];
 if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 			
 	$f = forum_load(array('_id'=>$forum));
-	$u = account_load(array('_id' => new MongoId($uid)));
+	$u = account_load(array('_id' => mongo_id($uid)));
 
 	if($_SESSION['forum'] == $f['_id'] && $u['forums'][$forum] != null) {
 

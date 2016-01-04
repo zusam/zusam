@@ -1,14 +1,15 @@
 <?php
 
 chdir(realpath(dirname(__FILE__).'/../'));
+require_once('Core/MongoDriver.php');
 require_once('LibPHP/Ganon/ganon.php');
 require_once('Core/Utils.php');
 
 function preview_initialize($url) {
 	$p = [];
 	$p['url'] = $url;
-	$p['_id'] = new MongoId();
-	$p['date'] = new MongoDate();
+	$p['_id'] = mongo_id();
+	$p['date'] = mongo_date();
 	$t = microtime(true);
 	preview_getBaseURL($p);
 	preview_getHTML($p);
@@ -317,27 +318,17 @@ function getImageFromSource($src,$url,$base_url) {
 }
 
 function preview_save(&$p) {
-	$m = new MongoClient();
-	$previews = $m->selectDB("zusam")->selectCollection("previews");
-	$mid = new MongoId($p['_id']);
-	$previews->update(array('_id' => $mid), $p, array('upsert' => true));
+	mongo_save("previews",$p);
 }	
 
 function preview_load($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	$m = new MongoClient();
-	$previews = $m->selectDB("zusam")->selectCollection("previews");
-	$p = $previews->findOne($array);
+	$p = mongo_load("previews",$array);
 	return $p;
 }
 
+// TODO destroy miniature file
 function preview_destroy($id) {
-	$m = new MongoClient();
-	$mid = new MongoId($id);
-	$previews = $m->selectDB("zusam")->selectCollection("previews");
-	$previews->remove(array('_id' => $mid));
+	mongo_destroy("previews",$id);
 }
 
 ?>

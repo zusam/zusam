@@ -103,13 +103,13 @@ function page_section_forum_settings(&$u, &$forum) {
 	$html .= '</div>';
 
 
-	$notifications = notification_bulkLoad(array('type' => 'invitation', 'source' => new MongoId($forum['_id'])));
+	$notifications = notification_bulkLoad(array('type' => 'invitation', 'source' => mongo_id($forum['_id'])));
 
 	$html .= '<div class="invitations-resume">';
 	$html .= '<div class="title">Invitations :</div>';
 	foreach($notifications as $n) {
-		if(MongoId::isValid($n['target'])) {
-			$user = account_load(array('_id'=> new MongoId($n['target'])));
+		if(mongo_isId($n['target'])) {
+			$user = account_load(array('_id'=> mongo_id($n['target'])));
 		} else {
 			$user = account_load(array('mail'=> $n['target']));
 		}

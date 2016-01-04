@@ -11,7 +11,6 @@ $password = (String) $_POST['password'];
 $password_conf = (String) $_POST['password_conf'];
 $action = (String) $_POST['action'];
 
-
 if($action == "logout" || $mail == "" || $password == "") {
 	session_unset();
 	exit();

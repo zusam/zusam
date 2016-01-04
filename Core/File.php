@@ -1,15 +1,16 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
+require_once('Core/MongoDriver.php');
 require_once('Core/Location.php');
 require_once('Core/Utils.php');
 
 function file_initialize($fileId, $type, $uid) {
 	$file = [];
-	$file['_id'] = new MongoId();
-	$file['date'] = new MongoDate();
+	$file['_id'] = mongo_id();
+	$file['date'] = mongo_date();
 	$file['type'] = $type;
-	$file['owner'] = new MongoId($uid);
+	$file['owner'] = mongo_id($uid);
 	$file['links'] = 1;
 	$file['fileId'] = $fileId;
 
@@ -31,10 +32,7 @@ function file_locate(&$file) {
 }
 
 function file_save(&$file) {
-	$m = new MongoClient();
-	$files = $m->selectDB("zusam")->selectCollection("files");
-	$mid = new MongoId($file['_id']);
-	$files->update(array('_id' => $mid), $file, array('upsert' => true));
+	mongo_save("files",$file);
 }
 
 function file_destroy($fid) {
@@ -42,9 +40,7 @@ function file_destroy($fid) {
 	$f = file_load(array('_id'=>$fid));
 	if($f != false && $f != null) {
 		unlink(file_getPath($f));	
-		$m = new MongoClient();
-		$files = $m->selectDB("zusam")->selectCollection("files");
-		$files->remove(array('_id' => $mid));
+		mongo_destroy("files",$fid);
 	}
 }
 
@@ -58,28 +54,12 @@ function file_unlink(&$file) {
 }
 
 function file_bulkLoad($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	if($array['owner'] != null && $array['owner'] != "") {
-		$array['owner'] = new MongoId($array['owner']);
-	}
-	$m = new MongoClient();
-	$files = $m->selectDB("zusam")->selectCollection("files");
-	$file = $files->find($array);
-	return $file;
+	$files = mongo_bulkLoad("files", $array);
+	return $files;
 }
 
 function file_load($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	if($array['owner'] != null && $array['owner'] != "") {
-		$array['owner'] = new MongoId($array['owner']);
-	}
-	$m = new MongoClient();
-	$files = $m->selectDB("zusam")->selectCollection("files");
-	$file = $files->findOne($array);
+	$file = mongo_load("files", $array);
 	return $file;
 }
 

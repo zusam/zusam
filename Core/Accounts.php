@@ -1,6 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
+require_once('Core/MongoDriver.php');
 require_once('Core/Location.php');
 require_once('Core/File.php');
 require_once('Core/Post.php');
@@ -44,11 +45,10 @@ function account_setPassword(&$ac, $password) {
 
 function account_initialize($mail, $password) {
 	$ac = [];
-	$ac['_id'] = new MongoId();
-	$ac['date'] = new MongoDate();
+	$ac['_id'] = mongo_id();
+	$ac['date'] = mongo_date();
 	$ac['mail'] = $mail;
 	$ac['name'] = preg_replace("/^(.*)@.*$/","$1",$mail);
-	//$ac['password'] = password_hash($password, PASSWORD_BCRYPT);
 	account_setPassword($ac, $password);
 	$ac['forums'] = [];
 	$ac['salt'] = bin2hex(openssl_random_pseudo_bytes(6));
@@ -56,33 +56,16 @@ function account_initialize($mail, $password) {
 }
 
 function account_save(&$ac) {
-	$m = new MongoClient();
-	$accounts = $m->selectDB("zusam")->selectCollection("accounts");
-	$mid = new MongoId($ac['_id']);
-	$accounts->update(array('_id' => $mid), $ac, array('upsert' => true));
+	mongo_save("accounts",$ac);
 }
 
 function account_bulkLoad($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	$m = new MongoClient();
-	$accounts = $m->selectDB("zusam")->selectCollection("accounts");
-	if(count($array) < 1) {
-		$ac = $accounts->find();
-	} else {
-		$ac = $accounts->find($array);
-	}
+	$ac = mongo_bulkLoad("accounts",$array);
 	return $ac;
 }
 
 function account_load($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	$m = new MongoClient();
-	$accounts = $m->selectDB("zusam")->selectCollection("accounts");
-	$ac = $accounts->findOne($array);
+	$ac = mongo_load("accounts", $array);
 	return $ac;
 }
 
@@ -135,8 +118,7 @@ function account_getAvatarHTML(&$ac) {
 
 function account_destroy($id) {
 
-	$mid = new MongoId($id);
-
+	$mid = mongo_id($id);
 	$ac = account_load(array('_id'=>$id));
 	if($ac != null && $ac != false) {
 		
@@ -149,7 +131,7 @@ function account_destroy($id) {
 		}
 
 		// destroy notifications
-		$notifications = file_bulkLoad(array('target'=>$mid));
+		$notifications = notifications_bulkLoad(array('target'=>$mid));
 		foreach($notifications as $n) {
 			notification_destroy($n['_id']);
 		}
@@ -166,9 +148,7 @@ function account_destroy($id) {
 			file_destroy($f['_id']);
 		}
 
-		$m = new MongoClient();
-		$accounts = $m->selectDB("zusam")->selectCollection("accounts");
-		$accounts->remove(array('_id' => $mid));
+		mongo_destroy("accounts",$id);
 	}
 }
 

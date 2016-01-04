@@ -1,30 +1,22 @@
 <?php
-// TODO remove file
 
 chdir(realpath(dirname(__FILE__))."/../");
+require_once('Core/MongoDriver.php');
 require_once('Core/Location.php');
 require_once('Core/Utils.php');
 require_once('Core/File.php');
 
 function album_initialize($albumId) {
 	$a = [];
-	$a['_id'] = new MongoId();
-	$a['date'] = new MongoDate();
+	$a['_id'] = mongo_id();
+	$a['date'] = mongo_date();
 	$a['files'] = [];
 	$a['albumId'] = $albumId;
 	return $a;
 }
 
 function album_load($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	if($array['uid'] != null && $array['uid'] != "") {
-		$array['uid'] = new MongoId($array['uid']);
-	}
-	$m = new MongoClient();
-	$albums = $m->selectDB("zusam")->selectCollection("albums");
-	$a = $albums->findOne($array);
+	$a = mongo_load("albums",$array);
 	return $a;
 }
 
@@ -43,10 +35,7 @@ function album_removeFile(&$a, &$f) {
 }
 
 function album_save(&$a) {
-	$m = new MongoClient();
-	$albums = $m->selectDB("zusam")->selectCollection("albums");
-	$mid = new MongoId($a['_id']);
-	$albums->update(array('_id' => $mid), $a, array('upsert' => true));
+	mongo_save("albums", $a);
 }
 
 function album_destroy(&$a) {
@@ -56,10 +45,7 @@ function album_destroy(&$a) {
 			album_removeFile($a, $f);
 		}
 	}
-	$mid = (String) $a['_id'];
-	$m = new MongoClient();
-	$albums = $m->selectDB("zusam")->selectCollection("albums");
-	$albums->remove(array('_id' => $mid));
+	mongo_destroy("albums", (String) $a['_id']);
 }
 
 function album_print(&$a, $viewer) {

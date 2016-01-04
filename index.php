@@ -1,4 +1,5 @@
 <?php
+exit;
 session_start();
 
 chdir(realpath(dirname(__FILE__)));

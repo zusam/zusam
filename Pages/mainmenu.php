@@ -62,7 +62,7 @@ function load_notifications(&$u) {
 	
 	$notifications = [];
 	// search by id
-	$n1 =  notification_bulkLoad(array('target' => new MongoId($u['_id'])));
+	$n1 =  notification_bulkLoad(array('target' => mongo_id($u['_id'])));
 	foreach($n1 as $n) {
 		array_push($notifications, $n);
 	}
@@ -70,7 +70,7 @@ function load_notifications(&$u) {
 	$n2 = notification_bulkLoad(array('target' => $u['mail']));
 	foreach($n2 as $n) {
 		// correct target to be an id
-		$n['target'] = new MongoId($u['_id']);
+		$n['target'] = mongo_id($u['_id']);
 		notification_save($n);
 		array_push($notifications, $n);
 	}

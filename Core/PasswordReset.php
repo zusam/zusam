@@ -1,12 +1,13 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
+require_once('Core/MongoDriver.php');
 require_once('Core/Accounts.php');
 
 function pr_initialize($uid) {
 	$pr = [];
-	$pr['_id'] = new MongoId();
-	$pr['date'] = new MongoDate();
+	$pr['_id'] = mongo_id();
+	$pr['date'] = mongo_date();
 	$pr['timestamp'] = time();
 	$pr['uid'] = $uid;
 	$pr['key'] = sha1(rand().$forum['_id'].time());
@@ -15,26 +16,15 @@ function pr_initialize($uid) {
 }
 
 function pr_save(&$pr) {
-	$m = new MongoClient();
-	$prs = $m->selectDB("zusam")->selectCollection("prs");
-	$mid = new MongoId($pr['_id']);
-	$prs->update(array('_id' => $mid), $pr, array('upsert' => true));
+	mongo_save("prs",$pr);
 }
 
 function pr_destroy($id) {
-	$m = new MongoClient();
-	$mid = new MongoId($id);
-	$prs = $m->selectDB("zusam")->selectCollection("prs");
-	$prs->remove(array('_id' => $mid));
+	mongo_save("prs", $id);
 }
 
 function pr_load($array) {
-	if($array['_id'] != null && $array['_id'] != "") {
-		$array['_id'] = new MongoId($array['_id']);
-	}
-	$m = new MongoClient();
-	$prs = $m->selectDB("zusam")->selectCollection("prs");
-	$pr = $prs->findOne($array);
+	$pr = mongo_load("prs", $array);
 	return $pr;
 }
 
