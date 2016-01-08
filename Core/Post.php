@@ -72,6 +72,11 @@ function post_removeChild(&$p, $id) {
 function post_addChild(&$p, $id) {
 	$mid = mongo_id($id);
 	array_push($p['children'], $mid);
+
+	//TODO XXX TRICK
+	$children = $p['children'];
+	unset($p['children']);
+	$p['children'] = $children;
 }
 
 function post_removeFiles(&$p) {

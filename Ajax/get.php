@@ -115,19 +115,6 @@ if($_SESSION['connected']) {
 			exit;
 		}
 
-		//// TODO protect
-		//if($GET['action'] == "getUnread") {
-		//	
-		//	$uid = $GET['uid'];
-		//	$u = account_load(array('_id' => $uid));
-		//	$r = new StdClass();
-		//	$r->unread = $u['unread'];
-		//	header('Content-Type: text/json; charset=UTF-8');
-		//	echo(json_encode($r));
-		//	exit;
-
-		//}
-
 		// TODO protect
 		if($GET['action'] == "getPost") {
 

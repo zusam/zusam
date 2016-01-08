@@ -7,7 +7,7 @@ require_once('Core/File.php');
 require_once('Core/Post.php');
 require_once('Core/Notification.php');
 
-//TODO necessary ?
+//TODO necessary ? -- yes
 function account_getDummy($default) {
 	$ac = [];
 	$ac['_id'] = -1;
@@ -25,18 +25,34 @@ function account_updateTimestamp(&$ac) {
 }
 
 function account_addUnread(&$ac, $pid) {
-	if($ac['unread'] == null) {
+	$pid = (String) $pid;
+	if(!isset($ac['unread'])) {
 		$ac['unread'] = [];
 	}
-	$pid = (String) $pid;
-	if(!in_array($pid, $ac['unread'])) {
+	//$pid = (String) $pid;
+	//if(!in_array($pid, $ac['unread'])) {
 		array_push($ac['unread'], $pid);		
-	}
+	
+	//TODO XXX TRICK
+	$unread = $ac['unread'];
+	unset($ac['unread']);
+	$ac['unread'] = $unread;
+	//}
 }
 
 function account_readPost(&$ac, $pid) {
 	$pid = (String) $pid;
-	deleteValue($pid, $ac['unread']);
+//var_dump(count($ac['unread']));
+//var_dump($pid);
+//var_dump($ac['unread']);
+	$ac['unread'] = deleteValue($pid, $ac['unread']);
+	$ac['unread'] = array_values($ac['unread']);
+//var_dump(count($ac['unread']));
+
+	//TODO XXX TRICK
+	$unread = $ac['unread'];
+	unset($ac['unread']);
+	$ac['unread'] = $unread;
 }
 
 function account_setPassword(&$ac, $password) {

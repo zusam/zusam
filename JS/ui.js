@@ -246,27 +246,36 @@ function showpostviewer(id) {
 	pv.addClass('active');
 	pv.css('display','block');
 	console.log("show: "+id);
-	$.get("Ajax/get.php?action=getPost&id="+id, function(data) {
+	console.log("Ajax/get.php?action=getPost&id="+id);
+	$.ajax({
+		url: "Ajax/get.php?action=getPost&id="+id, 
+		type: "GET",
+		success: function(data) {
+			console.log(data);
 
-		$('#mask').addClass('dark-mask');
-		pv.append('<div class="post-separator"></div>');
-		var prev = $('.post-mini[data-id='+id+']').prev().attr('data-id');
-		var next = $('.post-mini[data-id='+id+']').next().attr('data-id');
-		var opt = $('<div class="post-options"></div>');
-		if(prev!=null) {
-			opt.append('<div class="material-shadow cell" onclick="showpostviewer(\''+prev+'\')"><i class="fa fa-long-arrow-left"></i></div>');
+			$('#mask').addClass('dark-mask');
+			pv.append('<div class="post-separator"></div>');
+			var prev = $('.post-mini[data-id='+id+']').prev().attr('data-id');
+			var next = $('.post-mini[data-id='+id+']').next().attr('data-id');
+			var opt = $('<div class="post-options"></div>');
+			if(prev!=null) {
+				opt.append('<div class="material-shadow cell" onclick="showpostviewer(\''+prev+'\')"><i class="fa fa-long-arrow-left"></i></div>');
+			}
+			if(next!=null) {
+				opt.append('<div class="material-shadow cell" onclick="showpostviewer(\''+next+'\')"><i class="fa fa-long-arrow-right"></i></div>');
+			}
+			opt.append('<div class="material-shadow cell" onclick="hidepostviewer()"><i class="fa fa-close"></i></div>');
+			pv.append(opt);
+			pv.append('<div class="post-separator"></div>');
+			pv.append(data['html']);
+			pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
+			typebox.view();
+			//slideshow.init();
+			updatePostStats(id);
+		},
+		error: function() {
+			console.log('fail load post');
 		}
-		if(next!=null) {
-			opt.append('<div class="material-shadow cell" onclick="showpostviewer(\''+next+'\')"><i class="fa fa-long-arrow-right"></i></div>');
-		}
-		opt.append('<div class="material-shadow cell" onclick="hidepostviewer()"><i class="fa fa-close"></i></div>');
-		pv.append(opt);
-		pv.append('<div class="post-separator"></div>');
-		pv.append(data['html']);
-		pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
-		typebox.view();
-		//slideshow.init();
-		updatePostStats(id);
 	});
 	addMask("hideAll()",0.75);
 	pv.attr('data-id',id);

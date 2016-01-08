@@ -147,25 +147,32 @@ function fgc($url, $bytes, $header) {
 	return $data;
 }
 
-// TODO still used ? is unset alone not better ?
-function deleteValue(&$e, &$a) {
-	foreach($a as $k=>$v) {
-		if($v == $e) {
-			unset($a[$k]);
-			break;
-		}
+function deleteValue($e, $a) {
+	$k = array_search($e, $a, true);
+	if($k !== false) {
+		unset($a[$k]);
 	}
+	return $a;
+	//foreach($a as $k=>$v) {
+	//	if($v == $e) {
+	//		unset($a[$k]);
+	//		break;
+	//	}
+	//}
 }
 
 // TODO still used ? is unset alone not better ?
+// unset alone is far more better
+// this function is used in Core/Forum.php
 function deleteKey(&$e, &$a) {
 	$ee = (String) $e;
-	foreach($a as $k=>$v) {
-		if($k == $ee) {
-			unset($a[$k]);
-			break;
-		}
-	}
+	unset($a[$ee]);
+	//foreach($a as $k=>$v) {
+	//	if($k == $ee) {
+	//		unset($a[$k]);
+	//		break;
+	//	}
+	//}
 }
 
 // TODO not used... I hope.

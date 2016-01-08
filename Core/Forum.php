@@ -21,6 +21,7 @@ function forum_initialize($name) {
 
 function forum_addUnread(&$forum, $pid) {
 	foreach($forum['users'] as $uid) {
+		$uid = (String) $uid;
 		$u = account_load(array('_id'=>$uid));
 		if($u != null && $u != false) {
 			account_addUnread($u, $pid);
@@ -53,13 +54,20 @@ function forum_load($array) {
 
 function forum_post2news(&$forum, $pid) {
 	$pid = (String) $pid;
-	deleteValue($pid, $forum['news']); 	
+	$forum['news'] = deleteValue($pid, $forum['news']); 	
 	array_push($forum['news'], $pid);
+
+	// TODO XXX TRICK
+	$news = $forum['news'];
+	unset($forum['news']);
+	$forum['news'] = $news;
 }
 
 function forum_removeFromNews(&$forum, $pid) {
 	$pid = (String) $pid;
-	deleteValue($pid, $forum['news']); 	
+	$forum['news'] = deleteValue($pid, $forum['news']); 	
+	// TODO verify that this do not reorder values
+	$forum['news'] = array_values($forum['news']);
 }
 
 function forum_addUser_andSave(&$forum, &$user) {
@@ -72,7 +80,7 @@ function forum_addUser_andSave(&$forum, &$user) {
 }
 
 function forum_removeUser_andSave(&$forum, &$user) {
-	deleteValue($user['_id'], $forum['users']);
+	$forum['users'] = deleteValue($user['_id'], $forum['users']);
 	deleteKey($forum['_id'], $user['forums']);
 	forum_save($forum);
 	account_save($user);

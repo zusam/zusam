@@ -1,5 +1,4 @@
 <?php
-exit;
 session_start();
 
 chdir(realpath(dirname(__FILE__)));
@@ -114,8 +113,9 @@ if($_SESSION['forum'] != "" && $_SESSION['forum'] != null && $u['forums'][$_SESS
 
 // Force selection of a forum
 if($_SESSION['forum'] == "" && $GET['page'] != "profile") {
-	reset($u['forums']);
-	$fid = key($u['forums']);
+	//reset($u['forums']);
+	//$fid = key($u['forums']);
+	$fid = array_keys($u['forums'])[0];
 	if($fid != null) {
 		$_SESSION['forum'] = $fid;
 		$forum = forum_load(array('_id'=>$_SESSION['forum']));	
@@ -128,10 +128,23 @@ if($_SESSION['forum'] == "" && $GET['page'] != "profile") {
 
 // update timestamp of visited forum
 if($_SESSION['forum'] != "") {
-	$u['forums'][$_SESSION['forum']]['timestamp'] = time();
-	account_save($u);
-}
+	//var_dump($u);
+	//var_dump($_SESSION);
+	//var_dump($u['forums'][$_SESSION['forum']]['timestamp']);
+	//var_dump($_SESSION['forum']);
+	//var_dump(time());
+	$coucou = (String) $_SESSION['forum'];
+	$u['forums'][$coucou]['timestamp'] = time();
 
+
+	//var_dump($u);
+	//exit;
+	//echo('<br><br>');
+
+	account_save($u);
+	//echo('plop');
+	//exit;
+}
 
 // BODY
 echo('<body>');

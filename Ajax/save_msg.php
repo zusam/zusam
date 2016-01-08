@@ -16,6 +16,7 @@ $forum = (String) $_POST['forum'];
 $uid = (String) $_POST['uid'];
 $parent = (String) $_POST['parent'];
 
+
 if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 			
 	$f = forum_load(array('_id'=>$forum));

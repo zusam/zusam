@@ -16,8 +16,11 @@ if($action == "logout" || $mail == "" || $password == "") {
 	exit();
 }
 
+if($password_conf == "") {
+	$action = "login";
+}
+
 if($action == "signup") {
-	// TODO do both verifications in one swipe.
 	if(mailAlreadyExists($mail)) {
 		verifyACL($mail, $password);
 	} else {
@@ -28,7 +31,7 @@ if($action == "signup") {
 			$_SESSION['connected'] = true;
 			$_SESSION['mail'] = $mail;
 			$_SESSION['password'] = $password;
-			$_SESSION['uid'] = $ac['_id'];
+			$_SESSION['uid'] = (String) $ac['_id'];
 			account_save($ac);
 		} else {
 			echo("fail");
@@ -42,6 +45,8 @@ if($action == "login") {
 		$ret = verifyACL($mail, $password);
 		if(!$ret) {
 			echo("fail");
+		} else {
+			echo('ok');
 		}
 	} else {
 		echo("fail");

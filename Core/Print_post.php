@@ -34,7 +34,7 @@ function print_full_post($id, $uid, &$p) {
 		// loading the child to see if he exists
 		$c = post_load(array('_id'=>$cid));
 		if($c == false || $c == null) {
-			//deleteValue($cid, $p['children']);
+			//$p['children'] = deleteValue($cid, $p['children']);
 			post_removeChild($p, $cid);
 		} else {
 			$child_html = print_post($cid, $uid);

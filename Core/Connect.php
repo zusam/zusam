@@ -24,7 +24,7 @@ function verifyACL($mail, $pass) {
 		$_SESSION['mail'] = $mail;
 		// TODO security problem to save the password ?
 		$_SESSION['password'] = $pass;
-		$_SESSION['uid'] = $ac['_id'];
+		$_SESSION['uid'] = (String) $ac['_id'];
 		return true;
 	}
 	session_unset();
