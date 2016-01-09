@@ -34,6 +34,9 @@ function mongo_id($id) {
 }
 
 function mongo_date($milliseconds) {
+	if($milliseconds == "") {
+		$milliseconds = intval(1000*microtime(true));
+	}
 	return new MongoDB\BSON\UTCDateTime($milliseconds);
 }
 

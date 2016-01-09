@@ -88,7 +88,7 @@ function print_post($id, $uid, &$p) {
 	$html_data .= '<div class="author">'.$op['name'].'</div>';
 	$html_data .= '</div>';
 	$html_data .= '<div class="second-line">';
-	$html_data .= '<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->sec)).'</div>';
+	$html_data .= '<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
 	//$html_data .= '<i class="fa fa-circle circle-separator"></i><img onclick="addButterfly(this)" class="butterfly" src="Assets/pap7.svg"/>'.count($p['butterflies']);
 	$html_data .= '<i class="fa fa-circle circle-separator"></i>';
 	if(array_key_exists((String) $u['_id'], $p['butterflies'])) {
