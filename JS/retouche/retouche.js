@@ -1,37 +1,3 @@
-//function old_dataURItoBlob(dataURI) {
-//	// convert base64/URLEncoded data component to raw binary data held in a string
-//	var byteString;
-//	if (dataURI.split(',')[0].indexOf('base64') >= 0) {
-//		byteString = atob(dataURI.split(',')[1]);
-//	} else {
-//		byteString = unescape(dataURI.split(',')[1]);
-//	}
-//
-//	// separate out the mime component
-//	var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-//
-//	// write the bytes of the string to a typed array
-//	var ia = new Uint8Array(byteString.length);
-//	for(var i = 0; i < byteString.length; i++) {
-//		ia[i] = byteString.charCodeAt(i);
-//	}
-//
-//	return new Blob([ia], {type:mimeString});
-//}
-
-//function dataURItoBlob(dataURI) {
-//
-//	var byteString = atob(dataURI.split(",")[1]);
-//	var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-//	var ab = new ArrayBuffer(byteString.length);
-//	var ia = new Uint8Array(ab);
-//	for (var i = 0; i < byteString.length; i++) {
-//		ia[i] = byteString.charCodeAt(i);
-//	}
-//	return new Blob([ia], {type:mimeString});
-//}
-
-
 URL = window.URL || window.webkitURL;
 
 function turn(id, rotation) {
@@ -482,7 +448,9 @@ function sendCanvas(id) {
 			contentType: false
 		});
 		//togglenewavatar(id);
-		hideimageeditor();
+		//hideimageeditor();
+		var loading_retouche = $('<div class="loading-retouche"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
+		$(id).parent().append(loading_retouche);
 	};
 	htmlImage.src = imgURL;
 	console.log(imgURL);

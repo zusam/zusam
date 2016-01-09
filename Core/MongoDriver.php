@@ -103,9 +103,24 @@ function mongo_destroy($collection, $id) {
 	$mid = mongo_id($id);
 	$manager = new MongoDB\Driver\Manager('mongodb://localhost:27017');
 	$bulk = new MongoDB\Driver\BulkWrite;
-	$bulk->delete(array('_id' => $mid));
+	try {
+		$bulk->delete(array('_id' => $mid));
+	} catch (MongoDB\Driver\Exception\UnexpectedValueException $e) {
+		//var_dump($e);
+		echo($e);
+		echo('fail');
+		// TODO do something with it
+		return false;
+	}
 	$writeConcern = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY);
-	$result = $manager->executeBulkWrite('zusam.'.$collection, $bulk, $writeConcern);
+	try {
+		$result = $manager->executeBulkWrite('zusam.'.$collection, $bulk, $writeConcern);
+	} catch (MongoDB\Driver\Exception\BulkWriteException $e) {
+		$result = $e->getWriteResult();
+		var_dump($result);
+		// TODO do something with it
+		return false;
+	}
 }
 
 

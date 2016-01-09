@@ -147,7 +147,7 @@ function account_destroy($id) {
 		}
 
 		// destroy notifications
-		$notifications = notifications_bulkLoad(array('target'=>$mid));
+		$notifications = notification_bulkLoad(array('target'=>$mid));
 		foreach($notifications as $n) {
 			notification_destroy($n['_id']);
 		}

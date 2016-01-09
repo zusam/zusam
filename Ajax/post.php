@@ -446,6 +446,8 @@ if($_SESSION['connected']) {
 						account_destroy($uid);
 						echo('ok');
 					}
+				} else {
+					echo('fail');
 				}
 			} else {
 				echo('no credentials');
