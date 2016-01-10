@@ -95,8 +95,10 @@ var Filter = {
 		}
 		substitution = function(str) {
 			var v = str.replace(/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/,"$2");
-			var w = 'http://www.youtube.com/embed/'+v+'?wmode=opaque';
-			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" seamless allowfullscreen src="'+w+'"/><iframe></div></span>';
+			var w = 'http://www.youtube.com/embed/'+v+'?autoplay=1&controls=2&wmode=opaque';
+			//var x = 'http://i.ytimg.com/vi/'+v+'/hqdefault.jpg';
+			var xx = origin_url+'/miniature/'+str2md5(str)+'.jpg';
+			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+w+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div></span>';
 			return o;
 		}
 		output = Control.searchMatch({"callerName":"searchYoutube2", "inner":inner, "regex":r1, "substitution":substitution});
@@ -111,8 +113,10 @@ var Filter = {
 		}
 		substitution = function(str) {
 			var v = str.replace(/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/,"$4");
-			var w = 'http://www.youtube.com/embed/'+v+'?wmode=opaque';
-			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" seamless allowfullscreen src="'+w+'"/><iframe></div></span>';
+			var w = 'http://www.youtube.com/embed/'+v+'?autoplay=1&controls=2&wmode=opaque';
+			//var x = 'http://i.ytimg.com/vi/'+v+'/hqdefault.jpg';
+			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
+			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+w+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div></span>';
 			return o;
 		}
 		output = Control.searchMatch({"callerName":"searchYoutube", "inner":inner, "regex":r1, "substitution":substitution});
@@ -126,7 +130,12 @@ var Filter = {
 			r1 = new RegExp(r1+'[\s]','gi');
 		}
 		substitution = function(str) {
-				return '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><video autoplay loop><source src="'+str+'"></video></span>';
+				var html = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+				html += '<div class="playButton" onclick="playpause(this.nextSibling); $(this).remove()"></div>';
+				html += '<video loop onclick="playpause(this)">';
+				html += '<source src="'+str+'">';
+				html += 'Votre navigateur ne supporte pas ce format vidéo.</video></span>';
+				return html;
 		}
 		output = Control.searchMatch({"callerName":"searchVideo", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;

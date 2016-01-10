@@ -123,6 +123,9 @@ function print_post($id, $uid, &$p) {
 
 	$html_data .= '</div>';
 
+	//gen miniatures
+	create_miniatures($p['text']);
+
 	return $html_data;
 }
 

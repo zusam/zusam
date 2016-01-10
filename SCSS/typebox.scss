@@ -45,6 +45,7 @@
 	margin:0px 0px; 
 	width: 100%;
 	max-height: 80vh;
+	cursor: pointer;
 }
 /* INLINE-BLOCK IS NECESSARY TO PREVENT DIVS FROM CHROME */
 .dynamicBox > div {
@@ -64,21 +65,73 @@
 .dynamicBox > span > canvas { 
 	max-width: 100%; 
 }
-//.hashtag, .hashtag:focus, .hashtag:hover {
-//	color: orange;
-//	font-weight: bolder;
-//	cursor: pointer;
-//}
-//.link, .link:focus, .link:hover{
-//	color: blue;
-//	font-weight: bolder;
-//	cursor: pointer;
-//}
 .deletable {
 	display: block;
 	position: relative;
 	width: 100%;
 	text-align: center;
+
+	.iframeLauncher {
+		display: block;
+		position: relative;
+		cursor: pointer;
+		background: #ccc no-repeat center center / cover; 
+		clear: both;
+		height: 0px;
+		padding-bottom: 56.25%;
+	}
+
+	.iframeLauncher:before, .playButton:before {
+		content: '';
+		background: rgba(255, 255, 255, .6);
+		height: 80px;
+		width: 80px;
+		display:block;
+		margin: -40px 0 0 -40px;
+		border-radius: 100px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		box-shadow: 0 0 20px 3px rgba(51, 51, 51, .8);
+		transition: all .1s ease;
+		z-index:1;
+	}
+
+	.iframelauncher:hover:before, .playButton:hover:before {
+		background: rgba(238, 238, 238, .8);
+		box-shadow: 0 0 10px 3px rgba(51, 51, 51, .8);
+		width: 100px;
+		height: 100px;
+		margin: -50px 0 0 -50px;
+	}
+
+	.iframeLauncher:after, .playButton:after {
+		content: '';
+		width: 0;
+		height: 0;
+		line-height:0px;
+		display:block;
+		border-style: solid;
+		border-width: 20px 0 20px 40px;
+		margin: -20px 0 0 -15px;
+		border-color: transparent transparent transparent #333;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		height: 0;
+		width: 0;
+		z-index:2;
+	} 
+
+	.playButton {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 50;
+		cursor: pointer;
+	}
 	
 	.b-link {
 		width: 100%;

@@ -2,8 +2,8 @@
 
 function p2l($path) {
 	//$path = preg_replace("/\/srv\/http/","http://nibou.eu",$path);
-	$path = preg_replace("/\/srv\/http\/zusam/","http://zus.am",$path);
-	//$path = preg_replace("/\/srv\/http/","http://localhost/",$path);
+	//$path = preg_replace("/\/srv\/http\/zusam/","http://zus.am",$path);
+	$path = preg_replace("/\/srv\/http/","http://localhost/",$path);
 	return $path;
 }
 
@@ -18,8 +18,8 @@ function pathTo2($args) {
 	$ext = $args['ext'];
 	$dir = $args['dir'];
 
-	//$root_dir = "/zusam/";
-	$root_dir = "/";
+	$root_dir = "/zusam/";
+	//$root_dir = "/";
 
 	if(!$dir && ($param == "" || $url == "")) {
 		return false;

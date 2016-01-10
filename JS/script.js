@@ -505,3 +505,20 @@ function handleFileSelect(evt) {
 		}
 	}
 }
+
+function playpause(t) {
+	if(t.paused) {
+		t.play();
+	} else {
+		t.pause();
+	}
+}
+
+function loadIframe(t) {
+	var src = $(t).attr('data-src');
+	var iframe = $('<iframe class="embed-responsive-item" seamless allowfullscreen src="'+src+'"/><iframe>');
+	$(t).after(iframe);
+	$(t).remove();
+	// iframe bug
+	$('iframe:not([src])').remove();
+}

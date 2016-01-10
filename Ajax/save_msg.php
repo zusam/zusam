@@ -26,6 +26,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 
 		account_updateTimestamp($u);
 
+		create_miniatures($text);
 		$url_prev = search_miniature($text);
 		account_save($u);
 

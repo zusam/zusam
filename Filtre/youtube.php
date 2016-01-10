@@ -6,7 +6,7 @@ require_once('Filtre/web_image.php');
 
 function youtube($url) { 
 	$thumbnail = preg_replace("/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/",
-					"http://img.youtube.com/vi/$4/0.jpg",$url);
+					"http://img.youtube.com/vi/$4/maxresdefault.jpg",$url);
 	if(!file_exists(pathTo($url, "mini", "jpg"))) {
 		$tmp = file_get_contents($thumbnail);
 		file_put_contents(pathTo($url,"tmp"), $tmp);
@@ -27,7 +27,7 @@ function youtube($url) {
 
 function youtube2($url) { 
 	$thumbnail = preg_replace("/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/",
-					"http://img.youtube.com/vi/$2/0.jpg",$url);
+					"http://img.youtube.com/vi/$2/maxresdefault.jpg",$url);
 	if(!file_exists(pathTo($url, "mini", "jpg"))) {
 		$tmp = file_get_contents($thumbnail);
 		file_put_contents(pathTo($url,"tmp"), $tmp);

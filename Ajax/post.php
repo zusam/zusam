@@ -248,7 +248,7 @@ if($_SESSION['connected']) {
 			$uid = $POST['uid'];
 			$fileId = $POST['fileId'];
 		
-			if($_FILES["image"]["size"] < 1024*1024*10 && $_FILES["image"]["type"] == "image/png") {
+			if($_FILES["image"]["size"] < 1024*1024*31 && $_FILES["image"]["type"] == "image/png") {
 				$u = account_load(array('_id' => $uid));
 				if($u != null && $u != false) {
 					$file = file_load(array("fileId"=>$fileId));
@@ -271,7 +271,7 @@ if($_SESSION['connected']) {
 			$uid = $POST['uid'];
 			$fileId = $POST['fileId'];
 		
-			if($_FILES["video"]["size"] < 1024*1024*300) {
+			if($_FILES["video"]["size"] < 1024*1024*301) {
 				$u = account_load(array('_id' => $uid));
 				if($u != null && $u != false) {
 					$file = file_initialize($fileId, "webm", $u['_id']);
@@ -290,7 +290,7 @@ if($_SESSION['connected']) {
 			$uid = $POST['uid'];
 			$fileId = $POST['fileId'];
 		
-			if($_FILES["sgf"]["size"] < 1024*1024*5) {
+			if($_FILES["sgf"]["size"] < 1024*1024*4) {
 				$u = account_load(array('_id' => $uid));
 				if($u != null && $u != false) {
 					$file = file_initialize($fileId, "sgf", $u['_id']);
