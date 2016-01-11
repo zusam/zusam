@@ -268,14 +268,14 @@ function sendIt(id) {
 	});
 	if(parentID == 0 || parentID == null) {
 		if(pid == 0 || pid == null) {
-			var post_loading = $('<div data-balise="'+baliseId+'" class="post-mini"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
+			var post_loading = $('<div data-balise="'+baliseId+'" class="post-mini"><div class="spinner"><div class="bg-orange bounce1"></div><div class="bg-orange bounce2"></div><div class="bg-orange bounce3"></div></div></div>');
 			$('#container').prepend(post_loading);
 			hidenewpost(true);
 		}
 	} else {
 		if(pid == 0 || pid == null) {
 			hidenewcommentsection($('.new-comment-section'));
-			var com_loading = $('<div class="post child-post" data-balise="'+baliseId+'"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
+			var com_loading = $('<div class="post child-post" data-balise="'+baliseId+'"><div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div></div>');
 			$('.new-comment-section').before(com_loading);
 		}
 	}

@@ -18,12 +18,18 @@
 .spinner > div {
 	width: 18px;
 	height: 18px;
-	background-color: #F7A71B;
 
 	border-radius: 100%;
 	display: inline-block;
 	-webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 	animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.bg-orange {
+	background-color: #F7A71B;
+}
+.bg-white {
+	background-color: white;
 }
 
 @-webkit-keyframes sk-bouncedelay {

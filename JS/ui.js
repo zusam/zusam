@@ -254,23 +254,22 @@ function showpostviewer(id) {
 		url: "Ajax/get.php?action=getPost&id="+id, 
 		type: "GET",
 		success: function(data) {
-			console.log(data);
 
+			$('#slidepostviewer .spinner').remove();
 			$('#mask').addClass('dark-mask');
-			pv.append('<div class="post-separator"></div>');
 			var prev = $('.post-mini[data-id='+id+']').prev().attr('data-id');
 			var next = $('.post-mini[data-id='+id+']').next().attr('data-id');
 			var opt = $('<div class="post-options"></div>');
 			opt.append('<div class="material-shadow cell" onclick="shownewcommentsection()"><i class="fa fa-comment"></i></div>');
 			if(prev!=null) {
-				opt.append('<a href="'+window.location.origin+window.location.pathname+window.location.search+'#'+prev+'" target ="_blank" class="material-shadow cell" onclick="showpostviewer(\''+prev+'\')"><i class="fa fa-long-arrow-left"></i></div>');
+				opt.append('<div class="material-shadow cell" onclick="showpostviewer(\''+prev+'\')"><i class="fa fa-long-arrow-left"></i></div>');
 			}
 			if(next!=null) {
-				opt.append('<a href="'+window.location.origin+window.location.pathname+window.location.search+'#'+next+'" target ="_blank" class="material-shadow cell" onclick="showpostviewer(\''+next+'\');"><i class="fa fa-long-arrow-right"></i></div>');
+				opt.append('<div class="material-shadow cell" onclick="showpostviewer(\''+next+'\')"><i class="fa fa-long-arrow-right"></i></div>');
 			}
 			opt.append('<div class="material-shadow cell" onclick="hidepostviewer()"><i class="fa fa-close"></i></div>');
-			pv.append(opt);
-			pv.append('<div class="post-separator"></div>');
+			$('#slidepostviewer').prepend(opt);
+
 			pv.append(data['html']);
 			pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 			typebox.view();
@@ -283,17 +282,15 @@ function showpostviewer(id) {
 	});
 	addMask("hideAll()",0.75);
 	pv.attr('data-id',id);
+	pv.append('<div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div>');
 	window.history.pushState("", "", window.location.href.replace(/\#.*/,"") + "#" + id);
 }
 
 function hidepostviewer() {
 	unblockBody();
 	hideslidefromright('#slidepostviewer');
-	pv = $('#post-viewer');
-	pv.removeClass('active');
+	$('#slidepostviewer').html('<div id="post-viewer"></div>');
 	removeMask();
-	pv.attr('data-id','');
-	pv.html('');
 	typebox.stop('#commentBox');
 	window.history.pushState("", "", window.location.href.replace(/\#.*/,""));
 }

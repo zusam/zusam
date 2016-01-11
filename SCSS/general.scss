@@ -24,12 +24,6 @@ body {
 	font-family: RobotoRegular;
 	background-color: rgba(0,0,0,0.05);
 }
-#post-viewer {
-	display: none;
-	width: 530px;
-	max-width: 100%;
-	z-index: 10;
-}
 .material-shadow {
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	transition: all 0.2s ease-in-out;
@@ -49,9 +43,9 @@ body {
 	top: 0px;
 	z-index: 50;
 	margin: 0px;
-	padding: 0px 5px;
-	overflow: auto;
+	padding: 0px;
 	background: #D0D0D0;
+	overflow: hidden;
 }
 .slidefromleft {
 	left: 0px;

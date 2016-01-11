@@ -4,10 +4,6 @@ chdir(realpath(dirname(__FILE__)."/../"));
 require_once('Core/Preview.php');
 require_once('Filtre/web_image.php');
 
-//function preview_v2($url) {
-//	return preview($url);
-//}
-
 function preview($url) {
 	$p = preview_load(array('url' => $url));
 	if($p != null) {

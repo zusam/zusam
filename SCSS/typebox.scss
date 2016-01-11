@@ -159,7 +159,7 @@
 		
 			img { 
 				margin:0px 0px; 
-				height: 100%;
+				height: calc(100% + 1px);
 				transform: translate(-50%,0%);
 				-webkit-transform: translate(-50%,0%);
 				position: relative;
@@ -204,7 +204,7 @@
 		
 			img { 
 				margin:0px 0px; 
-				width: 100%; 
+				width: calc(100% + 1px); 
 				position: relative;
 				left: 50%;
 				transform: translate(-50%,0%);

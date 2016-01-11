@@ -173,8 +173,7 @@ echo('
 // POST VIEWER
 echo('
 <div id="slidepostviewer" class="slide slide-over slidefromright">
-	<div id="post-viewer">
-	</div>
+	<div id="post-viewer"></div>
 </div>
 ');
 
