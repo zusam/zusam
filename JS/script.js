@@ -516,7 +516,7 @@ function playpause(t) {
 
 function loadIframe(t) {
 	var src = $(t).attr('data-src');
-	var iframe = $('<iframe class="embed-responsive-item" seamless allowfullscreen src="'+src+'"/><iframe>');
+	var iframe = $('<iframe class="embed-responsive-item" seamless allowfullscreen frameborder="0" scrollable="no" allowTransparency="true" src="'+src+'"/><iframe>');
 	$(t).after(iframe);
 	$(t).remove();
 	// iframe bug

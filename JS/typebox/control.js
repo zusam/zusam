@@ -240,7 +240,7 @@ var Control = {
 		Control.searchFilter(t, Filter.searchVimeo, viewer, ending);
 		Control.searchFilter(t, Filter.searchDailymotion, viewer, ending);
 		Control.searchFilter(t, Filter.searchVine, viewer, ending);
-		Control.searchFilter(t, Filter.searchDeezer, viewer, ending);
+		//Control.searchFilter(t, Filter.searchDeezer, viewer, ending);
 		Control.searchFilter(t, Filter.searchImage, viewer, ending);
 		Control.searchFilter(t, Filter.searchVideo, viewer, ending);
 		Control.searchFilter(t, Filter.searchLink, viewer, ending);

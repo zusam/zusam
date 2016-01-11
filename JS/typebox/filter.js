@@ -1,21 +1,24 @@
 var Filter = {
 	
-	searchDeezer : function(inner, ending) {
-		var r1 = /[\s]*(https?:\/\/www.deezer.com\/)(playlist)\/(\d+)$/gi;
-		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
-		}
-		substitution = function(str) {
-			playlist_id = str.replace(/[\s]*(https?:\/\/www.deezer.com\/)(playlist)\/(\d+)$/,'$3');
-			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
-			output += '<div class="embed-responsive embed-responsive-16by9"><iframe scrolling="no" frameborder="0" allowTransparency="true" src="http://www.deezer.com/plugins/player?playlist=true&type=playlist&id='+playlist_id+'"></iframe></div>';
-			output += '</span>';
-			return output;
-		}
-		output = Control.searchMatch({"callerName":"searchDeezer", "inner":inner, "regex":r1, "substitution":substitution});
-		return output;
-		
-	},
+	//searchDeezer : function(inner, ending) {
+	//	var r1 = /[\s]*(https?:\/\/www.deezer.com\/)(playlist)\/(\d+)$/gi;
+	//	if(!ending) {
+	//		r1 = new RegExp(r1+'[\s]','gi');
+	//	}
+	//	substitution = function(str) {
+	//		playlist_id = str.replace(/[\s]*(https?:\/\/www.deezer.com\/)(playlist)\/(\d+)$/,'$3');
+	//		o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+	//		//output += '<div class="embed-responsive embed-responsive-16by9"><iframe scrolling="no" frameborder="0" allowTransparency="true" src="http://www.deezer.com/plugins/player?playlist=true&type=playlist&id='+playlist_id+'"></iframe></div>';
+	//		var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
+	//		o += '<div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="http://www.deezer.com/plugins/player?playlist=true&autoplay=true&type=playlist&id='+playlist_id+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div>';
+	//		o += '</span>';
+
+	//		return o;
+	//	}
+	//	output = Control.searchMatch({"callerName":"searchDeezer", "inner":inner, "regex":r1, "substitution":substitution});
+	//	return output;
+	//	
+	//},
 
 	searchSoundcloud : function(inner, ending) {
 		var r1 = /[\s]*(https?:\/\/soundcloud.com\/)([^\s]+)/gi;
@@ -28,9 +31,11 @@ var Filter = {
 			setTimeout( function() {
 				SC.oEmbed(str, { auto_play: true }, function(oEmbed) {
 					song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,'$1');
-					song_url = song_url.replace(/auto_play=true/,"auto_play=false");
-					output = '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" scrolling="no" frameborder="0" src="'+song_url+'"></iframe></div>';
-					$('#'+str2md5(str)).html(output);
+					song_url = song_url.replace(/auto_play=false/,"auto_play=true");
+					//output = '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" scrolling="no" frameborder="0" src="'+song_url+'"></iframe></div>';
+					var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
+					var o = '<div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+song_url+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div>';
+					$('#'+str2md5(str)).html(o);
 				});
 			}, 50);
 			return output;

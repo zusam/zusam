@@ -1,6 +1,7 @@
 *~
 *.css
 *.map
+*.swp
 Data/
 TODO
 SCSS/.sass-cache/

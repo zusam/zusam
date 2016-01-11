@@ -74,6 +74,13 @@ function forum_addUser_andSave(&$forum, &$user) {
 	if(!in_array($user['_id'], $forum['users'])) {
 		array_push($forum['users'], $user['_id']);
 	}
+
+	// TODO XXX TRICK
+	$users = $forum['users'];
+	unset($forum['users']);
+	$forum['users'] = $users;
+
+
 	account_addForum($user, $forum);
 	forum_save($forum);
 	account_save($user);
