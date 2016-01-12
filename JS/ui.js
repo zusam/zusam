@@ -260,14 +260,14 @@ function showpostviewer(id) {
 			var prev = $('.post-mini[data-id='+id+']').prev().attr('data-id');
 			var next = $('.post-mini[data-id='+id+']').next().attr('data-id');
 			var opt = $('<div class="post-options"></div>');
-			opt.append('<div class="material-shadow cell" onclick="shownewcommentsection()"><i class="fa fa-comment"></i></div>');
+			opt.append('<div class="cell" onclick="shownewcommentsection()"><i class="fa fa-comment"></i></div>');
 			if(prev!=null) {
-				opt.append('<div class="material-shadow cell" onclick="showpostviewer(\''+prev+'\')"><i class="fa fa-long-arrow-left"></i></div>');
+				opt.append('<div class="cell" onclick="showpostviewer(\''+prev+'\')"><i class="fa fa-arrow-left"></i></div>');
 			}
 			if(next!=null) {
-				opt.append('<div class="material-shadow cell" onclick="showpostviewer(\''+next+'\')"><i class="fa fa-long-arrow-right"></i></div>');
+				opt.append('<div class="cell" onclick="showpostviewer(\''+next+'\')"><i class="fa fa-arrow-right"></i></div>');
 			}
-			opt.append('<div class="material-shadow cell" onclick="hidepostviewer()"><i class="fa fa-close"></i></div>');
+			opt.append('<div class="cell" onclick="hidepostviewer()"><i class="fa fa-close"></i></div>');
 			$('#slidepostviewer').prepend(opt);
 
 			pv.append(data['html']);

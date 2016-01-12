@@ -1,0 +1,63 @@
+.profile_wrapper {
+    overflow-x: hidden;
+	overflow-y: auto;
+	max-width: 100%;
+
+
+	.change-profile {
+		display: block;
+		margin: 7px 20px;
+		width: 256px;
+		max-width: 100%;
+		padding: 15px;
+
+		.textInput {
+			font-family: RobotoRegular;
+			display: inline-block;
+			font-size: 14px;
+			width: 85%;
+			padding: 5px;
+			margin: 0px;
+			border-right: 0px;
+			border: none;
+		}
+		.submitInput, .submitInputAlone {
+			font-family: RobotoRegular;
+			display: inline-block;
+			font-size: 14px;
+			margin: 0px;
+			padding: 5px;
+			border: none;
+			background: lightgrey;
+			cursor: pointer;
+		}
+		.submitInput {
+			width: 15%;
+		}
+		.submitInputAlone {
+			width: 100%;
+		}
+		.submitInput:hover, .submitInputAlone:hover {
+			background: gainsboro;
+		}
+	}
+	.change-avatar {
+		display: block;
+		margin: 5px 33px;
+		cursor: pointer;
+		padding: 4px;
+		transition: all 1s;
+		width: 200px;
+		height: 200px;
+		overflow: hidden;
+
+		img {
+			width: 100%;
+		}
+	}
+	.change-avatar:hover {
+		filter: sepia(100%);
+		-webkit-filter: sepia(100%);
+		transition: all 0s;
+	}
+}

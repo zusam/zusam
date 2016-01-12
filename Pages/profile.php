@@ -15,29 +15,39 @@ function page_section_profile(&$u) {
 			'.account_getAvatarHTML($u).'
 		</div>
 	';
-	$html .= '
-			<form class="change-profile">
-				<label for="name">Nom:</label><br>
-				<input name="name" type="text" placeholder="'.$u['name'].'"><br>
-				<input type="submit" onclick="changename(\'input[name=name]\'); return false;" value="Enregistrer">
-			</form>
-			<form class="change-profile">
-				<label for="old_password">Mot de passe actuel:</label><br>
-				<input name="old_password" type="password"><br>
-				<label for="new_password">Nouveau mot de passe:</label><br>
-				<input name="new_password" type="password"><br>
-				<input type="submit" onclick="changepassword(\'input[name=old_password]\',\'input[name=new_password]\'); return false;" value="Enregistrer">
-			</form>
-			<form class="change-profile">
-				<label for="password">Mot de passe :</label><br>
-				<input name="password" type="password"><br>
-				<input type="submit" onclick="destroyAccount(\'input[name=password]\'); return false;" value="Supprimer ce compte">
-			</form>
-			<form class="change-profile">
-				<input type="submit" onclick="disconnect(); return false;" value="Se déconnecter">
-			</form>
-		</div>
-	';
+	$html .= '<form class="change-profile">';
+	$html .= '<span class="formTitle">Changer de nom :</span>';
+	//$html .= '<label for="name">Nom:</label><br>';
+	$html .= '<input class="textInput" name="name" type="text" placeholder="Nouveau nom">';
+	$html .= '<button class="submitInput" onclick="changename(\'input[name=name]\'); return false;">';
+	$html .= '<i class="fa fa-send"></i>';
+	$html .= '</button>';
+	$html .= '</form>';
+
+	$html .= '<form class="change-profile">';
+	$html .= '<span class="formTitle">Changer de mot de passe :</span>';
+	//$html .= '<label for="old_password">Mot de passe actuel:</label><br>';
+	$html .= '<input class="textInput" name="old_password" type="password" placeholder="Mot de passe actuel"><br>';
+	//$html .= '<label for="new_password">Nouveau mot de passe:</label><br>';
+	$html .= '<input class="textInput" name="new_password" type="password" placeholder="Nouveau mot de passe">';
+	$html .= '<button class="submitInput" onclick="changepassword(\'input[name=old_password]\',\'input[name=new_password]\'); return false;">';
+	$html .= '<i class="fa fa-send"></i>';
+	$html .= '</button>';
+	$html .= '</form>';
+
+	$html .= '<form class="change-profile">';
+	$html .= '<span class="formTitle">Supprimer ce compte :</span>';
+	//$html .= '<label for="password">Mot de passe :</label><br>';
+	$html .= '<input class="textInput" name="password" type="password" placeholder="Mot de passe actuel">';
+	$html .= '<button class="submitInput" onclick="destroyAccount(\'input[name=password]\'); return false;">';
+	$html .= '<i class="fa fa-send"></i>';
+	$html .= '</button>';
+	$html .= '</form>';
+
+	$html .= '<form class="change-profile">';
+	$html .= '<input class="submitInputAlone" type="submit" onclick="disconnect(); return false;" value="Se déconnecter">';
+	$html .= '</form>';
+	$html .= '</div>';
 
 	return $html;
 	echo($html);

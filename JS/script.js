@@ -1,4 +1,3 @@
-
 function toggleButterfly(t) {
 	var pid = $(t).closest('.post').attr('data-id');
 	var uid = $('#info').attr('data-uid');
@@ -12,6 +11,15 @@ function toggleButterfly(t) {
 			var butterflies = $(t).parent()[0].childNodes[3].textContent;
 			$(t).parent()[0].childNodes[3].textContent = data['count'];
 			t.style.fill = data['color'];
+			//if(data['color'] == "#F7A71B") {
+			//	var pap = $('<div class="butterfly">');
+			//	var aileg = $('<img class="aile aileg" src="Assets/aile.svg"/>');
+			//	var ailed = $('<img class="aile ailed" src="Assets/aile.svg"/>');
+			//	pap.append(aileg).append(ailed);
+			//	var pos = $(t).position();
+			//	pap.css({"top":pos.top+1,"left":pos.left+3});
+			//	$(t).parent().append(pap);
+			//}
 		},
 		error: function() {
 			console.log('fail butterfly');
@@ -512,6 +520,13 @@ function playpause(t) {
 	} else {
 		t.pause();
 	}
+}
+
+function loadVideo(t) {
+	var src = $(t).attr('data-src');
+	var vid = $('<video onclick="playpause(this)" controls="true" autoplay src="'+src+'"></video>');
+	$(t).after(vid);
+	$(t).remove();
 }
 
 function loadIframe(t) {

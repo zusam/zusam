@@ -4,11 +4,11 @@ chdir(realpath(dirname(__FILE__))."/../");
 require_once('Core/Location.php');
 require_once('Core/Filtre.php');
 
-function create_miniatures($text) {
+function search_miniatures($text) {
 	// look for a potential previews
 	$ret = preg_match_all("/https?:\/\/[^\s]+/i",$text,$matches);
 	$ret2 = preg_match_all("/\{\:[A-Za-z0-9]+\:\}/i",$text,$matches2);
-	$ret3 = preg_match_all("/\{\:\:[A-Za-z0-9]+\:\:\}/i",$text,$matches3);
+	//$ret3 = preg_match_all("/\{\:\:[A-Za-z0-9]+\:\:\}/i",$text,$matches3);
 	if($ret != false) {
 		$matches = $matches[0];
 	}
@@ -18,64 +18,25 @@ function create_miniatures($text) {
 	if($ret3 != false) {
 		$matches3 = $matches3[0];
 	}
+	$results = array_merge($matches, $matches2);
+	return $results;
+}
+
+function create_miniatures($text) {
+	$matches = search_miniatures($text);
+	$results = [];
 	foreach($matches as $preview) {
 		$link = gen_miniature($preview);
-	}
-	if($url_prev == "") {
-		foreach($matches2 as $preview) {
-			$link = gen_miniature($preview);
+		if($link != "") {
+			$results[] = $link;
 		}
 	}
-	if($url_prev == "") {
-		foreach($matches3 as $preview) {
-			$link = gen_miniature($preview);
-		}
-	}
+	return $results;
 }
 
 function search_miniature($text) {
-	// look for a potential previews
-	$ret = preg_match_all("/https?:\/\/[^\s]+/i",$text,$matches);
-	$ret2 = preg_match_all("/\{\:[A-Za-z0-9]+\:\}/i",$text,$matches2);
-	$ret3 = preg_match_all("/\{\:\:[A-Za-z0-9]+\:\:\}/i",$text,$matches3);
-	if($ret != false) {
-		$matches = $matches[0];
-	}
-	if($ret2 != false) {
-		$matches2 = $matches2[0];
-	}
-	if($ret3 != false) {
-		$matches3 = $matches3[0];
-	}
-	// look for a image that we can render
-	foreach($matches as $preview) {
-		//var_dump($preview);
-		$link = gen_miniature($preview);
-		//var_dump($link);
-		if($link != false && $link != "") {
-			$url_prev = $link;
-			break;
-		}
-	}
-	if($url_prev == "") {
-		foreach($matches2 as $preview) {
-			$link = gen_miniature($preview);
-			if($link != false && $link != "") {
-				$url_prev = $link;
-				break;
-			}
-		}
-	}
-	if($url_prev == "") {
-		foreach($matches3 as $preview) {
-			$link = gen_miniature($preview);
-			if($link != false && $link != "") {
-				$url_prev = $link;
-				break;
-			}
-		}
-	}
-	return $url_prev;
+	$miniatures = create_miniatures($text);
+	return $miniatures[0];
 }
 
 function gen_miniature($url) {

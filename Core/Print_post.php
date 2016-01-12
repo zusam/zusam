@@ -27,7 +27,7 @@ function print_full_post($id, $uid, &$p) {
 		return "";
 	}
 	$html_data .= print_post($id, $uid, $p);
-	$html_data .= '<div class="post-separator"></div>';
+	//$html_data .= '<div class="post-separator"></div>';
 	foreach($p['children'] as $cid) {
 
 		// TODO correct removing child posts in order to not do this
@@ -89,12 +89,11 @@ function print_post($id, $uid, &$p) {
 	$html_data .= '</div>';
 	$html_data .= '<div class="second-line">';
 	$html_data .= '<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
-	//$html_data .= '<i class="fa fa-circle circle-separator"></i><img onclick="addButterfly(this)" class="butterfly" src="Assets/pap7.svg"/>'.count($p['butterflies']);
 	$html_data .= '<i class="fa fa-circle circle-separator"></i>';
 	if(array_key_exists((String) $u['_id'], $p['butterflies'])) {
-		$html_data .= '<div onclick="toggleButterfly(this)" class="butterfly" style="fill:#F7A71B">'.file_get_contents('Assets/pap7.svg').'</div>';
+		$html_data .= '<div onclick="toggleButterfly(this)" class="butterfly-button" style="fill:#F7A71B">'.file_get_contents('Assets/pap7.svg').'</div>';
 	} else {
-		$html_data .= '<div onclick="toggleButterfly(this)" class="butterfly">'.file_get_contents('Assets/pap7.svg').'</div>';
+		$html_data .= '<div onclick="toggleButterfly(this)" class="butterfly-button">'.file_get_contents('Assets/pap7.svg').'</div>';
 	}
 	$html_data .= count($p['butterflies']);
 	$html_data .= '</div>';
@@ -132,7 +131,7 @@ function print_post($id, $uid, &$p) {
 function print_post_mini(&$p, $unread) {
 	$html = "";
 	if($p != false && ($p['parent'] == null || $p['parent'] == 0)) {
-		if(empty($p['preview'])) {
+		if(empty($p['preview']) || preg_match("/\.jpg/",$p['preview']) == 0) {
 			//var_dump($p['preview']);
 			$link = search_miniature($p['text']);
 			if($link != "") {
@@ -142,21 +141,29 @@ function print_post_mini(&$p, $unread) {
 			post_save($p);
 			//echo('<br>');
 		}
-		if(!file_exists(get_miniature_path($p['preview']))) {
-			if($p['preview'] != "") {
-				$link = gen_miniature($p['preview']);
-			}
-			if($link != null && $link != false && $link != "") {
-				$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
-			} else {
+		//if(!file_exists(get_miniature_path($p['preview']))) {
+		//	if($p['preview'] != "") {
+		//		$link = gen_miniature($p['preview']);
+		//	}
+		//	if($link != null && $link != false && $link != "") {
+		//		$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
+		//	} else {
+		//		$inside = '<div class="text-container">';
+		//		$text = cutIfTooLong($p['text'], 180);
+		//		$inside .= '<div>'.$text.'</div>';
+		//		$inside .= '</div>';
+		//	}
+		//} else {
+		//	//$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
+		//	$inside = '<img src="'.get_miniature($p['preview']).'"/>';
+		//}
+		if($p['preview'] != "") {
+			$inside = '<img src="'.$p['preview'].'"/>';
+		} else {
 				$inside = '<div class="text-container">';
 				$text = cutIfTooLong($p['text'], 180);
 				$inside .= '<div>'.$text.'</div>';
 				$inside .= '</div>';
-			}
-		} else {
-			//$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
-			$inside = '<img src="'.get_miniature($p['preview']).'"/>';
 		}
 		$c = count($p['children']);
 		//$b = count($p['butterflies']);

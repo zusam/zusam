@@ -135,12 +135,16 @@ var Filter = {
 			r1 = new RegExp(r1+'[\s]','gi');
 		}
 		substitution = function(str) {
-				var html = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
-				html += '<div class="playButton" onclick="playpause(this.nextSibling); $(this).remove()"></div>';
-				html += '<video loop onclick="playpause(this)">';
-				html += '<source src="'+str+'">';
-				html += 'Votre navigateur ne supporte pas ce format vidéo.</video></span>';
-				return html;
+				var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
+				var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+				o += '<div onclick="loadVideo(this)" data-src="'+str+'" class="iframeLauncher" style="background-image:url('+xx+')"></div>';
+				o += '</span>';
+				//var html = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+				//html += '<div class="playButton" onclick="playpause(this.nextSibling); $(this).remove()"></div>';
+				//html += '<video loop onclick="playpause(this)">';
+				//html += '<source src="'+str+'">';
+				//html += 'Votre navigateur ne supporte pas ce format vidéo.</video></span>';
+				return o;
 		}
 		output = Control.searchMatch({"callerName":"searchVideo", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;

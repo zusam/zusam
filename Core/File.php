@@ -85,7 +85,12 @@ function file_print(&$file, $viewer) {
 		}
 	}
 	if($file['type'] == "webm") {
-		$html .= '<video controls="true" src="'.p2l(file_getPath($file)).'"></video>';
+		$xx = p2l(pathTo2(array('url' => $file['fileId'], 'ext' => 'jpg', 'param' => 'mini')));
+		$html .= '<div onclick="loadVideo(this)" data-src="'.p2l(file_getPath($file)).'" class="iframeLauncher" style="background-image:url('.$xx.')"></div>';
+		//$html .= '<div class="playButton" onclick="playpause(this.nextSibling); $(this).remove()"></div>';
+		//$html .= '<video loop onclick="playpause(this)">';
+		//$html .= '<source src="'.p2l(file_getPath($file)).'">';
+		//$html .= 'Votre navigateur ne supporte pas ce format vidéo.</video></span>';
 	}
 	if($file['type'] == "sgf") {
 		$html .= '<div class="sgf-viewer" id="sgf-viewer-'.$file['fileId'].'"></div>';

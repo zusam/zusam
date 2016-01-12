@@ -1,0 +1,40 @@
+.butterfly {
+	position: absolute;
+	z-index: 8000;
+	width: 14px;
+	height: 14px;
+	transition: all linear 1s;
+	
+	.aile {
+		width: 100%;
+		position: absolute;
+		transform-origin: 0px 0px 0px;
+		fill: #F7A71B;
+		left: 7px;
+	}
+
+	.ailed {
+		animation: flyd 0.4s infinite;
+	}
+	.aileg {
+		animation: flyg 0.4s infinite;
+	}
+}
+@keyframes flyd {
+	from {
+		transform: rotate3d(0,1,0,-75deg);
+	}
+
+	to {
+		transform: rotate3d(0,1,0,75deg);
+	}
+}
+@keyframes flyg {
+	from {
+		transform: scaleX(-1) rotate3d(0,1,0,-75deg);
+	}
+
+	to {
+		transform: scaleX(-1) rotate3d(0,1,0,75deg);
+	}
+}
