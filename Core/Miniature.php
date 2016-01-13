@@ -8,15 +8,11 @@ function search_miniatures($text) {
 	// look for a potential previews
 	$ret = preg_match_all("/https?:\/\/[^\s]+/i",$text,$matches);
 	$ret2 = preg_match_all("/\{\:[A-Za-z0-9]+\:\}/i",$text,$matches2);
-	//$ret3 = preg_match_all("/\{\:\:[A-Za-z0-9]+\:\:\}/i",$text,$matches3);
 	if($ret != false) {
 		$matches = $matches[0];
 	}
 	if($ret2 != false) {
 		$matches2 = $matches2[0];
-	}
-	if($ret3 != false) {
-		$matches3 = $matches3[0];
 	}
 	$results = array_merge($matches, $matches2);
 	return $results;

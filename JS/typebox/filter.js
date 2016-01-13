@@ -139,11 +139,6 @@ var Filter = {
 				var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 				o += '<div onclick="loadVideo(this)" data-src="'+str+'" class="iframeLauncher" style="background-image:url('+xx+')"></div>';
 				o += '</span>';
-				//var html = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
-				//html += '<div class="playButton" onclick="playpause(this.nextSibling); $(this).remove()"></div>';
-				//html += '<video loop onclick="playpause(this)">';
-				//html += '<source src="'+str+'">';
-				//html += 'Votre navigateur ne supporte pas ce format vidéo.</video></span>';
 				return o;
 		}
 		output = Control.searchMatch({"callerName":"searchVideo", "inner":inner, "regex":r1, "substitution":substitution});
@@ -151,7 +146,7 @@ var Filter = {
 	},
 
 	searchImage : function(inner, ending) {
-		var r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.png|\.bmp|\.jpg|\.jpeg|\.gif)(\?[\w\/=?~.%&+\-#\!\']+)?/gi;
+		var r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.png|\.bmp|\.jpg|\.jpeg)(\?[\w\/=?~.%&+\-#\!\']+)?/gi;
 		if(!ending) {
 			r1 = new RegExp(r1+'[\s]','gi');
 		}
@@ -161,29 +156,47 @@ var Filter = {
 		output = Control.searchMatch({"callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
-	
-	searchAlbum : function(inner, ending, viewer) {
-		r1 = /\{\:\:[a-zA-Z0-9]+\:\:\}/gi;
-		substitution = function(str) {
-			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
-			return output;
-		};
-		var ajax_url = "Ajax/post.php";
-		var ajax_var = {"action":"getAlbum", "viewer":viewer};
-		callback = function(data) {
-			//console.log(data);
-			//console.log(data['html']);
-			balise = $('#'+str2md5(decodeURI(data['url'])));
-			balise.html(data['html']);
-			slideshow.init();
-		};
-		fail = function(url) {
-			balise = $('#'+str2md5(url));
-			balise.html("error");
+
+	searchGif : function(inner, ending) {
+		var r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.gif)(\?[\w\/=?~.%&+\-#\!\']+)?/gi;
+		if(!ending) {
+			r1 = new RegExp(r1+'[\s]','gi');
 		}
-		output = Control.searchMatch({"callerName":"searchAlbum", "inner":inner, "regex":r1, "substitution":substitution, "ajax_url":ajax_url, "ajax_var":ajax_var, "callback":callback, "fail":fail});
+		substitution = function(str) {
+				var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
+				var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+				o += '<div onclick="loadImage(this)" data-src="'+str+'" class="iframeLauncher" style="background-image:url('+xx+')"></div>';
+				o += '</span>';
+				return o;
+				//return '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+str+'"/></span>';
+
+		}
+		output = Control.searchMatch({"callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
+	
+	//searchAlbum : function(inner, ending, viewer) {
+	//	r1 = /\{\:\:[a-zA-Z0-9]+\:\:\}/gi;
+	//	substitution = function(str) {
+	//		output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
+	//		return output;
+	//	};
+	//	var ajax_url = "Ajax/post.php";
+	//	var ajax_var = {"action":"getAlbum", "viewer":viewer};
+	//	callback = function(data) {
+	//		//console.log(data);
+	//		//console.log(data['html']);
+	//		balise = $('#'+str2md5(decodeURI(data['url'])));
+	//		balise.html(data['html']);
+	//		slideshow.init();
+	//	};
+	//	fail = function(url) {
+	//		balise = $('#'+str2md5(url));
+	//		balise.html("error");
+	//	}
+	//	output = Control.searchMatch({"callerName":"searchAlbum", "inner":inner, "regex":r1, "substitution":substitution, "ajax_url":ajax_url, "ajax_var":ajax_var, "callback":callback, "fail":fail});
+	//	return output;
+	//},
 
 	searchFile : function(inner, ending, viewer) {
 		r1 = /\{\:[a-zA-Z0-9]+\:\}/gi;

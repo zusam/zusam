@@ -9,29 +9,36 @@ function start(redirect_url) {
 		action = $(this).attr('data-action');
 		
 		if($(this).attr('data-action') != "passwordReset") {	
-			if($(".password-confirmation").hasClass("hidden") || password == password_conf || password_conf == "") {
-				console.log("submitted");
-				$.ajax({
-					url: "Ajax/connect.php",
-					type: "POST",
-					data: {"action":action, "mail":mail, "password":password, "password_conf":password_conf},
-					success: function(data) {
-						console.log(data);
-							if(data != "fail") {	
-								window.location.reload();
-							} else {
-								$('.form-notif').html("Mauvais mot de passe ou identifiant");
-								$('.form-notif').removeClass('hidden');
+			console.log(mail.match(/[\.\-\w]+\@[\.\-\w]+\.[\.\-\w]+/));
+			if(mail.match(/[\.\-\w]+\@[\.\-\w]+\.[\.\-\w]+/)) {
+				if($(".password-confirmation").hasClass("hidden") || password == password_conf || password_conf == "") {
+					console.log("submitted");
+					$.ajax({
+						url: "Ajax/connect.php",
+						type: "POST",
+						data: {"action":action, "mail":mail, "password":password, "password_conf":password_conf},
+						success: function(data) {
+							console.log(data);
+								if(data != "fail") {	
+									window.location.reload();
+								} else {
+									$('.form-notif').html("Mauvais mot de passe ou identifiant");
+									$('.form-notif').removeClass('hidden');
+								}
+							},
+						error: function() {
+								console.log("fail");
 							}
-						},
-					error: function() {
-							console.log("fail");
-						}
-				})
+					})
+				} else {
+					console.log("passwords do not match");
+					$('.form-notif').html("Les mots de passe ne correspondent pas");
+					$('.form-notif').removeClass('hidden');
+				}
 			} else {
-				console.log("passwords do not match");
-				$('.form-notif').html("Les mots de passe ne correspondent pas");
-				$('.form-notif').removeClass('hidden');
+					console.log("bad mail");
+					$('.form-notif').html("Votre mail semble être incorrect");
+					$('.form-notif').removeClass('hidden');
 			}
 		} else {
 			console.log(action, mail);

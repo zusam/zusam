@@ -241,10 +241,11 @@ var Control = {
 		Control.searchFilter(t, Filter.searchDailymotion, viewer, ending);
 		Control.searchFilter(t, Filter.searchVine, viewer, ending);
 		Control.searchFilter(t, Filter.searchImage, viewer, ending);
+		Control.searchFilter(t, Filter.searchGif, viewer, ending);
 		Control.searchFilter(t, Filter.searchVideo, viewer, ending);
 		Control.searchFilter(t, Filter.searchLink, viewer, ending);
 		Control.searchFilter(t, Filter.searchFile, viewer, ending);
-		Control.searchFilter(t, Filter.searchAlbum, viewer, ending);
+		//Control.searchFilter(t, Filter.searchAlbum, viewer, ending);
 	},
 	
 	filter_out_all : function(t, viewer) {

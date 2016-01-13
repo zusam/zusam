@@ -4,6 +4,8 @@ chdir(realpath(dirname(__FILE__)."/../"));
 require_once('Core/Location.php');
 require_once('Reduc/ReducVideo.php');
 
+// This function is used to create miniatures from web videos
+// It's optimized to download as little as possible from the actual video
 function web_video($url, $file) {
 
 	if($file == null) {

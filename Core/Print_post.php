@@ -134,6 +134,7 @@ function print_post_mini(&$p, $unread) {
 		if(empty($p['preview']) || preg_match("/\.jpg/",$p['preview']) == 0) {
 			//var_dump($p['preview']);
 			$link = search_miniature($p['text']);
+			//var_dump($link);
 			if($link != "") {
 				$p['preview'] = $link;
 			}
@@ -141,23 +142,7 @@ function print_post_mini(&$p, $unread) {
 			post_save($p);
 			//echo('<br>');
 		}
-		//if(!file_exists(get_miniature_path($p['preview']))) {
-		//	if($p['preview'] != "") {
-		//		$link = gen_miniature($p['preview']);
-		//	}
-		//	if($link != null && $link != false && $link != "") {
-		//		$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
-		//	} else {
-		//		$inside = '<div class="text-container">';
-		//		$text = cutIfTooLong($p['text'], 180);
-		//		$inside .= '<div>'.$text.'</div>';
-		//		$inside .= '</div>';
-		//	}
-		//} else {
-		//	//$inside = '<img src="'.get_miniature($p['preview']).'?'.time().'"/>';
-		//	$inside = '<img src="'.get_miniature($p['preview']).'"/>';
-		//}
-		if($p['preview'] != "") {
+		if(preg_match("/\.jpg$/",$p['preview'])==1) {
 			$inside = '<img src="'.$p['preview'].'"/>';
 		} else {
 				$inside = '<div class="text-container">';

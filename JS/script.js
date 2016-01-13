@@ -522,6 +522,13 @@ function playpause(t) {
 	}
 }
 
+function loadImage(t) {
+	var src = $(t).attr('data-src');
+	var img = $('<img onerror="error_im(this)" src="'+src+'"/>');
+	$(t).after(img);
+	$(t).remove();
+}
+
 function loadVideo(t) {
 	var src = $(t).attr('data-src');
 	var vid = $('<video onclick="playpause(this)" controls="true" autoplay src="'+src+'"></video>');
