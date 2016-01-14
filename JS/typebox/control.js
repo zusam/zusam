@@ -40,23 +40,61 @@ var Control = {
 			} else {
 				hasChanged = false;
 			}
-			if(output.length > 1) {
-				for(j = (output.length-1); j > 0; j--) {
-					node.insertAdjacentHTML('afterend', output[j]);
-				}
-			}
-			if(output[0] == "") {
-				if(viewer) {
-					$(node).remove();
-				} else {
-					$(node).attr('data-placeholder','').html("");
-				}
-			} else {
-				node.innerHTML = output[0];
-			}
-		}
-		if(viewer == null || viewer == false) {
 			if(hasChanged) {
+				var firstOutputElement = null;
+				var foeID = "";
+				if(output.length > 1) {
+					for(j = (output.length-1); j > 0; j--) {
+						node.insertAdjacentHTML('afterend', output[j]);
+						if(foeID == "") {
+							//firstOutputElement = node.nextSibling;
+							foeID = node.nextSibling.id;
+						}
+					}
+				}
+				if(output[0] == "") {
+					if(viewer) {
+						$(node).remove();
+					} else {
+						$(node).attr('data-placeholder','').html("");
+					}
+				} else {
+					node.innerHTML = output[0];
+				}
+				if(!viewer && foeID != "") {
+					//console.log(firstOutputElement);
+					var tid = setInterval(function() {
+						console.log(foeID);
+						var plop = document.getElementById(foeID);
+						if(plop.scrollHeight > 0) {
+							console.log(plop.nextSibling);
+							console.log(plop.nextSibling.offsetTop);
+							console.log(plop.scrollHeight);
+							//document.getElementById('post-viewer').scrollTop = plop.offsetTop + plop.scrollHeight;
+							//document.getElementById('newpost').scrollTop = plop.offsetTop+ plop.scrollHeight;
+							plop.nextSibling.scrollIntoView(false);
+							clearInterval(tid);
+						}
+					}, 100);
+					setTimeout(function() {
+						clearInterval(tid);
+					}, 10000);
+					//setTimeout(function() {
+					//	var plop = document.getElementById(foeID);
+					//	console.log(plop.nextSibling);
+					//	plop.nextSibling.scrollIntoView(false);
+					//}, 1150);
+
+					//window.plop = firstOutputElement;
+					//throw new Error("Something went badly wrong!");
+					//console.log(firstOutputElement.scrollHeight);
+					//setTimeout(function(){console.log(firstOutputElement);firstOutputElement.scrollIntoView(false);console.log('plop')},20);
+					//node.scrollIntoView(false);
+					//firstOutputElement.scrollIntoView(false);
+					//$('#'+foeID)[0].scrollIntoView(false);
+				}
+			}
+			if(viewer == null || viewer == false) {
 				Control.refocus(e);
 			}
 		}
@@ -190,7 +228,7 @@ var Control = {
 
 			// activating deletable content
 			t.find('.deletable').on('mouseenter', function(event){
-					$(event.currentTarget).append('<div onclick="$(this).parent().remove();" class="delete-btn"><i class="fa fa-times"></i></div>');
+					$(event.currentTarget).append('<div onclick="$(this).closest(\'.deletable\').remove();" class="delete-btn"><i class="fa fa-times"></i></div>');
 					});
 			t.find('.deletable').on('mouseleave', function(event){
 					$(event.currentTarget).children('.delete-btn').remove();

@@ -16,6 +16,7 @@ require_once('Core/Preview.php');
 require_once('Core/PasswordReset.php');	
 require_once('Core/Mail.php');	
 require_once('Core/Album.php');	
+require_once('Core/Stats.php');	
 
 require_once('Pages/forum.php');
 require_once('Pages/mainmenu.php');
@@ -32,6 +33,18 @@ foreach($_POST as $K=>$V) {
 	$POST[$K] = (String) $V;
 }
 
+
+// CONNECTED OR NOT
+if($POST['action'] != null && $POST['action'] != "") {
+	
+	if($POST['action'] == "saveRecord") {
+		recordStat(array("connected"=>$_SESSION['connected'], "loadingTime"=>$POST['loadingTime']));
+		exit;
+	}
+}
+
+
+// CONNECTED
 if($_SESSION['connected']) {
 
 	if($POST['action'] != null && $POST['action'] != "") {

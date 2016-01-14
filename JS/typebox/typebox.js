@@ -120,7 +120,7 @@ function start(id) {
 							Control.filter_out_ending(t)
 							//return false;
 						} else {
-								Control.filter_out_search(t);
+							Control.filter_out_search(t);
 						}
 
 						if(cpos != false) {

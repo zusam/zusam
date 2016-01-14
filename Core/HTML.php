@@ -42,6 +42,11 @@ function html_head() {
 	$html .= '<link href="Assets/icons/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180" />';
 	$html .= '<link href="Assets/icons/icon-hires.png" rel="icon" sizes="192x192" />';
 	$html .= '<link href="Assets/icons/icon-normal.png" rel="icon" sizes="128x128" />';
+
+
+	// loading time calculation
+	$html .= '<script>window.startLoading = new Date().getTime();</script>';
+
 	$html .= '</head>';
 
 	return $html;

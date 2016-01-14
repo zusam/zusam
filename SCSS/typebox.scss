@@ -72,17 +72,21 @@
 	text-align: center;
 	cursor: default;
 
-	.iframeLauncher {
+	.launcher {
 		display: block;
 		position: relative;
 		cursor: pointer;
-		background: #ccc no-repeat center center / cover; 
-		clear: both;
+		//background: #ccc no-repeat center center / cover; 
+		//clear: both;
 		height: 0px;
 		padding-bottom: 56.25%;
+		
+		img {
+			width: 100%;
+		}
 	}
 
-	.iframeLauncher:before, .playButton:before {
+	.launcher:before, .playButton:before {
 		content: '';
 		background: rgba(255, 255, 255, .6);
 		height: 80px;
@@ -98,7 +102,7 @@
 		z-index:1;
 	}
 
-	.iframelauncher:hover:before, .playButton:hover:before {
+	.launcher:hover:before, .playButton:hover:before {
 		background: rgba(238, 238, 238, .8);
 		box-shadow: 0 0 10px 3px rgba(51, 51, 51, .8);
 		width: 100px;
@@ -106,7 +110,7 @@
 		margin: -50px 0 0 -50px;
 	}
 
-	.iframeLauncher:after, .playButton:after {
+	.launcher:after, .playButton:after {
 		content: '';
 		width: 0;
 		height: 0;

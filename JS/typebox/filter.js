@@ -31,10 +31,15 @@ var Filter = {
 			setTimeout( function() {
 				SC.oEmbed(str, { auto_play: true }, function(oEmbed) {
 					song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,'$1');
-					song_url = song_url.replace(/auto_play=false/,"auto_play=true");
+					var w = song_url.replace(/auto_play=false/,"auto_play=true");
 					//output = '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" scrolling="no" frameborder="0" src="'+song_url+'"></iframe></div>';
 					var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-					var o = '<div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+song_url+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div>';
+					//var o = '<div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+song_url+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div>';
+					var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+					o += '<div class="embed-responsive embed-responsive-16by9">';
+					o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
+					o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
+					o += '</div></div></span>';
 					$('#'+str2md5(str)).html(o);
 				});
 			}, 50);
@@ -69,7 +74,12 @@ var Filter = {
 		substitution = function(str) {
 			var w = str.replace(/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/,'http://www.dailymotion.com/embed/video/$2?autoplay=1');
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+w+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div></span>';
+			//var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+w+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div></span>';
+			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			o += '<div class="embed-responsive embed-responsive-16by9">';
+			o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
+			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
+			o += '</div></div></span>';
 			return o;
 		}
 		output = Control.searchMatch({"callerName":"searchDailymotion", "inner":inner, "regex":r1, "substitution":substitution});
@@ -85,7 +95,12 @@ var Filter = {
 		substitution = function(str) {
 			var w = str.replace(/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/,'http://player.vimeo.com/video/$3?autoplay=1');
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+w+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div></span>';
+			//var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+w+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div></span>';
+			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			o += '<div class="embed-responsive embed-responsive-16by9">';
+			o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
+			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
+			o += '</div></div></span>';
 			return o;
 		}
 		output = Control.searchMatch({"callerName":"searchVimeo", "inner":inner, "regex":r1, "substitution":substitution});
@@ -103,7 +118,12 @@ var Filter = {
 			var w = 'http://www.youtube.com/embed/'+v+'?autoplay=1&controls=2&wmode=opaque';
 			//var x = 'http://i.ytimg.com/vi/'+v+'/hqdefault.jpg';
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+w+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div></span>';
+			//var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+w+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div></span>';
+			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			o += '<div class="embed-responsive embed-responsive-16by9">';
+			o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
+			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
+			o += '</div></div></span>';
 			return o;
 		}
 		output = Control.searchMatch({"callerName":"searchYoutube2", "inner":inner, "regex":r1, "substitution":substitution});
@@ -121,7 +141,12 @@ var Filter = {
 			var w = 'http://www.youtube.com/embed/'+v+'?autoplay=1&controls=2&wmode=opaque';
 			//var x = 'http://i.ytimg.com/vi/'+v+'/hqdefault.jpg';
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+w+'" class="iframeLauncher" style="background-image:url('+xx+')"></div></div></span>';
+			//var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><div class="embed-responsive embed-responsive-16by9"><div onclick="loadIframe(this)" data-src="'+w+'" class="iframeLauncher" onerror="function(){console.log(this)}" style="background-image:url('+xx+')"></div></div></span>';
+			var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			o += '<div class="embed-responsive embed-responsive-16by9">';
+			o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
+			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
+			o += '</div></div></span>';
 			return o;
 		}
 		output = Control.searchMatch({"callerName":"searchYoutube", "inner":inner, "regex":r1, "substitution":substitution});
@@ -137,7 +162,7 @@ var Filter = {
 		substitution = function(str) {
 				var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 				var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
-				o += '<div onclick="loadVideo(this)" data-src="'+str+'" class="iframeLauncher" style="background-image:url('+xx+')"></div>';
+				o += '<div onclick="loadVideo(this)" data-src="'+str+'" class="launcher" style="background-image:url('+xx+')"></div>';
 				o += '</span>';
 				return o;
 		}
@@ -165,11 +190,9 @@ var Filter = {
 		substitution = function(str) {
 				var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 				var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
-				o += '<div onclick="loadImage(this)" data-src="'+str+'" class="iframeLauncher" style="background-image:url('+xx+')"></div>';
+				o += '<div onclick="loadImage(this)" data-src="'+str+'" class="launcher" style="background-image:url('+xx+')"></div>';
 				o += '</span>';
 				return o;
-				//return '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+str+'"/></span>';
-
 		}
 		output = Control.searchMatch({"callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;

@@ -13,6 +13,23 @@ origin_url = "http://localhost/zusam/";
 
 $(window).ready(function() {
 
+	// output loading time
+	document.body.onload = function() {
+		var loadingTime = new Date().getTime() - window.startLoading;
+		console.log("loaded in "+loadingTime);
+		$.ajax({
+			url:"Ajax/post.php",
+			type:"post",
+			data:{"action":"saveRecord","loadingTime":loadingTime},
+			success: function(data) {
+				console.log(data);
+			},
+			error: function() {
+				console.log("fail record");
+			}
+		});
+	}
+
 	// start fastclick
 	$(function() {
 		FastClick.attach(document.body);
