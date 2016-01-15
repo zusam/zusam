@@ -10,13 +10,15 @@
 	max-height: calc(100% - 52px);
 	overflow: auto;
 }
-#post-viewer {
-	display: none;
+#slidepostviewer {
 	width: 530px;
 	max-width: 100%;
+}
+#post-viewer {
+	display: block;
+	width: 100%;
 	z-index: 10;
-	height: calc(100% - 52px);
-	overflow: auto;
+	//height: calc(100% - 52px);
 	
 	.fake-comment {
 		color: black;
@@ -44,6 +46,10 @@
 	-webkit-justify-content: flex-end;
 	-webkit-align-items: center;
 	margin: 5px 0px;
+	position: fixed;
+	width: calc(100% - 30px);
+	top: 7px;
+	z-index: 5000;
 
 	.cell {
 		display: flex;

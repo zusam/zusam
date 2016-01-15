@@ -181,8 +181,8 @@ function hidenewpost(sent) {
 }
 
 function togglepostviewer(e) {
-	pv = $('#post-viewer');
-	if(pv.hasClass('active') || e == null) {
+	spv = $('#slidepostviewer');
+	if(spv.hasClass('active') || e == null) {
 		hidepostviewer();
 	} else {
 		var id = $(e.currentTarget).attr('data-id');
@@ -242,20 +242,29 @@ function shownewcommentsection(id) {
 }
 
 function showpostviewer(id) {
-//TODO load more posts if we are at the end (for next button)
 	hideAll();
 	showslidefromright('#slidepostviewer');
-	pv = $('#post-viewer');
-	pv.addClass('active');
-	pv.css('display','block');
+	spv = $('#slidepostviewer');
+	spv.addClass('active');
+	spv.append('<div class="nano"><div class="nano-content"></div></div>');
+	$('#slidepostviewer .nano .nano-content').append('<div id="post-viewer"></div>');
+	
+	addMask("hideAll()",0.75);
+	$('#post-viewer').attr('data-id',id);
+	$('#post-viewer').append('<div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div>');
+	window.history.pushState("", "", window.location.href.replace(/\#.*/,"") + "#" + id);
+
+	//throw new Error("Something went badly wrong!");
+	
 	console.log("show: "+id);
 	console.log("Ajax/get.php?action=getPost&id="+id);
+
 	$.ajax({
 		url: "Ajax/get.php?action=getPost&id="+id, 
 		type: "GET",
 		success: function(data) {
 
-			$('#slidepostviewer .spinner').remove();
+			$('#post-viewer .spinner').remove();
 			$('#mask').addClass('dark-mask');
 			var prev = $('.post-mini[data-id='+id+']').prev().attr('data-id');
 			var next = $('.post-mini[data-id='+id+']').next().attr('data-id');
@@ -268,28 +277,42 @@ function showpostviewer(id) {
 				opt.append('<div class="cell" onclick="showpostviewer(\''+next+'\')"><i class="fa fa-arrow-right"></i></div>');
 			}
 			opt.append('<div class="cell" onclick="hidepostviewer()"><i class="fa fa-close"></i></div>');
-			$('#slidepostviewer').prepend(opt);
+			
+			$('#post-viewer').before(opt);
+			$('#post-viewer').append(data['html']);
+			$('#post-viewer').append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 
-			pv.append(data['html']);
-			pv.append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
+			$('.nano-content').on('scroll',function(){
+				console.log('ocuoucou');
+				if(typeof(window.spvScrollTop) == 'undefined') {
+					window.spvScrollTop = 0;
+				}
+				var st = $(this).scrollTop();
+				if(st > window.spvScrollTop) {
+					$(this).find('.post-options').addClass('hidden');
+				} else {
+					$(this).find('.post-options').removeClass('hidden');
+				}
+				window.spvScrollTop = st;
+			});
+			
 			typebox.view();
-			//slideshow.init();
 			updatePostStats(id);
+			
+			//start nano scroller
+			$(".nano").nanoScroller();
 		},
 		error: function() {
 			console.log('fail load post');
 		}
 	});
-	addMask("hideAll()",0.75);
-	pv.attr('data-id',id);
-	pv.append('<div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div>');
-	window.history.pushState("", "", window.location.href.replace(/\#.*/,"") + "#" + id);
 }
 
 function hidepostviewer() {
 	unblockBody();
 	hideslidefromright('#slidepostviewer');
-	$('#slidepostviewer').html('<div id="post-viewer"></div>');
+	$('#slidepostviewer').html('');
+	$('#slidepostviewer').off();
 	removeMask();
 	typebox.stop('#commentBox');
 	window.history.pushState("", "", window.location.href.replace(/\#.*/,""));

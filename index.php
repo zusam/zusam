@@ -173,7 +173,6 @@ echo('
 // POST VIEWER
 echo('
 <div id="slidepostviewer" class="slide slide-over slidefromright">
-	<div id="post-viewer"></div>
 </div>
 ');
 
@@ -189,15 +188,6 @@ echo('
 			<div class="menu-cell">
 				<button onclick="hidenewpost()">Annuler</button>
 			</div>
-			');
-			/*
-			echo('
-			<div class="menu-cell">
-				<button onclick="album.start(\'#typeBox\')" id="create-album" class="action"><i class="fa fa-camera"></i></button>
-			</div>
-			');
-			*/
-			echo('
 			<div class="menu-cell">
 				<button onclick="inputFile(\'#typeBox\')" class="action"><i class="fa fa-paperclip"></i></button>
 			</div>

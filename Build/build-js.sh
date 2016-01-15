@@ -2,6 +2,7 @@
 
 loc=`pwd`
 JS="JS"
+LIBJS="LibJS"
 
 # first, clean the JS directory
 rm $JS/*.min.js
@@ -29,5 +30,5 @@ uglifyjs $JS/$libname/*.js $opt --wrap=$libname --export-all > $JS'/'$libname$b
 		#uglifyjs $JS/$libname/*.js $opt --wrap=$libname --export-all > $JS'/'$libname$b
 	fi
 done
-cat $JS/*.js | uglifyjs - $opt > zusam.min.js
+cat $JS/*.js $LIBJS/*.js | uglifyjs - $opt > zusam.min.js
 #cat $JS/*.js > zusam.min.js
