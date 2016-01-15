@@ -533,7 +533,7 @@ function loadImage(t) {
 function loadVideo(t) {
 	t = $(t).closest('.launcher');
 	var src = t.attr('data-src');
-	var vid = $('<video onclick="playpause(this)" controls="true" autoplay src="'+src+'"></video>');
+	var vid = $('<video onclick="playpause(this)" controls loop autoplay src="'+src+'"></video>');
 	t.after(vid);
 	t.remove();
 }

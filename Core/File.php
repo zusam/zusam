@@ -86,7 +86,10 @@ function file_print(&$file, $viewer) {
 	}
 	if($file['type'] == "webm") {
 		$xx = p2l(pathTo2(array('url' => $file['fileId'], 'ext' => 'jpg', 'param' => 'mini')));
-		$html .= '<div onclick="loadVideo(this)" data-src="'.p2l(file_getPath($file)).'" class="iframeLauncher" style="background-image:url('.$xx.')"></div>';
+		$w = p2l(file_getPath($file));
+		$html .= '<div onclick="loadVideo(this)" data-src="'.$w.'" class="launcher">';
+		$html .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';
+		$html .= '</div>';
 	}
 	if($file['type'] == "sgf") {
 		$html .= '<div class="sgf-viewer" id="sgf-viewer-'.$file['fileId'].'"></div>';

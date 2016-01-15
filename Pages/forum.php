@@ -66,31 +66,38 @@ function page_section_forum_settings(&$u, &$forum) {
 
 	$html = "";
 
-	$html .= '<div class="big-title">'.$forum['name'].'</div>';
+	//$html .= '<div class="big-title">'.$forum['name'].'</div>';
 	$html .= '<div class="settings-container">';
 
-	$html .= '
-		<div class="profile_wrapper">
-			<!--<div class="change-avatar" onclick="loadRetoucheBox(256,256,\'changeForum\')">'.forum_getAvatarHTML($forum).'</div>-->
-			<form class="change-profile">
-				<label for="name">Nom du groupe:</label><br>
-				<input name="name" type="text" placeholder="'.$forum['name'].'"><br>
-				<input type="submit" value="Enregistrer" onclick="changeforumname(\'input[name=name]\'); return false;">
-			</form>
-			<form class="change-profile">
-				<label for="mail">Inviter quelqu\'un dans le groupe :</label><br>
-				<input name="mail" type="email" placeholder="mail de la personne à inviter"><br>
-				<input type="submit" onclick="inviteUser(\'input[name=mail]\'); return false;" value="Envoyer">
-			</form>
-			<form class="change-profile">
-				<input type="text" onclick="this.setSelectionRange(0, this.value.length); return false;" value="'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?il='.$forum['link'].'" readonly="readonly">
-				<input type="submit" onclick="changeSecretLink(); return false;" value="Changer le lien secret">
-			</form>
-			<form class="change-profile">
-				<input type="submit" onclick="removeUserFromForum(); return false;" value="Quitter le groupe">
-			</form>
-		</div>
-	';
+	$html .= '<div class="profile_wrapper">';
+
+	$html .= '<form class="change-profile">';
+	$html .= '<span class="formTitle">Changer le nom du groupe:</span>';
+	$html .= '<input class="textInput" name="name" type="text" placeholder="Nom du groupe">';
+	$html .= '<button class="submitInput" onclick="changeforumname(\'input[name=name]\'); return false;">';
+	$html .= '<i class="fa fa-send"></i>';
+	$html .= '</button>';
+	$html .= '</form>';
+
+	$html .= '<form class="change-profile">';
+	$html .= '<span class="formTitle">Inviter quelqu\'un dans le groupe:</span>';
+	$html .= '<input class="textInput" name="mail" type="email" placeholder="mail de la personne à inviter">';
+	$html .= '<button class="submitInput" onclick="inviteUser(\'input[name=mail]\'); return false;">';
+	$html .= '<i class="fa fa-send"></i>';
+	$html .= '</button>';
+	$html .= '</form>';
+
+	$html .= '<form class="change-profile">';
+	$html .= '<span class="formTitle">Lien secret du groupe:</span>';
+	$html .= '<input class="textInput" type="text" onclick="this.setSelectionRange(0, this.value.length); return false;" value="'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?il='.$forum['link'].'" readonly="readonly">';
+	$html .= '<input type="submit" onclick="changeSecretLink(); return false;" value="Changer le lien secret">';
+	$html .= '</form>';
+
+	$html .= '<form class="change-profile">';
+	$html .= '<input type="submit" onclick="removeUserFromForum(); return false;" value="Quitter le groupe">';
+	$html .= '</form>';
+
+	$html .= '</div>';
 	
 	
 	$html .= '<div class="users-resume">';

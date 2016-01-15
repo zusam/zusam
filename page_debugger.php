@@ -8,6 +8,7 @@ $url = $_GET['url'];
 
 if($url != "") {
 	$p = preview_initialize($url);
+	//$p['description'] = strip_tags($p['description']);
 	$ret = json_encode($p);
 	$p = json_decode($ret, true);
 }

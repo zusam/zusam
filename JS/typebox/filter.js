@@ -162,8 +162,9 @@ var Filter = {
 		substitution = function(str) {
 				var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 				var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
-				o += '<div onclick="loadVideo(this)" data-src="'+str+'" class="launcher" style="background-image:url('+xx+')"></div>';
-				o += '</span>';
+				o += '<div onclick="loadVideo(this)" data-src="'+str+'" class="launcher">';
+				o += '<img src="'+xx+'" onerror="loadVideo(this)"/>';
+				o += '</div></span>';
 				return o;
 		}
 		output = Control.searchMatch({"callerName":"searchVideo", "inner":inner, "regex":r1, "substitution":substitution});
@@ -190,8 +191,9 @@ var Filter = {
 		substitution = function(str) {
 				var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 				var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
-				o += '<div onclick="loadImage(this)" data-src="'+str+'" class="launcher" style="background-image:url('+xx+')"></div>';
-				o += '</span>';
+				o += '<div onclick="loadImage(this)" data-src="'+str+'" class="launcher">';
+				o += '<img src="'+xx+'" onerror="loadImage(this)"/>';
+				o += '</div></span>';
 				return o;
 		}
 		output = Control.searchMatch({"callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});

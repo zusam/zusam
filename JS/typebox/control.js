@@ -52,7 +52,7 @@ var Control = {
 						}
 					}
 				}
-				if(output[0] == "") {
+				if(output[0].match(/^\s*$/)) {
 					if(viewer) {
 						$(node).remove();
 					} else {

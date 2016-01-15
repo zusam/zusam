@@ -23,7 +23,7 @@ function vine($url) {
 		file_put_contents(pathTo($url,"tmp"), $tmp);
 		if(file_exists(pathTo($url, "tmp"))) {
 			$file = pathTo($url, "tmp");
-			$ret = web_image($url, $file);
+			$ret = create_post_preview($url, $file);
 			unlink(pathTo($url, "tmp"));
 			return $ret;
 		} else {

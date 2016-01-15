@@ -94,6 +94,7 @@ function mongo_save($collection, &$entity) {
 		$result = $manager->executeBulkWrite('zusam.'.$collection, $bulk, $writeConcern);
 	} catch (MongoDB\Driver\Exception\BulkWriteException $e) {
 		$result = $e->getWriteResult();
+		//var_dump($result);
 		// TODO do something with it
 		return false;
 	}

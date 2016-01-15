@@ -5,16 +5,19 @@ require_once('Core/MongoDriver.php');
 
 function recordStat($array) {
 	$record = [];
+	$record['_id'] = mongo_id();
+	$record['date'] = mongo_date();
 	$record['loadingTime'] = intval($array['loadingTime']);
+	$record['screenHeight'] = intval($array['screenHeight']);
+	$record['screenWidth'] = intval($array['screenWidth']);
 	$record['referer'] = $_SERVER['HTTP_REFERER'];
-	$record['request_time'] = $_SERVER['REQUEST_TIME'];
 	$record['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 	$record['client_ip'] = $_SERVER['REMOTE_ADDR'];
 	$record['connected'] = $array['connected'];
 
-	//var_dump($record);
 
-	mongo_save("stats", $record);
+	mongo_save("records", $record);
+	//var_dump($record);
 }
 
 

@@ -4,13 +4,7 @@ chdir(realpath(dirname(__FILE__).'/../'));
 
 // TODO review and use !
 function isEmpty($var) {
-	if($var == null) {
-		return true;
-	}
-	if($var == "") {
-		return true;
-	}
-	if($var == false) {
+	if(!isset($var) || $var == null || $var == "" || $var == false) {
 		return true;
 	}
 	return false;
@@ -49,41 +43,30 @@ function ranger($url) {
 	return $info;
 }
 
+// convert string to utf8
 function to_utf8($str) {
-		//$str = htmlentities($str);
-		//$str = utf8_encode($str);
-		//$str = utf8_decode($str);
 	$encoding = mb_detect_encoding($str, 'UTF-8', true);
-	//var_dump($encoding);
 	if(!$encoding) {
 		$e = mb_detect_encoding($str);
-		//var_dump($e);
 		if($e != "UTF-8") {
-			//echo("f1");
 			$str = iconv($e, "UTF-8", $str);
 		} else {
-			//echo("f2");
 			$str = utf8_encode($str);
 
 		}
 	} else {
-		//echo("f3");
-		//$str = iconv(mb_detect_encoding($str, mb_detect_order(), true), "UTF-8", $str);
-		//$str = iconv("WINDOWS-1252", "UTF-8", $str);
-		//$str = Encoding::fixUTF8($str);
 	}
-	//$str = utf8_encode($str);
-	//$str = mb_convert_encoding($str, "UTF-8");
 	return $str;
 }
 
-function fixBadUnicode($str) {
-	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2")).chr(hexdec("$3")).chr(hexdec("$4"))', $str);
-	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2")).chr(hexdec("$3"))', $str);
-	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2"))', $str);
-	$str = preg_replace("/\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1"))', $str);
-	return $str;
-}
+// TODO remove : this should not be used
+//function fixBadUnicode($str) {
+//	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2")).chr(hexdec("$3")).chr(hexdec("$4"))', $str);
+//	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2")).chr(hexdec("$3"))', $str);
+//	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2"))', $str);
+//	$str = preg_replace("/\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1"))', $str);
+//	return $str;
+//}
 
 function cutIfTooLong($str, $n) {
 	$replace = trim(mb_substr($str,0,$n));
@@ -153,60 +136,48 @@ function deleteValue($e, $a) {
 		unset($a[$k]);
 	}
 	return $a;
-	//foreach($a as $k=>$v) {
-	//	if($v == $e) {
-	//		unset($a[$k]);
-	//		break;
-	//	}
-	//}
 }
 
-// TODO still used ? is unset alone not better ?
+// TODO need to be replace with unset ?
 // unset alone is far more better
 // this function is used in Core/Forum.php
 function deleteKey(&$e, &$a) {
 	$ee = (String) $e;
 	unset($a[$ee]);
-	//foreach($a as $k=>$v) {
-	//	if($k == $ee) {
-	//		unset($a[$k]);
-	//		break;
-	//	}
-	//}
 }
 
 // TODO not used... I hope.
 // rot(n) ...
-function str_rot($s, $n) {
-	static $letters = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
-	$n = (int)$n % 26;
-	if (!$n) return $s;
-	if ($n < 0) $n += 26;
-	if ($n == 13) return str_rot13($s);
-	$rep = substr($letters, $n * 2) . substr($letters, 0, $n * 2);
-	return strtr($s, $letters, $rep);
-}
+//function str_rot($s, $n) {
+//	static $letters = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
+//	$n = (int)$n % 26;
+//	if (!$n) return $s;
+//	if ($n < 0) $n += 26;
+//	if ($n == 13) return str_rot13($s);
+//	$rep = substr($letters, $n * 2) . substr($letters, 0, $n * 2);
+//	return strtr($s, $letters, $rep);
+//}
 
-// remove accents from string
-function noAccent($str) {
-	$replace = array(
-		'â' => 'a', 
-		'ä' => 'a', 
-		'à' => 'a', 
-		'ê' => 'e', 
-		'ë' => 'e', 
-		'è' => 'e', 
-		'é' => 'e', 
-		'ù' => 'u', 
-		'û' => 'u', 
-		'ü' => 'u', 
-		'ô' => 'o', 
-		'ö' => 'o', 
-		'ç' => 'c' 
-	);
-	$r = strtr($str, $replace);
-	return $r;
-}
+// TODO is this used ? --not used
+//function noAccent($str) {
+//	$replace = array(
+//		'â' => 'a', 
+//		'ä' => 'a', 
+//		'à' => 'a', 
+//		'ê' => 'e', 
+//		'ë' => 'e', 
+//		'è' => 'e', 
+//		'é' => 'e', 
+//		'ù' => 'u', 
+//		'û' => 'u', 
+//		'ü' => 'u', 
+//		'ô' => 'o', 
+//		'ö' => 'o', 
+//		'ç' => 'c' 
+//	);
+//	$r = strtr($str, $replace);
+//	return $r;
+//}
 
 // relative time
 function ago($d) {

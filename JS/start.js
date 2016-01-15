@@ -20,7 +20,7 @@ $(window).ready(function() {
 		$.ajax({
 			url:"Ajax/post.php",
 			type:"post",
-			data:{"action":"saveRecord","loadingTime":loadingTime},
+			data:{"action":"saveRecord","loadingTime":loadingTime,"screenHeight":screen.height,"screenWidth":screen.width},
 			success: function(data) {
 				console.log(data);
 			},

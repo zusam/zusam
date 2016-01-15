@@ -121,7 +121,7 @@ function preview_getDescription(&$p) {
 		$value = 0;
 		$description = "";
 		foreach($p['html']('p') as $d) {
-			$str = $d->getPlainText();
+			$str = strip_tags($d->getPlainText());
 			$v = 0;
 			$v = $v + min(floor(mb_strlen($str)/100), 8);
 			$v = $v + min(preg_match_all("/[,\.]/",$str), 8);
@@ -133,7 +133,7 @@ function preview_getDescription(&$p) {
 			}
 		}
 		foreach($p['html']('*:text') as $d) {
-			$str = $d->getPlainText();
+			$str = strip_tags($d->getPlainText());
 			$v = 0;
 			$v = $v + min(floor(mb_strlen($str)/100), 8);
 			$v = $v + min(preg_match_all("/[,\.]/",$str), 8);
@@ -147,6 +147,7 @@ function preview_getDescription(&$p) {
 	}
 	$description = to_utf8($description);
 	$description = html_entity_decode($description);
+	$description = strip_tags($description);
 	$p['description'] = cutIfTooLong($description, 335); 
 }
 
