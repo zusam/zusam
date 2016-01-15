@@ -10,6 +10,12 @@
 	max-height: calc(100% - 52px);
 	overflow: auto;
 }
+#slidenewpost {
+	.post-options {
+		position: relative;
+		top: 0px;
+	}
+}
 #slidepostviewer {
 	width: 530px;
 	max-width: 100%;

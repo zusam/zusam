@@ -179,7 +179,6 @@ echo('
 // NEW POST
 echo('
 <div id="slidenewpost" class="slide slide-over slidefromright">
-	<div class="post-separator"></div>
 	<div class="post-options"><div class="cell" onclick="hidenewpost()"><i class="fa fa-close"></i></div></div>
 	<div class="post-separator"></div>
 	<div id="newpost" class="newpost">

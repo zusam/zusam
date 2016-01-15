@@ -283,7 +283,6 @@ function showpostviewer(id) {
 			$('#post-viewer').append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 
 			$('.nano-content').on('scroll',function(){
-				console.log('ocuoucou');
 				if(typeof(window.spvScrollTop) == 'undefined') {
 					window.spvScrollTop = 0;
 				}

@@ -363,10 +363,6 @@ if($_SESSION['connected']) {
 
 			if($_SESSION['uid'] == $uid) {
 				if($_FILES["image"]["size"] < 1024*1024*2 && $_FILES["image"]["type"] == "image/png") {
-					//var_dump(pathTo($uid, "avatar", "jpg"));
-					//var_dump(is_writeable(pathTo($uid, "avatar", "jpg")));
-					//var_dump(is_writeable("/srv/http/zusam/Data/avatar/"));
-					//exit;
 					$r = saveImage($_FILES["image"]["tmp_name"], pathTo($uid, "avatar", "jpg"), 256, 256);
 				}
 			} else {

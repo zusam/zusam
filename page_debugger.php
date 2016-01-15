@@ -49,7 +49,7 @@ if($url != "" && $url != null) {
 	echo('<div class="post-parent-text dynamicBox">');
 	echo('<span class="deletable">');
 	if($p['image']['url'] != null) {
-		$preview = '<div class="preview"><img onerror="this.src=\'http://www.nibou.eu/zusam/web/assets/no_image.png\';" src="'.$p['image']['url'].'"/></div>';
+		$preview = '<div class="preview"><img src="'.$p['image']['url'].'"/></div>';
 	} else {
 		$preview = "";
 	}
@@ -80,7 +80,7 @@ if($url != "" && $url != null) {
 		echo('<div class="post-parent-text dynamicBox">');
 		echo('<span class="deletable">');
 		if($img['url'] != null) {
-			$preview = '<div class="preview"><img onerror="this.src=\'http://www.nibou.eu/zusam/web/assets/no_image.png\';" src="'.$img['url'].'"/></div>';
+			$preview = '<div class="preview"><img src="'.$img['url'].'"/></div>';
 		} else {
 			$preview = "";
 		}
