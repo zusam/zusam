@@ -98,6 +98,7 @@ function mongo_save($collection, &$entity) {
 		// TODO do something with it
 		return false;
 	}
+	return true;
 }
 
 function mongo_destroy($collection, $id) {

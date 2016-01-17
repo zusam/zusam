@@ -8,8 +8,8 @@ URL = window.URL || window.webkitURL;
 // sending state
 sending = 0;
 // global url
-origin_url = "http://localhost/zusam/";
-//origin_url = "http://zus.am/";
+//origin_url = "http://localhost/zusam/";
+origin_url = "http://zus.am/";
 
 $(window).ready(function() {
 

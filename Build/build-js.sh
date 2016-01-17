@@ -30,5 +30,6 @@ uglifyjs $JS/$libname/*.js $opt --wrap=$libname --export-all > $JS'/'$libname$b
 		#uglifyjs $JS/$libname/*.js $opt --wrap=$libname --export-all > $JS'/'$libname$b
 	fi
 done
-cat $JS/*.js $LIBJS/*.js | uglifyjs - $opt > zusam.min.js
+#cat $LIBJS/*.js $JS/*.js | uglifyjs - $opt > "test.min.js"
+cat $JS/*.js $LIBJS/*.js | uglifyjs - $opt > "zusam.min.js"
 #cat $JS/*.js > zusam.min.js

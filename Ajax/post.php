@@ -473,7 +473,7 @@ if($_SESSION['connected']) {
 			$u = account_load(array('_id' => $uid));
 			$cible = account_load(array('mail' => $mail));
 			if($cible != false && $cible != "") {
-				$cible = $cible['_id'];
+				$cible = (String) $cible['_id'];
 			} else {
 				$cible = $mail;
 			}

@@ -80,7 +80,6 @@ function forum_addUser_andSave(&$forum, &$user) {
 	unset($forum['users']);
 	$forum['users'] = $users;
 
-
 	account_addForum($user, $forum);
 	forum_save($forum);
 	account_save($user);
@@ -88,7 +87,20 @@ function forum_addUser_andSave(&$forum, &$user) {
 
 function forum_removeUser_andSave(&$forum, &$user) {
 	$forum['users'] = deleteValue($user['_id'], $forum['users']);
+	
+	// TODO XXX TRICK
+	$fusers = $forum['users'];
+	unset($forum['users']);
+	$forum['users'] = $fusers;
+	
 	deleteKey($forum['_id'], $user['forums']);
+	
+	// TODO XXX TRICK
+	//$uforums = $user['forums'];
+	//unset($user['forums']);
+	//$user['forums'] = $uforums;
+	
+	
 	forum_save($forum);
 	account_save($user);
 	if(count($forum['users']) <= 0) {

@@ -260,8 +260,9 @@ function showpostviewer(id) {
 	console.log("Ajax/get.php?action=getPost&id="+id);
 
 	$.ajax({
-		url: "Ajax/get.php?action=getPost&id="+id, 
+		url: "Ajax/get.php", 
 		type: "GET",
+		data: {"action":"getPost","id":id},
 		success: function(data) {
 
 			$('#post-viewer .spinner').remove();
@@ -299,7 +300,10 @@ function showpostviewer(id) {
 			updatePostStats(id);
 			
 			//start nano scroller
-			$(".nano").nanoScroller();
+			// TODO find a more clean method for this
+			setInterval(function() {
+				$(".nano").nanoScroller();
+			}, 1000);
 		},
 		error: function() {
 			console.log('fail load post');

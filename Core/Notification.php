@@ -17,7 +17,8 @@ function notification_initialize($a) {
 }
 
 function notification_save(&$n) {
-	mongo_save("notififications",$n);
+	$ret = mongo_save("notifications",$n);
+	return $ret;
 }
 
 function notification_destroy($id) {

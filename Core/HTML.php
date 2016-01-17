@@ -57,7 +57,7 @@ function html_footer() {
 
 	$html = "";
 
-	$html .= '<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->';
+	//$html .= '<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>';
 	$html .= '<script src="http://connect.soundcloud.com/sdk.js"></script>';
 	$html .= '<script src="LibJS/jquery.2.1.4.min.js"></script>';
 	$html .= '<script src="LibJS/fastclick.min.js"></script>';

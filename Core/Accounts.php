@@ -42,12 +42,8 @@ function account_addUnread(&$ac, $pid) {
 
 function account_readPost(&$ac, $pid) {
 	$pid = (String) $pid;
-//var_dump(count($ac['unread']));
-//var_dump($pid);
-//var_dump($ac['unread']);
 	$ac['unread'] = deleteValue($pid, $ac['unread']);
 	$ac['unread'] = array_values($ac['unread']);
-//var_dump(count($ac['unread']));
 
 	//TODO XXX TRICK
 	$unread = $ac['unread'];

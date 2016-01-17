@@ -118,7 +118,7 @@ function print_post($id, $uid, &$p) {
 	} else {
 		$html_data .= 'post-parent-text ';
 	}
-	$html_data .= 'dynamicBox viewerBox" data-id="'.$id.'"><div>'.$p['text'].'</div></div>';
+	$html_data .= 'dynamicBox viewerBox" data-id="'.$id.'"><div>'.trim($p['text']).'</div></div>';
 
 	$html_data .= '</div>';
 

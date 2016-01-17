@@ -50,7 +50,6 @@ function updatePostStats(pid) {
 			}
 		}
 	});
-
 }
 
 function changeSecretLink() {
@@ -322,10 +321,13 @@ function deletePost(t) {
 }
 
 function editPost(t) {
-	//var p = $(t).parent().parent().parent().parent();
 	var p = $(t).closest('.post');
 	var pid = p.attr('data-id');
-		$.get("Ajax/get.php?action=getRaw&pid="+pid, function(data) {
+	$.ajax({
+		url: "Ajax/get.php",
+		type: "get",
+		data: {"action":"getRaw","pid":pid},
+		success: function(data) {
 			box = '<div id="editBox" class="dynamicBox">';
 			box += '<div contenteditable="true" data-placeholder="Ecrivez quelque chose...">'+data['raw']+'</div>';
 			box += '</div>';
@@ -340,7 +342,8 @@ function editPost(t) {
 			p.html(box);
 			typebox.start("#editBox");
 			typebox.evaluate("#editBox");
-		});
+		}
+	});
 }
 
 function loadMorePosts() {

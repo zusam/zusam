@@ -69,12 +69,8 @@ if($_SESSION['connected']) {
 				header('Content-Type: text/json; charset=UTF-8');
 				echo(json_encode($r));
 			}
-
-
 			exit;
-
 		}
-
 
 		// TODO protect ?
 		if($GET['action'] == "getProgress") {
