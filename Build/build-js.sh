@@ -27,9 +27,6 @@ cat $(cat "$p/uglify.order" | sed -r "s/[a-zA-Z0-9_.]+/$JS\/${libname}\/&/g") | 
 		else
 uglifyjs $JS/$libname/*.js $opt --wrap=$libname --export-all > $JS'/'$libname$b
 		fi
-		#uglifyjs $JS/$libname/*.js $opt --wrap=$libname --export-all > $JS'/'$libname$b
 	fi
 done
-#cat $LIBJS/*.js $JS/*.js | uglifyjs - $opt > "test.min.js"
-cat $JS/*.js $LIBJS/*.js | uglifyjs - $opt > "zusam.min.js"
-#cat $JS/*.js > zusam.min.js
+cat $LIBJS/*.js $JS/*.js | uglifyjs - $opt > "script.js"

@@ -13,18 +13,15 @@ function page_nav_forum(&$u, &$forum) {
 
 	$html .= '<div class="left-module-nav">';
 	$html .= '<div class="my_avatar" onclick="toggleslidefromleft(\'#mainmenu\')">'.account_getAvatarHTML($u).'</div>';
-	//$html .= '<div class="my_name">'.$u['name'].'</div>';
 	$html .= '<a href="'.$_SERVER['REQUEST_URI'].'"><img class="logo" src="Assets/logo.png"/></a>';
 	$html .= '</div>';
 	if($_SESSION['forum'] != "") {
 		$html .= '<div class="forum-name"><span>'.$forum['name'].'<span></div>';
 		$html .= '<div class="right-module-nav">';
-		//$html .= '<button class="action" onclick="ask(\'Mail de la personne à inviter :\',55,inviteUser)"><i class="fa fa-user-plus"></i></button>';
 		$html .= '<button class="action" onclick="togglenewpost()"><i class="fa fa-pencil"></i></button>';
 		$html .= '</div>';
 	} else {
 		$html .= '<div class="right-module-nav">';
-		//$html .= '<button class="action" onclick="ask(\'Nom du forum :\',25,addForum)"><i class="fa fa-plus"></i></button>';
 		$html .= '</div>';
 	}
 
@@ -38,7 +35,6 @@ function page_section_forum(&$u, &$forum) {
 
 	if($forum != null && $forum != "" && $forum != false) {
 
-		//$html .= '<div class="big-title">'.$forum['name'].'</div>';
 		$html .='<div id="container">';
 
 		$list = array_reverse($forum['news']);

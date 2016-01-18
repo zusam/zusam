@@ -1,12 +1,16 @@
 <?php
 
 function p2l($path) {
-	//$path = preg_replace("/\/srv\/http/","http://nibou.eu",$path);
-	$path = preg_replace("/\/srv\/http\/zusam/","http://zus.am",$path);
-	//$path = preg_replace("/\/srv\/http/","http://localhost/",$path);
+	$path = preg_replace("/\/srv\/http\/zusam\//",$GLOBALS['__ROOT_URL__'],$path);
 	return $path;
 }
 
+// this function is just a shortcut
+function pmini($url) {
+	return pathTo2(array('url'=>$url,'param'=>'mini','ext'=>'jpg'));
+}
+
+// TODO remove this function
 function pathTo($url, $param, $ext) {
 	return pathTo2(array('url' => $url, 'param' => $param, 'ext' => $ext));
 }
@@ -18,8 +22,8 @@ function pathTo2($args) {
 	$ext = $args['ext'];
 	$dir = $args['dir'];
 
-	//$root_dir = "/zusam/";
-	$root_dir = "/";
+	$root_dir = "/zusam/";
+	//$root_dir = "/";
 
 	if(!$dir && ($param == "" || $url == "")) {
 		return false;
@@ -53,15 +57,15 @@ function pathTo2($args) {
 			$path = "tmp/".hash("md5", $url); 
 			return $path;
 		}
-		if($param == "default_avatar") {
-			$path = "Assets/avatar/".$url; 
-			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
-		}
+		//if($param == "default_avatar") {
+		//	$path = "Assets/avatar/".$url; 
+		//	return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
+		//}
 	} else {
-		if($param == "default_avatar") {
-			$path = "Assets/avatar"; 
-			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
-		}
+		//if($param == "default_avatar") {
+		//	$path = "Assets/avatar"; 
+		//	return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
+		//}
 	}
 }
 

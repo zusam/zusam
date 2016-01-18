@@ -264,6 +264,7 @@ function showpostviewer(id) {
 		type: "GET",
 		data: {"action":"getPost","id":id},
 		success: function(data) {
+			console.log(data);
 
 			$('#post-viewer .spinner').remove();
 			$('#mask').addClass('dark-mask');
@@ -280,7 +281,8 @@ function showpostviewer(id) {
 			opt.append('<div class="cell" onclick="hidepostviewer()"><i class="fa fa-close"></i></div>');
 			
 			$('#post-viewer').before(opt);
-			$('#post-viewer').append(data['html']);
+			var plop = $(data['html']);
+			$('#post-viewer').append(plop);
 			$('#post-viewer').append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 
 			$('.nano-content').on('scroll',function(){
@@ -296,7 +298,7 @@ function showpostviewer(id) {
 				window.spvScrollTop = st;
 			});
 			
-			typebox.view();
+			//typebox.view();
 			updatePostStats(id);
 			
 			//start nano scroller

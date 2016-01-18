@@ -13,13 +13,13 @@ function create_post_preview($url, $file) {
 	}
 	if(!file_exists(pathTo($url, "mini", "jpg"))) {
 		if(exif_imagetype($source) != IMAGETYPE_GIF) {
-			createPreview(320, $source, pathTo($url, "mini", "jpg"), 9/16, 70);
+			createPreview(320, $source, pmini($url), 9/16, 70);
 		} else {
-			gifPreview(320, $source, pathTo($url, "mini", "jpg"), 9/16, 70);
+			gifPreview(320, $source, pmini($url), 9/16, 70);
 		}
 	}
-	if(file_exists(pathTo($url, "mini", "jpg"))) {
-		return pathTo($url, "mini", "jpg");
+	if(file_exists(pmini($url))) {
+		return pmini($url);
 	} else {
 		return false;
 	}

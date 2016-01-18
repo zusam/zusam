@@ -1,10 +1,10 @@
 <?php
 
-function html_head() {
+function html_head($root_url) {
 
 	$title = "Zusam";
 	$description = "Un espace réellement privé pour vous et votre famille. Echangez photos, vidéos, liens en toute simplicité avec vos proches.";
-	$image = "http://zus.am/Assets/ogp.png";
+	$image = $root_url."Assets/ogp.png";
 
 	$html = "";
 
@@ -53,15 +53,18 @@ function html_head() {
 
 }
 
-function html_footer() {
+function html_footer($root_url) {
 
 	$html = "";
 
-	//$html .= '<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>';
+	$html .= '
+		<script>
+		origin_url = "'.$root_url.'";
+		</script>
+	';
+
 	$html .= '<script src="http://connect.soundcloud.com/sdk.js"></script>';
-	$html .= '<script src="LibJS/jquery.2.1.4.min.js"></script>';
-	$html .= '<script src="LibJS/fastclick.min.js"></script>';
-	$html .= '<script src="zusam.min.js"></script>';
+	$html .= '<script src="script.js"></script>';
 	$html .= '</body>';
 	$html .= '</html>';
 

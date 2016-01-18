@@ -120,7 +120,8 @@ if($_SESSION['connected']) {
 			// TODO why using mail ?
 			$u = account_load(array('_id' => $_SESSION['uid']));
 			$p = post_load(array('_id' => $id));
-
+	
+	
 			if($p['forum'] == mongo_id($_SESSION['forum']) && isset($u['forums'][$_SESSION['forum']])) { 
 				account_readPost($u, $id);
 				account_save($u);
@@ -141,15 +142,11 @@ if($_SESSION['connected']) {
 
 			$u = account_load(array('_id' => mongo_id($uid)));
 			$p = post_load(array('_id'=>mongo_id($pid)));
-			//var_dump($p);
-			//
-			//if($_SESSION['uid'] == $uid && $p['uid'] == $uid) {
-				$raw = $p['text'];
-				$r = new StdClass();
-				$r->raw = $raw;
-				header('Content-Type: text/json; charset=UTF-8');
-				echo(json_encode($r));
-			//}
+			$raw = $p['text'];
+			$r = new StdClass();
+			$r->raw = $raw;
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($r));
 			exit;
 		}
 	}

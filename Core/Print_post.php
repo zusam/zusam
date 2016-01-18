@@ -6,9 +6,10 @@ require_once('Core/Accounts.php');
 require_once('Core/Location.php');
 require_once('Core/Utils.php');
 require_once('Core/Miniature.php');
+require_once('Core/TextCompiler.php');
 
 
-function print_full_post($id, $uid, &$p) {
+function print_full_post($id, $uid) {
 	
 	// init the html to return
 	$html_data = "";
@@ -19,25 +20,20 @@ function print_full_post($id, $uid, &$p) {
 		$u = account_getDummy();
 	}
 	
-	// load the post if not provided
-	if($p == null) {
-		$p = post_load(array('_id'=>$id));
-	}
+	$p = post_load(array('_id'=>$id));
 	if($p == null) {
 		return "";
 	}
 	$html_data .= print_post($id, $uid, $p);
-	//$html_data .= '<div class="post-separator"></div>';
 	foreach($p['children'] as $cid) {
 
 		// TODO correct removing child posts in order to not do this
 		// loading the child to see if he exists
 		$c = post_load(array('_id'=>$cid));
 		if($c == false || $c == null) {
-			//$p['children'] = deleteValue($cid, $p['children']);
 			post_removeChild($p, $cid);
 		} else {
-			$child_html = print_post($cid, $uid);
+			$child_html = print_post($cid, $uid, $viewer);
 			if($child_html != "") {
 				$html_data .= $child_html;
 			}
@@ -48,7 +44,7 @@ function print_full_post($id, $uid, &$p) {
 
 }
 
-function print_post($id, $uid, &$p) {
+function print_post($id, $uid) {
 
 	// init the html to return
 	$html_data = "";
@@ -59,10 +55,7 @@ function print_post($id, $uid, &$p) {
 		$u = account_getDummy();
 	}
 	
-	// load the post if not provided
-	if($p == null) {
-		$p = post_load(array('_id'=>$id));
-	}
+	$p = post_load(array('_id'=>$id));
 	if($p == null) {
 		return "";
 	}
@@ -118,12 +111,9 @@ function print_post($id, $uid, &$p) {
 	} else {
 		$html_data .= 'post-parent-text ';
 	}
-	$html_data .= 'dynamicBox viewerBox" data-id="'.$id.'"><div>'.trim($p['text']).'</div></div>';
+	$html_data .= 'dynamicBox viewerBox" data-id="'.$id.'"><div>'.compileText(trim($p['text'])).'</div></div>';
 
 	$html_data .= '</div>';
-
-	//gen miniatures
-	create_miniatures($p['text']);
 
 	return $html_data;
 }
@@ -132,15 +122,11 @@ function print_post_mini(&$p, $unread) {
 	$html = "";
 	if($p != false && ($p['parent'] == null || $p['parent'] == 0)) {
 		if(empty($p['preview']) || preg_match("/\.jpg/",$p['preview']) == 0) {
-			//var_dump($p['preview']);
 			$link = search_miniature($p['text']);
-			//var_dump($link);
 			if($link != "") {
 				$p['preview'] = $link;
 			}
-			//var_dump($p['preview']);
 			post_save($p);
-			//echo('<br>');
 		}
 		if(preg_match("/\.jpg$/",$p['preview'])==1) {
 			$inside = '<img src="'.$p['preview'].'"/>';
@@ -163,7 +149,6 @@ function print_post_mini(&$p, $unread) {
 			$inside .= '</div>';
 		}
 		$html .= '<a class="material-shadow post-mini" href="#'.$p['_id'].'" data-id="'.$p['_id'].'">';
-		$html .= '<div class="post-start">'.cutIfTooLong($p['text'],50).'</div>';
 		$html .= '<div class="post-preview">'.$inside.'</div></a>';
 	}
 	return $html;

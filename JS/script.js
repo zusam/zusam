@@ -529,7 +529,7 @@ function playpause(t) {
 function loadImage(t) {
 	t = $(t).closest('.launcher');
 	var src = t.attr('data-src');
-	var img = $('<img onerror="error_im(this)" src="'+src+'"/>');
+	var img = $('<img class="inlineImage" onerror="error_im(this)" src="'+src+'"/>');
 	t.after(img);
 	t.remove();
 }
@@ -537,7 +537,7 @@ function loadImage(t) {
 function loadVideo(t) {
 	t = $(t).closest('.launcher');
 	var src = t.attr('data-src');
-	var vid = $('<video onclick="playpause(this)" controls loop autoplay src="'+src+'"></video>');
+	var vid = $('<video class="inlineImage" onclick="playpause(this)" controls loop autoplay src="'+src+'"></video>');
 	t.after(vid);
 	t.remove();
 }

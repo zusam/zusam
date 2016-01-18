@@ -38,7 +38,7 @@
 .viewerBox{
 	min-height:22px !important;
 }
-.dynamicBox > span > img, .dynamicBox > span > div > img { 
+.dynamicBox > span > img, .dynamicBox > span > div > img, .inlineImage { 
 	margin:0px 0px; max-width: 100%
 }
 .dynamicBox > span > video { 

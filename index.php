@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+// define root_url
+$GLOBALS['__ROOT_URL__'] = "http://localhost/zusam/";
+//$GLOBALS['__ROOT_URL__'] = "http://zus.am/";
+
 chdir(realpath(dirname(__FILE__)));
 require_once('Core/Post.php');
 require_once('Core/Location.php');
@@ -33,7 +37,7 @@ foreach($_POST as $K=>$V) {
 echo('<html>');
 
 // HEAD
-$head = html_head();
+$head = html_head($GLOBALS['__ROOT_URL__']);
 echo($head);
 
 //apply secret link
@@ -171,10 +175,7 @@ echo('
 ');
 
 // POST VIEWER
-echo('
-<div id="slidepostviewer" class="slide slide-over slidefromright">
-</div>
-');
+echo('<div id="slidepostviewer" class="slide slide-over slidefromright"></div>');
 
 // NEW POST
 echo('
@@ -234,7 +235,7 @@ echo('</div>');
 echo('<span class="send-notification" id="send-notification"></span>');
 
 // FOOTER
-$footer = html_footer();
+$footer = html_footer($GLOBALS['__ROOT_URL__']);
 echo($footer);
 
 ?>

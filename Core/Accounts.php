@@ -86,9 +86,11 @@ function account_getAvatar(&$ac) {
 	if($ac['_id'] == -1) {
 		return "";
 	}
-	$loc = array("url"=>$ac['_id'], "param"=>"avatar", "ext"=>"jpg");
+	$loc = array("url"=>(String) $ac['_id'], "param"=>"avatar", "ext"=>"jpg");
 	if(file_exists(pathTo2($loc))) {
+		//var_dump(pathTo2($loc));
 		$avatar = p2l(pathTo2($loc));
+		//var_dump($avatar);
 	} else {
 		return "";
 	}

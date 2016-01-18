@@ -73,15 +73,15 @@ function file_print(&$file, $viewer) {
 
 	if($file['type'] == "jpg") {
 		$imgsrc = p2l(file_getPath($file));
-		if($viewer == "false" || $viewer == false) {
+		if($viewer === "false" || $viewer === false) {
 			$html .= '
 				<div contenteditable="false">
-					<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.$imgsrc.'?'.time().'"/>
+					<img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" src="'.$imgsrc.'?'.time().'"/>
 					<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="editIMG">Editer l\'image</button>
 				</div>
 			';
 		} else {
-			$html .= '<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.$imgsrc.'?'.time().'"/>';
+			$html .= '<img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" src="'.$imgsrc.'?'.time().'"/>';
 		}
 	}
 	if($file['type'] == "webm") {
