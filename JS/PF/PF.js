@@ -166,9 +166,9 @@ function loadImage(file,id) {
 		ctx = canvas.getContext('2d');
 		ctx.drawImage(img,0,0,this.width*g,this.height*g);
 		delete img;
-		$('*[data-id='+id+']').remove();
+		//$('*[data-id='+id+']').remove();
 		var fileId = createId(); //Math.random().toString(36).slice(2)+Date.now().toString(36); 
-		PF.showImage(canvas,id, fileId);
+		PF.showImage(canvas, id, fileId);
 		PF.sendImage(canvas, fileId);
 	};
 	img.src = URL.createObjectURL(file);

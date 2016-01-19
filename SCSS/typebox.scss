@@ -39,7 +39,12 @@
 	min-height:22px !important;
 }
 .dynamicBox > span > img, .dynamicBox > span > div > img, .inlineImage { 
-	margin:0px 0px; max-width: 100%
+	margin:0px 0px; 
+	max-width: 100%;
+}
+img.lazyload {
+	opacity: 0;
+	transition: opacity .3s ease-in;
 }
 .dynamicBox > span > video { 
 	margin:0px 0px; 
@@ -50,10 +55,11 @@
 /* INLINE-BLOCK IS NECESSARY TO PREVENT DIVS FROM CHROME */
 .dynamicBox > div {
 	display: inline-block;
-	padding: 2px; 
+	//padding: 2px; 
 	margin: 0px; 
 	//min-height: 18px;
-	width: calc(100% - 4px);
+	width: 100%;
+	//width: calc(100% - 4px);
 }
 .dynamicBox > div:focus { 
 	border:none; 
@@ -71,6 +77,7 @@
 	width: 100%;
 	text-align: center;
 	cursor: default;
+	margin: 1px 0px;
 
 	.launcher {
 		display: block;

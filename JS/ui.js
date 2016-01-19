@@ -302,10 +302,17 @@ function showpostviewer(id) {
 			updatePostStats(id);
 			
 			//start nano scroller
-			// TODO find a more clean method for this
+			// TODO find a more clean method for adapting to the height of the content for this
 			setInterval(function() {
 				$(".nano").nanoScroller();
 			}, 1000);
+
+			// lazy loading
+			// TODO first lazyload : choose a more wise selector
+			lazyload($('.nano-content')[0]);
+			$('.nano-content').on('scroll',function(e) {
+				lazyload(e.currentTarget);
+			});
 		},
 		error: function() {
 			console.log('fail load post');
@@ -342,4 +349,23 @@ function removeMask(id) {
 	}
 	$('#'+id).remove();
 	unblockBody();
+}
+
+function lazyload(e) {
+	$(e).find('img.lazyload:not([src])').each(function() {
+		var y = e.scrollTop + window.screen.height;
+		var node = this;
+		var yy = node.offsetTop - 10;
+		while(!node.parentNode.className.match(/\.nano-content/) && node.parentNode != document.body) {
+			node = node.parentNode;
+			yy += node.offsetTop; 
+		}
+		if(yy < y) {
+			console.log("load :"+this.dataset.src);
+			this.src = this.dataset.src;	
+			this.onload = function() {
+				this.style.opacity = 1;
+			}
+		}
+	});
 }

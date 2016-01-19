@@ -184,6 +184,14 @@ var Filter = {
 			console.log(data['html']);
 			balise = $('#'+str2md5(decodeURI(data['url'])));
 			balise.html(data['html']);
+			console.log(viewer);
+			if(viewer != false) {
+				$('img.lazyload').each(function(){
+					console.log(this.dataset.src);
+					this.src = this.dataset.src;
+					this.style.opacity = 1;
+				});
+			}
 		};
 		fail = function(url) {
 				balise = $('#'+str2md5(url));
