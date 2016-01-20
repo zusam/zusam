@@ -153,6 +153,7 @@ function view() {
 	$('.post .dynamicBox').each(function() {
 		Control.filter_out_all(this, true);
 		$(this).find('*[contenteditable=true]').removeAttr('contenteditable');
+		lazyload($(this).closest('.nano-content')[0]);
 	});
 }
 

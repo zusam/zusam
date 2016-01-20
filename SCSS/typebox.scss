@@ -55,11 +55,11 @@ img.lazyload {
 /* INLINE-BLOCK IS NECESSARY TO PREVENT DIVS FROM CHROME */
 .dynamicBox > div {
 	display: inline-block;
-	//padding: 2px; 
+	padding: 0px 2px; 
 	margin: 0px; 
 	//min-height: 18px;
-	width: 100%;
-	//width: calc(100% - 4px);
+	//width: 100%;
+	width: calc(100% - 4px);
 }
 .dynamicBox > div:focus { 
 	border:none; 
@@ -297,6 +297,16 @@ img.lazyload {
 		position: absolute;
 		top: 10px;
 		left: 10px;
+		font-size: 14px;
+		border: none;
+		width: 28px;
+		height: 28px;
+		border-radius: 100%;
+		background-color: rgba(255, 255, 255, 0.75);
+		cursor: pointer;
+	}
+	.editIMG:hover {
+		background-color: white;
 	}
 }
 #commentBox, #editBox {

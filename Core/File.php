@@ -13,6 +13,7 @@ function file_initialize($fileId, $type, $uid) {
 	$file['owner'] = mongo_id($uid);
 	$file['links'] = 1;
 	$file['fileId'] = $fileId;
+	$file['timestamp'] = time();
 
 	file_locate($file);
 
@@ -32,6 +33,7 @@ function file_locate(&$file) {
 }
 
 function file_save(&$file) {
+	$file['timestamp'] = time();
 	mongo_save("files",$file);
 }
 
@@ -68,24 +70,24 @@ function file_getPath(&$file) {
 }
 
 function file_getWidth(&$file) {
-	if(isset($file['width'])) {
-		return $file['width'];
-	}
+	//if(isset($file['width'])) {
+	//	return $file['width'];
+	//}
 	$a = getimagesize(file_getPath($file));
 	if($a != false && isset($a[0])) {
-		$file['width'] = $a[0];
+		//$file['width'] = $a[0];
 		return $a[0];
 	}
 	return false;
 }
 
 function file_getHeight(&$file) {
-	if(isset($file['height'])) {
-		return $file['height'];
-	}
+	//if(isset($file['height'])) {
+	//	return $file['height'];
+	//}
 	$a = getimagesize(file_getPath($file));
 	if($a != false && isset($a[1])) {
-		$file['height'] = $a[1];
+		//$file['height'] = $a[1];
 		return $a[1];
 	}
 	return false;
@@ -105,18 +107,9 @@ function file_print(&$file) {
 
 		$xx = p2l(pmini($file['fileId']));
 
-		//if($viewer === "false" || $viewer === false) {
-		//	$html .= '
-		//		<div contenteditable="false">
-		//			<img width="'.$nw.'" height="'.$nh.'" class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" src="'.$imgsrc.'"/>
-		//			<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="editIMG">Editer l\'image</button>
-		//		</div>
-		//	';
-		//} else {
-		$html .= '<img width="'.$nw.'" height="'.$nh.'" class="inlineImage zoomPossible lazyload" onclick="lightbox.enlighten(this)" data-src="'.$imgsrc.'"/>';
-		//}
+		$html .= '<img width="'.$nw.'" height="'.$nh.'" class="inlineImage zoomPossible lazyload" onclick="lightbox.enlighten(this)" data-src="'.$imgsrc.'?'.$file['timestamp'].'"/>';
 		// save for getWidth and getHeight
-		file_save($file);
+		//file_save($file);
 	}
 	if($file['type'] == "webm") {
 		$xx = p2l(pathTo2(array('url' => $file['fileId'], 'ext' => 'jpg', 'param' => 'mini')));

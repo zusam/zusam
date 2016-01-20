@@ -32,16 +32,11 @@ function landing($warning, $redirect_url) {
 		echo($warning);
 		echo('</div>');
 	}
+	echo('</div>');
 	echo('
-			</div>
-	');
-	echo('
-		<script src="LibJS/jquery.2.1.4.min.js"></script>
-		<script src="LibJS/fastclick.min.js"></script>
-		<script src="zusam.min.js"></script>
-		<script>
-			landing.start();
-		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+		<script src="script.js"></script>
+		<script>landing.start();</script>
 		</body>
 		</html>
 	');

@@ -157,9 +157,10 @@ if($_SESSION['connected']) {
 
 			$fileId = preg_replace("/\{\:([a-zA-Z0-9]+)\:\}/","$1",$POST['url']);
 			$url = $POST['url'];
+			$uid = $_SESSION['uid'];
 
 			$file = file_load(array("fileId" => $fileId));	
-			$html = file_print($file, $POST['viewer']);
+			$html = file_print($file);
 
 			$response = new StdClass();
 			$response->url = $url;

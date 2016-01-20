@@ -18,6 +18,7 @@ function html_head($root_url) {
 
 	// css
 	$html .= '<link href="style.css" rel="stylesheet">';
+	//$html .= '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">';
 	
 	// ogp
 	$html .= '<meta property="og:title" content="'.$title.'" />';

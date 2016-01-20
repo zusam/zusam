@@ -112,7 +112,7 @@ function showimageeditor(id, t) {
 		var img = $(t).parent().find('img');
 		var src = img.attr('src');
 		console.log(src);
-		var fileId = $(t).parent().parent().attr('data-src').replace(/[{:}]/g,'');
+		var fileId = $(t).closest('.deletable').attr('data-src').replace(/[{:}]/g,'');
 		console.log(fileId);
 		r = $('#retoucheBox');
 		r.attr('data-action',"addImage");
@@ -201,11 +201,9 @@ function shownewcommentsection(id) {
 		id = $('#post-viewer .new-comment-section').get(0);
 	}
 	t = $(id);
-	//t.attr('onclick','');
 	fc = t.children(':first-child');
 	if(fc.hasClass('fake-comment')) {
 		fc.remove();
-		//var c = $('<div class="commentator"><img src="'+$('#info').attr('data-avatar')+'"/></div>');
 		var cb = $('<div id="commentBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Ecrire un commentaire..."></div></div>');
 		var np_menu = $('<div class="menu"></div>');
 		var np_cell1 = $('<div class="menu-cell"></div>');
@@ -221,23 +219,6 @@ function shownewcommentsection(id) {
 		typebox.start('#commentBox');
 		// require typebox module
 		typebox.Control.niceFocus('#commentBox');
-		// scroll to bottom
-		//var cb = document.getElementById('commentBox').childNodes[0];
-		//cb.addEventListener('focus', function(e) {
-		//	document.getElementById('post-viewer').scrollIntoView(false);
-		//	cb.removeEventListener('focus');
-		//});
-		//setTimeout(function(){
-		//	//pv.scrollTop = pv.scrollHeight;
-		//}, 100);
-		//setTimeout(function(){
-		//	document.getElementById('post-viewer').scrollIntoView(false);
-		//	//pv.scrollTop = pv.scrollHeight;
-		//}, 700);
-		//setTimeout(function(){
-		//	document.getElementById('post-viewer').scrollIntoView(false);
-		//	//pv.scrollTop = pv.scrollHeight;
-		//}, 3000);
 	}
 }
 
@@ -254,8 +235,6 @@ function showpostviewer(id) {
 	$('#post-viewer').append('<div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div>');
 	window.history.pushState("", "", window.location.href.replace(/\#.*/,"") + "#" + id);
 
-	//throw new Error("Something went badly wrong!");
-	
 	console.log("show: "+id);
 	console.log("Ajax/get.php?action=getPost&id="+id);
 

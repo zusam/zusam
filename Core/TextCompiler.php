@@ -19,6 +19,10 @@ function compileText($text) {
 	$str = preg_replace_callback('/https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.jpg|\.bmp|\.jpeg|\.png)(\?[\w\/=?~.%&+\-#\!\']+)?/i','callback_image',$str);
 	$str = preg_replace_callback('/https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.gif)(\?[\w\/=?~.%&+\-#\!\']+)?/i','callback_gif',$str);
 	$str = preg_replace_callback('/\{\:[a-zA-Z0-9]+\:\}/i','callback_file',$str);
+
+	$str = '<div>'.$str.'</div>';
+	$str = preg_replace('/\<div\>\s*\<\/div\>/','',$str);
+
 	return $str;
 }
 
@@ -43,7 +47,7 @@ function callback_soundcloud($match) {
 			</script>
 		</span>
 	';
-	return $html;
+	return '</div>'.$html.'<div>';
 }
 
 function callback_vine($match) {
@@ -55,7 +59,8 @@ function callback_vine($match) {
 	$html .= '<iframe seamless class="embed-responsive-item" src="'.$w.'" frameborder="0"></iframe>';
 	$html .= '<script async src="//platform.vine.co/static/scripts/embed.js charset="utf-8"></script>';
 	$html .= '</span>';
-	return $html;
+	//return $html;
+	return '</div>'.$html.'<div>';
 }
 
 function callback_dailymotion($match) {
@@ -68,7 +73,8 @@ function callback_dailymotion($match) {
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
 	$html .= '</div></div></span>';
-	return $html;
+	//return $html;
+	return '</div>'.$html.'<div>';
 }
 
 function callback_vimeo($match) {
@@ -81,7 +87,8 @@ function callback_vimeo($match) {
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
 	$html .= '</div></div></span>';
-	return $html;
+	//return $html;
+	return '</div>'.$html.'<div>';
 }
 
 function callback_youtube2($match) {
@@ -95,7 +102,8 @@ function callback_youtube2($match) {
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
 	$html .= '</div></div></span>';
-	return $html;
+	//return $html;
+	return '</div>'.$html.'<div>';
 }
 
 function callback_youtube($match) {
@@ -109,7 +117,8 @@ function callback_youtube($match) {
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
 	$html .= '</div></div></span>';
-	return $html;
+	//return $html;
+	return '</div>'.$html.'<div>';
 }
 
 function callback_video($match) {
@@ -120,7 +129,8 @@ function callback_video($match) {
 	$html .= '<div onclick="loadVideo(this)" data-src="'.$str.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';
 	$html .= '</div></span>';
-	return $html;
+	//return $html;
+	return '</div>'.$html.'<div>';
 }
 
 function callback_image($match) {
@@ -129,7 +139,8 @@ function callback_image($match) {
 	$html .= '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$str.'"/>';
 	$html .= '</span>';
-	return $html;
+	//return $html;
+	return '</div>'.$html.'<div>';
 }
 
 function callback_gif($match) {
@@ -140,19 +151,31 @@ function callback_gif($match) {
 	$html .= '<div onclick="loadImage(this)" data-src="'.$str.'" class="launcher">';
 	$html .= '<img class="inlineImage" src="'.$xx.'" onerror="return false; loadImage(this)"/>';
 	$html .= '</div></span>';
-	return $html;
+	//return $html;
+	return '</div>'.$html.'<div>';
 }
 
 function callback_file($match) {
 	$str = $match[0];
 	$fileId = preg_replace('/\{\:([a-zA-Z0-9]+)\:\}/','$1',$str);
 	$file = file_load(array('fileId' => $fileId));	
+	$uid = $_SESSION['uid'];
 	if($file) {
 		$html = "";
-		$html .= '<span class="deletable" data-src="'.str.'" contenteditable="false" id="'.md5(str).'">';
-		$html .= file_print($file);
+		$html .= '<span uid="'.$uid.'" owner="'.$file['owner'].'" class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		if($uid == (String) $file['owner'] && $file['type'] == 'jpg') {
+			$html .= '<div contenteditable="false">';
+			$html .= file_print($file);
+			$html .= '<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="material-shadow editIMG">';
+			$html .= '<i class="fa fa-pencil"></i>';
+			$html .= '</button>';
+			$html .= '</div>';
+		} else {
+			$html .= file_print($file);
+		}
 		$html .= '</span>';
-		return $html;
+		//return $html;
+		return '</div>'.$html.'<div>';
 	} else {
 		return "";
 	}
