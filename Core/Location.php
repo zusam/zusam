@@ -22,7 +22,7 @@ function pathTo2($args) {
 	$ext = $args['ext'];
 	$dir = $args['dir'];
 
-	$root_dir = "/zusam/";
+	//$root_dir = "/zusam/";
 	//$root_dir = "/";
 
 	if(!$dir && ($param == "" || $url == "")) {
@@ -39,19 +39,23 @@ function pathTo2($args) {
 	if(!$dir) {
 		if($param == "assets") {
 			$path = "Assets/".$url.$ext; 
-			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
+			//return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
+			return realpath(dirname(__FILE__)."/../")."/".$path;
 		}
 		if($param == "mini") {
 			$path = $loc."/miniature/".hash("md5", $url).$ext; 
-			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
+			//return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
+			return realpath(dirname(__FILE__)."/../")."/".$path;
 		}
 		if($param == "avatar") {
 			$path = $loc."/avatar/".$url.$ext; 
-			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
+			//return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
+			return realpath(dirname(__FILE__)."/../")."/".$path;
 		}
 		if($param == "file") {
 			$path = $loc."/file/".$url.$ext; 
-			return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
+			//return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
+			return realpath(dirname(__FILE__)."/../")."/".$path;
 		}
 		if($param == "tmp") {
 			$path = "tmp/".hash("md5", $url); 

@@ -18,3 +18,6 @@ scripts :
 - php-check-syntax.sh is a basic script that checks the syntax of all the php files.
 - build-css.sh is a script that builds all the css into one file at the root of the zusam project.
 - build-js.sh is a script that builds all js modules in the JS folder and add them to the others js files in the JS folder to uglify them.
+- backup.sh is a script thats backups all data in a BACKUP directory (as a tarball).
+- restore.sh is a script that ERASE all current data and REPLACE it with the specified backup tarball.
+- update.sh is a script that should be used after a merge to prepare the code for production.

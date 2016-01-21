@@ -1,3 +1,19 @@
+function recordUsage(usage) {
+	$.ajax({
+		url:"Ajax/post.php",
+		type:"post",
+		data:{"action":"recordUsage","usage":usage},
+		success: function(data) {
+			console.log(data);
+		},
+		error: function() {
+			console.log("fail record");
+		}
+	});
+}
+
+
+
 function toggleButterfly(t) {
 	var pid = $(t).closest('.post').attr('data-id');
 	var uid = $('#info').attr('data-uid');

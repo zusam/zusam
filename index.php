@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-// define root_url
-$GLOBALS['__ROOT_URL__'] = "http://localhost/zusam/";
-//$GLOBALS['__ROOT_URL__'] = "http://zus.am/";
-
 chdir(realpath(dirname(__FILE__)));
+
+// define some globals :
+require_once('Globals.php');
+
 require_once('Core/Post.php');
 require_once('Core/Location.php');
 require_once('Core/Utils.php');

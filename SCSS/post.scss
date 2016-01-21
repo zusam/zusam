@@ -24,7 +24,6 @@
 	display: block;
 	width: 100%;
 	z-index: 10;
-	//height: calc(100% - 52px);
 	
 	.fake-comment {
 		color: black;
@@ -42,6 +41,18 @@
 	padding: 0px;
 	height: 5px;
 }
+@media (max-width: 680px) {
+	.post-options {
+		position: relative !important;
+		top: 0px !important;
+
+		.cell {
+			font-size: 14px !important;
+			width: 28px !important;
+			height: 28px !important;
+		}
+	}
+}
 .post-options {
 	display: flex;
 	display: -webkit-flex;
@@ -51,10 +62,10 @@
 	-webkit-flex-flow: row wrap;
 	-webkit-justify-content: flex-end;
 	-webkit-align-items: center;
-	margin: 5px 0px;
 	position: fixed;
-	width: calc(100% - 30px);
-	top: 7px;
+	top: 12px;
+	margin: 5px 0px;
+	right: 45px;
 	z-index: 5000;
 
 	.cell {
@@ -65,14 +76,14 @@
 		justify-content: center;
 		-webkit-justify-content: center;
 		
-		font-size: 14px;
+		font-size: 10px;
 		cursor: pointer;
 		background-color: grey;
 		color: white;
-		margin: 0px 5px;
+		margin: 0px 8px;
 		text-align: center;
-		height: 28px;
-		width: 28px;
+		height: 20px;
+		width: 20px;
 		border-radius: 100%;
 		transition: all 0.2s;
 		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -170,6 +181,7 @@
 				text-align:center;
 				cursor: pointer;
 				position: relative;
+				right: 10px;
 
 				.options-menu {
 					display: none;

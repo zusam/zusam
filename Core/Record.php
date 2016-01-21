@@ -15,9 +15,16 @@ function recordStat($array) {
 	$record['client_ip'] = $_SERVER['REMOTE_ADDR'];
 	$record['connected'] = $array['connected'];
 
-
 	mongo_save("records", $record);
-	//var_dump($record);
+}
+
+function recordUsage($array) {
+	$record = [];
+	$record['_id'] = mongo_id();
+	$record['date'] = mongo_date();
+	$record['usage'] = $array['usage'];
+
+	mongo_save("usage", $record);
 }
 
 

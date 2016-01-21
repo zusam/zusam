@@ -244,20 +244,21 @@ function showpostviewer(id) {
 		data: {"action":"getPost","id":id},
 		success: function(data) {
 			console.log(data);
+			recordUsage("post");
 
 			$('#post-viewer .spinner').remove();
 			$('#mask').addClass('dark-mask');
 			var prev = $('.post-mini[data-id='+id+']').prev().attr('data-id');
 			var next = $('.post-mini[data-id='+id+']').next().attr('data-id');
 			var opt = $('<div class="post-options"></div>');
-			opt.append('<div class="cell" onclick="shownewcommentsection()"><i class="fa fa-comment"></i></div>');
+			opt.append('<div class="cell" onclick="recordUsage(\'newcom\');shownewcommentsection()"><i class="fa fa-comment"></i></div>');
 			if(prev!=null) {
-				opt.append('<div class="cell" onclick="showpostviewer(\''+prev+'\')"><i class="fa fa-arrow-left"></i></div>');
+				opt.append('<div class="cell" onclick="recordUsage(\'prev\');showpostviewer(\''+prev+'\')"><i class="fa fa-arrow-left"></i></div>');
 			}
 			if(next!=null) {
-				opt.append('<div class="cell" onclick="showpostviewer(\''+next+'\')"><i class="fa fa-arrow-right"></i></div>');
+				opt.append('<div class="cell" onclick="recordUsage(\'next\');showpostviewer(\''+next+'\')"><i class="fa fa-arrow-right"></i></div>');
 			}
-			opt.append('<div class="cell" onclick="hidepostviewer()"><i class="fa fa-close"></i></div>');
+			opt.append('<div class="cell" onclick="recordUsage(\'close\');hidepostviewer()"><i class="fa fa-close"></i></div>');
 			
 			$('#post-viewer').before(opt);
 			var plop = $(data['html']);
@@ -344,6 +345,8 @@ function lazyload(e) {
 			this.src = this.dataset.src;	
 			this.onload = function() {
 				this.style.opacity = 1;
+				this.removeAttribute('width');
+				this.removeAttribute('height');
 			}
 		}
 	});

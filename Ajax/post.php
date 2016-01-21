@@ -41,6 +41,11 @@ if($POST['action'] != null && $POST['action'] != "") {
 		recordStat(array("connected"=>$_SESSION['connected'], "loadingTime"=>$POST['loadingTime'], "screenHeight"=>$POST['screenHeight'],"screenWidth"=>$POST['screenWidth']));
 		exit;
 	}
+	if($POST['action'] == "recordUsage") {
+		//recordStat(array("connected"=>$_SESSION['connected'], "loadingTime"=>$POST['loadingTime'], "screenHeight"=>$POST['screenHeight'],"screenWidth"=>$POST['screenWidth']));
+		recordUsage(array("usage"=>$POST['usage']));
+		exit;
+	}
 }
 
 
