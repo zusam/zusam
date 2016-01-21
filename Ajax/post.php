@@ -17,6 +17,7 @@ require_once('Core/PasswordReset.php');
 require_once('Core/Mail.php');	
 require_once('Core/Album.php');	
 require_once('Core/Record.php');	
+require_once('Core/TextCompiler.php');	
 
 require_once('Pages/forum.php');
 require_once('Pages/mainmenu.php');
@@ -200,35 +201,41 @@ if($_SESSION['connected']) {
 		if($POST['action'] == "gen_preview") {
 		
 			$url = $POST['url'];
+
+			$ret = handleLink($url);
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($ret, JSON_UNESCAPED_UNICODE));
+			exit;
+
 			
 			// First we check if the preview doesn't exist (to be as fast as possible)	
-			$p = preview_load(array('url' => $url));
-			if($p != null) {
-				$ret = json_encode($p,JSON_UNESCAPED_UNICODE);
-				header('Content-Type: text/json; charset=UTF-8');
-				echo($ret);
-				exit;
-			}
-			
-			// EXTENSION LESS IMAGES
-			$type = contentType($url);
-			if($type == 'image/jpeg' || $type == 'image/png' || $type == 'image/bmp' || $type == 'image/gif') {
-				$data = [];
-				$data['ret'] = create_post_preview($url);
-				$data['url'] = $url;
-				$data['type'] = "image";
-				$data['info'] = "extensionless";
-				header('Content-Type: text/json; charset=UTF-8');
-				echo(json_encode($data));
-				exit;
-			}
+			//$p = preview_load(array('url' => $url));
+			//if($p != null) {
+			//	$ret = json_encode($p,JSON_UNESCAPED_UNICODE);
+			//	header('Content-Type: text/json; charset=UTF-8');
+			//	echo($ret);
+			//	exit;
+			//}
+			//
+			//// EXTENSION LESS IMAGES
+			//$type = contentType($url);
+			//if($type == 'image/jpeg' || $type == 'image/png' || $type == 'image/bmp' || $type == 'image/gif') {
+			//	$data = [];
+			//	$data['ret'] = create_post_preview($url);
+			//	$data['url'] = $url;
+			//	$data['type'] = "image";
+			//	$data['info'] = "extensionless";
+			//	header('Content-Type: text/json; charset=UTF-8');
+			//	echo(json_encode($data));
+			//	exit;
+			//}
 
-			// GENERAL LINKS & OPEN GRAPH //
-			$ret = preview($url);
-			gen_miniature($url);
-			header('Content-Type: text/json; charset=UTF-8');
-			echo($ret);
-			exit;
+			//// GENERAL LINKS & OPEN GRAPH //
+			//$ret = preview($url);
+			//gen_miniature($url);
+			//header('Content-Type: text/json; charset=UTF-8');
+			//echo($ret);
+			//exit;
 		}
 
 

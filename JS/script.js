@@ -546,16 +546,28 @@ function loadImage(t) {
 	t = $(t).closest('.launcher');
 	var src = t.attr('data-src');
 	var img = $('<img class="inlineImage" onerror="error_im(this)" src="'+src+'"/>');
-	t.after(img);
-	t.remove();
+	img.on('load', function() {
+		t.after(img);
+		t.remove();
+	});
+	t.on('click', function() {
+		return false;
+	});
+	t.addClass('launcher-loading');
 }
 
 function loadVideo(t) {
 	t = $(t).closest('.launcher');
 	var src = t.attr('data-src');
-	var vid = $('<video class="inlineImage" onclick="playpause(this)" controls loop autoplay src="'+src+'"></video>');
-	t.after(vid);
-	t.remove();
+	var vid = $('<video class="inlineImage" onclick="playpause(this)" loop autoplay src="'+src+'"></video>');
+	vid.on('load', function() {
+		t.after(vid);
+		t.remove();
+	});
+	t.on('click', function() {
+		return false;
+	});
+	t.addClass('launcher-loading');
 }
 
 function loadIframe(t) {

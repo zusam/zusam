@@ -55,7 +55,7 @@ img.lazyload {
 /* INLINE-BLOCK IS NECESSARY TO PREVENT DIVS FROM CHROME */
 .dynamicBox > div {
 	display: inline-block;
-	padding: 0px 2px; 
+	padding: 2px; 
 	margin: 0px; 
 	//min-height: 18px;
 	//width: 100%;
@@ -134,6 +134,13 @@ img.lazyload {
 		width: 0;
 		z-index:2;
 	} 
+
+	.launcher-loading:after {
+		border-width: 20px 0 20px 40px !important;
+		border-radius: 100% !important;
+		margin: -20px 0 0 -20px !important;
+		border-color: #232427 #232427 #232427 #232427 !important;
+	}
 
 	.playButton {
 		position: absolute;

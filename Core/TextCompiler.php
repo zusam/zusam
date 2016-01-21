@@ -7,7 +7,16 @@ require_once('Core/File.php');
 
 function compileText($text) {
 
-	$str = $text;
+	$str = strip_tags($text);
+
+	$str = encapsuleKnownLinks($str);
+	//var_dump($str);
+	
+	// general link
+	$str = preg_replace_callback('/https?:\/\/[^\s]+/i','callback_link',$str);
+
+	$str = decapsuleLinks($str);
+	//var_dump($str);
 
 	$str = preg_replace_callback('/(https?:\/\/soundcloud.com\/)([^\s]+)/i','callback_soundcloud',$str);
 	$str = preg_replace_callback('/(https?:\/\/vine.co\/v\/)([\w\-]+)/i','callback_vine',$str);
@@ -18,12 +27,97 @@ function compileText($text) {
 	$str = preg_replace_callback('/https?:\/\/[^\s]+(\.mp4|\.webm)(\?\w*)?/i','callback_video',$str);
 	$str = preg_replace_callback('/https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.jpg|\.bmp|\.jpeg|\.png)(\?[\w\/=?~.%&+\-#\!\']+)?/i','callback_image',$str);
 	$str = preg_replace_callback('/https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.gif)(\?[\w\/=?~.%&+\-#\!\']+)?/i','callback_gif',$str);
+	
+	// files
 	$str = preg_replace_callback('/\{\:[a-zA-Z0-9]+\:\}/i','callback_file',$str);
+	
 
 	$str = '<div>'.$str.'</div>';
 	$str = preg_replace('/\<div\>\s*\<\/div\>/','',$str);
 
 	return $str;
+}
+
+function encapsuleKnownLinks($str) {
+	
+	$str = preg_replace('/(https?:\/\/soundcloud.com\/[^\s]+)/i','[[$1]]',$str);
+	$str = preg_replace('/(https?:\/\/vine.co\/v\/[\w\-]+)/i','[[$1]]',$str);
+	$str = preg_replace('/(https?:\/\/www.dailymotion.com\/video\/[\w\-]+)/i','[[$1]]',$str);
+	$str = preg_replace('/(https?:\/\/vimeo.com\/(channels\/staffpicks\/)?[0-9]+)/','[[$1]]',$str);
+	$str = preg_replace('/(https?:\/\/youtu\.be\/[\w\/=?~.%&+\-#]+)/i','[[$1]]',$str);
+	$str = preg_replace('/(https?:\/\/(www|m)\.youtube\.com\/watch[\w\/=?~.%&+\-#]+)/i','[[$1]]',$str);
+	$str = preg_replace('/(https?:\/\/[^\s]+(\.mp4|\.webm)(\?\w*)?)/i','[[$1]]',$str);
+	$str = preg_replace('/(https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.jpg|\.bmp|\.jpeg|\.png)(\?[\w\/=?~.%&+\-#\!\']+)?)/i','[[$1]]',$str);
+	$str = preg_replace('/(https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.gif)(\?[\w\/=?~.%&+\-#\!\']+)?)/i','[[$1]]',$str);
+
+	return $str;
+}
+
+function decapsuleLinks($str) {
+	$str = preg_replace('/\[\[([^\s]+)\]\]/','$1',$str);
+	return $str;
+}
+
+function callback_link($match) {
+	$str = $match[0];
+
+	// don't take encapsuled links into account : they will be interpreted later
+	if(preg_match("/.*\]\]$/",$str)==1) {
+		return $str;
+	}
+
+	$data = handleLink($str);
+	if(isset($data['info']) && $data['info'] == "extensionless") {
+		switch($data['type']) {
+			case "image";
+				$e = '<img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['url'].'"/>';
+				break;
+			case "video";
+				$e = '<video autoplay loop><source src="'.$str.'"></video>';
+				break;
+			default;
+				$e = fail_request($str);
+				break;
+		}
+	} else {
+		$e = open_graph_build($data);
+	}
+	$html = "";
+	$html .= '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= $e;
+	$html .= '</span>';
+	return '</div>'.$html.'<div>';
+}
+	
+function open_graph_build($data) {
+	$base_url = $data['base_url'];
+	$preview = ""; 
+	if(isset($data['image'])) {
+		if(isset($data['image']['url']) && preg_match("/^\s*$/",$data['image']['url']) != 1) {
+			$xx = p2l(pmini($data['url']));
+			$preview = '<div class="preview"><img src="'.$xx.'" onerror="error_im(this)"/></div>';
+		}
+	}
+	if(isset($data['title']) && $data['title'] != "") {
+		$title = '<div class="title">'.html_entity_decode($data['title']).'</div>';
+	} else { $title = ""; }
+	if(isset($data['description']) && $data['description'] != "") {
+		$description = '<div class="description">'.html_entity_decode($data['description']).'</div>';
+	} else { $description = ""; }
+	if($preview != "" || ($title != "" && $description != "")) {
+		$e = '<a class="article_big" href="'.$data['url'].'" target="_blank">'.$preview.$title.$description.'<div class="base_url">'.$base_url.'</div></a>';
+		if(intval($data['image']['width']) < 380) {
+			$e = '<a class="article_small" href="'.$data['url'].'" target="_blank">'.$preview.$title.$description.'<div class="base_url">'.$base_url.'</div></a>';
+		}
+	} else {
+		$e = fail_request($data['url']);
+	}
+	return $e;
+}
+
+function fail_request($url) {
+	$e = '<a class="b-link" href="'.preg_replace("/\s/"," ",$url).'" target="_blank">'.$url.'</a>';
+	return e;
 }
 
 function callback_soundcloud($match) {
@@ -179,6 +273,34 @@ function callback_file($match) {
 	} else {
 		return "";
 	}
+}
+
+function handleLink($url) {
+
+	// First we check if the preview doesn't exist (to be as fast as possible)	
+	$p = preview_load(array('url' => $url));
+	if($p != null) {
+		$ret = $p;
+		return $ret;
+	}
+	
+	// EXTENSION LESS IMAGES
+	$type = contentType($url);
+	if($type == 'image/jpeg' || $type == 'image/png' || $type == 'image/bmp' || $type == 'image/gif') {
+		$data = [];
+		$data['ret'] = create_post_preview($url);
+		$data['url'] = $url;
+		$data['type'] = "image";
+		$data['info'] = "extensionless";
+
+		return $data;
+	}
+
+	// GENERAL LINKS & OPEN GRAPH //
+	$ret = preview($url);
+	gen_miniature($url);
+
+	return $ret;
 }
 
 ?>

@@ -85,7 +85,12 @@ function test_perm {
 					fi
 				fi
 			fi
-			if [ "$ext" == "js" ] || [ "$ext" == "css" ] || [ "$ext" == "jpg" ] || [ "$ext" == "png" ]
+			if [ "$ext" == "js" ] \
+				|| [ "$ext" == "css" ] \
+				|| [ "$ext" == "jpg" ] \
+				|| [ "$ext" == "png" ] \
+				|| [ "$ext" == "webm" ] \
+				|| [ "$ext" == "sgf" ]
 			then
 				p=`stat -c "%a" "$f"`
 				if [ "$p" != "775" ]
