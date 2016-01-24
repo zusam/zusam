@@ -132,6 +132,10 @@ function bulkTest_compileText() {
 		"http://imgur.com/6dZhOHk",
 		"https://youtu.be/2qpI49SuDTo?t=21s",
 	);
+
+	$test3 = "
+	{:ij8ricz3i59h460m9dp0ja1g:}{:ij8rjytktfakmzcpypffgqz:}{:ij8rm3nhijz17rhzndfm63qc:}{:ij8rnuad15vjjo2kt9lllekli:}{:ij8rqe0hca5osg6yhtsfre6s6:}{:ij8rte6bsse9qqlpexcjnpdc:}{:ij8rv1mbnmrq3jwfxtsr9axc:}{:ij8rxpgnrxf4ksu5n1nt974s:}{:ij8rze4y0y5r2ezbzuwhzljl:}
+	";
 	//$redditLinks = getRedditLinks();
 	//$newsGoogleLinks = getNewsGoogleLinks();
 	//$t = $newsGoogleLinks[0];
@@ -149,6 +153,7 @@ function bulkTest_compileText() {
 	
 	//$i = 0;
 	foreach($test2 as $t) {
+	//$t = $test3;
 		//echo('"'.$t.'",<br>');
 		$tt = compileText($t);
 		echo('<textarea>'.$t.'</textarea>');

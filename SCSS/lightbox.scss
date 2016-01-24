@@ -1,10 +1,76 @@
-.zoomedImage {
-	position: fixed;
-	z-index: 8000;
-	cursor: url(Assets/magnify.cur), default;
-	padding: 5px;
-	background: white;
-	box-shadow: 0px 0px 20px black;
+#lightbox {
+		position: fixed;
+		z-index: 8000;
+		padding: 5px;
+		background: white;
+		box-shadow: 0px 0px 20px black;
+		
+		.zoomedImage {
+			//cursor: url(Assets/magnify.cur), default;
+			cursor: default;
+			width: 100%;
+		}
+
+		.close {
+			position: absolute;
+			top: -15px;
+			right: -15px;
+			width: 40px;
+			height: 40px;
+			border-radius: 100%;
+			background-color: grey;
+			font-size: 25px;
+			color: white;
+			z-index: 100;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			display: -webkit-flex;
+			-webkit-align-items: center;
+			-webkit-justify-content: center;
+			cursor: pointer;
+		}
+
+
+		.prev, .next {
+			position: absolute;
+			top: 0px;
+			height: 100%;
+			z-index: 15;
+			display: flex;
+			align-items: center;
+			display: -webkit-flex;
+			-webkit-align-items: center;
+			font-size: 30px;
+			color: white;
+			opacity: 0;
+			transition: opacity 0.2s;
+			cursor: pointer;
+			justify-content: center;
+			-webkit-justify-content: center;
+			background-color: rgba(0,0,0,0.7);
+			min-width: 80px;
+			max-width: 160px;
+			width: 15%;
+		}
+		
+		.prev:hover, .next:hover {
+			opacity: 1;
+		}
+
+		.prev {
+			left: 0px;
+			//justify-content: flex-start;
+			//-webkit-justify-content: flex-start;
+			//padding-left: 5%;
+		}
+
+		.next {
+			right: 0px;
+			//justify-content: flex-end;
+			//-webkit-justify-content: flex-end;
+			//padding-right: 5%;
+		}
 }
 
 .lightbox-mask {
@@ -14,6 +80,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
+	background-color: rgba(0,0,0,0.2);
 }
 
 .zoomPossible {

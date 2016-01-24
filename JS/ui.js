@@ -341,13 +341,17 @@ function lazyload(e) {
 			yy += node.offsetTop; 
 		}
 		if(yy < y) {
-			console.log("load :"+this.dataset.src);
-			this.src = this.dataset.src;	
-			this.onload = function() {
-				this.style.opacity = 1;
-				this.removeAttribute('width');
-				this.removeAttribute('height');
-			}
+			unveil(this);
 		}
 	});
+}
+
+function unveil(e) {
+	console.log("load :"+e.dataset.src);
+	e.src = e.dataset.src;	
+	e.onload = function() {
+		e.style.opacity = 1;
+		e.removeAttribute('width');
+		e.removeAttribute('height');
+	}
 }

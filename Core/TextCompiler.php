@@ -19,7 +19,9 @@ function compileText($text) {
 	$str = preg_replace_callback('/https?:\/\/[^\s]+/i','callback_link',$str);
 
 	$str = decapsuleLinks($str);
+	//echo('<br><br>');
 	//var_dump($str);
+	//echo('<br><br>');
 
 	$str = preg_replace_callback('/\s+(https?:\/\/soundcloud.com\/)([^\s]+)\s+/i','callback_soundcloud',$str);
 	$str = preg_replace_callback('/\s+(https?:\/\/vine.co\/v\/)([\w\-]+)\s+/i','callback_vine',$str);
@@ -32,7 +34,7 @@ function compileText($text) {
 	$str = preg_replace_callback('/\s+https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.gif(?!v))(\?[\w\/=?~.%&+\-#\!\']+)?\s+/i','callback_gif',$str);
 	
 	// files
-	$str = preg_replace_callback('/\s+\{\:[a-zA-Z0-9]+\:\}\s+/i','callback_file',$str);
+	$str = preg_replace_callback('/\{\:[a-zA-Z0-9]+\:\}/i','callback_file',$str);
 	
 
 	$str = '<div>'.$str.'</div>';
