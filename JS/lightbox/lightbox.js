@@ -24,11 +24,21 @@ function enlighten(id) {
 		var prev_id = "#"+prev_img.parentNode.id+" img";
 		unveil($(prev_id)[0]);
 		var prev = $('<div onclick="lightbox.enlighten(\''+prev_id+'\')" class="prev"><i class="fa fa-arrow-left"></i></div>');
+		$(window).on('keydown', function(e) {
+			if(e.which == 37) {
+				prev.click();
+			}
+		});
 	}
 	if(typeof(next_img) != "undefined") {
 		var next_id = "#"+next_img.parentNode.id+" img";
 		unveil($(next_id)[0]);
 		var next = $('<div onclick="lightbox.enlighten(\''+next_id+'\')" class="next"><i class="fa fa-arrow-right"></i></div>');
+		$(window).on('keydown', function(e) {
+			if(e.which == 39) {
+				next.click();
+			}
+		});
 	}
 	var close = $('<div class="close material-shadow" onclick="lightbox.darken()"><i class="fa fa-close"></i></div>');
 	var img = $('<img class="zoomedImage" src="'+e.src+'"/>');
@@ -41,9 +51,15 @@ function enlighten(id) {
 	//$(img).on("click",function(){darken()});
 	lb.append(next).append(prev).append(img).append(close);
 	$('body').append(lb);
+	$(window).on('keydown',function(e) {
+		if(e.which == 27) {
+			lightbox.darken();
+		}
+	});
 }
 
 function darken() {
 	$('#lightbox').remove();
 	$('.lightbox-mask').remove();
+	$(window).off('keydown');
 }

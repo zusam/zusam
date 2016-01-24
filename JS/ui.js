@@ -347,11 +347,13 @@ function lazyload(e) {
 }
 
 function unveil(e) {
-	console.log("load :"+e.dataset.src);
-	e.src = e.dataset.src;	
-	e.onload = function() {
-		e.style.opacity = 1;
-		e.removeAttribute('width');
-		e.removeAttribute('height');
+	if(e.src == "") {
+		console.log("load :"+e.dataset.src);
+		e.src = e.dataset.src;	
+		e.onload = function() {
+			e.style.opacity = 1;
+			e.removeAttribute('width');
+			e.removeAttribute('height');
+		}
 	}
 }
