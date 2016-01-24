@@ -83,13 +83,13 @@ function toggleslidefromright(id) {
 function showslidefromright(id) {
 	hideAll();
 	g = $(id);
-	g.css({"transform":"translateX(0)"});
+	g.css({"transform":"translateX(50%)","right":"50%"});
 	g.addClass('active');
 }
 
 function hideslidefromright(id) {
 	g = $(id);
-	g.css({"transform":"translateX(100%)"});
+	g.css({"transform":"translateX(100%)","right":"0px"});
 	g.removeClass('active');
 }
 

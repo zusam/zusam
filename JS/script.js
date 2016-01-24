@@ -560,14 +560,18 @@ function loadVideo(t) {
 	t = $(t).closest('.launcher');
 	var src = t.attr('data-src');
 	var vid = $('<video class="inlineImage" onclick="playpause(this)" loop autoplay src="'+src+'"></video>');
-	vid.on('load', function() {
+	// TODO use canplaythrough ?
+	vid.on('canplay', function() {
+		console.log('loaded');
 		t.after(vid);
 		t.remove();
 	});
 	t.on('click', function() {
+		console.log('spam');
 		return false;
 	});
 	t.addClass('launcher-loading');
+	console.log(vid);
 }
 
 function loadIframe(t) {

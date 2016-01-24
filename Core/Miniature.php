@@ -36,10 +36,12 @@ function search_miniature($text) {
 }
 
 function gen_miniature($url) {
+	//var_dump($url);
 	if(empty($url)) {
 		return "";
 	}
 	$link = p2l(filtre($url));
+	//var_dump($link);
 	return $link;
 }
 
