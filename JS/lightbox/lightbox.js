@@ -11,9 +11,9 @@ function enlighten(id) {
 	var nw = e.naturalWidth;
 	var nh = e.naturalHeight;
 
-	var width = Math.min(nw,window.innerWidth*0.9);
+	var width = Math.min(nw,(window.innerWidth-10)*0.95);
 	nh = width/nw * nh;
-	var height = Math.min(nh,window.innerHeight*0.9);
+	var height = Math.min(nh,(window.innerHeight-10)*0.95);
 	width = height/nh * width;
 
 	mask = $('<div class="lightbox-mask" onclick="lightbox.darken()"></div>');

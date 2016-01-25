@@ -123,10 +123,12 @@ if($_SESSION['connected']) {
 	
 	
 			if($p['forum'] == mongo_id($_SESSION['forum']) && isset($u['forums'][$_SESSION['forum']])) { 
+				$r = new StdClass();
+				//$r->before = $u['unread'];
 				account_readPost($u, $id);
 				account_save($u);
+				//$r->after = $u['unread'];
 				$html_data = print_full_post($id, $u['_id']);
-				$r = new StdClass();
 				$r->html = $html_data;
 				header('Content-Type: text/json; charset=UTF-8');
 				echo(json_encode($r));

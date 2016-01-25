@@ -138,6 +138,14 @@ function deleteValue($e, $a) {
 	return $a;
 }
 
+function deleteAllValues($e, $a) {
+	$k = array_keys($a, $e, true);
+	foreach($k as $kk) {
+		unset($a[$kk]);
+	}
+	return $a;
+}
+
 // TODO need to be replace with unset ?
 // unset alone is far more better
 // this function is used in Core/Forum.php

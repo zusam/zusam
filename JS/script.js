@@ -12,8 +12,6 @@ function recordUsage(usage) {
 	});
 }
 
-
-
 function toggleButterfly(t) {
 	var pid = $(t).closest('.post').attr('data-id');
 	var uid = $('#info').attr('data-uid');
