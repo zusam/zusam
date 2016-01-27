@@ -546,6 +546,7 @@ function loadImage(t) {
 	var img = $('<img class="inlineImage" onerror="error_im(this)" src="'+src+'"/>');
 	img.on('load', function() {
 		t.after(img);
+		img.off()
 		t.remove();
 	});
 	t.on('click', function() {
@@ -560,8 +561,8 @@ function loadVideo(t) {
 	var vid = $('<video class="inlineImage" onclick="playpause(this)" loop autoplay src="'+src+'"></video>');
 	// TODO use canplaythrough ?
 	vid.on('canplay', function() {
-		console.log('loaded');
 		t.after(vid);
+		vid.off();
 		t.remove();
 	});
 	t.on('click', function() {

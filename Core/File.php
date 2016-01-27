@@ -112,7 +112,7 @@ function file_print(&$file) {
 		//file_save($file);
 	}
 	if($file['type'] == "webm") {
-		$xx = p2l(pathTo2(array('url' => $file['fileId'], 'ext' => 'jpg', 'param' => 'mini')));
+		$xx = p2l(pmini($file['fileId']));
 		$w = p2l(file_getPath($file));
 		$html .= '<div onclick="loadVideo(this)" data-src="'.$w.'" class="launcher">';
 		$html .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';

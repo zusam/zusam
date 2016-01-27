@@ -274,6 +274,7 @@ function callback_gif($match) {
 
 function callback_file($match) {
 	$str = prepareInput($match);
+	gen_miniature($str);
 	$fileId = preg_replace('/\{\:([a-zA-Z0-9]+)\:\}/','$1',$str);
 	$file = file_load(array('fileId' => $fileId));	
 	$uid = $_SESSION['uid'];
