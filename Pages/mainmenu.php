@@ -1,9 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
-require_once('Core/Accounts.php');
-require_once('Core/Forum.php');	
-require_once('Core/Notification.php');	
+require_once('Include.php');
 
 function page_mainmenu(&$u, $page) {
 
@@ -34,7 +32,7 @@ function page_mainmenu(&$u, $page) {
 				}
 				$html .= '</a>';
 				$html .= '
-					<a class="forum-settings" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum_settings">
+					<a class="forum-settings" href="'.$GLOBALS['__ROOT_URL__'].'?fid='.$f['_id'].'&page=forum_settings">
 						<i class="fa fa-gear fa-spin-hover">
 						</i>
 					</a>
@@ -44,14 +42,17 @@ function page_mainmenu(&$u, $page) {
 		}
 	}
 	$html .= '<div class="forum-menu" onclick="ask(\'Nom du forum :\',25,addForum)"><span class="fontgrey menu-highlight forum-link">+ Nouveau groupe</span></div>';
-	$html .= '<div class="separator"></div>';
 	$notifications = array_reverse(load_notifications($u));
 	if(count($notifications) > 0) {
+		$html .= '<div class="separator"></div>';
 		$html .= '<div class="section-title">Notifications</div>';
 		foreach($notifications as $n) {
 			$html .= notification_print($n);
 		}
 	}
+	$html .= '<div class="separator"></div>';
+	$html .= '<div class="separator"></div>';
+	$html .= '<div class="forum-menu"><a class="action menu-highlight forum-link" onclick="disconnect(); return false;">Se déconnecter</a></div>';
 	$html .= '</div>';
 
 	return $html;

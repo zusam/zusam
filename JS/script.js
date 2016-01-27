@@ -442,7 +442,11 @@ function addForum(name) {
 		success: function(data) {
 				console.log(data);
 				console.log("success!");
-				window.location.reload(true); 
+				if(typeof(data) != "undefined") {
+					window.location.href = data['link']; 
+				} else {
+					window.location.reload(true); 
+				}
 			},
 		error: function(){console.log('fail!');}
 	});

@@ -2,38 +2,13 @@
 session_start();
 
 chdir(realpath(dirname(__FILE__)."/../"));
-require_once('Core/Post.php');
-require_once('Core/Location.php');
-require_once('Core/Connect.php');
-require_once('Core/Landing.php');	
-require_once('Core/Accounts.php');
-require_once('Core/Forum.php');	
-require_once('Core/Notification.php');	
-require_once('Core/File.php');	
-require_once('Core/Utils.php');	
-require_once('Core/Print_post.php');	
-require_once('Core/Preview.php');	
-require_once('Core/PasswordReset.php');	
-require_once('Core/Mail.php');	
-require_once('Core/Album.php');	
-require_once('Core/Record.php');	
-require_once('Core/TextCompiler.php');	
-
-require_once('Pages/forum.php');
-require_once('Pages/mainmenu.php');
-require_once('Pages/profile.php');
-require_once('Pages/home.php');
-
-require_once('Reduc/ReducImage.php');
-require_once('Reduc/ReducVideo.php');
-
+require_once('Include.php');
 
 // secure post variables for mongodb
 $POST = [];
 foreach($_POST as $K=>$V) {
 	$POST[$K] = (String) $V;
 }
-
 
 // CONNECTED OR NOT
 if($POST['action'] != null && $POST['action'] != "") {
@@ -43,12 +18,10 @@ if($POST['action'] != null && $POST['action'] != "") {
 		exit;
 	}
 	if($POST['action'] == "recordUsage") {
-		//recordStat(array("connected"=>$_SESSION['connected'], "loadingTime"=>$POST['loadingTime'], "screenHeight"=>$POST['screenHeight'],"screenWidth"=>$POST['screenWidth']));
 		recordUsage(array("usage"=>$POST['usage']));
 		exit;
 	}
 }
-
 
 // CONNECTED
 if($_SESSION['connected']) {
@@ -206,36 +179,6 @@ if($_SESSION['connected']) {
 			header('Content-Type: text/json; charset=UTF-8');
 			echo(json_encode($ret, JSON_UNESCAPED_UNICODE));
 			exit;
-
-			
-			// First we check if the preview doesn't exist (to be as fast as possible)	
-			//$p = preview_load(array('url' => $url));
-			//if($p != null) {
-			//	$ret = json_encode($p,JSON_UNESCAPED_UNICODE);
-			//	header('Content-Type: text/json; charset=UTF-8');
-			//	echo($ret);
-			//	exit;
-			//}
-			//
-			//// EXTENSION LESS IMAGES
-			//$type = contentType($url);
-			//if($type == 'image/jpeg' || $type == 'image/png' || $type == 'image/bmp' || $type == 'image/gif') {
-			//	$data = [];
-			//	$data['ret'] = create_post_preview($url);
-			//	$data['url'] = $url;
-			//	$data['type'] = "image";
-			//	$data['info'] = "extensionless";
-			//	header('Content-Type: text/json; charset=UTF-8');
-			//	echo(json_encode($data));
-			//	exit;
-			//}
-
-			//// GENERAL LINKS & OPEN GRAPH //
-			//$ret = preview($url);
-			//gen_miniature($url);
-			//header('Content-Type: text/json; charset=UTF-8');
-			//echo($ret);
-			//exit;
 		}
 
 
@@ -341,6 +284,10 @@ if($_SESSION['connected']) {
 			if($u != null && $u != false) {
 				$f = forum_initialize($name);
 				forum_addUser_andSave($f, $u);
+				$r = new StdClass();
+				$r->link = $GLOBALS['__ROOT_URL__'].'?fid='.$f['_id'].'&page=forum_settings';
+				header('Content-Type: text/json; charset=UTF-8');
+				echo(json_encode($r));
 			}
 
 			exit;
@@ -361,7 +308,6 @@ if($_SESSION['connected']) {
 						forum_addUser_andSave($forum, $user);
 					}
 					notification_destroy($nid);
-					//notification_erase_andSave($notif, $user);
 				}
 			} else {
 				echo('no credentials');
@@ -381,7 +327,6 @@ if($_SESSION['connected']) {
 			} else {
 				echo('no credentials');
 			}
-
 			exit;
 		}
 
@@ -403,11 +348,6 @@ if($_SESSION['connected']) {
 							forum_save($f);
 						}
 					}
-				}
-
-				// avatar change
-				if($f != null && $f != false && $_FILES["avatar"]["size"] < 1024*1024*2 && $_FILES["avatar"]["type"] == "image/png") {
-					$r = saveImage($_FILES["avatar"]["tmp_name"], pathTo($fid, "avatar", "jpg"), 256, 256);
 				}
 			} else {
 				echo('no credentials');
@@ -441,7 +381,6 @@ if($_SESSION['connected']) {
 			} else {
 				echo('no credentials');
 			}
-
 			exit;
 		}
 
@@ -529,7 +468,6 @@ if($_SESSION['connected']) {
 			}
 			exit;
 		}
-
 	}
 
 // NOT CONNECTED
@@ -544,7 +482,7 @@ if($_SESSION['connected']) {
 			if($u != false && $u != null) {
 				$uid = (String) $u['_id'];
 				$pr = pr_initialize($uid);
-				mail_resetPassword($u['mail'], "http://zus.am?action=reset&id=".$pr['_id']."&key=".$pr['key'], $u['name']);
+				mail_resetPassword($u['mail'], $GLOBALS['__ROOT_URL__']."?action=reset&id=".$pr['_id']."&key=".$pr['key'], $u['name']);
 				// reset the key for security reasons
 				$pr['key'] == "";
 				pr_save($pr);

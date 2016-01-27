@@ -1,9 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
-require_once('Core/Accounts.php');
-require_once('Core/Forum.php');	
-require_once('Core/Notification.php');	
+require_once('Include.php');
 
 function page_section_profile(&$u) {
 
