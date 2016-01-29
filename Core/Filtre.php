@@ -113,15 +113,8 @@ function filtre($url) {
 		return $ret;
 	}
 
-	// WEB IMAGE //
-	if(preg_match("/(https?:\/\/.+)(\.bmp|\.jpeg|\.jpg|\.png)(.*)/i",$url)==1) {
-		$ret = create_post_preview($url);
-		return $ret;
-	}
-
-	// handled as an image for now
-	// WEB GIF //
-	if(preg_match("/(https?:\/\/.+)(\.gif)(.*)/i",$url)==1) {
+	// WEB IMAGE & GIF //
+	if(preg_match("/(https?:\/\/.+)(\.bmp|\.jpeg|\.jpg|\.png|\.gif)(.*)/i",$url)==1) {
 		$ret = create_post_preview($url);
 		return $ret;
 	}
@@ -133,18 +126,8 @@ function filtre($url) {
 	}
 
 	// IF ALL ELSE FAILS //
-	// GENERAL LINKS & OPEN GRAPH //
+	// OPEN GRAPH //
 	if(preg_match("/https?:\/\/[\w\/=?~.%&+\-#]+/",$url)==1) {
-		// verify that it's not an image (even if it doesn't have a image extension)
-		// very slowing down the process, is it still necessary ?
-		//$r = getimagesize($url);
-		//if($r != false) {
-		//	if($r['mime'] == 'image/jpeg' || $r['mime'] == 'image/png' || $r['mime'] == 'image/bmp') {
-		//		$ret = create_post_preview($url);
-		//		return $ret;
-		//	}
-		//} 
-		// open graph
 		$prev = json_decode(preview($url), true);
 		$link = $prev['image']['url'];
 		$ret = get_mini_from_link($url, $link);

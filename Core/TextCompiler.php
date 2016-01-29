@@ -310,19 +310,6 @@ function handleLink($url) {
 		return $ret;
 	}
 	
-	// EXTENSION LESS IMAGES
-	//$type = contentType($url);
-	//if($type == 'image/jpeg' || $type == 'image/png' || $type == 'image/bmp' || $type == 'image/gif') {
-	//	$data = [];
-	//	$data['ret'] = create_post_preview($url);
-	//	$data['url'] = $url;
-	//	$data['type'] = "image";
-	//	$data['info'] = "extensionless";
-
-	//	return $data;
-	//}
-
-	// GENERAL LINKS & OPEN GRAPH //
 	$ret = preview($url);
 
 	return $ret;

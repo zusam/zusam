@@ -181,7 +181,6 @@ if($_SESSION['connected']) {
 			exit;
 		}
 
-
 		if($POST['action'] == "changeSecretLink") {
 			$uid = $POST['uid'];
 			$fid = $POST['fid'];

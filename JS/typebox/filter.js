@@ -249,29 +249,9 @@ var Filter = {
 		var ajax_var = {"action":"gen_preview"};
 		callback = function(data) {
 			console.log(data);
-			if(typeof(data['info']) != "undefined" && data['info'] == "extensionless") {
-				switch(data['type']) {
-					case "image" :
-						e = '<img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+data['url']+'"/>';
-						balise = $('#'+baliseId);
-						balise.html(e);
-						break;
-					case "video" :
-						e = '<video autoplay loop><source src="'+str+'"></video>';
-						balise = $('#'+baliseId);
-						balise.html(e);
-						break;
-					default :
-						e = Filter.fail_request(url);
-						balise = $('#'+baliseId);
-						balise.html(e);
-						break;
-				}
-			} else {
-				e = Filter.open_graph_build(data);
-				balise = $('*[data-src="'+data['url']+'"]');
-				balise.html(e);
-			}
+			e = Filter.open_graph_build(data);
+			balise = $('*[data-src="'+data['url']+'"]');
+			balise.html(e);
 		};
 		fail = function(url) {
 			console.log("fail");
