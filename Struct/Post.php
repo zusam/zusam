@@ -1,11 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
-require_once('Core/MongoDriver.php');
-require_once('Core/Location.php');
-require_once('Core/Utils.php');
-require_once('Core/File.php');
-require_once('Core/Album.php');
+require_once('Include.php');
 
 function post_initialize($array) {
 	$post = [];

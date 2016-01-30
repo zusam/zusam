@@ -1,5 +1,8 @@
 <?php
 
+// OLD FILE FROM THE FORUM.
+// TO ADAPT FOR ZUSAM
+
 	function facebook($url) {
 
 		// facebook image

@@ -1,8 +1,6 @@
 <?php
 //TODO ajouter des try/catch
 
-chdir(realpath(dirname(__FILE__))."/../");
-
 function object_to_array($obj) {
 	if(is_object($obj) && get_class($obj)=="stdClass") {
 		$obj = (array) $obj;
@@ -27,9 +25,13 @@ function mongo_isId($id) {
 
 function mongo_id($id) {
 	$id = (String) $id;
+	if(!mongo_isId($id)) {
+		return false;
+	}
 	if($id == "") {
 		return new MongoDB\BSON\ObjectID();
 	}
+	$p = new MongoDB\BSON\ObjectID($id);
 	return new MongoDB\BSON\ObjectID($id);
 }
 

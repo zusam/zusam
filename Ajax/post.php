@@ -321,7 +321,7 @@ if($_SESSION['connected']) {
 
 			if($_SESSION['uid'] == $uid) {
 				if($_FILES["image"]["size"] < 1024*1024*2 && $_FILES["image"]["type"] == "image/png") {
-					$r = saveImage($_FILES["image"]["tmp_name"], pathTo($uid, "avatar", "jpg"), 256, 256);
+					$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array("url"=>$uid, "param"=>"avatar", "ext"=>"jpg")), 256, 256);
 				}
 			} else {
 				echo('no credentials');

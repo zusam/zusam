@@ -1,41 +1,5 @@
 <?php
 
-/*
-function soundcloud($url) { 
-	
-	if(!file_exists(pathTo($url, "mini", "jpg"))) {
-
-		//$track_url = preg_replace("/(https?:\/\/soundcloud.com\/)([a-zA-Z0-9\-_]+)\/([a-zA-Z0-9\-_]+)(.*)/","$1$2/$3",$url);
-		$track_url = $url;
-		//var_dump($track_url);
-		$client = new Services_Soundcloud('01af1b3315ad8177aefecab596621e09', 'f41efa7352f151e040d01a55c8c29b75');
-		$client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
-
-		// get a tracks oembed data
-		$embed_info = json_decode($client->get('resolve', array('url' => $track_url)));
-		//var_dump($embed_info);
-		$src = preg_replace("/large/","t500x500",$embed_info->artwork_url);
-		if($src == "") {
-			$user = $embed_info->user;
-			$src = preg_replace("/large/","t500x500",$user->avatar_url);
-		}
-		//var_dump($src);
-
-		$tmp = file_get_contents($src);
-		file_put_contents(pathTo($url,"tmp"), $tmp);
-		if(file_exists(pathTo($url, "tmp"))) {
-			$file = pathTo($url, "tmp");
-			$ret = create_post_preview($url, $file);
-			unlink(pathTo($url, "tmp"));
-			return $ret;
-		} else {
-			return false;
-		}
-	}
-	return true;
-}
-*/
-
 // SOUNDCLOUD LIBRARY (from github) TODO: read, understand, clean up.
 
 /**

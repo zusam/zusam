@@ -1,22 +1,16 @@
 <?php
 		
 chdir(realpath(dirname(__FILE__)."/../"));
-require_once('Filtre/web_image.php');
-require_once('Filtre/web_video.php');
-require_once('Filtre/preview.php');
-require_once('Filtre/soundcloud.php');
-require_once('Core/Location.php');
-require_once('Core/File.php');
-require_once('Core/Utils.php');
-require_once('Core/Album.php');
+require_once('Include.php');
 
 function get_mini_from_link($url, $link) {
 	if(!file_exists(pmini($url))) {
 		$tmp = fgc($link);
-		file_put_contents(pathTo($url,"tmp"), $tmp);
-		if(file_exists(pathTo($url, "tmp"))) {
-			$file = pathTo($url, "tmp");
+		file_put_contents(pathTo2(array("url"=>$url,"param"=>"tmp")), $tmp);
+		if(file_exists(pathTo2(array("url"=>$url, "param"=>"tmp")))) {
+			$file = pathTo2(array("url"=>$url, "param"=>"tmp"));
 			$ret = create_post_preview($url, $file);
+			unlink($file);
 			return $ret;
 		} else {
 			return false;
@@ -49,7 +43,9 @@ function filtre($url) {
 
 	// YOUTUBE //
 	if(preg_match("/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([a-zA-Z0-9\-\_]+)(.*)/",$url)==1) {
+		var_dump($url);
 		$link = preg_replace("/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/","http://img.youtube.com/vi/$4/0.jpg",$url);
+		var_dump($link);
 		$ret = get_mini_from_link($url, $link);
 		return $ret;
 	}

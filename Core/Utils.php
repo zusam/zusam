@@ -1,7 +1,5 @@
 <?php
 
-chdir(realpath(dirname(__FILE__).'/../'));
-
 // TODO review and use !
 function isEmpty($var) {
 	if(!isset($var) || $var == null || $var == "" || $var == false) {

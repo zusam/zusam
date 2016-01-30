@@ -1,9 +1,6 @@
 <?php
 session_start();
 
-// not necessary
-//chdir(realpath(dirname(__FILE__)));
-
 require_once('Include.php');
 
 // secure variables
@@ -23,7 +20,7 @@ echo('<html>');
 $head = html_head($GLOBALS['__ROOT_URL__']);
 echo($head);
 
-//apply secret link
+//execute secret link
 if($GET['il'] != null) {
 	if($_SESSION['connected']) {
 		$f = forum_load(array('link'=>$GET['il']));
@@ -78,13 +75,11 @@ if($_SESSION['connected'] != true) {
 
 // TODO Is $_SESSION['page'] still needed ?
 $u = account_load(array("mail" => $_SESSION['mail']));
-$_SESSION['page'] = $GET['page'];
 if($GET['fid'] != "") {
 	if(in_array($GET['fid'], $u['forums'])) {
 		$_SESSION['forum'] = $GET['fid'];
 	} else {
 		$_SESSION['forum'] = "";
-		$_SESSION['page'] = "";
 	}
 }
 
@@ -100,8 +95,6 @@ if($_SESSION['forum'] != "" && $_SESSION['forum'] != null && $u['forums'][$_SESS
 
 // Force selection of a forum
 if($_SESSION['forum'] == "" && $GET['page'] != "profile") {
-	//reset($u['forums']);
-	//$fid = key($u['forums']);
 	$fid = array_keys($u['forums'])[0];
 	if($fid != null) {
 		$_SESSION['forum'] = $fid;
@@ -115,22 +108,9 @@ if($_SESSION['forum'] == "" && $GET['page'] != "profile") {
 
 // update timestamp of visited forum
 if($_SESSION['forum'] != "") {
-	//var_dump($u);
-	//var_dump($_SESSION);
-	//var_dump($u['forums'][$_SESSION['forum']]['timestamp']);
-	//var_dump($_SESSION['forum']);
-	//var_dump(time());
 	$coucou = (String) $_SESSION['forum'];
 	$u['forums'][$coucou]['timestamp'] = time();
-
-
-	//var_dump($u);
-	//exit;
-	//echo('<br><br>');
-
 	account_save($u);
-	//echo('plop');
-	//exit;
 }
 
 // BODY
@@ -187,27 +167,25 @@ echo('<div id="main_page">');
 
 // NAVBAR
 echo('<nav>');
-if($GET['page'] == "forum" || $GET['page'] == "forum_settings") {
-	echo(page_nav_forum($u, $forum));
-} else {
-	echo(page_nav_forum($u, $forum));
-}
+echo(page_nav($u, $forum));
 echo('</nav>');
 
 // MAIN SECTION
 echo('<section>');
-if($GET['page'] == "profile") {
-	echo(page_section_profile($u));
-} 
-if($GET['page'] == "forum") {
-	echo(page_section_forum($u, $forum));
-}
-if($GET['page'] == "forum_settings") {
-	echo(page_section_forum_settings($u, $forum));
-}
-if($GET['page'] == "") {
-	//echo(page_section_home($u));
-	echo(page_section_forum($u, $forum));
+switch($GET['page']) {
+	case "profile": 
+		echo(page_section_profile($u));
+		break;
+	// this case should not exist anymore
+	//case "forum":
+	//	echo(page_section_forum($u, $forum));
+	//	break;
+	case "forum_settings":
+		echo(page_section_forum_settings($u, $forum));
+		break;
+	default:
+		echo(page_section_forum($u, $forum));
+		break;
 }
 echo('</section>');
 

@@ -2,8 +2,7 @@
 session_start();
 
 chdir(realpath(dirname(__FILE__))."/../");
-require_once('Core/Accounts.php');
-require_once('Core/Location.php');
+require_once('Include.php');
 
 function mailAlreadyExists($mail) {
 	$ac = account_load(array('mail' => $mail));

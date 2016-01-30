@@ -26,7 +26,7 @@ function page_mainmenu(&$u, $page) {
 				}
 				$html .= '">';
 				$html .= ' <a class="menu-highlight forum-link ';
-				$html .= '" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'&page=forum">'.$f['name'];
+				$html .= '" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'">'.$f['name'];
 				if($f['timestamp'] != null && $v['timestamp'] < $f['timestamp']) {
 					$html .= ' <i class="fa fa-circle notif"></i>';
 				}

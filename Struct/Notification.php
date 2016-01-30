@@ -1,8 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
-require_once('Core/MongoDriver.php');
-require_once('Core/Accounts.php');
+require_once('Include.php');
 
 function notification_initialize($a) {
 	$n = [];

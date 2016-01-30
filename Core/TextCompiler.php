@@ -1,27 +1,21 @@
 <?php
 
-//chdir(realpath(dirname(__FILE__))."/../");
-require_once('Core/Location.php');
-require_once('Core/Utils.php');
-require_once('Core/File.php');
-require_once('Core/Filtre.php');
-require_once('Core/Preview.php');
-require_once('Core/Miniature.php');
+chdir(realpath(dirname(__FILE__))."/../");
+require_once('Include.php');
 
 function compileText($text) {
 
 	$str = strip_tags($text);
+	
+	// new lines tags
+	$str = preg_replace("/\n/","<br>",$str);
 
 	$str = encapsuleKnownLinks($str);
-	//var_dump($str);
 	
 	// general link
 	$str = preg_replace_callback('/https?:\/\/[^\s]+/i','callback_link',$str);
 
 	$str = decapsuleLinks($str);
-	//echo('<br><br>');
-	//var_dump($str);
-	//echo('<br><br>');
 
 	$str = preg_replace_callback('/\s+(https?:\/\/soundcloud.com\/)([^\s]+)\s+/i','callback_soundcloud',$str);
 	$str = preg_replace_callback('/\s+(https?:\/\/vine.co\/v\/)([\w\-]+)\s+/i','callback_vine',$str);
@@ -35,20 +29,17 @@ function compileText($text) {
 	
 	// files
 	$str = preg_replace_callback('/\{\:[a-zA-Z0-9]+\:\}/i','callback_file',$str);
-	
 
 	$str = '<div>'.$str.'</div>';
 	$str = preg_replace('/\<div\>\s*\<\/div\>/','',$str);
 	
 	$str = trim($str);
 
+
 	return $str;
 }
 
 function encapsuleKnownLinks($str) {
-	
-	// prevent edge issues
-	//$str = " ".$str." ";
 	
 	$str = preg_replace('/(https?:\/\/soundcloud.com\/[^\s]+)/i','[[$1]]',$str);
 	$str = preg_replace('/(https?:\/\/vine.co\/v\/[\w\-]+)/i','[[$1]]',$str);

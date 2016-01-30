@@ -1,11 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
-require_once('Core/MongoDriver.php');
-require_once('Core/Location.php');
-require_once('Core/File.php');
-require_once('Core/Post.php');
-require_once('Core/Notification.php');
+require_once('Include.php');
 
 //TODO necessary ? -- yes
 function account_getDummy($default) {
@@ -29,15 +25,12 @@ function account_addUnread(&$ac, $pid) {
 	if(!isset($ac['unread'])) {
 		$ac['unread'] = [];
 	}
-	//$pid = (String) $pid;
-	//if(!in_array($pid, $ac['unread'])) {
-		array_push($ac['unread'], $pid);		
+	array_push($ac['unread'], $pid);		
 	
 	//TODO XXX TRICK
 	$unread = $ac['unread'];
 	unset($ac['unread']);
 	$ac['unread'] = $unread;
-	//}
 }
 
 function account_readPost(&$ac, $pid) {

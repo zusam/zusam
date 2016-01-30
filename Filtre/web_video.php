@@ -1,8 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__)."/../"));
-require_once('Core/Location.php');
-require_once('Reduc/ReducVideo.php');
+require_once('Include.php');
 
 // This function is used to create miniatures from web videos
 // It's optimized to download as little as possible from the actual video
@@ -14,32 +13,32 @@ function web_video($url, $file) {
 		$source = $file;
 	}
 
-	if(file_exists(pathTo($url, "mini", "jpg"))) {
-		return p2l(pathTo($url, "mini", "jpg"));
+	if(file_exists(pmini($url))) {
+		return p2l(pmini($url));
 	} else {
 
-		videoThumbnail($source, pathTo($url, "mini", "jpg"));
-		if(file_exists(pathTo($url, "mini", "jpg"))) {
-			return p2l(pathTo($url, "mini", "jpg"));
+		videoThumbnail($source, pmini($url));
+		if(file_exists(pmini($url))) {
+			return p2l(pmini($url));
 		} else {
 			// if it failed, try to download the file separately
 			$tmp = fgc($source, 65536);
-			file_put_contents(pathTo($url,"tmp"), $tmp);
-			if(file_exists(pathTo($url, "tmp"))) {
+			file_put_contents(pathTo2(array("url"=>$url,"param"=>"tmp")), $tmp);
+			if(file_exists(pathTo2(array("url"=>$url, "param"=>"tmp")))) {
 
 				// GENERATION
-				$source = pathTo($url, "tmp");
+				$source = pathTo2(array("url"=>$url, "param"=>"tmp"));
 
-				if(file_exists(pathTo($url, "mini", "jpg"))) {
-					$path = pathTo($url, "mini", "jpg");
+				if(file_exists(pmini($url))) {
+					$path = pmini($url);
 				} else {
-					videoThumbnail($source, pathTo($url, "mini", "jpg"));
+					videoThumbnail($source, pmini($url));
 				}
-				unlink(pathTo($url, "tmp"));
+				unlink(pathTo2(array("url"=>$url, "param"=>"tmp")));
 
 				// RETURN
-				if(file_exists(pathTo($url, "mini", "jpg"))) {
-					return p2l(pathTo($url, "mini", "jpg"));
+				if(file_exists(pmini($url))) {
+					return p2l(pmini($url));
 				}
 			}
 		}

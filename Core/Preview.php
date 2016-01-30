@@ -1,9 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__).'/../'));
-require_once('Core/MongoDriver.php');
-require_once('LibPHP/Ganon/ganon.php');
-require_once('Core/Utils.php');
+require_once('Include.php');
 
 function preview_initialize($url) {
 	$p = [];

@@ -2,30 +2,7 @@
 session_start();
 
 chdir(realpath(dirname(__FILE__)."/../"));
-require_once('Core/MongoDriver.php');
-require_once('Core/Post.php');
-require_once('Core/Location.php');
-require_once('Core/Connect.php');
-require_once('Core/Landing.php');	
-require_once('Core/Accounts.php');
-require_once('Core/Forum.php');	
-require_once('Core/Notification.php');	
-require_once('Core/File.php');	
-require_once('Core/Print_post.php');	
-require_once('Core/Utils.php');	
-require_once('Core/Filtre.php');
-require_once('Core/Preview.php');
-require_once('Core/Miniature.php');
-
-require_once('Filtre/preview.php');
-
-require_once('Pages/forum.php');
-require_once('Pages/mainmenu.php');
-require_once('Pages/profile.php');
-require_once('Pages/home.php');
-
-require_once('Reduc/ReducImage.php');
-require_once('Reduc/ReducVideo.php');
+require_once('Include.php');
 
 if($_SESSION['connected']) {
 
@@ -104,7 +81,7 @@ if($_SESSION['connected']) {
 			$uid = $GET['uid'];
 
 			$response = new StdClass();
-			$response->avatar = p2l(pathTo($uid,"avatar","jpg"));
+			$response->avatar = p2l(pathTo2(array("url"=>$uid,"param"=>"avatar","ext"=>"jpg")));
 
 			header('Content-Type: text/json; charset=UTF-8');
 			echo(json_encode($response));
@@ -117,10 +94,8 @@ if($_SESSION['connected']) {
 
 			$id = $GET['id'];
  
-			// TODO why using mail ?
 			$u = account_load(array('_id' => $_SESSION['uid']));
 			$p = post_load(array('_id' => $id));
-	
 	
 			if($p['forum'] == mongo_id($_SESSION['forum']) && isset($u['forums'][$_SESSION['forum']])) { 
 				$r = new StdClass();

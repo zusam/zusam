@@ -1,4 +1,5 @@
 <?php
+
 function landing($warning, $redirect_url) {
 	echo('
 		<body id="landing">

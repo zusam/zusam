@@ -22,9 +22,6 @@ function pathTo2($args) {
 	$ext = $args['ext'];
 	$dir = $args['dir'];
 
-	//$root_dir = "/zusam/";
-	//$root_dir = "/";
-
 	if(!$dir && ($param == "" || $url == "")) {
 		return false;
 	}
@@ -36,40 +33,25 @@ function pathTo2($args) {
 		}
 	}
 	$loc = "Data";
-	if(!$dir) {
-		if($param == "assets") {
-			$path = "Assets/".$url.$ext; 
-			//return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
-			return realpath(dirname(__FILE__)."/../")."/".$path;
-		}
-		if($param == "mini") {
-			$path = $loc."/miniature/".hash("md5", $url).$ext; 
-			//return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
-			return realpath(dirname(__FILE__)."/../")."/".$path;
-		}
-		if($param == "avatar") {
-			$path = $loc."/avatar/".$url.$ext; 
-			//return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
-			return realpath(dirname(__FILE__)."/../")."/".$path;
-		}
-		if($param == "file") {
-			$path = $loc."/file/".$url.$ext; 
-			//return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
-			return realpath(dirname(__FILE__)."/../")."/".$path;
-		}
-		if($param == "tmp") {
-			$path = "tmp/".hash("md5", $url); 
-			return $path;
-		}
-		//if($param == "default_avatar") {
-		//	$path = "Assets/avatar/".$url; 
-		//	return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
-		//}
-	} else {
-		//if($param == "default_avatar") {
-		//	$path = "Assets/avatar"; 
-		//	return preg_replace("/\/+/","/",$_SERVER['DOCUMENT_ROOT'].$root_dir.$path);
-		//}
+	if($param == "assets") {
+		$path = "Assets/".$url.$ext; 
+		return realpath(dirname(__FILE__)."/../")."/".$path;
+	}
+	if($param == "mini") {
+		$path = $loc."/miniature/".hash("md5", $url).$ext; 
+		return realpath(dirname(__FILE__)."/../")."/".$path;
+	}
+	if($param == "avatar") {
+		$path = $loc."/avatar/".$url.$ext; 
+		return realpath(dirname(__FILE__)."/../")."/".$path;
+	}
+	if($param == "file") {
+		$path = $loc."/file/".$url.$ext; 
+		return realpath(dirname(__FILE__)."/../")."/".$path;
+	}
+	if($param == "tmp") {
+		$path = "tmp/".hash("md5", $url); 
+		return $path;
 	}
 }
 

@@ -1,7 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
-require_once('Core/MongoDriver.php');
+require_once('Include.php');
 
 function recordStat($array) {
 	$record = [];

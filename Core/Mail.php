@@ -1,7 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__).'/../'));
-require_once('LibPHP/PHPMailer-5.2.14/PHPMailerAutoload.php');
+require_once('Include.php');
 
 function mail_resetPassword($to, $link, $name) {
 

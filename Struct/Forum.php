@@ -1,11 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
-require_once('Core/MongoDriver.php');
-require_once('Core/Accounts.php');
-require_once('Core/Location.php');
-require_once('Core/Post.php');
-require_once('Core/Notification.php');
+require_once('Include.php');
 
 function forum_initialize($name) {
 	$forum = [];
@@ -109,8 +105,8 @@ function forum_removeUser_andSave(&$forum, &$user) {
 }
 
 function forum_getAvatar(&$forum) {
-	if(file_exists(pathTo($forum['_id'], "avatar", "jpg"))) {
-		$avatar = p2l(pathTo($forum['_id'], "avatar", "jpg"));
+	if(file_exists(pathTo2(array("url"=>$forum['_id'], "param"=>"avatar", "ext"=>"jpg")))) {
+		$avatar = p2l(pathTo2(array("url"=>$forum['_id'], "param"=>"avatar", "ext"=>"jpg")));
 		return $avatar;
 	} else {
 		return "";

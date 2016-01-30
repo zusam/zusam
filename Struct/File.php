@@ -1,9 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
-require_once('Core/MongoDriver.php');
-require_once('Core/Location.php');
-require_once('Core/Utils.php');
+require_once('Include.php');
 
 function file_initialize($fileId, $type, $uid) {
 	$file = [];

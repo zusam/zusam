@@ -1,8 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__)."/../"));
-require_once('Core/Preview.php');
-require_once('Filtre/web_image.php');
+require_once('Include.php');
 
 function preview($url) {
 	$p = preview_load(array('url' => $url));

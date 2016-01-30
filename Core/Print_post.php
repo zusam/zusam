@@ -1,13 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
-require_once('Core/Post.php');
-require_once('Core/Accounts.php');
-require_once('Core/Location.php');
-require_once('Core/Utils.php');
-require_once('Core/Miniature.php');
-require_once('Core/TextCompiler.php');
-
+require_once('Include.php');
 
 function print_full_post($id, $uid) {
 	

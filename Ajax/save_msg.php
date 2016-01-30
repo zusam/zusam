@@ -1,14 +1,8 @@
 <?php
 session_start();
 
-chdir(realpath(dirname(__FILE__).'/../'));
-require_once('Core/MongoDriver.php');
-require_once('Core/Post.php');
-require_once('Core/Location.php');
-require_once('Core/Utils.php');
-require_once('Core/Print_post.php');
-require_once('Core/Forum.php');
-require_once('Core/Miniature.php');
+chdir(realpath(dirname(__FILE__)."/../"));
+require_once('Include.php');
 
 $pid = (String) $_POST['pid'];
 $text = (String) $_POST['text'];

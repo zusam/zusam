@@ -1,8 +1,7 @@
 <?php
 
 chdir(realpath(dirname(__FILE__))."/../");
-require_once('Core/Location.php');
-require_once('Core/Filtre.php');
+require_once('Include.php');
 
 function search_miniatures($text) {
 	// look for a potential previews
@@ -36,31 +35,10 @@ function search_miniature($text) {
 }
 
 function gen_miniature($url) {
-	//var_dump($url);
 	if(empty($url)) {
 		return "";
 	}
 	$link = p2l(filtre($url));
-	//var_dump($link);
 	return $link;
 }
 
-function get_miniature($url) {
-	//if it's a file
-	if(preg_match("/\{\:[a-zA-Z0-9]+\:\}/",$url)==1) {
-		$url = preg_replace("/\{\:([a-zA-Z0-9]+)\:\}/","$1",$url);
-	}
-	$link = p2l(pathTo($url, "mini", "jpg"));
-	return $link;
-}
-
-function get_miniature_path($url) {
-	//if it's a file
-	if(preg_match("/\{\:[a-zA-Z0-9]+\:\}/",$url)==1) {
-		$url = preg_replace("/\{\:([a-zA-Z0-9]+)\:\}/","$1",$url);
-	}
-	$link = pathTo($url, "mini", "jpg");
-	return $link;
-}
-
-?>
