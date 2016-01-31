@@ -25,11 +25,11 @@ function mongo_isId($id) {
 
 function mongo_id($id) {
 	$id = (String) $id;
-	if(!mongo_isId($id)) {
-		return false;
-	}
 	if($id == "") {
 		return new MongoDB\BSON\ObjectID();
+	}
+	if(!mongo_isId($id)) {
+		return false;
 	}
 	$p = new MongoDB\BSON\ObjectID($id);
 	return new MongoDB\BSON\ObjectID($id);

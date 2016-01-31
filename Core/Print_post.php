@@ -105,9 +105,7 @@ function print_post($id, $uid) {
 	} else {
 		$html_data .= 'post-parent-text ';
 	}
-	// problem when typebox.view() : the additional div must be removed. Is it still used ?
-	//$html_data .= 'dynamicBox viewerBox" data-id="'.$id.'"><div>'.compileText(trim($p['text'])).'</div></div>';
-	$html_data .= 'dynamicBox viewerBox" data-id="'.$id.'">'.compileText(trim($p['text'])).'</div>';
+	$html_data .= 'dynamicBox viewerBox" data-id="'.$p['_id'].'">'.compileText(trim($p['text'])).'</div>';
 
 	$html_data .= '</div>';
 

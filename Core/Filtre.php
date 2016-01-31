@@ -43,9 +43,7 @@ function filtre($url) {
 
 	// YOUTUBE //
 	if(preg_match("/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([a-zA-Z0-9\-\_]+)(.*)/",$url)==1) {
-		var_dump($url);
 		$link = preg_replace("/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/","http://img.youtube.com/vi/$4/0.jpg",$url);
-		var_dump($link);
 		$ret = get_mini_from_link($url, $link);
 		return $ret;
 	}

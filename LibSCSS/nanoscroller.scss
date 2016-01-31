@@ -33,7 +33,7 @@ $contentClass: "nano-content" !default;
 
     > .#{$paneClass} {
         width: 15px;
-        background: rgba(0,0,0,.25);
+        background: rgba(0,0,0,.45);
         position: absolute;
         top: 0;
         right: 0;
@@ -47,12 +47,13 @@ $contentClass: "nano-content" !default;
         //        border-radius: 5px;
         visibility: hidden\9; // Target only IE7 and IE8 with this hack
         opacity: .01;
+		z-index: 9001;
 
         > .#{$sliderClass} {
-            background: #444;
-            background: rgba(0,0,0,.5);
+            background: black;
             position: relative;
-            margin: 0 1px;
+            margin: 0px;
+			width: 15px;
             //-webkit-border-radius: 3px;
             //   -moz-border-radius: 3px;
             //        border-radius: 3px;

@@ -1,7 +1,7 @@
 #lightbox {
 		position: fixed;
 		z-index: 8000;
-		padding: 5px;
+		//padding: 5px;
 		background: white;
 		box-shadow: 0px 0px 20px black;
 		
@@ -80,7 +80,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,0,0.2);
+	background-color: rgba(0,0,0,0.8);
 }
 
 .zoomPossible {

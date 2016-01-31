@@ -324,9 +324,9 @@ function deletePost(t) {
 					console.log(data);
 					if(p.hasClass('parent-post')) {
 						hidepostviewer();
-						$('#container .post-mini[data-id='+id+']').remove();
+						$('#container .post-mini[data-id="'+id+'"]').remove();
 					} else {
-						$('.post[data-id='+id+']').remove();
+						$('.post[data-id="'+id+'"]').remove();
 					}
 					var ppid = $('#post-viewer').attr('data-id');
 					updatePostStats(ppid);

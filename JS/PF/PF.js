@@ -1,7 +1,7 @@
 
 function loadSGF(file,id) {
 	console.log("load sgf "+file.name);
-	$('*[data-id='+id+']').remove();
+	$('*[data-id="'+id+'"]').remove();
 	var fileId = createId(); //Math.random().toString(36).slice(2)+Date.now().toString(36); 
 	var content = $('<span data-src="{:'+fileId+':}" class="deletable" contenteditable="false"><div class="sgf-viewer" id="sgf-viewer-'+fileId+'"></div></span>');
 	$(id).append(content);
@@ -60,7 +60,7 @@ function loadVideo(file,id) {
 	vid.controls = true;
 	vid.autoplay = true;
 	vid.onloadeddata = function() {
-		$('*[data-id='+id+']').remove();
+		$('*[data-id="'+id+'"]').remove();
 		var fileId = createId(); //Math.random().toString(36).slice(2)+Date.now().toString(36); 
 		PF.showVideo(vid, id, fileId);
 		PF.sendVideo(file, fileId);
@@ -166,7 +166,7 @@ function loadImage(file,id) {
 		ctx = canvas.getContext('2d');
 		ctx.drawImage(img,0,0,this.width*g,this.height*g);
 		delete img;
-		//$('*[data-id='+id+']').remove();
+		//$('*[data-id="'+id+'"]').remove();
 		var fileId = createId(); //Math.random().toString(36).slice(2)+Date.now().toString(36); 
 		PF.showImage(canvas, id, fileId);
 		PF.sendImage(canvas, fileId);
