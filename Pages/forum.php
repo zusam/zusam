@@ -36,7 +36,6 @@ function page_section_forum_settings(&$u, &$forum) {
 
 	$html = "";
 
-	//$html .= '<div class="big-title">'.$forum['name'].'</div>';
 	$html .= '<div class="settings-container">';
 
 	$html .= '<div class="profile_wrapper">';
@@ -58,9 +57,9 @@ function page_section_forum_settings(&$u, &$forum) {
 	$html .= '</form>';
 
 	$html .= '<form class="change-profile">';
-	$html .= '<span class="formTitle">Lien secret du groupe:</span>';
-	$html .= '<input class="textInput" type="text" onclick="this.setSelectionRange(0, this.value.length); return false;" value="'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?il='.$forum['link'].'" readonly="readonly">';
-	$html .= '<input type="submit" onclick="changeSecretLink(); return false;" value="Changer le lien secret">';
+	$html .= '<span class="formTitle">Lien secret d\'invitation au groupe:</span>';
+	$html .= '<input class="textInput" type="text" onclick="this.setSelectionRange(0, this.value.length); return false;" value="'.$GLOBALS['__ROOT_URL__'].'?il='.$forum['link'].'" readonly="readonly">';
+	$html .= '<input type="submit" onclick="changeSecretLink(); return false;" value="Réinitialiser le lien secret">';
 	$html .= '</form>';
 
 	$html .= '<form class="change-profile">';

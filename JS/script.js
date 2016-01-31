@@ -172,6 +172,7 @@ function inviteUser(id) {
 	if(mail == "" || typeof(mail) == 'undefined') {
 		return false;
 	}
+	console.log(mail);
 	uid = $('#info').attr('data-uid');
 	forum = $('#info').attr('data-fid');
 	$.ajax({

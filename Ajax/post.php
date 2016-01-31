@@ -422,6 +422,10 @@ if($_SESSION['connected']) {
 			$mail = $POST['mail'];
 
 			$u = account_load(array('_id' => $uid));
+			if(!isset($u) || $u == false) {
+				echo("no source account");
+				exit;
+			}
 			$cible = account_load(array('mail' => $mail));
 			if($cible != false && $cible != "") {
 				$cible = (String) $cible['_id'];
@@ -432,15 +436,23 @@ if($_SESSION['connected']) {
 
 			if($_SESSION['uid'] == $uid && $u['forums'][$fid] != null) {
 				if($forum != null && $forum != false && $mail != "") {
-					$n = notification_initialize(array(
-							"type" => "invitation", 
-							"text" => $forum['name'], 
-							"data" => array("forum"=>$forum['_id'],"mail"=>$mail),
-							"source" => $forum['_id'], 
-							"target" => $cible
-						));	
-					notification_save($n);
-					echo("ok");
+					$n = notification_load(array('mail' => $mail));
+					if(!isset($n) || $n == false) { 
+						$n = notification_initialize(array(
+								"type" => "invitation",
+								"text" => $forum['name'],
+								"data" => array("forum"=>$forum['_id'],"mail"=>$mail),
+								"source" => $forum['_id'],
+								"target" => $cible
+							));
+						$ret = mail_invitation($mail,$GLOBALS['__ROOT_URL__'].'?il='.$forum['link'],$u['name']);
+						if(preg_match("/^Message/",$ret)==1) {
+							notification_save($n);
+						}
+						echo($ret);
+					} else {
+						echo("exists already");
+					}
 				}
 			} else {
 				echo('no credentials');
