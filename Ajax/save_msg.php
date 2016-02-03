@@ -20,7 +20,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 
 		account_updateTimestamp($u);
 
-		$url_prev = search_miniature($text);
+		$preview = search_miniature($text);
 		account_save($u);
 
 		if($pid == null || $pid == 0) {
@@ -65,14 +65,14 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 		}
 
 		$r = new stdClass();
-		if(preg_match("/.*miniature\/.*\.jpg/",$url_prev) != 1) {
+		if(preg_match("/.*miniature\/.*\.jpg/",$preview) != 1) {
 			$inside = '<div class="text-container">';
 			$text = cutIfTooLong($p['text'], 180);
 			$inside .= '<div>'.$text.'</div>';
 			$inside .= '</div>';
 			$r->html_preview = $inside;
 		} else {
-			$r->miniature = $url_prev;
+			$r->miniature = p2l($preview);
 		}
 		$r->prev = $preview;
 		$r->id = (String) $p['_id'];

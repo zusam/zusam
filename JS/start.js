@@ -10,6 +10,8 @@ sending = 0;
 // global url
 // Now located in Core/HTML.php
 
+console.log(origin_url);
+
 $(window).ready(function() {
 
 	// output loading time

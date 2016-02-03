@@ -38,18 +38,6 @@
 	padding: 0px;
 	height: 5px;
 }
-//@media (max-width: 680px) {
-//	.post-options {
-//		position: relative !important;
-//		top: 0px !important;
-//
-//		.cell {
-//			font-size: 14px !important;
-//			width: 28px !important;
-//			height: 28px !important;
-//		}
-//	}
-//}
 .post-options {
 	display: flex;
 	display: -webkit-flex;
@@ -60,31 +48,10 @@
 	-webkit-justify-content: center;
 	-webkit-align-items: center;
 	position: fixed;
-	//background: lightgrey;
-	//width: calc(100% - 16px);
-	//padding: 8px;
 	width: 100%;
 	z-index: 5000;
 
 	.cell {
-		//display: flex;
-		//display: -webkit-flex;
-		//align-items: center;
-		//-webkit-align-items: center;
-		//justify-content: center;
-		//-webkit-justify-content: center;
-		//
-		//font-size: 12px;
-		//cursor: pointer;
-		//background-color: grey;
-		//color: white;
-		//margin: 0px 8px;
-		//text-align: center;
-		//height: 24px;
-		//width: 24px;
-		//border-radius: 100%;
-		//transition: all 0.2s;
-		//box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 		display: flex;
 		display: -webkit-flex;
 		align-items: center;
@@ -95,14 +62,14 @@
 		-webkit-flex-grow: 2;
 		font-size: 14px;
 		cursor: pointer;
-		background-color: lightgrey;
-		color: white;
+		background-color: black;
+		color: #F7A71B;
 		text-align: center;
 		height: 30px;
 		transition: all 0.2s;
 	}
 	.cell:hover {
-		background-color: white;
+		background-color: #F7A71B;
 		color: black;
 	}
 }

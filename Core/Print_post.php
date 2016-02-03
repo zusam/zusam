@@ -115,6 +115,13 @@ function print_post($id, $uid) {
 function print_post_mini(&$p, $unread) {
 	$html = "";
 	if($p != false && ($p['parent'] == null || $p['parent'] == 0)) {
+		
+		// TODO to erase in the future
+		// it's here to clear the miniature cache of the most recents posts
+		if(preg_match("/^\/srv\/http/",$p['preview'])!=1) {
+			unset($p['preview']);
+		}
+
 		if(empty($p['preview']) || preg_match("/\.jpg/",$p['preview']) == 0) {
 			$link = search_miniature($p['text']);
 			if($link != "") {
@@ -123,7 +130,7 @@ function print_post_mini(&$p, $unread) {
 			post_save($p);
 		}
 		if(preg_match("/\.jpg$/",$p['preview'])==1) {
-			$inside = '<img src="'.$p['preview'].'"/>';
+			$inside = '<img src="'.p2l($p['preview']).'"/>';
 		} else {
 				$inside = '<div class="text-container">';
 				$text = cutIfTooLong($p['text'], 180);

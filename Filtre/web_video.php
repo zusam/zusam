@@ -14,12 +14,12 @@ function web_video($url, $file) {
 	}
 
 	if(file_exists(pmini($url))) {
-		return p2l(pmini($url));
+		return pmini($url);
 	} else {
 
 		videoThumbnail($source, pmini($url));
 		if(file_exists(pmini($url))) {
-			return p2l(pmini($url));
+			return pmini($url);
 		} else {
 			// if it failed, try to download the file separately
 			$tmp = fgc($source, 65536);
@@ -38,7 +38,7 @@ function web_video($url, $file) {
 
 				// RETURN
 				if(file_exists(pmini($url))) {
-					return p2l(pmini($url));
+					return pmini($url);
 				}
 			}
 		}

@@ -23,15 +23,17 @@ nav {
 		.action {
 			font-size: 15px;
 			border: none;
-			background-color: #F7A71B;
+			color: #F7A71B;
 			border-radius: 100%;
 			height: 27px;
 			width: 27px;
 			margin: 6px;
 			transition: all 0.2s;
+			background: none;
 		}
 		.action:hover {
-			background-color: rgb(255,175,35);
+			color: black;
+			background-color: #F7A71B;
 		}
 	}
 	.left-module-nav {

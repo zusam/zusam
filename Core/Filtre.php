@@ -9,7 +9,7 @@ function get_mini_from_link($url, $link) {
 		file_put_contents(pathTo2(array("url"=>$url,"param"=>"tmp")), $tmp);
 		if(file_exists(pathTo2(array("url"=>$url, "param"=>"tmp")))) {
 			$file = pathTo2(array("url"=>$url, "param"=>"tmp"));
-			$ret = create_post_preview($url, $file);
+			$ret = create_post_miniature($url, $file);
 			unlink($file);
 			return $ret;
 		} else {
@@ -19,6 +19,25 @@ function get_mini_from_link($url, $link) {
 	return pmini($url);
 }
 
+function create_post_miniature($url, $file) {
+	if($file != null) {
+		$source = $file;
+	} else {
+		$source = $url;
+	}
+	if(!file_exists(pmini($url))) {
+		if(exif_imagetype($source) != IMAGETYPE_GIF) {
+			createPreview(320, $source, pmini($url), 9/16, 70);
+		} else {
+			gifPreview(320, $source, pmini($url), 9/16, 70);
+		}
+	}
+	if(file_exists(pmini($url))) {
+		return pmini($url);
+	} else {
+		return false;
+	}
+}
 
 function filtre($url) {
 
@@ -27,7 +46,7 @@ function filtre($url) {
 		$link = preg_replace("/(\{\:)([A-Za-z0-9]+)(\:\})/","$2",$url);
 		$file = file_load(array("fileId" => $link));
 		if($file['type'] == "jpg") {
-			$ret = create_post_preview($link, pathTo2(array('url' => $link, 'ext' => 'jpg', 'param' => 'file')));
+			$ret = create_post_miniature($link, pathTo2(array('url' => $link, 'ext' => 'jpg', 'param' => 'file')));
 		}
 		if($file['type'] == "webm") {
 			$ret = videoThumbnail(
@@ -109,7 +128,7 @@ function filtre($url) {
 
 	// WEB IMAGE & GIF //
 	if(preg_match("/(https?:\/\/.+)(\.bmp|\.jpeg|\.jpg|\.png|\.gif)(.*)/i",$url)==1) {
-		$ret = create_post_preview($url);
+		$ret = create_post_miniature($url);
 		return $ret;
 	}
 

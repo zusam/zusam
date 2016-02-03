@@ -17,7 +17,6 @@ require_once('Core/TextCompiler.php');
 require_once('Core/Utils.php');	
 
 require_once('Filtre/preview.php');
-require_once('Filtre/web_image.php');
 require_once('Filtre/web_video.php');
 
 require_once('LibPHP/Ganon/ganon.php');

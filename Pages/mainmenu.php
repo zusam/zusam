@@ -52,7 +52,9 @@ function page_mainmenu(&$u, $page) {
 	}
 	$html .= '<div class="separator"></div>';
 	$html .= '<div class="separator"></div>';
-	$html .= '<div class="forum-menu"><a class="action menu-highlight forum-link" onclick="disconnect(); return false;">Se déconnecter</a></div>';
+	$html .= '<div class="disconnect forum-menu">';
+	$html .= '<a class="action menu-highlight forum-link" onclick="disconnect(); return false;">Se déconnecter</a>';
+	$html .= '</div>';
 	$html .= '</div>';
 
 	return $html;

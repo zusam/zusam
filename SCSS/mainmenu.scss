@@ -100,6 +100,10 @@
 	.menu-action:hover {
 		background-color: rgba(0,0,0,0.5);
 	}
+	.disconnect {
+		position: absolute;
+		bottom: 0;
+	}
 	.forum-menu {
 		display: flex;
 		display: -webkit-flex;

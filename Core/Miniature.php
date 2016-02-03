@@ -38,7 +38,7 @@ function gen_miniature($url) {
 	if(empty($url)) {
 		return "";
 	}
-	$link = p2l(filtre($url));
+	$link = filtre($url);
 	return $link;
 }
 
