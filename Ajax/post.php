@@ -450,12 +450,10 @@ if($_SESSION['connected']) {
 								"source" => $forum['_id'],
 								"target" => $cible
 							));
-						//$ret = mail_invitation($mail,$GLOBALS['__ROOT_URL__'].'?il='.$forum['link'],$u['name']);
-						//if(preg_match("/^Message/",$ret)==1) {
-						//	notification_save($n);
-						//}
+						$ret = mail_invitation($mail,$GLOBALS['__ROOT_URL__'].'?il='.$forum['link'],$u['name']);
+						if(preg_match("/^Message/",$ret)==1) {
 							notification_save($n);
-						echo($ret);
+						}
 					} else {
 						echo("exists already");
 					}
