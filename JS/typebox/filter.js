@@ -1,4 +1,53 @@
 var Filter = {
+
+	searchOneDrive : function(inner, ending) {
+		var r1 = /[\s]*(https?:\/\/onedrive.live.com\/)([^\s]+)/gi;
+		if(!ending) {
+			r1 = new RegExp(r1+'[\s]','gi');
+		}
+		substitution = function(str) {
+			if(str.match(/resid=/)) {
+				var id = str.replace(/(https?:\/\/onedrive.live.com\/).*resid=([\!\%\w]+).*/,'$2');
+			} else {
+				var id = str.replace(/(https?:\/\/onedrive.live.com\/).*id=([\!\%\w]+).*/,'$2');
+			}
+			console.log(id);
+			if(id.match(/^[\!\%\w]+$/)) {
+				var b = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+				var o = '<iframe width="320" height="180" seamless src="https://onedrive.live.com/embed?resid='+id+'" frameborder="0"></iframe>';
+				var a = '</span>';
+				return b+o+a;
+			} else {
+				return Filter.fail_request(str);
+			}
+		}
+		output = Control.searchMatch({"callerName":"searchOneDrive", "inner":inner, "regex":r1, "substitution":substitution});
+		return output;
+	},
+
+	searchGoogleDrive : function(inner, ending) {
+		var r1 = /[\s]*(https?:\/\/drive.google.com\/)([^\s]+)/gi;
+		if(!ending) {
+			r1 = new RegExp(r1+'[\s]','gi');
+		}
+		substitution = function(str) {
+			if(str.match(/open\?id=/)) {
+				var id = str.replace(/(https?:\/\/drive.google.com\/open\?id=)(\w+)/,'$2');
+			} else {
+				var id = str.replace(/(https?:\/\/drive.google.com\/file\/d\/)([\w]+)(\/)([^\s]+)/,'$2');
+			}
+			if(id.match(/^\w+$/)) {
+				var b = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+				var o = '<div class="embed-responsive embed-responsive-square"><iframe seamless class="embed-responsive-item" src="https://drive.google.com/file/d/'+id+'/preview" frameborder="0"></iframe></div>';
+				var a = '</span>';
+				return b+o+a;
+			} else {
+				return Filter.fail_request(str);
+			}
+		}
+		output = Control.searchMatch({"callerName":"searchGoogleDrive", "inner":inner, "regex":r1, "substitution":substitution});
+		return output;
+	},
 	
 	searchSoundcloud : function(inner, ending) {
 		var r1 = /[\s]*(https?:\/\/soundcloud.com\/)([^\s]+)/gi;
@@ -20,11 +69,14 @@ var Filter = {
 					$('#'+str2md5(str)).html(o);
 				});
 			}, 50);
+			var b = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			var o = str.replace(/(https?:\/\/vine.co\/v\/)([\w\-]+)/,'<div class="embed-responsive embed-responsive-square"><iframe seamless class="embed-responsive-item" src="$1$2/embed/simple" frameborder="0"></iframe></div><script async src="//platform.vine.co/static/scripts/embed.js" charset="utf-8"></script>');
+			var a = '</span>';
+			return b+o+a;
 			return output;
 		}
 		output = Control.searchMatch({"callerName":"searchSoundcloud", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
-		
 	},
 
 	searchVine : function(inner, ending) {

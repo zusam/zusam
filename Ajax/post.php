@@ -307,6 +307,11 @@ if($_SESSION['connected']) {
 						forum_addUser_andSave($forum, $user);
 					}
 					notification_destroy($nid);
+					
+					$r = new StdClass();
+					$r->link = $GLOBALS['__ROOT_URL__'].'?fid='.$forum['_id'];
+					header('Content-Type: text/json; charset=UTF-8');
+					echo(json_encode($r));
 				}
 			} else {
 				echo('no credentials');
@@ -417,7 +422,7 @@ if($_SESSION['connected']) {
 
 		if($POST['action'] == "inviteUser") {
 
-			$fid = $POST['forum'];
+			$fid = $POST['fid'];
 			$uid = $POST['uid'];
 			$mail = $POST['mail'];
 
@@ -445,10 +450,11 @@ if($_SESSION['connected']) {
 								"source" => $forum['_id'],
 								"target" => $cible
 							));
-						$ret = mail_invitation($mail,$GLOBALS['__ROOT_URL__'].'?il='.$forum['link'],$u['name']);
-						if(preg_match("/^Message/",$ret)==1) {
+						//$ret = mail_invitation($mail,$GLOBALS['__ROOT_URL__'].'?il='.$forum['link'],$u['name']);
+						//if(preg_match("/^Message/",$ret)==1) {
+						//	notification_save($n);
+						//}
 							notification_save($n);
-						}
 						echo($ret);
 					} else {
 						echo("exists already");
@@ -457,6 +463,7 @@ if($_SESSION['connected']) {
 			} else {
 				echo('no credentials');
 			}
+			echo('plop');
 			$url_prev = search_miniature($text);
 			account_save($u);
 			exit;

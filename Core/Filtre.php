@@ -60,6 +60,16 @@ function filtre($url) {
 		return $ret;
 	}
 
+	// GOOGLE DRIVE //
+	if(preg_match("/(https?:\/\/drive.google.com\/)([^\s]+)/",$url)==1) {
+		return pathTo2(array("url"=>"googleDrive","param"=>"static_mini","ext"=>"jpg"));
+	}
+	
+	// ONEDRIVE //
+	if(preg_match("/(https?:\/\/onedrive.live.com\/)([^\s]+)/",$url)==1) {
+		return pathTo2(array("url"=>"onedrive","param"=>"static_mini","ext"=>"jpg"));
+	}
+
 	// YOUTUBE //
 	if(preg_match("/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([a-zA-Z0-9\-\_]+)(.*)/",$url)==1) {
 		$link = preg_replace("/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/","http://img.youtube.com/vi/$4/0.jpg",$url);

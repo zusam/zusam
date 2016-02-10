@@ -34,6 +34,8 @@ function page_section_forum(&$u, &$forum) {
 
 function page_section_forum_settings(&$u, &$forum) {
 
+	$fid = (String) $forum['_id'];
+
 	$html = "";
 
 	$html .= '<div class="settings-container">';
@@ -71,10 +73,16 @@ function page_section_forum_settings(&$u, &$forum) {
 	
 	$html .= '<div class="users-resume">';
 	$html .= '<div class="title">Utilisateurs :</div>';
-	foreach($forum['users'] as $userId) {
+	foreach($forum['users'] as $k=>$userId) {
 		$user = account_load(array('_id'=>$userId));
 		if($user != false && $user != null) {
-			$html .= '<div class="user"><div title="'.$user['name'].'">'.account_getAvatarHTML($user).'</div><span>'.$user['name'].'</span></div>';
+			if($user['forums'][$fid] != null) {
+				$html .= '<div class="user"><div title="'.$user['name'].'">'.account_getAvatarHTML($user).'</div><span>'.$user['name'].'</span></div>';
+			} else {
+				unset($forum['users'][$k]);	
+				$forum['users'] = array_values($forum['users']);
+				forum_save($forum);
+			}
 		}
 	}
 	$html .= '</div>';

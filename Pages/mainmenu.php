@@ -6,21 +6,25 @@ require_once('Include.php');
 function page_mainmenu(&$u, $page) {
 
 	$html = "";
-	$html .= '
-		<div id="mainmenu" class="slide slide-menu slidefromleft">
-		<a class="menu-profil menu-action ';
+	$html .= '<div id="mainmenu" class="slide slide-menu slidefromleft">';
+	$html .= '<div class="menu-profil">';
+	$html .= '<a class="profil ';
 	if($page == "profile") {
 		$html .= 'selected';
 	}
 	$html .= '" href="'.$_SERVER['PHP_SELF'].'?page=profile">'.account_getAvatarHTML($u).$u['name'].'</a>';
+	//$html .= '<div class="notif"><i class="fa fa-bell-o"></i></div>';
+	$html .= '</div>';
+
 	$html .= '<div class="separator"></div>';
+	$html .= '<div class="list-section">';
 	$html .= '<div class="section-title">Groupes';
 	$html .= '</div>';
 	foreach($u['forums'] as $fid=>$v) {
 		if($fid != "") {
 			$f = forum_load(array('_id'=>$fid));
 			if($f != null && $f != false) {
-				$html .= '<div class="forum-menu ';
+				$html .= '<div class="section-entry ';
 				if($_SESSION['forum'] == $fid) {
 					$html .= 'selected';
 				}
@@ -41,18 +45,27 @@ function page_mainmenu(&$u, $page) {
 			}
 		}
 	}
-	$html .= '<div class="forum-menu" onclick="ask(\'Nom du forum :\',25,addForum)"><span class="fontgrey menu-highlight forum-link">+ Nouveau groupe</span></div>';
 	$notifications = array_reverse(load_notifications($u));
 	if(count($notifications) > 0) {
-		$html .= '<div class="separator"></div>';
-		$html .= '<div class="section-title">Notifications</div>';
 		foreach($notifications as $n) {
-			$html .= notification_print($n);
+			if($n['type'] == "invitation") {
+				$html .= notification_print($n);
+			}
 		}
 	}
+	$html .= '<div class="section-entry" onclick="ask(\'Nom du forum :\',25,addForum)"><span class="fontgrey menu-highlight forum-link">+ Nouveau groupe</span></div>';
+	$html .= '</div>';
+	//if(count($notifications) > 0) {
+	//	$html .= '<div class="list-section">';
+	//	$html .= '<div class="separator"></div>';
+	//	$html .= '<div class="section-title">Notifications</div>';
+	//	foreach($notifications as $n) {
+	//		$html .= notification_print($n);
+	//	}
+	//	$html .= '</div>';
+	//}
 	$html .= '<div class="separator"></div>';
-	$html .= '<div class="separator"></div>';
-	$html .= '<div class="disconnect forum-menu">';
+	$html .= '<div class="disconnect">';
 	$html .= '<a class="action menu-highlight forum-link" onclick="disconnect(); return false;">Se déconnecter</a>';
 	$html .= '</div>';
 	$html .= '</div>';

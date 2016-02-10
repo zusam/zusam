@@ -37,6 +37,10 @@ function pathTo2($args) {
 		$path = "Assets/".$url.$ext; 
 		return realpath(dirname(__FILE__)."/../")."/".$path;
 	}
+	if($param == "static_mini") {
+		$path = "Assets/Miniatures/".$url.$ext; 
+		return realpath(dirname(__FILE__)."/../")."/".$path;
+	}
 	if($param == "mini") {
 		$path = $loc."/miniature/".hash("md5", $url).$ext; 
 		return realpath(dirname(__FILE__)."/../")."/".$path;

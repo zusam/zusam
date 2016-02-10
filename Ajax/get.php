@@ -115,9 +115,9 @@ if($_SESSION['connected']) {
 		if($GET['action'] == "getRaw") {
 
 			$pid = $GET['pid'];
-			$uid = $GET['uid'];
+			//$uid = $GET['uid'];
 
-			$u = account_load(array('_id' => mongo_id($uid)));
+			//$u = account_load(array('_id' => mongo_id($uid)));
 			$p = post_load(array('_id'=>mongo_id($pid)));
 			$raw = $p['text'];
 			$r = new StdClass();

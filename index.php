@@ -143,8 +143,6 @@ echo('<div id="slidepostviewer" class="slide slide-over slidefromright"></div>')
 // NEW POST
 echo('
 <div id="slidenewpost" class="slide slide-over slidefromright">
-	<div class="post-options"><div class="cell" onclick="hidenewpost()"><i class="fa fa-close"></i></div></div>
-	<div class="post-separator"></div>
 	<div id="newpost" class="newpost">
 		<div id="typeBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Partagez quelque chose..."></div></div>
 		<div class="menu">

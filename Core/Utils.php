@@ -57,15 +57,6 @@ function to_utf8($str) {
 	return $str;
 }
 
-// TODO remove : this should not be used
-//function fixBadUnicode($str) {
-//	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2")).chr(hexdec("$3")).chr(hexdec("$4"))', $str);
-//	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2")).chr(hexdec("$3"))', $str);
-//	$str = preg_replace("/\\\\u00([0-9a-f]{2})\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1")).chr(hexdec("$2"))', $str);
-//	$str = preg_replace("/\\\\u00([0-9a-f]{2})/e", 'chr(hexdec("$1"))', $str);
-//	return $str;
-//}
-
 function cutIfTooLong($str, $n) {
 	$replace = trim(mb_substr($str,0,$n));
 	if(abs(mb_strlen($replace) - mb_strlen($str)) > 3) {
@@ -151,39 +142,6 @@ function deleteKey(&$e, &$a) {
 	$ee = (String) $e;
 	unset($a[$ee]);
 }
-
-// TODO not used... I hope.
-// rot(n) ...
-//function str_rot($s, $n) {
-//	static $letters = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
-//	$n = (int)$n % 26;
-//	if (!$n) return $s;
-//	if ($n < 0) $n += 26;
-//	if ($n == 13) return str_rot13($s);
-//	$rep = substr($letters, $n * 2) . substr($letters, 0, $n * 2);
-//	return strtr($s, $letters, $rep);
-//}
-
-// TODO is this used ? --not used
-//function noAccent($str) {
-//	$replace = array(
-//		'â' => 'a', 
-//		'ä' => 'a', 
-//		'à' => 'a', 
-//		'ê' => 'e', 
-//		'ë' => 'e', 
-//		'è' => 'e', 
-//		'é' => 'e', 
-//		'ù' => 'u', 
-//		'û' => 'u', 
-//		'ü' => 'u', 
-//		'ô' => 'o', 
-//		'ö' => 'o', 
-//		'ç' => 'c' 
-//	);
-//	$r = strtr($str, $replace);
-//	return $r;
-//}
 
 // relative time
 function ago($d) {

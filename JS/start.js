@@ -9,6 +9,7 @@ URL = window.URL || window.webkitURL;
 sending = 0;
 // global url
 // Now located in Core/HTML.php
+active_post = 0;
 
 console.log(origin_url);
 
@@ -75,11 +76,10 @@ $(window).ready(function() {
 
 	// view post if url says so
 	if($('#info').length != 0) {
-		if(window.location.href.match(/\#[a-z0-9]+$/)) {
-			var pid = window.location.href.replace(/.*\#([a-z0-9]+)/,"$1");
-			console.log("show:"+pid);
-			showpostviewer(pid);
-		}
+		evaluateURL()
+		$(window).on("popstate", function() {
+			evaluateURL()
+		});
 	}
 
 	// prevent exiting while download
@@ -91,6 +91,7 @@ $(window).ready(function() {
 		} 
 	});
 
-	// start album
-	//album.start();
+	// reconstruct url
+	//reconstructURL();
+
 });

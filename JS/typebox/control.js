@@ -272,6 +272,8 @@ var Control = {
 	},
 
 	filter_out_search : function(t, viewer, ending) {
+		Control.searchFilter(t, Filter.searchOneDrive, viewer, ending);
+		Control.searchFilter(t, Filter.searchGoogleDrive, viewer, ending);
 		Control.searchFilter(t, Filter.searchSoundcloud, viewer, ending);
 		Control.searchFilter(t, Filter.searchYoutube, viewer, ending);
 		Control.searchFilter(t, Filter.searchYoutube2, viewer, ending);

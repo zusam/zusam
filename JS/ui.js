@@ -180,15 +180,15 @@ function hidenewpost(sent) {
 	}
 }
 
-function togglepostviewer(e) {
-	spv = $('#slidepostviewer');
-	if(spv.hasClass('active') || e == null) {
-		hidepostviewer();
-	} else {
-		var id = $(e.currentTarget).attr('data-id');
-		showpostviewer(id);
-	}
-}
+//function togglepostviewer(e) {
+//	spv = $('#slidepostviewer');
+//	if(spv.hasClass('active') || e == null) {
+//		hidepostviewer();
+//	} else {
+//		var id = $(e.currentTarget).attr('data-id');
+//		showpostviewer(id);
+//	}
+//}
 
 function hidenewcommentsection(id) {
 	t = $(id);
@@ -222,6 +222,11 @@ function shownewcommentsection(id) {
 	}
 }
 
+function push_showpost(id) {
+	window.history.pushState('{pid:'+id+'}', "", window.location.href.replace(/\#.*/,"") + "#" + id);
+	evaluateURL();
+}
+
 function showpostviewer(id) {
 	hideAll();
 	showslidefromright('#slidepostviewer');
@@ -230,13 +235,14 @@ function showpostviewer(id) {
 	spv.append('<div class="nano"><div class="nano-content"></div></div>');
 	$('#slidepostviewer .nano .nano-content').append('<div id="post-viewer"></div>');
 	
-	addMask("hideAll()",0.75);
+	addMask("push_hidepost()",0.75);
 	$('#post-viewer').attr('data-id',id);
 	$('#post-viewer').append('<div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div>');
-	window.history.pushState("", "", window.location.href.replace(/\#.*/,"") + "#" + id);
 
 	console.log("show: "+id);
 	console.log("Ajax/get.php?action=getPost&id="+id);
+
+	active_post = id;
 
 	$.ajax({
 		url: "Ajax/get.php", 
@@ -250,17 +256,6 @@ function showpostviewer(id) {
 			$('#mask').addClass('dark-mask');
 			var prev = $('.post-mini[data-id='+id+']').prev().attr('data-id');
 			var next = $('.post-mini[data-id='+id+']').next().attr('data-id');
-			var opt = $('<div class="post-options"></div>');
-			opt.append('<div class="cell" onclick="recordUsage(\'newcom\');shownewcommentsection()"><i class="fa fa-comment"></i></div>');
-			if(prev!=null) {
-				opt.append('<div class="cell" onclick="recordUsage(\'prev\');showpostviewer(\''+prev+'\')"><i class="fa fa-arrow-left"></i></div>');
-			}
-			if(next!=null) {
-				opt.append('<div class="cell" onclick="recordUsage(\'next\');showpostviewer(\''+next+'\')"><i class="fa fa-arrow-right"></i></div>');
-			}
-			opt.append('<div class="cell" onclick="recordUsage(\'close\');hidepostviewer()"><i class="fa fa-close"></i></div>');
-			
-			$('#post-viewer').before(opt);
 			var plop = $(data['html']);
 			$('#post-viewer').append(plop);
 			$('#post-viewer').append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
@@ -300,14 +295,20 @@ function showpostviewer(id) {
 	});
 }
 
+function push_hidepost() {
+	window.history.pushState("", "", window.location.href.replace(/\#.*/,""));
+	evaluateURL();
+}
+
 function hidepostviewer() {
 	unblockBody();
 	hideslidefromright('#slidepostviewer');
-	$('#slidepostviewer').html('');
-	$('#slidepostviewer').off();
+	var spv = $('#slidepostviewer');
+	spv.html('');
+	spv.off();
 	removeMask();
 	typebox.stop('#commentBox');
-	window.history.pushState("", "", window.location.href.replace(/\#.*/,""));
+	active_post = 0;
 }
 
 function addMask(func, darkness, zindex, id) {

@@ -17,6 +17,8 @@ function compileText($text) {
 
 	$str = decapsuleLinks($str);
 
+	$str = preg_replace_callback('/\s+(https?:\/\/onedrive.live.com\/)([^\s]+)\s+/i','callback_onedrive',$str);
+	$str = preg_replace_callback('/\s+(https?:\/\/drive.google.com\/)([^\s]+)\s+/i','callback_googleDrive',$str);
 	$str = preg_replace_callback('/\s+(https?:\/\/soundcloud.com\/)([^\s]+)\s+/i','callback_soundcloud',$str);
 	$str = preg_replace_callback('/\s+(https?:\/\/vine.co\/v\/)([\w\-]+)\s+/i','callback_vine',$str);
 	$str = preg_replace_callback('/\s+(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)\s+/i','callback_dailymotion',$str);
@@ -35,12 +37,13 @@ function compileText($text) {
 	
 	$str = trim($str);
 
-
 	return $str;
 }
 
 function encapsuleKnownLinks($str) {
 	
+	$str = preg_replace('/(https?:\/\/onedrive.live.com\/[^\s]+)/i','[[$1]]',$str);
+	$str = preg_replace('/(https?:\/\/drive.google.com\/[^\s]+)/i','[[$1]]',$str);
 	$str = preg_replace('/(https?:\/\/soundcloud.com\/[^\s]+)/i','[[$1]]',$str);
 	$str = preg_replace('/(https?:\/\/vine.co\/v\/[\w\-]+)/i','[[$1]]',$str);
 	$str = preg_replace('/(https?:\/\/www.dailymotion.com\/video\/[\w\-]+)/i','[[$1]]',$str);
@@ -67,6 +70,43 @@ function prepareInput($match) {
 
 function prepareOutput($str) {
 	return ' </div>'.$str.'<div> ';
+}
+
+function callback_onedrive($match) {
+	$str = prepareInput($match);
+	if(preg_match("/resid=/",$str)) {
+		$id = preg_replace("/(https?:\/\/onedrive.live.com\/).*resid=([\!\%\w]+).*/","$2",$str);
+	} else {
+		$id = preg_replace("/(https?:\/\/onedrive.live.com\/).*id=([\!\%\w]+).*/","$2",$str);
+	}
+	if(preg_match("/^[\!\%\w]+$/",$id)) {
+		$b = '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		$o = '<iframe width="320" height="180" seamless src="https://onedrive.live.com/embed?resid='.$id.'" frameborder="0"></iframe>';
+		$a = '</span>';
+		$output = $b.$o.$a;
+	} else {
+		$output = fail_request($str);
+	}
+	return prepareOutput($output);
+}
+
+function callback_googleDrive($match) {
+	$str = prepareInput($match);
+	
+	if(preg_match("/open\?id=/",$str)) {
+		$id = preg_replace("/(https?:\/\/drive.google.com\/open\?id=)(\w+)/","$2",$str);
+	} else {
+		$id = preg_replace("/(https?:\/\/drive.google.com\/file\/d\/)([\w]+)(\/)([^\s]+)/","$2",$str);
+	}
+	if(preg_match("/^\w+$/",$id)==1) {
+		$b = '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		$o = '<div class="embed-responsive embed-responsive-square"><iframe seamless class="embed-responsive-item" src="https://drive.google.com/file/d/'.$id.'/preview" frameborder="0"></iframe></div>';
+		$a = '</span>';
+		$output = $b.$o.$a;
+	} else {
+		$output = fail_request($str);
+	}
+	return prepareOutput($output);
 }
 
 function callback_link($match) {
@@ -305,5 +345,5 @@ function handleLink($url) {
 
 	return $ret;
 }
-
+	
 ?>

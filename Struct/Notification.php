@@ -40,9 +40,9 @@ function notification_print(&$n) {
 	
 	if($n['type'] == "invitation") {
 		$html .= '	
-			<div class="notification" data-id="'.$n['_id'].'">
-				<div onclick="addUserToForum(this)" class="menu-highlight title">Rejoindre le groupe "'.$n['text'].'"</div>
-				<div onclick="removeNotification(this)" class="remove"><i class="fa fa-remove"></i></div>
+			<div class="section-entry" data-id="'.$n['_id'].'">
+				<div onclick="addUserToForum(this)" class="fontgrey menu-highlight forum-link">+ '.$n['text'].'</div>
+				<div onclick="removeNotification(this)" class="forum-settings"><i class="fontgrey fa fa-remove"></i></div>
 			</div>
 		';
 		return $html;
