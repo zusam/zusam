@@ -17,22 +17,23 @@ function compileText($text) {
 
 	$str = decapsuleLinks($str);
 
-	$str = preg_replace_callback('/\s+(https?:\/\/onedrive.live.com\/)([^\s]+)\s+/i','callback_onedrive',$str);
-	$str = preg_replace_callback('/\s+(https?:\/\/drive.google.com\/)([^\s]+)\s+/i','callback_googleDrive',$str);
-	$str = preg_replace_callback('/\s+(https?:\/\/soundcloud.com\/)([^\s]+)\s+/i','callback_soundcloud',$str);
-	$str = preg_replace_callback('/\s+(https?:\/\/vine.co\/v\/)([\w\-]+)\s+/i','callback_vine',$str);
-	$str = preg_replace_callback('/\s+(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)\s+/i','callback_dailymotion',$str);
-	$str = preg_replace_callback('/\s+(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)\s+/','callback_vimeo',$str);
-	$str = preg_replace_callback('/\s+https?:\/\/youtu\.be\/[\w\/=?~.%&+\-#]+\s+/i','callback_youtube2',$str);
-	$str = preg_replace_callback('/\s+https?:\/\/(www|m)\.youtube\.com\/watch[\w\/=?~.%&+\-#]+\s+/i','callback_youtube',$str);
-	$str = preg_replace_callback('/\s+https?:\/\/[^\s]+(\.mp4|\.webm|\.gifv)(\?\w*)?\s+/i','callback_video',$str);
-	$str = preg_replace_callback('/\s+https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.jpg|\.bmp|\.jpeg|\.png)(\?[\w\/=?~.%&+\-#\!\']+)?\s+/i','callback_image',$str);
-	$str = preg_replace_callback('/\s+https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.gif(?!v))(\?[\w\/=?~.%&+\-#\!\']+)?\s+/i','callback_gif',$str);
+	//$str = preg_replace_callback('/(https?:\/\/www.instagram.com\/)([^\s]+)\s+/i','callback_instagram',$str);
+	$str = preg_replace_callback('/(https?:\/\/onedrive.live.com\/)([^\s]+)\s+/i','callback_onedrive',$str);
+	$str = preg_replace_callback('/(https?:\/\/drive.google.com\/)([^\s]+)\s+/i','callback_googleDrive',$str);
+	$str = preg_replace_callback('/(https?:\/\/soundcloud.com\/)([^\s]+)\s+/i','callback_soundcloud',$str);
+	$str = preg_replace_callback('/(https?:\/\/vine.co\/v\/)([\w\-]+)\s+/i','callback_vine',$str);
+	$str = preg_replace_callback('/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)\s+/i','callback_dailymotion',$str);
+	$str = preg_replace_callback('/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)\s+/','callback_vimeo',$str);
+	$str = preg_replace_callback('/https?:\/\/youtu\.be\/[\w\/=?~.%&+\-#]+\s+/i','callback_youtube2',$str);
+	$str = preg_replace_callback('/https?:\/\/(www|m)\.youtube\.com\/watch[\w\/=?~.%&+\-#]+\s+/i','callback_youtube',$str);
+	$str = preg_replace_callback('/https?:\/\/[^\s]+(\.mp4|\.webm|\.gifv)(\?\w*)?\s+/i','callback_video',$str);
+	$str = preg_replace_callback('/https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.jpg|\.bmp|\.jpeg|\.png)(\?[\w\/=?~.%&+\-#\!\']+)?\s+/i','callback_image',$str);
+	$str = preg_replace_callback('/https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.gif(?!v))(\?[\w\/=?~.%&+\-#\!\']+)?\s+/i','callback_gif',$str);
 	
 	// files
 	$str = preg_replace_callback('/\{\:[a-zA-Z0-9]+\:\}/i','callback_file',$str);
 
-	$str = '<div>'.$str.'</div>';
+	$str = ' <div>'.$str.'</div> ';
 	$str = preg_replace('/\<div\>\s*\<\/div\>/','',$str);
 	
 	$str = trim($str);
@@ -42,6 +43,7 @@ function compileText($text) {
 
 function encapsuleKnownLinks($str) {
 	
+	//$str = preg_replace('/(https?:\/\/www.instagram.com\/[^\s]+)/i','[[$1]]',$str);
 	$str = preg_replace('/(https?:\/\/onedrive.live.com\/[^\s]+)/i','[[$1]]',$str);
 	$str = preg_replace('/(https?:\/\/drive.google.com\/[^\s]+)/i','[[$1]]',$str);
 	$str = preg_replace('/(https?:\/\/soundcloud.com\/[^\s]+)/i','[[$1]]',$str);
@@ -72,16 +74,34 @@ function prepareOutput($str) {
 	return ' </div>'.$str.'<div> ';
 }
 
+function callback_instagram($match) {
+	$str = prepareInput($match);
+
+		$b = '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		//$o = '<blockquote class="instagram-media"><div><div><div></div></div><p><a href="'.$str.'" target="_blank"></a></p><p></p></div></blockquote><script async defer src="//platform.instagram.com/en_US/embeds.js"></script>';
+		$o = '<blockquote class="instagram-media" data-instgrm-version="6" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:8px;"> <div style=" background:#F8F8F8; line-height:0; margin-top:40px; padding:62.5% 0; text-align:center; width:100%;"> <div style=" background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAGFBMVEUiIiI9PT0eHh4gIB4hIBkcHBwcHBwcHBydr+JQAAAACHRSTlMABA4YHyQsM5jtaMwAAADfSURBVDjL7ZVBEgMhCAQBAf//42xcNbpAqakcM0ftUmFAAIBE81IqBJdS3lS6zs3bIpB9WED3YYXFPmHRfT8sgyrCP1x8uEUxLMzNWElFOYCV6mHWWwMzdPEKHlhLw7NWJqkHc4uIZphavDzA2JPzUDsBZziNae2S6owH8xPmX8G7zzgKEOPUoYHvGz1TBCxMkd3kwNVbU0gKHkx+iZILf77IofhrY1nYFnB/lQPb79drWOyJVa/DAvg9B/rLB4cC+Nqgdz/TvBbBnr6GBReqn/nRmDgaQEej7WhonozjF+Y2I/fZou/qAAAAAElFTkSuQmCC); display:block; height:44px; margin:0 auto -44px; position:relative; top:-22px; width:44px;"></div></div><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="'.$str.'" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A photo posted by Texts From Your Existentialist (@textsfromyourexistentialist)</a> on <time style=" font-family:Arial,sans-serif; font-size:14px; line-height:17px;" datetime="2016-02-11T03:55:31+00:00">Feb 10, 2016 at 7:55pm PST</time></p></div></blockquote>
+		<script async defer src="//platform.instagram.com/en_US/embeds.js"></script>';
+		$a = '</span>';
+		$output = $b.$o.$a;
+
+	return prepareOutput($output);
+}
+
 function callback_onedrive($match) {
 	$str = prepareInput($match);
 	if(preg_match("/resid=/",$str)) {
-		$id = preg_replace("/(https?:\/\/onedrive.live.com\/).*resid=([\!\%\w]+).*/","$2",$str);
+		$resid = preg_replace("/(https?:\/\/onedrive.live.com\/).*resid=([\-\!\%\w]+).*/","$2",$str);
+		$param = "resid=".$resid;
 	} else {
-		$id = preg_replace("/(https?:\/\/onedrive.live.com\/).*id=([\!\%\w]+).*/","$2",$str);
+		$resid = preg_replace("/(https?:\/\/onedrive.live.com\/).*id=([\-\!\%\w]+).*/","$2",$str);
+		$cid = preg_replace("/(https?:\/\/onedrive.live.com\/).*cid=([\-\!\%\w]+).*/","$2",$str);
+		$authkey = preg_replace("/(https?:\/\/onedrive.live.com\/).*authkey=([\-\!\%\w]+).*/","$2",$str);
+		$param = "resid=".$resid."&cid=".$cid."&authkey=".$authkey;
+
 	}
-	if(preg_match("/^[\!\%\w]+$/",$id)) {
+	if(preg_match("/^[\!\%\w]+$/",$resid)) {
 		$b = '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
-		$o = '<iframe width="320" height="180" seamless src="https://onedrive.live.com/embed?resid='.$id.'" frameborder="0"></iframe>';
+		$o = '<iframe width="320" height="180" seamless src="https://onedrive.live.com/embed?'.$param.'" frameborder="0"></iframe>';
 		$a = '</span>';
 		$output = $b.$o.$a;
 	} else {

@@ -250,44 +250,51 @@ function showpostviewer(id) {
 		data: {"action":"getPost","id":id},
 		success: function(data) {
 			console.log(data);
-			recordUsage("post");
+			if(data == null || data == "") {
+				// do something else : we need an error message
+				push_hidepost();
+			} else {
 
-			$('#post-viewer .spinner').remove();
-			$('#mask').addClass('dark-mask');
-			var prev = $('.post-mini[data-id='+id+']').prev().attr('data-id');
-			var next = $('.post-mini[data-id='+id+']').next().attr('data-id');
-			var plop = $(data['html']);
-			$('#post-viewer').append(plop);
-			$('#post-viewer').append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
+				recordUsage("post");
 
-			$('.nano-content').on('scroll',function(){
-				if(typeof(window.spvScrollTop) == 'undefined') {
-					window.spvScrollTop = 0;
-				}
-				var st = $(this).scrollTop();
-				if(st > window.spvScrollTop) {
-					$(this).find('.post-options').addClass('hidden');
-				} else {
-					$(this).find('.post-options').removeClass('hidden');
-				}
-				window.spvScrollTop = st;
-			});
-			
-			//typebox.view();
-			updatePostStats(id);
-			
-			//start nano scroller
-			// TODO find a more clean method for adapting to the height of the content for this
-			setInterval(function() {
-				$(".nano").nanoScroller();
-			}, 1000);
+				$('#post-viewer .spinner').remove();
+				$('#mask').addClass('dark-mask');
+				//var prev = $('.post-mini[data-id='+id+']').prev().attr('data-id');
+				//var next = $('.post-mini[data-id='+id+']').next().attr('data-id');
+				var plop = $(data['html']);
+				$('#post-viewer').append(plop);
+				//$('#post-viewer').append('<div class="post-separator"></div>');
+				$('#post-viewer').append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 
-			// lazy loading
-			// TODO first lazyload : choose a more wise selector
-			lazyload($('.nano-content')[0]);
-			$('.nano-content').on('scroll',function(e) {
-				lazyload(e.currentTarget);
-			});
+				$('.nano-content').on('scroll',function(){
+					if(typeof(window.spvScrollTop) == 'undefined') {
+						window.spvScrollTop = 0;
+					}
+					var st = $(this).scrollTop();
+					if(st > window.spvScrollTop) {
+						$(this).find('.post-options').addClass('hidden');
+					} else {
+						$(this).find('.post-options').removeClass('hidden');
+					}
+					window.spvScrollTop = st;
+				});
+				
+				//typebox.view();
+				updatePostStats(id);
+				
+				//start nano scroller
+				// TODO find a more clean method for adapting to the height of the content for this
+				setInterval(function() {
+					$(".nano").nanoScroller();
+				}, 1000);
+
+				// lazy loading
+				// TODO first lazyload : choose a more wise selector
+				lazyload($('.nano-content')[0]);
+				$('.nano-content').on('scroll',function(e) {
+					lazyload(e.currentTarget);
+				});
+			}
 		},
 		error: function() {
 			console.log('fail load post');

@@ -316,7 +316,16 @@ function getImageFromSource($src,$url,$base_url) {
 
 }
 
+function preview_identify(&$p) {
+	$url = $p['url'];
+	$pp = preview_load(array('url'=>$url));
+	if($pp != null) {
+		$p['_id'] = $pp['_id'];
+	}
+}
+
 function preview_save(&$p) {
+	preview_identify($p);
 	mongo_save("previews",$p);
 }	
 

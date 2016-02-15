@@ -57,7 +57,7 @@ img.lazyload {
 	display: inline-block;
 	padding: 2px; 
 	margin: 0px; 
-	//min-height: 18px;
+	min-height: 18px;
 	//width: 100%;
 	width: calc(100% - 4px);
 }
@@ -71,6 +71,12 @@ img.lazyload {
 .dynamicBox > span > canvas { 
 	max-width: 100%; 
 }
+//.middle-iframe iframe {
+//	margin: 0 auto;
+//}
+//.large-iframe iframe {
+//	width: calc(100% - 20px);
+//}
 .deletable {
 	display: block;
 	position: relative;

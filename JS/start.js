@@ -10,6 +10,8 @@ sending = 0;
 // global url
 // Now located in Core/HTML.php
 active_post = 0;
+// to prevent spam click on loading elements
+request_loading = false;
 
 console.log(origin_url);
 

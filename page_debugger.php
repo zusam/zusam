@@ -1,15 +1,18 @@
 <?php
-	header('Content-type: text/html; charset=utf-8');
+header('Content-type: text/html; charset=utf-8');
 
-require_once('Core/Preview.php');
-
+require_once('Include.php');
 
 $url = $_GET['url'];
 
 if($url != "") {
-	$p = preview_initialize($url);
+	$p = preview_load(array('url' => $url));
+	if($p == null) {
+		$p = preview_initialize($url);
+		preview_save($p);
+	}
 	//$p['description'] = strip_tags($p['description']);
-	$ret = json_encode($p);
+	$ret = json_encode($p,JSON_UNESCAPED_UNICODE);
 	$p = json_decode($ret, true);
 }
 
@@ -74,25 +77,25 @@ if($url != "" && $url != null) {
 	echo('</div>');
 	echo('<br>');
 
-	echo('<p class="debug_info"> Candidate previews</p>');
-	foreach($p['candidates'] as $img) {
+	//echo('<p class="debug_info"> Candidate previews</p>');
+	//foreach($p['candidates'] as $img) {
 
-		echo('<div class="post-parent-text dynamicBox">');
-		echo('<span class="deletable">');
-		if($img['url'] != null) {
-			$preview = '<div class="preview"><img src="'.$img['url'].'"/></div>';
-		} else {
-			$preview = "";
-		}
-		if($p['image'] != "" && $img['width'] != null && $img['height'] != null && $img['width'] < 380) {
-			echo('<a class="article_small" href="'.$p['url'].'" target="_blank">'.$preview.$title.$description.'<div class="base_url">'.$p['base_url'].'</div></a>');
-		} else {
-			echo('<a class="article_big" href="'.$p['url'].'" target="_blank">'.$preview.$title.$description.'<div class="base_url">'.$p['base_url'].'</div></a>');
-		}
-		echo('</span>');
-		echo('</div>');
-		echo('<br>');
-	}
+	//	echo('<div class="post-parent-text dynamicBox">');
+	//	echo('<span class="deletable">');
+	//	if($img['url'] != null) {
+	//		$preview = '<div class="preview"><img src="'.$img['url'].'"/></div>';
+	//	} else {
+	//		$preview = "";
+	//	}
+	//	if($p['image'] != "" && $img['width'] != null && $img['height'] != null && $img['width'] < 380) {
+	//		echo('<a class="article_small" href="'.$p['url'].'" target="_blank">'.$preview.$title.$description.'<div class="base_url">'.$p['base_url'].'</div></a>');
+	//	} else {
+	//		echo('<a class="article_big" href="'.$p['url'].'" target="_blank">'.$preview.$title.$description.'<div class="base_url">'.$p['base_url'].'</div></a>');
+	//	}
+	//	echo('</span>');
+	//	echo('</div>');
+	//	echo('<br>');
+	//}
 	
 	echo('</div>');
 	echo('<br>');

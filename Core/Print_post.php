@@ -3,6 +3,15 @@
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Include.php');
 
+function getRawText($id) {
+	
+	$p = post_load(array('_id'=>$id));
+	if($p == null) {
+		return "";
+	}
+	return $p['text'];
+}
+
 function print_full_post($id, $uid) {
 	
 	// init the html to return

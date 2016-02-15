@@ -105,6 +105,10 @@ if($_SESSION['connected']) {
 				//$r->after = $u['unread'];
 				$html_data = print_full_post($id, $u['_id']);
 				$r->html = $html_data;
+				//$r->raw = getRawText($id);
+				//$r->encap = encapsuleKnownLinks($r->raw);
+				//$r->decap = decapsuleLinks(encapsuleKnownLinks($r->raw));
+				//$r->comp = compileText($r->raw);
 				header('Content-Type: text/json; charset=UTF-8');
 				echo(json_encode($r));
 			}

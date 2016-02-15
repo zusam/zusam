@@ -553,6 +553,9 @@ function playpause(t) {
 
 function loadImage(t) {
 	t = $(t).closest('.launcher');
+	t.on('click', function() {
+		return false;
+	});
 	var src = t.attr('data-src');
 	var img = $('<img class="inlineImage" onerror="error_im(this)" src="'+src+'"/>');
 	img.on('load', function() {
@@ -560,25 +563,22 @@ function loadImage(t) {
 		img.off()
 		t.remove();
 	});
-	t.on('click', function() {
-		return false;
-	});
 	t.addClass('launcher-loading');
 }
 
 function loadVideo(t) {
 	t = $(t).closest('.launcher');
+	t.on('click', function() {
+		console.log('spam');
+		return false;
+	});
 	var src = t.attr('data-src');
-	var vid = $('<video class="inlineImage" onclick="playpause(this)" loop autoplay src="'+src+'"></video>');
+	var vid = $('<video class="inlineImage" onclick="playpause(this)" controls loop autoplay src="'+src+'"></video>');
 	// TODO use canplaythrough ?
 	vid.on('canplay', function() {
 		t.after(vid);
 		vid.off();
 		t.remove();
-	});
-	t.on('click', function() {
-		console.log('spam');
-		return false;
 	});
 	t.addClass('launcher-loading');
 	console.log(vid);

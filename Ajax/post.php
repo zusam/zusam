@@ -202,12 +202,10 @@ if($_SESSION['connected']) {
 			
 			$u = account_load(array('_id' => $uid));
 			$f = forum_load(array('_id'=> $fid));
-			var_dump($u);
 
 			if($_SESSION['uid'] == $uid) {
 				forum_removeUser_andSave($f, $u);
 			}
-			var_dump($u);
 			exit;
 		}
 
