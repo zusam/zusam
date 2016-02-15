@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo chown -R niels:http .
+sudo chown -R niels:http /srv/http/zusam
 Build/build-js.sh compress
 Build/build-css.sh
 Build/correct-install.sh correct
