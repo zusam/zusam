@@ -135,13 +135,9 @@ function hideimageeditor() {
 	removeMask("imageeditormask");
 }
 
-function togglenewpost() {
-	e = $('#newpost');
-	if(e.hasClass('active')) {
-		hidenewpost();
-	} else {
-		shownewpost();
-	}
+function push_shownewpost() {
+	window.history.pushState('newpost', "", window.location.href.replace(/\#.*/,"") + "#newpost");
+	evaluateURL();
 }
 
 function shownewpost() {
@@ -152,7 +148,12 @@ function shownewpost() {
 	invite = $('<div contenteditable="true" data-placeholder="Partagez quelque chose..."></div>')
 	$('#typeBox').html(invite);
 	e.addClass('active');
-	addMask("hidenewpost()",0.75);
+	addMask("push_hideAll()",0.75);
+}
+
+function push_hideAll() {
+	window.history.pushState("", "", window.location.href.replace(/\#.*/,""));
+	evaluateURL();
 }
 
 function hidenewpost(sent) {
@@ -225,7 +226,7 @@ function showpostviewer(id) {
 	spv.append('<div class="nano"><div class="nano-content"></div></div>');
 	$('#slidepostviewer .nano .nano-content').append('<div id="post-viewer" tabindex="-1"></div>');
 	
-	addMask("push_hidepost()",0.75);
+	addMask("push_hideAll()",0.75);
 	$('#post-viewer').attr('data-id',id);
 	$('#post-viewer').append('<div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div>');
 
@@ -242,7 +243,7 @@ function showpostviewer(id) {
 			console.log(data);
 			if(data == null || data == "") {
 				// do something else : we need an error message
-				push_hidepost();
+				push_hideAll();
 			} else {
 
 				recordUsage("post");
@@ -291,11 +292,6 @@ function showpostviewer(id) {
 			console.log('fail load post');
 		}
 	});
-}
-
-function push_hidepost() {
-	window.history.pushState("", "", window.location.href.replace(/\#.*/,""));
-	evaluateURL();
 }
 
 function hidepostviewer() {

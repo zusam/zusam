@@ -16,6 +16,7 @@ function toggleButterfly(t) {
 	var pid = $(t).closest('.post').attr('data-id');
 	var uid = $('#info').attr('data-uid');
 	var fid = $('#info').attr('data-fid');
+	recordUsage("butterfly");
 	$.ajax({
 		url: "Ajax/post.php",
 		type: "POST",
@@ -25,15 +26,6 @@ function toggleButterfly(t) {
 			var butterflies = $(t).parent()[0].childNodes[3].textContent;
 			$(t).parent()[0].childNodes[3].textContent = data['count'];
 			t.style.fill = data['color'];
-			//if(data['color'] == "#F7A71B") {
-			//	var pap = $('<div class="butterfly">');
-			//	var aileg = $('<img class="aile aileg" src="Assets/aile.svg"/>');
-			//	var ailed = $('<img class="aile ailed" src="Assets/aile.svg"/>');
-			//	pap.append(aileg).append(ailed);
-			//	var pos = $(t).position();
-			//	pap.css({"top":pos.top+1,"left":pos.left+3});
-			//	$(t).parent().append(pap);
-			//}
 		},
 		error: function() {
 			console.log('fail butterfly');
@@ -208,7 +200,6 @@ function changepassword(old_id,new_id) {
 			location.reload();
 		}
 	});
-	//nz.html(name);
 }
 
 function sendIt(id) {
@@ -338,6 +329,7 @@ function deletePost(t) {
 }
 
 function editPost(t) {
+	recordUsage("edit");
 	var p = $(t).closest('.post');
 	var pid = p.attr('data-id');
 	$.ajax({
@@ -365,6 +357,7 @@ function editPost(t) {
 
 function loadMorePosts() {
 	if(!window.loading) {
+		recordUsage("morePosts");
 		console.log("trying to load posts");
 		window.loading = true;
 		var list = $('#container .post-mini').map(function(){ var t = this.dataset.id; return t; }).get();
@@ -399,6 +392,7 @@ function loadMorePosts() {
 }
 	
 function disconnect() {
+	recordUsage("disconnect");
 	$.ajax({
 		url: "Ajax/connect.php",
 		type: "POST",
@@ -503,7 +497,6 @@ function inputFile(id) {
 }
 
 function handleFileSelect(evt) {
-console.log(evt);
 	var files = evt.target.files;
 	var id = evt.target.dataset.id;
 	console.log("change!");
@@ -515,7 +508,6 @@ console.log(evt);
 		return false;
 	} else {
 		for(var i=0;i<files.length;i++) {
-			console.log(i);
 			handleFile(files[i],id);
 		}
 	}
@@ -523,39 +515,36 @@ console.log(evt);
 }
 
 function handleFile(file,id) {
-	//if(!window.sending) {
-		console.log(file.type);
-		console.log(file);
-		var fileTypeHandled = false;
-		if(file.type.match(/image/)) {
-			fileTypeHandled = true;
-			if(file.size > 1024*1024*30) {
-				alert("fichier image trop lourd (max 30Mo)");
-			} else {
-				PF.loadImage(file,id);
-			}
+	console.log(file);
+	var fileTypeHandled = false;
+	if(file.type.match(/image/)) {
+		fileTypeHandled = true;
+		if(file.size > 1024*1024*30) {
+			alert("fichier image trop lourd (max 30Mo)");
+		} else {
+			PF.loadImage(file,id);
 		}
-		if(file.type.match(/video/)) {
-			fileTypeHandled = true;
-			if(file.size > 1024*1024*300) {
-				alert("fichier vidéo trop lourd (max 300Mo)");
-			} else {
-				PF.loadVideo(file,id);
-			}
+	}
+	if(file.type.match(/video/)) {
+		fileTypeHandled = true;
+		if(file.size > 1024*1024*300) {
+			alert("fichier vidéo trop lourd (max 300Mo)");
+		} else {
+			PF.loadVideo(file,id);
 		}
-		if(file.type.match(/sgf/) || file.name.match(/sgf/)) {
-			fileTypeHandled = true;
-			if(file.size > 1024*1024*3) {
-				alert("fichier SGF trop lourd (max 3Mo)");
-			} else {
-				console.log("SGF DETECTED");
-				PF.loadSGF(file,id);
-			}
+	}
+	if(file.type.match(/sgf/) || file.name.match(/sgf/)) {
+		fileTypeHandled = true;
+		if(file.size > 1024*1024*3) {
+			alert("fichier SGF trop lourd (max 3Mo)");
+		} else {
+			console.log("SGF DETECTED");
+			PF.loadSGF(file,id);
 		}
-		if(!fileTypeHandled) {
-			alert("Le format du fichier n'est pas supporté");
-		}
-	//}
+	}
+	if(!fileTypeHandled) {
+		alert("Le format du fichier n'est pas supporté");
+	}
 }
 
 function playpause(t) {
@@ -610,15 +599,23 @@ function loadIframe(t) {
 }
 
 function evaluateURL() {
-	if(window.location.href.match(/\#[a-z0-9]+$/)) {
-		var pid = window.location.href.replace(/.*\#([a-z0-9]+)/,"$1");
-		if(active_post != pid) {
-			console.log("show:"+pid);
-			showpostviewer(pid);
-			console.log("show");
+	if(window.location.href.match(/\#[a-zA-Z0-9]+$/)) {
+		var tag = window.location.href.replace(/.*\#([a-zA-Z0-9]+)/,"$1");
+		if(tag.length == 24) {
+			var pid = tag;
+			if(active_post != pid) {
+				console.log("show:"+pid);
+				showpostviewer(pid);
+				console.log("show");
+			}
+		} else {
+			if(tag == "newpost") {
+				shownewpost();
+			}
 		}
 	} else {
-		console.log("hide");
-		hidepostviewer();
+		console.log("hideAll from evaluate");
+		//hidepostviewer();
+		hideAll();
 	}
 }

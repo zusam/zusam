@@ -147,7 +147,7 @@ echo('
 		<div id="typeBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Partagez quelque chose..."></div></div>
 		<div class="menu">
 			<div class="menu-cell">
-				<button onclick="hidenewpost()">Annuler</button>
+				<button onclick="push_hideAll()">Annuler</button>
 			</div>
 			<div class="menu-cell">
 				<button onclick="inputFile(\'#typeBox\')" class="action"><i class="fa fa-paperclip"></i></button>

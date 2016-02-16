@@ -14,7 +14,7 @@ function page_nav(&$u, &$forum) {
 	if($_SESSION['forum'] != "") {
 		$html .= '<div class="forum-name"><span>'.$forum['name'].'<span></div>';
 		$html .= '<div class="right-module-nav">';
-		$html .= '<button class="action" onclick="togglenewpost()"><i class="fa fa-pencil"></i></button>';
+		$html .= '<button class="action" onclick="push_shownewpost()"><i class="fa fa-pencil"></i></button>';
 		$html .= '</div>';
 	} else {
 		$html .= '<div class="right-module-nav">';

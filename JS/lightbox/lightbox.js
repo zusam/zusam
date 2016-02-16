@@ -5,8 +5,13 @@ function enlighten(id) {
 	lightbox.darken();
 	
 	var next_img = $(e).closest(".deletable").next().find('img.zoomPossible')[0];
+	if(typeof(next_img) == "undefined") {
+		next_img = $(e).closest(".post").next().find('.deletable img.zoomPossible')[0];
+	}
 	var prev_img = $(e).closest(".deletable").prev().find('img.zoomPossible')[0];
-	//console.log(next_src,prev_src);
+	if(typeof(prev_img) == "undefined") {
+		prev_img = $(e).closest(".post").prev().find('.deletable img.zoomPossible').last()[0];
+	}
 
 	var nw = e.naturalWidth;
 	var nh = e.naturalHeight;
