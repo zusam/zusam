@@ -13,6 +13,7 @@ require_once('Core/Miniature.php');
 require_once('Core/MongoDriver.php');
 require_once('Core/Preview.php');
 require_once('Core/Print_post.php');	
+require_once('Core/Regex.php');
 require_once('Core/TextCompiler.php');	
 require_once('Core/Utils.php');	
 

@@ -1,9 +1,9 @@
 var Filter = {
 
 	searchOneDrive : function(inner, ending) {
-		var r1 = /[\s]*(https?:\/\/onedrive.live.com\/)([^\s]+)/gi;
+		var r1 = new RegExp(regex.onedrive,'gi');
 		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
+			r1 = new RegExp(regex.onedrive+'[\s]','gi');
 		}
 		substitution = function(str) {
 			if(str.match(/resid=/)) {
@@ -26,9 +26,9 @@ var Filter = {
 	},
 
 	searchGoogleDrive : function(inner, ending) {
-		var r1 = /[\s]*(https?:\/\/drive.google.com\/)([^\s]+)/gi;
+		var r1 = new RegExp(regex.googleDrive,'gi');
 		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
+			r1 = new RegExp(regex.googleDrive+'[\s]','gi');
 		}
 		substitution = function(str) {
 			if(str.match(/open\?id=/)) {
@@ -50,9 +50,9 @@ var Filter = {
 	},
 	
 	searchSoundcloud : function(inner, ending) {
-		var r1 = /[\s]*(https?:\/\/soundcloud.com\/)([^\s]+)/gi;
+		var r1 = new RegExp(regex.soundcloud,'gi');
 		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
+			r1 = new RegExp(regex.soundcloud+'[\s]','gi');
 		}
 		substitution = function(str) {
 			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img src="'+'Assets/ajax-loader.gif"/></span>';
@@ -80,9 +80,9 @@ var Filter = {
 	},
 
 	searchVine : function(inner, ending) {
-		var r1 = /[\s]*(https?:\/\/vine.co\/v\/)([\w\-]+)/gi;
+		var r1 = new RegExp(regex.vine ,'gi');
 		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
+			r1 = new RegExp(regex.vine+'[\s]','gi');
 		}
 		substitution = function(str) {
 			var b = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
@@ -96,9 +96,9 @@ var Filter = {
 	},
 
 	searchDailymotion : function(inner, ending) {
-		var r1 = /[\s]*(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/gi;
+		var r1 = new RegExp(regex.dailymotion,'gi');
 		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
+			r1 = new RegExp(regex.dailymotion+'[\s]','gi');
 		}
 		substitution = function(str) {
 			var w = str.replace(/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/,'http://www.dailymotion.com/embed/video/$2?autoplay=1');
@@ -116,9 +116,9 @@ var Filter = {
 	},
 
 	searchVimeo : function(inner, ending) {
-		var r1 = /[\s]*(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/gi;
+		var r1 = new RegExp(regex.vimeo,'gi');
 		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
+			r1 = new RegExp(regex.vimeo+'[\s]','gi');
 		}
 		substitution = function(str) {
 			var w = str.replace(/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/,'http://player.vimeo.com/video/$3?autoplay=1');
@@ -136,9 +136,9 @@ var Filter = {
 	},
 
 	searchYoutube2 : function(inner, ending) {
-		var r1 = /[\s]*https?:\/\/youtu\.be\/[\w\/=?~.%&+\-#]+/gi;
+		var r1 = new RegExp(regex.youtube2,'gi');
 		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
+			r1 = new RegExp(regex.youtube2+'[\s]','gi');
 		}
 		substitution = function(str) {
 			var v = str.replace(/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/,"$2");
@@ -157,9 +157,9 @@ var Filter = {
 	},
 
 	searchYoutube : function(inner, ending) {
-		var r1 = /[\s]*https?:\/\/(www|m)\.youtube\.com\/watch[\w\/=?~.%&+\-#]+/gi;
+		var r1 = new RegExp(regex.youtube,'gi');
 		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
+			r1 = new RegExp(regex.youtube+'[\s]','gi');
 		}
 		substitution = function(str) {
 			var v = str.replace(/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/,"$4");
@@ -178,9 +178,9 @@ var Filter = {
 	},
 
 	searchVideo : function(inner, ending) {
-		var r1 = /[\s]*https?:\/\/[^\s]+(\.mp4|\.webm)(\?\w*)?/gi;
+		var r1 = new RegExp(regex.video,'gi');
 		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
+			r1 = new RegExp(regex.video+'[\s]','gi');
 		}
 		substitution = function(str) {
 				var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
@@ -195,9 +195,9 @@ var Filter = {
 	},
 
 	searchImage : function(inner, ending) {
-		var r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.png|\.bmp|\.jpg|\.jpeg)(\?[\w\/=?~.%&+\-#\!\']+)?/gi;
+		var r1 = new RegExp(regex.image,'gi');
 		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
+			r1 = new RegExp(regex.image+'[\s]','gi');
 		}
 		substitution = function(str) {
 				return '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+str+'"/></span>';
@@ -207,9 +207,9 @@ var Filter = {
 	},
 
 	searchGif : function(inner, ending) {
-		var r1 = /[\s]*https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.gif)(\?[\w\/=?~.%&+\-#\!\']+)?/gi;
+		var r1 = new RegExp(regex.gif,'gi');
 		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
+			r1 = new RegExp(regex.gif+'[\s]','gi');
 		}
 		substitution = function(str) {
 				var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
@@ -224,7 +224,7 @@ var Filter = {
 	},
 
 	searchFile : function(inner, ending, viewer) {
-		r1 = /\{\:[a-zA-Z0-9]+\:\}/gi;
+		var r1 = new RegExp(regex.file,'gi');
 		substitution = function(str) {
 			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
 			return output;
@@ -289,9 +289,9 @@ var Filter = {
 
 	searchLink : function(inner, ending) {
 		var baliseId = createId();
-		var r1 = /[\s]*https?:\/\/[^\s]+/gi;
+		var r1 = new RegExp(regex.link,'gi');
 		if(!ending) {
-			r1 = new RegExp(r1+'[\s]','gi');
+			r1 = new RegExp(regex.link+'[\s]','gi');
 		}
 		substitution = function(str) {
 			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+baliseId+'"><img src="Assets/ajax-loader.gif"/></span>';

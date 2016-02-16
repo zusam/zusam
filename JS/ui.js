@@ -180,19 +180,9 @@ function hidenewpost(sent) {
 	}
 }
 
-//function togglepostviewer(e) {
-//	spv = $('#slidepostviewer');
-//	if(spv.hasClass('active') || e == null) {
-//		hidepostviewer();
-//	} else {
-//		var id = $(e.currentTarget).attr('data-id');
-//		showpostviewer(id);
-//	}
-//}
-
 function hidenewcommentsection(id) {
 	t = $(id);
-	t.after('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
+	t.after('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 	t.remove();
 }
 
@@ -233,7 +223,7 @@ function showpostviewer(id) {
 	spv = $('#slidepostviewer');
 	spv.addClass('active');
 	spv.append('<div class="nano"><div class="nano-content"></div></div>');
-	$('#slidepostviewer .nano .nano-content').append('<div id="post-viewer"></div>');
+	$('#slidepostviewer .nano .nano-content').append('<div id="post-viewer" tabindex="-1"></div>');
 	
 	addMask("push_hidepost()",0.75);
 	$('#post-viewer').attr('data-id',id);
@@ -264,7 +254,7 @@ function showpostviewer(id) {
 				var plop = $(data['html']);
 				$('#post-viewer').append(plop);
 				//$('#post-viewer').append('<div class="post-separator"></div>');
-				$('#post-viewer').append('<div onclick="shownewcommentsection(this)" class="new-comment-section"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
+				$('#post-viewer').append('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
 
 				$('.nano-content').on('scroll',function(){
 					if(typeof(window.spvScrollTop) == 'undefined') {
@@ -294,6 +284,7 @@ function showpostviewer(id) {
 				$('.nano-content').on('scroll',function(e) {
 					lazyload(e.currentTarget);
 				});
+				$('#post-viewer').focus();
 			}
 		},
 		error: function() {

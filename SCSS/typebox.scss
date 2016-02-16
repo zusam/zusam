@@ -71,12 +71,6 @@ img.lazyload {
 .dynamicBox > span > canvas { 
 	max-width: 100%; 
 }
-//.middle-iframe iframe {
-//	margin: 0 auto;
-//}
-//.large-iframe iframe {
-//	width: calc(100% - 20px);
-//}
 .deletable {
 	display: block;
 	position: relative;
@@ -84,13 +78,12 @@ img.lazyload {
 	text-align: center;
 	cursor: default;
 	margin: 1px 0px;
+	overflow: hidden;
 
 	.launcher {
 		display: block;
 		position: relative;
 		cursor: pointer;
-		//background: #ccc no-repeat center center / cover; 
-		//clear: both;
 		height: 0px;
 		padding-bottom: 56.25%;
 		

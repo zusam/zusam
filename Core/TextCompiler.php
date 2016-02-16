@@ -5,7 +5,10 @@ require_once('Include.php');
 
 function compileText($text) {
 
+	$r = $GLOBALS['regex'];
+
 	$str = strip_tags($text);
+	$str = " ".$str." ";
 	
 	// new lines tags
 	$str = preg_replace("/\n/","<br>",$str);
@@ -13,25 +16,25 @@ function compileText($text) {
 	$str = encapsuleKnownLinks($str);
 	
 	// general link
-	$str = preg_replace_callback('/https?:\/\/[^\s]+/i','callback_link',$str);
+	$str = preg_replace_callback(r2p($r['link']),'callback_link',$str);
 
 	$str = decapsuleLinks($str);
 
 	//$str = preg_replace_callback('/(https?:\/\/www.instagram.com\/)([^\s]+)\s+/i','callback_instagram',$str);
-	$str = preg_replace_callback('/(https?:\/\/onedrive.live.com\/)([^\s]+)\s+/i','callback_onedrive',$str);
-	$str = preg_replace_callback('/(https?:\/\/drive.google.com\/)([^\s]+)\s+/i','callback_googleDrive',$str);
-	$str = preg_replace_callback('/(https?:\/\/soundcloud.com\/)([^\s]+)\s+/i','callback_soundcloud',$str);
-	$str = preg_replace_callback('/(https?:\/\/vine.co\/v\/)([\w\-]+)\s+/i','callback_vine',$str);
-	$str = preg_replace_callback('/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)\s+/i','callback_dailymotion',$str);
-	$str = preg_replace_callback('/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)\s+/','callback_vimeo',$str);
-	$str = preg_replace_callback('/https?:\/\/youtu\.be\/[\w\/=?~.%&+\-#]+\s+/i','callback_youtube2',$str);
-	$str = preg_replace_callback('/https?:\/\/(www|m)\.youtube\.com\/watch[\w\/=?~.%&+\-#]+\s+/i','callback_youtube',$str);
-	$str = preg_replace_callback('/https?:\/\/[^\s]+(\.mp4|\.webm|\.gifv)(\?\w*)?\s+/i','callback_video',$str);
-	$str = preg_replace_callback('/https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.jpg|\.bmp|\.jpeg|\.png)(\?[\w\/=?~.%&+\-#\!\']+)?\s+/i','callback_image',$str);
-	$str = preg_replace_callback('/https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.gif(?!v))(\?[\w\/=?~.%&+\-#\!\']+)?\s+/i','callback_gif',$str);
+	$str = preg_replace_callback(r2p($r['onedrive']),'callback_onedrive',$str);
+	$str = preg_replace_callback(r2p($r['googleDrive']),'callback_googleDrive',$str);
+	$str = preg_replace_callback(r2p($r['soundcloud']),'callback_soundcloud',$str);
+	$str = preg_replace_callback(r2p($r['vine']),'callback_vine',$str);
+	$str = preg_replace_callback(r2p($r['dailymotion']),'callback_dailymotion',$str);
+	$str = preg_replace_callback(r2p($r['vimeo']),'callback_vimeo',$str);
+	$str = preg_replace_callback(r2p($r['youtube2']),'callback_youtube2',$str);
+	$str = preg_replace_callback(r2p($r['youtube']),'callback_youtube',$str);
+	$str = preg_replace_callback(r2p($r['video']),'callback_video',$str);
+	$str = preg_replace_callback(r2p($r['image']),'callback_image',$str);
+	$str = preg_replace_callback(r2p($r['gif']),'callback_gif',$str);
 	
 	// files
-	$str = preg_replace_callback('/\{\:[a-zA-Z0-9]+\:\}/i','callback_file',$str);
+	$str = preg_replace_callback(r2p($r['file']),'callback_file',$str);
 
 	$str = ' <div>'.$str.'</div> ';
 	$str = preg_replace('/\<div\>\s*\<\/div\>/','',$str);
@@ -43,25 +46,30 @@ function compileText($text) {
 
 function encapsuleKnownLinks($str) {
 	
+	$r = $GLOBALS['regex'];
+	
+	//var_dump(r2ep($r['image']));
 	//$str = preg_replace('/(https?:\/\/www.instagram.com\/[^\s]+)/i','[[$1]]',$str);
-	$str = preg_replace('/(https?:\/\/onedrive.live.com\/[^\s]+)/i','[[$1]]',$str);
-	$str = preg_replace('/(https?:\/\/drive.google.com\/[^\s]+)/i','[[$1]]',$str);
-	$str = preg_replace('/(https?:\/\/soundcloud.com\/[^\s]+)/i','[[$1]]',$str);
-	$str = preg_replace('/(https?:\/\/vine.co\/v\/[\w\-]+)/i','[[$1]]',$str);
-	$str = preg_replace('/(https?:\/\/www.dailymotion.com\/video\/[\w\-]+)/i','[[$1]]',$str);
-	$str = preg_replace('/(https?:\/\/vimeo.com\/(channels\/staffpicks\/)?[0-9]+)/','[[$1]]',$str);
-	$str = preg_replace('/(https?:\/\/youtu\.be\/[\w\/=?~.%&+\-#]+)/i','[[$1]]',$str);
-	$str = preg_replace('/(https?:\/\/(www|m)\.youtube\.com\/watch[\w\/=?~.%&+\-#]+)/i','[[$1]]',$str);
-	$str = preg_replace('/(https?:\/\/[^\s]+(\.mp4|\.webm|\.gifv)(\?\w*)?)/i','[[$1]]',$str);
-	$str = preg_replace('/(https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.jpg|\.bmp|\.jpeg|\.png)(\?[\w\/=?~.%&+\-#\!\']+)?)/i','[[$1]]',$str);
-	$str = preg_replace('/(https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.gif(?!v))(\?[\w\/=?~.%&+\-#\!\']+)?)/i','[[$1]]',$str);
+	$str = preg_replace(r2ep($r['onedrive']),'[[$1]]',$str);
+	$str = preg_replace(r2ep($r['googleDrive']),'[[$1]]',$str);
+	$str = preg_replace(r2ep($r['soundcloud']),'[[$1]]',$str);
+	$str = preg_replace(r2ep($r['vine']),'[[$1]]',$str);
+	$str = preg_replace(r2ep($r['dailymotion']),'[[$1]]',$str);
+	$str = preg_replace(r2ep($r['vimeo']),'[[$1]]',$str);
+	$str = preg_replace(r2ep($r['youtube2']),'[[$1]]',$str);
+	$str = preg_replace(r2ep($r['youtube']),'[[$1]]',$str);
+	$str = preg_replace(r2ep($r['video']),'[[$1]]',$str);
+	$str = preg_replace(r2ep($r['image']),'[[$1]]',$str);
+	$str = preg_replace(r2ep($r['gif']),'[[$1]]',$str);
+
+	//var_dump($str);
 
 	return $str;
 }
 
 function decapsuleLinks($str) {
-	$str = preg_replace('/\[\[([^\[\]]+)\]\]/','$1',$str);
-	return " ".$str." ";
+	$str = preg_replace('/\[\[([^\[\]]+)\]\]/',' $1 ',$str);
+	return $str;
 }
 
 function prepareInput($match) {

@@ -496,19 +496,34 @@ function removeNotification(t) {
 }
 
 function inputFile(id) {
-	input = $('<input class="hidden" data-id="'+id+'" type="file"></input>');
+	input = $('<input class="hidden" data-id="'+id+'" type="file" multiple></input>');
 	input.on('change', handleFileSelect);
 	$('body').append(input);
 	input.click();
 }
 
 function handleFileSelect(evt) {
+console.log(evt);
 	var files = evt.target.files;
 	var id = evt.target.dataset.id;
 	console.log("change!");
 	file = files[0];
+	console.log(file);
+	console.log(files);
+	if(files.length > 20) {
+		alert('Le nombre maximum de fichier que vous pouvez envoyer en même temps est 20');
+		return false;
+	} else {
+		for(var i=0;i<files.length;i++) {
+			console.log(i);
+			handleFile(files[i],id);
+		}
+	}
 	evt.target.value = null;
-	if(!window.sending) {
+}
+
+function handleFile(file,id) {
+	//if(!window.sending) {
 		console.log(file.type);
 		console.log(file);
 		var fileTypeHandled = false;
@@ -540,7 +555,7 @@ function handleFileSelect(evt) {
 		if(!fileTypeHandled) {
 			alert("Le format du fichier n'est pas supporté");
 		}
-	}
+	//}
 }
 
 function playpause(t) {
@@ -593,26 +608,6 @@ function loadIframe(t) {
 	// iframe bug
 	$('iframe:not([src])').remove();
 }
-
-//function reconstructURL() {
-//	if(window.location.href.match(/\#[a-z0-9]+$/)) {
-//		var pid = window.location.href.replace(/.*\#([a-z0-9]+)/,"$1");
-//	} else {
-//		var pid = "";
-//	}
-//	var fid = $('#info').attr('data-fid');
-//
-//	if(fid != "") {
-//		var url = origin_url + "?fid=" + fid;
-//		if(pid != "") {
-//			url = url + "#" + pid;
-//		}
-//	} else {
-//		var url = origin_url + "?page=profile";
-//	}
-//	console.log("reconstruct :"+url);
-//	window.history.replaceState("", "", url);
-//}
 
 function evaluateURL() {
 	if(window.location.href.match(/\#[a-z0-9]+$/)) {
