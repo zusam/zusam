@@ -5,6 +5,7 @@ function loadSGF(file,id) {
 	var fileId = createId(); //Math.random().toString(36).slice(2)+Date.now().toString(36); 
 	var content = $('<span data-src="{:'+fileId+':}" class="deletable" contenteditable="false"><div class="sgf-viewer" id="sgf-viewer-'+fileId+'"></div></span>');
 	$(id).append(content);
+	$(id).append('<div contenteditable="true"></div>');
 	var wgo = new WGo.BasicPlayer(document.getElementById("sgf-viewer-"+fileId), { sgfFile: URL.createObjectURL(file), enableKeys: false, enableWheel: false, layout: {top: ["InfoBox", "Control"],bottom: ["CommentBox"]}});
 	wgo.setCoordinates(true);
 	PF.sendSGF(file, fileId);
@@ -71,7 +72,8 @@ function loadVideo(file,id) {
 function showVideo(vid, id, fileId) {
 	var content = $('<span data-src="{:'+fileId+':}" class="deletable" contenteditable="false"></span>');
 	content.append(vid);
-	$(id).append(content);	
+	$(id).append(content);
+	$(id).append('<div contenteditable="true"></div>');
 }
 
 function sendVideo(vidBlob, fileId) {
@@ -150,8 +152,6 @@ function trackProgress(fileId) {
 	}, 1000);
 }
 
-
-
 function loadImage(file,id) {
 	console.log("load image "+file.name);
 	var img = new Image();
@@ -178,6 +178,7 @@ function showImage(canvas, id, fileId) {
 	var content = $('<span data-src="{:'+fileId+':}" class="deletable" contenteditable="false"></span>');
 	content.append(canvas);
 	$(id).append(content);	
+	$(id).append('<div contenteditable="true"></div>');
 }
 
 function sendImage(canvas, fileId) {

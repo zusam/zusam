@@ -65,27 +65,6 @@ function cutIfTooLong($str, $n) {
 	return $replace;
 }
 
-function contentType($url) {
-	$ch = curl_init($url);
-	curl_setopt($ch, CURLOPT_HEADER, true);
-	curl_setopt($curl, CURLOPT_NOBODY, true);
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-	curl_setopt($ch, CURLOPT_ENCODING, "");
-	curl_setopt($ch, CURLOPT_USERAGENT, "");
-	curl_setopt($ch, CURLOPT_AUTOREFERER, true);
-	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-	curl_setopt($ch, CURLOPT_MAXREDIR, 10);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_COOKIEFILE, "tmp/cookie.txt");
-	curl_setopt($ch, CURLOPT_COOKIEJAR, "tmp/cookie.txt");
-	curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
-	$data = curl_exec($ch);
-	$data = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-	curl_close($ch);
-	return $data;
-}
-
 function fgc($url, $bytes, $header) {
 	$ch = curl_init($url);
 	if($header == true) {

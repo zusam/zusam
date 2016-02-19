@@ -1,33 +1,49 @@
-.newpost {
-	display: block;
+#slidenewpost {
+	width: 600px;
 	max-width: 100%;
-	width: 530px;
-	z-index: 10;
-	text-align: center;
-	cursor: text;
-	background: white;
-	color: black;
-	max-height: 100%;
-	overflow: auto;
+
+	.newpost {
+		display: block;
+		//max-width: 100%;
+		//width: 530px;
+		width: 100%;
+		z-index: 10;
+		//text-align: center;
+		//cursor: text;
+		//background: white;
+		//color: black;
+		//max-height: 100%;
+		//overflow: auto;
+	}
 }
 #slidepostviewer {
 	//width: 530px;
 	width: 600px;
 	max-width: 100%;
-}
-#post-viewer {
-	display: block;
-	width: 100%;
-	z-index: 10;
-	//margin-top: 30px;
 	
-	.fake-comment {
-		color: black;
-		background: white;
-		padding: 5px;
-		height: 20px;
-		cursor: text;
-		margin-bottom: 10px;
+	#post-viewer:focus {
+		outline: none;
+	}
+	#post-viewer {
+		display: block;
+		width: 100%;
+		z-index: 10;
+		//margin-top: 30px;
+		
+		.fake-comment {
+			color: black;
+			background: white;
+			padding: 15px;
+			height: 20px;
+			cursor: text;
+			margin-bottom: 50px;
+			color: grey;
+
+			i {
+				float: right;
+				font-size: 20px;
+			}
+		}
 	}
 }
 .post-separator {

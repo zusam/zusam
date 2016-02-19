@@ -93,7 +93,10 @@ $(window).ready(function() {
 		} 
 	});
 
-	// reconstruct url
-	//reconstructURL();
+	//start nano scroller
+	// TODO find a more clean method for adapting to the height of the content for this
+	setInterval(function() {
+		$(".nano").nanoScroller();
+	}, 1000);
 
 });

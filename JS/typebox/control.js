@@ -62,36 +62,16 @@ var Control = {
 					node.innerHTML = output[0];
 				}
 				if(!viewer && foeID != "") {
-					//console.log(firstOutputElement);
 					var tid = setInterval(function() {
-						console.log(foeID);
-						var plop = document.getElementById(foeID);
-						if(plop.scrollHeight > 0) {
-							console.log(plop.nextSibling);
-							console.log(plop.nextSibling.offsetTop);
-							console.log(plop.scrollHeight);
-							//document.getElementById('post-viewer').scrollTop = plop.offsetTop + plop.scrollHeight;
-							//document.getElementById('newpost').scrollTop = plop.offsetTop+ plop.scrollHeight;
-							plop.nextSibling.scrollIntoView(false);
+						var tmp = document.getElementById(foeID);
+						if(tmp.scrollHeight > 0) {
+							tmp.nextSibling.scrollIntoView(false);
 							clearInterval(tid);
 						}
 					}, 100);
 					setTimeout(function() {
 						clearInterval(tid);
 					}, 10000);
-					//setTimeout(function() {
-					//	var plop = document.getElementById(foeID);
-					//	console.log(plop.nextSibling);
-					//	plop.nextSibling.scrollIntoView(false);
-					//}, 1150);
-
-					//window.plop = firstOutputElement;
-					//throw new Error("Something went badly wrong!");
-					//console.log(firstOutputElement.scrollHeight);
-					//setTimeout(function(){console.log(firstOutputElement);firstOutputElement.scrollIntoView(false);console.log('plop')},20);
-					//node.scrollIntoView(false);
-					//firstOutputElement.scrollIntoView(false);
-					//$('#'+foeID)[0].scrollIntoView(false);
 				}
 			}
 			if(viewer == null || viewer == false) {
@@ -272,7 +252,8 @@ var Control = {
 	},
 
 	filter_out_search : function(t, viewer, ending) {
-		Control.searchFilter(t, Filter.searchOneDrive, viewer, ending);
+		Control.searchFilter(t, Filter.searchInstagram, viewer, ending);
+		Control.searchFilter(t, Filter.searchOnedrive, viewer, ending);
 		Control.searchFilter(t, Filter.searchGoogleDrive, viewer, ending);
 		Control.searchFilter(t, Filter.searchSoundcloud, viewer, ending);
 		Control.searchFilter(t, Filter.searchYoutube, viewer, ending);
@@ -302,6 +283,10 @@ var Control = {
 		var fail = args['fail'];
 		var ajax_url = args['ajax_url'];
 		var ajax_var = args['ajax_var'];
+		var ajax_method = args['ajax_method'];
+		if(typeof(ajax_method) == "undefined") {
+			ajax_method = "post";
+		}
 
 
 		inner = decode(inner);
@@ -346,23 +331,16 @@ var Control = {
 
 			for(j=0;j<m.length;j++) {
 				settings = new Object();
+				var param = [];
 				if(typeof(ajax_var) != "undefined") {
-					//var param = Object.keys(ajax_var).reduce(function(p,k){
-					//	return p+"&"+k+"="+ajax_var[k];
-					//}, "");
-					var param = ajax_var;
-					//console.log(param);
-					param['url'] = m[j];
-					//console.log(m[j]);
-				} else {
-					var param = "";
+					param = ajax_var;
 				}
-				//console.log(param);
+				param['url'] = m[j];
 				if(typeof(ajax_url) != "undefined") {
-					//settings.url = ajax_url+"?url="+encodeURI(m[j])+param;
 					settings.url = ajax_url;
 					settings.data = param;
-					settings.method = "post";
+					settings.method = ajax_method;
+					console.log(settings);
 					if(callback != null) {
 						settings.success = function(data){ 
 							callback(data); 
@@ -376,7 +354,6 @@ var Control = {
 						settings.error = function(){ fail(m[j]); };
 					}
 					if(callback != null) {
-						//console.log(settings);
 						$.ajax(settings);
 					}
 				}

@@ -2,6 +2,7 @@
 
 global $regex;
 $regex = array(
+	'instagram' => '(https?:\/\/www.instagram.com\/)([^\s]+)',
 	'onedrive' => '(https?:\/\/onedrive.live.com\/)([^\s]+)',
 	'googleDrive' => '(https?:\/\/drive.google.com\/)([^\s]+)',
 	'soundcloud' => '(https?:\/\/soundcloud.com\/)([^\s]+)',

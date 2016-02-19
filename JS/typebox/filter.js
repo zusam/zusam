@@ -1,6 +1,34 @@
 var Filter = {
 
-	searchOneDrive : function(inner, ending) {
+	searchInstagram : function(inner, ending) {
+		var baliseId = createId();
+		var r1 = new RegExp(regex.instagram,'gi');
+		if(!ending) {
+			r1 = new RegExp(regex.instagram+'[\s]','gi');
+		}
+		substitution = function(str) {
+			output = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+baliseId+'"><img src="Assets/ajax-loader.gif"/></span>';
+			return output;
+		}
+		var ajax_url = "Ajax/post.php";
+		var ajax_var = {"action":"getInstagram"};
+		callback = function(data) {
+			console.log(data);
+			e = $('<a class="mediaLink material-shadow" href="'+data['url']+'" target="_blank"><i class="fa fa-instagram"></i></a><img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+data['thumbnail_url']+'"/>');
+			balise = $('#'+baliseId);
+			balise.html(e);
+		};
+		fail = function(url) {
+			console.log("fail");
+			e = Filter.fail_request(url);
+			balise = $('#'+baliseId);
+			balise.html(e);
+		}
+		output = Control.searchMatch({"callerName":"searchInstagram", "inner":inner, "regex":r1, "ajax_url":ajax_url, "ajax_var":ajax_var, "substitution":substitution, "callback":callback, "fail":fail});
+		return output;
+	},
+
+	searchOnedrive : function(inner, ending) {
 		var r1 = new RegExp(regex.onedrive,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.onedrive+'[\s]','gi');
@@ -21,7 +49,7 @@ var Filter = {
 				return Filter.fail_request(str);
 			}
 		}
-		output = Control.searchMatch({"callerName":"searchOneDrive", "inner":inner, "regex":r1, "substitution":substitution});
+		output = Control.searchMatch({"callerName":"searchOnedrive", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
 

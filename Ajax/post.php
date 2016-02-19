@@ -27,6 +27,15 @@ if($POST['action'] != null && $POST['action'] != "") {
 if($_SESSION['connected']) {
 
 	if($POST['action'] != null && $POST['action'] != "") {
+
+		if($POST['action'] == "getInstagram") {
+			$url = $POST['url']; 
+			$data = json_decode(fgc("https://api.instagram.com/oembed/?url=".$url),true);
+			$data['url'] = $url;
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($data));
+			exit;
+		}
 		
 		// TODO protect
 		if($POST['action'] == "addFileToAlbum") {

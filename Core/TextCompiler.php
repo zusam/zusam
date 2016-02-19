@@ -20,7 +20,7 @@ function compileText($text) {
 
 	$str = decapsuleLinks($str);
 
-	//$str = preg_replace_callback('/(https?:\/\/www.instagram.com\/)([^\s]+)\s+/i','callback_instagram',$str);
+	$str = preg_replace_callback(r2p($r['instagram']),'callback_instagram',$str);
 	$str = preg_replace_callback(r2p($r['onedrive']),'callback_onedrive',$str);
 	$str = preg_replace_callback(r2p($r['googleDrive']),'callback_googleDrive',$str);
 	$str = preg_replace_callback(r2p($r['soundcloud']),'callback_soundcloud',$str);
@@ -48,8 +48,7 @@ function encapsuleKnownLinks($str) {
 	
 	$r = $GLOBALS['regex'];
 	
-	//var_dump(r2ep($r['image']));
-	//$str = preg_replace('/(https?:\/\/www.instagram.com\/[^\s]+)/i','[[$1]]',$str);
+	$str = preg_replace(r2ep($r['instagram']),'[[$1]]',$str);
 	$str = preg_replace(r2ep($r['onedrive']),'[[$1]]',$str);
 	$str = preg_replace(r2ep($r['googleDrive']),'[[$1]]',$str);
 	$str = preg_replace(r2ep($r['soundcloud']),'[[$1]]',$str);
@@ -61,8 +60,6 @@ function encapsuleKnownLinks($str) {
 	$str = preg_replace(r2ep($r['video']),'[[$1]]',$str);
 	$str = preg_replace(r2ep($r['image']),'[[$1]]',$str);
 	$str = preg_replace(r2ep($r['gif']),'[[$1]]',$str);
-
-	//var_dump($str);
 
 	return $str;
 }
@@ -84,11 +81,12 @@ function prepareOutput($str) {
 
 function callback_instagram($match) {
 	$str = prepareInput($match);
+		
+		$data = fgc("https://api.instagram.com/oembed/?url=".$str);
+		$data = json_decode($data,true);
 
 		$b = '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
-		//$o = '<blockquote class="instagram-media"><div><div><div></div></div><p><a href="'.$str.'" target="_blank"></a></p><p></p></div></blockquote><script async defer src="//platform.instagram.com/en_US/embeds.js"></script>';
-		$o = '<blockquote class="instagram-media" data-instgrm-version="6" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:8px;"> <div style=" background:#F8F8F8; line-height:0; margin-top:40px; padding:62.5% 0; text-align:center; width:100%;"> <div style=" background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAGFBMVEUiIiI9PT0eHh4gIB4hIBkcHBwcHBwcHBydr+JQAAAACHRSTlMABA4YHyQsM5jtaMwAAADfSURBVDjL7ZVBEgMhCAQBAf//42xcNbpAqakcM0ftUmFAAIBE81IqBJdS3lS6zs3bIpB9WED3YYXFPmHRfT8sgyrCP1x8uEUxLMzNWElFOYCV6mHWWwMzdPEKHlhLw7NWJqkHc4uIZphavDzA2JPzUDsBZziNae2S6owH8xPmX8G7zzgKEOPUoYHvGz1TBCxMkd3kwNVbU0gKHkx+iZILf77IofhrY1nYFnB/lQPb79drWOyJVa/DAvg9B/rLB4cC+Nqgdz/TvBbBnr6GBReqn/nRmDgaQEej7WhonozjF+Y2I/fZou/qAAAAAElFTkSuQmCC); display:block; height:44px; margin:0 auto -44px; position:relative; top:-22px; width:44px;"></div></div><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="'.$str.'" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A photo posted by Texts From Your Existentialist (@textsfromyourexistentialist)</a> on <time style=" font-family:Arial,sans-serif; font-size:14px; line-height:17px;" datetime="2016-02-11T03:55:31+00:00">Feb 10, 2016 at 7:55pm PST</time></p></div></blockquote>
-		<script async defer src="//platform.instagram.com/en_US/embeds.js"></script>';
+		$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="fa fa-instagram"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['thumbnail_url'].'"/>';
 		$a = '</span>';
 		$output = $b.$o.$a;
 

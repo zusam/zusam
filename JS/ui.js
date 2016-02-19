@@ -136,7 +136,7 @@ function hideimageeditor() {
 }
 
 function push_shownewpost() {
-	window.history.pushState('newpost', "", window.location.href.replace(/\#.*/,"") + "#newpost");
+	window.history.replaceState('newpost', "", window.location.href.replace(/\#.*/,"") + "#newpost");
 	evaluateURL();
 }
 
@@ -148,12 +148,17 @@ function shownewpost() {
 	invite = $('<div contenteditable="true" data-placeholder="Partagez quelque chose..."></div>')
 	$('#typeBox').html(invite);
 	e.addClass('active');
-	addMask("push_hideAll()",0.75);
+	addMask("push_hidenewpost()",0.75);
 }
 
 function push_hideAll() {
 	window.history.pushState("", "", window.location.href.replace(/\#.*/,""));
 	evaluateURL();
+}
+
+function push_hidenewpost(sent) {
+	window.history.replaceState("", "", window.location.href.replace(/\#.*/,""));
+	hidenewpost(sent);
 }
 
 function hidenewpost(sent) {
@@ -183,7 +188,7 @@ function hidenewpost(sent) {
 
 function hidenewcommentsection(id) {
 	t = $(id);
-	t.after('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
+	t.after('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="fa fa-comment-o"></i>Ecrire un commentaire...</div></div>');
 	t.remove();
 }
 
@@ -255,7 +260,7 @@ function showpostviewer(id) {
 				var plop = $(data['html']);
 				$('#post-viewer').append(plop);
 				//$('#post-viewer').append('<div class="post-separator"></div>');
-				$('#post-viewer').append('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment" data-placeholder="Ecrire un commentaire..."></div></div>');
+				$('#post-viewer').append('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="fa fa-comment-o"></i>Ecrire un commentaire...</div></div>');
 
 				$('.nano-content').on('scroll',function(){
 					if(typeof(window.spvScrollTop) == 'undefined') {
@@ -273,12 +278,6 @@ function showpostviewer(id) {
 				//typebox.view();
 				updatePostStats(id);
 				
-				//start nano scroller
-				// TODO find a more clean method for adapting to the height of the content for this
-				setInterval(function() {
-					$(".nano").nanoScroller();
-				}, 1000);
-
 				// lazy loading
 				// TODO first lazyload : choose a more wise selector
 				lazyload($('.nano-content')[0]);
@@ -351,4 +350,21 @@ function unveil(e) {
 			e.removeAttribute('height');
 		}
 	}
+}
+
+function fakeComment() {
+	var uid = $('#info').attr('data-uid');
+	$.ajax({
+		url:"Ajax/post.php",
+		type:"post",
+		data:{"action":"recordUsage","usage":usage},
+		success: function(data) {
+			console.log(data);
+		},
+		error: function() {
+			console.log("fail record");
+		}
+	});
+	var fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="fa fa-comment-o"></i>Ecrire un commentaire...</div></div>');
+//TODO XXX
 }

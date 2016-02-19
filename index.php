@@ -143,17 +143,21 @@ echo('<div id="slidepostviewer" class="slide slide-over slidefromright"></div>')
 // NEW POST
 echo('
 <div id="slidenewpost" class="slide slide-over slidefromright">
-	<div id="newpost" class="newpost">
-		<div id="typeBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Partagez quelque chose..."></div></div>
-		<div class="menu">
-			<div class="menu-cell">
-				<button onclick="push_hideAll()">Annuler</button>
-			</div>
-			<div class="menu-cell">
-				<button onclick="inputFile(\'#typeBox\')" class="action"><i class="fa fa-paperclip"></i></button>
-			</div>
-			<div class="menu-cell">
-				<button onclick="sendIt(\'#typeBox\')">Envoyer</button>
+	<div class="nano">
+		<div class="nano-content">
+			<div id="newpost" class="newpost">
+				<div id="typeBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Partagez quelque chose..."></div></div>
+				<div class="menu">
+					<div class="menu-cell">
+						<button onclick="push_hidenewpost()">Annuler</button>
+					</div>
+					<div class="menu-cell">
+						<button onclick="inputFile(\'#typeBox\')" class="action"><i class="fa fa-paperclip"></i></button>
+					</div>
+					<div class="menu-cell">
+						<button onclick="sendIt(\'#typeBox\')">Envoyer</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

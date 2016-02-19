@@ -284,7 +284,7 @@ function sendIt(id) {
 		if(pid == 0 || pid == null) {
 			var post_loading = $('<div data-balise="'+baliseId+'" class="post-mini"><div class="spinner"><div class="bg-orange bounce1"></div><div class="bg-orange bounce2"></div><div class="bg-orange bounce3"></div></div></div>');
 			$('#container').prepend(post_loading);
-			hidenewpost(true);
+			push_hidenewpost(true);
 		}
 	} else {
 		if(pid == 0 || pid == null) {
