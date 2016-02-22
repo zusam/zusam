@@ -1,6 +1,8 @@
 <?php
 
 function landing($warning, $redirect_url) {
+	$head = html_head($GLOBALS['__ROOT_URL__']);
+	echo($head);
 	echo('
 		<body id="landing">
 			

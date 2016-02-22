@@ -40,9 +40,11 @@ function create_post_miniature($url, $file) {
 }
 
 function filtre($url) {
+	
+	$regex = $GLOBALS['regex'];
 
 	// FILE //
-	if(preg_match("/(\{\:)([A-Za-z0-9]+)(\:\})/",$url)==1) {
+	if(preg_match(r2ep($regex['file']),$url)==1) {
 		$link = preg_replace("/(\{\:)([A-Za-z0-9]+)(\:\})/","$2",$url);
 		$file = file_load(array("fileId" => $link));
 		if($file['type'] == "jpg") {
@@ -61,31 +63,31 @@ function filtre($url) {
 	}
 
 	// GOOGLE DRIVE //
-	if(preg_match("/(https?:\/\/drive.google.com\/)([^\s]+)/",$url)==1) {
+	if(preg_match(r2ep($regex['googleDrive']),$url)==1) {
 		return pathTo2(array("url"=>"googleDrive","param"=>"static_mini","ext"=>"jpg"));
 	}
 	
 	// ONEDRIVE //
-	if(preg_match("/(https?:\/\/onedrive.live.com\/)([^\s]+)/",$url)==1) {
+	if(preg_match(r2ep($regex['onedrive']),$url)==1) {
 		return pathTo2(array("url"=>"onedrive","param"=>"static_mini","ext"=>"jpg"));
 	}
 
 	// YOUTUBE //
-	if(preg_match("/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([a-zA-Z0-9\-\_]+)(.*)/",$url)==1) {
+	if(preg_match(r2ep($regex['youtube']),$url)==1) {
 		$link = preg_replace("/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/","http://img.youtube.com/vi/$4/0.jpg",$url);
 		$ret = get_mini_from_link($url, $link);
 		return $ret;
 	}
 
 	// YOUTUBE2 //
-	if(preg_match("/https?:\/\/youtu\.be\/[\w\/=?~.%&+\-#]+$/",$url)==1) {
+	if(preg_match(r2ep($regex['youtube2']),$url)==1) {
 		$link = preg_replace("/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/","http://img.youtube.com/vi/$2/0.jpg",$url);
 		$ret = get_mini_from_link($url, $link);
 		return $ret;
 	}
 
 	// VIMEO //
-	if(preg_match("/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/",$url)==1) {
+	if(preg_match(r2ep($regex['vimeo']),$url)==1) {
 		$id = preg_replace("/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/","$3",$url);
 		$hash = unserialize(file_get_contents("http://vimeo.com/api/v2/video/$id.php"));
 		$link = $hash[0]['thumbnail_large'];  
@@ -94,14 +96,14 @@ function filtre($url) {
 	}
 
 	// DAILYMOTION //
-	if(preg_match("/(http:\/\/www.dailymotion.com\/video\/)([0-9a-zA-Z]+)([^\s]+)/",$url)==1) {
+	if(preg_match(r2ep($regex['dailymotion']),$url)==1) {
 		$link = preg_replace("/(http:\/\/www\.dailymotion\.com\/video\/)([0-9a-zA-Z]+)([^\s]*)/","http://www.dailymotion.com/thumbnail/video/$2",$url);
 		$ret = get_mini_from_link($url, $link);
 		return $ret;
 	}
 
 	// VINE //
-	if(preg_match("/(https?:\/\/vine.co\/v\/[a-zA-Z0-9]+\/?)/",$url)==1) {
+	if(preg_match(r2ep($regex['vine']),$url)==1) {
 		$id = preg_replace("/(https?:\/\/vine.co\/v\/)([a-zA-Z0-9]*)(\/?)/","$2",$url);
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HEADER, false);
@@ -122,7 +124,7 @@ function filtre($url) {
 	}
 
 	// SOUNDCLOUD //
-	if(preg_match("/(https?:\/\/soundcloud.com\/)([\w\-]+)\/([\w\-]+)(\/[\w\-]+)?/",$url)==1) {
+	if(preg_match(r2ep($regex['soundcloud']),$url)==1) {
 		$track_url = $url;
 		$client = new Services_Soundcloud('01af1b3315ad8177aefecab596621e09', 'f41efa7352f151e040d01a55c8c29b75');
 		$client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
@@ -137,20 +139,23 @@ function filtre($url) {
 	}
 
 	// WEB IMAGE & GIF //
-	if(preg_match("/(https?:\/\/.+)(\.bmp|\.jpeg|\.jpg|\.png|\.gif)(.*)/i",$url)==1) {
+	if(preg_match(r2ep($regex['image']),$url)==1) {
 		$ret = create_post_miniature($url);
 		return $ret;
 	}
 
 	// WEB VIDEO //
-	if(preg_match("/(https?:\/\/.+)(\.webm|\.mp4)(.*)/i",$url)==1) {
+	if(preg_match(r2ep($regex['video']),$url)==1) {
+		if(preg_match("/\.gifv/",$url)==1) {
+			$url = preg_replace("/\.gifv/",".webm",$url);
+		}
 		$ret = web_video($url);
 		return $ret;
 	}
 
 	// IF ALL ELSE FAILS //
 	// OPEN GRAPH //
-	if(preg_match("/https?:\/\/[\w\/=?~.%&+\-#]+/",$url)==1) {
+	if(preg_match(r2ep($regex['link']),$url)==1) {
 		$prev = json_decode(preview($url), true);
 		$link = $prev['image']['url'];
 		$ret = get_mini_from_link($url, $link);

@@ -211,9 +211,13 @@ var Filter = {
 			r1 = new RegExp(regex.video+'[\s]','gi');
 		}
 		substitution = function(str) {
+				var video_link = str;
+				if(str.match(/\.gifv/)) {
+					video_link = str.replace(/\.gifv/,".webm");
+				}
 				var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 				var o = '<span class="deletable" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
-				o += '<div onclick="loadVideo(this)" data-src="'+str+'" class="launcher">';
+				o += '<div onclick="loadVideo(this)" data-src="'+video_link+'" class="launcher">';
 				o += '<img src="'+xx+'" onerror="loadVideo(this)"/>';
 				o += '</div></span>';
 				return o;

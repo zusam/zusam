@@ -1,8 +1,9 @@
 section {
 	position: relative;
-	top: 50px;
+	top: 40px;
 	transition: all 0.5s;
-	width: 100%;
+	width: calc(100% - 20px);
+	padding: 10px;
 	
 	.big-title {
 		display: block;
@@ -33,14 +34,17 @@ section {
 	.post-mini {
 		display: block;
 		overflow: hidden;
-		margin: 10px;
+		margin: 15px;
 		cursor: pointer;
-		width: 320px;
+		width: 280px;
 		max-height: 180px;
 		min-height: 80px;
 		border-radius: 2px;
 		position: relative;
 		text-decoration: none;
+		flex-grow: 1;
+		-webkit-flex-grow: 1;
+		max-width: 360px;
 
 		.post-start {
 			display: none;

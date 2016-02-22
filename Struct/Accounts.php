@@ -3,7 +3,6 @@
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Include.php');
 
-//TODO necessary ? -- yes
 function account_getDummy($default) {
 	$ac = [];
 	$ac['_id'] = -1;

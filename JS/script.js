@@ -398,6 +398,7 @@ function disconnect() {
 		type: "POST",
 		data: {"mail":"", "password":""},
 		success: function(data) {
+				document.cookie = 'auth_token' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 				window.location = location.protocol + "//" + location.host + location.pathname;
 			}
 	})
@@ -547,13 +548,13 @@ function handleFile(file,id) {
 	}
 }
 
-function playpause(t) {
-	if(t.paused) {
-		t.play();
-	} else {
-		t.pause();
-	}
-}
+//function playpause(t) {
+//	if(t.paused) {
+//		t.play();
+//	} else {
+//		t.pause();
+//	}
+//}
 
 function loadImage(t) {
 	t = $(t).closest('.launcher');
@@ -577,7 +578,7 @@ function loadVideo(t) {
 		return false;
 	});
 	var src = t.attr('data-src');
-	var vid = $('<video class="inlineImage" onclick="playpause(this)" controls loop autoplay src="'+src+'"></video>');
+	var vid = $('<video class="inlineImage" controls loop autoplay src="'+src+'"></video>');
 	// TODO use canplaythrough ?
 	vid.on('canplay', function() {
 		t.after(vid);

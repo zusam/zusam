@@ -25,6 +25,7 @@ require_once('LibPHP/PHPMailer-5.2.14/PHPMailerAutoload.php');
 require_once('LibPHP/Soundcloud.php');
 
 require_once('Pages/forum.php');
+require_once('Pages/main.php');
 require_once('Pages/mainmenu.php');
 require_once('Pages/nav.php');
 require_once('Pages/profile.php');

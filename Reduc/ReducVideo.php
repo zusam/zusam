@@ -26,9 +26,9 @@ function saveVideo($url, $to, $progressID) {
 	$pathProgress = "tmp/".escapeshellcmd($progressID);
 	$in = escapeshellcmd($url);
 	$out = escapeshellcmd($to);
-	var_dump($in);
-	var_dump($out);
-	var_dump($pathProgress);
+	//var_dump($in);
+	//var_dump($out);
+	//var_dump($pathProgress);
 exec("/usr/bin/ffmpeg -t 600 -i ".$in." -c:v libvpx -filter:v scale=480:-1 -speed 2 -crf 24 -b:v 600k -c:a libvorbis -y -t 600 ".$out." -progress ".$pathProgress);
 	exec("/usr/bin/rm ".$pathProgress);
 	if(filesize($out) == 0) {
