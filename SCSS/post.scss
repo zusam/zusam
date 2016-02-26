@@ -4,16 +4,12 @@
 
 	.newpost {
 		display: block;
-		//max-width: 100%;
-		//width: 530px;
 		width: 100%;
 		z-index: 10;
-		//text-align: center;
-		//cursor: text;
-		//background: white;
-		//color: black;
-		//max-height: 100%;
-		//overflow: auto;
+
+		.dynamicBox {
+			background-color: white;
+		}
 	}
 }
 #slidepostviewer {

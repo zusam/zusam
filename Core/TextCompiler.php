@@ -85,7 +85,7 @@ function callback_instagram($match) {
 		$data = fgc("https://api.instagram.com/oembed/?url=".$str);
 		$data = json_decode($data,true);
 
-		$b = '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 		$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="fa fa-instagram"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['thumbnail_url'].'"/>';
 		$a = '</span>';
 		$output = $b.$o.$a;
@@ -106,7 +106,7 @@ function callback_onedrive($match) {
 
 	}
 	if(preg_match("/^[\!\%\w]+$/",$resid)) {
-		$b = '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 		$o = '<iframe width="320" height="180" seamless src="https://onedrive.live.com/embed?'.$param.'" frameborder="0"></iframe>';
 		$a = '</span>';
 		$output = $b.$o.$a;
@@ -125,7 +125,7 @@ function callback_googleDrive($match) {
 		$id = preg_replace("/(https?:\/\/drive.google.com\/file\/d\/)([\w]+)(\/)([^\s]+)/","$2",$str);
 	}
 	if(preg_match("/^\w+$/",$id)==1) {
-		$b = '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 		$o = '<div class="embed-responsive embed-responsive-square"><iframe seamless class="embed-responsive-item" src="https://drive.google.com/file/d/'.$id.'/preview" frameborder="0"></iframe></div>';
 		$a = '</span>';
 		$output = $b.$o.$a;
@@ -160,7 +160,7 @@ function callback_link($match) {
 		$e = open_graph_build($data);
 	}
 	$html = "";
-	$html .= '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= $e;
 	$html .= '</span>';
 	return prepareOutput($html);
@@ -208,7 +208,7 @@ function callback_soundcloud($match) {
 	$code .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
 	$code .= '</div></div>';
 	$html = '
-		<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">
+		<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">
 			<script>
 				SC.oEmbed("'.$str.'", { auto_play: true }, function(oEmbed) {
 					var song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,"$1");
@@ -227,7 +227,7 @@ function callback_vine($match) {
 	$str = prepareInput($match);
 	$html = "";
 	$w .= preg_replace('/(https?:\/\/vine.co\/v\/)([\w\-]+)/','$1$2/embed/simple',$str);
-	$html .= '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-square">';
 	$html .= '<iframe seamless class="embed-responsive-item" src="'.$w.'" frameborder="0"></iframe>';
 	$html .= '<script async src="//platform.vine.co/static/scripts/embed.js charset="utf-8"></script>';
@@ -241,7 +241,7 @@ function callback_dailymotion($match) {
 	$w = preg_replace('/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/','http://www.dailymotion.com/embed/video/$2?autoplay=1',$str);
 	$xx = p2l(pmini($str));
 	gen_miniature($str);
-	$html .= '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
@@ -255,7 +255,7 @@ function callback_vimeo($match) {
 	$w = preg_replace('/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/','http://player.vimeo.com/video/$3?autoplay=1',$str);
 	$xx = p2l(pmini($str));
 	gen_miniature($str);
-	$html .= '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
@@ -270,7 +270,7 @@ function callback_youtube2($match) {
 	$w = 'http://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
 	$xx = p2l(pmini($str));
 	gen_miniature($str);
-	$html .= '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
@@ -285,7 +285,7 @@ function callback_youtube($match) {
 	$w = 'http://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
 	$xx = p2l(pmini($str));
 	gen_miniature($str);
-	$html .= '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
@@ -301,7 +301,7 @@ function callback_video($match) {
 	$xx = p2l(pmini($str));
 	gen_miniature($str);
 	$html = "";
-	$html .= '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div onclick="loadVideo(this)" data-src="'.$str.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';
 	$html .= '</div></span>';
@@ -311,7 +311,7 @@ function callback_video($match) {
 function callback_image($match) {
 	$str = prepareInput($match);
 	$html = "";
-	$html .= '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$str.'"/>';
 	$html .= '</span>';
 	return prepareOutput($html);
@@ -322,7 +322,7 @@ function callback_gif($match) {
 	$xx = p2l(pmini($str));
 	gen_miniature($str);
 	$html = "";
-	$html .= '<span class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div onclick="loadImage(this)" data-src="'.$str.'" class="launcher">';
 	$html .= '<img class="inlineImage" src="'.$xx.'" onerror="loadImage(this)"/>';
 	$html .= '</div></span>';
@@ -337,7 +337,7 @@ function callback_file($match) {
 	$uid = $_SESSION['uid'];
 	if($file) {
 		$html = "";
-		$html .= '<span uid="'.$uid.'" owner="'.$file['owner'].'" class="deletable" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		$html .= '<span uid="'.$uid.'" owner="'.$file['owner'].'" class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 		if($uid == (String) $file['owner'] && $file['type'] == 'jpg') {
 			$html .= '<div contenteditable="false">';
 			$html .= file_print($file);

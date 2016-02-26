@@ -1,5 +1,5 @@
 .dynamicBox{
-	display: inline-block;
+	//display: inline-block;
 	padding:0px;
 	position:relative;
 	min-height:66px;
@@ -8,7 +8,15 @@
 	text-align:left;
 	word-break: break-word;
 	width: 100%;
-	background-color: white;
+	
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: initial;
+	align-items: center;
+	display: -webkit-flex;
+	-webkit-flex-flow: row wrap;
+	-webkit-justify-content: initial;
+	-webkit-align-items: center;
 	
 	.progressBar {
 		display: block;
@@ -42,6 +50,10 @@
 .dynamicBox > span > img, .dynamicBox > span > div > img, .inlineImage { 
 	margin:0px 0px; 
 	max-width: 100%;
+	//position: relative;
+	//top: 50%;
+	//transform: translateY(-50%);
+	//-webkit-transform: translateY(-50%);
 }
 img.lazyload {
 	opacity: 0;
@@ -59,7 +71,6 @@ img.lazyload {
 	padding: 2px; 
 	margin: 0px; 
 	min-height: 18px;
-	//width: 100%;
 	width: calc(100% - 4px);
 }
 .dynamicBox > div:focus { 
@@ -72,7 +83,30 @@ img.lazyload {
 .dynamicBox > span > canvas { 
 	max-width: 100%; 
 }
-.deletable {
+.flexible-image {
+	display: block;
+	position: relative;
+	width: 33%;
+	text-align: center;
+	cursor: default;
+	overflow: hidden;
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	height: 130px;
+	outline: 1px solid white;
+
+	img {
+		position: relative;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		-webkit-transform: translate(-50%, -50%);
+		width: 100px;
+		min-width: 100%;
+		min-height: 100%;
+	}
+}
+.deletable-block {
 	display: block;
 	position: relative;
 	width: 100%;
@@ -80,7 +114,8 @@ img.lazyload {
 	cursor: default;
 	margin: 1px 0px;
 	overflow: hidden;
-
+}
+.deletable {
 	.launcher {
 		display: block;
 		position: relative;
