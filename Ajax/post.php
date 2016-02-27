@@ -250,10 +250,8 @@ if($_SESSION['connected']) {
 				$u = account_load(array('_id' => $uid));
 				if($u != null && $u != false) {
 					$file = file_initialize($fileId, "webm", $u['_id']);
-			$r = saveVideo($_FILES["video"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'webm', 'param' => 'file')), $fileId);
-					if($r) {
-						file_save($file);
-					}
+				saveVideo($_FILES["video"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'webm', 'param' => 'file')), $fileId);
+					file_save($file);
 				}
 			}
 

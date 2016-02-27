@@ -3,7 +3,7 @@ function loadSGF(file,id) {
 	console.log("load sgf "+file.name);
 	$('*[data-id="'+id+'"]').remove();
 	var fileId = createId(); //Math.random().toString(36).slice(2)+Date.now().toString(36); 
-	var content = $('<span data-src="{:'+fileId+':}" class="deletable" contenteditable="false"><div class="sgf-viewer" id="sgf-viewer-'+fileId+'"></div></span>');
+	var content = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"><div class="sgf-viewer" id="sgf-viewer-'+fileId+'"></div></span>');
 	$(id).append(content);
 	$(id).append('<div contenteditable="true"></div>');
 	var wgo = new WGo.BasicPlayer(document.getElementById("sgf-viewer-"+fileId), { sgfFile: URL.createObjectURL(file), enableKeys: false, enableWheel: false, layout: {top: ["InfoBox", "Control"],bottom: ["CommentBox"]}});
@@ -70,7 +70,7 @@ function loadVideo(file,id) {
 }
 
 function showVideo(vid, id, fileId) {
-	var content = $('<span data-src="{:'+fileId+':}" class="deletable" contenteditable="false"></span>');
+	var content = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
 	content.append(vid);
 	$(id).append(content);
 	$(id).append('<div contenteditable="true"></div>');
@@ -112,7 +112,7 @@ function sendVideo(vidBlob, fileId) {
 				console.log('done !');
 				setTimeout(function() {
 					trackProgress(fileId);
-				}, 1000);
+				}, 500);
 			}
 			return xhr;
 		}
@@ -122,12 +122,13 @@ function sendVideo(vidBlob, fileId) {
 
 function trackProgress(fileId) {
 	pid = setInterval(function() {
+		console.log("Ajax/get.php?action=getProgess&fileId="+fileId);
 		$.ajax({
 			url: "Ajax/get.php",
 			type: "GET",
 			data: {"fileId":fileId, "action":"getProgress"},
 			success: function(data){ 
-					//console.log(data);
+					console.log(data);
 					if(!data['progress']) {
 						console.log("endTrack"); 
 						clearInterval(pid);
@@ -138,7 +139,7 @@ function trackProgress(fileId) {
 						var duration = content.find('video')[0].duration;
 						var time = (data['progress'].replace(/\r?\n|\r/g,""))/1000000;
 						var p = time/duration*100;
-						//console.log(p);
+						console.log(p);
 						content.find('.progressBar .conversion').css('width',p+"%");
 					}
 				},
@@ -175,7 +176,7 @@ function loadImage(file,id) {
 }
 
 function showImage(canvas, id, fileId) {
-	var content = $('<span data-src="{:'+fileId+':}" class="deletable" contenteditable="false"></span>');
+	var content = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
 	content.append(canvas);
 	$(id).append(content);	
 	$(id).append('<div contenteditable="true"></div>');
