@@ -28,6 +28,19 @@ function print_full_post($id, $uid) {
 		return "";
 	}
 	$html_data .= print_post($id, $uid, $p);
+
+	$nb_hidden = max(count($p['children']) - 4, 0);
+
+	if($nb_hidden > 0) {
+		if($nb_hidden > 1) {
+			$s = "s";
+		} else {
+			$s = "";
+		}
+		$html_data .= '<div class="more_comments" onclick="getMoreComments(\''.$id.'\')">Afficher '.$nb_hidden.' autre'.$s.' commentaire'.$s.'</div>';
+	}
+
+	$count_hidden = 0;
 	foreach($p['children'] as $cid) {
 
 		// TODO correct removing child posts in order to not do this
@@ -36,15 +49,58 @@ function print_full_post($id, $uid) {
 		if($c == false || $c == null) {
 			post_removeChild($p, $cid);
 		} else {
-			$child_html = print_post($cid, $uid, $viewer);
-			if($child_html != "") {
-				$html_data .= $child_html;
+			if($count_hidden < $nb_hidden) {
+				$count_hidden++;
+			} else {
+				$child_html = print_post($cid, $uid, $viewer);
+				if($child_html != "") {
+					$html_data .= $child_html;
+				}
 			}
 		}
 		post_save($p);
 	}
 	return $html_data;
+}
 
+function print_more_comments($id, $uid) {
+	
+	// init the html to return
+	$html_data = "";
+
+	// get the user
+	$u = account_load(array('_id' => $uid));
+	if($u == null || $u == false) {
+		$u = account_getDummy();
+	}
+	
+	$p = post_load(array('_id'=>$id));
+	if($p == null) {
+		return "";
+	}
+
+	$nb_hidden = max(count($p['children']) - 4, 0);
+
+	$count_hidden = 0;
+	foreach($p['children'] as $cid) {
+
+		// TODO correct removing child posts in order to not do this
+		// loading the child to see if he exists
+		$c = post_load(array('_id'=>$cid));
+		if($c == false || $c == null) {
+			post_removeChild($p, $cid);
+		} else {
+			if($count_hidden < $nb_hidden) {
+				$count_hidden++;
+				$child_html = print_post($cid, $uid, $viewer);
+				if($child_html != "") {
+					$html_data .= $child_html;
+				}
+			}
+		}
+		post_save($p);
+	}
+	return $html_data;
 }
 
 function print_post($id, $uid) {

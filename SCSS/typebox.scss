@@ -12,11 +12,11 @@
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: initial;
-	align-items: center;
+	//align-items: center;
 	display: -webkit-flex;
 	-webkit-flex-flow: row wrap;
 	-webkit-justify-content: initial;
-	-webkit-align-items: center;
+	//-webkit-align-items: center;
 	
 	.progressBar {
 		display: block;
@@ -86,7 +86,6 @@ img.lazyload {
 .flexible-image {
 	display: block;
 	position: relative;
-	width: 33%;
 	text-align: center;
 	cursor: default;
 	overflow: hidden;

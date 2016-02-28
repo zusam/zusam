@@ -304,7 +304,7 @@ var Filter = {
 			title = '<div class="title">'+html_entity_decode(data['title'])+'</div>'
 		} else { title = ""; }
 		if(typeof(data['description']) != "undefined" && data['description'] != "") {
-			description = '<div class="description">'+html_entity_decode(data['description'])+'</div>';
+			description = '<div class="description">'+data['description']+'</div>';
 		} else { description = ""; }
 		if(preview != "" || (title != "" && description != "")) {
 			e = $('<a class="article_big" href="'+decodeURI(data['url'])+'" target="_blank">'+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');

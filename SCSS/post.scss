@@ -1,3 +1,14 @@
+.more_comments {
+	padding: 5px;
+    text-align: center;
+	color: black;
+	background-color: lightgrey;
+	cursor: pointer;
+}
+.more_comments:hover {
+	text-decoration: underline;
+}
+
 #slidenewpost {
 	width: 600px;
 	max-width: 100%;

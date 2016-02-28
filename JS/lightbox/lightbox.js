@@ -1,6 +1,12 @@
 function enlighten(id) {
 
 	var e = $(id)[0];
+
+	if(e.dataset.lightbox != null) {
+		var lightbox_src = e.dataset.lightbox;	
+	} else {
+		var lightbox_src = e.src;
+	}
 	
 	lightbox.darken();
 	
@@ -26,7 +32,6 @@ function enlighten(id) {
 	$('body').css({'overflow':'hidden','max-height':'100%'});
 	var lb = $('<div id="lightbox"></div>');
 	if(typeof(prev_img) != "undefined") {
-		//var prev_id = "#"+prev_img.parentNode.id+" img";
 		$(prev_img).addClass("lightbox_prev");
 		unveil(prev_img);
 		var prev = $('<div onclick="lightbox.enlighten(\'.lightbox_prev\')" class="prev"><i class="fa fa-arrow-left"></i></div>');
@@ -37,7 +42,6 @@ function enlighten(id) {
 		});
 	}
 	if(typeof(next_img) != "undefined") {
-		//var next_id = "#"+next_img.parentNode.id+" img";
 		$(next_img).addClass("lightbox_next");
 		unveil(next_img);
 		var next = $('<div onclick="lightbox.enlighten(\'.lightbox_next\')" class="next"><i class="fa fa-arrow-right"></i></div>');
@@ -48,14 +52,13 @@ function enlighten(id) {
 		});
 	}
 	var close = $('<div class="close material-shadow" onclick="lightbox.darken()"><i class="fa fa-close"></i></div>');
-	var img = $('<img class="zoomedImage" src="'+e.src+'"/>');
+	var img = $('<img class="zoomedImage" src="'+lightbox_src+'"/>');
 	lb.css({
 		"top" : (window.innerHeight-height)/2 + "px",
 		"left" : (window.innerWidth-width)/2 + "px",
 		"width" : width + "px",
 		"height" : height + "px",
 	});
-	//$(img).on("click",function(){darken()});
 	lb.append(next).append(prev).append(img).append(close);
 	$('body').append(lb);
 	$(window).on('keydown',function(e) {

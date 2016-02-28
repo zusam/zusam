@@ -33,6 +33,24 @@ function toggleButterfly(t) {
 	});
 }
 
+function getMoreComments(pid) {
+	var uid = $('#info').attr('data-uid');
+	var fid = $('#info').attr('data-fid');
+	$.ajax({
+		url: "Ajax/get.php",
+		type: "GET",
+		data: {"action":"getMoreComments", "uid":uid, "fid":fid, "pid":pid},
+		success: function(data) {
+			console.log(data);
+			$('#post-viewer .more_comments').after(data['html']);
+			$('#post-viewer .more_comments').remove();
+		},
+		error: function() {
+			console.log('fail more_comments');
+		}
+	});
+}
+
 function updatePostStats(pid) {
 
 	var uid = $('#info').attr('data-uid');
