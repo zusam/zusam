@@ -56,7 +56,7 @@ function preview_getHTML(&$p) {
 	
 	//remove script/style tags
 	$dom = new DOMDocument();
-	$html_string = to_utf8($html_string);
+	//$html_string = to_utf8($html_string);
 	$html_string = mb_convert_encoding($html_string, 'HTML-ENTITIES', "UTF-8"); 
 	$dom->loadHTML($html_string);
 	$remove = [];

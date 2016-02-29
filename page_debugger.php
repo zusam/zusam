@@ -6,7 +6,7 @@ require_once('Include.php');
 $url = $_GET['url'];
 
 if($url != "") {
-	$p = preview_load(array('url' => $url));
+	//$p = preview_load(array('url' => $url));
 	if($p == null) {
 		$p = preview_initialize($url);
 		preview_save($p);
