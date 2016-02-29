@@ -156,24 +156,55 @@ function prepareOutput($str) {
 	return ' </div>'.$str.'<div> ';
 }
 
-function callback_imgur($match) {
-	$str = prepareInput($match);
+function process_imgur($str) {
 	// TODO add support for albums and not gallery (just add gallery)
-
-	if(preg_match("/\/gallery\//",$str)) {
-		$id = preg_replace("/.*gallery\/(\w+).*/","$1",$str);
-		if($id != "") {
-			$data = fgc("https://api.imgur.com/3/gallery/".$id);
-			$data = json_decode($data,true);
-			$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
-			$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="fa fa-external-link-square"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['data']['link'].'"/>';
-			$a = '</span>';
-			$output = $b.$o.$a;
+	$id = preg_replace("/.*\/(\w+)\/?$/","$1",$str);
+	if($id != "") {
+		$data = fgc("https://api.imgur.com/3/gallery/".$id);
+		$data = json_decode($data,true);
+		if($data['success']) {
+			if($data['data']['is_album'] == false) {
+				$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+				if($data['data']['webm'] != "") {
+					$xx = p2l(pmini($data['data']['webm']));
+					gen_miniature($data['data']['webm']);
+					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="fa fa-external-link-square"></i></a>';
+					$o .= '<div onclick="loadVideo(this)" data-src="'.$data['data']['webm'].'" class="launcher">';
+					$o .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';
+				} else {
+					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="fa fa-external-link-square"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['data']['link'].'"/>';
+				}
+				$a = '</span>';
+				$output = $b.$o.$a;
+			} else {
+				$output = "";
+				$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+				$output .= $b;	
+				foreach($data['data']['images'] as $im) {
+					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="fa fa-external-link-square"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$im['link'].'"/>';
+					$output .= $o;	
+				}
+				$a = '</span>';
+				$output .= $a;	
+			}
+		} else {
+			$data = handleLink($str);
+			$output = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+			$output .= open_graph_build($data);
+			$output .= '</span>';
 		}
 	} else {
-		$output = $str;
+		$data = handleLink($str);
+		$output = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		$output .= open_graph_build($data);
+		$output .= '</span>';
 	}
+	return $output;
+}
 
+function callback_imgur($match) {
+	$str = prepareInput($match);
+	$output = process_imgur($str);
 	return prepareOutput($output);
 }
 
@@ -242,21 +273,22 @@ function callback_link($match) {
 	}
 
 	$data = handleLink($str);
-	if(isset($data['info']) && $data['info'] == "extensionless") {
-		switch($data['type']) {
-			case "image";
-				$e = '<img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['url'].'"/>';
-				break;
-			case "video";
-				$e = '<video autoplay loop><source src="'.$str.'"></video>';
-				break;
-			default;
-				$e = fail_request($str);
-				break;
-		}
-	} else {
+	//if(isset($data['info']) && $data['info'] == "extensionless") {
+	//	switch($data['type']) {
+	//		case "image";
+	//			$e = '<img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['url'].'"/>';
+	//			break;
+	//		case "video";
+	//			$e = '<video autoplay loop><source src="'.$str.'"></video>';
+	//			break;
+	//		default;
+	//			$e = fail_request($str);
+	//			break;
+	//	}
+	//} else {
+	//	$e = open_graph_build($data);
+	//}
 		$e = open_graph_build($data);
-	}
 	$html = "";
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= $e;

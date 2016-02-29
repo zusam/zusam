@@ -28,6 +28,14 @@ if($_SESSION['connected']) {
 
 	if($POST['action'] != null && $POST['action'] != "") {
 
+		if($POST['action'] == "getImgur") {
+			$url = $POST['url']; 
+			$data['html'] = process_imgur($url);
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($data));
+			exit;
+		}
+
 		if($POST['action'] == "getInstagram") {
 			$url = $POST['url']; 
 			$data = json_decode(fgc("https://api.instagram.com/oembed/?url=".$url),true);

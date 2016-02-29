@@ -252,6 +252,7 @@ var Control = {
 	},
 
 	filter_out_search : function(t, viewer, ending) {
+		Control.searchFilter(t, Filter.searchImgur, viewer, ending);
 		Control.searchFilter(t, Filter.searchInstagram, viewer, ending);
 		Control.searchFilter(t, Filter.searchOnedrive, viewer, ending);
 		Control.searchFilter(t, Filter.searchGoogleDrive, viewer, ending);

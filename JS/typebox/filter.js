@@ -1,4 +1,32 @@
 var Filter = {
+	
+	searchImgur : function(inner, ending) {
+		var baliseId = createId();
+		var r1 = new RegExp(regex.imgur,'gi');
+		if(!ending) {
+			r1 = new RegExp(regex.imgur+'[\s]','gi');
+		}
+		substitution = function(str) {
+			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+baliseId+'"><img src="Assets/ajax-loader.gif"/></span>';
+			return output;
+		}
+		var ajax_url = "Ajax/post.php";
+		var ajax_var = {"action":"getImgur"};
+		callback = function(data) {
+			console.log(data);
+			e = $(data['html']);
+			balise = $('#'+baliseId);
+			balise.html(e);
+		};
+		fail = function(url) {
+			console.log("fail");
+			e = Filter.fail_request(url);
+			balise = $('#'+baliseId);
+			balise.html(e);
+		}
+		output = Control.searchMatch({"callerName":"searchImgur", "inner":inner, "regex":r1, "ajax_url":ajax_url, "ajax_var":ajax_var, "substitution":substitution, "callback":callback, "fail":fail});
+		return output;
+	},
 
 	searchInstagram : function(inner, ending) {
 		var baliseId = createId();

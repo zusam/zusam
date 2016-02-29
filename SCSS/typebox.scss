@@ -368,6 +368,8 @@ img.lazyload {
 		display: -webkit-flex;
 		-webkit-align-items: center;
 		-webkit-justify-content: center;
+		z-index: 80;
+		text-decoration: none;
 	}
 	.mediaLink:hover {
 		background-color: white;

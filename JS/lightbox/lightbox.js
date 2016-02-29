@@ -52,7 +52,7 @@ function enlighten(id) {
 		});
 	}
 	var close = $('<div class="close material-shadow" onclick="lightbox.darken()"><i class="fa fa-close"></i></div>');
-	var img = $('<img class="zoomedImage" src="'+lightbox_src+'"/>');
+	var img = $('<img onclick="lightbox.darken()" class="zoomedImage" src="'+lightbox_src+'"/>');
 	lb.css({
 		"top" : (window.innerHeight-height)/2 + "px",
 		"left" : (window.innerWidth-width)/2 + "px",
