@@ -111,7 +111,7 @@ if(isset($GET['fid'])) {
 // load forum
 if(isset($_SESSION['forum']) && $u['forums'][$_SESSION['forum']] != null) {
 	$forum = forum_load(array('_id'=>$_SESSION['forum']));	
-	if($forum != null) {
+	if($forum != null && $GET['page'] != "profile") {
 		$_SESSION['forum'] = (String) $forum['_id'];
 	} else {
 		$_SESSION['forum'] = "";
@@ -132,6 +132,9 @@ if(isset($_SESSION['forum']) && $u['forums'][$_SESSION['forum']] != null) {
 			// TODO the user don't have any forum yet. Propose to create/join one !
 			$_SESSION['forum'] = "";
 		}
+	} else {
+		$forum = "";
+		$_SESSION['forum'] = "";
 	}
 }
 

@@ -74,6 +74,9 @@
 		.profil:hover {
 			background-color: rgba(0,0,0,0.5);
 		}
+		.profil.selected {
+		    background-color: rgba(0,0,0,0.5);
+		}
 	}
 	.action {
 		color: darkgrey;

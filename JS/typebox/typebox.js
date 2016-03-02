@@ -55,23 +55,27 @@ function start(id) {
 	tt.on("keydown", function(e) {
 		// trap the return key being pressed
 		if(e.keyCode === 13) {
-			//document.execCommand('insertHTML', false, '<br><br>');
-			//console.log(e);
-			cpos = Control.getCpos(document.activeElement);
-			console.log("cpos before :"+cpos);
-			if(e.target.innerHTML.trim().match(/\<br\>$/)) {
-				typebox.pasteHtmlAtCaret('<br>', false);
+			if(e.ctrlKey) {
+				tt.parent().find('.menu .send').click(); 
 			} else {
-				console.log(e.target.innerHTML.trim().match(/\<br\>$/));
-				console.log(e.target.innerHTML);
-				typebox.pasteHtmlAtCaret('<br>', false);
-				e.target.innerHTML = e.target.innerHTML+'<br>';
+				//document.execCommand('insertHTML', false, '<br><br>');
+				//console.log(e);
+				cpos = Control.getCpos(document.activeElement);
+				console.log("cpos before :"+cpos);
+				if(e.target.innerHTML.trim().match(/\<br\>$/)) {
+					typebox.pasteHtmlAtCaret('<br>', false);
+				} else {
+					console.log(e.target.innerHTML.trim().match(/\<br\>$/));
+					console.log(e.target.innerHTML);
+					typebox.pasteHtmlAtCaret('<br>', false);
+					e.target.innerHTML = e.target.innerHTML+'<br>';
+				}
+				Control.setCpos(document.activeElement, parseInt(cpos+1));
+				cpos = Control.getCpos(document.activeElement);
+				console.log("cpos after :"+cpos);
+				// prevent the default behaviour of return key pressed
+				return false;
 			}
-			Control.setCpos(document.activeElement, parseInt(cpos+1));
-			cpos = Control.getCpos(document.activeElement);
-			console.log("cpos after :"+cpos);
-			// prevent the default behaviour of return key pressed
-			return false;
 		}
 		
 		// TODO evaluate if necessary, &nbsp; causes word wrap issues
@@ -83,8 +87,8 @@ function start(id) {
 		//	// prevent the default behaviour of return key pressed
 		//	//return false;
 		//}
-
 	});
+
 
 	// on each keyup we trigger the manipulation of the typebox
 	tt.on("keyup", function(e) {

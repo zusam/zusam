@@ -1,3 +1,36 @@
+function searchNext(e) {
+	var img = $(e).closest(".deletable").next().find('img.zoomPossible')[0];
+	
+	// search in other posts
+	var post = $(e).closest(".post").nextUntil('post');
+	var i = 0;
+	while(i < 30 && typeof(img) == "undefined" && post.length > 0) {
+		post = $(post.get(0));
+		img = post.find('.deletable img.zoomPossible')[0];
+		post = post.nextUntil('post');
+		i++;
+	}
+	console.log("max iterations: "+i);
+	return img;
+}
+
+function searchPrevious(e) {
+	var img = $(e).closest(".deletable").prev().find('img.zoomPossible')[0];
+	
+	// search in other posts
+	var post = $(e).closest(".post").prevUntil('post');
+	var i = 0;
+	while(i < 30 && typeof(img) == "undefined" && post.length > 0) {
+		post = $(post.get(0));
+		img = post.find('.deletable img.zoomPossible')[0];
+		post = post.prevUntil('post');
+		i++;
+	}
+	console.log("max iterations: "+i);
+	return img;
+}
+
+
 function enlighten(id) {
 
 	var e = $(id)[0];
@@ -9,15 +42,19 @@ function enlighten(id) {
 	}
 	
 	lightbox.darken();
+
+	//scroll to image
+	var node = e;
+	var yy = node.offsetTop - 10;
+	while(!node.parentNode.className.match(/\.nano-content/) && node.parentNode != document.body) {
+		node = node.parentNode;
+		yy += node.offsetTop; 
+	}
+	// TODO select nano-content more precisely
+	$('.nano-content')[0].scrollTop = yy;
 	
-	var next_img = $(e).closest(".deletable").next().find('img.zoomPossible')[0];
-	if(typeof(next_img) == "undefined") {
-		next_img = $(e).closest(".post").next().find('.deletable img.zoomPossible')[0];
-	}
-	var prev_img = $(e).closest(".deletable").prev().find('img.zoomPossible')[0];
-	if(typeof(prev_img) == "undefined") {
-		prev_img = $(e).closest(".post").prev().find('.deletable img.zoomPossible').last()[0];
-	}
+	var next_img = lightbox.searchNext(e);
+	var prev_img = lightbox.searchPrevious(e);
 
 	var nw = e.naturalWidth;
 	var nh = e.naturalHeight;

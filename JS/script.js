@@ -44,6 +44,7 @@ function getMoreComments(pid) {
 			console.log(data);
 			$('#post-viewer .more_comments').after(data['html']);
 			$('#post-viewer .more_comments').remove();
+			lazyload($('.nano-content')[0]);
 		},
 		error: function() {
 			console.log('fail more_comments');
@@ -564,15 +565,9 @@ function handleFile(file,id) {
 	if(!fileTypeHandled) {
 		alert("Le format du fichier n'est pas supporté");
 	}
-}
+	//refocus on typebox
 
-//function playpause(t) {
-//	if(t.paused) {
-//		t.play();
-//	} else {
-//		t.pause();
-//	}
-//}
+}
 
 function loadImage(t) {
 	t = $(t).closest('.launcher');

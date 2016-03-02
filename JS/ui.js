@@ -203,11 +203,11 @@ function shownewcommentsection(id) {
 		var cb = $('<div id="commentBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Ecrire un commentaire..."></div></div>');
 		var np_menu = $('<div class="menu"></div>');
 		var np_cell1 = $('<div class="menu-cell"></div>');
-		np_cell1.append('<button onclick="hidenewcommentsection($(\'.new-comment-section\'))">Annuler</button>');
+		np_cell1.append('<button class="cancel" onclick="hidenewcommentsection($(\'.new-comment-section\'))">Annuler</button>');
 		var np_cell2 = $('<div class="menu-cell"></div>');
 		np_cell2.append('<button onclick="inputFile(\'#commentBox\')" class="action"><i class="fa fa-paperclip"></i></button>');
 		var np_cell3 = $('<div class="menu-cell"></div>');
-		np_cell3.append('<button onclick="sendIt(\'#commentBox\')">Envoyer</button>');
+		np_cell3.append('<button class="send" onclick="sendIt(\'#commentBox\')">Envoyer</button>');
 		np_menu.append(np_cell1);
 		np_menu.append(np_cell2);
 		np_menu.append(np_cell3);
@@ -255,27 +255,23 @@ function showpostviewer(id) {
 
 				$('#post-viewer .spinner').remove();
 				$('#mask').addClass('dark-mask');
-				//var prev = $('.post-mini[data-id='+id+']').prev().attr('data-id');
-				//var next = $('.post-mini[data-id='+id+']').next().attr('data-id');
 				var plop = $(data['html']);
 				$('#post-viewer').append(plop);
-				//$('#post-viewer').append('<div class="post-separator"></div>');
 				$('#post-viewer').append('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="fa fa-comment-o"></i>Ecrire un commentaire...</div></div>');
 
-				$('.nano-content').on('scroll',function(){
-					if(typeof(window.spvScrollTop) == 'undefined') {
-						window.spvScrollTop = 0;
-					}
-					var st = $(this).scrollTop();
-					if(st > window.spvScrollTop) {
-						$(this).find('.post-options').addClass('hidden');
-					} else {
-						$(this).find('.post-options').removeClass('hidden');
-					}
-					window.spvScrollTop = st;
-				});
+				//$('.nano-content').on('scroll',function(){
+				//	if(typeof(window.spvScrollTop) == 'undefined') {
+				//		window.spvScrollTop = 0;
+				//	}
+				//	var st = $(this).scrollTop();
+				//	if(st > window.spvScrollTop) {
+				//		$(this).find('.post-options').addClass('hidden');
+				//	} else {
+				//		$(this).find('.post-options').removeClass('hidden');
+				//	}
+				//	window.spvScrollTop = st;
+				//});
 				
-				//typebox.view();
 				updatePostStats(id);
 				
 				// lazy loading

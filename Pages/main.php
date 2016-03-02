@@ -37,13 +37,13 @@ function main(&$u,&$forum,&$GET,&$POST) {
 					<div id="typeBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Partagez quelque chose..."></div></div>
 					<div class="menu">
 						<div class="menu-cell">
-							<button onclick="push_hidenewpost()">Annuler</button>
+							<button class="cancel" onclick="push_hidenewpost()">Annuler</button>
 						</div>
 						<div class="menu-cell">
 							<button onclick="inputFile(\'#typeBox\')" class="action"><i class="fa fa-paperclip"></i></button>
 						</div>
 						<div class="menu-cell">
-							<button onclick="sendIt(\'#typeBox\')">Envoyer</button>
+							<button class="send" onclick="sendIt(\'#typeBox\')">Envoyer</button>
 						</div>
 					</div>
 				</div>
