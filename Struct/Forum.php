@@ -148,7 +148,7 @@ function forum_getAvatarHTML(&$forum) {
 
 function forum_destroy($fid) {
 	
-	$mid = new MongoId($fid);
+	$mid = mongo_id($fid);
 	$f = forum_load(array('_id'=>$fid));
 	if($f != null && $f != false) {
 		$posts = post_bulkLoad(array('forum'=>$mid));	

@@ -4,156 +4,147 @@ chdir(realpath(dirname(__FILE__))."/../");
 require_once('Include.php');
 
 function compileText($text) {
-
 	$r = $GLOBALS['regex'];
-
 	$str = strip_tags($text);
-	$str = " ".$str." ";
-	
-	// new lines tags
+	$str = trim($str);
 	$str = preg_replace("/\n/","<br>",$str);
 
-	$str = encapsuleKnownLinks($str);
+	$map = genTextMap($str);
 
-	// general link
-	$str = preg_replace_callback(r2p($r['link']),'callback_link',$str);
-
-	$str = decapsuleLinks($str);
-	
-	//genTextMap($str);
-	
-	// files
-	$str = preg_replace_callback(r2p($r['file']),'callback_file',$str);
-
-	$str = preg_replace_callback(r2p($r['imgur']),'callback_imgur',$str);
-	$str = preg_replace_callback(r2p($r['instagram']),'callback_instagram',$str);
-	$str = preg_replace_callback(r2p($r['onedrive']),'callback_onedrive',$str);
-	$str = preg_replace_callback(r2p($r['googleDrive']),'callback_googleDrive',$str);
-	$str = preg_replace_callback(r2p($r['soundcloud']),'callback_soundcloud',$str);
-	$str = preg_replace_callback(r2p($r['vine']),'callback_vine',$str);
-	$str = preg_replace_callback(r2p($r['dailymotion']),'callback_dailymotion',$str);
-	$str = preg_replace_callback(r2p($r['vimeo']),'callback_vimeo',$str);
-	$str = preg_replace_callback(r2p($r['youtube2']),'callback_youtube2',$str);
-	$str = preg_replace_callback(r2p($r['youtube']),'callback_youtube',$str);
-	$str = preg_replace_callback(r2p($r['video']),'callback_video',$str);
-	$str = preg_replace_callback(r2p($r['image']),'callback_image',$str);
-	$str = preg_replace_callback(r2p($r['gif']),'callback_gif',$str);
-	
-	$str = ' <div>'.$str.'</div> ';
-	$str = preg_replace('/\<div\>\s*\<\/div\>/','',$str);
-	
-	$str = trim($str);
-
-	return $str;
+	$html = "";
+	$text = false;
+	foreach($map as $m) {
+		if($m[1] != "text") {
+			if($text) {
+				$pre = '</div>';
+				$text = false;
+			} else {
+				$pre = ' ';
+			}
+		} else {
+			if($text) {
+				$pre = ' ';
+			} else {
+				$pre = '<div>';
+				$text = true;
+			}
+		}
+		switch($m[1]) {
+			case "file_jpg":
+				if($m[2] > 3) {
+					$html .= $pre.process_albumImage($m[0]);	
+				} else {
+					$html .= $pre.process_file($m[0]);	
+				}
+			break;
+			case "file_webm":
+				$html .= $pre.process_file($m[0]);	
+			break;
+			case "file_sgf":
+				$html .= $pre.process_file($m[0]);	
+			break;
+			case "imgur":
+				$html .= $pre.process_imgur($m[0]);
+			break;
+			case "instagram":
+				$html .= $pre.process_instagram($m[0]);
+			break;
+			case "onedrive":
+				$html .= $pre.process_onedrive($m[0]);
+			break;
+			case "googleDrive":
+				$html .= $pre.process_googleDrive($m[0]);
+			break;
+			case "soundcloud":
+				$html .= $pre.process_soundcloud($m[0]);
+			break;
+			case "vine":
+				$html .= $pre.process_vine($m[0]);
+			break;
+			case "dailymotion":
+				$html .= $pre.process_dailymotion($m[0]);
+			break;
+			case "vimeo":
+				$html .= $pre.process_vimeo($m[0]);
+			break;
+			case "youtube2":
+				$html .= $pre.process_youtube2($m[0]);
+			break;
+			case "youtube":
+				$html .= $pre.process_youtube($m[0]);
+			break;
+			case "video":
+				$html .= $pre.process_video($m[0]);
+			break;
+			case "image":
+				$html .= $pre.process_image($m[0]);
+			break;
+			case "gif":
+				$html .= $pre.process_gif($m[0]);
+			break;
+			case "link":
+				$html .= $pre.process_link($m[0]);
+			break;
+			default:
+				$html .= $pre.$m[0];
+			break;
+		}
+	}
+	if($text) {
+		$html .= '</div>';
+	}
+	return $html;
 }
 
 function genTextMap($str) {
 	$r = $GLOBALS['regex'];
-	//$map = preg_split("/\s+/",$str);
-	$map1 = explode(' ',$str);
-	$map2 = [];
-	foreach($map1 as $elmt) {
-		if(preg_match(r2ep($r['file']),$elmt)) {
-			$fileId = preg_replace('/\{\:([a-zA-Z0-9]+)\:\}/','$1',$elmt);
-			$file = file_load(array('fileId' => $fileId));	
-			if($file) {
-				$map2[] = "file_".$file['type'];
-			} else {
-				$map2[] = "file_unknown";
+	$map = explode(' ',$str);
+	$suite = [];
+	$suiteType = "";
+	foreach($map as $k=>$elmt) {
+		$matched = false;
+		foreach($r as $kr=>$vr) {
+			if(preg_match(r2ep($vr),$elmt)) {
+				$matched = true;
+				if($kr == "file") {
+					$fileId = preg_replace('/\{\:([a-zA-Z0-9]+)\:\}/','$1',$elmt);
+					$file = file_load(array('fileId' => $fileId));	
+					if($file) {
+						$type = "file_".$file['type'];
+					} else {
+						$type = "file_unknown";
+					}
+				} else {
+					$type = $kr;
+				}
+				break;
 			}
-			continue;
+			if(!$matched) {
+				$type = "text";
+			}
 		}
-		if(preg_match(r2ep($r['instagram']),$elmt)) {
-			$map2[] = "instagram";
-			continue;
+		if($type == $suiteType) {
+			array_push($suite, $k);	
+			$map[$k] = array($elmt, $type);
+		} else {
+			if($suiteType != "") {
+				$n = count($suite);
+				foreach($suite as $key) {
+					array_push($map[$key], $n);
+				}
+			}
+			$map[$k] = array($elmt, $type);
+			$suite = array($k);
+			$suiteType = $type;
 		}
-		if(preg_match(r2ep($r['onedrive']),$elmt)) {
-			$map2[] = "onedrive";
-			continue;
-		}
-		if(preg_match(r2ep($r['googleDrive']),$elmt)) {
-			$map2[] = "googleDrive";
-			continue;
-		}
-		if(preg_match(r2ep($r['soundcloud']),$elmt)) {
-			$map2[] = "soundcloud";
-			continue;
-		}
-		if(preg_match(r2ep($r['vine']),$elmt)) {
-			$map2[] = "vine";
-			continue;
-		}
-		if(preg_match(r2ep($r['dailymotion']),$elmt)) {
-			$map2[] = "dailymotion";
-			continue;
-		}
-		if(preg_match(r2ep($r['vimeo']),$elmt)) {
-			$map2[] = "vimeo";
-			continue;
-		}
-		if(preg_match(r2ep($r['youtube2']),$elmt)) {
-			$map2[] = "youtube2";
-			continue;
-		}
-		if(preg_match(r2ep($r['youtube']),$elmt)) {
-			$map2[] = "youtube";
-			continue;
-		}
-		if(preg_match(r2ep($r['video']),$elmt)) {
-			$map2[] = "video";
-			continue;
-		}
-		if(preg_match(r2ep($r['image']),$elmt)) {
-			$map2[] = "image";
-			continue;
-		}
-		if(preg_match(r2ep($r['gif']),$elmt)) {
-			$map2[] = "gif";
-			continue;
-		}
-		if(preg_match(r2ep($r['link']),$elmt)) {
-			$map2[] = "link";
-			continue;
-		}
-		$map2[] = "text";
 	}
-	var_dump($map2);
-}
-
-function encapsuleKnownLinks($str) {
 	
-	$r = $GLOBALS['regex'];
+	$n = count($suite);
+	foreach($suite as $key) {
+		array_push($map[$key], $n);
+	}
 	
-	$str = preg_replace(r2ep($r['imgur']),'[[$1]]',$str);
-	$str = preg_replace(r2ep($r['instagram']),'[[$1]]',$str);
-	$str = preg_replace(r2ep($r['onedrive']),'[[$1]]',$str);
-	$str = preg_replace(r2ep($r['googleDrive']),'[[$1]]',$str);
-	$str = preg_replace(r2ep($r['soundcloud']),'[[$1]]',$str);
-	$str = preg_replace(r2ep($r['vine']),'[[$1]]',$str);
-	$str = preg_replace(r2ep($r['dailymotion']),'[[$1]]',$str);
-	$str = preg_replace(r2ep($r['vimeo']),'[[$1]]',$str);
-	$str = preg_replace(r2ep($r['youtube2']),'[[$1]]',$str);
-	$str = preg_replace(r2ep($r['youtube']),'[[$1]]',$str);
-	$str = preg_replace(r2ep($r['video']),'[[$1]]',$str);
-	$str = preg_replace(r2ep($r['image']),'[[$1]]',$str);
-	$str = preg_replace(r2ep($r['gif']),'[[$1]]',$str);
-
-	return $str;
-}
-
-function decapsuleLinks($str) {
-	$str = preg_replace('/\[\[([^\[\]]+)\]\]/',' $1 ',$str);
-	return $str;
-}
-
-function prepareInput($match) {
-	$str = $match[0];
-	$str = trim($str);
-	return $str;
-}
-
-function prepareOutput($str) {
-	return ' </div>'.$str.'<div> ';
+	return $map;
 }
 
 function process_imgur($str) {
@@ -202,15 +193,7 @@ function process_imgur($str) {
 	return $output;
 }
 
-function callback_imgur($match) {
-	$str = prepareInput($match);
-	$output = process_imgur($str);
-	return prepareOutput($output);
-}
-
-function callback_instagram($match) {
-	$str = prepareInput($match);
-		
+function process_instagram($str) {
 	$data = fgc("https://api.instagram.com/oembed/?url=".$str);
 	$data = json_decode($data,true);
 
@@ -218,12 +201,10 @@ function callback_instagram($match) {
 	$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="fa fa-instagram"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['thumbnail_url'].'"/>';
 	$a = '</span>';
 	$output = $b.$o.$a;
-
-	return prepareOutput($output);
+	return $output;
 }
 
-function callback_onedrive($match) {
-	$str = prepareInput($match);
+function process_onedrive($str) {
 	if(preg_match("/resid=/",$str)) {
 		$resid = preg_replace("/(https?:\/\/onedrive.live.com\/).*resid=([\-\!\%\w]+).*/","$2",$str);
 		$param = "resid=".$resid;
@@ -242,12 +223,10 @@ function callback_onedrive($match) {
 	} else {
 		$output = fail_request($str);
 	}
-	return prepareOutput($output);
+	return $output;
 }
 
-function callback_googleDrive($match) {
-	$str = prepareInput($match);
-	
+function process_googleDrive($str) {
 	if(preg_match("/open\?id=/",$str)) {
 		$id = preg_replace("/(https?:\/\/drive.google.com\/open\?id=)(\w+)/","$2",$str);
 	} else {
@@ -261,41 +240,19 @@ function callback_googleDrive($match) {
 	} else {
 		$output = fail_request($str);
 	}
-	return prepareOutput($output);
+	return $output;
 }
 
-function callback_link($match) {
-	$str = prepareInput($match);
-
-	// don't take encapsuled links into account : they will be interpreted later
-	if(preg_match("/.*\]\]$/",$str)==1) {
-		return $str;
-	}
-
+function process_link($str) {
 	$data = handleLink($str);
-	//if(isset($data['info']) && $data['info'] == "extensionless") {
-	//	switch($data['type']) {
-	//		case "image";
-	//			$e = '<img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['url'].'"/>';
-	//			break;
-	//		case "video";
-	//			$e = '<video autoplay loop><source src="'.$str.'"></video>';
-	//			break;
-	//		default;
-	//			$e = fail_request($str);
-	//			break;
-	//	}
-	//} else {
-	//	$e = open_graph_build($data);
-	//}
-		$e = open_graph_build($data);
+	$e = open_graph_build($data);
 	$html = "";
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= $e;
 	$html .= '</span>';
-	return prepareOutput($html);
+	return $html;
 }
-	
+
 function open_graph_build($data) {
 	$base_url = $data['base_url'];
 	$preview = ""; 
@@ -328,8 +285,7 @@ function fail_request($url) {
 	return $e;
 }
 
-function callback_soundcloud($match) {
-	$str = prepareInput($match);
+function process_soundcloud($str) {
 	$xx = p2l(pmini($str));
 	gen_miniature($str);
 	$code = "";
@@ -355,11 +311,10 @@ function callback_soundcloud($match) {
 			</script>
 		</span>
 	';
-	return prepareOutput($html);
+	return $html;
 }
 
-function callback_vine($match) {
-	$str = prepareInput($match);
+function process_vine($str) {
 	$html = "";
 	$w .= preg_replace('/(https?:\/\/vine.co\/v\/)([\w\-]+)/','$1$2/embed/simple',$str);
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
@@ -367,11 +322,10 @@ function callback_vine($match) {
 	$html .= '<iframe seamless class="embed-responsive-item" src="'.$w.'" frameborder="0"></iframe>';
 	$html .= '<script async src="//platform.vine.co/static/scripts/embed.js charset="utf-8"></script>';
 	$html .= '</span>';
-	return prepareOutput($html);
+	return $html;
 }
 
-function callback_dailymotion($match) {
-	$str = prepareInput($match);
+function process_dailymotion($str) {
 	$html = "";
 	$w = preg_replace('/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/','http://www.dailymotion.com/embed/video/$2?autoplay=1',$str);
 	$xx = p2l(pmini($str));
@@ -381,11 +335,10 @@ function callback_dailymotion($match) {
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
 	$html .= '</div></div></span>';
-	return prepareOutput($html);
+	return $html;
 }
 
-function callback_vimeo($match) {
-	$str = prepareInput($match);
+function process_vimeo($str) {
 	$html = "";
 	$w = preg_replace('/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/','http://player.vimeo.com/video/$3?autoplay=1',$str);
 	$xx = p2l(pmini($str));
@@ -395,11 +348,10 @@ function callback_vimeo($match) {
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
 	$html .= '</div></div></span>';
-	return prepareOutput($html);
+	return $html;
 }
 
-function callback_youtube2($match) {
-	$str = prepareInput($match);
+function process_youtube2($str) {
 	$html = "";
 	$v = preg_replace('/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/','$2',$str);
 	$w = 'http://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
@@ -410,11 +362,10 @@ function callback_youtube2($match) {
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
 	$html .= '</div></div></span>';
-	return prepareOutput($html);
+	return $html;
 }
 
-function callback_youtube($match) {
-	$str = prepareInput($match);
+function process_youtube($str) {
 	$html = "";
 	$v = preg_replace('/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/','$4',$str);
 	$w = 'http://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
@@ -425,11 +376,10 @@ function callback_youtube($match) {
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
 	$html .= '</div></div></span>';
-	return prepareOutput($html);
+	return $html;
 }
 
-function callback_video($match) {
-	$str = prepareInput($match);
+function process_video($str) {
 	// change gifv into webm
 	$str = preg_replace("/\.gifv/",".webm",$str);
 	$html = "";
@@ -440,20 +390,18 @@ function callback_video($match) {
 	$html .= '<div onclick="loadVideo(this)" data-src="'.$str.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';
 	$html .= '</div></span>';
-	return prepareOutput($html);
+	return $html;
 }
 
-function callback_image($match) {
-	$str = prepareInput($match);
+function process_image($str) {
 	$html = "";
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$str.'"/>';
 	$html .= '</span>';
-	return prepareOutput($html);
+	return $html;
 }
 
-function callback_gif($match) {
-	$str = prepareInput($match);
+function process_gif($str) {
 	$xx = p2l(pmini($str));
 	gen_miniature($str);
 	$html = "";
@@ -461,18 +409,41 @@ function callback_gif($match) {
 	$html .= '<div onclick="loadImage(this)" data-src="'.$str.'" class="launcher">';
 	$html .= '<img class="inlineImage" src="'.$xx.'" onerror="loadImage(this)"/>';
 	$html .= '</div></span>';
-	return prepareOutput($html);
+	return $html;
 }
 
-function callback_file($match) {
-	$str = prepareInput($match);
+function process_albumImage($str) {
 	gen_miniature($str);
 	$fileId = preg_replace('/\{\:([a-zA-Z0-9]+)\:\}/','$1',$str);
 	$file = file_load(array('fileId' => $fileId));	
 	$uid = $_SESSION['uid'];
 	if($file) {
 		$html = "";
-		//$html .= '<span uid="'.$uid.'" owner="'.$file['owner'].'" class="deletable flexible-image" style="width:'.intval(file_getWidth($file)*130/file_getHeight($file)).'" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		$html .= '<span uid="'.$uid.'" owner="'.$file['owner'].'" class="deletable flexible-image" style="width:'.intval(file_getWidth($file)*130/file_getHeight($file)).'" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		if($uid == (String) $file['owner'] && $file['type'] == 'jpg') {
+			$html .= '<div contenteditable="false">';
+			$html .= file_print($file);
+			$html .= '<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="material-shadow editIMG">';
+			$html .= '<i class="fa fa-pencil"></i>';
+			$html .= '</button>';
+			$html .= '</div>';
+		} else {
+			$html .= file_print($file);
+		}
+		$html .= '</span>';
+		return $html;
+	} else {
+		return " ";
+	}
+}
+
+function process_file($str) {
+	gen_miniature($str);
+	$fileId = preg_replace('/\{\:([a-zA-Z0-9]+)\:\}/','$1',$str);
+	$file = file_load(array('fileId' => $fileId));	
+	$uid = $_SESSION['uid'];
+	if($file) {
+		$html = "";
 		$html .= '<span class="deletable deletable-block" data-type="'.$file['type'].'" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 		if($uid == (String) $file['owner'] && $file['type'] == 'jpg') {
 			$html .= '<div contenteditable="false">';
@@ -485,7 +456,7 @@ function callback_file($match) {
 			$html .= file_print($file);
 		}
 		$html .= '</span>';
-		return prepareOutput($html);
+		return $html;
 	} else {
 		return " ";
 	}
