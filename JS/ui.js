@@ -259,19 +259,6 @@ function showpostviewer(id) {
 				$('#post-viewer').append(plop);
 				$('#post-viewer').append('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="fa fa-comment-o"></i>Ecrire un commentaire...</div></div>');
 
-				//$('.nano-content').on('scroll',function(){
-				//	if(typeof(window.spvScrollTop) == 'undefined') {
-				//		window.spvScrollTop = 0;
-				//	}
-				//	var st = $(this).scrollTop();
-				//	if(st > window.spvScrollTop) {
-				//		$(this).find('.post-options').addClass('hidden');
-				//	} else {
-				//		$(this).find('.post-options').removeClass('hidden');
-				//	}
-				//	window.spvScrollTop = st;
-				//});
-				
 				updatePostStats(id);
 				
 				// lazy loading

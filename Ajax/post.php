@@ -116,8 +116,8 @@ if($_SESSION['connected']) {
 			$f = forum_load(array('_id'=>$fid));
 			if($f != null && $f != false && in_array($_SESSION['uid'], $f['users'])) {
 				$news = array_reverse($f['news']);
-				$n = intval($POST['n']);
-				if(!$n || $n == 0) {
+				$n = intval($POST['number']);
+				if($n == 0) {
 					$n = 30;
 				}
 				$j = 0;
@@ -142,6 +142,11 @@ if($_SESSION['connected']) {
 				$r->list = $newlist;
 				$r->count = $i;
 				$r->load = $j;
+				if($i < $n) {
+					$r->end = true;
+				} else {
+					$r->end = false;
+				}
 				header('Content-Type: text/json; charset=UTF-8');
 				echo(json_encode($r));
 			}

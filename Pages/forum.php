@@ -11,21 +11,21 @@ function page_section_forum(&$u, &$forum) {
 
 		$html .='<div id="container">';
 
-		$list = array_reverse($forum['news']);
-		
-		for($i=0;$i<min(30,count($list));$i++) {
-			$p = post_load(array('_id'=>$list[$i]));
-			if($p != null && $p != false) {
-				if(in_array((String) $p['_id'], $u['unread'])) {
-					$html .= print_post_mini($p, true);
-				} else {
-					$html .= print_post_mini($p, false);
-				}
-			} else {
-				forum_removeFromNews($forum, $list[$i]);
-			}
-		}
-		forum_save($forum);
+		//$list = array_reverse($forum['news']);
+		//
+		//for($i=0;$i<min(30,count($list));$i++) {
+		//	$p = post_load(array('_id'=>$list[$i]));
+		//	if($p != null && $p != false) {
+		//		if(in_array((String) $p['_id'], $u['unread'])) {
+		//			$html .= print_post_mini($p, true);
+		//		} else {
+		//			$html .= print_post_mini($p, false);
+		//		}
+		//	} else {
+		//		forum_removeFromNews($forum, $list[$i]);
+		//	}
+		//}
+		//forum_save($forum);
 		$html .= '</div>';
 	}
 

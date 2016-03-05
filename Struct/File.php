@@ -91,6 +91,13 @@ function file_getHeight(&$file) {
 	return false;
 }
 
+function file_albumImage(&$file) {
+	$imgsrc = p2l(file_getPath($file));
+	$xx = p2l(pmini($file['fileId']));
+	$html = '<img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" src="'.$xx.'" data-lightbox="'.$imgsrc.'?'.$file['timestamp'].'"/>';
+	return $html;
+}
+
 function file_print(&$file) {
 
 	$html = "";
@@ -116,10 +123,10 @@ function file_print(&$file) {
 		$html .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';
 		$html .= '</div>';
 	}
-	if($file['type'] == "sgf") {
-		$html .= '<div class="sgf-viewer" id="sgf-viewer-'.$file['fileId'].'"></div>';
-		$html .= '<script>var wgo = new WGo.BasicPlayer(document.getElementById("sgf-viewer-'.$file['fileId'].'"), {sgfFile : "'.p2l(file_getPath($file)).'", enableKeys: false, enableWheel: false, layout: {top: ["InfoBox", "Control"],bottom: ["CommentBox"]}}); wgo.setCoordinates(true);</script>';
-	}
+	//if($file['type'] == "sgf") {
+	//	$html .= '<div class="sgf-viewer" id="sgf-viewer-'.$file['fileId'].'"></div>';
+	//	$html .= '<script>var wgo = new WGo.BasicPlayer(document.getElementById("sgf-viewer-'.$file['fileId'].'"), {sgfFile : "'.p2l(file_getPath($file)).'", enableKeys: false, enableWheel: false, layout: {top: ["InfoBox", "Control"],bottom: ["CommentBox"]}}); wgo.setCoordinates(true);</script>';
+	//}
 	return $html;
 }
 

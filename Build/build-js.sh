@@ -29,4 +29,20 @@ uglifyjs $JS/$libname/*.js $opt --wrap=$libname --export-all > $JS'/'$libname$b
 		fi
 	fi
 done
-cat $LIBJS/*.js $JS/*.js | uglifyjs - $opt > "script.js"
+A=(`echo $LIBJS/*`)
+for p in "${A[@]}";
+do
+	if [[ -d "$p" ]]
+	then
+		libname=$(basename "$p")
+		b=`echo ".min.js"`
+		if [[ -f "$p/uglify.order" ]]
+		then
+cat $(cat "$p/uglify.order" | sed -r "s/[a-zA-Z0-9_.]+/$LIBJS\/${libname}\/&/g") | uglifyjs - $opt --wrap=$libname --export-all > $LIBJS'/'$libname$b
+		else
+uglifyjs $LIBJS/$libname/*.js $opt --wrap=$libname --export-all > $LIBJS'/'$libname$b
+		fi
+	fi
+done
+cat $JS/*.js | uglifyjs - $opt > "JS.js"
+cat $LIBJS/*.js | uglifyjs - $opt > "LIBJS.js"

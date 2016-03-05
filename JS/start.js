@@ -5,13 +5,10 @@
 albumFiles = window.albumFiles = [];
 // canvas conversions
 URL = window.URL || window.webkitURL;
-// sending state
+// scripts states
 sending = 0;
-// global url
-// Now located in Core/HTML.php
 active_post = 0;
-// to prevent spam click on loading elements
-request_loading = false;
+loading_posts = false;
 
 console.log(origin_url);
 
@@ -43,11 +40,15 @@ $(window).ready(function() {
 	if($('#info').attr('data-fid') != "") {
 		$(document).on('scroll', function() {
 		//console.log(window.pageYOffset, document.body.scrollHeight);
-			if(window.pageYOffset > document.body.scrollHeight/2) {
+			if(window.pageYOffset+window.innerHeight > document.body.scrollHeight-window.innerHeight/2) {
 				//console.log("loadmore!");
 				loadMorePosts();
 			}
 		});
+	}
+
+	window.onresize = function() {
+		loadMorePosts();
 	}
 
 	//small code to permit keyboard shortcuts with ctrlKey
@@ -98,5 +99,8 @@ $(window).ready(function() {
 	setInterval(function() {
 		$(".nano").nanoScroller();
 	}, 1000);
+
+	// load posts
+	loadMorePosts();
 
 });

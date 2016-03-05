@@ -419,16 +419,16 @@ function process_albumImage($str) {
 	$uid = $_SESSION['uid'];
 	if($file) {
 		$html = "";
-		$html .= '<span uid="'.$uid.'" owner="'.$file['owner'].'" class="deletable flexible-image" style="width:'.intval(file_getWidth($file)*130/file_getHeight($file)).'" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
-		if($uid == (String) $file['owner'] && $file['type'] == 'jpg') {
+		$html .= '<span uid="'.$uid.'" owner="'.$file['owner'].'" class="deletable flexible-image" style="width:'.intval(320*130/180).'" contenteditable="false" id="'.md5($str).'">';
+		if($uid == (String) $file['owner']) {
 			$html .= '<div contenteditable="false">';
-			$html .= file_print($file);
+			$html .= file_albumImage($file);
 			$html .= '<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="material-shadow editIMG">';
 			$html .= '<i class="fa fa-pencil"></i>';
 			$html .= '</button>';
 			$html .= '</div>';
 		} else {
-			$html .= file_print($file);
+			$html .= file_albumImage($file);
 		}
 		$html .= '</span>';
 		return $html;

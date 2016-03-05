@@ -375,17 +375,33 @@ function editPost(t) {
 }
 
 function loadMorePosts() {
-	if(!window.loading) {
+	if(!window.loading_posts) {
 		recordUsage("morePosts");
 		console.log("trying to load posts");
-		window.loading = true;
+		window.loading_posts = true;
 		var list = $('#container .post-mini').map(function(){ var t = this.dataset.id; return t; }).get();
 		list = JSON.stringify(list);
 		var fid = $('#info').attr('data-fid');
+
+		// calculate number of posts to load
+
+		var width = window.innerWidth;
+		if(width > 680) {
+			width = width - 200;
+		}
+		var height = window.innerHeight;
+
+		var margin = 10;
+
+		var ncol = parseInt(width / (320+margin));
+		var nlin = parseInt(height / (180+margin));
+		var number = ncol*(nlin+1);
+		console.log(ncol,nlin,number);
+
 		$.ajax({
 			url: 'Ajax/post.php',
 			type: 'POST',
-			data: {'action':'morePost','fid':fid,'list':list},
+			data: {'action':'morePost','fid':fid,'list':list,'number':number},
 			success: function(data) {
 				console.log(data);
 				if(typeof(data) != 'undefined' && data != "") {
@@ -393,18 +409,17 @@ function loadMorePosts() {
 						$('#container').append(data['html']);
 					}
 					console.log('loaded ('+data['count']+')');
-					if(data['count'] < 30) {
+					if(data['end'] == true) {
 						console.log('all posts are here !');
-						window.stop = true;
 						$(document).unbind('scroll');
 					}
 					setpostsviewable();
-					window.loading = false;
+					window.loading_posts = false;
 				}
 			},
 			error: function() {
 				console.log("fail to load more posts");
-				window.loading = false;
+				window.loading_posts = false;
 			}
 		});
 	}
@@ -553,15 +568,15 @@ function handleFile(file,id) {
 			PF.loadVideo(file,id);
 		}
 	}
-	if(file.type.match(/sgf/) || file.name.match(/sgf/)) {
-		fileTypeHandled = true;
-		if(file.size > 1024*1024*3) {
-			alert("fichier SGF trop lourd (max 3Mo)");
-		} else {
-			console.log("SGF DETECTED");
-			PF.loadSGF(file,id);
-		}
-	}
+	//if(file.type.match(/sgf/) || file.name.match(/sgf/)) {
+	//	fileTypeHandled = true;
+	//	if(file.size > 1024*1024*3) {
+	//		alert("fichier SGF trop lourd (max 3Mo)");
+	//	} else {
+	//		console.log("SGF DETECTED");
+	//		PF.loadSGF(file,id);
+	//	}
+	//}
 	if(!fileTypeHandled) {
 		alert("Le format du fichier n'est pas supporté");
 	}
