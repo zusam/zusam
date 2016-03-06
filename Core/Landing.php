@@ -37,8 +37,7 @@ function landing($warning, $redirect_url) {
 	}
 	echo('</div>');
 	echo('
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-		<script src="script.js"></script>
+		<script src="LIBJS.js"></script>
 		<script>landing.start();</script>
 		</body>
 		</html>

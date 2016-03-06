@@ -96,13 +96,13 @@ if($_SESSION['connected']) {
 			$u = account_load(array('_id' => $_SESSION['uid']));
 			$p = post_load(array('_id' => $pid));
 	
-			if($p['forum'] == mongo_id($_SESSION['forum']) && isset($u['forums'][$_SESSION['forum']])) { 
+			//if($p['forum'] == mongo_id($_SESSION['forum']) && isset($u['forums'][$_SESSION['forum']])) { 
 				$r = new StdClass();
 				$html_data = print_more_comments($pid, $u['_id']);
 				$r->html = $html_data;
 				header('Content-Type: text/json; charset=UTF-8');
 				echo(json_encode($r));
-			}
+			//}
 			exit;
 		}
 
@@ -114,7 +114,7 @@ if($_SESSION['connected']) {
 			$u = account_load(array('_id' => $_SESSION['uid']));
 			$p = post_load(array('_id' => $id));
 	
-			if($p['forum'] == mongo_id($_SESSION['forum']) && isset($u['forums'][$_SESSION['forum']])) { 
+			//if($p['forum'] == mongo_id($_SESSION['forum']) && isset($u['forums'][$_SESSION['forum']])) { 
 				$r = new StdClass();
 				//$r->before = $u['unread'];
 				account_readPost($u, $id);
@@ -128,7 +128,7 @@ if($_SESSION['connected']) {
 				//$r->comp = compileText($r->raw);
 				header('Content-Type: text/json; charset=UTF-8');
 				echo(json_encode($r));
-			}
+			//}
 			exit;
 		}
 

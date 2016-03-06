@@ -1,5 +1,7 @@
 function searchNext(e) {
+	// search in the same post
 	var img = $(e).closest(".deletable").next().find('img.zoomPossible')[0];
+
 	
 	// search in other posts
 	var post = $(e).closest(".post").nextUntil('post');

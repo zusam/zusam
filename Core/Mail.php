@@ -3,6 +3,50 @@
 chdir(realpath(dirname(__FILE__).'/../'));
 require_once('Include.php');
 
+function mail_general($to, $subject, $content) {
+
+	//PHPMailer Object
+	$mail = new PHPMailer();
+
+	$mail->IsSMTP();
+	$mail->SMTPAuth = true;
+	$mail->Host = "smtp.postmarkapp.com";
+	$mail->Port = 25;
+	$mail->Username = "717653f9-41a0-4cfb-8d1f-adb32bc397b3";
+	$mail->Password = "717653f9-41a0-4cfb-8d1f-adb32bc397b3";
+	$mail->CharSet = 'utf-8';
+
+	//From email address and name
+	$mail->setFrom("noreply@zus.am", "Zusam");
+
+	//To address and name
+	$mail->addAddress($to); //Recipient name is optional
+
+	//Send HTML or Plain Text email
+	$mail->isHTML(true);
+
+	$mail->Subject = (String) $subject;
+	
+	if($name == "") {
+		$name = preg_replace("/(.*)@.*/","$1",$to);
+	}
+
+	$body = (String) $content;
+
+	$mail->MsgHTML($body);
+	$mail->AltBody = strip_tags($body);
+
+	$mail->Timeout = 15;
+
+	if(!$mail->send()) {
+		return "Mailer Error: " . $mail->ErrorInfo;
+	} else {
+		return "Message has been sent successfully";
+	}
+
+
+}
+
 function mail_invitation($to, $link, $name) {
 
 	//PHPMailer Object
@@ -17,7 +61,7 @@ function mail_invitation($to, $link, $name) {
 	$mail->CharSet = 'utf-8';
 
 	//From email address and name
-	$mail->setFrom("support@zus.am", "Zusam Support");
+	$mail->setFrom("support@zus.am", "Zusam");
 
 	//To address and name
 	$mail->addAddress($to); //Recipient name is optional
@@ -51,6 +95,7 @@ function mail_invitation($to, $link, $name) {
 
 	$mail->MsgHTML($body);
 	$mail->AltBody = strip_tags($body);
+	$mail->Timeout = 15;
 
 	if(!$mail->send()) {
 		return "Mailer Error: " . $mail->ErrorInfo;
@@ -73,7 +118,7 @@ function mail_resetPassword($to, $link, $name) {
 	$mail->CharSet = 'utf-8';
 
 	//From email address and name
-	$mail->setFrom("support@zus.am", "Zusam Support");
+	$mail->setFrom("support@zus.am", "Zusam");
 
 	//To address and name
 	$mail->addAddress($to); //Recipient name is optional
@@ -108,6 +153,7 @@ function mail_resetPassword($to, $link, $name) {
 
 	$mail->MsgHTML($body);
 	$mail->AltBody = strip_tags($body);
+	$mail->Timeout = 15;
 
 	if(!$mail->send()) {
 		return "Mailer Error: " . $mail->ErrorInfo;

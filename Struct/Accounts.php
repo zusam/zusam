@@ -89,33 +89,11 @@ function account_getAvatar(&$ac) {
 	return $avatar;
 }
 
-function account_genIdenticon(&$ac) {
-
-	list($r,$g,$b) = sscanf(substr($ac['salt'],0,6), "%02x%02x%02x");
-	$rl = floor((255+$r)/2);
-	$gl = floor((255+$g)/2);
-	$bl = floor((255+$b)/2);
-	$rd = floor((0+$r)/2);
-	$gd = floor((0+$g)/2);
-	$bd = floor((0+$b)/2);
-
-	$html = '';
-	$html .= '
-		<div class="identicon" style="background:rgb('."$rd,$gd,$bd".')">
-			<div style="background:rgb('."$rl,$gl,$bl".')" class="head"></div>
-			<div class="shoulder" style="background:rgb('."$rd,$gd,$bd".')" ></div>
-			<div style="background:rgb('."$rl,$gl,$bl".')" class="body"></div>
-		</div>
-	';
-
-	return $html;
-}
-
 function account_getAvatarHTML(&$ac) {
 	$html = "";
 	$avatar = account_getAvatar($ac);
 	if($avatar == "") {
-		$html = account_genIdenticon($ac);	
+		$html = '<img src="'.p2l(pathTo2(array("url"=>"avatar","param"=>"assets","ext"=>"png"))).'"/>';
 	} else {
 		$html = '<img src="'.$avatar.'"/>';
 	}
