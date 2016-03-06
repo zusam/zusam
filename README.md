@@ -1,6 +1,6 @@
 Zusam
 
-Zusam is intended to work on a archlinux system along with mongodb, nginx, ruby and nodejs.
+Zusam is intended to work on a archlinux system along with mongodb, nginx, ruby, nodejs, php7.
 You can use the server-install repo to create a clean environnement for Zusam.
 
 requirements :
