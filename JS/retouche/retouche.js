@@ -418,13 +418,6 @@ function sendCanvas(id) {
 		imgURL = c3.toDataURL("image/png");
 		delete c3; delete ctx3; delete htmlImage;
 		
-		//var plop = new Image()
-		//plop.onload = function () {
-		//	$('body').html(plop);	
-		//	throw new Error("Something went badly wrong!");
-		//}
-		//plop.src = imgURL;
-		
 		f = new FormData();
 		f.append("image",dataURItoBlob(imgURL));
 		var uid = $('#info').attr('data-uid');
@@ -447,8 +440,6 @@ function sendCanvas(id) {
 			processData: false,
 			contentType: false
 		});
-		//togglenewavatar(id);
-		//hideimageeditor();
 		var loading_retouche = $('<div class="loading-retouche"><div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div></div>');
 		$(id).parent().append(loading_retouche);
 	};

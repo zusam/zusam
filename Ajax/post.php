@@ -44,40 +44,6 @@ if($_SESSION['connected']) {
 			echo(json_encode($data));
 			exit;
 		}
-		
-		// TODO protect
-		if($POST['action'] == "addFileToAlbum") {
-			$uid = $POST['uid'];
-			$fid = $POST['fid'];
-			$albumId = $POST['albumId'];
-			$fileId = $POST['fileId'];
-
-			$u = account_load(array('_id'=>$uid));
-			$f = forum_load(array('_id'=>$fid));
-
-			if($u != false && $u != null && $f != false && $f != null) {
-				
-				$a = album_load(array('albumId'=>$albumId));
-				// create album if there isn't one
-				if($a == false || $a == null) {
-					$a = album_initialize($albumId);
-				}
-
-				if($_FILES["image"]["size"] < 1024*1024*10 && $_FILES["image"]["type"] == "image/png") {
-					$file = file_load(array("fileId"=>$fileId));
-					if($file == null || $file == false) {
-						$file = file_initialize($fileId, "jpg", $u['_id']);
-					}
-		$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'jpg', 'param' => 'file')), 1024, 1024);
-					if($r) {
-						album_addFile($a, $file);
-						file_save($file);
-						album_save($a);
-					}
-				}
-			}
-		}
-
 
 		// TODO protect
 		if($POST['action'] == "toggleButterfly") {
@@ -172,25 +138,6 @@ if($_SESSION['connected']) {
 			exit;
 
 		}
-		
-		// TODO protect album
-		if($POST['action'] == "getAlbum") {
-
-			$albumId = preg_replace("/\{\:\:([a-zA-Z0-9]+)\:\:\}/","$1",$POST['url']);
-			$url = $POST['url'];
-
-			$album = album_load(array("albumId" => $albumId));	
-			$html = album_print($album, $POST['viewer']);
-
-			$response = new StdClass();
-			$response->url = $url;
-			$response->html = $html;
-
-			header('Content-Type: text/json; charset=UTF-8');
-			echo(json_encode($response));
-			exit;
-
-		}
 
 		// TODO protect ?
 		if($POST['action'] == "gen_preview") {
@@ -244,6 +191,8 @@ if($_SESSION['connected']) {
 						$file = file_initialize($fileId, "jpg", $u['_id']);
 					}
 					$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'jpg', 'param' => 'file')), 1024, 1024);
+					unlink(pmini($file['fileId']));
+					gen_miniature("{:".$fileId.":}");
 					if($r) {
 						file_save($file);
 						echo($file['fileId']);
@@ -271,26 +220,6 @@ if($_SESSION['connected']) {
 			exit;
 		}
 		
-		if($POST['action'] == "addSGF") {
-
-			$uid = $POST['uid'];
-			$fileId = $POST['fileId'];
-		
-			if($_FILES["sgf"]["size"] < 1024*1024*4) {
-				$u = account_load(array('_id' => $uid));
-				if($u != null && $u != false) {
-					$file = file_initialize($fileId, "sgf", $u['_id']);
-					// TODO verify that's a sgf an not something else...
-	$r = copy($_FILES["sgf"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'sgf', 'param' => 'file')));
-	$plop = file_get_contents($_FILES["sgf"]["tmp_name"]);
-					if($r) {
-						file_save($file);
-					}
-				}
-			}
-			exit;
-		}
-
 		if($POST['action'] == "addForum") {
 			
 			$name = $POST['name'];
@@ -374,7 +303,6 @@ if($_SESSION['connected']) {
 			} else {
 				echo('no credentials');
 			}
-
 			exit;
 		}
 
