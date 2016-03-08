@@ -41,17 +41,30 @@
 			align-items: center;
 			display: -webkit-flex;
 			-webkit-align-items: center;
-			font-size: 30px;
-			color: white;
-			opacity: 0;
+			opacity: 0.5;
 			transition: opacity 0.2s;
 			cursor: pointer;
 			justify-content: center;
 			-webkit-justify-content: center;
-			background-color: rgba(0,0,0,0.7);
-			min-width: 80px;
-			max-width: 160px;
-			width: 15%;
+			width: 50%;
+
+			img {
+			    width: 50px;
+				position: absolute;
+				top: 50%;
+			}
+		}
+
+		.next img {
+			right: 0px;
+			transform: translate(0%,-50%);
+			-webkit-transform: translate(0%,-50%);
+		}
+		
+		.prev img {
+			left: 0px;
+			transform: scale(-1,1) translate(0%,-50%);
+			-webkit-transform: scale(-1,1) translate(0%,-50%);
 		}
 		
 		.prev:hover, .next:hover {

@@ -47,7 +47,8 @@
 .viewerBox{
 	min-height:22px !important;
 }
-.dynamicBox > span > img, .dynamicBox > span > div > img, .inlineImage { 
+//.dynamicBox > span > img, .dynamicBox > span > div > img, 
+.inlineImage { 
 	margin:0px 0px; 
 	max-width: 100%;
 	//position: relative;
@@ -100,7 +101,7 @@ img.lazyload {
 		left: 50%;
 		transform: translate(-50%, -50%);
 		-webkit-transform: translate(-50%, -50%);
-		width: 100px;
+		//width: 100px;
 		min-width: 100%;
 		min-height: 100%;
 	}

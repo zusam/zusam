@@ -36,8 +36,16 @@ function landing($warning, $redirect_url) {
 		echo('</div>');
 	}
 	echo('</div>');
+	// passing global variables to javascript
 	echo('
-		<script src="LIBJS.js"></script>
+		<script>
+			regex = '.json_encode($GLOBALS['regex'],JSON_UNESCAPED_UNICODE).';
+			origin_url = "'.$root_url.'";
+		</script>
+	');
+	echo('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>');
+	echo('<script src="JS/landing.min.js"></script>');
+	echo('
 		<script>landing.start();</script>
 		</body>
 		</html>

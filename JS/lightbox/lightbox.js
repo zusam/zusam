@@ -75,7 +75,7 @@ function enlighten(id) {
 		if(typeof(prev_img) != "undefined") {
 			$(prev_img).addClass("lightbox_prev");
 			unveil(prev_img);
-			var prev = $('<div onclick="lightbox.enlighten(\'.lightbox_prev\')" class="prev"><i class="fa fa-arrow-left"></i></div>');
+			var prev = $('<div onclick="lightbox.enlighten(\'.lightbox_prev\')" class="prev"><img src="Assets/arrow.png"/></div>');
 			$(window).on('keydown', function(e) {
 				if(e.which == 37) {
 					prev.click();
@@ -85,7 +85,7 @@ function enlighten(id) {
 		if(typeof(next_img) != "undefined") {
 			$(next_img).addClass("lightbox_next");
 			unveil(next_img);
-			var next = $('<div onclick="lightbox.enlighten(\'.lightbox_next\')" class="next"><i class="fa fa-arrow-right"></i></div>');
+			var next = $('<div onclick="lightbox.enlighten(\'.lightbox_next\')" class="next"><img src="Assets/arrow.png"/></div>');
 			$(window).on('keydown', function(e) {
 				if(e.which == 39) {
 					next.click();

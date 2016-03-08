@@ -76,6 +76,7 @@ if($_SESSION['connected']) {
 		// TODO protect ?
 		if($POST['action'] == "morePost") {
 
+			$u = account_load(array('_id'=>$_SESSION['uid']));
 			$list = json_decode($POST['list'], true);
 			
 			$fid = $POST['fid'];
@@ -96,7 +97,11 @@ if($_SESSION['connected']) {
 						$p = post_load(array('_id'=>$news[$j]));
 						if($p != null && $p != false) {
 							$i++;
-							$html .= print_post_mini($p);
+							if(in_array((String) $p['_id'], $u['unread'])) {
+								$html .= print_post_mini($p, true);
+							} else {
+								$html .= print_post_mini($p, false);
+							}
 							$newlist[] = $news[$j];
 						}
 					}

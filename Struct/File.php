@@ -94,7 +94,7 @@ function file_getHeight(&$file) {
 function file_albumImage(&$file) {
 	$imgsrc = p2l(file_getPath($file));
 	$xx = p2l(pmini($file['fileId']));
-	$html = '<img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" src="'.$xx.'" data-lightbox="'.$imgsrc.'?'.$file['timestamp'].'"/>';
+	$html = '<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.$xx.'" data-lightbox="'.$imgsrc.'?'.$file['timestamp'].'"/>';
 	return $html;
 }
 
