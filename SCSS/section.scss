@@ -53,17 +53,17 @@ section {
 		.post-preview {
 
 			.text-container {
-				background: ivory;
-				line-height: 36px;
+				background: white;
+				line-height: 31px;
 				font-size: 15px;
-		background-image: repeating-linear-gradient(top, transparent 0%, transparent 35px, rgba(0, 0, 0, 0.4) 36px, rgba(0, 0, 0, 0.28) 30px);
-		background-image: -webkit-repeating-linear-gradient(top, transparent 0%, transparent 35px, rgba(0, 0, 0, 0.4) 36px, rgba(0, 0, 0, 0.28) 30px);
-		background-image: -moz-repeating-linear-gradient(top, transparent 0%, transparent 35px, rgba(0, 0, 0, 0.4) 36px, rgba(0, 0, 0, 0.28) 30px);
+		background-image: repeating-linear-gradient(top, transparent 0%, transparent 30px, rgba(0, 0, 0, 0.4) 31px, rgba(0, 0, 0, 0.28) 30px);
+		background-image: -webkit-repeating-linear-gradient(top, transparent 0%, transparent 30px, rgba(0, 0, 0, 0.4) 31px, rgba(0, 0, 0, 0.28) 30px);
+		background-image: -moz-repeating-linear-gradient(top, transparent 0%, transparent 30px, rgba(0, 0, 0, 0.4) 31px, rgba(0, 0, 0, 0.28) 30px);
 
 				div {
 					padding: 6px 15px 0 15px;
 					margin-left: 30px;
-					border-left: 2px solid #f0c2b3;
+					border-left: 1px solid #f7a71b;
 					color: #5d5b54;
 					height: 180px;
 				}

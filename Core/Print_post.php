@@ -198,7 +198,7 @@ function print_post_mini(&$p, $unread) {
 			$inside = '<img src="'.p2l($p['preview']).'"/>';
 		} else {
 				$inside = '<div class="text-container">';
-				$text = cutIfTooLong($p['text'], 180);
+				$text = cutIfTooLong($p['text'], 165);
 				$inside .= '<div>'.$text.'</div>';
 				$inside .= '</div>';
 		}

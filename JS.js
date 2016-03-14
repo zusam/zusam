@@ -146,6 +146,7 @@
     }
     function enlighten(id) {
         var e = $(id)[0];
+        var owner = $(e).closest(".deletable").attr("data-owner");
         console.log(e.dataset.lightbox);
         if (e.dataset.lightbox != null) {
             var lightbox_src = e.dataset.lightbox;
@@ -203,10 +204,19 @@
                 width: width + "px",
                 height: height + "px"
             });
-            lb.append(next).append(prev).append(this).append(close);
+            if (owner == $("#info").attr("data-uid")) {
+                var button = $('<button contentditable="false" class="material-shadow editIMG"><i class="fa fa-pencil"></i></button>');
+                button.on("click", function(evt) {
+                    evt.stopPropagation();
+                    console.log(e);
+                    showimageeditor("#retoucheBox", e);
+                    lightbox.darken();
+                });
+            }
+            lb.append(next).append(prev).append(this).append(close).append(button);
             $("body").append(lb);
-            $(window).on("keydown", function(e) {
-                if (e.which == 27) {
+            $(window).on("keydown", function(evt) {
+                if (evt.which == 27) {
                     lightbox.darken();
                 }
             });
@@ -2684,16 +2694,19 @@ function showimageeditor(id, t) {
     pv.css("display", "block");
     addMask("hideimageeditor()", .75, 699, "imageeditormask");
     if (t != null) {
-        var img = $(t).parent().find("img");
-        var src = img.attr("src");
+        var deletable = $(t).closest(".deletable");
+        var src = deletable.attr("data-src");
         console.log(src);
-        var fileId = $(t).closest(".deletable").attr("data-src").replace(/[{:}]/g, "");
+        console.log(t);
+        var fileId = deletable.attr("data-fileid").replace(/[{:}]/g, "");
+        var width = deletable.attr("data-width");
+        var height = deletable.attr("data-height");
         console.log(fileId);
         r = $("#retoucheBox");
         r.attr("data-action", "addImage");
         r.attr("data-arg", fileId);
-        r.attr("data-w", img.attr("naturalWidth"));
-        r.attr("data-h", img.attr("naturalHeight"));
+        r.attr("data-w", width);
+        r.attr("data-h", height);
         retouche.set(id, src);
     } else {
         retouche.restart("#retoucheBox");

@@ -86,7 +86,9 @@ function compileText($text) {
 				$html .= $pre.process_link($m[0]);
 			break;
 			default:
-				$html .= $pre.$m[0];
+				if($m[0] != "") {
+					$html .= $pre.$m[0];
+				}
 			break;
 		}
 	}
@@ -104,6 +106,9 @@ function genTextMap($str) {
 	foreach($map as $k=>$elmt) {
 		$matched = false;
 		foreach($r as $kr=>$vr) {
+			if($elmt == "") {
+				continue;
+			}
 			if(preg_match(r2ep($vr),$elmt)) {
 				$matched = true;
 				if($kr == "file") {
@@ -417,16 +422,19 @@ function process_albumImage($str) {
 	$fileId = preg_replace('/\{\:([a-zA-Z0-9]+)\:\}/','$1',$str);
 	$file = file_load(array('fileId' => $fileId));	
 	$uid = $_SESSION['uid'];
+	$w = file_getWidth($file);
+	$h = file_getHeight($file);
 	if($file) {
 		$html = "";
-		$html .= '<span uid="'.$uid.'" owner="'.$file['owner'].'" class="deletable flexible-image" style="width:'.intval(file_getWidth($file)*130/file_getHeight($file)).'" contenteditable="false" id="'.md5($str).'">';
+		$html .= '<span data-owner="'.$file['owner'].'" class="deletable flexible-image" data-width="'.$w.'" data-height="'.$h.'" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" style="width:'.intval($w*130/$h).'" contenteditable="false" id="'.md5($str).'">';
 		if($uid == (String) $file['owner']) {
-			$html .= '<div contenteditable="false">';
+			// TODO add editImg button to lightbox
+			//$html .= '<div contenteditable="false">';
 			$html .= file_albumImage($file);
-			$html .= '<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="material-shadow editIMG">';
-			$html .= '<i class="fa fa-pencil"></i>';
-			$html .= '</button>';
-			$html .= '</div>';
+			//$html .= '<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="material-shadow editIMG">';
+			//$html .= '<i class="fa fa-pencil"></i>';
+			//$html .= '</button>';
+			//$html .= '</div>';
 		} else {
 			$html .= file_albumImage($file);
 		}
@@ -444,7 +452,7 @@ function process_file($str) {
 	$uid = $_SESSION['uid'];
 	if($file) {
 		$html = "";
-		$html .= '<span class="deletable deletable-block" data-type="'.$file['type'].'" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		$html .= '<span data-owner="'.$file['owner'].'" class="deletable deletable-block" data-width="'.$w.'" data-height="'.$h.'" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" contenteditable="false" id="'.md5($str).'">';
 		if($uid == (String) $file['owner'] && $file['type'] == 'jpg') {
 			$html .= '<div contenteditable="false">';
 			$html .= file_print($file);

@@ -96,7 +96,7 @@ img.lazyload {
 	outline: 1px solid white;
 
 	img {
-		position: relative;
+		position: absolute;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
@@ -334,22 +334,6 @@ img.lazyload {
 			vertical-align: middle;
 			line-height: 22px; 
 		}
-	}
-	.editIMG {
-		position: absolute;
-		top: 10px;
-		left: 10px;
-		font-size: 14px;
-		border: none;
-		width: 28px;
-		height: 28px;
-		border-radius: 100%;
-		background-color: rgba(255, 255, 255, 0.75);
-		cursor: pointer;
-		color: black;
-	}
-	.editIMG:hover {
-		background-color: white;
 	}
 	.mediaLink {
 		position: absolute;

@@ -39,7 +39,8 @@ function preview_getHTML(&$p) {
 
 	$url = $p['url'];
 	$ch = curl_init($url);
-	curl_setopt($ch, CURLOPT_HEADER, false);
+	curl_setopt($ch, CURLOPT_HEADER, true);
+	curl_setopt($ch, CURLOPT_VERBOSE, true);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 	curl_setopt($ch, CURLOPT_ENCODING, "");
 	curl_setopt($ch, CURLOPT_USERAGENT, "");
@@ -51,8 +52,19 @@ function preview_getHTML(&$p) {
 	curl_setopt($ch, CURLOPT_COOKIEFILE, "/tmp/cookie.txt");
 	curl_setopt($ch, CURLOPT_COOKIEJAR, "/tmp/cookie.txt");
 	curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
-	$html_string = curl_exec($ch);
+	$response = curl_exec($ch);
+
+	$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	$header = substr($response, 0, $header_size);
+	$html_string = substr($response, $header_size);
+
 	curl_close($ch);
+	
+	$p['http_code'] = $http_code;
+	if($http_code > 400) {
+		return false;
+	}
 	
 	//remove script/style tags
 	$dom = new DOMDocument();
@@ -78,6 +90,7 @@ function preview_getHTML(&$p) {
 	$p['html'] = $html;
 
 	$p['html_t'] = microtime(true) - $t;
+	$p['header'] = $header;
 }
 
 function preview_getTitle(&$p) {
