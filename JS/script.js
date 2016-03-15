@@ -415,11 +415,13 @@ function loadMorePosts() {
 					}
 					setpostsviewable();
 					window.loading_posts = false;
+					return true;
 				}
 			},
 			error: function() {
 				console.log("fail to load more posts");
 				window.loading_posts = false;
+				return false;
 			}
 		});
 	}

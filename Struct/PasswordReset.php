@@ -62,11 +62,11 @@ function pr_printPage($id, $key) {
 				<input type="text" class="hidden" value="passwordReset" name="action"></input>
 				<div class="input-group">
 					<label name="password">Nouveau mot de passe :</label>
-					<input type="password" name="password"></input><br>
+					<input class="insetInput" type="password" name="password"></input><br>
 				</div>
 				<div class="input-group">
 					<label name="password_conf">Confirmez le mot de passe :</label>
-					<input type="password" name="password_conf"></input><br>
+					<input class="insetIntput" type="password" name="password_conf"></input><br>
 				</div>
 				<div class="input-group center-flex">
 					<input type="submit" name="submit"></input>

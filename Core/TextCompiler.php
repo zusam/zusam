@@ -428,13 +428,7 @@ function process_albumImage($str) {
 		$html = "";
 		$html .= '<span data-owner="'.$file['owner'].'" class="deletable flexible-image" data-width="'.$w.'" data-height="'.$h.'" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" style="width:'.intval($w*130/$h).'" contenteditable="false" id="'.md5($str).'">';
 		if($uid == (String) $file['owner']) {
-			// TODO add editImg button to lightbox
-			//$html .= '<div contenteditable="false">';
 			$html .= file_albumImage($file);
-			//$html .= '<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="material-shadow editIMG">';
-			//$html .= '<i class="fa fa-pencil"></i>';
-			//$html .= '</button>';
-			//$html .= '</div>';
 		} else {
 			$html .= file_albumImage($file);
 		}

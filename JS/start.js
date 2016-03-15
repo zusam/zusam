@@ -101,6 +101,9 @@ $(window).ready(function() {
 	}, 1000);
 
 	// load posts
-	loadMorePosts();
+	var ret = loadMorePosts();
+	while(ret == false) {
+		ret = loadMorePosts();
+	}
 
 });
