@@ -37,7 +37,6 @@ section {
 		margin: 20px;
 		cursor: pointer;
 		width: 280px;
-		max-height: 180px;
 		min-height: 80px;
 		border-radius: 2px;
 		position: relative;
@@ -48,6 +47,53 @@ section {
 
 		.post-start {
 			display: none;
+		}
+		
+		.post-info {
+			position: relative;
+			background: white;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			display: -webkit-flex;
+			-webkit-align-items: center;
+			-webkit-justify-content: space-between;
+			padding: 5px;
+			height: 20px;
+			border-top: 1px solid lightgrey;
+
+			.date {
+				color: grey;
+				font-size: 14px;
+			}
+
+			.op-avatar {
+				width: 40px;
+				height: 40px;
+				border-radius: 100px;
+				overflow: hidden;
+				background: white;
+				position: relative;
+				bottom: 15px;
+				left: 4px;
+				border: 2px solid white;
+
+				img {
+					height: 100%;
+				}
+			}
+			
+			.comments-indicator {
+				min-width: 25px;
+
+				.newcom {
+					color: #F7A71B !important;
+				}
+				div {
+					color: grey;
+					font-size: 15px;
+				}
+			}
 		}
 
 		.post-preview {
@@ -68,35 +114,8 @@ section {
 					height: 180px;
 				}
 			}
-			img {
+			.miniature {
 				width: 100%;
-			}
-		}
-		.stats {
-			position: absolute;
-			bottom: 0;
-			right: 0;
-			z-index: 10;
-			background-color: rgba(0, 0, 0, 0.75);
-			box-shadow: 0px 0px 10px rgba(0,0,0,0.75);
-			border-top-left-radius: 4px;
-			padding: 0px 4px 4px 4px;
-			
-			.comments-indicator {
-				.newcom {
-					color: #F7A71B !important;
-				}
-				div {
-					color: white;
-					font-family: Roboto;
-					font-weight: bold;
-					font-size: 13px;
-					position: relative;
-					top: 2px;
-					width: 100%;
-					text-align: center;
-					overflow: hidden;
-				}
 			}
 		}
 	}

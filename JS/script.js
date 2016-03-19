@@ -12,26 +12,26 @@ function recordUsage(usage) {
 	});
 }
 
-function toggleButterfly(t) {
-	var pid = $(t).closest('.post').attr('data-id');
-	var uid = $('#info').attr('data-uid');
-	var fid = $('#info').attr('data-fid');
-	recordUsage("butterfly");
-	$.ajax({
-		url: "Ajax/post.php",
-		type: "POST",
-		data: {"action":"toggleButterfly", "uid":uid, "fid":fid, "pid":pid},
-		success: function(data) {
-			console.log(data);
-			var butterflies = $(t).parent()[0].childNodes[3].textContent;
-			$(t).parent()[0].childNodes[3].textContent = data['count'];
-			t.style.fill = data['color'];
-		},
-		error: function() {
-			console.log('fail butterfly');
-		}
-	});
-}
+//function toggleButterfly(t) {
+//	var pid = $(t).closest('.post').attr('data-id');
+//	var uid = $('#info').attr('data-uid');
+//	var fid = $('#info').attr('data-fid');
+//	recordUsage("butterfly");
+//	$.ajax({
+//		url: "Ajax/post.php",
+//		type: "POST",
+//		data: {"action":"toggleButterfly", "uid":uid, "fid":fid, "pid":pid},
+//		success: function(data) {
+//			console.log(data);
+//			var butterflies = $(t).parent()[0].childNodes[3].textContent;
+//			$(t).parent()[0].childNodes[3].textContent = data['count'];
+//			t.style.fill = data['color'];
+//		},
+//		error: function() {
+//			console.log('fail butterfly');
+//		}
+//	});
+//}
 
 function getMoreComments(pid) {
 	var uid = $('#info').attr('data-uid');
@@ -64,13 +64,14 @@ function updatePostStats(pid) {
 			console.log(data);
 			if(typeof(data) != "undefined" && typeof(data['coms']) != "undefined") {
 				if(data['coms'] != 0) {
-			$('#container .post-mini[data-id="'+pid+'"]').find('.stats').remove();
-			$('#container .post-mini[data-id="'+pid+'"]').append('<div class="stats"><div class="comments-indicator"><div>'+data['coms']+' <i class="fa fa-comment"></i></div></div></div>');
+					var pci = $('#container .post-mini[data-id="'+pid+'"]').find('.comments-indicator');
+					pci.html('<div>'+data['coms']+' <i class="fa fa-comment-o"></i></div>');
+					//pci.remove();
 					if(data['unread'] == true) {
 						$('.post-mini[data-id="'+pid+'"] .comments-indicator div').addClass('newcom');
 					}
 				} else {
-			$('#container .post-mini[data-id="'+pid+'"]').find('.stats').remove();
+					$('#container .post-mini[data-id="'+pid+'"]').find('.comments-indicator').html('');
 				}
 			}
 		}
@@ -110,7 +111,6 @@ function removeUserFromForum() {
 		}
 	});
 }
-
 
 function loadRetoucheBox(w,h,action) {
 	r = $('#retoucheBox');
@@ -570,15 +570,6 @@ function handleFile(file,id) {
 			PF.loadVideo(file,id);
 		}
 	}
-	//if(file.type.match(/sgf/) || file.name.match(/sgf/)) {
-	//	fileTypeHandled = true;
-	//	if(file.size > 1024*1024*3) {
-	//		alert("fichier SGF trop lourd (max 3Mo)");
-	//	} else {
-	//		console.log("SGF DETECTED");
-	//		PF.loadSGF(file,id);
-	//	}
-	//}
 	if(!fileTypeHandled) {
 		alert("Le format du fichier n'est pas supporté");
 	}
@@ -646,7 +637,6 @@ function evaluateURL() {
 		}
 	} else {
 		console.log("hideAll from evaluate");
-		//hidepostviewer();
 		hideAll();
 	}
 }

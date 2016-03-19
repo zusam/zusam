@@ -36,13 +36,13 @@ function toggleoptionsmenu(id) {
 	if(!g.hasClass('active')) {
 		g.css("display","block");
 		g.addClass('active');
-		$(id).find('i').removeClass("fa-caret-down");
-		$(id).find('i').addClass("fa-caret-up");
+		$(id).find('i').removeClass("icon-down-dir");
+		$(id).find('i').addClass("icon-up-dir");
 	} else {
 		g.css("display","none");
 		g.removeClass('active');
-		$(id).find('i').removeClass("fa-caret-up");
-		$(id).find('i').addClass("fa-caret-down");
+		$(id).find('i').removeClass("icon-up-dir");
+		$(id).find('i').addClass("icon-down-dir");
 	}
 }
 
@@ -134,7 +134,7 @@ function hideimageeditor() {
 	pv.css('display','none');
 	$('#container').css("filter","none");
 	$('#container').css("-webkit-filter","none");
-	pv.html('<div id="retoucheBox"><div class="placeholder"><i class="label fa fa-photo"></i><span class="underLabel">Cliquez pour choisir une photo</span><input type="file"></input></div></div>');
+	pv.html('<div id="retoucheBox"><div class="placeholder"><i class="label icon-picture"></i><span class="underLabel">Cliquez pour choisir une photo</span><input type="file"></input></div></div>');
 	removeMask("imageeditormask");
 }
 
@@ -191,7 +191,7 @@ function hidenewpost(sent) {
 
 function hidenewcommentsection(id) {
 	t = $(id);
-	t.after('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="fa fa-comment-o"></i>Ecrire un commentaire...</div></div>');
+	t.after('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="icon-comment-empty"></i>Ecrire un commentaire...</div></div>');
 	t.remove();
 }
 
@@ -208,7 +208,7 @@ function shownewcommentsection(id) {
 		var np_cell1 = $('<div class="menu-cell"></div>');
 		np_cell1.append('<button class="cancel" onclick="hidenewcommentsection($(\'.new-comment-section\'))">Annuler</button>');
 		var np_cell2 = $('<div class="menu-cell"></div>');
-		np_cell2.append('<button onclick="inputFile(\'#commentBox\')" class="action"><i class="fa fa-paperclip"></i></button>');
+		np_cell2.append('<button onclick="inputFile(\'#commentBox\')" class="action"><i class="icon-attach"></i></button>');
 		var np_cell3 = $('<div class="menu-cell"></div>');
 		np_cell3.append('<button class="send" onclick="sendIt(\'#commentBox\')">Envoyer</button>');
 		np_menu.append(np_cell1);
@@ -260,7 +260,7 @@ function showpostviewer(id) {
 				$('#mask').addClass('dark-mask');
 				var plop = $(data['html']);
 				$('#post-viewer').append(plop);
-				$('#post-viewer').append('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="fa fa-comment-o"></i>Ecrire un commentaire...</div></div>');
+				$('#post-viewer').append('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="icon-comment-empty"></i>Ecrire un commentaire...</div></div>');
 
 				updatePostStats(id);
 				
@@ -351,6 +351,6 @@ function fakeComment() {
 			console.log("fail record");
 		}
 	});
-	var fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="fa fa-comment-o"></i>Ecrire un commentaire...</div></div>');
+	var fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="icon-comment-empty"></i>Ecrire un commentaire...</div></div>');
 //TODO XXX
 }

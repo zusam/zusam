@@ -141,20 +141,13 @@ function print_post($id, $uid) {
 	$html_data .= '</div>';
 	$html_data .= '<div class="second-line">';
 	$html_data .= '<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
-	$html_data .= '<i class="fa fa-circle circle-separator"></i>';
-	if(array_key_exists((String) $u['_id'], $p['butterflies'])) {
-		$html_data .= '<div onclick="toggleButterfly(this)" class="butterfly-button" style="fill:#F7A71B">'.file_get_contents('Assets/pap7.svg').'</div>';
-	} else {
-		$html_data .= '<div onclick="toggleButterfly(this)" class="butterfly-button">'.file_get_contents('Assets/pap7.svg').'</div>';
-	}
-	$html_data .= count($p['butterflies']);
 	$html_data .= '</div>';
 	$html_data .= '</div></div>';
 	$html_data .= '<div class="right-menu">';
 		if($p['uid'] == $u['_id']) {
 			$html_data .= '
 					<div onclick="toggleoptionsmenu(this)" class="options">
-						<i class="fa fa-caret-down"></i>
+						<i class="icon-down-dir"></i>
 						<div class="options-menu">
 							<a onclick="editPost(this)">Editer</a>
 							<a onclick="deletePost(this)">Supprimer</a>
@@ -195,30 +188,39 @@ function print_post_mini(&$p, $unread) {
 			post_save($p);
 		}
 		if(preg_match("/\.jpg$/",$p['preview'])==1) {
-			$inside = '<img src="'.p2l($p['preview']).'"/>';
+			$inside = '<div><img class="miniature" src="'.p2l($p['preview']).'"/></div>';
 		} else {
 				$inside = '<div class="text-container">';
-				$text = cutIfTooLong($p['text'], 165);
+				$text = cutIfTooLong($p['text'], 160);
 				$inside .= '<div>'.$text.'</div>';
 				$inside .= '</div>';
 		}
+
+		// get the user
+		$op = account_load(array('_id' => $p['uid']));
+		
+		$inside .= '<div class="post-info">';
+
+		$inside .= '<div class="op-avatar">'.account_getAvatarHTML($op).'</div>';
+		$inside .= '<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
+		
+		$inside .= '<div class="comments-indicator">';
 		$c = count($p['children']);
-		//$b = count($p['butterflies']);
 		if($c > 0) {
-			$inside .= '<div class="stats">';
-			//$inside .= '<div class="butterflies-indicator"><div>'.$b.' '.file_get_contents('Assets/pap7.svg').'</div></div>';
 			if($unread) {
-				$inside .= '<div class="comments-indicator"><div class="newcom">'.$c.' <i class="fa fa-comment"></i></div></div>';
+				$inside .= '<div class="newcom">'.$c.' <i class="icon-comment-empty"></i></div>';
 			} else {
-				$inside .= '<div class="comments-indicator"><div>'.$c.' <i class="fa fa-comment"></i></div></div>';
+				$inside .= '<div>'.$c.' <i class="icon-comment-empty"></i></div>';
 			}
-			$inside .= '</div>';
 		}
+
+		$inside .= '</div>';
+		$inside .= '</div>';
+
 		$html .= '<a class="material-shadow post-mini" href="#'.$p['_id'].'" data-id="'.$p['_id'].'">';
 		$html .= '<div class="post-preview">'.$inside.'</div></a>';
 	}
 	return $html;
 }
-
 
 ?>

@@ -1,20 +1,17 @@
 @font-face {
-  font-family: 'RobotoThin';
-  src: url('Fonts/Roboto-Thin.woff');
-  font-weight: normal;
-  font-style: normal;
+	font-family: 'RobotoRegular';
+	src: url('Fonts/Roboto-Regular.woff');
+	font-weight: normal;
+	font-style: normal;
 }
 @font-face {
-  font-family: 'RobotoRegular';
-  src: url('Fonts/Roboto-Regular.woff');
-  font-weight: normal;
-  font-style: normal;
+	font-family: 'zusamicons';
+	src: url('Fonts/zusamicons.woff');
+	font-weight: normal;
+	font-style: normal;
 }
 .hidden {
 	display: none !important;
-}
-.robotothin {
-	font-family: RobotoThin;
 }
 body {
 	margin: 0px;
@@ -157,10 +154,6 @@ body {
 		font-size: 25px;
 		line-height: 41px;
 	}
-}
-.fa-spin-hover:hover {
-	-webkit-animation: fa-spin 2s infinite linear;
-	animation: fa-spin 2s infinite linear;
 }
 .my_name {
 	display: inline-block;

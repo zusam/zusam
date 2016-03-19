@@ -17,7 +17,7 @@ function main(&$u,&$forum,&$GET,&$POST) {
 	<div id="newavatar" class="newavatar">
 		<div id="retoucheBox">
 			<div class="placeholder">
-				<i class="label fa fa-photo"></i>
+				<i class="label icon-picture"></i>
 				<span class="underLabel">Cliquez pour choisir une photo</span>
 				<input type="file"></input>
 			</div>
@@ -40,7 +40,7 @@ function main(&$u,&$forum,&$GET,&$POST) {
 							<button class="cancel" onclick="push_hidenewpost()">Annuler</button>
 						</div>
 						<div class="menu-cell">
-							<button onclick="inputFile(\'#typeBox\')" class="action"><i class="fa fa-paperclip"></i></button>
+							<button onclick="inputFile(\'#typeBox\')" class="action"><i class="icon-attach"></i></button>
 						</div>
 						<div class="menu-cell">
 							<button class="send" onclick="sendIt(\'#typeBox\')">Envoyer</button>

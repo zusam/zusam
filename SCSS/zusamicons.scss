@@ -1,0 +1,66 @@
+[class^="icon-"]:before, [class*=" icon-"]:before {
+	font-family: "zusamicons";
+	font-style: normal;
+	font-weight: normal;
+	speak: none;
+
+	display: inline-block;
+	text-decoration: inherit;
+	width: 1em;
+	margin-right: .2em;
+	text-align: center;
+	/* opacity: .8; */
+
+	/* For safety - reset parent styles, that can break glyph codes*/
+	font-variant: normal;
+	text-transform: none;
+
+	/* fix buttons height, for twitter bootstrap */
+	line-height: 1em;
+
+	/* Animation center compensation - margins should be symmetric */
+	/* remove if not needed */
+	margin-left: .2em;
+
+	/* you can be more comfortable with increased icons size */
+	/* font-size: 120%; */
+
+	/* Font smoothing. That was taken from TWBS */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	/* Uncomment for 3D effect */
+	/* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+
+	// correct positionning
+	position: relative;
+}
+ 
+.icon-cancel:before { content: '\e800'; } /* '' */
+.icon-picture:before { content: '\e801'; } /* '' */
+.icon-attach:before { 
+	content: '\e802'; 
+	right: 3px;
+}
+.icon-pencil:before { 
+	content: '\e803'; 
+	right: 3px;
+}
+.icon-comment-empty:before { content: '\e804'; } /* '' */
+.icon-left-open:before { content: '\e805'; } /* '' */
+.icon-cog:before { 
+	content: '\e806';
+	right: 0px;
+}
+.icon-down-dir:before { content: '\e807'; } /* '' */
+.icon-up-dir:before { content: '\e808'; } /* '' */
+.icon-cw:before { content: '\e809'; } /* '' */
+.icon-ccw:before { content: '\e80a'; } /* '' */
+.icon-paper-plane:before { content: '\e80b'; } /* '' */
+.icon-circle:before { content: '\e80c'; } /* '' */
+.icon-star:before { content: '\e80d'; } /* '' */
+.icon-star-empty:before { content: '\e80e'; } /* '' */
+.icon-right-open:before { content: '\e80f'; } /* '' */
+.icon-export-alt:before { content: '\e810'; } /* '' */
+.icon-help-circled:before { content: '\e811'; } /* '' */
+.icon-calendar:before { content: '\e812'; } /* '' */

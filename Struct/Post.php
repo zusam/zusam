@@ -23,22 +23,22 @@ function post_updateTimestamp(&$post) {
 	$post['timestamp'] = time();
 }
 
-function post_addButterfly(&$post, $uid) {
-	if($post['butterflies'] == null) {
-		$post['butterflies'] = [];
-	}
-	if($post['butterflies'][$uid] == null) {
-		$post['butterflies'][$uid]['timestamp'] = time();
-	}
-}
-
-function post_removeButterfly(&$post, $uid) {
-	if($post['butterflies'] == null) {
-		$post['butterflies'] = [];
-	} else {
-		unset($post['butterflies'][$uid]);
-	}
-}
+//function post_addButterfly(&$post, $uid) {
+//	if($post['butterflies'] == null) {
+//		$post['butterflies'] = [];
+//	}
+//	if($post['butterflies'][$uid] == null) {
+//		$post['butterflies'][$uid]['timestamp'] = time();
+//	}
+//}
+//
+//function post_removeButterfly(&$post, $uid) {
+//	if($post['butterflies'] == null) {
+//		$post['butterflies'] = [];
+//	} else {
+//		unset($post['butterflies'][$uid]);
+//	}
+//}
 
 function post_bulkLoad($array) {
 	$p = mongo_bulkLoad("posts",$array);
@@ -82,18 +82,6 @@ function post_removeFiles(&$p) {
 		$file = file_load(array('fileId'=>$fileId));
 		if($file != null && $file != false) {
 			file_unlink($file);
-		}
-	}
-}
-
-function post_removeAlbums(&$p) {
-	preg_match_all("/(\{\:\:)([\w\-]+)(\:\:\})/",$p['text'],$matches);
-	foreach($matches[0] as $m) {
-		$albumId = preg_replace("/(\{\:\:)([\w\-]+)(\:\:\})/","$2",$m);
-		$album = album_load(array('albumId'=>$albumId));
-		if($album != false && $album != null) {
-			echo('album targeted');
-			album_destroy($album);
 		}
 	}
 }

@@ -80,9 +80,7 @@ function account_getAvatar(&$ac) {
 	}
 	$loc = array("url"=>(String) $ac['_id'], "param"=>"avatar", "ext"=>"jpg");
 	if(file_exists(pathTo2($loc))) {
-		//var_dump(pathTo2($loc));
 		$avatar = p2l(pathTo2($loc));
-		//var_dump($avatar);
 	} else {
 		return "";
 	}

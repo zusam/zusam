@@ -10,22 +10,6 @@ function page_section_forum(&$u, &$forum) {
 	if($forum != null && $forum != "" && $forum != false) {
 
 		$html .='<div id="container">';
-
-		//$list = array_reverse($forum['news']);
-		//
-		//for($i=0;$i<min(30,count($list));$i++) {
-		//	$p = post_load(array('_id'=>$list[$i]));
-		//	if($p != null && $p != false) {
-		//		if(in_array((String) $p['_id'], $u['unread'])) {
-		//			$html .= print_post_mini($p, true);
-		//		} else {
-		//			$html .= print_post_mini($p, false);
-		//		}
-		//	} else {
-		//		forum_removeFromNews($forum, $list[$i]);
-		//	}
-		//}
-		//forum_save($forum);
 		$html .= '</div>';
 	}
 
@@ -46,7 +30,7 @@ function page_section_forum_settings(&$u, &$forum) {
 	$html .= '<span class="formTitle">Changer le nom du groupe:</span>';
 	$html .= '<input class="textInput" name="name" type="text" placeholder="Nom du groupe">';
 	$html .= '<button class="submitInput" onclick="changeforumname(\'input[name=name]\'); return false;">';
-	$html .= '<i class="fa fa-send"></i>';
+	$html .= '<i class="icon-paper-plane"></i>';
 	$html .= '</button>';
 	$html .= '</form>';
 
@@ -54,7 +38,7 @@ function page_section_forum_settings(&$u, &$forum) {
 	$html .= '<span class="formTitle">Inviter quelqu\'un dans le groupe:</span>';
 	$html .= '<input class="textInput" name="mail" type="email" placeholder="mail de la personne à inviter">';
 	$html .= '<button class="submitInput" onclick="inviteUser(\'input[name=mail]\'); return false;">';
-	$html .= '<i class="fa fa-send"></i>';
+	$html .= '<i class="icon-paper-plane"></i>';
 	$html .= '</button>';
 	$html .= '</form>';
 
