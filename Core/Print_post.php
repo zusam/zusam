@@ -29,7 +29,7 @@ function print_full_post($id, $uid) {
 	}
 	$html_data .= print_post($id, $uid, $p);
 
-	$nb_hidden = max(count($p['children']) - 4, 0);
+	$nb_hidden = max(count($p['children']) - 5, 0);
 
 	if($nb_hidden > 0) {
 		if($nb_hidden > 1) {

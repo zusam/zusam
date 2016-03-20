@@ -12,27 +12,6 @@ function recordUsage(usage) {
 	});
 }
 
-//function toggleButterfly(t) {
-//	var pid = $(t).closest('.post').attr('data-id');
-//	var uid = $('#info').attr('data-uid');
-//	var fid = $('#info').attr('data-fid');
-//	recordUsage("butterfly");
-//	$.ajax({
-//		url: "Ajax/post.php",
-//		type: "POST",
-//		data: {"action":"toggleButterfly", "uid":uid, "fid":fid, "pid":pid},
-//		success: function(data) {
-//			console.log(data);
-//			var butterflies = $(t).parent()[0].childNodes[3].textContent;
-//			$(t).parent()[0].childNodes[3].textContent = data['count'];
-//			t.style.fill = data['color'];
-//		},
-//		error: function() {
-//			console.log('fail butterfly');
-//		}
-//	});
-//}
-
 function getMoreComments(pid) {
 	var uid = $('#info').attr('data-uid');
 	var fid = $('#info').attr('data-fid');
@@ -121,8 +100,16 @@ function loadRetoucheBox(w,h,action) {
 }
 
 
-function destroyAccount(id) {
-	var password = $(id).val();
+function destroyAccount(t) {
+	if(t == null) {
+		return false;
+	}
+	var uid = $('#info').attr('data-uid');
+	var data = {};
+	$(t).closest('.change-profile').find('input').each(function() {
+		data[$(this).attr('name')] = $(this).val();	
+	});
+	var password = data['password'];
 	if(password == null || password.match(/^\s*$/)) {
 		return false;
 	}
@@ -157,16 +144,21 @@ function changeforumname(id) {
 	});
 }
 
-function changename(id) {
-	name = $(id).val();
-	if(name == null || name.match(/^\s*$/)) {
+function changeProfile(t) {
+	if(t == null) {
 		return false;
 	}
 	var uid = $('#info').attr('data-uid');
+	var data = {};
+	$(t).closest('.change-profile').find('input').each(function() {
+		data[$(this).attr('name')] = $(this).val();	
+	});
+	data = JSON.stringify(data);
+	console.log(data);
 	$.ajax({
 		url: "Ajax/post.php",
 		type: "POST",
-		data: {"action":"changeProfile", "uid":uid, "name":name},
+		data: {"action":"changeProfile", "uid":uid, "data":data},
 		success: function(data) {
 			console.log(data);
 			location.reload();
@@ -197,27 +189,6 @@ function inviteUser(id) {
 				window.location.reload(true); 
 			},
 		error: function(){console.log('fail!');}
-	});
-}
-
-function changepassword(old_id,new_id) {
-	old_password = $(old_id).val();
-	new_password = $(new_id).val();
-	if(old_password == null || old_password.match(/^\s*$/)) {
-		return false;
-	}
-	if(new_password == null || new_password.match(/^\s*$/)) {
-		return false;
-	}
-	var uid = $('#info').attr('data-uid');
-	$.ajax({
-		url: "Ajax/post.php",
-		type: "POST",
-		data: {"action":"changeProfile", "uid":uid, "old_password":old_password, "new_password":new_password},
-		success: function(data) {
-			console.log(data);
-			location.reload();
-		}
 	});
 }
 

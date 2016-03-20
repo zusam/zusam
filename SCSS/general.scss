@@ -213,3 +213,30 @@ body {
 	border: 1px inset grey;
 	padding: 5px;
 }
+
+.help-balise {
+	display: inline-block;
+	position: relative;
+	color: black;
+	border-radius: 100%;
+	font-size: 17px;
+	margin: 0px 3px;
+}
+
+.help-balise span {
+	display: none;
+	position: absolute;
+	top: 0px;
+	left: calc(100% + 5px);
+	border: 1px solid black;
+	border-radius: 10px;
+	padding: 5px;
+	font-size: 15px;
+	width: 150px;
+	background: white;
+	z-index: 700;
+}
+
+.help-balise:hover span {
+	display: block;
+}

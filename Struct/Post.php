@@ -23,23 +23,6 @@ function post_updateTimestamp(&$post) {
 	$post['timestamp'] = time();
 }
 
-//function post_addButterfly(&$post, $uid) {
-//	if($post['butterflies'] == null) {
-//		$post['butterflies'] = [];
-//	}
-//	if($post['butterflies'][$uid] == null) {
-//		$post['butterflies'][$uid]['timestamp'] = time();
-//	}
-//}
-//
-//function post_removeButterfly(&$post, $uid) {
-//	if($post['butterflies'] == null) {
-//		$post['butterflies'] = [];
-//	} else {
-//		unset($post['butterflies'][$uid]);
-//	}
-//}
-
 function post_bulkLoad($array) {
 	$p = mongo_bulkLoad("posts",$array);
 	return $p;
@@ -91,7 +74,6 @@ function post_destroy($id) {
 	if($p != null && $p != false) {
 		// unlink files
 		post_removeFiles($p);
-		post_removeAlbums($p);
 		// destroy children
 		foreach($p['children'] as $cid) {
 			post_destroy($cid);

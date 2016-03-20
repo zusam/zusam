@@ -119,7 +119,18 @@ if(isset($_SESSION['forum']) && $u['forums'][$_SESSION['forum']] != null) {
 } else {
 	// Force selection of a forum
 	if($GET['page'] != "profile") {
+		
+		// erase non-existant forums TODO (fix this : we should not need it)
+		foreach($u['forums'] as $k=>$uf) {
+			$f = forum_load(array('_id'=>(String) $k));
+			if($f == false || $f == null) {
+				unset($u['forums'][$k]);
+			}
+		}
+		account_save($u);
+		
 		$fid = array_keys($u['forums'])[0];
+
 		if($fid != null) {
 			$forum = forum_load(array('_id'=>$fid));	
 			if($forum != null) {

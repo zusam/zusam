@@ -23,7 +23,7 @@
 		border-left: 1px solid lightgrey;
 		height: auto;
 		padding: 15px;
-		max-width: 256px;
+		//max-width: 256px;
 		min-width: 100px;
 		margin: 25px;
 		position: relative;
@@ -39,13 +39,16 @@
 		.user {
 			width: 96px;
 			height: 96px;
-			margin: 5px;
+			margin: 10px;
 			padding: 5px;
 			position: relative;
 			text-align: center;
 
 			img {
 				width: 100%;
+			}
+			span {
+				word-break: break-all;
 			}
 		}
 		.user > div {
