@@ -164,11 +164,11 @@ function process_imgur($str) {
 				if($data['data']['webm'] != "") {
 					$xx = p2l(pmini($data['data']['webm']));
 					gen_miniature($data['data']['webm']);
-					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="fa fa-external-link-square"></i></a>';
+					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-export-alt"></i></a>';
 					$o .= '<div onclick="loadVideo(this)" data-src="'.$data['data']['webm'].'" class="launcher">';
 					$o .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';
 				} else {
-					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="fa fa-external-link-square"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['data']['link'].'"/>';
+					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-export-alt"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['data']['link'].'"/>';
 				}
 				$a = '</span>';
 				$output = $b.$o.$a;
@@ -177,7 +177,7 @@ function process_imgur($str) {
 				$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 				$output .= $b;	
 				foreach($data['data']['images'] as $im) {
-					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="fa fa-external-link-square"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$im['link'].'"/>';
+					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-export-alt"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$im['link'].'"/>';
 					$output .= $o;	
 				}
 				$a = '</span>';
@@ -203,7 +203,7 @@ function process_instagram($str) {
 	$data = json_decode($data,true);
 
 	$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
-	$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="fa fa-instagram"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['thumbnail_url'].'"/>';
+	$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-export-alt"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['thumbnail_url'].'"/>';
 	$a = '</span>';
 	$output = $b.$o.$a;
 	return $output;
@@ -291,8 +291,8 @@ function fail_request($url) {
 }
 
 function process_soundcloud($str) {
-	$xx = p2l(pmini($str));
 	gen_miniature($str);
+	$xx = p2l(pmini($str));
 	$code = "";
 	$code .= '<div class="embed-responsive embed-responsive-16by9">';
 	$code .= '<div onclick="loadIframe(this)" class="launcher">';
@@ -320,6 +320,7 @@ function process_soundcloud($str) {
 }
 
 function process_vine($str) {
+	gen_miniature($str);
 	$html = "";
 	$w .= preg_replace('/(https?:\/\/vine.co\/v\/)([\w\-]+)/','$1$2/embed/simple',$str);
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
@@ -331,10 +332,10 @@ function process_vine($str) {
 }
 
 function process_dailymotion($str) {
+	gen_miniature($str);
 	$html = "";
 	$w = preg_replace('/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/','http://www.dailymotion.com/embed/video/$2?autoplay=1',$str);
 	$xx = p2l(pmini($str));
-	gen_miniature($str);
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
@@ -344,10 +345,10 @@ function process_dailymotion($str) {
 }
 
 function process_vimeo($str) {
+	gen_miniature($str);
 	$html = "";
 	$w = preg_replace('/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/','http://player.vimeo.com/video/$3?autoplay=1',$str);
 	$xx = p2l(pmini($str));
-	gen_miniature($str);
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
@@ -357,11 +358,11 @@ function process_vimeo($str) {
 }
 
 function process_youtube2($str) {
+	gen_miniature($str);
 	$html = "";
 	$v = preg_replace('/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/','$2',$str);
 	$w = 'http://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
 	$xx = p2l(pmini($str));
-	gen_miniature($str);
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
@@ -371,11 +372,11 @@ function process_youtube2($str) {
 }
 
 function process_youtube($str) {
+	gen_miniature($str);
 	$html = "";
 	$v = preg_replace('/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/','$4',$str);
 	$w = 'http://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
 	$xx = p2l(pmini($str));
-	gen_miniature($str);
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
@@ -387,9 +388,9 @@ function process_youtube($str) {
 function process_video($str) {
 	// change gifv into webm
 	$str = preg_replace("/\.gifv/",".webm",$str);
+	gen_miniature($str);
 	$html = "";
 	$xx = p2l(pmini($str));
-	gen_miniature($str);
 	$html = "";
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div onclick="loadVideo(this)" data-src="'.$str.'" class="launcher">';
@@ -407,8 +408,8 @@ function process_image($str) {
 }
 
 function process_gif($str) {
-	$xx = p2l(pmini($str));
 	gen_miniature($str);
+	$xx = p2l(pmini($str));
 	$html = "";
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div onclick="loadImage(this)" data-src="'.$str.'" class="launcher">';
@@ -451,7 +452,7 @@ function process_file($str) {
 			$html .= '<div contenteditable="false">';
 			$html .= file_print($file);
 			$html .= '<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="material-shadow editIMG">';
-			$html .= '<i class="fa fa-pencil"></i>';
+			$html .= '<i class="icon-pencil"></i>';
 			$html .= '</button>';
 			$html .= '</div>';
 		} else {

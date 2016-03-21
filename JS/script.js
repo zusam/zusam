@@ -44,7 +44,7 @@ function updatePostStats(pid) {
 			if(typeof(data) != "undefined" && typeof(data['coms']) != "undefined") {
 				if(data['coms'] != 0) {
 					var pci = $('#container .post-mini[data-id="'+pid+'"]').find('.comments-indicator');
-					pci.html('<div>'+data['coms']+' <i class="fa fa-comment-o"></i></div>');
+					pci.html('<div>'+data['coms']+' <i class="icon-comment-empty"></i></div>');
 					//pci.remove();
 					if(data['unread'] == true) {
 						$('.post-mini[data-id="'+pid+'"] .comments-indicator div').addClass('newcom');

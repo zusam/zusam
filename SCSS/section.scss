@@ -99,19 +99,31 @@ section {
 		.post-preview {
 
 			.text-container {
-				background: white;
-				line-height: 31px;
-				font-size: 15px;
-		background-image: repeating-linear-gradient(top, transparent 0%, transparent 30px, rgba(0, 0, 0, 0.4) 31px, rgba(0, 0, 0, 0.28) 30px);
-		background-image: -webkit-repeating-linear-gradient(top, transparent 0%, transparent 30px, rgba(0, 0, 0, 0.4) 31px, rgba(0, 0, 0, 0.28) 30px);
-		background-image: -moz-repeating-linear-gradient(top, transparent 0%, transparent 30px, rgba(0, 0, 0, 0.4) 31px, rgba(0, 0, 0, 0.28) 30px);
+				.paper {
+				    height: 20px;
+					background-image: url('Assets/bloc-note.svg');
+					background-size: contain;
+				}
 
-				div {
-					padding: 6px 15px 0 15px;
-					margin-left: 30px;
-					border-left: 1px solid #f7a71b;
-					color: #5d5b54;
+				.text {
+					background: white;
 					height: 180px;
+					padding: 20px;
+
+					div {
+						height: 100%;
+						line-height: 31px;
+						font-size: 15px;
+						background: white;
+						padding: 5px 15px 0 15px;
+						color: rgb(0, 0, 0);
+						background-image: repeating-linear-gradient(top, transparent 0%, transparent 30px, rgba(0, 0, 0, 0.2) 31px, rgba(0, 0, 0, 0.14) 30px);
+						background-image: -webkit-repeating-linear-gradient(top, transparent 0%, transparent 30px, rgba(0, 0, 0, 0.2) 31px, rgba(0, 0, 0, 0.14) 30px);
+						background-image: -moz-repeating-linear-gradient(top, transparent 0%, transparent 30px, rgba(0, 0, 0, 0.2) 31px, rgba(0, 0, 0, 0.14) 30px);
+					}
+					div:first-letter {
+						text-transform: capitalize;
+					}
 				}
 			}
 			.miniature {

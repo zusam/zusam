@@ -99,7 +99,7 @@ function enlighten(id) {
 				}
 			});
 		}
-		var close = $('<div class="close material-shadow" onclick="lightbox.darken()"><i class="fa fa-close"></i></div>');
+		var close = $('<div class="close material-shadow" onclick="lightbox.darken()"><i class="icon-cancel"></i></div>');
 		$(this).attr('onclick','lightbox.darken()').addClass('zoomedImage');
 		lb.css({
 			"top" : (window.innerHeight-height)/2 + "px",
@@ -108,7 +108,7 @@ function enlighten(id) {
 			"height" : height + "px",
 		});
 		if(owner == $('#info').attr('data-uid')) {
-			var button = $('<button contentditable="false" class="material-shadow editIMG"><i class="fa fa-pencil"></i></button>');
+			var button = $('<button contentditable="false" class="material-shadow editIMG"><i class="icon-pencil"></i></button>');
 			button.on("click", function(evt) {
 				evt.stopPropagation();
 				console.log(e);
