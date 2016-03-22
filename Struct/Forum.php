@@ -15,13 +15,17 @@ function forum_initialize($name) {
 	return $forum;
 }
 
-function forum_addUnread(&$forum, $pid) {
-	foreach($forum['users'] as $uid) {
-		$uid = (String) $uid;
-		$u = account_load(array('_id'=>$uid));
-		if($u != null && $u != false) {
-			account_addUnread($u, $pid);
-			account_save($u);
+function forum_addUnread(&$forum, $pid, $uid) {
+	$pid = (String) $pid;
+	$uid = (String) $uid;
+	foreach($forum['users'] as $user_id) {
+		$user_id = (String) $user_id;
+		if($uid != $user_id) {
+			$u = account_load(array('_id'=>$user_id));
+			if($u != null && $u != false) {
+				account_addUnread($u, $pid);
+				account_save($u);
+			}
 		}
 	}
 }

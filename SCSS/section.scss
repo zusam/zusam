@@ -66,6 +66,9 @@ section {
 				color: grey;
 				font-size: 14px;
 			}
+			.newcom {
+				color: #F7A71B !important;
+			}
 
 			.op-avatar {
 				width: 40px;
@@ -86,9 +89,6 @@ section {
 			.comments-indicator {
 				min-width: 25px;
 
-				.newcom {
-					color: #F7A71B !important;
-				}
 				div {
 					color: grey;
 					font-size: 15px;
@@ -98,31 +98,35 @@ section {
 
 		.post-preview {
 
-			.text-container {
+			.text-miniature {
+				background-image: repeating-linear-gradient(top, transparent 0%, transparent 31px, rgba(0, 0, 0, 0.2) 32px, rgba(0, 0, 0, 0.14) 31px);
+				background-image: -webkit-repeating-linear-gradient(top, transparent 0%, transparent 31px, rgba(0, 0, 0, 0.2) 32px, rgba(0, 0, 0, 0.14) 31px);
+				background-image: -moz-repeating-linear-gradient(top, transparent 0%, transparent 31px, rgba(0, 0, 0, 0.2) 32px, rgba(0, 0, 0, 0.14) 31px);
+				background-color: white;
 				.paper {
 				    height: 20px;
 					background-image: url('Assets/bloc-note.svg');
 					background-size: contain;
+					background-color: rgb(245,245,245);
 				}
+				.text-container {
+					width: 100%;
+					height: 0px;
+					padding-bottom: calc(56% - 20px);
 
-				.text {
-					background: white;
-					height: 180px;
-					padding: 20px;
+					.text {
+						padding: 0px 20px;
 
-					div {
-						height: 100%;
-						line-height: 31px;
-						font-size: 15px;
-						background: white;
-						padding: 5px 15px 0 15px;
-						color: rgb(0, 0, 0);
-						background-image: repeating-linear-gradient(top, transparent 0%, transparent 30px, rgba(0, 0, 0, 0.2) 31px, rgba(0, 0, 0, 0.14) 30px);
-						background-image: -webkit-repeating-linear-gradient(top, transparent 0%, transparent 30px, rgba(0, 0, 0, 0.2) 31px, rgba(0, 0, 0, 0.14) 30px);
-						background-image: -moz-repeating-linear-gradient(top, transparent 0%, transparent 30px, rgba(0, 0, 0, 0.2) 31px, rgba(0, 0, 0, 0.14) 30px);
-					}
-					div:first-letter {
-						text-transform: capitalize;
+						div {
+							height: 100%;
+							line-height: 32px;
+							font-size: 15px;
+							padding: 16px 15px 0 15px;
+							color: rgb(0, 0, 0);
+						}
+						div:first-letter {
+							text-transform: capitalize;
+						}
 					}
 				}
 			}

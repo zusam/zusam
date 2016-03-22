@@ -171,7 +171,6 @@ function hidenewpost(sent) {
 		var nbc = document.getElementById('typeBox').childNodes.length;
 		var fc = document.getElementById('typeBox').childNodes[0].innerHTML.replace(/\<br\>/,'');
 		if(nbc == 1 && fc == "") {
-			console.log("okay!");
 			var answer = true;
 		} else {
 			console.log(fc);
@@ -190,8 +189,8 @@ function hidenewpost(sent) {
 }
 
 function hidenewcommentsection(id) {
-	t = $(id);
-	t.after('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="icon-comment-empty"></i>Ecrire un commentaire...</div></div>');
+	var t = $(id);
+	t.after(fakeComment());
 	t.remove();
 }
 
@@ -248,9 +247,11 @@ function showpostviewer(id) {
 		type: "GET",
 		data: {"action":"getPost","id":id},
 		success: function(data) {
+			console.log('loaded post data');
 			console.log(data);
-			if(data == null || data == "") {
+			if(data == null || data == "" || data['html'] == "") {
 				// do something else : we need an error message
+				console.log("no post to show !");
 				push_hideAll();
 			} else {
 
@@ -260,7 +261,8 @@ function showpostviewer(id) {
 				$('#mask').addClass('dark-mask');
 				var plop = $(data['html']);
 				$('#post-viewer').append(plop);
-				$('#post-viewer').append('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="icon-comment-empty"></i>Ecrire un commentaire...</div></div>');
+				var opimg = $('#info').attr('data-avatar');
+				$('#post-viewer').append(fakeComment());
 
 				updatePostStats(id);
 				
@@ -339,18 +341,7 @@ function unveil(e) {
 }
 
 function fakeComment() {
-	var uid = $('#info').attr('data-uid');
-	$.ajax({
-		url:"Ajax/post.php",
-		type:"post",
-		data:{"action":"recordUsage","usage":usage},
-		success: function(data) {
-			console.log(data);
-		},
-		error: function() {
-			console.log("fail record");
-		}
-	});
-	var fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><i class="icon-comment-empty"></i>Ecrire un commentaire...</div></div>');
-//TODO XXX
+	var opimg = $('#info').attr('data-avatar');
+	var fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><img class="op-img" src="'+opimg+'"/><span>Ecrire un commentaire...</span></div></div>');
+	return fc;
 }

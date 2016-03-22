@@ -190,10 +190,10 @@ function print_post_mini(&$p, $unread) {
 		if(preg_match("/\.jpg$/",$p['preview'])==1) {
 			$inside = '<div><img class="miniature" src="'.p2l($p['preview']).'"/></div>';
 		} else {
-				$inside = '<div class="text-container">';
+				$inside = '<div class="text-miniature">';
 				$inside .= '<div class="paper"></div>';
-				$text = cutIfTooLong($p['text'], 160);
-				$inside .= '<div class="text"><div>'.$text.'</div></div>';
+				$text = cutIfTooLong($p['text'], 150);
+				$inside .= '<div class="text-container"><div class="text"><div>'.$text.'</div></div></div>';
 				$inside .= '</div>';
 		}
 
@@ -203,16 +203,17 @@ function print_post_mini(&$p, $unread) {
 		$inside .= '<div class="post-info">';
 
 		$inside .= '<div class="op-avatar">'.account_getAvatarHTML($op).'</div>';
-		$inside .= '<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
+
+		if($unread) {
+			$inside .= '<div class="date newcom">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
+		} else {
+			$inside .= '<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
+		}
 		
 		$inside .= '<div class="comments-indicator">';
 		$c = count($p['children']);
 		if($c > 0) {
-			if($unread) {
-				$inside .= '<div class="newcom">'.$c.' <i class="icon-comment-empty"></i></div>';
-			} else {
-				$inside .= '<div>'.$c.' <i class="icon-comment-empty"></i></div>';
-			}
+			$inside .= '<div>'.$c.' <i class="icon-comment-empty"></i></div>';
 		}
 
 		$inside .= '</div>';

@@ -43,10 +43,14 @@
 			cursor: text;
 			margin-bottom: 50px;
 			color: grey;
+			display: flex;
+			align-items: center;
+			display: -webkit-flex;
+			-webkit-align-items: center;
 
-			i {
-				float: right;
-				font-size: 20px;
+			.op-img {
+				height: 35px;
+				margin-right: 10px;
 			}
 		}
 	}

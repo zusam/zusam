@@ -1,15 +1,29 @@
 function loadVideo(file,id) {
-	console.log("load video "+file.name);
-	var vid = document.createElement('video');
-	vid.controls = true;
-	vid.autoplay = true;
-	vid.onloadeddata = function() {
-		$('*[data-id="'+id+'"]').remove();
+	if(file.type.match(/mp4|webm|ogg/)) {
+		console.log("load video "+file.name);
+		console.log(file);
+		var vid = document.createElement('video');
+		vid.controls = true;
+		vid.autoplay = true;
+		vid.onloadeddata = function() {
+			$('*[data-id="'+id+'"]').remove();
+			var fileId = createId();
+			PF.showVideo(vid, id, fileId);
+			PF.sendVideo(file, fileId);
+		};
+		vid.src = URL.createObjectURL(file);
+	} else {
 		var fileId = createId();
-		PF.showVideo(vid, id, fileId);
+		PF.showPlaceHolderVideo(id, fileId);
 		PF.sendVideo(file, fileId);
-	};
-	vid.src = URL.createObjectURL(file);
+	}
+}
+
+function showPlaceHolderVideo(id, fileId) {
+	var content = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
+	content.append('<div class="placeHolderVideo"><i class="icon-video"></i></div>');
+	$(id).append(content);
+	$(id).append('<div contenteditable="true"></div>');
 }
 
 function showVideo(vid, id, fileId) {
@@ -102,16 +116,33 @@ function loadImage(file,id) {
 	img.onload = function() {
 		console.log("img:"+img);
 		canvas = document.createElement('canvas');
-		w = Math.min(this.width, 1024);
-		h = Math.min(this.height, 1024);
-		g = Math.min(w/img.width, h/img.height);
-		canvas.width = this.width*g;
-		canvas.height = this.height*g;
-		ctx = canvas.getContext('2d');
-		ctx.drawImage(img,0,0,this.width*g,this.height*g);
-		delete img;
-		//$('*[data-id="'+id+'"]').remove();
-		var fileId = createId(); //Math.random().toString(36).slice(2)+Date.now().toString(36); 
+
+		//w = Math.min(this.width, 1024);
+		//h = Math.min(this.height, 1024);
+		//g = Math.min(w/img.width, h/img.height);
+		//canvas.width = this.width*g;
+		//canvas.height = this.height*g;
+		//ctx = canvas.getContext('2d');
+		//ctx.drawImage(img,0,0,this.width*g,this.height*g);
+		//delete img;
+		
+		// find new_width and new_height
+		var w = Math.min(this.width, 1024);
+		var h = Math.min(this.height, 1024);
+		var g = Math.min(w/img.width, h/img.height);
+		//var new_width = this.width*g;
+		//var new_height = this.height*g
+		
+		// hermite canvas
+		canvas.width = img.width;
+		canvas.height = img.height;
+		//canvas.style.display = "none";
+		var ctx = canvas.getContext('2d');
+		ctx.drawImage(img, 0, 0);
+		//retouche.resample_hermite(canvas, img.width, img.height, new_width, new_height);
+		canvas = retouche.downScaleCanvas(canvas, g);
+		
+		var fileId = createId();
 		PF.showImage(canvas, id, fileId);
 		PF.sendImage(canvas, fileId);
 	};

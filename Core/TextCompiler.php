@@ -448,16 +448,7 @@ function process_file($str) {
 	if($file) {
 		$html = "";
 		$html .= '<span data-owner="'.$file['owner'].'" class="deletable deletable-block" data-width="'.$w.'" data-height="'.$h.'" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" contenteditable="false" id="'.md5($str).'">';
-		if($uid == (String) $file['owner'] && $file['type'] == 'jpg') {
-			$html .= '<div contenteditable="false">';
-			$html .= file_print($file);
-			$html .= '<button onclick="showimageeditor(\'#retoucheBox\', this)" contentditable="false" class="material-shadow editIMG">';
-			$html .= '<i class="icon-pencil"></i>';
-			$html .= '</button>';
-			$html .= '</div>';
-		} else {
-			$html .= file_print($file);
-		}
+		$html .= file_print($file);
 		$html .= '</span>';
 		return $html;
 	} else {

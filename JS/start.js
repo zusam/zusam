@@ -1,8 +1,6 @@
 
 //// usefull global variables /////
 
-// albums
-albumFiles = window.albumFiles = [];
 // canvas conversions
 URL = window.URL || window.webkitURL;
 // scripts states
@@ -23,7 +21,7 @@ $(window).ready(function() {
 			type:"post",
 			data:{"action":"saveRecord","loadingTime":loadingTime,"screenHeight":screen.height,"screenWidth":screen.width},
 			success: function(data) {
-				console.log(data);
+				//console.log(data);
 			},
 			error: function() {
 				console.log("fail record");

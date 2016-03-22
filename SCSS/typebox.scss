@@ -116,6 +116,14 @@ img.lazyload {
 	overflow: hidden;
 }
 .deletable {
+	
+	.placeHolderVideo {
+		padding: 10px;
+	    font-size: 50px;
+		border-bottom: 1px solid lightgrey;
+		border-top: 1px solid lightgrey;
+	}
+
 	.launcher {
 		display: block;
 		position: relative;

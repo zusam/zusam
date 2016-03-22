@@ -4,7 +4,7 @@ function recordUsage(usage) {
 		type:"post",
 		data:{"action":"recordUsage","usage":usage},
 		success: function(data) {
-			console.log(data);
+			//console.log(data);
 		},
 		error: function() {
 			console.log("fail record");
@@ -41,17 +41,20 @@ function updatePostStats(pid) {
 		data: {"action":"getPostStats", "uid":uid, "fid":fid, "pid":pid},
 		success: function(data) {
 			console.log(data);
-			if(typeof(data) != "undefined" && typeof(data['coms']) != "undefined") {
+			if(typeof(data) != "undefined") {
+				var p = $('#container .post-mini[data-id="'+pid+'"] .post-info');
 				if(data['coms'] != 0) {
-					var pci = $('#container .post-mini[data-id="'+pid+'"]').find('.comments-indicator');
+					var pci = p.find('.comments-indicator');
 					pci.html('<div>'+data['coms']+' <i class="icon-comment-empty"></i></div>');
-					//pci.remove();
-					if(data['unread'] == true) {
-						$('.post-mini[data-id="'+pid+'"] .comments-indicator div').addClass('newcom');
-					}
 				} else {
-					$('#container .post-mini[data-id="'+pid+'"]').find('.comments-indicator').html('');
+					p.find('.comments-indicator').html('');
 				}
+				if(data['unread'] == true) {
+					p.find('.date').addClass('newcom');
+				} else {
+					p.find('.date').removeClass('newcom');
+				}
+				p.find('.date').html(data['date']);
 			}
 		}
 	});
@@ -193,7 +196,7 @@ function inviteUser(id) {
 }
 
 function sendIt(id) {
-	msg = "";
+	var msg = "";
 	if(id == "#commentBox" || id == "#editBox") {
 		var parentID = $('#post-viewer').attr('data-id');
 	} else {
@@ -204,7 +207,7 @@ function sendIt(id) {
 	} else {
 		var pid = 0;
 	}
-	t = $(id);
+	var t = $(id);
 	for(i=0;i<t.children().length;i++) {
 		c = $(t.children()[i]);
 		if(c.hasClass("deletable")) {
@@ -213,8 +216,8 @@ function sendIt(id) {
 			msg += " "+decode(c.html());
 		}
 	}
-	uid = $('#info').eq(0).attr('data-uid');
-	forum = $('#info').eq(0).attr('data-fid');
+	var uid = $('#info').eq(0).attr('data-uid');
+	var forum = $('#info').eq(0).attr('data-fid');
 	console.log("text:"+msg+",forum:"+forum+",uid:"+uid+",parent:"+parentID+",pid:"+pid);
 	var baliseId = createId();
 	$.ajax({
@@ -222,15 +225,11 @@ function sendIt(id) {
 		type: "POST",
 		data: {"text":msg,"forum":forum,"uid":uid,"parent":parentID,"pid":pid},
 		success: function(data) {
+		console.log('coucou');
 			console.log(data);
 				if(data['parent'] == 0 || data['parent'] == null) {
-					console.log("new post");
 					var balise = $('#container div[data-balise="'+baliseId+'"]');
-					if(data['miniature'] != null) {
-						balise.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><div class="post-preview"><img src="'+data['miniature']+'"/></div></div>');
-					} else {
-						balise.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><div class="post-preview">'+data['html_preview']+'</div></div>');
-					}
+					balise.after(data['html']);
 					balise.remove();
 					hidepostviewer();
 				} else {
@@ -252,11 +251,7 @@ function sendIt(id) {
 							pp.remove();
 							typebox.view();
 							var p = $('#container .post-mini[data-id='+data['pid']+']');
-							if(data['miniature'] != null) {
-								p.after('<div class="material-shadow post-mini" data-id="'+data['pid']+'"><img src="'+data['miniature']+'"/></div>');
-							} else {
-								p.after('<div class="material-shadow post-mini" data-id="'+data['pid']+'">'+data['html_preview']+'</div>');
-							}
+							p.after(data['html']);
 							p.remove();
 						} else {
 							console.log("edit com");
@@ -597,9 +592,7 @@ function evaluateURL() {
 		if(tag.length == 24) {
 			var pid = tag;
 			if(active_post != pid) {
-				console.log("show:"+pid);
 				showpostviewer(pid);
-				console.log("show");
 			}
 		} else {
 			if(tag == "newpost") {
