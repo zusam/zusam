@@ -9,7 +9,7 @@ function landing($warning, $redirect_url) {
 			<div class="background"></div>
 		
 			<div class="menu">
-				<a class="action" href="http://facebook.com/zusam"><i class="fa fa-facebook"></i></a>
+				<a class="action" href="http://facebook.com/zusam">Facebook</a>
 				<a class="action" href="http://blog.zus.am">Blog</a>
 				<button class="signin action" onclick="landing.switchForm()">Se connecter</button>
 			</div>
@@ -25,7 +25,7 @@ function landing($warning, $redirect_url) {
 						<input class="password borderMiddle" name="password" type="password" placeholder="mot de passe"/>
 						<input class="password-confirmation borderBottom" name="password-confirmation" type="password" placeholder="confirmez votre mot de passe"/>
 						<p class="form-notif hidden">Les mots de passe ne correspondent pas</p>
-						<button type="submit" name="submit" class="submit"><i class="fa fa-paper-plane"></i></button>
+						<button type="submit" name="submit" class="submit"><i class="icon-paper-plane"></i></button>
 						<a class="action hidden" onclick="landing.switchToPasswordReset()">Mot de passe oublié ?</a>
 					</form>
 				</div>

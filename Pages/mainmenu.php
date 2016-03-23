@@ -13,7 +13,6 @@ function page_mainmenu(&$u, $page) {
 		$html .= 'selected';
 	}
 	$html .= '" href="'.$_SERVER['PHP_SELF'].'?page=profile">'.account_getAvatarHTML($u).$u['name'].'</a>';
-	//$html .= '<div class="notif"><i class="fa fa-bell-o"></i></div>';
 	$html .= '</div>';
 
 	$html .= '<div class="separator"></div>';
@@ -32,12 +31,12 @@ function page_mainmenu(&$u, $page) {
 				$html .= ' <a class="menu-highlight forum-link ';
 				$html .= '" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'">'.$f['name'];
 				if($f['timestamp'] != null && $v['timestamp'] < $f['timestamp']) {
-					$html .= ' <i class="fa fa-circle notif"></i>';
+					$html .= ' <i class="icon-circle notif"></i>';
 				}
 				$html .= '</a>';
 				$html .= '
-					<a class="forum-settings" href="'.$GLOBALS['__ROOT_URL__'].'?fid='.$f['_id'].'&page=forum_settings">
-						<i class="fa fa-gear fa-spin-hover">
+					<a class="forum-settings spin-hover" href="'.$GLOBALS['__ROOT_URL__'].'?fid='.$f['_id'].'&page=forum_settings">
+						<i class="icon-cog">
 						</i>
 					</a>
 				';

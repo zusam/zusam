@@ -114,14 +114,6 @@ function deleteAllValues($e, $a) {
 	return $a;
 }
 
-// TODO need to be replace with unset ?
-// unset alone is far more better
-// this function is used in Core/Forum.php
-function deleteKey(&$e, &$a) {
-	$ee = (String) $e;
-	unset($a[$ee]);
-}
-
 // relative time
 function ago($d) {
 	$da = new DateTime($d);

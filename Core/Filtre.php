@@ -139,7 +139,7 @@ function filtre($url) {
 	}
 
 	// WEB IMAGE & GIF //
-	if(preg_match(r2ep($regex['image']),$url)==1) {
+	if(preg_match(r2ep($regex['image']),$url)==1 || preg_match(r2ep($regex['gif']),$url)==1) {
 		$ret = create_post_miniature($url);
 		return $ret;
 	}

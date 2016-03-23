@@ -34,9 +34,6 @@
 	width: 200px; 
 	box-shadow: inset -10px 0px 10px -8px rgba(0,0,0,0.8);
 	font-size: 16px;
-	//overflow: auto;
-	//z-index: 35;
-
 
 	.section-separator {
 		display: block;
@@ -132,6 +129,8 @@
 			-webkit-justify-content: space-between;
 			-webkit-align-items: center;
 			width: 100%;
+			border-bottom: 2px solid rgba(0,0,0,0.1);
+			border-top: 1px solid rgba(255,255,255,0.1);
 		
 			.forum-link {
 				text-decoration: none;

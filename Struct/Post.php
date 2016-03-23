@@ -23,23 +23,6 @@ function post_updateTimestamp(&$post) {
 	$post['timestamp'] = time();
 }
 
-function post_addButterfly(&$post, $uid) {
-	if($post['butterflies'] == null) {
-		$post['butterflies'] = [];
-	}
-	if($post['butterflies'][$uid] == null) {
-		$post['butterflies'][$uid]['timestamp'] = time();
-	}
-}
-
-function post_removeButterfly(&$post, $uid) {
-	if($post['butterflies'] == null) {
-		$post['butterflies'] = [];
-	} else {
-		unset($post['butterflies'][$uid]);
-	}
-}
-
 function post_bulkLoad($array) {
 	$p = mongo_bulkLoad("posts",$array);
 	return $p;
@@ -86,24 +69,11 @@ function post_removeFiles(&$p) {
 	}
 }
 
-function post_removeAlbums(&$p) {
-	preg_match_all("/(\{\:\:)([\w\-]+)(\:\:\})/",$p['text'],$matches);
-	foreach($matches[0] as $m) {
-		$albumId = preg_replace("/(\{\:\:)([\w\-]+)(\:\:\})/","$2",$m);
-		$album = album_load(array('albumId'=>$albumId));
-		if($album != false && $album != null) {
-			echo('album targeted');
-			album_destroy($album);
-		}
-	}
-}
-
 function post_destroy($id) {
 	$p = post_load(array('_id'=>$id));
 	if($p != null && $p != false) {
 		// unlink files
 		post_removeFiles($p);
-		post_removeAlbums($p);
 		// destroy children
 		foreach($p['children'] as $cid) {
 			post_destroy($cid);

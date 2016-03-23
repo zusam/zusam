@@ -33,7 +33,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				forum_save($f);
 				$u['forums'][$forum]['timestamp'] = time();
 				account_save($u);
-				forum_addUnread($f, $p['_id']);
+				forum_addUnread($f, $p['_id'], $uid);
 			} else {
 				// new com
 				$p = post_load(array('_id'=>$parent));
@@ -45,7 +45,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				forum_post2news($f, $p['_id']);
 				forum_updateTimestamp($f);
 				forum_save($f);
-				forum_addUnread($f, $p['_id']);
+				forum_addUnread($f, $p['_id'], $uid);
 				$u['forums'][$forum]['timestamp'] = time();
 				account_readPost($u, $id);
 				account_save($u);
@@ -65,15 +65,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 		}
 
 		$r = new stdClass();
-		if(preg_match("/.*miniature\/.*\.jpg/",$preview) != 1) {
-			$inside = '<div class="text-container">';
-			$text = cutIfTooLong($p['text'], 180);
-			$inside .= '<div>'.$text.'</div>';
-			$inside .= '</div>';
-			$r->html_preview = $inside;
-		} else {
-			$r->miniature = p2l($preview);
-		}
+		$r->miniature = p2l($preview);
 		$r->prev = $preview;
 		$r->id = (String) $p['_id'];
 		$r->text = $text;
@@ -82,6 +74,8 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 
 		if($parent != null && $parent != 0) {
 			$r->html = print_post($c['_id'], $uid);
+		} else {
+			$r->html = print_post_mini($p, false);
 		}
 
 		header('Content-Type: text/json; charset=UTF-8');

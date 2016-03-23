@@ -4,8 +4,9 @@ loc=`pwd`
 JS="JS"
 LIBJS="LibJS"
 
-# first, clean the JS directory
+# first, clean the selected directories
 rm $JS/*.min.js
+#rm $LIBJS/*.min.js
 
 if [[ "$1" == "compress" ]]
 then

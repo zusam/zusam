@@ -78,23 +78,6 @@
 	.next {
 		right: 0px;
 	}
-	.editIMG {
-		position: absolute;
-		top: 10px;
-		left: 10px;
-		font-size: 14px;
-		border: none;
-		width: 28px;
-		height: 28px;
-		border-radius: 100%;
-		background-color: rgba(255, 255, 255, 0.75);
-		cursor: pointer;
-		color: black;
-		z-index: 100;
-	}
-	.editIMG:hover {
-		background-color: white;
-	}
 }
 
 .lightbox-mask {
@@ -114,7 +97,28 @@
 		-webkit-transform: translate(-50%, -50);
 	}
 }
-
 .zoomPossible {
 	cursor: url(Assets/magnify.cur), default;
+}
+.editIMG {
+	position: absolute;
+	left: 10px;
+	font-size: 14px;
+	border: none;
+	width: 28px;
+	height: 28px;
+	border-radius: 100%;
+	background-color: rgba(255, 255, 255, 0.75);
+	cursor: pointer;
+	color: black;
+	z-index: 100;
+}
+.editIMG:hover {
+	background-color: white;
+}
+.cw {
+	top: 10px;
+}
+.ccw {
+	top: 44px;
 }

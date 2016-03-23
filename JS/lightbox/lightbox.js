@@ -1,7 +1,6 @@
 function searchNext(e) {
 	// search in the same post
 	var img = $(e).closest(".deletable").next().find('img.zoomPossible')[0];
-
 	
 	// search in other posts
 	var post = $(e).closest(".post").nextUntil('post');
@@ -39,10 +38,6 @@ function enlighten(id) {
 
 	// get file owner id
 	var owner = $(e).closest('.deletable').attr('data-owner');
-	//console.log(owner);
-	//if(owner == $('#info').attr('data-uid')) {
-	//	console.log('ok edit');
-	//}
 
 	console.log(e.dataset.lightbox);
 	if(e.dataset.lightbox != null) {
@@ -99,7 +94,7 @@ function enlighten(id) {
 				}
 			});
 		}
-		var close = $('<div class="close material-shadow" onclick="lightbox.darken()"><i class="fa fa-close"></i></div>');
+		var close = $('<div class="close material-shadow" onclick="lightbox.darken()"><i class="icon-cancel"></i></div>');
 		$(this).attr('onclick','lightbox.darken()').addClass('zoomedImage');
 		lb.css({
 			"top" : (window.innerHeight-height)/2 + "px",
@@ -108,15 +103,20 @@ function enlighten(id) {
 			"height" : height + "px",
 		});
 		if(owner == $('#info').attr('data-uid')) {
-			var button = $('<button contentditable="false" class="material-shadow editIMG"><i class="fa fa-pencil"></i></button>');
-			button.on("click", function(evt) {
+			var turncw = $('<button contentditable="false" class="material-shadow editIMG cw"><i class="icon-cw"></i></button>');
+			turncw.on("click", function(evt) {
 				evt.stopPropagation();
 				console.log(e);
-				showimageeditor('#retoucheBox', e);
-				lightbox.darken();
+				retouche.turnAndSend(e,"cw");
+			});
+			var turnccw = $('<button contentditable="false" class="material-shadow editIMG ccw"><i class="icon-ccw"></i></button>');
+			turnccw.on("click", function(evt) {
+				evt.stopPropagation();
+				console.log(e);
+				retouche.turnAndSend(e,"ccw");
 			});
 		}
-		lb.append(next).append(prev).append(this).append(close).append(button);
+		lb.append(next).append(prev).append(this).append(close).append(turncw).append(turnccw);
 		$('body').append(lb);
 		$(window).on('keydown',function(evt) {
 			if(evt.which == 27) {

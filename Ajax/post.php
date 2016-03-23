@@ -45,34 +45,6 @@ if($_SESSION['connected']) {
 			exit;
 		}
 
-		// TODO protect
-		if($POST['action'] == "toggleButterfly") {
-			$uid = $POST['uid'];
-			$fid = $POST['fid'];
-			$pid = $POST['pid'];
-			$u = account_load(array('_id'=>$uid));
-			$f = forum_load(array('_id'=>$fid));
-			$p = post_load(array('_id'=>$pid));
-
-			if($u != null && $u != false && $p != null && $p != false && $f != null && $f != false) {
-				$r = new StdClass();
-				if(array_key_exists($uid, $p['butterflies'])) {
-					post_removeButterfly($p, $uid);	
-					$r->color = "grey";
-				} else {
-					post_addButterfly($p, $uid);	
-					$r->color = "#F7A71B";
-				}
-				post_save($p);
-				$r->count = count($p['butterflies']);
-				header('Content-Type: text/json; charset=UTF-8');
-				echo(json_encode($r));
-				$url_prev = search_miniature($text);
-				account_save($u);
-			}
-			exit;
-		}
-
 		// TODO protect ?
 		if($POST['action'] == "morePost") {
 
@@ -312,10 +284,13 @@ if($_SESSION['connected']) {
 		}
 
 		if($POST['action'] == "changeProfile") {
-
-			$name = $POST['name'];
-			$new_password = $POST['new_password'];
-			$old_password = $POST['old_password'];
+			
+			$data = json_decode($POST['data'], true);
+			$name = $data['name'];
+			$new_password = $data['new_password'];
+			$old_password = $data['old_password'];
+			$new_mail = $data['new_mail'];
+			$password = $data['password'];
 
 			$uid = $POST['uid'];
 			$u = account_load(array('_id' => $uid));
@@ -330,6 +305,11 @@ if($_SESSION['connected']) {
 						if(preg_match("/^\s*$/",$new_password) != 1) {
 							$u['password'] = password_hash($new_password, PASSWORD_BCRYPT);
 						}
+					}
+				}
+				if(preg_match("/^\s*$/",$new_mail) != 1) {
+					if(password_verify($password, $u['password'])) {
+						$u['mail'] = $new_mail;
 					}
 				}
 				account_save($u);

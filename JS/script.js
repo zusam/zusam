@@ -4,31 +4,10 @@ function recordUsage(usage) {
 		type:"post",
 		data:{"action":"recordUsage","usage":usage},
 		success: function(data) {
-			console.log(data);
+			//console.log(data);
 		},
 		error: function() {
 			console.log("fail record");
-		}
-	});
-}
-
-function toggleButterfly(t) {
-	var pid = $(t).closest('.post').attr('data-id');
-	var uid = $('#info').attr('data-uid');
-	var fid = $('#info').attr('data-fid');
-	recordUsage("butterfly");
-	$.ajax({
-		url: "Ajax/post.php",
-		type: "POST",
-		data: {"action":"toggleButterfly", "uid":uid, "fid":fid, "pid":pid},
-		success: function(data) {
-			console.log(data);
-			var butterflies = $(t).parent()[0].childNodes[3].textContent;
-			$(t).parent()[0].childNodes[3].textContent = data['count'];
-			t.style.fill = data['color'];
-		},
-		error: function() {
-			console.log('fail butterfly');
 		}
 	});
 }
@@ -62,16 +41,20 @@ function updatePostStats(pid) {
 		data: {"action":"getPostStats", "uid":uid, "fid":fid, "pid":pid},
 		success: function(data) {
 			console.log(data);
-			if(typeof(data) != "undefined" && typeof(data['coms']) != "undefined") {
+			if(typeof(data) != "undefined") {
+				var p = $('#container .post-mini[data-id="'+pid+'"] .post-info');
 				if(data['coms'] != 0) {
-			$('#container .post-mini[data-id="'+pid+'"]').find('.stats').remove();
-			$('#container .post-mini[data-id="'+pid+'"]').append('<div class="stats"><div class="comments-indicator"><div>'+data['coms']+' <i class="fa fa-comment"></i></div></div></div>');
-					if(data['unread'] == true) {
-						$('.post-mini[data-id="'+pid+'"] .comments-indicator div').addClass('newcom');
-					}
+					var pci = p.find('.comments-indicator');
+					pci.html('<div>'+data['coms']+' <i class="icon-comment-empty"></i></div>');
 				} else {
-			$('#container .post-mini[data-id="'+pid+'"]').find('.stats').remove();
+					p.find('.comments-indicator').html('');
 				}
+				if(data['unread'] == true) {
+					p.find('.date').addClass('newcom');
+				} else {
+					p.find('.date').removeClass('newcom');
+				}
+				p.find('.date').html(data['date']);
 			}
 		}
 	});
@@ -111,7 +94,6 @@ function removeUserFromForum() {
 	});
 }
 
-
 function loadRetoucheBox(w,h,action) {
 	r = $('#retoucheBox');
 	r.attr('data-w',w);
@@ -121,8 +103,16 @@ function loadRetoucheBox(w,h,action) {
 }
 
 
-function destroyAccount(id) {
-	var password = $(id).val();
+function destroyAccount(t) {
+	if(t == null) {
+		return false;
+	}
+	var uid = $('#info').attr('data-uid');
+	var data = {};
+	$(t).closest('.change-profile').find('input').each(function() {
+		data[$(this).attr('name')] = $(this).val();	
+	});
+	var password = data['password'];
 	if(password == null || password.match(/^\s*$/)) {
 		return false;
 	}
@@ -157,16 +147,21 @@ function changeforumname(id) {
 	});
 }
 
-function changename(id) {
-	name = $(id).val();
-	if(name == null || name.match(/^\s*$/)) {
+function changeProfile(t) {
+	if(t == null) {
 		return false;
 	}
 	var uid = $('#info').attr('data-uid');
+	var data = {};
+	$(t).closest('.change-profile').find('input').each(function() {
+		data[$(this).attr('name')] = $(this).val();	
+	});
+	data = JSON.stringify(data);
+	console.log(data);
 	$.ajax({
 		url: "Ajax/post.php",
 		type: "POST",
-		data: {"action":"changeProfile", "uid":uid, "name":name},
+		data: {"action":"changeProfile", "uid":uid, "data":data},
 		success: function(data) {
 			console.log(data);
 			location.reload();
@@ -200,29 +195,8 @@ function inviteUser(id) {
 	});
 }
 
-function changepassword(old_id,new_id) {
-	old_password = $(old_id).val();
-	new_password = $(new_id).val();
-	if(old_password == null || old_password.match(/^\s*$/)) {
-		return false;
-	}
-	if(new_password == null || new_password.match(/^\s*$/)) {
-		return false;
-	}
-	var uid = $('#info').attr('data-uid');
-	$.ajax({
-		url: "Ajax/post.php",
-		type: "POST",
-		data: {"action":"changeProfile", "uid":uid, "old_password":old_password, "new_password":new_password},
-		success: function(data) {
-			console.log(data);
-			location.reload();
-		}
-	});
-}
-
 function sendIt(id) {
-	msg = "";
+	var msg = "";
 	if(id == "#commentBox" || id == "#editBox") {
 		var parentID = $('#post-viewer').attr('data-id');
 	} else {
@@ -233,7 +207,7 @@ function sendIt(id) {
 	} else {
 		var pid = 0;
 	}
-	t = $(id);
+	var t = $(id);
 	for(i=0;i<t.children().length;i++) {
 		c = $(t.children()[i]);
 		if(c.hasClass("deletable")) {
@@ -242,8 +216,8 @@ function sendIt(id) {
 			msg += " "+decode(c.html());
 		}
 	}
-	uid = $('#info').eq(0).attr('data-uid');
-	forum = $('#info').eq(0).attr('data-fid');
+	var uid = $('#info').eq(0).attr('data-uid');
+	var forum = $('#info').eq(0).attr('data-fid');
 	console.log("text:"+msg+",forum:"+forum+",uid:"+uid+",parent:"+parentID+",pid:"+pid);
 	var baliseId = createId();
 	$.ajax({
@@ -251,15 +225,11 @@ function sendIt(id) {
 		type: "POST",
 		data: {"text":msg,"forum":forum,"uid":uid,"parent":parentID,"pid":pid},
 		success: function(data) {
+		console.log('coucou');
 			console.log(data);
 				if(data['parent'] == 0 || data['parent'] == null) {
-					console.log("new post");
 					var balise = $('#container div[data-balise="'+baliseId+'"]');
-					if(data['miniature'] != null) {
-						balise.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><div class="post-preview"><img src="'+data['miniature']+'"/></div></div>');
-					} else {
-						balise.after('<div class="material-shadow post-mini" data-id="'+data['id']+'"><div class="post-preview">'+data['html_preview']+'</div></div>');
-					}
+					balise.after(data['html']);
 					balise.remove();
 					hidepostviewer();
 				} else {
@@ -281,11 +251,7 @@ function sendIt(id) {
 							pp.remove();
 							typebox.view();
 							var p = $('#container .post-mini[data-id='+data['pid']+']');
-							if(data['miniature'] != null) {
-								p.after('<div class="material-shadow post-mini" data-id="'+data['pid']+'"><img src="'+data['miniature']+'"/></div>');
-							} else {
-								p.after('<div class="material-shadow post-mini" data-id="'+data['pid']+'">'+data['html_preview']+'</div>');
-							}
+							p.after(data['html']);
 							p.remove();
 						} else {
 							console.log("edit com");
@@ -415,11 +381,13 @@ function loadMorePosts() {
 					}
 					setpostsviewable();
 					window.loading_posts = false;
+					return true;
 				}
 			},
 			error: function() {
 				console.log("fail to load more posts");
 				window.loading_posts = false;
+				return false;
 			}
 		});
 	}
@@ -568,15 +536,6 @@ function handleFile(file,id) {
 			PF.loadVideo(file,id);
 		}
 	}
-	//if(file.type.match(/sgf/) || file.name.match(/sgf/)) {
-	//	fileTypeHandled = true;
-	//	if(file.size > 1024*1024*3) {
-	//		alert("fichier SGF trop lourd (max 3Mo)");
-	//	} else {
-	//		console.log("SGF DETECTED");
-	//		PF.loadSGF(file,id);
-	//	}
-	//}
 	if(!fileTypeHandled) {
 		alert("Le format du fichier n'est pas supporté");
 	}
@@ -633,9 +592,7 @@ function evaluateURL() {
 		if(tag.length == 24) {
 			var pid = tag;
 			if(active_post != pid) {
-				console.log("show:"+pid);
 				showpostviewer(pid);
-				console.log("show");
 			}
 		} else {
 			if(tag == "newpost") {
@@ -644,7 +601,6 @@ function evaluateURL() {
 		}
 	} else {
 		console.log("hideAll from evaluate");
-		//hidepostviewer();
 		hideAll();
 	}
 }

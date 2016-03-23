@@ -17,12 +17,10 @@ if($_SESSION['connected']) {
 		// TODO protect
 		if($GET['action'] == "getPostStats") {
 			$uid = $GET['uid'];
-			//$fid = $GET['fid'];
 			$pid = $GET['pid'];
 			$r = new StdClass();
 
 			$u = account_load(array('_id' => $uid));
-			//$f = forum_load(array('_id'=>$fid));
 			$p = post_load(array('_id'=>$pid));
 			if($p != null && $p != false) {
 				$coms = 0;
@@ -35,6 +33,7 @@ if($_SESSION['connected']) {
 					}
 				}
 				post_save($p);
+				$r->date = convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp()));
 				$r->coms = $coms;
 			
 				if(in_array($pid,$u['unread'])) {
@@ -96,13 +95,11 @@ if($_SESSION['connected']) {
 			$u = account_load(array('_id' => $_SESSION['uid']));
 			$p = post_load(array('_id' => $pid));
 	
-			//if($p['forum'] == mongo_id($_SESSION['forum']) && isset($u['forums'][$_SESSION['forum']])) { 
-				$r = new StdClass();
-				$html_data = print_more_comments($pid, $u['_id']);
-				$r->html = $html_data;
-				header('Content-Type: text/json; charset=UTF-8');
-				echo(json_encode($r));
-			//}
+			$r = new StdClass();
+			$html_data = print_more_comments($pid, $u['_id']);
+			$r->html = $html_data;
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($r));
 			exit;
 		}
 
@@ -114,21 +111,13 @@ if($_SESSION['connected']) {
 			$u = account_load(array('_id' => $_SESSION['uid']));
 			$p = post_load(array('_id' => $id));
 	
-			//if($p['forum'] == mongo_id($_SESSION['forum']) && isset($u['forums'][$_SESSION['forum']])) { 
-				$r = new StdClass();
-				//$r->before = $u['unread'];
-				account_readPost($u, $id);
-				account_save($u);
-				//$r->after = $u['unread'];
-				$html_data = print_full_post($id, $u['_id']);
-				$r->html = $html_data;
-				//$r->raw = getRawText($id);
-				//$r->encap = encapsuleKnownLinks($r->raw);
-				//$r->decap = decapsuleLinks(encapsuleKnownLinks($r->raw));
-				//$r->comp = compileText($r->raw);
-				header('Content-Type: text/json; charset=UTF-8');
-				echo(json_encode($r));
-			//}
+			$r = new StdClass();
+			account_readPost($u, $id);
+			account_save($u);
+			$html_data = print_full_post($id, $u['_id']);
+			$r->html = $html_data;
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($r));
 			exit;
 		}
 
@@ -136,9 +125,7 @@ if($_SESSION['connected']) {
 		if($GET['action'] == "getRaw") {
 
 			$pid = $GET['pid'];
-			//$uid = $GET['uid'];
 
-			//$u = account_load(array('_id' => mongo_id($uid)));
 			$p = post_load(array('_id'=>mongo_id($pid)));
 			$raw = $p['text'];
 			$r = new StdClass();

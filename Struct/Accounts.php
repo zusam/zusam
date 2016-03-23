@@ -27,20 +27,37 @@ function account_addUnread(&$ac, $pid) {
 	array_push($ac['unread'], $pid);		
 	
 	//TODO XXX TRICK
-	$unread = $ac['unread'];
-	unset($ac['unread']);
-	$ac['unread'] = $unread;
+	//$unread = $ac['unread'];
+	//unset($ac['unread']);
+	//$ac['unread'] = $unread;
 }
 
 function account_readPost(&$ac, $pid) {
 	$pid = (String) $pid;
-	$ac['unread'] = deleteAllValues($pid, $ac['unread']);
+	foreach($ac['unread'] as $k=>$v) {
+		if($v == $pid) {
+			unset($ac['unread'][$k]);
+			continue;
+		}
+		$p = post_load(array('_id'=>$pid));
+		if($p == false || $p == null) {
+			unset($ac['unread'][$k]);
+			continue;
+		}
+		// TODO : this was temporary to fix the database. Can be erased in 1 month (the 22 April 2016)
+		if((String) $p['uid'] == (String) $ac['_id'] && count($p['children']) == 0) {
+			unset($ac['unread'][$k]);
+			continue;
+		}
+	}
+	//$ac['unread'] = deleteAllValues($pid, $ac['unread']);
 	$ac['unread'] = array_values($ac['unread']);
+	//var_dump($ac['unread']);
 
 	//TODO XXX TRICK
-	$unread = $ac['unread'];
-	unset($ac['unread']);
-	$ac['unread'] = $unread;
+	//$unread = $ac['unread'];
+	//unset($ac['unread']);
+	//$ac['unread'] = $unread;
 }
 
 function account_setPassword(&$ac, $password) {
@@ -76,15 +93,13 @@ function account_load($array) {
 function account_getAvatar(&$ac) {
 	//dummy
 	if($ac['_id'] == -1) {
-		return "";
+		return p2l(pathTo2(array("url"=>"avatar","param"=>"assets","ext"=>"png")));
 	}
 	$loc = array("url"=>(String) $ac['_id'], "param"=>"avatar", "ext"=>"jpg");
 	if(file_exists(pathTo2($loc))) {
-		//var_dump(pathTo2($loc));
 		$avatar = p2l(pathTo2($loc));
-		//var_dump($avatar);
 	} else {
-		return "";
+		return p2l(pathTo2(array("url"=>"avatar","param"=>"assets","ext"=>"png")));
 	}
 	return $avatar;
 }

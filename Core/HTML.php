@@ -18,13 +18,7 @@ function html_head($root_url) {
 
 	// css
 	$html .= '<link href="style.css" rel="stylesheet">';
-	$html .= '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">';
 
-	// JAVASCRIPT
-	//$html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>';
-	//$html .= '<script src="JS.js"></script>';
-	//$html .= '<script src="LIBJS.js"></script>';
-	
 	// ogp
 	$html .= '<meta property="og:title" content="'.$title.'" />';
 	$html .= '<meta property="og:description" content="'.$description.'" />';

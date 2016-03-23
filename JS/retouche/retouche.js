@@ -1,33 +1,76 @@
 URL = window.URL || window.webkitURL;
 
-function turn(id, rotation) {
-	var img = new Image();
+function turnAndSend(img, rotation) {
+
+	// init canvas
+	canvas = document.createElement('canvas');
+	canvas.width = img.naturalWidth;
+	canvas.height = img.naturalHeight;
+	var ctx = canvas.getContext('2d');
+	ctx.drawImage(img, 0, 0);
+	
+	// process canvas
+	canvas = retouche.turn(canvas, rotation);
+
+	var action = "addImage";
+	var fileid = $(img).closest('.deletable').attr('data-fileid');
+
+	imgURL = canvas.toDataURL("image/png");
+	
+	f = new FormData();
+	f.append("image",dataURItoBlob(imgURL));
+	var uid = $('#info').attr('data-uid');
+	var fid = $('#info').attr('data-fid');
+	f.append("uid",uid);
+	f.append("fid",fid);
+	f.append("action",action);
+	console.log(action);
+	f.append("fileId",fileid);
+	$.ajax({
+		url: 'Ajax/post.php',
+		type: "POST",
+		data: f,
+		success: function(data){ 
+				console.log(data); 
+				console.log("sent!");
+				// replace all sent images
+				$('.deletable[data-fileid="'+fileid+'"] img').each(function(){
+					var src = this.src.replace(/\?.*/,'') + '?' + Date.now(); 
+					this.src = src;
+					var pid = $('#post-viewer').attr('data-id');
+					var mini = $('.post-mini[data-id="'+pid+'"] .miniature')[0];
+					if(typeof(mini) !=! "undefined") {
+						src = mini.src.replace(/\?.*/,'') + '?' + Date.now();
+						mini.src = src;
+					}
+				});
+				lightbox.enlighten(img);
+			},
+		error: function(){ console.log(uid,fid,action); },
+		processData: false,
+		contentType: false
+	});
+}
+
+function effectivTurn(id, rotation) {
 	var canvas = $(id).find('canvas')[0];
-	var ctx = canvas.getContext("2d");
-	var imgURL = canvas.toDataURL("image/png");
-	img.onload = function() {
-		delete imgURL;
-		var canvas2 = document.createElement('canvas');
-		// rotation of values
-		canvas2.height = img.width;
-		canvas2.width = img.height;
-		canvas2.dataset.h = img.width;
-		canvas2.dataset.w = img.height;
-		canvas2.style.width = canvas.style.height;
-		canvas2.style.height = canvas.style.width;
-		var ctx2 = canvas2.getContext('2d');
-		ctx2.translate(canvas2.width/2,canvas2.height/2);
-		ctx2.rotate(rotation);
-		ctx2.translate(-canvas2.height/2,-canvas2.width/2);
-		ctx2.drawImage(img,0,0,img.width,img.height);
-		$(canvas).after(canvas2);
-		$(canvas).remove();
-		delete img;
-		if($(id).find('.zone').length != 0) {
-			retouche.initHandles(id);
-		}
-	};
-	img.src = imgURL;
+	var cv = retouche.turn(canvas, rotation);
+	$(cv).attr('data-h', canvas.width);
+	$(cv).attr('data-w', canvas.height);
+	$(cv).css("width", canvas.style.height);
+	$(cv).css("height", canvas.style.width);
+	$(canvas).after(cv);
+	$(canvas).remove();
+	if($(id).find('.zone').length != 0) {
+		retouche.initHandles(id);
+	}
+}
+
+function turnccw(id) {
+	effectivTurn(id, "ccw");
+}
+function turncw(id) {
+	effectivTurn(id, "cw");
 }
 
 function initHandles(id) {
@@ -78,28 +121,19 @@ function addHandles(id) {
 }
 
 function loadCanvas(img, id) {
-		window.retouche.img = img;
 		canvas = document.createElement('canvas');
+		canvas.style.width = "100%";
+
 		var realw = Math.min(img.width, 1024);
 		var realh = Math.min(img.height, 1024);
-		var wi = Math.min(img.width, Math.min(1024,Math.min(window.innerWidth,window.innerHeight)-100));
-		var hi = Math.min(img.height, Math.min(1024,Math.min(window.innerWidth,window.innerHeight)-100));
-		console.log(img.height,img.width);
-		console.log(hi,wi);
-		var g = Math.min(wi/img.width, hi/img.height);
 		var realg = Math.min(realw/img.width, realh/img.height);
-		console.log(g);
-		canvas.width = img.width*realg;
-		canvas.height = img.height*realg;
-		canvas.style.width = img.width*g;
-		canvas.style.height = img.height*g;
-		ctx = canvas.getContext('2d');
-		ctx.drawImage(img,0,0,img.width*realg,img.height*realg);
-		canvas.dataset.w = img.width*realg;
-		canvas.dataset.h = img.height*realg;
-		URL.revokeObjectURL(img.src);
-		img = null;
-		delete img;
+
+		canvas.width = img.width;
+		canvas.height = img.height;
+		var ctx = canvas.getContext('2d');
+		ctx.drawImage(img, 0, 0);
+		canvas = retouche.downScaleCanvas(canvas, realg);
+
 		$(id).html(canvas);
 
 		stopInput(id);
@@ -110,8 +144,8 @@ function loadCanvas(img, id) {
 
 		var menu = $('<div class="menu"></div>');
 		var cancelit = $('<div class="menu-cell"><button onclick="togglenewavatar()" class="material-button">Annuler</button></div>');
-		var turnleft = $('<div class="menu-cell"><button onclick="retouche.turn(\''+id+'\',-Math.PI/2)" class="material-button"><i class="fa fa-rotate-left"></i></button></div>');
-		var turnright = $('<div class="menu-cell"><button onclick="retouche.turn(\''+id+'\',Math.PI/2)" class="material-button"><i class="fa fa-rotate-right"></i></button></div>');
+		var turnleft = $('<div class="menu-cell"><button onclick="retouche.turnccw(\''+id+'\')" class="material-button"><i class="icon-ccw"></i></button></div>');
+		var turnright = $('<div class="menu-cell"><button onclick="retouche.turncw(\''+id+'\')" class="material-button"><i class="icon-cw"></i></button></div>');
 		var sendit = $('<div class="menu-cell"><button onclick="retouche.sendCanvas(\''+id+'\')" class="material-button">Envoyer</button></div>');
 		menu.append(cancelit);
 		menu.append(turnleft);
@@ -153,7 +187,6 @@ function setZone(d, x, y, w, h) {
 		w = g*h;
 	}
 	//h = w = Math.min(w,h); //square
-
 
 	x = Math.max(x,0);
 	y = Math.max(y,0);
@@ -364,7 +397,6 @@ function set(id, src) {
 // CANVAS
 
 function sendCanvas(id) {
-	console.log("coucou");
 	canvas = document.querySelector(id+' canvas');
 	var ctx = canvas.getContext('2d');
 	var action = $(id).attr('data-action');
@@ -391,59 +423,42 @@ function sendCanvas(id) {
 		w = $(id).find('canvas').attr('data-w');
 		h = $(id).find('canvas').attr('data-h');
 		data = ctx.getImageData(0, 0, canvas.dataset.w, canvas.dataset.h);
-		console.log("plop");
 	}
+	
 	console.log(w,h);
+	
 	c2 = document.createElement('canvas');
 	c2.width = parseInt(w);
 	c2.height = parseInt(h);
 	ctx2 = c2.getContext('2d');
 	ctx2.putImageData(data, 0, 0);
-	imgURL = c2.toDataURL("image/png");
-	delete c2; delete ctx2; 
-	
-	c3 = document.createElement('canvas');
-	c3.width = parseInt(w*g);
-	c3.height = parseInt(h*g);
-	ctx3 = c3.getContext('2d');
-	ctx3.transform(g,0,0,g,0,0);
 
-	var htmlImage = new Image();
-		console.log("f1");
-	htmlImage.onload = function() {
-		
-		console.log("f3");
-		ctx3.drawImage(htmlImage, 0, 0);
-		delete imgURL;
-		imgURL = c3.toDataURL("image/png");
-		delete c3; delete ctx3; delete htmlImage;
-		
-		f = new FormData();
-		f.append("image",dataURItoBlob(imgURL));
-		var uid = $('#info').attr('data-uid');
-		var fid = $('#info').attr('data-fid');
-		f.append("uid",uid);
-		f.append("fid",fid);
-		f.append("action",action);
-		console.log(action);
-		f.append("fileId",arg);
-		$.ajax({
-			url: 'Ajax/post.php',
-			type: "POST",
-			data: f,
-			success: function(data){ 
-					console.log(data); 
-					console.log("sent!");
-					location.reload();
-				},
-			error: function(){ console.log(uid,fid,action); },
-			processData: false,
-			contentType: false
-		});
-		var loading_retouche = $('<div class="loading-retouche"><div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div></div>');
-		$(id).parent().append(loading_retouche);
-	};
-	htmlImage.src = imgURL;
-	console.log(imgURL);
-		console.log("f2");
+	c3 = retouche.downScaleCanvas(c2,g);
+	imgURL = c3.toDataURL("image/png");
+	delete c3; 
+	
+	f = new FormData();
+	f.append("image",dataURItoBlob(imgURL));
+	var uid = $('#info').attr('data-uid');
+	var fid = $('#info').attr('data-fid');
+	f.append("uid",uid);
+	f.append("fid",fid);
+	f.append("action",action);
+	console.log(action);
+	f.append("fileId",arg);
+	$.ajax({
+		url: 'Ajax/post.php',
+		type: "POST",
+		data: f,
+		success: function(data){ 
+				console.log(data); 
+				console.log("sent!");
+				location.reload();
+			},
+		error: function(){ console.log(uid,fid,action); },
+		processData: false,
+		contentType: false
+	});
+	var loading_retouche = $('<div class="loading-retouche"><div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div></div>');
+	$(id).parent().append(loading_retouche);
 }
