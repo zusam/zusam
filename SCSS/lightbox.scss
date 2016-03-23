@@ -102,7 +102,6 @@
 }
 .editIMG {
 	position: absolute;
-	top: 10px;
 	left: 10px;
 	font-size: 14px;
 	border: none;
@@ -116,4 +115,10 @@
 }
 .editIMG:hover {
 	background-color: white;
+}
+.cw {
+	top: 10px;
+}
+.ccw {
+	top: 44px;
 }
