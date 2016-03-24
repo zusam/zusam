@@ -14,7 +14,7 @@ foreach($_POST as $K=>$V) {
 }
 
 // reset password
-if($GET['action'] == "reset") {
+if(isset($GET['action']) && $GET['action'] == "reset") {
 	unset($_COOKIE['auth_token']);
 	$head = html_head($GLOBALS['__ROOT_URL__']);
 	echo($head);
@@ -22,7 +22,7 @@ if($GET['action'] == "reset") {
 	echo($html);
 	exit();
 }
-if($POST['action'] == "passwordReset") {
+if(isset($POST['action']) && $POST['action'] == "passwordReset") {
 	unset($_COOKIE['auth_token']);
 	unset($_SESSION);
 	session_destroy();
@@ -55,7 +55,7 @@ if(isset($_COOKIE['auth_token'])) {
 
 // load account if not loaded with auth_token
 if(!isset($u) || $u == null || $u == false) {
-	if($_SESSION['connected'] != true) {
+	if(isset($_SESSION['connected']) && $_SESSION['connected'] != true) {
 		unset($_SESSION);
 		session_destroy();
 		landing();
@@ -64,12 +64,14 @@ if(!isset($u) || $u == null || $u == false) {
 		if(isset($_SESSION['uid'])) {
 			$u = account_load(array('_id'=>$_SESSION['uid']));
 		} else {
-			$u = account_load(array("mail" => $_SESSION['mail']));
+			if(isset($_SESSION['mail'])) {
+				$u = account_load(array("mail" => $_SESSION['mail']));
+			}
 		}
-		if($u == null || $u == false) {
+		if(!isset($u) || $u == null || $u == false) {
 			unset($_SESSION);
 			session_destroy();
-			landing();
+			landing(null, null);
 			exit();
 		} else {
 			if(isset($u['token'])) {
@@ -85,7 +87,7 @@ if(!isset($u) || $u == null || $u == false) {
 }
 
 //execute secret invitation link
-if($GET['il'] != null) {
+if(isset($GET['il']) && $GET['il'] != null) {
 	if($_SESSION['connected']) {
 		$f = forum_load(array('link'=>$GET['il']));
 		if($f != null && $f != false && $u != null && $u != false) {
@@ -118,7 +120,7 @@ if(isset($_SESSION['forum']) && $u['forums'][$_SESSION['forum']] != null) {
 	}
 } else {
 	// Force selection of a forum
-	if($GET['page'] != "profile") {
+	if(!isset($GET['page']) || $GET['page'] != "profile") {
 		
 		// erase non-existant forums TODO (fix this : we should not need it)
 		foreach($u['forums'] as $k=>$uf) {

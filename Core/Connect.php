@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Include.php');
