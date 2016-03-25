@@ -10,7 +10,6 @@ function landing($warning, $redirect_url) {
 		
 			<div class="menu">
 				<a class="action" href="http://facebook.com/zusam">Facebook</a>
-				<a class="action" href="http://blog.zus.am">Blog</a>
 				<button class="signin action" onclick="landing.switchForm()">Se connecter</button>
 			</div>
 			<div class="top-div">

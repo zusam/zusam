@@ -140,7 +140,7 @@ function print_post($id, $uid) {
 	$html_data .= '<div class="author">'.$op['name'].'</div>';
 	$html_data .= '</div>';
 	$html_data .= '<div class="second-line">';
-	$html_data .= '<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
+	$html_data .= '<div class="date" title="'.date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp()).'">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
 	$html_data .= '</div>';
 	$html_data .= '</div></div>';
 	$html_data .= '<div class="right-menu">';

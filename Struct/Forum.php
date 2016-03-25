@@ -58,9 +58,9 @@ function forum_post2news(&$forum, $pid) {
 	array_push($forum['news'], $pid);
 
 	// TODO XXX TRICK
-	$news = $forum['news'];
-	unset($forum['news']);
-	$forum['news'] = $news;
+	//$news = $forum['news'];
+	//unset($forum['news']);
+	//$forum['news'] = $news;
 }
 
 function forum_removeFromNews(&$forum, $pid) {
@@ -92,9 +92,9 @@ function forum_addUser_andSave(&$forum, &$user) {
 	}
 
 	// TODO XXX TRICK
-	$users = $forum['users'];
-	unset($forum['users']);
-	$forum['users'] = $users;
+	//$users = $forum['users'];
+	//unset($forum['users']);
+	//$forum['users'] = $users;
 
 	account_addForum($user, $forum);
 	forum_save($forum);
@@ -119,14 +119,14 @@ function forum_removeUser_andSave(&$forum, &$user) {
 	$uid = (String) $user['_id'];
 	//var_dump($uid);
 
-	//$forum['users'] = deleteValue($uid, $forum['users']);
-	foreach($forum['users'] as $k=>$fu) {
-		if($fu == $uid) {
-			//var_dump($k);
-			//var_dump($forum['users']);
-			unset($forum['users'][$k]);
-		}
-	}
+	$forum['users'] = deleteValue($uid, $forum['users']);
+	//foreach($forum['users'] as $k=>$fu) {
+	//	if($fu == $uid) {
+	//		//var_dump($k);
+	//		//var_dump($forum['users']);
+	//		unset($forum['users'][$k]);
+	//	}
+	//}
 	
 	// TODO XXX TRICK
 	//$fusers = $forum['users'];
@@ -134,13 +134,13 @@ function forum_removeUser_andSave(&$forum, &$user) {
 	//$forum['users'] = $fusers;
 	
 	//deleteKey($forum['_id'], $user['forums']);
-	unset($users['forums'][(String) $forum['_id']]);
+	$fid = (String) $forum['_id'];
+	unset($user['forums'][$fid]);
 	
 	// TODO XXX TRICK
 	//$uforums = $user['forums'];
 	//unset($user['forums']);
 	//$user['forums'] = $uforums;
-	
 	
 	forum_save($forum);
 	account_save($user);

@@ -53,9 +53,9 @@ function post_addChild(&$p, $id) {
 	array_push($p['children'], $mid);
 
 	//TODO XXX TRICK
-	$children = $p['children'];
-	unset($p['children']);
-	$p['children'] = $children;
+	//$children = $p['children'];
+	//unset($p['children']);
+	//$p['children'] = $children;
 }
 
 function post_removeFiles(&$p) {
