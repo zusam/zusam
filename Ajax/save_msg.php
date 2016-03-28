@@ -19,6 +19,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 	if($_SESSION['forum'] == $f['_id'] && $u['forums'][$forum] != null) {
 
 		account_updateTimestamp($u);
+		account_usageTimestamp($u);
 
 		$preview = search_miniature($text);
 		account_save($u);
