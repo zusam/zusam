@@ -116,8 +116,16 @@ if($_SESSION['connected']) {
 			account_save($u);
 			$html_data = print_full_post($id, $u['_id']);
 			$r->html = $html_data;
-			header('Content-Type: text/json; charset=UTF-8');
-			echo(json_encode($r));
+			if($GET['debug']==1) {
+				$r->debug = compileText(trim($p['text']), true);
+			}
+			if(!isset($GET['debug'])) {
+				header('Content-Type: text/json; charset=UTF-8');
+				echo(json_encode($r));
+			} else {
+				header('Content-Type: text/json; charset=UTF-8');
+				echo("<textarea>".json_encode($r)."</textarea>");
+			}
 			exit;
 		}
 

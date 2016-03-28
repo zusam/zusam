@@ -52,17 +52,10 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				account_save($u);
 			}
 		} else {
-			if($parent == null || $parent == 0) {
-				// editing post
-				$p = post_load(array('_id'=>$pid));
-				post_update($p, array('text'=>$text,'preview'=>$preview));
-				post_save($p);
-			} else {
-				// editing com
-				$c = post_load(array('_id'=>$pid));
-				post_update($c, array('text'=>$text,'preview'=>$preview));
-				post_save($c);
-			}
+			// editing (parent or child)
+			$p = post_load(array('_id'=>$pid));
+			post_update($p, array('text'=>$text,'preview'=>$preview));
+			post_save($p);
 		}
 
 		$r = new stdClass();
@@ -74,9 +67,14 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 		$r->pid = $pid;
 
 		if($parent != null && $parent != 0) {
-			$r->html = print_post($c['_id'], $uid);
+			if($pid == $parent) {
+				$r->mini_html = print_post_mini($p, false);
+				$r->html = print_post($p['_id'], $uid);
+			} else {
+				$r->html = print_post($c['_id'], $uid);
+			}
 		} else {
-			$r->html = print_post_mini($p, false);
+			$r->mini_html = print_post_mini($p, false);
 		}
 
 		header('Content-Type: text/json; charset=UTF-8');

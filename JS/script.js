@@ -225,11 +225,10 @@ function sendIt(id) {
 		type: "POST",
 		data: {"text":msg,"forum":forum,"uid":uid,"parent":parentID,"pid":pid},
 		success: function(data) {
-		console.log('coucou');
 			console.log(data);
 				if(data['parent'] == 0 || data['parent'] == null) {
 					var balise = $('#container div[data-balise="'+baliseId+'"]');
-					balise.after(data['html']);
+					balise.after(data['mini_html']);
 					balise.remove();
 					hidepostviewer();
 				} else {
@@ -251,7 +250,7 @@ function sendIt(id) {
 							pp.remove();
 							typebox.view();
 							var p = $('#container .post-mini[data-id='+data['pid']+']');
-							p.after(data['html']);
+							p.after(data['mini_html']);
 							p.remove();
 						} else {
 							console.log("edit com");

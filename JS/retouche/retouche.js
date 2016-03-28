@@ -1,6 +1,8 @@
 URL = window.URL || window.webkitURL;
 
-function turnAndSend(img, rotation) {
+function turnAndSend(e, rotation, img) {
+	
+	$('#lightbox').css('opacity','0');
 
 	// init canvas
 	canvas = document.createElement('canvas');
@@ -13,7 +15,7 @@ function turnAndSend(img, rotation) {
 	canvas = retouche.turn(canvas, rotation);
 
 	var action = "addImage";
-	var fileid = $(img).closest('.deletable').attr('data-fileid');
+	var fileid = $(e).closest('.deletable').attr('data-fileid');
 
 	imgURL = canvas.toDataURL("image/png");
 	
@@ -44,7 +46,7 @@ function turnAndSend(img, rotation) {
 						mini.src = src;
 					}
 				});
-				lightbox.enlighten(img);
+				lightbox.enlighten(e);
 			},
 		error: function(){ console.log(uid,fid,action); },
 		processData: false,
