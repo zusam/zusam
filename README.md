@@ -10,7 +10,7 @@ requirements :
 - the owner of the non-data files should be user:http where user is a non root user created to push new code on the server.
 - you will need ruby/gem and the sass compiler to build the css files : "gem install sass".
 - nodejs is required to use uglifyJS2 (don't forget to install it : "sudo npm install -g uglify-js".
-- don't forget to start nginx and mongodb services
+- don't forget to start nginx, php-fpm and mongodb services
 - mongdb-tools is necessary for backup and restore db scripts
 
 scripts :
