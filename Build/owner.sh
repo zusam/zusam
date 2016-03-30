@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RESTRICT=(Build Unstable BACKUP Tests testdummy)
+RESTRICT=(Build Unstable BACKUP Tests Maintenance)
 
 sudo chown -R niels:http /srv/http/zusam
 

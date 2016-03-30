@@ -69,6 +69,19 @@ function post_removeFiles(&$p) {
 	}
 }
 
+function post_listFiles(&$p) {
+	$files = [];
+	preg_match_all("/(\{\:)([\w\-]+)(\:\})/",$p['text'],$matches);
+	foreach($matches[0] as $m) {
+		$fileId = preg_replace("/(\{\:)([\w\-]+)(\:\})/","$2",$m);
+		$file = file_load(array('fileId'=>$fileId));
+		if($file != null && $file != false) {
+			array_push($files, $file);
+		}
+	}
+	return $files;
+}
+
 function post_destroy($id) {
 	$p = post_load(array('_id'=>$id));
 	if($p != null && $p != false) {
