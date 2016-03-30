@@ -67,7 +67,25 @@ function test_perm {
 		else
 			filename=$(basename "$f")
 			ext="${filename##*.}"
-			if [ "$ext" == "php" ] || [ "$ext" == "sh" ]
+			if [ "$ext" == "sh" ] || [ "$ext" == "md" ]
+			then
+				p=`stat -c "%a" "$f"`
+				if [ "$p" != "700" ]
+				then
+					if [[ "$2" != "correct" ]]
+					then
+						echo "`pwd`"
+						echo "$f permissions should be 700"
+						echo "they are $p"
+					else
+						pa=`pwd`
+						chmod 700 "$pa/$f"
+						echo "`pwd`"
+						echo "$f corrected"
+					fi
+				fi
+			fi
+			if [ "$ext" == "php" ] 
 			then
 				p=`stat -c "%a" "$f"`
 				if [ "$p" != "770" ]
@@ -117,12 +135,6 @@ for p in "${A[@]}";
 do
 	test_perm "$p" "$1"
 done
-
-# CHANGE OWNERSHIP
-if [[ "$1" != "correct" ]]
-then
-	sudo chown -R niels:http *
-fi
 
 echo ""
 echo "everything is ok"
