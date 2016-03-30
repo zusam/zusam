@@ -29,7 +29,7 @@ function landing($warning, $redirect_url) {
 					</form>
 				</div>
 	');
-	if($warning != "") {
+	if(isset($warning) && $warning != "") {
 		echo('<div class="warning">');
 		echo($warning);
 		echo('</div>');
@@ -38,8 +38,7 @@ function landing($warning, $redirect_url) {
 	// passing global variables to javascript
 	echo('
 		<script>
-			regex = '.json_encode($GLOBALS['regex'],JSON_UNESCAPED_UNICODE).';
-			origin_url = "'.$root_url.'";
+			origin_url = "'.$GLOBALS['__ROOT_URL__'].'";
 		</script>
 	');
 	echo('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>');

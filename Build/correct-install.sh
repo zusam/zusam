@@ -90,6 +90,7 @@ function test_perm {
 				|| [ "$ext" == "jpg" ] \
 				|| [ "$ext" == "png" ] \
 				|| [ "$ext" == "webm" ] \
+				|| [ "$ext" == "svg" ] \
 				|| [ "$ext" == "woff" ]
 			then
 				p=`stat -c "%a" "$f"`

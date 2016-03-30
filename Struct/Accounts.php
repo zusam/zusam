@@ -109,7 +109,7 @@ function account_load($array) {
 
 function account_getAvatar(&$ac) {
 	//dummy
-	if($ac['_id'] == -1) {
+	if($ac['_id'] == "-1") {
 		return p2l(pathTo2(array("url"=>"avatar","param"=>"assets","ext"=>"png")));
 	}
 	$loc = array("url"=>(String) $ac['_id'], "param"=>"avatar", "ext"=>"jpg");
