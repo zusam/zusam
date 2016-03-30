@@ -9,7 +9,7 @@ then
 fi
 
 # TEST EXISTENCE OF SOME PACKAGES
-P=(nodejs npm ruby ffmpeg mongodb php-mcrypt php-imagick php-gd php-mongo)
+P=(nodejs npm ruby ffmpeg mongodb nginx php-fpm php-mcrypt php-gd php-mongo)
 for p in "${P[@]}";
 do
 	x=`pacman -Qs $p`

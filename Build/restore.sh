@@ -1,7 +1,7 @@
 #!/bin/bash
 #RESTORE
 
-if [[ -d $1 ]]
+if [[ -d $1 ]] || [[ -z $1 ]]
 then
 	echo "must be a tar.gz file !"
 	exit;
@@ -20,6 +20,6 @@ case $yn in
 	[Nn]* ) exit;;
 esac
 
-mongorestore --host 127.0.0.1 --port 27017 --dir "BACKUP/$dir"
-mv "BACKUP/$dir/Data" Data
-rm -rf "BACKUP/$dir"
+mongorestore --host 127.0.0.1 --port 27017 --dir "$dir"
+mv "$dir/Data" Data
+rm -rf "$dir"
