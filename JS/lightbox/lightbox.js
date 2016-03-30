@@ -45,16 +45,22 @@ function enlighten(id) {
 	} else {
 		var lightbox_src = e.src;
 	}
+	lightbox_src = lightbox_src.replace(/\?.*/,'') + "?" + Date.now();
 	
 	lightbox.darken();
 
 	//scroll to image
 	var node = e;
 	var yy = node.offsetTop - 10;
-	while(!node.parentNode.className.match(/\.nano-content/) && node.parentNode != document.body) {
+	console.log(node.parentNode);
+	while(node.parentNode != null && !node.parentNode.className.match(/\.nano-content/) && node.parentNode != document.body) {
 		node = node.parentNode;
 		yy += node.offsetTop; 
 	}
+	console.log(node);
+	console.log(node.parentNode);
+	console.log(yy);
+	console.log(owner == $('#info').attr('data-uid'));
 	// TODO select nano-content more precisely
 	$('.nano-content')[0].scrollTop = yy;
 	
@@ -64,6 +70,9 @@ function enlighten(id) {
 	var img = new Image();
 
 	img.onload = function(){
+
+		var this_img = this;
+
 		var nw = this.naturalWidth;
 		var nh = this.naturalHeight;
 
@@ -77,7 +86,7 @@ function enlighten(id) {
 		if(typeof(prev_img) != "undefined") {
 			$(prev_img).addClass("lightbox_prev");
 			unveil(prev_img);
-			var prev = $('<div onclick="lightbox.enlighten(\'.lightbox_prev\')" class="prev"><img src="Assets/arrow.png"/></div>');
+			var prev = $('<div onclick="lightbox.enlighten(\'.lightbox_prev\')" class="prev"><i class="icon-left-open"></i></div>');
 			$(window).on('keydown', function(e) {
 				if(e.which == 37) {
 					prev.click();
@@ -87,7 +96,7 @@ function enlighten(id) {
 		if(typeof(next_img) != "undefined") {
 			$(next_img).addClass("lightbox_next");
 			unveil(next_img);
-			var next = $('<div onclick="lightbox.enlighten(\'.lightbox_next\')" class="next"><img src="Assets/arrow.png"/></div>');
+			var next = $('<div onclick="lightbox.enlighten(\'.lightbox_next\')" class="next"><i class="icon-right-open"></i></div>');
 			$(window).on('keydown', function(e) {
 				if(e.which == 39) {
 					next.click();
@@ -107,13 +116,13 @@ function enlighten(id) {
 			turncw.on("click", function(evt) {
 				evt.stopPropagation();
 				console.log(e);
-				retouche.turnAndSend(e,"cw");
+				retouche.turnAndSend(e,"cw",this_img);
 			});
 			var turnccw = $('<button contentditable="false" class="material-shadow editIMG ccw"><i class="icon-ccw"></i></button>');
 			turnccw.on("click", function(evt) {
 				evt.stopPropagation();
 				console.log(e);
-				retouche.turnAndSend(e,"ccw");
+				retouche.turnAndSend(e,"ccw",this_img);
 			});
 		}
 		lb.append(next).append(prev).append(this).append(close).append(turncw).append(turnccw);
@@ -125,7 +134,7 @@ function enlighten(id) {
 		});
 	};
 	
-	img.src= lightbox_src;
+	img.src = lightbox_src;
 	mask = $('<div class="lightbox-mask" onclick="lightbox.darken()"></div>');
 	mask.append('<div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div>');
 	$('body').append(mask);

@@ -41,30 +41,33 @@
 		align-items: center;
 		display: -webkit-flex;
 		-webkit-align-items: center;
-		opacity: 0.5;
-		transition: opacity 0.2s;
+		opacity: 0.6;
+		transition: all 0.2s;
 		cursor: pointer;
 		justify-content: center;
 		-webkit-justify-content: center;
 		width: 50%;
 
-		img {
+		i {
 			width: 50px;
 			position: absolute;
 			top: 50%;
+			color: white;
+			font-size: 3em;
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 		}
 	}
 
-	.next img {
-		right: 0px;
+	.next i {
+		right: 15px;
 		transform: translate(0%,-50%);
 		-webkit-transform: translate(0%,-50%);
 	}
 	
-	.prev img {
+	.prev i {
 		left: 0px;
-		transform: scale(-1,1) translate(0%,-50%);
-		-webkit-transform: scale(-1,1) translate(0%,-50%);
+		transform: translate(0%,-50%);
+		-webkit-transform: translate(0%,-50%);
 	}
 	
 	.prev:hover, .next:hover {

@@ -66,8 +66,8 @@ function html_footer($root_url) {
 	';
 
 	$html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>';
-	$html .= '<script src="JS.js"></script>';
-	$html .= '<script src="LIBJS.js"></script>';
+	$html .= '<script src="JS.js?'.time().'"></script>';
+	$html .= '<script src="LIBJS.js?'.time().'"></script>';
 	$html .= '<script src="http://connect.soundcloud.com/sdk.js"></script>';
 	$html .= '</body>';
 	$html .= '</html>';

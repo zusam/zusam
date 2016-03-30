@@ -149,6 +149,10 @@ if(isset($_SESSION['forum']) && $u['forums'][$_SESSION['forum']] != null) {
 	}
 }
 
+// update timestamp
+account_updateTimestamp($u);
+account_save($u);
+
 // update timestamp of visited forum
 if($_SESSION['forum'] != "") {
 	$coucou = (String) $_SESSION['forum'];

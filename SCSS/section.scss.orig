@@ -85,15 +85,31 @@ section {
 					height: 100%;
 				}
 			}
+<<<<<<< HEAD
 			img {
 				width: 100%;
 			}
 		}
+		.stats {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			z-index: 10;
+			background-color: rgba(0, 0, 0, 0.75);
+			//box-shadow: 0px 0px 10px rgba(0,0,0,0.75);
+			border-top-left-radius: 4px;
+			padding: 0px 4px 4px 4px;
+=======
+>>>>>>> refs/remotes/origin/master
 			
-		.comments-indicator {
-			min-width: 25px;
-			color: grey;
-			font-size: 14px;
+			.comments-indicator {
+				min-width: 25px;
+
+				div {
+					color: grey;
+					font-size: 15px;
+				}
+			}
 		}
 
 		.post-preview {
@@ -107,7 +123,7 @@ section {
 				    height: 20px;
 					background-image: url('Assets/bloc-note.svg');
 					background-size: contain;
-					background-color: rgb(230,230,230);
+					background-color: rgb(245,245,245);
 				}
 				.text-container {
 					width: 100%;

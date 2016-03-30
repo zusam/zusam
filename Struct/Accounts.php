@@ -15,6 +15,10 @@ function account_getDummy($default) {
 	return $ac;
 }
 
+function account_usageTimestamp(&$ac) {
+	$ac['usage'] = time();
+}
+
 function account_updateTimestamp(&$ac) {
 	$ac['timestamp'] = time();
 }
@@ -50,6 +54,7 @@ function account_readPost(&$ac, $pid) {
 			continue;
 		}
 	}
+
 	//$ac['unread'] = deleteAllValues($pid, $ac['unread']);
 	$ac['unread'] = array_values($ac['unread']);
 	//var_dump($ac['unread']);
@@ -75,6 +80,18 @@ function account_initialize($mail, $password) {
 	$ac['salt'] = bin2hex(openssl_random_pseudo_bytes(6));
 	return $ac;
 }
+
+// counting uploads
+//function account_addUpload(&$ac) {
+//	if(!isset($ac['upload'])) {
+//		$ac['upload'] = array("number"=>0,"last_cycle"=>time());
+//	}
+//	if($ac['upload']['last_cycle'] < time() - 30*24*60*60) {
+//		$ac['upload']['last_cycle'] = time();
+//		$ac['upload']['number'] = 0;
+//	}
+//	$ac['upload'] = $ac['upload'] + 1;
+//}
 
 function account_save(&$ac) {
 	mongo_save("accounts",$ac);

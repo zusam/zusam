@@ -3,14 +3,16 @@
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Include.php');
 
-function compileText($text) {
+function compileText($text, $debug) {
 	$r = $GLOBALS['regex'];
 	$str = strip_tags($text);
 	$str = trim($str);
 	$str = preg_replace("/\n/","<br>",$str);
 
-	$map = genTextMap($str);
-
+	$map = genTextMap($str, $debug);
+	if($debug) {
+		var_dump($map);
+	}
 	$html = "";
 	$text = false;
 	foreach($map as $m) {
@@ -77,7 +79,12 @@ function compileText($text) {
 				$html .= $pre.process_video($m[0]);
 			break;
 			case "image":
-				$html .= $pre.process_image($m[0]);
+				$output = process_image($m[0]);
+				$html .= $pre.$output;
+				if($debug) {
+					var_dump($output);
+					echo('______________________________________');
+				}
 			break;
 			case "gif":
 				$html .= $pre.process_gif($m[0]);
@@ -98,17 +105,18 @@ function compileText($text) {
 	return $html;
 }
 
-function genTextMap($str) {
+function genTextMap($str, $debug) {
 	$r = $GLOBALS['regex'];
 	$map = explode(' ',$str);
 	$suite = [];
 	$suiteType = "";
 	foreach($map as $k=>$elmt) {
 		$matched = false;
+		if($elmt == "") {
+			unset($map[$k]);
+			continue;
+		}
 		foreach($r as $kr=>$vr) {
-			if($elmt == "") {
-				continue;
-			}
 			if(preg_match(r2ep($vr),$elmt)) {
 				$matched = true;
 				if($kr == "file") {
@@ -141,6 +149,9 @@ function genTextMap($str) {
 			$map[$k] = array($elmt, $type);
 			$suite = array($k);
 			$suiteType = $type;
+		}
+		if($debug) {
+			var_dump($elmt);
 		}
 	}
 	
