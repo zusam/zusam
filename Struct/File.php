@@ -13,22 +13,23 @@ function file_initialize($fileId, $type, $uid) {
 	$file['fileId'] = $fileId;
 	$file['timestamp'] = time();
 
-	file_locate($file);
+	// will be erased in the future
+	$file['location'] = $file['fileId'];
 
 	return $file;
 }
 
-function file_locate(&$file) {
-	if($file['type'] == 'jpg') {
-		$file['location'] = $file['fileId'];
-	}
-	if($file['type'] == 'webm') {
-		$file['location'] = $file['fileId'];
-	}
-	if($file['type'] == 'sgf') {
-		$file['location'] = $file['fileId'];
-	}
-}
+//function file_locate(&$file) {
+//	if($file['type'] == 'jpg') {
+//		$file['location'] = $file['fileId'];
+//	}
+//	if($file['type'] == 'webm') {
+//		$file['location'] = $file['fileId'];
+//	}
+//	if($file['type'] == 'sgf') {
+//		$file['location'] = $file['fileId'];
+//	}
+//}
 
 function file_save(&$file) {
 	$file['timestamp'] = time();
@@ -64,7 +65,7 @@ function file_load($array) {
 }
 
 function file_getPath(&$file) {
-	return pathTo2(array("url" => $file['location'], "ext" => $file['type'], "param" => "file"));
+	return pathTo2(array("url" => $file['fileId'], "ext" => $file['type'], "param" => "file"));
 }
 
 function file_getWidth(&$file) {
@@ -117,16 +118,30 @@ function file_print(&$file) {
 		//file_save($file);
 	}
 	if($file['type'] == "webm") {
-		$xx = p2l(pmini($file['fileId']));
-		$w = p2l(file_getPath($file));
-		$html .= '<div onclick="loadVideo(this)" data-src="'.$w.'" class="launcher">';
-		$html .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';
-		$html .= '</div>';
+		if(file_exists(file_getPath($file))) {
+			$xx = p2l(pmini($file['fileId']));
+			$w = p2l(file_getPath($file));
+			$html .= '<div onclick="loadVideo(this)" data-src="'.$w.'" class="launcher">';
+			$html .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';
+			$html .= '</div>';
+		} else {
+			//var_dump($file['fileId']);
+			//var_dump(glob("Data/uploaded/*"));
+			//var_dump(glob("Data/uploaded/".$file['fileId']."*"));
+			if(count(glob("Data/uploaded/".$file['fileId'].".*")) > 0) {
+				if(count(glob("Data/converted/".$file['fileId'].".*")) > 0) {
+					$message = "Conversion de la vidéo en cours";
+				} else {
+					$message = "Vidéo en attente de conversion";
+				}
+			} else {
+				$message = "Le fichier est inexistant";
+			}
+			$html .= '<div class="file-placeholder">';
+			$html .= '<span>'.$message.'</span>';
+			$html .= '</div>';
+		}
 	}
-	//if($file['type'] == "sgf") {
-	//	$html .= '<div class="sgf-viewer" id="sgf-viewer-'.$file['fileId'].'"></div>';
-	//	$html .= '<script>var wgo = new WGo.BasicPlayer(document.getElementById("sgf-viewer-'.$file['fileId'].'"), {sgfFile : "'.p2l(file_getPath($file)).'", enableKeys: false, enableWheel: false, layout: {top: ["InfoBox", "Control"],bottom: ["CommentBox"]}}); wgo.setCoordinates(true);</script>';
-	//}
 	return $html;
 }
 

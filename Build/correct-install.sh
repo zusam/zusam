@@ -24,7 +24,7 @@ if [ ! -d "/srv/http" ]
 then 
 	echo "/srv/http should exists and be the root directory of apache"
 fi
-P=(tmp Data/avatar Data/miniature Data/file)
+P=(tmp Data/avatar Data/miniature Data/file Data/uploaded Data/converted)
 for p in "${P[@]}";
 do
 	if [ ! -d "$p" ] 

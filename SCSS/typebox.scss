@@ -124,6 +124,16 @@ img.lazyload {
 		border-top: 1px solid lightgrey;
 	}
 
+	.file-placeholder {
+		background-color: rgba(0,0,0,0.7);
+		padding: 40px;
+		color: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 30px;
+	}
+
 	.launcher {
 		display: block;
 		position: relative;

@@ -25,6 +25,7 @@ function pathTo2($args) {
 	if(!$dir && ($param == "" || $url == "")) {
 		return false;
 	}
+
 	if($ext == "") {
 		$ext = ".".pathinfo($url, PATHINFO_EXTENSION);
 	} else {
@@ -32,6 +33,10 @@ function pathTo2($args) {
 			$ext = ".".$ext;
 		}
 	}
+	if($ext == ".") {
+		$ext = "";
+	}
+
 	$loc = "Data";
 	if($param == "assets") {
 		$path = "Assets/".$url.$ext; 
@@ -51,6 +56,10 @@ function pathTo2($args) {
 	}
 	if($param == "file") {
 		$path = $loc."/file/".$url.$ext; 
+		return realpath(dirname(__FILE__)."/../")."/".$path;
+	}
+	if($param == "uploaded") {
+		$path = $loc."/uploaded/".$url.$ext; 
 		return realpath(dirname(__FILE__)."/../")."/".$path;
 	}
 	if($param == "tmp") {

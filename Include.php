@@ -14,6 +14,9 @@ require_once('Core/MongoDriver.php');
 require_once('Core/Preview.php');
 require_once('Core/Print_post.php');	
 require_once('Core/Regex.php');
+require_once('Core/ReducImage.php');
+//require_once('Core/ReducPDF.php');
+require_once('Core/ReducVideo.php');
 require_once('Core/TextCompiler.php');	
 require_once('Core/Utils.php');	
 
@@ -30,11 +33,7 @@ require_once('Pages/mainmenu.php');
 require_once('Pages/nav.php');
 require_once('Pages/profile.php');
 
-require_once('Reduc/ReducImage.php');
-require_once('Reduc/ReducVideo.php');
-
 require_once('Struct/Accounts.php');
-require_once('Struct/Album.php');	
 require_once('Struct/File.php');	
 require_once('Struct/Forum.php');	
 require_once('Struct/Notification.php');	

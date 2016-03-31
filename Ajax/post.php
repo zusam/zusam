@@ -10,6 +10,7 @@ foreach($_POST as $K=>$V) {
 	$POST[$K] = (String) $V;
 }
 
+
 // CONNECTED OR NOT
 if($POST['action'] != null && $POST['action'] != "") {
 	
@@ -25,7 +26,7 @@ if($POST['action'] != null && $POST['action'] != "") {
 
 // CONNECTED
 if($_SESSION['connected']) {
-
+	
 	if($POST['action'] != null && $POST['action'] != "") {
 
 		if($POST['action'] == "getImgur") {
@@ -189,11 +190,16 @@ if($_SESSION['connected']) {
 				$u = account_load(array('_id' => $uid));
 				if($u != null && $u != false) {
 					$file = file_initialize($fileId, "webm", $u['_id']);
-				saveVideo($_FILES["video"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'webm', 'param' => 'file')), $fileId);
-					file_save($file);
+					$ext = ".".pathinfo($_FILES['video']['name'], PATHINFO_EXTENSION);
+				$r = move_uploaded_file($_FILES['video']['tmp_name'], pathTo2(array('url'=>$file['fileId'], 'ext'=>$ext, 'param'=>'uploaded')));
+				//saveVideo($_FILES["video"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'webm', 'param' => 'file')), $fileId);
+					if($r) {
+						file_save($file);
+					} else {
+						echo('fail move file');
+					}
 				}
 			}
-
 			exit;
 		}
 		

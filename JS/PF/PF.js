@@ -40,7 +40,7 @@ function sendVideo(vidBlob, fileId) {
 	f.append("fileId",fileId);
 	f.append("uid",uid);
 	f.append("action","addVideo");
-	var progressBar = $('<div class="progressBar"><div class="progress"></div><div class="conversion"></div></div>');
+	var progressBar = $('<div class="progressBar"><div class="progress"></div></div>');
 	$('*[data-src="{:'+fileId+':}"]').append(progressBar);
 	$.ajax({
 		url: "Ajax/post.php",
@@ -67,9 +67,10 @@ function sendVideo(vidBlob, fileId) {
 			};
 			xhr.upload.onload = function(){ 
 				console.log('done !');
-				setTimeout(function() {
-					trackProgress(fileId);
-				}, 500);
+				content.find('.progressBar').remove();
+				//setTimeout(function() {
+				//	trackProgress(fileId);
+				//}, 500);
 			}
 			return xhr;
 		}
@@ -77,38 +78,38 @@ function sendVideo(vidBlob, fileId) {
 	window.sending = window.sending + 1;
 }
 
-function trackProgress(fileId) {
-	pid = setInterval(function() {
-		console.log("Ajax/get.php?action=getProgess&fileId="+fileId);
-		$.ajax({
-			url: "Ajax/get.php",
-			type: "GET",
-			data: {"fileId":fileId, "action":"getProgress"},
-			success: function(data){ 
-					console.log(data);
-					if(!data['progress']) {
-						console.log("endTrack"); 
-						clearInterval(pid);
-						content = $('*[data-src="{:'+fileId+':}"]');
-						content.find('.progressBar').remove();
-					} else {
-						content = $('*[data-src="{:'+fileId+':}"]');
-						var duration = content.find('video')[0].duration;
-						var time = (data['progress'].replace(/\r?\n|\r/g,""))/1000000;
-						var p = time/duration*100;
-						console.log(p);
-						content.find('.progressBar .conversion').css('width',p+"%");
-					}
-				},
-			error: function(){ 
-					console.log("endTrack"); 
-					clearInterval(pid);
-					content = $('*[data-src="{:'+fileId+':}"]');
-					content.find('.progressBar').remove();
-				}
-		});
-	}, 1000);
-}
+//function trackProgress(fileId) {
+//	pid = setInterval(function() {
+//		console.log("Ajax/get.php?action=getProgess&fileId="+fileId);
+//		$.ajax({
+//			url: "Ajax/get.php",
+//			type: "GET",
+//			data: {"fileId":fileId, "action":"getProgress"},
+//			success: function(data){ 
+//					console.log(data);
+//					if(!data['progress']) {
+//						console.log("endTrack"); 
+//						clearInterval(pid);
+//						content = $('*[data-src="{:'+fileId+':}"]');
+//						content.find('.progressBar').remove();
+//					} else {
+//						content = $('*[data-src="{:'+fileId+':}"]');
+//						var duration = content.find('video')[0].duration;
+//						var time = (data['progress'].replace(/\r?\n|\r/g,""))/1000000;
+//						var p = time/duration*100;
+//						console.log(p);
+//						content.find('.progressBar .conversion').css('width',p+"%");
+//					}
+//				},
+//			error: function(){ 
+//					console.log("endTrack"); 
+//					clearInterval(pid);
+//					content = $('*[data-src="{:'+fileId+':}"]');
+//					content.find('.progressBar').remove();
+//				}
+//		});
+//	}, 1000);
+//}
 
 function loadImage(file,id) {
 	console.log("load image "+file.name);
