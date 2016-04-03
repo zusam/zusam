@@ -11,6 +11,7 @@ foreach($_POST as $K=>$V) {
 }
 
 
+
 // CONNECTED OR NOT
 if($POST['action'] != null && $POST['action'] != "") {
 	
@@ -63,7 +64,8 @@ if($_SESSION['connected']) {
 				$j = 0;
 				$i = 0;
 				$html = "";
-				$newlist = [];
+				$newslist = [];
+			
 				// max 300 posts backwards
 				while($i < $n && $j < count($news) && $j < 300) {
 					if(!in_array($news[$j], $list)) {
@@ -75,15 +77,22 @@ if($_SESSION['connected']) {
 							} else {
 								$html .= print_post_mini($p, false);
 							}
-							$newlist[] = $news[$j];
+							//$newslist[] = $news[$j];
+							array_push($newslist, $news[$j]);
+						} else {
+							//var_dump($news[$j]);
+							//deleteValue($news[$j], $f['news']);		
+							//forum_save($f);
 						}
 					}
 					$j++;
 				}
+
+				//forum_save($f);
 				
 				$r = new StdClass();
 				$r->html = $html;
-				$r->list = $newlist;
+				$r->list = $newslist;
 				$r->count = $i;
 				$r->load = $j;
 				if($i < $n) {
@@ -168,7 +177,7 @@ if($_SESSION['connected']) {
 					if($file == null || $file == false) {
 						$file = file_initialize($fileId, "jpg", $u['_id']);
 					}
-					$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'jpg', 'param' => 'file')), 1024, 1024);
+					$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'jpg', 'param' => 'file')), 2048, 2048);
 					unlink(pmini($file['fileId']));
 					gen_miniature("{:".$fileId.":}");
 					if($r) {

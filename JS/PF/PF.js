@@ -68,48 +68,12 @@ function sendVideo(vidBlob, fileId) {
 			xhr.upload.onload = function(){ 
 				console.log('done !');
 				content.find('.progressBar').remove();
-				//setTimeout(function() {
-				//	trackProgress(fileId);
-				//}, 500);
 			}
 			return xhr;
 		}
 	});
 	window.sending = window.sending + 1;
 }
-
-//function trackProgress(fileId) {
-//	pid = setInterval(function() {
-//		console.log("Ajax/get.php?action=getProgess&fileId="+fileId);
-//		$.ajax({
-//			url: "Ajax/get.php",
-//			type: "GET",
-//			data: {"fileId":fileId, "action":"getProgress"},
-//			success: function(data){ 
-//					console.log(data);
-//					if(!data['progress']) {
-//						console.log("endTrack"); 
-//						clearInterval(pid);
-//						content = $('*[data-src="{:'+fileId+':}"]');
-//						content.find('.progressBar').remove();
-//					} else {
-//						content = $('*[data-src="{:'+fileId+':}"]');
-//						var duration = content.find('video')[0].duration;
-//						var time = (data['progress'].replace(/\r?\n|\r/g,""))/1000000;
-//						var p = time/duration*100;
-//						console.log(p);
-//						content.find('.progressBar .conversion').css('width',p+"%");
-//					}
-//				},
-//			error: function(){ 
-//					console.log("endTrack"); 
-//					clearInterval(pid);
-//					content = $('*[data-src="{:'+fileId+':}"]');
-//					content.find('.progressBar').remove();
-//				}
-//		});
-//	}, 1000);
-//}
 
 function loadImage(file,id) {
 	console.log("load image "+file.name);
@@ -118,29 +82,15 @@ function loadImage(file,id) {
 		console.log("img:"+img);
 		canvas = document.createElement('canvas');
 
-		//w = Math.min(this.width, 1024);
-		//h = Math.min(this.height, 1024);
-		//g = Math.min(w/img.width, h/img.height);
-		//canvas.width = this.width*g;
-		//canvas.height = this.height*g;
-		//ctx = canvas.getContext('2d');
-		//ctx.drawImage(img,0,0,this.width*g,this.height*g);
-		//delete img;
-		
 		// find new_width and new_height
-		var w = Math.min(this.width, 1024);
-		var h = Math.min(this.height, 1024);
+		var w = Math.min(this.width, 2048);
+		var h = Math.min(this.height, 2048);
 		var g = Math.min(w/img.width, h/img.height);
-		//var new_width = this.width*g;
-		//var new_height = this.height*g
 		
-		// hermite canvas
 		canvas.width = img.width;
 		canvas.height = img.height;
-		//canvas.style.display = "none";
 		var ctx = canvas.getContext('2d');
 		ctx.drawImage(img, 0, 0);
-		//retouche.resample_hermite(canvas, img.width, img.height, new_width, new_height);
 		canvas = retouche.downScaleCanvas(canvas, g);
 		
 		var fileId = createId();
@@ -148,11 +98,13 @@ function loadImage(file,id) {
 		PF.sendImage(canvas, fileId);
 	};
 	img.src = URL.createObjectURL(file);
+	var loading = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"><div class="spinner"><div class="bg-orange bounce1"></div><div class="bg-orange bounce2"></div><div class="bg-orange bounce3"></div></div></div></span>');
 }
 
 function showImage(canvas, id, fileId) {
 	var content = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
 	content.append(canvas);
+	$(id).find('span[data-src="{:'+fileId+':}"]').remove();
 	$(id).append(content);	
 	$(id).append('<div contenteditable="true"></div>');
 }

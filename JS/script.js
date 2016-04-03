@@ -94,15 +94,6 @@ function removeUserFromForum() {
 	});
 }
 
-function loadRetoucheBox(w,h,action) {
-	r = $('#retoucheBox');
-	r.attr('data-w',w);
-	r.attr('data-h',h);
-	r.attr('data-action',action);
-	showimageeditor("#retoucheBox");
-}
-
-
 function destroyAccount(t) {
 	if(t == null) {
 		return false;
@@ -361,7 +352,7 @@ function loadMorePosts() {
 		var ncol = parseInt(width / (320+margin));
 		var nlin = parseInt(height / (180+margin));
 		var number = ncol*(nlin+1);
-		console.log(ncol,nlin,number);
+		console.log(ncol,nlin,number,list);
 
 		$.ajax({
 			url: 'Ajax/post.php',
@@ -386,6 +377,9 @@ function loadMorePosts() {
 			error: function() {
 				console.log("fail to load more posts");
 				window.loading_posts = false;
+				setTimeout(function() {
+					loadMorePosts();
+				}, 5000);
 				return false;
 			}
 		});
@@ -538,8 +532,6 @@ function handleFile(file,id) {
 	if(!fileTypeHandled) {
 		alert("Le format du fichier n'est pas supporté");
 	}
-	//refocus on typebox
-
 }
 
 function loadImage(t) {

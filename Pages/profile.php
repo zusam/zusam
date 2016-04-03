@@ -8,11 +8,10 @@ function page_section_profile(&$u) {
 	$html = "";
 
 	$html .= '<div class="profile_wrapper">';
-	$html .= '
-		<div class="change-avatar" onclick="loadRetoucheBox(128,128,\'changeAvatar\')">
-			'.account_getAvatarHTML($u).'
-		</div>
-	';
+	$html .= '<div class="change-avatar" onclick="retouche.changeAvatar()">';
+	$html .= account_getAvatarHTML($u);
+	$html .= '</div>';
+	
 	$html .= '<form class="change-profile">';
 	$html .= '<span class="formTitle">Changer de nom<div class="help-balise icon-help-circled"><span>Il s\'agit du nom visible par les autres utilisateurs sur tous vos forums</span></div></span>';
 	$html .= '<input class="textInput" name="name" type="text" placeholder="Nouveau nom">';

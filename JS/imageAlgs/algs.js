@@ -183,6 +183,7 @@ function downScaleCanvas(cv, scale) {
 //}
 //
 
+// returns a new canvas with the image turned
 function turn(cv, rotation) {
 	
 	var ctx = cv.getContext('2d');

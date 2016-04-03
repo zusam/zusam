@@ -102,39 +102,13 @@ function togglenewavatar() {
 	}
 }
 
-function showimageeditor(id, t) {
-	pv = $('#newavatar');
-	pv.addClass('active');
-	pv.css('display','block');
-	addMask("hideimageeditor()",0.75, 699, "imageeditormask");
-	// t is provided when we edit an existing image
-	if(t != null) {
-		var deletable = $(t).closest('.deletable');
-		var src = deletable.attr('data-src');
-		console.log(src);
-		console.log(t);
-		var fileId = deletable.attr('data-fileid').replace(/[{:}]/g,'');
-		var width = deletable.attr('data-width');
-		var height = deletable.attr('data-height');
-		console.log(fileId);
-		r = $('#retoucheBox');
-		r.attr('data-action',"addImage");
-		r.attr('data-arg',fileId);
-		r.attr('data-w',width);
-		r.attr('data-h',height);
-		retouche.set(id, src);
-	} else {
-		retouche.restart("#retoucheBox");
-	}
-}
-
 function hideimageeditor() {
 	pv = $('#newavatar');
 	pv.removeClass('active');
 	pv.css('display','none');
 	$('#container').css("filter","none");
 	$('#container').css("-webkit-filter","none");
-	pv.html('<div id="retoucheBox"><div class="placeholder"><i class="label icon-picture"></i><span class="underLabel">Cliquez pour choisir une photo</span><input type="file"></input></div></div>');
+	pv.html('<div id="retoucheBox"></div>');
 	removeMask("imageeditormask");
 }
 

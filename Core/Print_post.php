@@ -172,13 +172,13 @@ function print_post($id, $uid) {
 
 function print_post_mini(&$p, $unread) {
 	$html = "";
-	if($p != false && ($p['parent'] == null || $p['parent'] == 0)) {
+	if($p != null && $p != false && ($p['parent'] == null || $p['parent'] == 0)) {
 		
 		// TODO to erase in the future
 		// it's here to clear the miniature cache of the most recents posts
-		if(preg_match("/^\/srv\/http/",$p['preview'])!=1) {
-			unset($p['preview']);
-		}
+		//if(preg_match("/^\/srv\/http/",$p['preview'])!=1) {
+		//	unset($p['preview']);
+		//}
 
 		if(empty($p['preview']) || preg_match("/\.jpg/",$p['preview']) == 0) {
 			$link = search_miniature($p['text']);
@@ -202,7 +202,7 @@ function print_post_mini(&$p, $unread) {
 		
 		$inside .= '<div class="post-info">';
 
-		$inside .= '<div class="op-avatar">'.account_getAvatarHTML($op).'</div>';
+		$inside .= '<div class="op-avatar"><img src="'.account_getAvatar($op).'" /></div>';
 
 		if($unread) {
 			$inside .= '<div class="date newcom">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';

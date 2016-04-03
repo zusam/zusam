@@ -108,8 +108,8 @@ body {
 	transform: translate(-50%, -50%);
 	-webkit-transform: translate(-50%, -50%);
 	z-index: 700;
-	max-width: calc(90% - 20px);
-	max-height: calc(90% - 20px);
+	width: calc(80% - 20px);
+	height: calc(80% - 20px);
 	padding: 10px;
 	background: white;
 	
@@ -146,16 +146,16 @@ body {
 	transition: all 0.8s;
 	background: lightgrey;
 }
-#notification {
-	cursor: pointer;
-	position: relative;
-	color: white;
-
-	i {
-		font-size: 25px;
-		line-height: 41px;
-	}
-}
+//#notification {
+//	cursor: pointer;
+//	position: relative;
+//	color: white;
+//
+//	i {
+//		font-size: 25px;
+//		line-height: 41px;
+//	}
+//}
 .my_name {
 	display: inline-block;
 	margin-left: 5px;
@@ -214,7 +214,6 @@ body {
 	border: 1px inset grey;
 	padding: 5px;
 }
-
 .help-balise {
 	display: inline-block;
 	position: relative;
@@ -223,7 +222,6 @@ body {
 	font-size: 17px;
 	margin: 0px 3px;
 }
-
 .help-balise span {
 	display: none;
 	position: absolute;
@@ -237,7 +235,18 @@ body {
 	background: white;
 	z-index: 700;
 }
-
 .help-balise:hover span {
 	display: block;
+}
+.unselectable {
+	-moz-user-select: none; /* These user-select properties are inheritable, used to prevent text selection */
+	-webkit-user-select: none;
+	-ms-user-select: none; /* From IE10 only */
+	user-select: none; /* Not valid CSS yet, as of July 2012 */
+
+	-webkit-user-drag: none; /* Prevents dragging of images/divs etc */
+	user-drag: none;
+}
+.hidden {
+	display: none;
 }

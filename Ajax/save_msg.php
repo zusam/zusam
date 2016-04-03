@@ -37,16 +37,16 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				forum_addUnread($f, $p['_id'], $uid);
 			} else {
 				// new com
-				$p = post_load(array('_id'=>$parent));
-				$c = post_initialize(array('text'=>$text, 'uid'=>$uid, 'preview'=>$preview, 'forum'=>$forum, 'parent'=>$parent));
-				post_addChild($p, $c['_id']);
-				post_save($c);
-				post_updateTimestamp($p);
+				$pp = post_load(array('_id'=>$parent));
+				$p = post_initialize(array('text'=>$text, 'uid'=>$uid, 'preview'=>$preview, 'forum'=>$forum, 'parent'=>$parent));
+				post_addChild($pp, $p['_id']);
 				post_save($p);
-				forum_post2news($f, $p['_id']);
+				post_updateTimestamp($pp);
+				post_save($pp);
+				forum_post2news($f, $pp['_id']);
 				forum_updateTimestamp($f);
 				forum_save($f);
-				forum_addUnread($f, $p['_id'], $uid);
+				forum_addUnread($f, $pp['_id'], $uid);
 				$u['forums'][$forum]['timestamp'] = time();
 				account_readPost($u, $id);
 				account_save($u);
@@ -71,7 +71,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				$r->mini_html = print_post_mini($p, false);
 				$r->html = print_post($p['_id'], $uid);
 			} else {
-				$r->html = print_post($c['_id'], $uid);
+				$r->html = print_post($p['_id'], $uid);
 			}
 		} else {
 			$r->mini_html = print_post_mini($p, false);

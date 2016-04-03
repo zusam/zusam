@@ -1,4 +1,3 @@
-
 //// usefull global variables /////
 
 // canvas conversions
@@ -99,9 +98,9 @@ $(window).ready(function() {
 	}, 1000);
 
 	// load posts
-	var ret = loadMorePosts();
-	while(ret == false) {
-		ret = loadMorePosts();
-	}
-
+	loadMorePosts();
+	//while(ret == false) {
+	//	console.log(ret);
+	//	ret = loadMorePosts();
+	//}
 });

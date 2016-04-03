@@ -1,62 +1,38 @@
 URL = window.URL || window.webkitURL;
 
-function turnAndSend(e, rotation, img) {
-	
-	$('#lightbox').css('opacity','0');
+// just get an image from the user and pass the file to the retouchebox
+function changeAvatar() {
+	r = $('#retoucheBox');
+	r.attr('data-w',128);
+	r.attr('data-h',128);
+	r.attr('data-action',"changeAvatar");
+	console.log("ca1");
 
-	// init canvas
-	canvas = document.createElement('canvas');
-	canvas.width = img.naturalWidth;
-	canvas.height = img.naturalHeight;
-	var ctx = canvas.getContext('2d');
-	ctx.drawImage(img, 0, 0);
-	
-	// process canvas
-	canvas = retouche.turn(canvas, rotation);
+	//retouche.restart("#retoucheBox");
+	console.log("ca2");
 
-	var action = "addImage";
-	var fileid = $(e).closest('.deletable').attr('data-fileid');
-
-	imgURL = canvas.toDataURL("image/png");
-	
-	f = new FormData();
-	f.append("image",dataURItoBlob(imgURL));
-	var uid = $('#info').attr('data-uid');
-	var fid = $('#info').attr('data-fid');
-	f.append("uid",uid);
-	f.append("fid",fid);
-	f.append("action",action);
-	console.log(action);
-	f.append("fileId",fileid);
-	$.ajax({
-		url: 'Ajax/post.php',
-		type: "POST",
-		data: f,
-		success: function(data){ 
-				console.log(data); 
-				console.log("sent!");
-				// replace all sent images
-				$('.deletable[data-fileid="'+fileid+'"] img').each(function(){
-					var src = this.src.replace(/\?.*/,'') + '?' + Date.now(); 
-					this.src = src;
-					var pid = $('#post-viewer').attr('data-id');
-					var mini = $('.post-mini[data-id="'+pid+'"] .miniature')[0];
-					if(typeof(mini) !=! "undefined") {
-						src = mini.src.replace(/\?.*/,'') + '?' + Date.now();
-						mini.src = src;
-					}
-				});
-				lightbox.enlighten(e);
-			},
-		error: function(){ console.log(uid,fid,action); },
-		processData: false,
-		contentType: false
+	var input = $('<input id="avatarchangeinput" class="hidden" type="file" accept="image/*">');
+	input.on('change', function(evt) {
+		id = "#retoucheBox";
+		console.log(id);
+		var file = evt.target.files[0];
+		console.log(file);
+		retouche.loadImage(file, id);
+		$('#avatarchangeinput').remove();
+		console.log("ca3");
+		pv = $('#newavatar');
+		pv.addClass('active');
+		pv.css('display','block');
+		addMask("hideimageeditor()",0.75, 699, "imageeditormask");
 	});
+	$('body').append(input);
+	$('#avatarchangeinput').click();
 }
 
+// turn the image of the canvas
 function effectivTurn(id, rotation) {
 	var canvas = $(id).find('canvas')[0];
-	var cv = retouche.turn(canvas, rotation);
+	var cv = imageAlgs.turn(canvas, rotation);
 	$(cv).attr('data-h', canvas.width);
 	$(cv).attr('data-w', canvas.height);
 	$(cv).css("width", canvas.style.height);
@@ -126,19 +102,21 @@ function loadCanvas(img, id) {
 		canvas = document.createElement('canvas');
 		canvas.style.width = "100%";
 
-		var realw = Math.min(img.width, 1024);
-		var realh = Math.min(img.height, 1024);
+		var realw = Math.min(img.width, 2048);
+		var realh = Math.min(img.height, 2048);
 		var realg = Math.min(realw/img.width, realh/img.height);
 
 		canvas.width = img.width;
 		canvas.height = img.height;
 		var ctx = canvas.getContext('2d');
 		ctx.drawImage(img, 0, 0);
-		canvas = retouche.downScaleCanvas(canvas, realg);
+		canvas = imageAlgs.downScaleCanvas(canvas, realg);
 
 		$(id).html(canvas);
 
-		stopInput(id);
+		$(id+' .label').remove();
+		$(id+' .underLabel').remove();
+		$(id+' input').remove();
 		
 		if($(id).attr('data-action') == "changeAvatar") {
 			retouche.addHandles(id);
@@ -175,6 +153,7 @@ function handleFileSelect(evt) {
 	}
 }
 
+// move the handles
 function setZone(d, x, y, w, h) {
 
 	p = d.parentNode;
@@ -240,6 +219,7 @@ function setZone(d, x, y, w, h) {
 	hbr.style.left = y-12+w;
 }
 
+// record this event. In order to move the handles accordingly
 function downEvent(e,d,t,a,id) {
 	window.s = new Object();
 	window.s.elmt = e.target;
@@ -274,12 +254,13 @@ function downEvent(e,d,t,a,id) {
 	window.s.h = z.offsetHeight;
 }
 
-function stopInput(id) {
-	$(id+' .label').remove();
-	$(id+' .underLabel').remove();
-	$(id+' input').remove();
-}
+//function stopInput(id) {
+//	$(id+' .label').remove();
+//	$(id+' .underLabel').remove();
+//	$(id+' input').remove();
+//}
 
+// when the mouse moves, record it to move the handles accordingly
 function moveEvent(e) {
 	if(window.s != null && window.s.type != null) {
 
@@ -405,7 +386,7 @@ function sendCanvas(id) {
 	var arg = $(id).attr('data-arg');
 
 	if(action == "changeAvatar") {
-		g = canvas.offsetWidth/parseInt(canvas.dataset.w);
+		g = canvas.offsetWidth/canvas.width; //parseInt($(id).attr('data-w'));
 		z = document.querySelector(id+' > .zone');
 		l = parseInt(z.style.left)/g;
 		t = parseInt(z.style.top)/g;
@@ -418,7 +399,7 @@ function sendCanvas(id) {
 		if(nw != null && nh != null) {
 			g = Math.min(Math.max(w, nw)/w, Math.max(h, nh)/h);
 		} else {
-			g = Math.min(Math.max(w, 1024)/w, Math.max(h, 1024)/h);
+			g = Math.min(Math.max(w, 2048)/w, Math.max(h, 2048)/h);
 		}
 	} else {
 		g = 1;
@@ -435,7 +416,7 @@ function sendCanvas(id) {
 	ctx2 = c2.getContext('2d');
 	ctx2.putImageData(data, 0, 0);
 
-	c3 = retouche.downScaleCanvas(c2,g);
+	c3 = imageAlgs.downScaleCanvas(c2,g);
 	imgURL = c3.toDataURL("image/png");
 	delete c3; 
 	

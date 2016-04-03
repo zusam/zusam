@@ -13,17 +13,7 @@ function main(&$u,&$forum,&$GET,&$POST) {
 	echo(page_mainmenu($u, $GET['page']));
 
 	// NEW AVATAR
-	echo('
-	<div id="newavatar" class="newavatar">
-		<div id="retoucheBox">
-			<div class="placeholder">
-				<i class="label icon-picture"></i>
-				<span class="underLabel">Cliquez pour choisir une photo</span>
-				<input type="file"></input>
-			</div>
-		</div>
-	</div>
-	');
+	echo('<div id="newavatar" class="newavatar"><div id="retoucheBox"></div></div>');
 
 	// POST VIEWER
 	echo('<div id="slidepostviewer" class="slide slide-over slidefromright"></div>');
