@@ -32,7 +32,7 @@ function searchPrevious(e) {
 }
 
 
-function enlighten(id) {
+function enlighten(id, refresh) {
 
 	var e = $(id)[0];
 
@@ -45,7 +45,13 @@ function enlighten(id) {
 	} else {
 		var lightbox_src = e.src;
 	}
-	lightbox_src = lightbox_src.replace(/\?.*/,'') + "?" + Date.now();
+	if(refresh) {
+		lightbox_src = lightbox_src.replace(/\?.*/,'') + "?" + Date.now();
+	} else {
+		lightbox_src = lightbox_src.replace(/\?.*/,'');// + "?" + Date.now();
+	}
+
+	var name = lightbox_src.replace(/.*\/([^\/]+)$/,'$1');
 	
 	lightbox.darken();
 
@@ -125,7 +131,8 @@ function enlighten(id) {
 				lightbox.turnAndSend(e,"ccw",this_img);
 			});
 		}
-		lb.append(next).append(prev).append(this).append(close).append(turncw).append(turnccw);
+		var dl = $('<a class="material-shadow dl-button" href="'+lightbox_src+'" download="'+name+'">Télécharger</a>');
+		lb.append(next).append(prev).append(this).append(close).append(turncw).append(turnccw).append(dl);
 		$('body').append(lb);
 		$(window).on('keydown',function(evt) {
 			if(evt.which == 27) {
@@ -195,7 +202,7 @@ function turnAndSend(e, rotation, img) {
 						mini.src = src;
 					}
 				});
-				lightbox.enlighten(e);
+				lightbox.enlighten(e, true);
 			},
 		error: function(){ console.log(uid,fid,action); },
 		processData: false,

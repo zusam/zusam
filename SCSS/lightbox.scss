@@ -103,6 +103,19 @@
 .zoomPossible {
 	cursor: url(Assets/magnify.cur), default;
 }
+.dl-button {
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+	font-size: 14px;
+	border: none;
+	padding: 5px;
+	background-color: rgba(255, 255, 255, 0.75);
+	cursor: pointer;
+	color: black;
+	z-index: 100;
+	text-decoration: none;
+}
 .editIMG {
 	position: absolute;
 	left: 10px;

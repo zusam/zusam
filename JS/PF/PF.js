@@ -77,6 +77,7 @@ function sendVideo(vidBlob, fileId) {
 
 function loadImage(file,id) {
 	console.log("load image "+file.name);
+	var fileId = createId();
 	var img = new Image();
 	img.onload = function() {
 		console.log("img:"+img);
@@ -91,20 +92,22 @@ function loadImage(file,id) {
 		canvas.height = img.height;
 		var ctx = canvas.getContext('2d');
 		ctx.drawImage(img, 0, 0);
-		canvas = retouche.downScaleCanvas(canvas, g);
+		canvas = imageAlgs.downScaleCanvas(canvas, g);
 		
-		var fileId = createId();
 		PF.showImage(canvas, id, fileId);
 		PF.sendImage(canvas, fileId);
 	};
 	img.src = URL.createObjectURL(file);
 	var loading = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"><div class="spinner"><div class="bg-orange bounce1"></div><div class="bg-orange bounce2"></div><div class="bg-orange bounce3"></div></div></div></span>');
+	$(id).append(loading);
 }
 
 function showImage(canvas, id, fileId) {
-	var content = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
-	content.append(canvas);
-	$(id).find('span[data-src="{:'+fileId+':}"]').remove();
+	var content = $('span[data-src="{:'+fileId+':}"]');
+	if(content.length == 0) {
+		var content = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
+	}
+	content.html(canvas);
 	$(id).append(content);	
 	$(id).append('<div contenteditable="true"></div>');
 }
