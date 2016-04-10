@@ -99,8 +99,4 @@ $(window).ready(function() {
 
 	// load posts
 	loadMorePosts();
-	//while(ret == false) {
-	//	console.log(ret);
-	//	ret = loadMorePosts();
-	//}
 });

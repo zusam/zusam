@@ -79,7 +79,7 @@ function print_more_comments($id, $uid) {
 		return "";
 	}
 
-	$nb_hidden = max(count($p['children']) - 4, 0);
+	$nb_hidden = max(count($p['children']) - 5, 0);
 
 	$count_hidden = 0;
 	foreach($p['children'] as $cid) {
@@ -192,7 +192,7 @@ function print_post_mini(&$p, $unread) {
 		} else {
 				$inside = '<div class="text-miniature">';
 				$inside .= '<div class="paper"></div>';
-				$text = cutIfTooLong($p['text'], 150);
+				$text = strip_tags(cutIfTooLong($p['text'], 150));
 				$inside .= '<div class="text-container"><div class="text"><div>'.$text.'</div></div></div>';
 				$inside .= '</div>';
 		}

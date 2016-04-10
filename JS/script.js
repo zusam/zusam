@@ -352,7 +352,7 @@ function loadMorePosts() {
 		var ncol = parseInt(width / (320+margin));
 		var nlin = parseInt(height / (180+margin));
 		var number = ncol*(nlin+1);
-		console.log(ncol,nlin,number,list);
+		console.log(ncol,nlin,number);
 
 		$.ajax({
 			url: 'Ajax/post.php',

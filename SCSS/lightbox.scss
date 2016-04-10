@@ -46,7 +46,6 @@
 		cursor: pointer;
 		justify-content: center;
 		-webkit-justify-content: center;
-		width: 50%;
 
 		i {
 			width: 50px;
@@ -76,10 +75,12 @@
 
 	.prev {
 		left: 0px;
+		width: 30%;
 	}
 
 	.next {
 		right: 0px;
+		width: 70%;
 	}
 }
 
