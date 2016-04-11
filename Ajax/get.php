@@ -116,7 +116,7 @@ if($_SESSION['connected']) {
 			account_save($u);
 			$html_data = print_full_post($id, $u['_id']);
 			$r->html = $html_data;
-			if($GET['debug']==1) {
+			if(isset($GET['debug'])) {
 				$r->debug = compileText(trim($p['text']), true);
 			}
 			if(!isset($GET['debug'])) {

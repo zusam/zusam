@@ -36,17 +36,21 @@ section {
 		overflow: hidden;
 		margin: 20px;
 		cursor: pointer;
-		width: 280px;
+		width: 320px;
 		min-height: 80px;
 		border-radius: 2px;
 		position: relative;
 		text-decoration: none;
-		flex-grow: 1;
-		-webkit-flex-grow: 1;
-		max-width: 360px;
+		//flex-grow: 1;
+		//-webkit-flex-grow: 1;
+		//max-width: 360px;
 
 		.post-start {
 			display: none;
+		}
+		
+		.newcom > * {
+			color: #F7A71B !important;
 		}
 		
 		.post-info {
@@ -65,9 +69,6 @@ section {
 			.date {
 				color: grey;
 				font-size: 14px;
-			}
-			.newcom {
-				color: #F7A71B !important;
 			}
 
 			.op-avatar {

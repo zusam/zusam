@@ -190,25 +190,34 @@ function print_post_mini(&$p, $unread) {
 		if(preg_match("/\.jpg$/",$p['preview'])==1) {
 			$inside = '<div><img class="miniature" src="'.p2l($p['preview']).'"/></div>';
 		} else {
+			$text = $p['text'];
+			$str = strip_tags($text);
+			$str = trim($str);
+			$str = preg_replace("/\n/","<br>",$str);
+			$map = genTextMap($str, $debug);
+			if(count($map) == 1 && $map[0][1] != "text") {
+				$inside = '<div><img class="miniature" src="'.p2l(pathTo2(array("param"=>"assets", "url"=>"noimage", "ext"=>"png"))).'"/></div>';
+			} else {
 				$inside = '<div class="text-miniature">';
 				$inside .= '<div class="paper"></div>';
 				$text = strip_tags(cutIfTooLong($p['text'], 150));
 				$inside .= '<div class="text-container"><div class="text"><div>'.$text.'</div></div></div>';
 				$inside .= '</div>';
+			}
 		}
 
 		// get the user
 		$op = account_load(array('_id' => $p['uid']));
 		
-		$inside .= '<div class="post-info">';
+		if($unread) {
+			$inside .= '<div class="post-info newcom">';
+		} else {
+			$inside .= '<div class="post-info">';
+		}
 
 		$inside .= '<div class="op-avatar"><img src="'.account_getAvatar($op).'" /></div>';
 
-		if($unread) {
-			$inside .= '<div class="date newcom">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
-		} else {
-			$inside .= '<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
-		}
+		$inside .= '<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
 		
 		$inside .= '<div class="comments-indicator">';
 		$c = count($p['children']);
