@@ -20,7 +20,7 @@ function start(redirect_url) {
 						success: function(data) {
 							console.log(data);
 								if(data != "fail") {	
-									window.location.reload();
+									window.location.href = window.location.href.replace(/\?pr=false/,'');
 								} else {
 									$('.form-notif').html("Mauvais mot de passe ou identifiant");
 									$('.form-notif').removeClass('hidden');

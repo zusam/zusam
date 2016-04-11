@@ -25,6 +25,8 @@ if(isset($GET['action']) && $GET['action'] == "reset") {
 if(isset($POST['action']) && $POST['action'] == "passwordReset") {
 	unset($_COOKIE['auth_token']);
 	unset($_SESSION);
+	unset($_POST);
+	unset($_GET);
 	session_destroy();
 	if($POST['password'] == $POST['password_conf']) {
 		$pr = pr_load(array('_id'=>$POST['id']));
@@ -39,6 +41,10 @@ if(isset($POST['action']) && $POST['action'] == "passwordReset") {
 			}
 		}
 	}
+	header('Location: '.$GLOBALS['__ROOT_URL__'].'?pr=false');
+	exit;
+}
+if($GET['pr'] == "false") {
 	landing("Erreur : votre mot de passe n'a pas été modifié, veuillez réessayer ou contactez support@zus.am");
 	exit;
 }
