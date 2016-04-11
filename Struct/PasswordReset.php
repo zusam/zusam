@@ -19,7 +19,7 @@ function pr_save(&$pr) {
 }
 
 function pr_destroy($id) {
-	mongo_save("prs", $id);
+	mongo_destroy("prs", $id);
 }
 
 function pr_load($array) {
@@ -57,19 +57,19 @@ function pr_printPage($id, $key) {
 		$html = '
 			<img class="pr-logo-zusam" src="Assets/icons/icon-hires.png"/>
 			<form class="passwordResetForm material-shadow" method="post" action="'.$_SERVER['PHP_SELF'].'">
-				<input type="text" class="hidden" value="'.$id.'" name="id"></input>
-				<input type="text" class="hidden" value="'.$key.'" name="key"></input>
-				<input type="text" class="hidden" value="passwordReset" name="action"></input>
+				<input type="hidden" value="'.$id.'" name="id"/>
+				<input type="hidden" value="'.$key.'" name="key"/>
+				<input type="hidden" value="passwordReset" name="action"/>
 				<div class="input-group">
 					<label name="password">Nouveau mot de passe :</label>
-					<input class="insetInput" type="password" name="password"></input><br>
+					<input class="insetInput" type="password" name="password"/><br>
 				</div>
 				<div class="input-group">
 					<label name="password_conf">Confirmez le mot de passe :</label>
-					<input class="insetIntput" type="password" name="password_conf"></input><br>
+					<input class="insetIntput" type="password" name="password_conf"/><br>
 				</div>
 				<div class="input-group center-flex">
-					<input type="submit" name="submit"></input>
+					<input type="submit" name="submit"/>
 				</div>
 			</form>
 		';
@@ -80,8 +80,8 @@ function pr_printPage($id, $key) {
 function pr_request() {
 	$html = '
 		<form action="" method="">
-			<input type="mail" name="mail"></input>
-			<input type="submit" name="submit"></input>
+			<input type="mail" name="mail"/>
+			<input type="submit" name="submit"/>
 		</form>
 	';
 	return $html;
