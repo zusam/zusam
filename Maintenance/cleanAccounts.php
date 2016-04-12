@@ -13,7 +13,7 @@ foreach($accounts as $a) {
 	if(count($a['forums']) == 0) {
 		$n++;
 	}
-	if(intval($a['timestamp']) < time() - 14*24*60*60) {
+	if(intval($a['timestamp']) < time() - 21*24*60*60) {
 		$k++;
 	}
 }

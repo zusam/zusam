@@ -1,5 +1,8 @@
 <?php
 
+// Report all errors except E_NOTICE   
+error_reporting(E_ALL ^ E_NOTICE);
+
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Include.php');
 
@@ -18,7 +21,7 @@ foreach($files as $fname) {
 		$fsize = filesize($path.$fname);
 		$total_fsize += $fsize;
 		$total_nfiles++;
-		unlink($path.$fname);
+		//unlink($path.$fname);
 		//var_dump(human_filesize($fsize));
 		continue;
 	}

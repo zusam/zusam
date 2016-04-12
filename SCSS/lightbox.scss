@@ -111,11 +111,14 @@
 	font-size: 14px;
 	border: none;
 	padding: 5px;
-	background-color: rgba(255, 255, 255, 0.75);
+	background-color: rgba(255, 255, 255, 0.55);
 	cursor: pointer;
 	color: black;
 	z-index: 100;
 	text-decoration: none;
+}
+.dl-button:hover {
+	background-color: rgba(255, 255, 255, 0.75);
 }
 .editIMG {
 	position: absolute;

@@ -50,9 +50,9 @@ function updatePostStats(pid) {
 					p.find('.comments-indicator').html('');
 				}
 				if(data['unread'] == true) {
-					p.find('.date').addClass('newcom');
+					p.addClass('newcom');
 				} else {
-					p.find('.date').removeClass('newcom');
+					p.removeClass('newcom');
 				}
 				p.find('.date').html(data['date']);
 			}
