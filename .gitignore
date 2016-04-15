@@ -2,6 +2,7 @@
 *.css
 *.map
 *.swp
+*.log
 Data/
 TODO
 SCSS/.sass-cache/
