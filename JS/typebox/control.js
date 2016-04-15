@@ -207,16 +207,23 @@ var Control = {
 					});
 
 			// activating deletable content
-			t.find('.deletable').on('mouseenter', function(event){
-					$(event.currentTarget).append('<div onclick="$(this).closest(\'.deletable\').remove();" class="delete-btn"><i class="fa fa-times"></i></div>');
-					});
-			t.find('.deletable').on('mouseleave', function(event){
-					$(event.currentTarget).children('.delete-btn').remove();
-					});
+			t.find('.deletable').children('.delete-btn').remove();
+			t.find('.deletable').append('<div onclick="$(this).closest(\'.deletable\').remove();" class="delete-btn"><i class="icon-cancel"></i></div>');
+			//t.find('.deletable').on('mouseenter', function(event){
+			//		$(event.currentTarget).append('<div onclick="$(this).closest(\'.deletable\').remove();" class="delete-btn"><i class="icon-cancel"></i></div>');
+			//		});
+			//t.find('.deletable').on('mouseleave', function(event){
+			//		$(event.currentTarget).children('.delete-btn').remove();
+			//		});
 
 		}
 		//erase empty iframes (bug with youtube)
 		t.find('iframe:not([src])').remove();
+	},
+
+	genDelBtn : function() {
+		var btn = $('<div onclick="$(this).closest(\'.deletable\').remove();" class="delete-btn"><i class="icon-cancel"></i></div>');
+		return btn;
 	},
 
 	niceFocus : function(t) {

@@ -16,13 +16,23 @@ var Filter = {
 			console.log(data);
 			e = $(data['html']);
 			balise = $('#'+baliseId);
-			balise.html(e);
+			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
+				balise.html(e);
+			} else {
+				balise.html(e);
+				balise.append(Control.genDelBtn());
+			}
 		};
 		fail = function(url) {
 			console.log("fail");
 			e = Filter.fail_request(url);
 			balise = $('#'+baliseId);
-			balise.html(e);
+			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
+				balise.html(e);
+			} else {
+				balise.html(e);
+				balise.append(Control.genDelBtn());
+			}
 		}
 		output = Control.searchMatch({"callerName":"searchImgur", "inner":inner, "regex":r1, "ajax_url":ajax_url, "ajax_var":ajax_var, "substitution":substitution, "callback":callback, "fail":fail});
 		return output;
@@ -44,13 +54,23 @@ var Filter = {
 			console.log(data);
 			e = $('<a class="mediaLink material-shadow" href="'+data['url']+'" target="_blank"><i class="fa fa-instagram"></i></a><img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+data['thumbnail_url']+'"/>');
 			balise = $('#'+baliseId);
-			balise.html(e);
+			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
+				balise.html(e);
+			} else {
+				balise.html(e);
+				balise.append(Control.genDelBtn());
+			}
 		};
 		fail = function(url) {
 			console.log("fail");
 			e = Filter.fail_request(url);
 			balise = $('#'+baliseId);
-			balise.html(e);
+			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
+				balise.html(e);
+			} else {
+				balise.html(e);
+				balise.append(Control.genDelBtn());
+			}
 		}
 		output = Control.searchMatch({"callerName":"searchInstagram", "inner":inner, "regex":r1, "ajax_url":ajax_url, "ajax_var":ajax_var, "substitution":substitution, "callback":callback, "fail":fail});
 		return output;
@@ -295,7 +315,12 @@ var Filter = {
 			console.log(data);
 			console.log(data['html']);
 			balise = $('#'+str2md5(decodeURI(data['url'])));
-			balise.html(data['html']);
+			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
+				balise.html(data['html']);
+			} else {
+				balise.html(data['html']);
+				balise.append(Control.genDelBtn());
+			}
 			console.log(viewer);
 			if(viewer != false) {
 				$('img.lazyload').each(function(){
@@ -307,9 +332,13 @@ var Filter = {
 		};
 		fail = function(url) {
 				balise = $('#'+str2md5(url));
-				balise.html("error");
-
-		}
+				if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
+					balise.html("error");
+				} else {
+					balise.html("error");
+					balise.append(Control.genDelBtn());
+				}
+		};
 		output = Control.searchMatch({"callerName":"searchFile", "inner":inner, "regex":r1, "substitution":substitution, "ajax_url":ajax_url, "ajax_var":ajax_var, "callback":callback, "fail":fail});
 		return output;
 	},
@@ -363,13 +392,23 @@ var Filter = {
 			console.log(data);
 			e = Filter.open_graph_build(data);
 			balise = $('*[data-src="'+data['url']+'"]');
-			balise.html(e);
+			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
+				balise.html(e);
+			} else {
+				balise.html(e);
+				balise.append(Control.genDelBtn());
+			}
 		};
 		fail = function(url) {
 			console.log("fail");
 			e = Filter.fail_request(url);
 			balise = $('#'+baliseId);
-			balise.html(e);
+			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
+				balise.html(e);
+			} else {
+				balise.html(e);
+				balise.append(Control.genDelBtn());
+			}
 		}
 		output = Control.searchMatch({"callerName":"searchLink", "inner":inner, "regex":r1, "substitution":substitution, "ajax_var":ajax_var, "ajax_url":ajax_url, "callback":callback, "fail":fail});
 		return output;

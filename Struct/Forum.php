@@ -56,11 +56,6 @@ function forum_post2news(&$forum, $pid) {
 	$pid = (String) $pid;
 	$forum['news'] = deleteValue($pid, $forum['news']); 	
 	array_push($forum['news'], $pid);
-
-	// TODO XXX TRICK
-	//$news = $forum['news'];
-	//unset($forum['news']);
-	//$forum['news'] = $news;
 }
 
 function forum_removeFromNews(&$forum, $pid) {
@@ -90,11 +85,6 @@ function forum_addUser_andSave(&$forum, &$user) {
 	if(!in_array($uid, $forum['users'])) {
 		array_push($forum['users'], $uid);
 	}
-
-	// TODO XXX TRICK
-	//$users = $forum['users'];
-	//unset($forum['users']);
-	//$forum['users'] = $users;
 
 	account_addForum($user, $forum);
 	forum_save($forum);

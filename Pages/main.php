@@ -93,9 +93,24 @@ function crossroad(&$GET, &$POST, &$FILES) {
 
 	$connected = isConnected();
 
-	//execute secret invitation link
+	//execute notification's secret invitation link
+	if(isset($GET['ii']) && $GET['ii'] != null) {
+		if($connected) {
+		$data['uid'] = $_SESSION['uid'];
+			$data['action'] = "join_forum";
+			$data['ii'] = $GET['ii'];
+			return $data;
+		} else {
+			$data['action'] = "landing";
+			$data['message'] = "Connectez-vous ou inscrivez-vous pour accéder à cette ressource";
+			return $data;
+		}
+	}
+
+	//execute forum's secret invitation link
 	if(isset($GET['il']) && $GET['il'] != null) {
 		if($connected) {
+			$data['uid'] = $_SESSION['uid'];
 			$data['action'] = "join_forum";
 			$data['il'] = $GET['il'];
 			return $data;
@@ -214,13 +229,32 @@ function takeAction($data) {
 
 		case "join_forum" :
 			$u = account_load(array('_id'=>$data['uid']));
-			$f = forum_load(array('link'=>$GET['il']));
+			if(isset($data['il'])) {
+				$f = forum_load(array('link'=>$GET['il']));
+			}
+			if(isset($data['ii'])) {
+				$n = notification_load(array('link'=>$data['ii']));
+				if($n != null && $n != false){
+					$fid = (String) $n['data']['forum'];
+					$f = forum_load(array('_id'=>$fid));
+					if($f != null && $f != false) {
+						notification_destroy((String) $n['_id']);
+					}
+				}
+			}
 			if($f != null && $f != false && $u != null && $u != false) {
 				forum_addUser_andSave($f, $u);	
+				$data['fid'] = (String) $f['_id'];
+				$data['action'] = "forum";
+				takeAction($data);
+			} else {
+				// redirect to normal forum
+				// TODO add popup notif for error
+				$data['action'] = "forum";
+				$fid = array_keys($u['forums'])[0];
+				$data['fid'] = $fid;
+				takeAction($data);
 			}
-			$data['forum'] = (String) $f['_id'];
-			$data['action'] = "forum";
-			takeAction($data);
 			break;
 
 		case "profile" :
