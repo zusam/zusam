@@ -195,7 +195,7 @@ function print_post_mini(&$p, $unread) {
 			$str = trim($str);
 			$str = preg_replace("/\n/","<br>",$str);
 			$map = genTextMap($str, $debug);
-			if(count($map) == 1 && $map[0][1] != "text") {
+			if($map[0][1] && (count($map) == 1 || mb_strlen($map[0][0]) > 45)) {
 				$inside = '<div><img class="miniature" src="'.p2l(pathTo2(array("param"=>"assets", "url"=>"noimage", "ext"=>"png"))).'"/></div>';
 			} else {
 				$inside = '<div class="text-miniature">';

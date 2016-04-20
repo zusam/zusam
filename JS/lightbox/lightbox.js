@@ -1,33 +1,36 @@
 function searchNext(e) {
 	// search in the same post
-	var img = $(e).closest(".deletable").next().find('img.zoomPossible')[0];
+	var img = $(e).closest(".deletable").nextAll('.deletable').first().find('img.zoomPossible')[0];
 	
-	// search in other posts
-	var post = $(e).closest(".post").nextUntil('post');
-	var i = 0;
-	while(i < 30 && typeof(img) == "undefined" && post.length > 0) {
-		post = $(post.get(0));
-		img = post.find('.deletable img.zoomPossible')[0];
-		post = post.nextUntil('post');
-		i++;
+	if(typeof(img) == "undefined") {
+		// search in other posts
+		var post = $(e).closest(".post").nextAll('.post').first();
+		var i = 0;
+		while(i < 30 && typeof(img) == "undefined" && post.length > 0) {
+			img = post.find('.deletable img.zoomPossible')[0];
+			post = post.nextAll('.post').first();
+			i++;
+		}
+		console.log("max iterations: "+i);
 	}
-	console.log("max iterations: "+i);
 	return img;
 }
 
 function searchPrevious(e) {
-	var img = $(e).closest(".deletable").prev().find('img.zoomPossible')[0];
+	// search in the same post
+	var img = $(e).closest(".deletable").prevAll('.deletable').first().find('img.zoomPossible')[0];
 	
-	// search in other posts
-	var post = $(e).closest(".post").prevUntil('post');
-	var i = 0;
-	while(i < 30 && typeof(img) == "undefined" && post.length > 0) {
-		post = $(post.get(0));
-		img = post.find('.deletable img.zoomPossible')[0];
-		post = post.prevUntil('post');
-		i++;
+	if(typeof(img) == "undefined") {
+		// search in other posts
+		var post = $(e).closest(".post").prevAll('.post').first();
+		var i = 0;
+		while(i < 30 && typeof(img) == "undefined" && post.length > 0) {
+			img = post.find('.deletable img.zoomPossible').last()[0];
+			post = post.prevAll('.post').first();
+			i++;
+		}
+		console.log("max iterations: "+i);
 	}
-	console.log("max iterations: "+i);
 	return img;
 }
 

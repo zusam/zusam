@@ -3,14 +3,14 @@ session_start();
 
 chdir(realpath(dirname(__FILE__)."/../"));
 require_once('Include.php');
-
+	
+// secure post variables for mongodb
+$GET = [];
+foreach($_GET as $K=>$V) {
+	$GET[$K] = (String) $V;
+}
+		
 if($_SESSION['connected']) {
-
-	// secure post variables for mongodb
-	$GET = [];
-	foreach($_GET as $K=>$V) {
-		$GET[$K] = (String) $V;
-	}
 
 	if($GET['action'] != null && $GET['action'] != "") {
 

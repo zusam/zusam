@@ -46,7 +46,7 @@ function compileText($text, $debug) {
 				$html .= $pre.process_file($m[0]);	
 			break;
 			case "imgur":
-				$html .= $pre.process_imgur($m[0]);
+				$html .= $pre.process_imgur($m[0],$debug);
 			break;
 			case "instagram":
 				$html .= $pre.process_instagram($m[0]);
@@ -93,7 +93,7 @@ function compileText($text, $debug) {
 				$html .= $pre.process_link($m[0]);
 			break;
 			default:
-				if($m[0] != "") {
+				if(preg_match("/^[\s]*$/",$m[0]) != 1) {
 					$html .= $pre.$m[0];
 				}
 			break;
@@ -163,11 +163,16 @@ function genTextMap($str, $debug) {
 	return $map;
 }
 
-function process_imgur($str) {
+function process_imgur($str,$debug) {
 	// TODO add support for albums and not gallery (just add gallery)
 	$id = preg_replace("/.*\/(\w+)\/?$/","$1",$str);
 	if($id != "") {
 		$data = fgc("https://api.imgur.com/3/gallery/".$id);
+		if($debug) {
+			echo('-');
+			var_dump($data);
+			echo('-');
+		}
 		$data = json_decode($data,true);
 		if($data['success']) {
 			if($data['data']['is_album'] == false) {
