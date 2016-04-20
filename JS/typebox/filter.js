@@ -7,7 +7,7 @@ var Filter = {
 			r1 = new RegExp(regex.imgur+'[\s]','gi');
 		}
 		substitution = function(str) {
-			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+baliseId+'"><img src="Assets/ajax-loader.gif"/></span>';
+			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+baliseId+'">'+typebox.genAjaxLoader()+'</span>';
 			return output;
 		}
 		var ajax_url = "Ajax/post.php";
@@ -45,7 +45,7 @@ var Filter = {
 			r1 = new RegExp(regex.instagram+'[\s]','gi');
 		}
 		substitution = function(str) {
-			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+baliseId+'"><img src="Assets/ajax-loader.gif"/></span>';
+			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+baliseId+'">'+typebox.genAjaxLoader()+'</span>';
 			return output;
 		}
 		var ajax_url = "Ajax/post.php";
@@ -131,7 +131,7 @@ var Filter = {
 			r1 = new RegExp(regex.soundcloud+'[\s]','gi');
 		}
 		substitution = function(str) {
-			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img src="'+'Assets/ajax-loader.gif"/></span>';
+			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">'+typebox.genAjaxLoader()+'</span>';
 			setTimeout( function() {
 				SC.oEmbed(str, { auto_play: true }, function(oEmbed) {
 					song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,'$1');
@@ -306,7 +306,7 @@ var Filter = {
 	searchFile : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.file,'gi');
 		substitution = function(str) {
-			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'"><img src="Assets/ajax-loader.gif"/></span>';
+			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'">'+typebox.genAjaxLoader()+'</span>';
 			return output;
 		};
 		var ajax_url = "Ajax/post.php";
@@ -383,7 +383,7 @@ var Filter = {
 			r1 = new RegExp(regex.link+'[\s]','gi');
 		}
 		substitution = function(str) {
-			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+baliseId+'"><img src="Assets/ajax-loader.gif"/></span>';
+			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+baliseId+'">'+typebox.genAjaxLoader()+'</span>';
 			return output;
 		};
 		var ajax_url = "Ajax/post.php";

@@ -299,6 +299,18 @@ function takeAction($data) {
 		case "forum" :
 			$u = account_load(array('_id'=>$data['uid']));
 			$f = forum_load(array('_id'=>$data['fid']));
+			
+			// update timestamp
+			account_updateTimestamp($u);
+			account_save($u);
+
+			// update timestamp of visited forum
+			if($_SESSION['forum'] != "") {
+				$coucou = (String) $_SESSION['forum'];
+				$u['forums'][$coucou]['timestamp'] = time();
+				account_save($u);
+			}
+
 			echo('<body>');
 			echo('<div class="hidden" id="info" data-uid="'.$u['_id'].'" data-avatar="'.account_getAvatar($u).'" data-fid="'.$_SESSION['forum'].'" data-action="'.$data['action'].'"></div>');
 			echo(page_mainmenu($u, "forum"));
