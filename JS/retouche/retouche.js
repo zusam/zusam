@@ -100,7 +100,7 @@ function addHandles(id) {
 
 function loadCanvas(img, id) {
 		canvas = document.createElement('canvas');
-		canvas.style.width = "100%";
+		//canvas.style.width = "100%";
 
 		var realw = Math.min(img.width, 2048);
 		var realh = Math.min(img.height, 2048);

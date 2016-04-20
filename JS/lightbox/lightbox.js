@@ -81,11 +81,13 @@ function enlighten(id, refresh) {
 
 		var nw = this.naturalWidth;
 		var nh = this.naturalHeight;
+		var ratio = Math.max(nw/nh, 1.3);
+		console.log(ratio, nw/nh);
 
-		var width = Math.min(nw,(window.innerWidth-10)*0.95);
-		nh = width/nw * nh;
-		var height = Math.min(nh,(window.innerHeight-10)*0.95);
-		width = height/nh * width;
+		//var width = Math.min(nw,(window.innerWidth-10)*0.95);
+		//nh = width/nw * nh;
+		//var height = Math.min(nh,(window.innerHeight-10)*0.95);
+		//width = height/nh * width;
 
 		$('body').css({'overflow':'hidden','max-height':'100%'});
 		var lb = $('<div id="lightbox"></div>');
@@ -111,11 +113,14 @@ function enlighten(id, refresh) {
 		}
 		var close = $('<div class="close material-shadow" onclick="lightbox.darken()"><i class="icon-cancel"></i></div>');
 		$(this).attr('onclick','lightbox.darken()').addClass('zoomedImage');
+		var lbw = window.innerWidth - 40;
+		var lbh = Math.min(lbw/ratio, window.innerHeight - 40);
+		lbw = lbh * ratio;
 		lb.css({
-			"top" : (window.innerHeight-height)/2 + "px",
-			"left" : (window.innerWidth-width)/2 + "px",
-			"width" : width + "px",
-			"height" : height + "px",
+			//"top" : (window.innerHeight-height)/2 + "px",
+			//"left" : (window.innerWidth-width)/2 + "px",
+			"width" : lbw + "px",
+			"height" : lbh + "px",
 		});
 		if(owner == $('#info').attr('data-uid')) {
 			var turncw = $('<button contentditable="false" class="material-shadow editIMG cw"><i class="icon-cw"></i></button>');
@@ -132,13 +137,16 @@ function enlighten(id, refresh) {
 			});
 		}
 		var dl = $('<a class="material-shadow dl-button" href="'+lightbox_src+'" download="'+name+'">Télécharger</a>');
-		lb.append(next).append(prev).append(this).append(close).append(turncw).append(turnccw).append(dl);
-		$('body').append(lb);
-		$(window).on('keydown',function(evt) {
-			if(evt.which == 27) {
-				lightbox.darken();
-			}
-		});
+		//var dl = $('<form method="get" action="'+lightbox_src+'"><button class="material-shadow dl-button" type="submit">Télécharger</button></form>');
+		if($('.lightbox-mask').length > 0)  {
+			lb.append(next).append(prev).append(this_img).append(close).append(turncw).append(turnccw).append(dl);
+			$('body').append(lb);
+			$(window).on('keydown',function(evt) {
+				if(evt.which == 27) {
+					lightbox.darken();
+				}
+			});
+		}
 	};
 	
 	img.src = lightbox_src;
