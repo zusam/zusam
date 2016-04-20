@@ -12,6 +12,7 @@ function notification_initialize($a) {
 	$n['data'] = $a['data'];
 	$n['source'] = $a['source']; 
 	$n['target'] = $a['target'];
+	$n['link'] = sha1(rand().$forum['_id'].time());
 	return $n;
 }
 

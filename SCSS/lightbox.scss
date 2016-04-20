@@ -1,14 +1,32 @@
 #lightbox {
+	display: block;
 	position: fixed;
 	z-index: 8000;
 	//padding: 5px;
 	//background: white;
 	box-shadow: 0px 0px 20px black;
+	background-color: black;
+	width: calc(80vw - 20px);
+	height: calc(80vh - 20px);
+	//min-width: 200px;
+	//min-height: 200px;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	border: 1px solid rgb(20,20,20);
 	
 	.zoomedImage {
 		//cursor: url(Assets/magnify.cur), default;
+		display: block;
 		cursor: default;
-		width: 100%;
+		max-width: 100%;
+		max-height: 100%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		-webkit-transform: translate(-50%, -50%);
 	}
 
 	.close {

@@ -33,21 +33,6 @@ $(window).ready(function() {
 		FastClick.attach(document.body);
 	});
 
-	// start infinite scrolling
-	if($('#info').attr('data-fid') != "") {
-		$(document).on('scroll', function() {
-		//console.log(window.pageYOffset, document.body.scrollHeight);
-			if(window.pageYOffset+window.innerHeight > document.body.scrollHeight-window.innerHeight/2) {
-				//console.log("loadmore!");
-				loadMorePosts();
-			}
-		});
-	}
-
-	window.onresize = function() {
-		loadMorePosts();
-	}
-
 	//small code to permit keyboard shortcuts with ctrlKey
 	// necessary to not intefere with typebox. (see typebox code)
 	window.ctrl = false
@@ -65,38 +50,56 @@ $(window).ready(function() {
 	// set post-mini clickable
 	setpostsviewable();
 	
-	// INITIALISATION OF EXTERNAL LIBRARIES
-	// SOUNDCLOUD
-	if( typeof(SC) != "undefined" ) {
-		SC.initialize({
-			// zusam client ID
-			client_id: '01af1b3315ad8177aefecab596621e09'
-		});
-	}
+	if($('#info').attr('data-action') == "forum") {
+	
+		// start infinite scrolling
+		if($('#info').attr('data-fid') != "") {
+			$(document).on('scroll', function() {
+			//console.log(window.pageYOffset, document.body.scrollHeight);
+				if(window.pageYOffset+window.innerHeight > document.body.scrollHeight-window.innerHeight/2) {
+					//console.log("loadmore!");
+					loadMorePosts();
+				}
+			});
+		}
 
-	// view post if url says so
-	if($('#info').length != 0) {
-		evaluateURL()
-		$(window).on("popstate", function() {
+		window.onresize = function() {
+			loadMorePosts();
+		}
+
+		// INITIALISATION OF EXTERNAL LIBRARIES
+		// SOUNDCLOUD
+		if( typeof(SC) != "undefined" ) {
+			SC.initialize({
+				// zusam client ID
+				client_id: '01af1b3315ad8177aefecab596621e09'
+			});
+		}
+
+		// view post if url says so
+		if($('#info').length != 0) {
 			evaluateURL()
+			$(window).on("popstate", function() {
+				evaluateURL()
+			});
+		}
+
+		// prevent exiting while download
+		$(window).on("beforeunload", function (e) {
+			//console.log("beforeunload");
+			//console.log(window.sending);
+			if(window.sending > 0) {
+				return 'Upload en cours !';
+			} 
 		});
+
+		//start nano scroller
+		// TODO find a more clean method for adapting to the height of the content for this
+		setInterval(function() {
+			$(".nano").nanoScroller();
+		}, 1000);
+
+		// load posts
+		loadMorePosts();
 	}
-
-	// prevent exiting while download
-	$(window).on("beforeunload", function (e) {
-		//console.log("beforeunload");
-		//console.log(window.sending);
-		if(window.sending > 0) {
-			return 'Upload en cours !';
-		} 
-	});
-
-	//start nano scroller
-	// TODO find a more clean method for adapting to the height of the content for this
-	setInterval(function() {
-		$(".nano").nanoScroller();
-	}, 1000);
-
-	// load posts
-	loadMorePosts();
 });

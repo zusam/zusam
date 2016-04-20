@@ -13,6 +13,8 @@ foreach($_POST as $K=>$V) {
 	$POST[$K] = (String) $V;
 }
 
+/*
+
 // reset password
 if(isset($GET['action']) && $GET['action'] == "reset") {
 	unset($_COOKIE['auth_token']);
@@ -168,12 +170,20 @@ if($_SESSION['forum'] != "") {
 	account_save($u);
 }
 
+*/
+
+$data = crossroad($GET, $POST, $FILES);
+//var_dump($data);
+//var_dump($_SESSION);
+//var_dump($_COOKIE);
+
 // HTML
 echo('<html>');
 
 // HEAD
 $head = html_head($GLOBALS['__ROOT_URL__']);
 echo($head);
-main($u,$forum,$GET,$POST);
+takeAction($data);
+//main($u,$forum,$GET,$POST);
 
 ?>

@@ -54,15 +54,6 @@ function page_mainmenu(&$u, $page) {
 	}
 	$html .= '<div class="section-entry" onclick="ask(\'Nom du forum :\',25,addForum)"><span class="fontgrey menu-highlight forum-link">+ Nouveau groupe</span></div>';
 	$html .= '</div>';
-	//if(count($notifications) > 0) {
-	//	$html .= '<div class="list-section">';
-	//	$html .= '<div class="separator"></div>';
-	//	$html .= '<div class="section-title">Notifications</div>';
-	//	foreach($notifications as $n) {
-	//		$html .= notification_print($n);
-	//	}
-	//	$html .= '</div>';
-	//}
 	$html .= '<div class="separator"></div>';
 	$html .= '<div class="disconnect">';
 	$html .= '<a class="action menu-highlight forum-link" onclick="disconnect(); return false;">Se déconnecter</a>';

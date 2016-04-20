@@ -1,3 +1,9 @@
+function genAjaxLoader() {
+	//var loader = '<img src="Assets/ajax-loader.gif"/>';
+	var loader = '<div class="ajax-loader"><div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div></div>';
+	return loader;
+}
+
 function evaluate(id) {
 	var t = $(id)[0];
 	Control.filter_out_all(t);

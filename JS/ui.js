@@ -139,26 +139,28 @@ function push_hidenewpost(sent) {
 }
 
 function hidenewpost(sent) {
-	if(sent) {
-		var answer = true;
-	} else {
-		var nbc = document.getElementById('typeBox').childNodes.length;
-		var fc = document.getElementById('typeBox').childNodes[0].innerHTML.replace(/\<br\>/,'');
-		if(nbc == 1 && fc == "") {
+	if($('#newpost').length != 0) {
+		if(sent) {
 			var answer = true;
 		} else {
-			console.log(fc);
-			var answer = confirm('Voulez-vous vraiment annuler le message ?');
+			var nbc = document.getElementById('typeBox').childNodes.length;
+			var fc = document.getElementById('typeBox').childNodes[0].innerHTML.replace(/\<br\>/,'');
+			if(nbc == 1 && fc == "") {
+				var answer = true;
+			} else {
+				console.log(fc);
+				var answer = confirm('Voulez-vous vraiment annuler le message ?');
+			}
 		}
-	}
-	if(answer == true) {
-		e = $('#newpost');
-		hideslidefromright('#slidenewpost');
-		$('#newpost').removeClass('active');	
-		invite = $('<div contenteditable="true" data-placeholder="Partagez quelque chose..."></div>')
-		$('#typeBox').html(invite);
-		typebox.stop('#typeBox');
-		removeMask();
+		if(answer == true) {
+			e = $('#newpost');
+			hideslidefromright('#slidenewpost');
+			$('#newpost').removeClass('active');	
+			invite = $('<div contenteditable="true" data-placeholder="Partagez quelque chose..."></div>')
+			$('#typeBox').html(invite);
+			typebox.stop('#typeBox');
+			removeMask();
+		}
 	}
 }
 

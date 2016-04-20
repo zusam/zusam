@@ -3,7 +3,7 @@
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Include.php');
 
-function page_nav(&$u, &$forum) {
+function page_nav(&$u, &$forum, $page) {
 
 	$html = "";
 
@@ -14,7 +14,9 @@ function page_nav(&$u, &$forum) {
 	if($_SESSION['forum'] != "") {
 		$html .= '<div class="forum-name"><span>'.$forum['name'].'<span></div>';
 		$html .= '<div class="right-module-nav">';
-		$html .= '<button class="action" onclick="push_shownewpost()"><i class="icon-pencil"></i></button>';
+		if($page != "profile" && $page = "forum_settings") {
+			$html .= '<button class="action" onclick="push_shownewpost()"><i class="icon-pencil"></i></button>';
+		}
 		$html .= '</div>';
 	} else {
 		$html .= '<div class="right-module-nav">';

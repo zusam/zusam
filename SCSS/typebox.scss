@@ -337,20 +337,20 @@ img.lazyload {
 	}
 	.delete-btn {
 		display: block;
-		background: orangered; 
-		width: 22px;
+		background: #F7A71B; 
+		width: 30px;
 		color: white;
-		height: 22px;
+		height: 30px;
 		position: absolute;
 		top: 0;
-		right: 0;
+		right: 20px;
 		z-index: 200;
 		cursor: pointer;
 
 		i {
-			text-align: center;
-			vertical-align: middle;
-			line-height: 22px; 
+			position: relative;
+			top: 4px;
+			font-size: 20px;
 		}
 	}
 	.mediaLink {
@@ -380,4 +380,10 @@ img.lazyload {
 }
 #commentBox, #editBox {
 	background: white;
+}
+.ajax-loader {
+	display: block;
+	width: 100%;
+	height: 80px;
+	background: lightgrey;
 }
