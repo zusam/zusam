@@ -50,6 +50,7 @@
 		justify-content: space-between;
 		-webkit-justify-content: space-between;
 		width: 100%;
+		height: 40px;
 
 		.profil {
 			font-weight: bolder;
@@ -59,8 +60,9 @@
 			display: -webkit-flex;
 			-webkit-align-items: center;
 			cursor: pointer;
-			padding: 12px 10px;
+			padding: 0px 10px;
 			width: 100%;
+			height: 100%;
 
 			.identicon, img {
 				height: 26px;
@@ -69,10 +71,35 @@
 			}
 		}
 		.profil:hover {
-			background-color: rgba(0,0,0,0.5);
+			background-color: rgba(0,0,0,0.2);
+			//color: #F7A71B;
 		}
 		.profil.selected {
 		    background-color: rgba(0,0,0,0.5);
+			//color: #F7A71B;
+		}
+		.disconnect {
+			padding: 8px 10px 8px 0px;
+			cursor: pointer;
+			font-size: 20px;
+			
+			a {
+				text-decoration: none;
+				flex-grow: 2;
+				-webkit-flex-grow: 2;
+				padding: 5px 5px;
+				border: none;
+				background: none;
+				margin: 0px 5px;
+				cursor: pointer;
+			}
+			a:hover {
+				color: white;
+			}
+		}
+		.disconnect:hover {
+			background-color: rgba(0,0,0,0.2);
+			//color: #F7A71B;
 		}
 	}
 	.action {
@@ -80,27 +107,6 @@
 	}
 	.fontgrey {
 		color: grey;
-	}
-	.disconnect {
-		padding: 3px 0px;
-		cursor: pointer;
-		
-		a {
-			text-decoration: none;
-			flex-grow: 2;
-			-webkit-flex-grow: 2;
-			padding: 5px 5px;
-			border: none;
-			background: none;
-			margin: 0px 5px;
-			cursor: pointer;
-		}
-		a:hover {
-			color: white;
-		}
-	}
-	.disconnect:hover {
-		background-color: rgba(0,0,0,0.1);
 	}
 	.list-section {
 		max-height: calc(100% - 115px);

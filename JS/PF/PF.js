@@ -92,7 +92,10 @@ function loadImage(file,id) {
 		canvas.height = img.height;
 		var ctx = canvas.getContext('2d');
 		ctx.drawImage(img, 0, 0);
-		canvas = imageAlgs.downScaleCanvas(canvas, g);
+		console.log(g);
+		if(g < 0.9) {
+			canvas = imageAlgs.downScaleCanvas(canvas, g);
+		}
 		
 		PF.showImage(canvas, id, fileId);
 		PF.sendImage(canvas, fileId);

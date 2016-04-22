@@ -13,6 +13,9 @@ function page_mainmenu(&$u, $page) {
 		$html .= 'selected';
 	}
 	$html .= '" href="'.$_SERVER['PHP_SELF'].'?page=profile">'.account_getAvatarHTML($u).$u['name'].'</a>';
+	$html .= '<div class="disconnect">';
+	$html .= '<a class="action menu-highlight forum-link" onclick="disconnect(); return false;"><i class="icon-logout"></i></a>';
+	$html .= '</div>';
 	$html .= '</div>';
 
 	$html .= '<div class="separator"></div>';
@@ -55,9 +58,6 @@ function page_mainmenu(&$u, $page) {
 	$html .= '<div class="section-entry" onclick="ask(\'Nom du forum :\',25,addForum)"><span class="fontgrey menu-highlight forum-link">+ Nouveau groupe</span></div>';
 	$html .= '</div>';
 	$html .= '<div class="separator"></div>';
-	$html .= '<div class="disconnect">';
-	$html .= '<a class="action menu-highlight forum-link" onclick="disconnect(); return false;">Se déconnecter</a>';
-	$html .= '</div>';
 	$html .= '</div>';
 
 	return $html;

@@ -110,7 +110,10 @@ function loadCanvas(img, id) {
 		canvas.height = img.height;
 		var ctx = canvas.getContext('2d');
 		ctx.drawImage(img, 0, 0);
-		canvas = imageAlgs.downScaleCanvas(canvas, realg);
+		console.log(realg);
+		if(realg < 0.9) {
+			canvas = imageAlgs.downScaleCanvas(canvas, realg);
+		}
 
 		$(id).html(canvas);
 
@@ -415,10 +418,14 @@ function sendCanvas(id) {
 	c2.height = parseInt(h);
 	ctx2 = c2.getContext('2d');
 	ctx2.putImageData(data, 0, 0);
-
-	c3 = imageAlgs.downScaleCanvas(c2,g);
-	imgURL = c3.toDataURL("image/png");
-	delete c3; 
+	console.log(g);
+	if(g < 0.9) {
+		c3 = imageAlgs.downScaleCanvas(c2,g);
+		imgURL = c3.toDataURL("image/png");
+		delete c3; 
+	} else {
+		imgURL = c2.toDataURL("image/png");
+	}
 	
 	f = new FormData();
 	f.append("image",dataURItoBlob(imgURL));
