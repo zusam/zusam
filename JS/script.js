@@ -330,59 +330,77 @@ function editPost(t) {
 	});
 }
 
+function calcNbToLoad() {
+	var loaded = $('.post-mini').length;
+	
+	var width = window.innerWidth;
+	if(width > 680) {
+		width = width - 200;
+	}
+	var height = window.innerHeight + window.scrollY;
+	var margin = 10;
+
+	var ncol = parseInt(width / (320+margin));
+	var nlin = parseInt(height / (180+margin));
+
+	var viewing = Math.min(ncol * nlin, loaded);
+	var goal = ncol * 2;
+	if(loaded == 0) {
+		goal = ncol * (nlin + 1);
+	}
+
+	var toView = loaded - viewing;
+	var toLoad = Math.max(0, goal - toView);
+
+	//console.log(viewing, loaded, toLoad);
+
+	return toLoad;
+}
+
 function loadMorePosts() {
 	if(!window.loading_posts) {
 		recordUsage("morePosts");
-		console.log("trying to load posts");
 		window.loading_posts = true;
 		var list = $('#container .post-mini').map(function(){ var t = this.dataset.id; return t; }).get();
 		list = JSON.stringify(list);
 		var fid = $('#info').attr('data-fid');
 
 		// calculate number of posts to load
-
-		var width = window.innerWidth;
-		if(width > 680) {
-			width = width - 200;
-		}
-		var height = window.innerHeight;
-
-		var margin = 10;
-
-		var ncol = parseInt(width / (320+margin));
-		var nlin = parseInt(height / (180+margin));
-		var number = ncol*(nlin+1);
-		console.log(ncol,nlin,number);
-
-		$.ajax({
-			url: 'Ajax/post.php',
-			type: 'POST',
-			data: {'action':'morePost','fid':fid,'list':list,'number':number},
-			success: function(data) {
-				console.log(data);
-				if(typeof(data) != 'undefined' && data != "") {
-					if(data['count'] > 0) {
-						$('#container').append(data['html']);
+		var number = calcNbToLoad();
+		if(number > 0) {
+			console.log("trying to load posts");
+			$.ajax({
+				url: 'Ajax/post.php',
+				type: 'POST',
+				data: {'action':'morePost','fid':fid,'list':list,'number':number},
+				success: function(data) {
+					console.log(data);
+					if(typeof(data) != 'undefined' && data != "") {
+						if(data['count'] > 0) {
+							$('#container').append(data['html']);
+						}
+						console.log('loaded ('+data['count']+')');
+						if(data['end'] == true) {
+							console.log('all posts are here !');
+							$(document).unbind('scroll');
+						}
+						setpostsviewable();
+						window.loading_posts = false;
+						return true;
 					}
-					console.log('loaded ('+data['count']+')');
-					if(data['end'] == true) {
-						console.log('all posts are here !');
-						$(document).unbind('scroll');
-					}
-					setpostsviewable();
+				},
+				error: function() {
+					console.log("fail to load more posts");
 					window.loading_posts = false;
-					return true;
+					setTimeout(function() {
+						loadMorePosts();
+					}, 5000);
+					return false;
 				}
-			},
-			error: function() {
-				console.log("fail to load more posts");
-				window.loading_posts = false;
-				setTimeout(function() {
-					loadMorePosts();
-				}, 5000);
-				return false;
-			}
-		});
+			});
+		} else {
+			window.loading_posts = false;
+		}
 	}
 }
 	

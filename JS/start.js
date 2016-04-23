@@ -62,16 +62,9 @@ $(window).ready(function() {
 	
 	if($('#info').attr('data-action') == "forum") {
 	
-		// start infinite scrolling
-		if($('#info').attr('data-fid') != "") {
-			$(document).on('scroll', function() {
-			//console.log(window.pageYOffset, document.body.scrollHeight);
-				if(window.pageYOffset+window.innerHeight > document.body.scrollHeight-window.innerHeight/2) {
-					//console.log("loadmore!");
-					loadMorePosts();
-				}
-			});
-		}
+		$(document).on('scroll', function() {
+			loadMorePosts();
+		});
 
 		window.onresize = function() {
 			loadMorePosts();
@@ -120,18 +113,6 @@ $(window).ready(function() {
 					});
 				}
 			}
-			//$(".nano").each(function(){
-			//	if($(this).find('.nano-content')[0].offsetHeight > window.innerHeight) {
-			//		$(this).nanoScroller({
-			//			preventPageScrolling: true,
-			//			alwaysVisible: true
-			//		});
-			//	} else {
-			//		$(this).nanoScroller({
-			//			destroy: true
-			//		});
-			//	}
-			//});
 		}, 1000);
 
 		// load posts

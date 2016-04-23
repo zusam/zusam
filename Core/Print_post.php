@@ -188,7 +188,7 @@ function print_post_mini(&$p, $unread) {
 			post_save($p);
 		}
 		if(preg_match("/\.jpg$/",$p['preview'])==1) {
-			$inside = '<div><img class="miniature" src="'.p2l($p['preview']).'"/></div>';
+			$inside = '<div class="post-preview-image"><img class="miniature" src="'.p2l($p['preview']).'"/></div>';
 		} else {
 			$text = $p['text'];
 			$str = strip_tags($text);

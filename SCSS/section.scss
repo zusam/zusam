@@ -41,16 +41,20 @@ section {
 		border-radius: 2px;
 		position: relative;
 		text-decoration: none;
-		//flex-grow: 1;
-		//-webkit-flex-grow: 1;
-		//max-width: 360px;
 
-		.post-start {
-			display: none;
-		}
+		//.post-start {
+		//	display: none;
+		//}
 		
 		.newcom > * {
 			color: #F7A71B !important;
+		}
+
+		.post-preview-image {
+			display: block;
+			width: 320px;
+			height: 180px;
+			background-image: url('Assets/placeholder-mini-post.png');
 		}
 		
 		.post-info {

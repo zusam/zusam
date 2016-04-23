@@ -57,6 +57,10 @@ function html_footer($root_url) {
 
 	$html = "";
 
+	// preload some ressources
+	$html .= '<img src="Assets/placeholder-mini-post.png" class="hidden">';
+
+
 	// passing global variables to javascript
 	$html .= '
 		<script>
