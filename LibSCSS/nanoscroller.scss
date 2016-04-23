@@ -42,10 +42,6 @@ $contentClass: "nano-content" !default;
            -moz-transition: .2s;
              -o-transition: .2s;
                 transition: .2s;
-        //-webkit-border-radius: 5px;
-        //   -moz-border-radius: 5px;
-        //        border-radius: 5px;
-        visibility: hidden\9; // Target only IE7 and IE8 with this hack
         opacity: .01;
 		z-index: 9001;
 
@@ -54,9 +50,6 @@ $contentClass: "nano-content" !default;
             position: relative;
             margin: 0px;
 			width: 15px;
-            //-webkit-border-radius: 3px;
-            //   -moz-border-radius: 3px;
-            //        border-radius: 3px;
         }
     }
 }
@@ -69,7 +62,7 @@ $contentClass: "nano-content" !default;
     .#{$nanoClass}:hover > &,
     &.active,
     &.flashed {
-        visibility: visible\9; // Target only IE7 and IE8 with this hack
         opacity: 0.99;
+		//opacity: 1;
     }
 }

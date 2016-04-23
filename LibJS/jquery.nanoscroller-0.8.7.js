@@ -687,7 +687,7 @@
         };
       } else if (BROWSER_SCROLLBAR_WIDTH) {
         cssRule = {
-          right: -BROWSER_SCROLLBAR_WIDTH
+          //right: -BROWSER_SCROLLBAR_WIDTH
         };
         this.$el.addClass(options.enabledClass);
       }

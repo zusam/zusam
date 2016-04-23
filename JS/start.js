@@ -94,9 +94,34 @@ $(window).ready(function() {
 		});
 
 		//start nano scroller
-		// TODO find a more clean method for adapting to the height of the content for this
+		// TODO find a more clean method for adapting to the height of the content for this (based on events if it's possible)
 		setInterval(function() {
-			$(".nano").nanoScroller();
+			// check for active post-viewer nanoscroller
+			var pv = document.getElementById('post-viewer');
+			if(pv != null) {
+				if(pv.offsetHeight > window.innerHeight) {
+					$(pv).closest('.nano').nanoScroller({
+						preventPageScrolling: true,
+						alwaysVisible: true
+					});
+				} else {
+					$(pv).closest('.nano').nanoScroller({
+						destroy: true
+					});
+				}
+			}
+			//$(".nano").each(function(){
+			//	if($(this).find('.nano-content')[0].offsetHeight > window.innerHeight) {
+			//		$(this).nanoScroller({
+			//			preventPageScrolling: true,
+			//			alwaysVisible: true
+			//		});
+			//	} else {
+			//		$(this).nanoScroller({
+			//			destroy: true
+			//		});
+			//	}
+			//});
 		}, 1000);
 
 		// load posts
