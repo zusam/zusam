@@ -47,12 +47,10 @@ body {
 .slidefromleft {
 	left: 0px;
 	transform: translateX(-100%);
-	-webkit-transform: translateX(-100%);
 }
 .slidefromright {
 	right: 0px;
 	transform: translateX(100%);
-	-webkit-transform: translateX(100%);
 }
 .menu {
 	display: flex;
@@ -105,7 +103,6 @@ body {
 	top: calc(50% - 10px);
 	left: 50%;
 	transform: translate(-50%, -50%);
-	-webkit-transform: translate(-50%, -50%);
 	z-index: 700;
 	//max-width: calc(80% - 20px);
 	//max-height: calc(80% - 20px);

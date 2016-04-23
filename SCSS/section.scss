@@ -33,7 +33,7 @@ section {
 	}
 	.post-mini {
 		display: block;
-		overflow: hidden;
+		//overflow: hidden;
 		margin: 20px;
 		cursor: pointer;
 		width: 320px;
@@ -42,66 +42,70 @@ section {
 		position: relative;
 		text-decoration: none;
 
-		//.post-start {
-		//	display: none;
-		//}
-		
 		.newcom > * {
 			color: #F7A71B !important;
 		}
 
-		.post-preview-image {
-			display: block;
-			width: 320px;
-			height: 180px;
-			background-image: url('Assets/placeholder-mini-post.png');
-		}
 		
-		.post-info {
-			position: relative;
-			background: white;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			display: -webkit-flex;
-			-webkit-align-items: center;
-			-webkit-justify-content: space-between;
-			padding: 5px;
-			height: 20px;
-			border-top: 1px solid lightgrey;
-
-			.date {
-				color: grey;
-				font-size: 14px;
-			}
-
-			.op-avatar {
-				width: 40px;
-				height: 40px;
-				border-radius: 100px;
-				overflow: hidden;
-				background: white;
-				position: relative;
-				bottom: 15px;
-				left: 4px;
-				border: 2px solid white;
-
-				img {
-					height: 100%;
-				}
-			}
-			img {
-				width: 100%;
-			}
-		}
-			
-		.comments-indicator {
-			min-width: 25px;
-			color: grey;
-			font-size: 14px;
-		}
 
 		.post-preview {
+		
+			.post-info {
+				position: relative;
+				background: white;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				display: -webkit-flex;
+				-webkit-align-items: center;
+				-webkit-justify-content: space-between;
+				padding: 5px;
+				height: 20px;
+				border-top: 1px solid lightgrey;
+
+				.date {
+					color: grey;
+					font-size: 14px;
+				}
+			
+				.comments-indicator {
+					min-width: 25px;
+					color: grey;
+					font-size: 14px;
+				}
+
+				.op-avatar {
+					width: 40px;
+					height: 40px;
+					border-radius: 100px;
+					overflow: hidden;
+					background: white;
+					position: relative;
+					bottom: 15px;
+					left: 4px;
+					border: 2px solid white;
+					transition: all 0.25s;
+
+					img {
+						height: 100%;
+					}
+				}
+
+				.op-avatar:hover {
+					transform: scale(2);
+				}
+
+				img {
+					width: 100%;
+				}
+			}
+				
+			.post-preview-image {
+				display: block;
+				width: 320px;
+				height: 180px;
+				background-image: url('Assets/placeholder-mini-post.png');
+			}
 
 			.text-miniature {
 				background-image: repeating-linear-gradient(top, transparent 0%, transparent 31px, rgba(0, 0, 0, 0.2) 32px, rgba(0, 0, 0, 0.14) 31px);

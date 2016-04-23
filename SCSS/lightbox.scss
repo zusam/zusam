@@ -13,7 +13,6 @@
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	-webkit-transform: translate(-50%, -50%);
 	border: 1px solid rgb(20,20,20);
 	
 	.zoomedImage {
@@ -26,7 +25,6 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		-webkit-transform: translate(-50%, -50%);
 	}
 
 	.close {
@@ -78,13 +76,11 @@
 	.next i {
 		right: 15px;
 		transform: translate(0%,-50%);
-		-webkit-transform: translate(0%,-50%);
 	}
 	
 	.prev i {
 		left: 0px;
 		transform: translate(0%,-50%);
-		-webkit-transform: translate(0%,-50%);
 	}
 	
 	.prev:hover, .next:hover {
@@ -116,7 +112,6 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50);
-		-webkit-transform: translate(-50%, -50);
 	}
 }
 .zoomPossible {
