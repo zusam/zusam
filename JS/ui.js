@@ -31,19 +31,32 @@ function unblockBody() {
 	}
 }
 
-function toggleoptionsmenu(id) {
+// TODO erase
+//function toggleoptionsmenu(id) {
+//	g = $(id).find('.options-menu');
+//	if(!g.hasClass('active')) {
+//		showoptionsmenu(id);
+//	} else {
+//		hideoptionsmenu(id);
+//	}
+//}
+
+function showoptionsmenu(id) {
 	g = $(id).find('.options-menu');
-	if(!g.hasClass('active')) {
-		g.css("display","block");
-		g.addClass('active');
-		$(id).find('i').removeClass("icon-down-dir");
-		$(id).find('i').addClass("icon-up-dir");
-	} else {
-		g.css("display","none");
-		g.removeClass('active');
-		$(id).find('i').removeClass("icon-up-dir");
-		$(id).find('i').addClass("icon-down-dir");
-	}
+	g.css("display","block");
+	g.addClass('active');
+	$(id).find('i').removeClass("icon-down-dir");
+	$(id).find('i').addClass("icon-up-dir");
+	$(id).attr('onclick','hideoptionsmenu(this)');
+}
+
+function hideoptionsmenu(id) {
+	g = $(id).find('.options-menu');
+	g.css("display","none");
+	g.removeClass('active');
+	$(id).find('i').removeClass("icon-up-dir");
+	$(id).find('i').addClass("icon-down-dir");
+	$(id).attr('onclick','showoptionsmenu(this)');
 }
 
 function toggleslidefromleft(id) {

@@ -217,8 +217,12 @@ img.lazyload {
 		display: block;
 		overflow: hidden;
 		position: relative;
-		border-bottom: 1px solid #CCC;
+		//border-bottom: 1px solid #CCC;
 		background-color: white;
+		border: 1px solid #CCC;
+		background-color: white;
+		width: calc(100% - 20px);
+		margin: 5px auto;
 	}
 	.article_small {
 		.preview{

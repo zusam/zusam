@@ -146,7 +146,7 @@ function print_post($id, $uid) {
 	$html_data .= '<div class="right-menu">';
 		if($p['uid'] == $u['_id']) {
 			$html_data .= '
-					<div onclick="toggleoptionsmenu(this)" class="options">
+					<div onclick="showoptionsmenu(this)" class="options">
 						<i class="icon-down-dir"></i>
 						<div class="options-menu">
 							<a onclick="editPost(this)">Editer</a>

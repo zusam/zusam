@@ -28,6 +28,16 @@ $(window).ready(function() {
 		});
 	}
 
+	// close menus when outside is clicked
+	$('body').on('click',function(e) {
+		// options menu in post
+		$('#post-viewer .options').each(function() {
+			if(e.target != this && !$.contains(this, e.target)) {
+				hideoptionsmenu(this);
+			}
+		});
+	});
+
 	// start fastclick
 	$(function() {
 		FastClick.attach(document.body);
