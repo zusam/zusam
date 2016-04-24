@@ -1,4 +1,5 @@
 var Control = {
+
 	mergeEditableNodes : function(e) {
 		for(i = 0; i<e.childNodes.length; i++) {
 			if(e.childNodes[i].tagName == 'DIV') {

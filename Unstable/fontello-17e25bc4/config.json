@@ -179,6 +179,18 @@
       "css": "circle-thin",
       "code": 59420,
       "src": "fontawesome"
+    },
+    {
+      "uid": "7fd683b2c518ceb9e5fa6757f2276faa",
+      "css": "eye-off",
+      "code": 59421,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "c5fd349cbd3d23e4ade333789c29c729",
+      "css": "eye",
+      "code": 59422,
+      "src": "fontawesome"
     }
   ]
 }

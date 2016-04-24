@@ -223,6 +223,22 @@ img.lazyload {
 		background-color: white;
 		width: calc(100% - 20px);
 		margin: 5px auto;
+
+		.basic_link_button {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			z-index: 10;
+			padding: 3px;
+			border: none;
+			background-color: #f7a71b;
+			color: white;
+			font-size: 20px;
+			cursor: pointer;
+		}
+		.basic_link_button:hover {
+			background-color: #F7671B;
+		}
 	}
 	.article_small {
 		.preview{

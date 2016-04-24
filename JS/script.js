@@ -1,3 +1,14 @@
+function toBasicLink(e,ev) {
+	var d = $(e).closest('.deletable');
+	var url = d.find('a').attr('href');
+	var bl = typebox.Filter.fail_request(url); //$('<a class="b-link" href="'+url.replace(/\s/," ")+'" target="_blank">'+url+'</a>');
+	d.html(bl);
+	typebox.Control.refreshContent(false, d.closest('.dynamicBox'));
+	ev.stopPropagation();
+	ev.preventDefault();
+	return false;
+}
+
 function recordUsage(usage) {
 	$.ajax({
 		url:"Ajax/post.php",

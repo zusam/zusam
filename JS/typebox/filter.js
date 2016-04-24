@@ -348,8 +348,13 @@ var Filter = {
 		return e;
 	},
 
-	open_graph_build : function(data) {
+	open_graph_build : function(data, viewer) {
 		base_url = data['base_url'];
+		if(typeof(viewer) == "undefined") {
+			var basic_link_button = '<button onclick="toBasicLink(this,event)" class="basic_link_button"><i class="icon-eye-off"></i></button>';
+		} else {
+			var basic_link_button = '';
+		}
 		var preview = ""; 
 		if(typeof(data['image']) != "undefined") {
 			if(typeof(data['image']['url']) != "undefined" && !data['image']['url'].match(/^\s*$/)) {
@@ -363,11 +368,12 @@ var Filter = {
 		if(typeof(data['description']) != "undefined" && data['description'] != "") {
 			description = '<div class="description">'+data['description']+'</div>';
 		} else { description = ""; }
+		console.log(viewer, basic_link_button);
 		if(preview != "" || (title != "" && description != "")) {
-			e = $('<a class="article_big" href="'+decodeURI(data['url'])+'" target="_blank">'+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
+			e = $('<a class="article_big" href="'+decodeURI(data['url'])+'" target="_blank">'+basic_link_button+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
 			if(typeof(data['image']) != "undefined") {
 				if(data['image']['url'] != "" && data['image']['width'] != null && data['image']['height'] != null && parseInt(data['image']['width']) < 380) {
-					e = $('<a class="article_small" href="'+decodeURI(data['url'])+'" target="_blank">'+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
+					e = $('<a class="article_small" href="'+decodeURI(data['url'])+'" target="_blank">'+basic_link_button+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
 				} 
 			}
 		} else {
@@ -376,7 +382,7 @@ var Filter = {
 		return e;
 	},
 
-	searchLink : function(inner, ending) {
+	searchLink : function(inner, ending, viewer) {
 		var baliseId = createId();
 		var r1 = new RegExp(regex.link,'gi');
 		if(!ending) {
@@ -390,7 +396,7 @@ var Filter = {
 		var ajax_var = {"action":"gen_preview"};
 		callback = function(data) {
 			console.log(data);
-			e = Filter.open_graph_build(data);
+			e = Filter.open_graph_build(data, viewer);
 			balise = $('*[data-src="'+data['url']+'"]');
 			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
 				balise.html(e);
