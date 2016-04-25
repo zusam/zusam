@@ -139,7 +139,8 @@ function enlighten(id, refresh) {
 				lightbox.turnAndSend(e,"ccw",this_img);
 			});
 		}
-		var dl = $('<a class="material-shadow dl-button" href="'+lightbox_src+'" download="'+name+'">Télécharger</a>');
+		//var dl = $('<a class="material-shadow dl-button" href="'+lightbox_src+'" download="'+name+'">Télécharger</a>');
+		var dl = $('<a class="material-shadow dl-button" target="_blank" href="download.php?fileId='+name.replace(/\.jpg/,'')+'">Télécharger</a>');
 		//var dl = $('<form method="get" action="'+lightbox_src+'"><button class="material-shadow dl-button" type="submit">Télécharger</button></form>');
 		if($('.lightbox-mask').length > 0)  {
 			lb.append(next).append(prev).append(this_img).append(close).append(turncw).append(turnccw).append(dl);

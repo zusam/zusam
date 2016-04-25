@@ -22,7 +22,7 @@ done
 # TEST DIRECTORY TREE
 if [ ! -d "/srv/http" ] 
 then 
-	echo "/srv/http should exists and be the root directory of apache"
+	echo "/srv/http should exists and be the root directory of nginx"
 fi
 P=(tmp Data/avatar Data/miniature Data/file Data/uploaded Data/converted)
 for p in "${P[@]}";
@@ -135,6 +135,9 @@ for p in "${A[@]}";
 do
 	test_perm "$p" "$1"
 done
+
+# correct permissions of root php files
+chmod 770 *.php
 
 echo ""
 echo "everything is ok"

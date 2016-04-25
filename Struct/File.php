@@ -126,9 +126,6 @@ function file_print(&$file) {
 			$html .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';
 			$html .= '</div>';
 		} else {
-			//var_dump($file['fileId']);
-			//var_dump(glob("Data/uploaded/*"));
-			//var_dump(glob("Data/uploaded/".$file['fileId']."*"));
 			if(count(glob("Data/uploaded/".$file['fileId'].".*")) > 0) {
 				if(count(glob("Data/converted/".$file['fileId'].".*")) > 0) {
 					$message = "Conversion de la vidéo en cours";
