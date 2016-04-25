@@ -42,8 +42,8 @@ function compileText($text, $debug) {
 			case "file_webm":
 				$html .= $pre.process_file($m[0]);	
 			break;
-			case "file_sgf":
-				$html .= $pre.process_file($m[0]);	
+			case "facebook_video":
+				$html .= $pre.process_facebook_video($m[0]);
 			break;
 			case "imgur":
 				$html .= $pre.process_imgur($m[0],$debug);
@@ -161,6 +161,14 @@ function genTextMap($str, $debug) {
 	}
 	
 	return $map;
+}
+
+function process_facebook_video($str) {
+	gen_miniature($str);
+	$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$o = '<iframe src="https://www.facebook.com/plugins/video.php?href='.$str.'&show_text=0&width=600" width="600" height="337" style="border:none;overflow:hidden" onload="keepFormat(this, 16/9)" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>';
+	$a = '</span>';
+	return $b.$o.$a;
 }
 
 function process_imgur($str,$debug) {

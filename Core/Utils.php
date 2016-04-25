@@ -85,7 +85,6 @@ function fgc($url, $bytes, $header) {
 	curl_setopt($ch, CURLOPT_COOKIEJAR, "tmp/cookie.txt");
 	curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
 	if($bytes != "" && intval($bytes) != 0) {
-	var_dump($bytes);
 		$headers = array("Range: bytes=0-"+intval($bytes));
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 	}

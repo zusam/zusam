@@ -1,3 +1,12 @@
+function keepFormat(e,f) {
+	f = parseFloat(f);
+	var w = $(e).width();
+	//var h = $(e).height();
+	var nh = Math.round(w/f);
+	console.log(nh);
+	$(e).attr('height',nh+"px");
+}
+
 function toBasicLink(e,ev) {
 	var d = $(e).closest('.deletable');
 	var url = d.find('a').attr('href');

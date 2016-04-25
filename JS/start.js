@@ -66,9 +66,9 @@ $(window).ready(function() {
 			loadMorePosts();
 		});
 
-		window.onresize = function() {
+		$(window).on('resize', function() {
 			loadMorePosts();
-		}
+		});
 
 		// INITIALISATION OF EXTERNAL LIBRARIES
 		// SOUNDCLOUD

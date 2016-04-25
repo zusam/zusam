@@ -351,7 +351,8 @@ var Filter = {
 	open_graph_build : function(data, viewer) {
 		base_url = data['base_url'];
 		if(typeof(viewer) == "undefined") {
-			var basic_link_button = '<button onclick="toBasicLink(this,event)" class="basic_link_button"><i class="icon-eye-off"></i></button>';
+			//var basic_link_button = '<button onclick="toBasicLink(this,event)" class="basic_link_button"><i class="icon-eye-off"></i></button>';
+			var basic_link_button = '';
 		} else {
 			var basic_link_button = '';
 		}

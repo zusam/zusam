@@ -2,6 +2,7 @@
 
 global $regex;
 $regex = array(
+	'facebook_video' => '(https?:\/\/www.facebook.com\/.*videos\/[0-9]+)([^\s]+)',
 	'imgur' => '(https?:\/\/imgur.com\/)([^\s]+)',
 	'instagram' => '(https?:\/\/www.instagram.com\/)([^\s]+)',
 	'onedrive' => '(https?:\/\/onedrive.live.com\/)([^\s]+)',
