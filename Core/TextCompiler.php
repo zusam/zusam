@@ -32,6 +32,10 @@ function compileText($text, $debug) {
 			}
 		}
 		switch($m[1]) {
+			case "file_unknown":
+				// nothing is done in order to quietly discard these
+				// TODO properly do something
+			break;
 			case "file_jpg":
 				if($m[2] > 3) {
 					$html .= $pre.process_albumImage($m[0]);	
