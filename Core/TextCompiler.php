@@ -192,11 +192,11 @@ function process_imgur($str,$debug) {
 				if($data['data']['webm'] != "") {
 					$xx = p2l(pmini($data['data']['webm']));
 					gen_miniature($data['data']['webm']);
-					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-export-alt"></i></a>';
+					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-link-ext-alt"></i></a>';
 					$o .= '<div onclick="loadVideo(this)" data-src="'.$data['data']['webm'].'" class="launcher">';
 					$o .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';
 				} else {
-					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-export-alt"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['data']['link'].'"/>';
+					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-link-ext-alt"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['data']['link'].'"/>';
 				}
 				$a = '</span>';
 				$output = $b.$o.$a;
@@ -205,7 +205,7 @@ function process_imgur($str,$debug) {
 				$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 				$output .= $b;	
 				foreach($data['data']['images'] as $im) {
-					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-export-alt"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$im['link'].'"/>';
+					$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-link-ext-alt"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$im['link'].'"/>';
 					$output .= $o;	
 				}
 				$a = '</span>';
@@ -231,7 +231,7 @@ function process_instagram($str) {
 	$data = json_decode($data,true);
 
 	$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
-	$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-export-alt"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['thumbnail_url'].'"/>';
+	$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-link-ext-alt"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['thumbnail_url'].'"/>';
 	$a = '</span>';
 	$output = $b.$o.$a;
 	return $output;

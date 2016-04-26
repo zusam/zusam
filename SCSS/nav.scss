@@ -74,6 +74,20 @@
 		height: 100%;
 		overflow: hidden;
 		margin: 0px;
+			
+		img, svg {
+			height: 24px;
+			width: 24px;
+			margin: 8px;
+			border-radius: 100%;
+
+			.bg {
+				fill: #f7a71b;
+			}
+			.letter {
+				fill: #fff;
+			}
+		}
 	}
 	.my_avatar > * {
 		height: 100%;

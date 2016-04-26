@@ -13,6 +13,9 @@ requirements :
 - don't forget to start nginx, php-fpm and mongodb services
 - mongdb-tools is necessary for backup and restore db scripts
 
+usefull bonus :
+- installing svgo for reducing the size of new svg can be good : "sudo npm install -g svgo"
+
 scripts :
 - correct-install.sh is a basic script that checks some of the requirements for Zusam.
 - php-check-syntax.sh is a basic script that checks the syntax of all the php files.

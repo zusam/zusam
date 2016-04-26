@@ -51,8 +51,16 @@
 		height: 200px;
 		overflow: hidden;
 
-		img {
-			width: 100%;
+		img, svg {
+			height: 200px;
+			width: 200px;
+
+			.bg {
+				fill: #f7a71b;
+			}
+			.letter {
+				fill: #fff;
+			}
 		}
 	}
 	.change-avatar:hover {

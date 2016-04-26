@@ -162,7 +162,7 @@ function preview_getDescription(&$p) {
 	$p['description'] = cutIfTooLong($description, 335); 
 }
 
-function preview_imageInit($url) {
+function preview_imageInit($url, $meta) {
 	$im = [];
 	$ret = ranger($url);
 	$im['url'] = $url;
@@ -174,8 +174,11 @@ function preview_imageInit($url) {
 	$width = $im['width'];
 	$height = $im['height'];
 	if($width == null || $height == null) {
-		$im['score'] = 0;
+		$score = 0;
 	} else {
+		if($meta) {
+			$score += 10;
+		}
 		if($width > 270) {
 			$score += 8;
 		}
@@ -217,7 +220,7 @@ function preview_getImage(&$p) {
 		if($img != null) {
 			$img_final = $img[0]->content;
 			if($img_final != null) {
-				$im = preview_imageInit($img_final);
+				$im = preview_imageInit($img_final, true);
 				if($im['score'] > $score_max) {
 					$score_max = $im['score'];
 					$id_max = $i;
@@ -231,7 +234,7 @@ function preview_getImage(&$p) {
 	$p['meta'] = $candidates;
 	
 	// stop here if the images are good enough
-	if($score_max > 40 && $candidates[$id_max]['width'] > 270) {
+	if($score_max > 40 || ($candidates[$id_max]['width'] > 360 && $candidates[$id_max]['height'] > 100)) {
 		$p['image'] = $candidates[$id_max];
 		$p['candidates'] = $candidates;
 		return true;

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="142" height="142" viewBox="0 0 141.73 141.73">
+    <path class="bg" fill="none" d="M0 0h142v142H0z"/>
+    <g class="letter" fill="none">
+        <path d="M79 54c-2-3-17-5-17 1v60c3 3 17 5 17-1V84 54z"/>
+        <circle clip-rule="evenodd" cx="71" cy="33" r="10"/>
+    </g>
+</svg>

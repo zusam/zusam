@@ -42,6 +42,10 @@ function pathTo2($args) {
 		$path = "Assets/".$url.$ext; 
 		return realpath(dirname(__FILE__)."/../")."/".$path;
 	}
+	if($param == "default_avatar") {
+		$path = "Assets/default_avatar/".$url.$ext; 
+		return realpath(dirname(__FILE__)."/../")."/".$path;
+	}
 	if($param == "static_mini") {
 		$path = "Assets/Miniatures/".$url.$ext; 
 		return realpath(dirname(__FILE__)."/../")."/".$path;

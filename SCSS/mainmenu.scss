@@ -59,14 +59,22 @@
 			display: -webkit-flex;
 			-webkit-align-items: center;
 			cursor: pointer;
-			padding: 0px 10px;
+			padding: 0px;
 			width: 100%;
 			height: 100%;
 
-			.identicon, img {
-				height: 26px;
-				width: 26px;
-				margin-right: 10px;
+			img, svg {
+				height: 24px;
+				width: 24px;
+				margin: 8px;
+				border-radius: 100%;
+
+				.bg {
+					fill: #f7a71b;
+				}
+				.letter {
+					fill: #fff;
+				}
 			}
 		}
 		.profil:hover {

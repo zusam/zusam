@@ -13,7 +13,7 @@ function page_section_profile(&$u) {
 	$html .= '</div>';
 	
 	$html .= '<form class="change-profile">';
-	$html .= '<span class="formTitle">Changer de nom<div class="help-balise icon-help-circled"><span>Il s\'agit du nom visible par les autres utilisateurs sur tous vos forums</span></div></span>';
+	$html .= '<span class="formTitle">Changer de nom<div class="help-balise icon-help-circled"><span>Il s\'agit du nom visible par les autres utilisateurs sur tous vos groupes</span></div></span>';
 	$html .= '<input class="textInput" name="name" type="text" placeholder="Nouveau nom">';
 	$html .= '<button class="submitInput" onclick="changeProfile(this); return false;">';
 	$html .= '<i class="icon-paper-plane"></i>';

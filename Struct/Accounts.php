@@ -29,11 +29,6 @@ function account_addUnread(&$ac, $pid) {
 		$ac['unread'] = [];
 	}
 	array_push($ac['unread'], $pid);		
-	
-	//TODO XXX TRICK
-	//$unread = $ac['unread'];
-	//unset($ac['unread']);
-	//$ac['unread'] = $unread;
 }
 
 function account_readPost(&$ac, $pid) {
@@ -55,14 +50,7 @@ function account_readPost(&$ac, $pid) {
 		}
 	}
 
-	//$ac['unread'] = deleteAllValues($pid, $ac['unread']);
 	$ac['unread'] = array_values($ac['unread']);
-	//var_dump($ac['unread']);
-
-	//TODO XXX TRICK
-	//$unread = $ac['unread'];
-	//unset($ac['unread']);
-	//$ac['unread'] = $unread;
 }
 
 function account_setPassword(&$ac, $password) {
@@ -80,18 +68,6 @@ function account_initialize($mail, $password) {
 	$ac['salt'] = bin2hex(openssl_random_pseudo_bytes(6));
 	return $ac;
 }
-
-// counting uploads
-//function account_addUpload(&$ac) {
-//	if(!isset($ac['upload'])) {
-//		$ac['upload'] = array("number"=>0,"last_cycle"=>time());
-//	}
-//	if($ac['upload']['last_cycle'] < time() - 30*24*60*60) {
-//		$ac['upload']['last_cycle'] = time();
-//		$ac['upload']['number'] = 0;
-//	}
-//	$ac['upload'] = $ac['upload'] + 1;
-//}
 
 function account_save(&$ac) {
 	mongo_save("accounts",$ac);
@@ -116,7 +92,8 @@ function account_getAvatar(&$ac) {
 	if(file_exists(pathTo2($loc))) {
 		$avatar = p2l(pathTo2($loc));
 	} else {
-		return p2l(pathTo2(array("url"=>"avatar","param"=>"assets","ext"=>"png")));
+		//return p2l(pathTo2(array("url"=>"avatar","param"=>"assets","ext"=>"png")));
+		return "";
 	}
 	return $avatar;
 }
@@ -125,7 +102,9 @@ function account_getAvatarHTML(&$ac) {
 	$html = "";
 	$avatar = account_getAvatar($ac);
 	if($avatar == "") {
-		$html = '<img src="'.p2l(pathTo2(array("url"=>"avatar","param"=>"assets","ext"=>"png"))).'"/>';
+		//$html = '<img src="'.p2l(pathTo2(array("url"=>"avatar","param"=>"assets","ext"=>"png"))).'"/>';
+		$fl = mb_strtolower(preg_replace('/[^a-zA-Z]/','',$ac['name']));
+		$html = file_get_contents(pathTo2(array("url"=>$fl[0],"param"=>"default_avatar","ext"=>"svg")));
 	} else {
 		$html = '<img src="'.$avatar.'"/>';
 	}
