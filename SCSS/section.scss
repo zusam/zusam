@@ -85,9 +85,18 @@ section {
 					left: 4px;
 					border: 2px solid white;
 					transition: all 0.25s;
+					
+					img, svg {
+						height: 40px;
+						width: 40px;
+						border-radius: 100%;
 
-					img {
-						height: 100%;
+						.bg {
+							fill: #f7a71b;
+						}
+						.letter {
+							fill: #fff;
+						}
 					}
 				}
 

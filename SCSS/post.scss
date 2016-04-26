@@ -125,14 +125,20 @@
 				transition: transform 0.2s;
 				z-index: 50;
 				position: relative;
-			}
-			//.avatar:hover {
-			//	transform: translate(100%, 100%) scale(3);
-			//	z-index: 51;
-			//}
-			.avatar > * {
-				width: 100%;
-				height: 100%;
+				
+				img, svg {
+					//border-radius: 100%;
+					width: 45px;
+					height: 45px;
+					//margin: 6px;
+
+					.bg {
+						fill: #f7a71b;
+					}
+					.letter {
+						fill: #fff;
+					}
+				}
 			}
 			.post-info {
 				padding-left: 10px;
