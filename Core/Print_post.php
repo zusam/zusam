@@ -52,7 +52,7 @@ function print_full_post($id, $uid) {
 			if($count_hidden < $nb_hidden) {
 				$count_hidden++;
 			} else {
-				$child_html = print_post($cid, $uid, $viewer);
+				$child_html = print_post($cid, $uid);
 				if($child_html != "") {
 					$html_data .= $child_html;
 				}
@@ -158,7 +158,7 @@ function print_post($id, $uid) {
 	$html_data .= '</div>';
 	$html_data .= '</div>';
 	$html_data .= '<div class="';
-	if($p['parent'] != null && $p['parent'] != 0) {
+	if($p['parent'] != null) {
 		$html_data .= 'post-com-text ';
 	} else {
 		$html_data .= 'post-parent-text ';

@@ -20,7 +20,11 @@ function pathTo2($args) {
 	$url = $args['url'];
 	$param = $args['param'];
 	$ext = $args['ext'];
-	$dir = $args['dir'];
+	if(isset($args['dir'])) {
+		$dir = $args['dir'];
+	} else {
+		$dir = null;
+	}
 
 	if(!$dir && ($param == "" || $url == "")) {
 		return false;

@@ -4,6 +4,11 @@ chdir(realpath(dirname(__FILE__))."/../");
 require_once('Include.php');
 
 function compileText($text, $debug) {
+
+	if(!isset($debug)) {
+		$debug = false;
+	}
+
 	$r = $GLOBALS['regex'];
 	$str = strip_tags($text);
 	$str = trim($str);
@@ -212,6 +217,8 @@ function process_imgur($str,$debug) {
 				$output .= $a;	
 			}
 		} else {
+			//var_dump($data);
+			//var_dump("https://api.imgur.com/3/gallery/".$id);
 			$data = handleLink($str);
 			$output = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 			$output .= open_graph_build($data);
