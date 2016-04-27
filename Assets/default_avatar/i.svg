@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="142" height="142" viewBox="0 0 141.73 141.73">
-    <path class="bg" fill="none" d="M0 0h142v142H0z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="141.73" height="141.73" viewBox="0 0 141.73 141.73">
+    <path class="bg" fill="none" d="M0 0h141.73v141.73H0z"/>
     <g class="letter" fill="none">
-        <path d="M79 54c-2-3-17-5-17 1v60c3 3 17 5 17-1V84 54z"/>
-        <circle clip-rule="evenodd" cx="71" cy="33" r="10"/>
+        <path d="M79.07 54.146c-2.444-3.462-16.942-5.505-16.734.485.222 6.334.163 26.632.163 26.632l-.168 33.472c2.444 3.462 16.942 5.505 16.734-.485-.23-6.571-.165-20.555.092-29.914.009-.124-.087-30.19-.087-30.19z"/>
+        <circle clip-rule="evenodd" cx="70.865" cy="33.202" r="9.529"/>
     </g>
 </svg>

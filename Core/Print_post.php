@@ -163,7 +163,7 @@ function print_post($id, $uid) {
 	} else {
 		$html_data .= 'post-parent-text ';
 	}
-	$html_data .= 'dynamicBox viewerBox" data-id="'.$p['_id'].'">'.compileText(trim($p['text'])).'</div>';
+	$html_data .= 'dynamicBox viewerBox" data-id="'.$p['_id'].'">'.compileText(trim($p['text']), false).'</div>';
 
 	$html_data .= '</div>';
 
@@ -194,7 +194,7 @@ function print_post_mini(&$p, $unread) {
 			$str = strip_tags($text);
 			$str = trim($str);
 			$str = preg_replace("/\n/","<br>",$str);
-			$map = genTextMap($str);
+			$map = genTextMap($str, false);
 			if($map[0][1] != "text" && (count($map) == 1 || mb_strlen($map[0][0]) > 45)) {
 				$inside = '<div><img class="miniature" src="'.p2l(pathTo2(array("param"=>"assets", "url"=>"noimage", "ext"=>"png"))).'"/></div>';
 			} else {

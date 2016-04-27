@@ -263,7 +263,7 @@ function showpostviewer(id) {
 				});
 				setTimeout(function() {
 					$('.viewerBox').each(function() {
-						typebox.toHighToFly(this);
+						typebox.limitHeight(this);
 					});
 				}, 100);
 				$('#post-viewer').focus();

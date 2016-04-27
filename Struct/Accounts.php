@@ -86,7 +86,8 @@ function account_load($array) {
 function account_getAvatar(&$ac) {
 	//dummy
 	if($ac['_id'] == "-1") {
-		return p2l(pathTo2(array("url"=>"avatar","param"=>"assets","ext"=>"png")));
+		//return p2l(pathTo2(array("url"=>"avatar","param"=>"assets","ext"=>"png")));
+		return "";
 	}
 	$loc = array("url"=>(String) $ac['_id'], "param"=>"avatar", "ext"=>"jpg");
 	if(file_exists(pathTo2($loc))) {
@@ -104,7 +105,11 @@ function account_getAvatarHTML(&$ac) {
 	if($avatar == "") {
 		//$html = '<img src="'.p2l(pathTo2(array("url"=>"avatar","param"=>"assets","ext"=>"png"))).'"/>';
 		$fl = mb_strtolower(preg_replace('/[^a-zA-Z]/','',$ac['name']));
-		$html = file_get_contents(pathTo2(array("url"=>$fl[0],"param"=>"default_avatar","ext"=>"svg")));
+		$fl = $fl[0];
+		if($fl == "") {
+			$fl = "null";
+		}
+		$html = file_get_contents(pathTo2(array("url"=>$fl,"param"=>"default_avatar","ext"=>"svg")));
 	} else {
 		$html = '<img src="'.$avatar.'"/>';
 	}

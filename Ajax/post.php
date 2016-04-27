@@ -49,6 +49,7 @@ if($_SESSION['connected']) {
 
 		// TODO protect ?
 		if($POST['action'] == "morePost") {
+			
 
 			$u = account_load(array('_id'=>$_SESSION['uid']));
 			$list = json_decode($POST['list'], true);

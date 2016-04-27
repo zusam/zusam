@@ -16,7 +16,7 @@ function page_section_profile(&$u) {
 	$html .= '<span class="formTitle">Changer de nom<div class="help-balise icon-help-circled"><span>Il s\'agit du nom visible par les autres utilisateurs sur tous vos groupes</span></div></span>';
 	$html .= '<input class="textInput" name="name" type="text" placeholder="Nouveau nom">';
 	$html .= '<button class="submitInput" onclick="changeProfile(this); return false;">';
-	$html .= '<i class="icon-paper-plane"></i>';
+	$html .= 'Sauvegarder';
 	$html .= '</button>';
 	$html .= '</form>';
 
@@ -25,7 +25,7 @@ function page_section_profile(&$u) {
 	$html .= '<input class="textInput" name="old_password" type="password" placeholder="Mot de passe actuel"><br>';
 	$html .= '<input class="textInput" name="new_password" type="password" placeholder="Nouveau mot de passe">';
 	$html .= '<button class="submitInput" onclick="changeProfile(this); return false;">';
-	$html .= '<i class="icon-paper-plane"></i>';
+	$html .= 'Sauvegarder';
 	$html .= '</button>';
 	$html .= '</form>';
 
@@ -34,7 +34,7 @@ function page_section_profile(&$u) {
 	$html .= '<input class="textInput" name="password" type="password" placeholder="Mot de passe actuel">';
 	$html .= '<input class="textInput" name="new_mail" type="mail" placeholder="Nouvelle adresse mail">';
 	$html .= '<button class="submitInput" onclick="changeProfile(this); return false;">';
-	$html .= '<i class="icon-paper-plane"></i>';
+	$html .= 'Sauvegarder';
 	$html .= '</button>';
 	$html .= '</form>';
 
@@ -42,7 +42,7 @@ function page_section_profile(&$u) {
 	$html .= '<span class="formTitle">Supprimer ce compte <div class="help-balise icon-help-circled"><span>Cette opération est irréversible et supprimera tous les fichiers et messages envoyés depuis ce compte.</span></div></span>';
 	$html .= '<input class="textInput" name="password" type="password" placeholder="Mot de passe actuel">';
 	$html .= '<button class="submitInput" onclick="destroyAccount(this); return false;">';
-	$html .= '<i class="icon-paper-plane"></i>';
+	$html .= 'Sauvegarder';
 	$html .= '</button>';
 	$html .= '</form>';
 

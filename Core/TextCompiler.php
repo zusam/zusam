@@ -115,6 +115,9 @@ function compileText($text, $debug) {
 }
 
 function genTextMap($str, $debug) {
+	if(!isset($debug)) {
+		$debug = false;
+	}
 	$r = $GLOBALS['regex'];
 	$map = explode(' ',$str);
 	$suite = [];

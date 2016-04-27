@@ -44,8 +44,18 @@
 			position: relative;
 			text-align: center;
 
-			img {
+			img, svg {
+				//border-radius: 100%;
 				width: 100%;
+				height: 100%;
+				//margin: 6px;
+
+				.bg {
+					fill: #f7a71b;
+				}
+				.letter {
+					fill: #fff;
+				}
 			}
 			span {
 				word-break: break-all;

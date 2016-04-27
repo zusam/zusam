@@ -159,10 +159,10 @@ function start(id) {
 	});
 }
 
-function toHighToFly(t) {
+function limitHeight(t) {
 	console.log(t.offsetHeight, window.innerHeight)
-	if(t.offsetHeight > (window.innerHeight*0.8)) {
-		$(t).css('max-height',Math.floor(window.innerHeight*0.8) + "px");
+	if(t.offsetHeight > (window.innerHeight*0.75 + 100)) {
+		$(t).css('max-height',Math.floor(window.innerHeight*0.75) + "px");
 		$(t).append('<div class="seeMore" onclick="this.parentNode.style.maxHeight = \'none\'; $(this).remove()"><span>Voir plus</span></div>');
 	}
 }
@@ -174,7 +174,7 @@ function view() {
 		Control.filter_out_all(this, true);
 		$(this).find('*[contenteditable=true]').removeAttr('contenteditable');
 		lazyload($(this).closest('.nano-content')[0]);
-		typebox.toHighToFly(this);
+		typebox.limitHeight(this);
 	});
 }
 
