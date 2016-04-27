@@ -261,6 +261,11 @@ function showpostviewer(id) {
 				$('.nano-content').on('scroll',function(e) {
 					lazyload(e.currentTarget);
 				});
+				setTimeout(function() {
+					$('.viewerBox').each(function() {
+						typebox.toHighToFly(this);
+					});
+				}, 100);
 				$('#post-viewer').focus();
 			}
 		},
