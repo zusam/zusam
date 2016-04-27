@@ -188,7 +188,7 @@ function print_post_mini(&$p, $unread) {
 			post_save($p);
 		}
 		if(preg_match("/\.jpg$/",$p['preview'])==1) {
-			$inside = '<div class="post-preview-image"><img class="miniature" src="'.p2l($p['preview']).'"/></div>';
+			$inside = '<div class="post-preview-image"><img onload="this.style.opacity=1" class="miniature" src="'.p2l($p['preview']).'"/></div>';
 		} else {
 			$text = $p['text'];
 			$str = strip_tags($text);
@@ -196,7 +196,7 @@ function print_post_mini(&$p, $unread) {
 			$str = preg_replace("/\n/","<br>",$str);
 			$map = genTextMap($str, false);
 			if($map[0][1] != "text" && (count($map) == 1 || mb_strlen($map[0][0]) > 45)) {
-				$inside = '<div><img class="miniature" src="'.p2l(pathTo2(array("param"=>"assets", "url"=>"noimage", "ext"=>"png"))).'"/></div>';
+				$inside = '<div><img class="miniature" onload="this.style.opacity=1" src="'.p2l(pathTo2(array("param"=>"assets", "url"=>"noimage", "ext"=>"png"))).'"/></div>';
 			} else {
 				$inside = '<div class="text-miniature">';
 				$inside .= '<div class="paper"></div>';

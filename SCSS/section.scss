@@ -149,7 +149,9 @@ section {
 				}
 			}
 			.miniature {
+				opacity: 0;
 				width: 100%;
+				transition: all 0.2s;
 			}
 		}
 	}

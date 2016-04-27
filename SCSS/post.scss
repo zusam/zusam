@@ -47,11 +47,24 @@
 			align-items: center;
 			display: -webkit-flex;
 			-webkit-align-items: center;
+			border-top: 1px solid lightgray;
 
 			.op-img {
 				height: 35px;
 				width: 35px;
 				margin-right: 10px;
+				
+				img, svg {
+					height: 100%;
+					width: 100%;
+
+					.bg {
+						fill: #f7a71b;
+					}
+					.letter {
+						fill: #fff;
+					}
+				}
 			}
 		}
 	}

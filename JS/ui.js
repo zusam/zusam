@@ -336,6 +336,11 @@ function unveil(e) {
 
 function fakeComment() {
 	var opimg = $('#info').attr('data-avatar');
-	var fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><img class="op-img" src="'+opimg+'"/><span>Ecrire un commentaire...</span></div></div>');
+	if(opimg == "") {
+		opimg = $('.my_avatar').html();
+		var fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><div class="op-img">'+opimg+'</div><span>Ecrire un commentaire...</span></div></div>');
+	} else {
+		var fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><img class="op-img" src="'+opimg+'"/><span>Ecrire un commentaire...</span></div></div>');
+	}
 	return fc;
 }
