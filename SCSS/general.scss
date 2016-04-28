@@ -1,6 +1,18 @@
+//@font-face {
+//	font-family: 'RobotoRegular';
+//	src: url('Fonts/Roboto-Regular.woff');
+//	font-weight: normal;
+//	font-style: normal;
+//}
+//@font-face {
+//	font-family: 'RobotoLight';
+//	src: url('Fonts/Roboto-Light.woff');
+//	font-weight: normal;
+//	font-style: normal;
+//}
 @font-face {
-	font-family: 'RobotoRegular';
-	src: url('Fonts/Roboto-Regular.woff');
+	font-family: 'LatoRegular';
+	src: url('Fonts/Lato-Regular.woff');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -19,7 +31,7 @@ body {
 	max-width: 2048px;
 	overflow: auto;
 	font-size: 15px;
-	font-family: RobotoRegular;
+	font-family: LatoRegular;
 	background-color: rgb(230,230,230);
 }
 .material-shadow {
