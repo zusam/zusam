@@ -74,7 +74,22 @@ function mongo_load($collection, $array) {
 	return $data;
 }
 
-function mongo_save($collection, &$entity) {
+function mongo_correctArray(&$array) {
+	foreach($array as $k=>$v) {
+		if(empty($v)) {
+			unset($array[$k]);
+		}
+	}
+}
+
+function mongo_save($collection, &$entity, $debug) {
+
+	if(!isset($debug)) {
+		$debug = false;
+	}
+
+	mongo_correctArray($entity);
+
 	$mid = mongo_id($entity['_id']);
 	$manager = new MongoDB\Driver\Manager('mongodb://localhost:27017');
 	$bulk = new MongoDB\Driver\BulkWrite;
@@ -99,6 +114,9 @@ function mongo_save($collection, &$entity) {
 		//var_dump($result);
 		// TODO do something with it
 		return false;
+	}
+	if($debug) {
+		var_dump($result);
 	}
 	return true;
 }

@@ -161,8 +161,9 @@ if($_SESSION['connected']) {
 			$f = forum_load(array('_id'=> $fid));
 
 			if($_SESSION['uid'] == $uid) {
-				forum_removeUser_andSave($f, $u);
+				$r = forum_removeUser_andSave($f, $u);
 			}
+			var_dump($r);
 			exit;
 		}
 
