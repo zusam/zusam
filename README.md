@@ -10,7 +10,6 @@ requirements :
 - the owner of the non-data files should be user:http where user is a non root user created to push new code on the server.
 - you will need ruby/gem and the sass compiler to build the css files : "gem install sass".
 - nodejs is required to use uglifyJS2 (don't forget to install it : "sudo npm install -g uglify-js".
-- don't forget to start nginx, php-fpm and mongodb services
 - mongdb-tools is necessary for backup and restore db scripts
 
 usefull bonus :
@@ -24,3 +23,12 @@ scripts :
 - backup.sh is a script thats backups all data in a BACKUP directory (as a tarball).
 - restore.sh is a script that ERASE all current data and REPLACE it with the specified backup tarball.
 - update.sh is a script that should be used after a merge to prepare the code for production.
+
+systemctl :
+sudo systemctl start nginx
+sudo systemctl start php-fpm
+sudo systemctl start mongodb
+sudo systemctl start fcron
+
+fcron :
+@ 1 php /srv/http/zusam/Fcron/convertNextVideo.php
