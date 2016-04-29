@@ -41,6 +41,9 @@ function post_update(&$p, $a) {
 
 function post_removeChild(&$p, $id) {
 	$mid = mongo_id($id);
+	if(!isset($p['children'])) {
+		return;
+	}
 	foreach($p['children'] as $key=>$cid) {
 		if($cid == $mid || $cid == $id) {
 			unset($p['children'][$key]);
@@ -50,12 +53,10 @@ function post_removeChild(&$p, $id) {
 
 function post_addChild(&$p, $id) {
 	$mid = mongo_id($id);
+	if(!isset($p['children'])) {
+		$p['children'] = [];
+	}
 	array_push($p['children'], $mid);
-
-	//TODO XXX TRICK
-	//$children = $p['children'];
-	//unset($p['children']);
-	//$p['children'] = $children;
 }
 
 function post_removeFiles(&$p) {
