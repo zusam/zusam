@@ -44,10 +44,7 @@
 	.menu-profil {
 		display: flex;
 		align-items: center;
-		display: -webkit-flex;
-		-webkit-align-items: center;
 		justify-content: space-between;
-		-webkit-justify-content: space-between;
 		width: 100%;
 		height: 40px;
 
@@ -56,8 +53,6 @@
 			text-decoration: none;
 			display: flex;
 			align-items: center;
-			display: -webkit-flex;
-			-webkit-align-items: center;
 			cursor: pointer;
 			padding: 0px;
 			width: 100%;
@@ -94,7 +89,6 @@
 			a {
 				text-decoration: none;
 				flex-grow: 2;
-				-webkit-flex-grow: 2;
 				padding: 5px 5px;
 				border: none;
 				background: none;
@@ -129,20 +123,14 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			display: -webkit-flex;
-			-webkit-align-items: center;
-			-webkit-justify-content: space-between;
 		}
 		.section-entry:hover {
 			background-color: rgba(0,0,0,0.1);
 		}
 		.section-entry {
 			display: flex;
-			display: -webkit-flex;
 			justify-content: space-between;
 			align-items: center;
-			-webkit-justify-content: space-between;
-			-webkit-align-items: center;
 			width: 100%;
 			border-bottom: 2px solid rgba(0,0,0,0.1);
 			border-top: 1px solid rgba(255,255,255,0.1);
@@ -150,7 +138,6 @@
 			.forum-link {
 				text-decoration: none;
 				flex-grow: 2;
-				-webkit-flex-grow: 2;
 				padding: 5px 5px;
 				border: none;
 				background: none;
@@ -175,7 +162,6 @@
 				cursor: pointer;
 			}
 			.forum-settings:hover i {
-				-webkit-animation: fa-spin 2s infinite linear;
 				animation: fa-spin 2s infinite linear;
 				color: white;
 			}
@@ -191,8 +177,6 @@
 	.notification {
 		display: flex;
 		align-items: stretch;
-		display: -webkit-flex;
-		-webkit-align-items: stretch;
 		margin: 0px;
 		width: 100%;
 		position: relative;
@@ -214,9 +198,6 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			display: -webkit-flex;
-			-webkit-flex-direction: column;
-			-webkit-justify-content: center;
 			width: 20%;
 			text-align: center;
 			cursor: pointer;

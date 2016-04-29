@@ -41,9 +41,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		display: -webkit-flex;
-		-webkit-align-items: center;
-		-webkit-justify-content: center;
 		cursor: pointer;
 	}
 
@@ -55,13 +52,10 @@
 		z-index: 15;
 		display: flex;
 		align-items: center;
-		display: -webkit-flex;
-		-webkit-align-items: center;
 		opacity: 0.6;
 		transition: all 0.2s;
 		cursor: pointer;
 		justify-content: center;
-		-webkit-justify-content: center;
 
 		i {
 			width: 50px;

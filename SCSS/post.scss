@@ -45,8 +45,6 @@
 			color: grey;
 			display: flex;
 			align-items: center;
-			display: -webkit-flex;
-			-webkit-align-items: center;
 			border-top: 1px solid lightgray;
 
 			.op-img {
@@ -78,26 +76,18 @@
 }
 .post-options {
 	display: flex;
-	display: -webkit-flex;
 	flex-flow: row wrap;
 	justify-content: center;
 	align-items: center;
-	-webkit-flex-flow: row wrap;
-	-webkit-justify-content: center;
-	-webkit-align-items: center;
 	position: fixed;
 	width: 100%;
 	z-index: 5000;
 
 	.cell {
 		display: flex;
-		display: -webkit-flex;
 		align-items: center;
-		-webkit-align-items: center;
 		justify-content: center;
-		-webkit-justify-content: center;
 		flex-grow: 2;
-		-webkit-flex-grow: 2;
 		font-size: 14px;
 		cursor: pointer;
 		background-color: black;
@@ -120,19 +110,14 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		display: -webkit-flex;
-		-webkit-justify-content: space-between;
-		-webkit-align-items: center;
 		background: none;
 		color: black;
 		
 		.op {
 			display: flex;
-			display: -webkit-flex;
 			margin: 0px;
 			padding: 0px;
 			align-content: center;
-			-webkit-align-content: center;
 
 			.avatar {
 				transition: transform 0.2s;
@@ -167,8 +152,6 @@
 					padding: 0px;
 					display: flex;
 					align-items: center;
-					display: -webkit-flex;
-					-webkit-align-items: center;
 					color: grey;
 					font-size: 12px;
 

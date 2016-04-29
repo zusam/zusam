@@ -2,8 +2,6 @@
 	nav {
 		display: flex;
 		justify-content: space-between;
-		display: -webkit-flex;
-		-webkit-justify-content: space-between;
 		width: 100%;
 		position: fixed;
 		top: 0;
@@ -40,9 +38,7 @@
 		.left-module-nav {
 			margin: 0px;
 			display: flex;
-			display: -webkit-flex;
 			align-items: center;
-			-webkit-align-items: center;
 
 			a {
 				height: 100%;
@@ -58,8 +54,6 @@
 		.forum-name {
 			display: flex;
 			align-items: center;
-			display: -webkit-flex;
-			-webkit-align-items: center;
 			color: white;
 			font-size: 20px;
 			text-align: center;

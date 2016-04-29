@@ -66,11 +66,8 @@ body {
 }
 .menu {
 	display: flex;
-	display: -webkit-flex;
 	align-items: center;
-	-webkit-align-items: center;
 	justify-content: space-between;
-	-webkit-justify-content: space-between;
 	width: 100%;
 	background: #eee;
 	margin: 0;
@@ -184,13 +181,9 @@ body {
 	padding: 10px;
 	border-radius: 4px;
 	display: flex;
-	display: -webkit-flex;
 	flex-flow: row wrap;
 	justify-content: space-between;
 	align-items: center;
-	-webkit-flex-flow: row wrap;
-	-webkit-justify-content: space-between;
-	-webkit-align-items: center;
 
 	span {
 		width: 100%;
@@ -201,7 +194,6 @@ body {
 	}
 	button {
 		flex-grow: 2;
-		-webkit-flex-grow: 2;
 		margin: 0px 2px;
 	}
 }
