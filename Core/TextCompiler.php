@@ -60,9 +60,9 @@ function compileText($text, $debug) {
 			case "instagram":
 				$html .= $pre.process_instagram($m[0]);
 			break;
-			case "onedrive":
-				$html .= $pre.process_onedrive($m[0]);
-			break;
+			//case "onedrive":
+			//	$html .= $pre.process_onedrive($m[0]);
+			//break;
 			case "googleDrive":
 				$html .= $pre.process_googleDrive($m[0]);
 			break;
@@ -247,27 +247,28 @@ function process_instagram($str) {
 	return $output;
 }
 
-function process_onedrive($str) {
-	if(preg_match("/resid=/",$str)) {
-		$resid = preg_replace("/(https?:\/\/onedrive.live.com\/).*resid=([\-\!\%\w]+).*/","$2",$str);
-		$param = "resid=".$resid;
-	} else {
-		$resid = preg_replace("/(https?:\/\/onedrive.live.com\/).*id=([\-\!\%\w]+).*/","$2",$str);
-		$cid = preg_replace("/(https?:\/\/onedrive.live.com\/).*cid=([\-\!\%\w]+).*/","$2",$str);
-		$authkey = preg_replace("/(https?:\/\/onedrive.live.com\/).*authkey=([\-\!\%\w]+).*/","$2",$str);
-		$param = "resid=".$resid."&cid=".$cid."&authkey=".$authkey;
-
-	}
-	if(preg_match("/^[\!\%\w]+$/",$resid)) {
-		$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
-		$o = '<iframe width="320" height="180" seamless src="https://onedrive.live.com/embed?'.$param.'" frameborder="0"></iframe>';
-		$a = '</span>';
-		$output = $b.$o.$a;
-	} else {
-		$output = fail_request($str);
-	}
-	return $output;
-}
+//onedrive embed is not good
+//function process_onedrive($str) {
+//	if(preg_match("/resid=/",$str)) {
+//		$resid = preg_replace("/(https?:\/\/onedrive.live.com\/).*resid=([\-\!\%\w]+).*/","$2",$str);
+//		$param = "resid=".$resid;
+//	} else {
+//		$resid = preg_replace("/(https?:\/\/onedrive.live.com\/).*id=([\-\!\%\w]+).*/","$2",$str);
+//		$cid = preg_replace("/(https?:\/\/onedrive.live.com\/).*cid=([\-\!\%\w]+).*/","$2",$str);
+//		$authkey = preg_replace("/(https?:\/\/onedrive.live.com\/).*authkey=([\-\!\%\w]+).*/","$2",$str);
+//		$param = "resid=".$resid."&cid=".$cid."&authkey=".$authkey;
+//
+//	}
+//	if(preg_match("/^[\!\%\w]+$/",$resid)) {
+//		$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+//		$o = '<iframe seamless src="https://onedrive.live.com/embed?'.$param.'" frameborder="0"></iframe>';
+//		$a = '</span>';
+//		$output = $b.$o.$a;
+//	} else {
+//		$output = fail_request($str);
+//	}
+//	return $output;
+//}
 
 function process_googleDrive($str) {
 	if(preg_match("/open\?id=/",$str)) {

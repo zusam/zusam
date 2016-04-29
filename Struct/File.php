@@ -128,12 +128,12 @@ function file_print(&$file) {
 		} else {
 			if(count(glob("Data/uploaded/".$file['fileId'].".*")) > 0) {
 				if(count(glob("Data/converted/".$file['fileId'].".*")) > 0) {
-					$message = "Conversion de la vidéo en cours";
+					$message = "Conversion en cours";
 				} else {
-					$message = "Vidéo en attente de conversion";
+					$message = "En attente de conversion";
 				}
 			} else {
-				$message = "Le fichier est inexistant";
+				$message = "Fichier inexistant";
 			}
 			$html .= '<div class="file-placeholder">';
 			$html .= '<span>'.$message.'</span>';

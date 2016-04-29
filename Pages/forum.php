@@ -3,19 +3,6 @@
 chdir(realpath(dirname(__FILE__))."/../");
 require_once('Include.php');
 
-function page_section_forum(&$u, &$forum) {
-
-	$html = "";
-
-	if($forum != null && $forum != "" && $forum != false) {
-
-		$html .='<div id="container">';
-		$html .= '</div>';
-	}
-
-	return $html;
-}
-
 function page_section_forum_settings(&$u, &$forum) {
 
 	$fid = (String) $forum['_id'];
@@ -96,7 +83,8 @@ function page_section_forum_settings(&$u, &$forum) {
 			$user = account_getDummy(array('mail'=>$n['data']['mail'], 'name'=>preg_replace("/@.*/","",$n['data']['mail']) ) );
 		}
 		if(!in_array($n['data']['mail'], $isUser) && !in_array($n['data']['mail'], $isNotified)) {
-			$html .= '<div class="user"><div title="'.$user['name'].'">'.account_getAvatarHTML($user).'</div><span>'.$user['name'].'</span></div>';
+			$nid = (String) $n['_id'];
+			$html .= '<div class="user" data-nid="'.$nid.'"><div title="'.$n['data']['mail'].'">'.account_getAvatarHTML($user).'</div><span>'.$user['name'].'</span><button onclick="removeNotification(this.parentNode)">Supprimer l\'invitation</button></div>';
 			$isNotified[] = $n['data']['mail'];
 		} else {
 			// erase unecessary notif

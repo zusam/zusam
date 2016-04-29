@@ -1,3 +1,23 @@
+function removeNotification(e) {
+	var nid = $(e).attr('data-nid');
+	var uid = $('#info').attr('data-uid');
+	if(nid == null || nid == "") {
+		return false;
+	}
+	$.ajax({
+		url:"Ajax/post.php",
+		type:"post",
+		data:{"action":"removeNotification","nid":nid, "uid":uid},
+		success: function(data) {
+			console.log(data);
+			$(e).remove();
+		},
+		error: function() {
+			console.log("fail");
+		}
+	});
+}
+
 function keepFormat(e,f) {
 	f = parseFloat(f);
 	var w = $(e).width();
@@ -7,16 +27,16 @@ function keepFormat(e,f) {
 	$(e).attr('height',nh+"px");
 }
 
-function toBasicLink(e,ev) {
-	var d = $(e).closest('.deletable');
-	var url = d.find('a').attr('href');
-	var bl = typebox.Filter.fail_request(url); //$('<a class="b-link" href="'+url.replace(/\s/," ")+'" target="_blank">'+url+'</a>');
-	d.html(bl);
-	typebox.Control.refreshContent(false, d.closest('.dynamicBox'));
-	ev.stopPropagation();
-	ev.preventDefault();
-	return false;
-}
+//function toBasicLink(e,ev) {
+//	var d = $(e).closest('.deletable');
+//	var url = d.find('a').attr('href');
+//	var bl = typebox.Filter.fail_request(url); //$('<a class="b-link" href="'+url.replace(/\s/," ")+'" target="_blank">'+url+'</a>');
+//	d.html(bl);
+//	typebox.Control.refreshContent(false, d.closest('.dynamicBox'));
+//	ev.stopPropagation();
+//	ev.preventDefault();
+//	return false;
+//}
 
 function recordUsage(usage) {
 	$.ajax({
@@ -504,25 +524,6 @@ function addUserToForum(t) {
 	$(t).parent().remove();
 }
 
-function removeNotification(t) {
-	nid = $(t).parent().attr('data-id');
-	console.log(nid);
-	console.log(t);
-	uid = $('#info').attr('data-uid');
-	$.ajax({
-		url: "Ajax/post.php",
-		type: "POST",
-		data: {'action':'removeNotification', 'uid':uid, 'nid':nid},
-		success: function(data) {
-				console.log(data);
-				console.log("success!");
-				//window.location.reload(true); 
-			},
-		error: function(){console.log('fail!');}
-	});
-	$('*[data-id="'+nid+'"]').remove();
-}
-
 function inputFile(id) {
 	input = $('<input class="hidden" data-id="'+id+'" type="file" multiple></input>');
 	input.on('change', handleFileSelect);
@@ -556,7 +557,11 @@ function handleFile(file,id) {
 		if(file.size > 1024*1024*30) {
 			alert("fichier image trop lourd (max 30Mo)");
 		} else {
-			PF.loadImage(file,id);
+			if(file.type.match(/gif/)) {
+				PF.loadGif(file,id);
+			} else {
+				PF.loadImage(file,id);
+			}
 		}
 	}
 	if(file.type.match(/video/)) {

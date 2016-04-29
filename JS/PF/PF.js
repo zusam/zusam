@@ -75,6 +75,75 @@ function sendVideo(vidBlob, fileId) {
 	window.sending = window.sending + 1;
 }
 
+function loadGif(file,id) {
+	console.log("load gif "+file.name);
+	var fileId = createId();
+	var img = new Image();
+	img.onload = function() {
+		PF.showGif(img, id, fileId);
+		PF.sendGif(file, fileId);
+	};
+	img.src = URL.createObjectURL(file);
+	var loading = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"><div class="spinner"><div class="bg-orange bounce1"></div><div class="bg-orange bounce2"></div><div class="bg-orange bounce3"></div></div></div></span>');
+	$(id).append(loading);
+}
+
+function showGif(img, id, fileId) {
+	var content = $('span[data-src="{:'+fileId+':}"]');
+	if(content.length == 0) {
+		var content = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
+	}
+	content.html(img);
+	$(id).append(content);	
+	$(id).append('<div contenteditable="true"></div>');
+}
+
+function sendGif(file, fileId) {
+	console.log("send gif "+name);
+	var f = new FormData();
+	var uid = $('#info').attr('data-uid');
+	f.append("image",file);
+	f.append("fileId",fileId);
+	f.append("uid",uid);
+	f.append("action","addGif");
+	var progressBar = $('<div class="progressBar"><div class="progress"></div></div>');
+	$('*[data-src="{:'+fileId+':}"]').append(progressBar);
+	$.ajax({
+		url: "Ajax/post.php",
+		type: "POST",
+		data: f,
+		success: function(data){ 
+				console.log(data);
+				window.sending = window.sending - 1;
+			},
+		error: function(){ 
+				console.log("fail"); 
+				window.sending = window.sending - 1;
+			},
+		processData: false,
+		contentType: false,
+		xhr: function(){
+			var xhr = $.ajaxSettings.xhr();
+			xhr.upload.onprogress = function(evt){ 
+				var p = parseInt(evt.loaded/evt.total*100);
+				console.log('progress', p);
+				content = $('*[data-src="{:'+fileId+':}"]');
+				content.find('.progressBar .progress').css('width', p+"%");
+
+			};
+			xhr.upload.onload = function(){ 
+				console.log('done !');
+				setTimeout(function() {
+					content = $('*[data-src="{:'+fileId+':}"]');
+					content.find('.progressBar').remove();
+				}, 1000);
+			}
+			return xhr;
+		}
+	});
+	window.sending = window.sending + 1;
+}
+
 function loadImage(file,id) {
 	console.log("load image "+file.name);
 	var fileId = createId();

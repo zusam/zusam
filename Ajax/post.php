@@ -30,6 +30,14 @@ if($_SESSION['connected']) {
 	
 	if($POST['action'] != null && $POST['action'] != "") {
 
+		//TODO protect
+		if($POST['action'] == "removeNotification") {
+			if($POST['uid'] == $_SESSION['uid']) {
+				$nid = $POST['nid'];
+				notification_destroy($nid);
+			}
+		}
+
 		if($POST['action'] == "getImgur") {
 			$url = $POST['url']; 
 			$data['html'] = process_imgur($url);
@@ -167,6 +175,46 @@ if($_SESSION['connected']) {
 			exit;
 		}
 
+		if($POST['action'] == "addGif") {
+			$uid = $POST['uid'];
+			$fileId = $POST['fileId'];
+		
+			if($_FILES["image"]["size"] < 1024*1024*31 && $_FILES["image"]["type"] == "image/gif") {
+				$u = account_load(array('_id' => $uid));
+				if($u != null && $u != false) {
+					if(isAnimated($_FILES['image']['tmp_name'])) {
+						echo('is animated');
+						$file = file_initialize($fileId, "webm", $u['_id']);
+						var_dump($file);
+						$ext = ".".pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+						var_dump($ext);
+					$r = move_uploaded_file($_FILES['image']['tmp_name'], pathTo2(array('url'=>$file['fileId'], 'ext'=>$ext, 'param'=>'uploaded')));
+					var_dump($r);
+						if($r) {
+							file_save($file);
+						} else {
+							echo('fail move file');
+						}
+					} else {
+						echo('is not animated');
+						$file = file_load(array("fileId"=>$fileId));
+						if($file == null || $file == false) {
+							$file = file_initialize($fileId, "jpg", $u['_id']);
+						}
+						$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'jpg', 'param' => 'file')), 2048, 2048);
+						unlink(pmini($file['fileId']));
+						gen_miniature("{:".$fileId.":}");
+						if($r) {
+							file_save($file);
+							echo($file['fileId']);
+						}
+					}
+				}
+			}
+
+			exit;
+		}
+
 		if($POST['action'] == "addImage") {
 
 			$uid = $POST['uid'];
@@ -203,7 +251,6 @@ if($_SESSION['connected']) {
 					$file = file_initialize($fileId, "webm", $u['_id']);
 					$ext = ".".pathinfo($_FILES['video']['name'], PATHINFO_EXTENSION);
 				$r = move_uploaded_file($_FILES['video']['tmp_name'], pathTo2(array('url'=>$file['fileId'], 'ext'=>$ext, 'param'=>'uploaded')));
-				//saveVideo($_FILES["video"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'webm', 'param' => 'file')), $fileId);
 					if($r) {
 						file_save($file);
 					} else {
@@ -412,24 +459,6 @@ if($_SESSION['connected']) {
 			echo('plop');
 			$url_prev = search_miniature($text);
 			account_save($u);
-			exit;
-		}
-
-		if($POST['action'] == "removeNotification") {
-
-			$uid = $POST['uid'];
-			$nid = $POST['nid'];
-
-			$user = account_load(array('_id' => $uid));
-			$notif = notification_load(array('_id' => $nid));
-
-			if($_SESSION['uid'] == $uid && $notif['target'] == $uid) {  
-				if($user != null && $user != false && $notif != null && $notif != false) {
-					notification_destroy($nid);
-				}
-			} else {
-				echo('no credentials');
-			}
 			exit;
 		}
 	}

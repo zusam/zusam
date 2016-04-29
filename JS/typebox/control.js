@@ -260,9 +260,10 @@ var Control = {
 	},
 
 	filter_out_search : function(t, viewer, ending) {
+		Control.searchFilter(t, Filter.searchFacebook_video, viewer, ending);
 		Control.searchFilter(t, Filter.searchImgur, viewer, ending);
 		Control.searchFilter(t, Filter.searchInstagram, viewer, ending);
-		Control.searchFilter(t, Filter.searchOnedrive, viewer, ending);
+		//Control.searchFilter(t, Filter.searchOnedrive, viewer, ending);
 		Control.searchFilter(t, Filter.searchGoogleDrive, viewer, ending);
 		Control.searchFilter(t, Filter.searchSoundcloud, viewer, ending);
 		Control.searchFilter(t, Filter.searchYoutube, viewer, ending);
