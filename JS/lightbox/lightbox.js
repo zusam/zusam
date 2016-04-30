@@ -35,7 +35,7 @@ function searchPrevious(e) {
 }
 
 
-function enlighten(id, refresh) {
+function enlighten(id) {
 
 	var e = $(id)[0];
 
@@ -48,11 +48,11 @@ function enlighten(id, refresh) {
 	} else {
 		var lightbox_src = e.src;
 	}
-	if(refresh) {
-		lightbox_src = lightbox_src.replace(/\?.*/,'') + "?" + Date.now();
-	} else {
-		lightbox_src = lightbox_src.replace(/\?.*/,'');// + "?" + Date.now();
-	}
+	//if(refresh) {
+	//	lightbox_src = lightbox_src.replace(/\?.*/,'') + "?" + Date.now();
+	//} else {
+	//	lightbox_src = lightbox_src.replace(/\?.*/,'');// + "?" + Date.now();
+	//}
 
 	var name = lightbox_src.replace(/.*\/([^\/]+)$/,'$1');
 	
@@ -153,7 +153,7 @@ function enlighten(id, refresh) {
 		}
 	};
 	
-	img.src = lightbox_src;
+	img.src = lightbox_src+"#"+Date.now();
 	mask = $('<div class="lightbox-mask" onclick="lightbox.darken()"></div>');
 	mask.append('<div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div>');
 	$('body').append(mask);
@@ -214,7 +214,7 @@ function turnAndSend(e, rotation, img) {
 						mini.src = src;
 					}
 				});
-				lightbox.enlighten(e, true);
+				lightbox.enlighten(e);
 			},
 		error: function(){ console.log(uid,fid,action); },
 		processData: false,

@@ -101,6 +101,9 @@ $(window).ready(function() {
 		setInterval(function() {
 			// check for active post-viewer nanoscroller
 			var pv = document.getElementById('post-viewer');
+			if(pv == null) {
+				pv = document.getElementById('newpost');
+			}
 			if(pv != null) {
 				if(pv.offsetHeight > window.innerHeight) {
 					$(pv).closest('.nano').nanoScroller({
