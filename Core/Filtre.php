@@ -86,9 +86,9 @@ function filtre($url) {
 	}
 	
 	// ONEDRIVE //
-	if(preg_match(r2ep($regex['onedrive']),$url)==1) {
-		return pathTo2(array("url"=>"onedrive","param"=>"static_mini","ext"=>"jpg"));
-	}
+	//if(preg_match(r2ep($regex['onedrive']),$url)==1) {
+	//	return pathTo2(array("url"=>"onedrive","param"=>"static_mini","ext"=>"jpg"));
+	//}
 
 	// YOUTUBE //
 	if(preg_match(r2ep($regex['youtube']),$url)==1) {

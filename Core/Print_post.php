@@ -177,7 +177,7 @@ function print_post_mini(&$p, $unread) {
 		// TODO to erase in the future
 		// it's here to clear the miniature cache of the most recents posts
 		//if(preg_match("/^\/srv\/http/",$p['preview'])!=1) {
-		//	unset($p['preview']);
+			//unset($p['preview']);
 		//}
 
 		if(empty($p['preview']) || preg_match("/\.jpg/",$p['preview']) == 0) {
