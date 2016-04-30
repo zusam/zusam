@@ -69,8 +69,13 @@ function account_initialize($mail, $password) {
 	return $ac;
 }
 
-function account_save(&$ac) {
-	mongo_save("accounts",$ac);
+function account_save(&$ac, $debug) {
+
+	if(!isset($debug)) {
+		$debug = false;
+	}
+
+	mongo_save("accounts",$ac,$debug);
 }
 
 function account_bulkLoad($array) {

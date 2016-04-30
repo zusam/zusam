@@ -17,7 +17,7 @@ function html_head($root_url) {
 	$html .= '<meta charset="utf-8"/>';
 
 	// css
-	$html .= '<link href="style.css" rel="stylesheet">';
+	$html .= '<link href="style.css?'.time().'" rel="stylesheet">';
 
 	// ogp
 	$html .= '<meta property="og:title" content="'.$title.'" />';

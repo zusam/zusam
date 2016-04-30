@@ -92,6 +92,9 @@ function forum_addUser_andSave(&$forum, &$user) {
 }
 
 function forum_removeUser_andSave(&$forum, &$user) {
+
+	$nbu = count($user['forums']);
+	$nbf = count($forum['users']);
 	
 	// convert all ids to strings : should be removable in the future...
 	foreach($forum['users'] as $k=>$fu) {
@@ -118,25 +121,31 @@ function forum_removeUser_andSave(&$forum, &$user) {
 	//	}
 	//}
 	
-	// TODO XXX TRICK
-	//$fusers = $forum['users'];
-	//unset($forum['users']);
-	//$forum['users'] = $fusers;
-	
 	//deleteKey($forum['_id'], $user['forums']);
 	$fid = (String) $forum['_id'];
+	foreach($user['forums'] as $k=>$v) {
+		if($k == $fid) {
+			unset($user['forums'][$k]);
+			continue;
+		}
+		$f = forum_load(array("_id"=>$k));
+		if($f == null || $f == false) {
+			unset($user['forums'][$k]);
+		}
+	}
 	unset($user['forums'][$fid]);
-	
-	// TODO XXX TRICK
-	//$uforums = $user['forums'];
-	//unset($user['forums']);
-	//$user['forums'] = $uforums;
-	
-	forum_save($forum);
-	account_save($user);
-	//var_dump($forum['users']);
-	if(count($forum['users']) <= 0) {
-		forum_destroy($forum['_id']);
+
+	// these extra precautions are not needed anymore TODO remove them ?
+	if($nbu > count($user['forums']) && $nbf > count($forum['users'])) {
+		forum_save($forum);
+		account_save($user, true);
+		//var_dump($forum['users']);
+		if(count($forum['users']) <= 0) {
+			forum_destroy($forum['_id']);
+		}
+		return true;
+	} else {
+		return false;
 	}
 }
 
