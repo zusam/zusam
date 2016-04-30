@@ -51,6 +51,9 @@ function compileText($text, $debug) {
 			case "file_webm":
 				$html .= $pre.process_file($m[0]);	
 			break;
+			case "gfycat":
+				$html .= $pre.process_gfycat($m[0]);
+			break;
 			case "facebook_video":
 				$html .= $pre.process_facebook_video($m[0]);
 			break;
@@ -173,6 +176,20 @@ function genTextMap($str, $debug) {
 	}
 	
 	return $map;
+}
+
+function process_gfycat($str) {
+	gen_miniature($str);
+	$id = preg_replace("/.*\/([a-zA-Z]+)$/","$1",$str);
+	$w = "https://gfycat.com/ifr/".$id;
+	$xx = p2l(pmini($str));
+	$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$o = '<div class="embed-responsive embed-responsive-16by9">';
+	$o .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
+	$o .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
+	$o .= '</div></div>';
+	$a = '</span>';
+	return $b.$o.$a;
 }
 
 function process_facebook_video($str) {

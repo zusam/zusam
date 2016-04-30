@@ -43,6 +43,14 @@ function filtre($url) {
 	
 	$regex = $GLOBALS['regex'];
 
+	// GFYCAT //
+	if(preg_match(r2ep($regex['gfycat']),$url)==1) {
+		$id = preg_replace("/.*\/([a-zA-Z]+)$/","$1",$url);
+		$link = "https://thumbs.gfycat.com/".$id."-mobile.jpg";
+		$ret = get_mini_from_link($url, $link);
+		return $ret;
+	}
+
 	// FACEBOOK VIDEO //
 	if(preg_match(r2ep($regex['facebook_video']),$url)==1) {
 		$vid = preg_replace("/.*videos\/([0-9]+).*/","$1",$url);

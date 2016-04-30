@@ -260,6 +260,7 @@ var Control = {
 	},
 
 	filter_out_search : function(t, viewer, ending) {
+		Control.searchFilter(t, Filter.searchGfycat, viewer, ending);
 		Control.searchFilter(t, Filter.searchFacebook_video, viewer, ending);
 		Control.searchFilter(t, Filter.searchImgur, viewer, ending);
 		Control.searchFilter(t, Filter.searchInstagram, viewer, ending);

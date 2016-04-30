@@ -1,5 +1,28 @@
 var Filter = {
 
+	searchGfycat : function(inner, ending) {
+		var r1 = new RegExp(regex.gfycat ,'gi');
+		if(!ending) {
+			r1 = new RegExp(regex.gfycat+'[\s]','gi');
+		}
+		substitution = function(str) {
+			var id = str.replace(/.*\/([a-zA-Z]+)$/,"$1");
+			var w = "https://gfycat.com/ifr/"+id;
+			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
+			console.log(xx);
+			var b = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			//var o = '<div style="position:relative;padding-bottom:calc(100% / 1.78)"><iframe src="'+url+'" frameborder="0" scrolling="no" width="100%" height="100%" style="position:absolute;top:0;left:0;" allowfullscreen></iframe></div>';
+			var o = '<div class="embed-responsive embed-responsive-16by9">';
+			o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
+			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
+			o += '</div></div>';
+			var a = '</span>';
+			return b+o+a;
+		}
+		output = Control.searchMatch({"callerName":"searchGfycat", "inner":inner, "regex":r1, "substitution":substitution});
+		return output;
+	},
+
 	searchFacebook_video : function(inner, ending) {
 		var r1 = new RegExp(regex.facebook_video ,'gi');
 		if(!ending) {
@@ -359,6 +382,9 @@ var Filter = {
 	},
 
 	fail_request : function(url) {
+		if(typeof(url) == "undefined") {
+			return "";	
+		}
 		e = $('<a class="b-link" href="'+url.replace(/\s/," ")+'" target="_blank">'+url+'</a>');
 		return e;
 	},
