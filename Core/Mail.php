@@ -43,8 +43,6 @@ function mail_general($to, $subject, $content) {
 	} else {
 		return "Message has been sent successfully";
 	}
-
-
 }
 
 function mail_invitation($to, $link, $name) {
@@ -161,4 +159,5 @@ function mail_resetPassword($to, $link, $name) {
 		return "Message has been sent successfully";
 	}
 }
+
 ?>

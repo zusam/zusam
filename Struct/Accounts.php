@@ -12,6 +12,7 @@ function account_getDummy($default) {
 	$ac['password'] = "";
 	$ac['forums'] = [];
 	$ac['salt'] = "888888888888";
+	$ac['absenceMail'] = "yes";
 	return $ac;
 }
 
@@ -69,13 +70,8 @@ function account_initialize($mail, $password) {
 	return $ac;
 }
 
-function account_save(&$ac, $debug) {
-
-	if(!isset($debug)) {
-		$debug = false;
-	}
-
-	mongo_save("accounts",$ac,$debug);
+function account_save(&$ac) {
+	mongo_save("accounts",$ac);
 }
 
 function account_bulkLoad($array) {

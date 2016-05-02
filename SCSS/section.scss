@@ -41,11 +41,10 @@ section {
 		position: relative;
 		text-decoration: none;
 
-		.newcom > * {
-			color: #F7A71B !important;
+		.newcom .comments-indicator {
+			//color: #F7A71B !important;
+			color: #EC9909 !important; // - 5% luminosity
 		}
-
-		
 
 		.post-preview {
 		

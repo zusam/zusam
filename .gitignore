@@ -4,6 +4,7 @@
 *.swp
 *.log
 Data/
+Log/
 TODO
 SCSS/.sass-cache/
 .sass-cache/

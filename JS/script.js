@@ -185,7 +185,12 @@ function changeProfile(t) {
 	var uid = $('#info').attr('data-uid');
 	var data = {};
 	$(t).closest('.change-profile').find('input').each(function() {
-		data[$(this).attr('name')] = $(this).val();	
+		var type = $(this).attr('type');
+		if(type == "text" || type == "password" || type == "mail") {
+			data[$(this).attr('name')] = $(this).val();	
+		} else {
+			data[$(this).attr('name')] = $(this).prop('checked');
+		}
 	});
 	data = JSON.stringify(data);
 	console.log(data);

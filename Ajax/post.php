@@ -355,11 +355,18 @@ if($_SESSION['connected']) {
 			$old_password = $data['old_password'];
 			$new_mail = $data['new_mail'];
 			$password = $data['password'];
+			$absenceMail = $data['absenceMail'];
 
 			$uid = $POST['uid'];
 			$u = account_load(array('_id' => $uid));
 
 			if($_SESSION['uid'] == $uid) {
+
+				if($absenceMail == true) {
+					$u['absenceMail'] = "yes";
+				} else {
+					$u['absenceMail'] = "no";
+				}
 				if(preg_match("/^\s*$/",$name) != 1) {
 					$name = htmlentities($name);
 					$u['name'] = $name;

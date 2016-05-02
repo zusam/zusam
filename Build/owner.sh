@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RESTRICT=(Build Unstable BACKUP Maintenance Fcron)
+RESTRICT=(Build Unstable BACKUP Maintenance Fcron Log)
 
 sudo chown -R niels:http /srv/http/zusam
 

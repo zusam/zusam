@@ -69,7 +69,12 @@ function mongo_load($collection, $array) {
 	$manager = new MongoDB\Driver\Manager('mongodb://localhost:27017');
 	$query = new MongoDB\Driver\Query($array);
 	$cursor = $manager->executeQuery('zusam.'.$collection, $query);
-	$response = $cursor->toArray()[0];
+	$cta = $cursor->toArray();
+	if(isset($cta[0])) {
+		$response = $cta[0];
+	} else {
+		$response = null;
+	}
 	$data = object_to_array($response);
 	return $data;
 }
@@ -82,11 +87,7 @@ function mongo_correctArray(&$array) {
 	}
 }
 
-function mongo_save($collection, &$entity, $debug) {
-
-	if(!isset($debug)) {
-		$debug = false;
-	}
+function mongo_save($collection, &$entity) {
 
 	mongo_correctArray($entity);
 
@@ -114,9 +115,6 @@ function mongo_save($collection, &$entity, $debug) {
 		//var_dump($result);
 		// TODO do something with it
 		return false;
-	}
-	if($debug) {
-		var_dump($result);
 	}
 	return true;
 }

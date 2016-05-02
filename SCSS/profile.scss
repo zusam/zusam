@@ -10,6 +10,8 @@
 		width: 256px;
 		max-width: 100%;
 		padding: 15px;
+		border: 1px solid #CCCCCC;
+		border-radius: 2px;
 
 		.textInput {
 			display: inline-block;
@@ -20,13 +22,16 @@
 			border-right: 0px;
 			border: none;
 		}
+		.danger {
+			background: #D8B3B3 !important;	
+		}
 		.submitInput, .submitInputAlone {
 			display: inline-block;
 			font-size: 14px;
 			margin: 0px;
 			padding: 5px;
 			border: none;
-			background: lightgrey;
+			background-color: lightgrey;
 			cursor: pointer;
 			color: #4C4C4C;
 		}
