@@ -10,6 +10,7 @@ SCSS/.sass-cache/
 .sass-cache/
 *.min.js
 !LibJS/*.min.js
+!Fonts/*.css
 tmp/
 BACKUP/
 script.js
