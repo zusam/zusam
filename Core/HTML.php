@@ -16,6 +16,11 @@ function html_head($root_url) {
 	$html .= '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>';
 	$html .= '<meta charset="utf-8"/>';
 
+	// font
+	$html .= '<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">';
+	$html .= '<link href="Fonts/fonticon.css" rel="stylesheet">';
+
+
 	// css
 	$html .= '<link href="style.css?'.time().'" rel="stylesheet">';
 

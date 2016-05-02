@@ -6,7 +6,10 @@ var Filter = {
 			r1 = new RegExp(regex.gfycat+'[\s]','gi');
 		}
 		substitution = function(str) {
-			var id = str.replace(/.*\/([a-zA-Z]+)$/,"$1");
+			var url = str.replace(/(.*)\?.*$/,'$1');
+			console.log(url);
+			var id = url.replace(/.*\/([a-zA-Z]+)$/,"$1");
+			console.log(id);
 			var w = "https://gfycat.com/ifr/"+id;
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 			console.log(xx);

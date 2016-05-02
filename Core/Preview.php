@@ -159,7 +159,7 @@ function preview_getDescription(&$p) {
 	$description = to_utf8($description);
 	$description = html_entity_decode($description);
 	$description = strip_tags($description);
-	$p['description'] = cutIfTooLong($description, 335); 
+	$p['description'] = cutIfTooLong($description, 325); 
 }
 
 function preview_imageInit($url, $meta) {

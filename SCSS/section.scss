@@ -47,6 +47,11 @@ section {
 			width: 320px;
 			height: calc(180px + 30px);
 		
+			.newcom .comments-indicator {
+				//color: #F7A71B !important;
+				color: #EC9909 !important; // - 5% luminosity
+			}
+			
 			.post-info {
 				position: relative;
 				background: white;
@@ -59,11 +64,6 @@ section {
 				padding: 5px;
 				height: 20px;
 				border-top: 1px solid lightgrey;
-				
-				.newcom .comments-indicator {
-					//color: #F7A71B !important;
-					color: #EC9909 !important; // - 5% luminosity
-				}
 
 				.date {
 					color: grey;

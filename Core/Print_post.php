@@ -221,7 +221,11 @@ function print_post_mini(&$p, $unread) {
 		$inside .= '<div class="comments-indicator">';
 		$c = count($p['children']);
 		if($c > 0) {
-			$inside .= '<div>'.$c.' <i class="icon-comment-empty"></i></div>';
+			if($unread) {
+				$inside .= '<div>'.$c.' <i class="icon-comment"></i></div>';
+			} else {
+				$inside .= '<div>'.$c.' <i class="icon-comment-empty"></i></div>';
+			}
 		}
 
 		$inside .= '</div>';

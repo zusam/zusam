@@ -180,7 +180,9 @@ function genTextMap($str, $debug) {
 
 function process_gfycat($str) {
 	gen_miniature($str);
-	$id = preg_replace("/.*\/([a-zA-Z]+)$/","$1",$str);
+
+	$url = preg_replace("/(.*)\?.*$/",'$1',$str);
+	$id = preg_replace("/.*\/([a-zA-Z]+)$/","$1",$url);
 	$w = "https://gfycat.com/ifr/".$id;
 	$xx = p2l(pmini($str));
 	$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';

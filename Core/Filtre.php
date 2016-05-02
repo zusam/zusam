@@ -45,7 +45,8 @@ function filtre($url) {
 
 	// GFYCAT //
 	if(preg_match(r2ep($regex['gfycat']),$url)==1) {
-		$id = preg_replace("/.*\/([a-zA-Z]+)$/","$1",$url);
+		$str = preg_replace("/(.*)\?.*$/",'$1',$url);
+		$id = preg_replace("/.*\/([a-zA-Z]+)$/","$1",$str);
 		$link = "https://thumbs.gfycat.com/".$id."-mobile.jpg";
 		$ret = get_mini_from_link($url, $link);
 		return $ret;

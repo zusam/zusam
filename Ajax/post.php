@@ -57,6 +57,7 @@ if($_SESSION['connected']) {
 
 		// TODO protect ?
 		if($POST['action'] == "morePost") {
+			$r = new StdClass();
 			
 
 			$u = account_load(array('_id'=>$_SESSION['uid']));
@@ -83,6 +84,8 @@ if($_SESSION['connected']) {
 							$i++;
 							if(in_array((String) $p['_id'], $u['unread'])) {
 								$html .= print_post_mini($p, true);
+							$r->debug1 = json_encode($u['unread']);
+							$r->debug2 = json_encode((String) $p['_id']);
 							} else {
 								$html .= print_post_mini($p, false);
 							}
@@ -99,7 +102,6 @@ if($_SESSION['connected']) {
 
 				//forum_save($f);
 				
-				$r = new StdClass();
 				$r->html = $html;
 				$r->list = $newslist;
 				$r->count = $i;
