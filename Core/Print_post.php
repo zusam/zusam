@@ -172,7 +172,10 @@ function print_post($id, $uid) {
 
 function print_post_mini(&$p, $unread) {
 	$html = "";
+	$inside = "";
 	if($p != null && $p != false && ($p['parent'] == null || $p['parent'] == 0)) {
+
+		$inside .= '<div class="post-preview">';
 		
 		if(empty($p['preview']) || preg_match("/\.jpg/",$p['preview']) == 0) {
 			$link = search_miniature($p['text']);
@@ -182,7 +185,7 @@ function print_post_mini(&$p, $unread) {
 			post_save($p);
 		}
 		if(preg_match("/\.jpg$/",$p['preview'])==1) {
-			$inside = '<div class="post-preview-image"><img onload="this.style.opacity=1" class="miniature" src="'.p2l($p['preview']).'"/></div>';
+			$inside .= '<div class="post-preview-image"><img onload="this.style.opacity=1" class="miniature" src="'.p2l($p['preview']).'"/></div>';
 		} else {
 			$text = $p['text'];
 			$str = strip_tags($text);
@@ -190,15 +193,17 @@ function print_post_mini(&$p, $unread) {
 			$str = preg_replace("/\n/","<br>",$str);
 			$map = genTextMap($str, false);
 			if($map[0][1] != "text" && (count($map) == 1 || mb_strlen($map[0][0]) > 45)) {
-				$inside = '<div><img class="miniature" onload="this.style.opacity=1" src="'.p2l(pathTo2(array("param"=>"assets", "url"=>"noimage", "ext"=>"png"))).'"/></div>';
+				$inside .= '<div><img class="miniature" onload="this.style.opacity=1" src="'.p2l(pathTo2(array("param"=>"assets", "url"=>"noimage", "ext"=>"png"))).'"/></div>';
 			} else {
-				$inside = '<div class="text-miniature">';
+				$inside .= '<div class="text-miniature">';
 				$inside .= '<div class="paper"></div>';
 				$text = strip_tags(cutIfTooLong($p['text'], 150));
 				$inside .= '<div class="text-container"><div class="text"><div>'.$text.'</div></div></div>';
 				$inside .= '</div>';
 			}
 		}
+
+		$inside .= "</div>";
 
 		// get the user
 		$op = account_load(array('_id' => $p['uid']));
@@ -223,7 +228,7 @@ function print_post_mini(&$p, $unread) {
 		$inside .= '</div>';
 
 		$html .= '<a class="material-shadow post-mini" href="#'.$p['_id'].'" data-id="'.$p['_id'].'">';
-		$html .= '<div class="post-preview">'.$inside.'</div></a>';
+		$html .= '<div class="post-inside">'.$inside.'</div></a>';
 	}
 	return $html;
 }
