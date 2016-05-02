@@ -15,8 +15,8 @@ $regex = array(
 	'youtube2' => 'https?:\/\/youtu\.be\/[\w\/=?~.%&+\-#]+',
 	'youtube' => 'https?:\/\/(www|m)\.youtube\.com\/watch[\w\/=?~.%&+\-#]+',
 	'video' => 'https?:\/\/[^\s]+(\.mp4|\.webm|\.gifv)(\?\w*)?',
-	'image' => 'https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.jpg|\.bmp|\.jpeg|\.png)([^\s]+)?',
-	'gif' => 'https?:\/\/[\w\/=?~.%&+\-#\!\']+(\.gif(?!v))(\?[\w\/=?~.%&+\-#\!\']+)?',
+	'image' => 'https?:\/\/[^\s]+(\.jpg|\.bmp|\.jpeg|\.png)([^\s]+)?',
+	'gif' => 'https?:\/\/[^\s]+(\.gif(?!v))([^\s]+)?',
 	'file' => '\{\:[a-zA-Z0-9]+\:\}',
 	'link' => 'https?:\/\/[^\s]+'
 );
