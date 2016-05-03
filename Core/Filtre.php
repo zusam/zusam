@@ -25,9 +25,15 @@ function create_post_miniature($url, $file) {
 	} else {
 		$source = $url;
 	}
+	if(!file_exists(ppi($url))) {
+		createPostImage($source, ppi($url), 600, 6000, 70);  
+	}
 	if(!file_exists(pmini($url))) {
 		if(exif_imagetype($source) != IMAGETYPE_GIF) {
 			createPreview(320, $source, pmini($url), 9/16, 70);
+			if(filesize($source) > 1024*700) { // > 700K
+				createPostImage($source, ppi($url), 600, 6000, 70);  
+			}
 		} else {
 			gifPreview(320, $source, pmini($url), 9/16, 70);
 		}

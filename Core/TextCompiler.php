@@ -459,9 +459,14 @@ function process_video($str) {
 
 function process_image($str) {
 	gen_miniature($str);
+	if(file_exists(ppi($file['fileId']))) {
+		$postImage = p2l(ppi($str));
+	} else {
+		$postImage = $str;
+	}
 	$html = "";
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
-	$html .= '<img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$str.'"/>';
+	$html .= '<img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$postImage.'"/>';
 	$html .= '</span>';
 	return $html;
 }

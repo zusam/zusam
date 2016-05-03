@@ -10,6 +10,11 @@ function pmini($url) {
 	return pathTo2(array('url'=>$url,'param'=>'mini','ext'=>'jpg'));
 }
 
+// this function is just a shortcut
+function ppi($url) {
+	return pathTo2(array('url'=>$url,'param'=>'postImage','ext'=>'jpg'));
+}
+
 // TODO remove this function
 function pathTo($url, $param, $ext) {
 	return pathTo2(array('url' => $url, 'param' => $param, 'ext' => $ext));
@@ -56,6 +61,10 @@ function pathTo2($args) {
 	}
 	if($param == "mini") {
 		$path = $loc."/miniature/".hash("md5", $url).$ext; 
+		return realpath(dirname(__FILE__)."/../")."/".$path;
+	}
+	if($param == "postImage") {
+		$path = $loc."/postImage/".hash("md5", $url).$ext; 
 		return realpath(dirname(__FILE__)."/../")."/".$path;
 	}
 	if($param == "avatar") {

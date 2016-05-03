@@ -13,23 +13,8 @@ function file_initialize($fileId, $type, $uid) {
 	$file['fileId'] = $fileId;
 	$file['timestamp'] = time();
 
-	// will be erased in the future
-	$file['location'] = $file['fileId'];
-
 	return $file;
 }
-
-//function file_locate(&$file) {
-//	if($file['type'] == 'jpg') {
-//		$file['location'] = $file['fileId'];
-//	}
-//	if($file['type'] == 'webm') {
-//		$file['location'] = $file['fileId'];
-//	}
-//	if($file['type'] == 'sgf') {
-//		$file['location'] = $file['fileId'];
-//	}
-//}
 
 function file_save(&$file) {
 	$file['timestamp'] = time();
@@ -113,11 +98,13 @@ function file_print(&$file) {
 
 		$xx = p2l(pmini($file['fileId']));
 
-		//$html .= '<img width="'.$nw.'" height="'.$nh.'" class="inlineImage zoomPossible lazyload" onclick="lightbox.enlighten(this)" data-src="'.$imgsrc.'?'.$file['timestamp'].'"/>';
-		$html .= '<img width="'.$nw.'" height="'.$nh.'" class="inlineImage zoomPossible lazyload" onclick="lightbox.enlighten(this)" data-src="'.$imgsrc.'?m='.filemtime(file_getPath($file)).'"/>';
-		//$html .= '<img width="'.$nw.'" height="'.$nh.'" class="inlineImage zoomPossible lazyload" onclick="lightbox.enlighten(this)" data-src="'.$imgsrc.'"/>';
-		// save for getWidth and getHeight
-		//file_save($file);
+		if(file_exists(ppi($file['fileId']))) {
+			$postImage = p2l(ppi($file['fileId']));
+		} else {
+			$postImage = $imgsrc.'?m='.filemtime(file_getPath($file));
+		}
+
+		$html .= '<img width="'.$nw.'" height="'.$nh.'" class="inlineImage zoomPossible lazyload" onclick="lightbox.enlighten(this)" data-src="'.$postImage.'" data-lightbox="'.$imgsrc.'?m='.filemtime(file_getPath($file)).'"/>';
 	}
 	if($file['type'] == "webm") {
 		if(file_exists(file_getPath($file))) {

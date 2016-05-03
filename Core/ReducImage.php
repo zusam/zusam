@@ -1,4 +1,41 @@
 <?php
+	function createPostImage($from, $to, $w, $max_height, $q) {
+		if($q == null) {
+			$q = 90;
+		}
+		
+		$im = new \Imagick();
+		try {
+			if(!$im->readImage($from)) {
+				throw new Exception("");
+			}
+		} catch(Exception $e) {
+			return false;
+		}
+
+		$width = $im->getImageWidth();
+		$height = $im->getImageHeight();
+
+		$hw = $height / $width;
+		$wh = $width / $height;
+
+		//then we shorten the image 
+		$new_width = min($width, $w); 
+		$new_height = $hw*$new_width; 
+		$final_height = min($new_height, $max_height); 
+
+		$im->thumbnailImage($new_width, $new_height);
+		$im->cropImage($new_width, $final_height, 0, 0);
+		$im->setImageFormat('jpeg');
+		$im->stripImage();
+		$im->setImageCompression(Imagick::COMPRESSION_JPEG);
+		$im->setImageCompressionQuality($q);
+		$im->writeImage($to);
+		$im->destroy();
+		
+		return file_exists($to);
+	}
+
 	function saveImage($from, $to, $w, $h, $q) {
 		if($q == null) {
 			$q = 90;
@@ -36,6 +73,7 @@
 		return file_exists($to);
 	}
 
+	// TODO not used anymore
 	function rotateImage($location, $direction) {
 
 		$im = new \Imagick();
