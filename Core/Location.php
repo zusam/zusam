@@ -81,7 +81,7 @@ function pathTo2($args) {
 	}
 	if($param == "tmp") {
 		$path = "tmp/".hash("md5", $url); 
-		return $path;
+		return realpath(dirname(__FILE__)."/../")."/".$path;
 	}
 }
 

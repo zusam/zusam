@@ -1,5 +1,24 @@
 <?php
 
+function getFileSize($url) {
+	$size = filesize($url);
+	if($size) {
+		return $size;
+	}
+
+	$ch = curl_init($url);
+
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_HEADER, TRUE);
+	curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+
+	$data = curl_exec($ch);
+	$size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+
+	curl_close($ch);
+	return $size;
+}
+
 // TODO review and use !
 function isEmpty($var) {
 	if(!isset($var) || $var == null || $var == "" || $var == false) {

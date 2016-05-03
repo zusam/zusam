@@ -459,7 +459,7 @@ function process_video($str) {
 
 function process_image($str) {
 	gen_miniature($str);
-	if(file_exists(ppi($file['fileId']))) {
+	if(file_exists(ppi($str))) {
 		$postImage = p2l(ppi($str));
 	} else {
 		$postImage = $str;
