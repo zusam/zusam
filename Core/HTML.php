@@ -79,7 +79,7 @@ function html_footer($root_url) {
 	//$html .= '<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.min.js"></script>';
 	$html .= '<script src="JS.js?'.time().'"></script>';
 	$html .= '<script src="LIBJS.js?'.time().'"></script>';
-	$html .= '<script src="http://connect.soundcloud.com/sdk.js"></script>';
+	$html .= '<script src="https://connect.soundcloud.com/sdk.js"></script>';
 	$html .= '</body>';
 	$html .= '</html>';
 
