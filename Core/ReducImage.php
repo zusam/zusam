@@ -94,6 +94,33 @@
 		$im->writeImage($location);
 	}
 
+	// Specialized miniature creator function
+	function createMini($source, $to) {
+		$im = new \Imagick();
+		try {
+			if(!$im->readImage($source)) {
+				throw new Exception("");
+			}
+		} catch(Exception $e) {
+			return false;
+		}
+
+		$im->setImageBackgroundColor(new \ImagickPixel('white'));
+		$im = $im->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
+
+		$im->cropThumbnailImage(320, 180);
+
+		$im->setImageFormat('jpeg');
+		$im->stripImage();
+		$im->setImageCompression(\Imagick::COMPRESSION_JPEG);
+		$im->setImageCompressionQuality(70);
+		$ret = $im->writeImage($to);
+		$im->destroy();
+
+		return file_exists($to);
+	}
+
+	// TODO replace with createMini
 	function createPreview($new_width, $url, $to, $format, $quality) {
 		
 		if($quality == null) {
@@ -161,7 +188,6 @@
 
 	// TODO is it still used ?
 	function gifPreview($new_width, $url, $to, $format, $quality) {
-		//echo("gif preview");
 
 		if($quality == null) {
 			$quality = 100;

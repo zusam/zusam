@@ -111,9 +111,12 @@ $(window).ready(function() {
 						alwaysVisible: true
 					});
 				} else {
-					$(pv).closest('.nano').nanoScroller({
-						destroy: true
-					});
+					// small threshold to prevent back and forth changing
+					if(pv.offsetHeight + 30 < window.innerHeight) {
+						$(pv).closest('.nano').nanoScroller({
+							destroy: true
+						});
+					}
 				}
 			}
 		}, 1000);

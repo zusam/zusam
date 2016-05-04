@@ -472,13 +472,17 @@ function process_image($str) {
 }
 
 function process_gif($str) {
-	gen_miniature($str);
-	$xx = p2l(pmini($str));
-	$html = "";
-	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
-	$html .= '<div onclick="loadImage(this)" data-src="'.$str.'" class="launcher">';
-	$html .= '<img class="inlineImage" src="'.$xx.'" onerror="loadImage(this)"/>';
-	$html .= '</div></span>';
+	if(!isAnimated($str)) {
+		$html = process_image($str);
+	} else {
+		gen_miniature($str);
+		$xx = p2l(pmini($str));
+		$html = "";
+		$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		$html .= '<div onclick="loadImage(this)" data-src="'.$str.'" class="launcher">';
+		$html .= '<img class="inlineImage" src="'.$xx.'" onerror="loadImage(this)"/>';
+		$html .= '</div></span>';
+	}
 	return $html;
 }
 

@@ -34,7 +34,8 @@ function create_post_miniature($url, $file) {
 	}
 	if(!file_exists(pmini($url))) {
 		if(exif_imagetype($source) != IMAGETYPE_GIF) {
-			createPreview(320, $source, pmini($url), 9/16, 70);
+			//createPreview(320, $source, pmini($url), 9/16, 70);
+			createMini($source, pmini($url));
 		} else {
 			gifPreview(320, $source, pmini($url), 9/16, 70);
 		}
