@@ -1,4 +1,4 @@
-function loadVideo(file,id) {
+function loadVideo(file,id, fileId) {
 	if(file.type.match(/mp4|webm|ogg/)) {
 		console.log("load video "+file.name);
 		console.log(file);
@@ -6,16 +6,18 @@ function loadVideo(file,id) {
 		vid.controls = true;
 		vid.autoplay = true;
 		vid.onloadeddata = function() {
+			startProcessingFileFromQueue();
 			$('*[data-id="'+id+'"]').remove();
 			var fileId = createId();
 			PF.showVideo(vid, id, fileId);
 			PF.sendVideo(file, fileId);
 		};
 		vid.src = URL.createObjectURL(file);
+		startProcessingFileFromQueue();
 	} else {
-		var fileId = createId();
 		PF.showPlaceHolderVideo(id, fileId);
 		PF.sendVideo(file, fileId);
+		startProcessingFileFromQueue();
 	}
 }
 
@@ -75,11 +77,11 @@ function sendVideo(vidBlob, fileId) {
 	window.sending = window.sending + 1;
 }
 
-function loadGif(file,id) {
+function loadGif(file,id, fileId) {
 	console.log("load gif "+file.name);
-	var fileId = createId();
 	var img = new Image();
 	img.onload = function() {
+		startProcessingFileFromQueue();
 		PF.showGif(img, id, fileId);
 		PF.sendGif(file, fileId);
 	};
@@ -144,9 +146,8 @@ function sendGif(file, fileId) {
 	window.sending = window.sending + 1;
 }
 
-function loadImage(file,id) {
+function loadImage(file,id, fileId) {
 	console.log("load image "+file.name);
-	var fileId = createId();
 	var img = new Image();
 	img.onload = function() {
 		console.log("img:"+img);
@@ -166,11 +167,12 @@ function loadImage(file,id) {
 			canvas = imageAlgs.downScaleCanvas(canvas, g);
 		}
 		
+		startProcessingFileFromQueue();
 		PF.showImage(canvas, id, fileId);
 		PF.sendImage(canvas, fileId);
 	};
 	img.src = URL.createObjectURL(file);
-	var loading = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"><div class="spinner"><div class="bg-orange bounce1"></div><div class="bg-orange bounce2"></div><div class="bg-orange bounce3"></div></div></div></span>');
+	var loading = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false">'+typebox.genAjaxLoader()+'</span>');
 	$(id).append(loading);
 }
 

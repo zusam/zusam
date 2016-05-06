@@ -548,13 +548,27 @@ function handleFileSelect(evt) {
 		return false;
 	} else {
 		for(var i=0;i<files.length;i++) {
-			handleFile(files[i],id);
+			var fileId = createId();
+			fileQueue.push({"file":files[i],"id":id,"fileId":fileId});
+			//handleFile(files[i],id, fileId);
 		}
+		startProcessingFileFromQueue();
 	}
 	evt.target.value = null;
 }
 
-function handleFile(file,id) {
+function startProcessingFileFromQueue() {
+	if(typeof(fileQueue) == "undefined" || fileQueue.length == 0) {
+		return;
+	}
+	console.log("queue length : "+fileQueue.length);
+	setTimeout(function() {
+		var processObject = fileQueue.shift();
+		handleFile(processObject.file, processObject.id, processObject.fileId);
+	}, 0);
+}
+
+function handleFile(file,id, fileId) {
 	console.log(file);
 	var fileTypeHandled = false;
 	if(file.type.match(/image/)) {
@@ -563,9 +577,9 @@ function handleFile(file,id) {
 			alert("fichier image trop lourd (max 30Mo)");
 		} else {
 			if(file.type.match(/gif/)) {
-				PF.loadGif(file,id);
+				PF.loadGif(file,id, fileId);
 			} else {
-				PF.loadImage(file,id);
+				PF.loadImage(file,id, fileId);
 			}
 		}
 	}
@@ -574,7 +588,7 @@ function handleFile(file,id) {
 		if(file.size > 1024*1024*300) {
 			alert("fichier vidéo trop lourd (max 300Mo)");
 		} else {
-			PF.loadVideo(file,id);
+			PF.loadVideo(file,id, fileId);
 		}
 	}
 	if(!fileTypeHandled) {

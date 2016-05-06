@@ -229,7 +229,7 @@ if($_SESSION['connected']) {
 					if($file == null || $file == false) {
 						$file = file_initialize($fileId, "jpg", $u['_id']);
 					}
-					$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['location'], 'ext' => 'jpg', 'param' => 'file')), 2048, 2048);
+					$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['fileId'], 'ext' => 'jpg', 'param' => 'file')), 2048, 2048);
 					unlink(pmini($file['fileId']));
 					unlink(ppi($file['fileId']));
 					gen_miniature("{:".$fileId.":}");

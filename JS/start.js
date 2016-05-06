@@ -7,6 +7,8 @@ sending = 0;
 active_post = 0;
 loading_posts = false;
 
+fileQueue = [];
+
 console.log(origin_url);
 
 $(window).ready(function() {

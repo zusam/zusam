@@ -24,7 +24,7 @@ if [ ! -d "/srv/http" ]
 then 
 	echo "/srv/http should exists and be the root directory of nginx"
 fi
-P=(tmp Data/avatar Data/miniature Data/file Data/uploaded Data/converted)
+P=(tmp Data/avatar Data/miniature Data/file Data/uploaded Data/converted Data/postImage)
 for p in "${P[@]}";
 do
 	if [ ! -d "$p" ] 
