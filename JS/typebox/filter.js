@@ -218,7 +218,7 @@ var Filter = {
 			r1 = new RegExp(regex.dailymotion+'[\s]','gi');
 		}
 		substitution = function(str) {
-			var w = str.replace(/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/,'http://www.dailymotion.com/embed/video/$2?autoplay=1');
+			var w = str.replace(/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/,'https://www.dailymotion.com/embed/video/$2?autoplay=1');
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 			var o = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			o += '<div class="embed-responsive embed-responsive-16by9">';
@@ -238,7 +238,7 @@ var Filter = {
 			r1 = new RegExp(regex.vimeo+'[\s]','gi');
 		}
 		substitution = function(str) {
-			var w = str.replace(/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/,'http://player.vimeo.com/video/$3?autoplay=1');
+			var w = str.replace(/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/,'https://player.vimeo.com/video/$3?autoplay=1');
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 			var o = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			o += '<div class="embed-responsive embed-responsive-16by9">';
@@ -259,7 +259,7 @@ var Filter = {
 		}
 		substitution = function(str) {
 			var v = str.replace(/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/,"$2");
-			var w = 'http://www.youtube.com/embed/'+v+'?autoplay=1&controls=2&wmode=opaque';
+			var w = 'https://www.youtube.com/embed/'+v+'?autoplay=1&controls=2&wmode=opaque';
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 			var o = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			o += '<div class="embed-responsive embed-responsive-16by9">';
@@ -280,7 +280,7 @@ var Filter = {
 		}
 		substitution = function(str) {
 			var v = str.replace(/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/,"$4");
-			var w = 'http://www.youtube.com/embed/'+v+'?autoplay=1&controls=2&wmode=opaque';
+			var w = 'https://www.youtube.com/embed/'+v+'?autoplay=1&controls=2&wmode=opaque';
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 			var o = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			o += '<div class="embed-responsive embed-responsive-16by9">';

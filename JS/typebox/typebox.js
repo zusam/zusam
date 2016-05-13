@@ -161,7 +161,7 @@ function start(id) {
 
 function limitHeight(t) {
 	console.log(t.offsetHeight, window.innerHeight)
-	if(t.offsetHeight > (window.innerHeight*0.8 + 200)) {
+	if(t.offsetHeight > (window.innerHeight*1.3)) {
 		$(t).css('max-height',Math.floor(window.innerHeight*0.75) + "px");
 		$(t).append('<div class="seeMore" onclick="this.parentNode.style.maxHeight = \'none\'; $(this).remove()"><span>Voir plus</span></div>');
 	}

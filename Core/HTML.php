@@ -14,7 +14,7 @@ function html_head($root_url) {
 	$html .= '<title>'.$title.'</title>';
 	$html .= '<meta name="description" content="'.$description.'"/>';
 	$html .= '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>';
-	$html .= '<meta charset="utf-8"/>';
+	$html .= '<meta charset="UTF-8"/>';
 
 	// font
 	$html .= '<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">';
@@ -37,7 +37,7 @@ function html_head($root_url) {
 	$html .= '<meta name="twitter:card" content="summary" />';
 	$html .= '<meta name="twitter:title" content="'.$title.'" />';
 	$html .= '<meta name="twitter:description" content="'.$description.'" />';
-	$html .= '<meta name="twitter:image" content"'.$image.'" />';
+	$html .= '<meta name="twitter:image" content="'.$image.'" />';
 	
 	// icons
 	$html .= '<link href="Assets/icons/apple-touch-icon.png" rel="apple-touch-icon" />';
