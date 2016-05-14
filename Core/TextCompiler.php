@@ -239,8 +239,6 @@ function process_imgur($str,$debug) {
 				$output .= $a;	
 			}
 		} else {
-			//var_dump($data);
-			//var_dump("https://api.imgur.com/3/gallery/".$id);
 			$data = handleLink($str);
 			$output = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 			$output .= open_graph_build($data);
@@ -486,7 +484,7 @@ function process_albumImage($str) {
 	$h = file_getHeight($file);
 	if($file) {
 		$html = "";
-		$html .= '<span data-owner="'.$file['owner'].'" class="deletable flexible-image" data-width="'.$w.'" data-height="'.$h.'" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" style="width:'.intval($w*130/$h).'" contenteditable="false" id="'.md5($str).'">';
+		$html .= '<span data-owner="'.$file['owner'].'" class="deletable flexible-image" data-width="'.$w.'" data-height="'.$h.'" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" style="width:'.intval($w*130/$h).'px" contenteditable="false" id="'.md5($str).'">';
 		if($uid == (String) $file['owner']) {
 			$html .= file_albumImage($file);
 		} else {

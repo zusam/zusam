@@ -56,9 +56,7 @@ function filtre($url) {
 	if(preg_match(r2ep($regex['facebook_video']),$url)==1) {
 		$vid = preg_replace("/.*videos\/([0-9]+).*/","$1",$url);
 		$link = "http://graph.facebook.com/".$vid."/picture";
-		//var_dump($link);
 		$ret = get_mini_from_link($url, $link);
-		//var_dump($ret);
 		return $ret;
 	}
 
