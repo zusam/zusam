@@ -27,7 +27,7 @@ function page_mainmenu(&$u, $page) {
 			$f = forum_load(array('_id'=>$fid));
 			if($f != null && $f != false) {
 				$html .= '<div class="section-entry ';
-				if($_SESSION['forum'] == $fid) {
+				if($_SESSION['forum'] == $fid && $page != "profile") {
 					$html .= 'selected';
 				}
 				$html .= '">';

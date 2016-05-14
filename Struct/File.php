@@ -93,7 +93,7 @@ function file_print(&$file) {
 
 		$width = file_getWidth($file);
 		$height = file_getHeight($file);
-		$nw = 530;
+		$nw = 600;
 		$nh = floor($nw * $height / $width);
 
 		$xx = p2l(pmini($file['fileId']));

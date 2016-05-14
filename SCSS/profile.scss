@@ -66,6 +66,7 @@
 	}
 	.change-avatar:hover {
 		filter: sepia(100%);
+		-webkit-filter: sepia(100%);
 		transition: all 0s;
 	}
 }

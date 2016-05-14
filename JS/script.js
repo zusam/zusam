@@ -395,7 +395,7 @@ function calcNbToLoad() {
 	}
 
 	var toView = loaded - viewing;
-	var toLoad = Math.max(0, goal - toView);
+	var toLoad = parseInt(Math.max(0, goal - toView));
 
 	//console.log(viewing, loaded, toLoad);
 
@@ -406,7 +406,7 @@ function loadMorePosts() {
 	if(!window.loading_posts) {
 		recordUsage("morePosts");
 		window.loading_posts = true;
-		var list = $('#container .post-mini').map(function(){ var t = this.dataset.id; return t; }).get();
+		var list = $('.post-mini').map(function(){ var t = this.dataset.id; return t; }).get();
 		list = JSON.stringify(list);
 		var fid = $('#info').attr('data-fid');
 

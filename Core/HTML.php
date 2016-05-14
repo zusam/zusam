@@ -14,7 +14,7 @@ function html_head($root_url) {
 	$html .= '<title>'.$title.'</title>';
 	$html .= '<meta name="description" content="'.$description.'"/>';
 	$html .= '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>';
-	$html .= '<meta charset="utf-8"/>';
+	$html .= '<meta charset="UTF-8"/>';
 
 	// font
 	$html .= '<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">';
@@ -37,7 +37,7 @@ function html_head($root_url) {
 	$html .= '<meta name="twitter:card" content="summary" />';
 	$html .= '<meta name="twitter:title" content="'.$title.'" />';
 	$html .= '<meta name="twitter:description" content="'.$description.'" />';
-	$html .= '<meta name="twitter:image" content"'.$image.'" />';
+	$html .= '<meta name="twitter:image" content="'.$image.'" />';
 	
 	// icons
 	$html .= '<link href="Assets/icons/apple-touch-icon.png" rel="apple-touch-icon" />';
@@ -79,7 +79,7 @@ function html_footer($root_url) {
 	//$html .= '<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.min.js"></script>';
 	$html .= '<script src="JS.js?'.time().'"></script>';
 	$html .= '<script src="LIBJS.js?'.time().'"></script>';
-	$html .= '<script src="http://connect.soundcloud.com/sdk.js"></script>';
+	$html .= '<script src="https://connect.soundcloud.com/sdk.js"></script>';
 	$html .= '</body>';
 	$html .= '</html>';
 

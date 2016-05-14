@@ -178,7 +178,7 @@ $data = crossroad($GET, $POST, $FILES);
 //var_dump($_COOKIE);
 
 // HTML
-echo('<html>');
+echo('<!DOCTYPE html>');
 
 // HEAD
 $head = html_head($GLOBALS['__ROOT_URL__']);

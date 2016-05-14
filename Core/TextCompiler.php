@@ -239,8 +239,6 @@ function process_imgur($str,$debug) {
 				$output .= $a;	
 			}
 		} else {
-			//var_dump($data);
-			//var_dump("https://api.imgur.com/3/gallery/".$id);
 			$data = handleLink($str);
 			$output = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 			$output .= open_graph_build($data);
@@ -392,7 +390,7 @@ function process_vine($str) {
 function process_dailymotion($str) {
 	gen_miniature($str);
 	$html = "";
-	$w = preg_replace('/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/','http://www.dailymotion.com/embed/video/$2?autoplay=1',$str);
+	$w = preg_replace('/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/','https://www.dailymotion.com/embed/video/$2?autoplay=1',$str);
 	$xx = p2l(pmini($str));
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
@@ -405,7 +403,7 @@ function process_dailymotion($str) {
 function process_vimeo($str) {
 	gen_miniature($str);
 	$html = "";
-	$w = preg_replace('/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/','http://player.vimeo.com/video/$3?autoplay=1',$str);
+	$w = preg_replace('/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/','https://player.vimeo.com/video/$3?autoplay=1',$str);
 	$xx = p2l(pmini($str));
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
@@ -419,7 +417,7 @@ function process_youtube2($str) {
 	gen_miniature($str);
 	$html = "";
 	$v = preg_replace('/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/','$2',$str);
-	$w = 'http://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
+	$w = 'https://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
 	$xx = p2l(pmini($str));
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
@@ -433,7 +431,7 @@ function process_youtube($str) {
 	gen_miniature($str);
 	$html = "";
 	$v = preg_replace('/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/','$4',$str);
-	$w = 'http://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
+	$w = 'https://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
 	$xx = p2l(pmini($str));
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
@@ -495,7 +493,7 @@ function process_albumImage($str) {
 	$h = file_getHeight($file);
 	if($file) {
 		$html = "";
-		$html .= '<span data-owner="'.$file['owner'].'" class="deletable flexible-image" data-width="'.$w.'" data-height="'.$h.'" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" style="width:'.intval($w*130/$h).'" contenteditable="false" id="'.md5($str).'">';
+		$html .= '<span data-owner="'.$file['owner'].'" class="deletable flexible-image" data-width="'.$w.'" data-height="'.$h.'" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" style="width:'.intval($w*130/$h).'px" contenteditable="false" id="'.md5($str).'">';
 		if($uid == (String) $file['owner']) {
 			$html .= file_albumImage($file);
 		} else {
