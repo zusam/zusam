@@ -130,13 +130,15 @@ function enlighten(id) {
 			turncw.on("click", function(evt) {
 				evt.stopPropagation();
 				console.log(e);
-				lightbox.turnAndSend(e,"cw",this_img);
+				//lightbox.turnAndSend(e,"cw",this_img);
+				lightbox.turnImage(e,90);
 			});
 			var turnccw = $('<button contentditable="false" class="material-shadow editIMG ccw"><i class="icon-ccw"></i></button>');
 			turnccw.on("click", function(evt) {
 				evt.stopPropagation();
 				console.log(e);
-				lightbox.turnAndSend(e,"ccw",this_img);
+				//lightbox.turnAndSend(e,"ccw",this_img);
+				lightbox.turnAndSend(e,270);
 			});
 		}
 		var r = new RegExp("/"+origin_url+"/" ,'gi');
@@ -170,34 +172,17 @@ function darken() {
 	$(window).off('keydown');
 }
 
-// turn the image
-function turnAndSend(e, rotation, img) {
-	
+function turnImage(e, rotation) {
 	$('#lightbox').css('opacity','0');
-
-	// init canvas
-	canvas = document.createElement('canvas');
-	canvas.width = img.naturalWidth;
-	canvas.height = img.naturalHeight;
-	var ctx = canvas.getContext('2d');
-	ctx.drawImage(img, 0, 0);
-	
-	// process canvas
-	canvas = imageAlgs.turn(canvas, rotation);
-
-	var action = "addImage";
-	var fileid = $(e).closest('.deletable').attr('data-fileid');
-
-	imgURL = canvas.toDataURL("image/png");
 	
 	f = new FormData();
-	f.append("image",dataURItoBlob(imgURL));
+	var fileid = $(e).closest('.deletable').attr('data-fileid');
 	var uid = $('#info').attr('data-uid');
 	var fid = $('#info').attr('data-fid');
 	f.append("uid",uid);
 	f.append("fid",fid);
-	f.append("action",action);
-	console.log(action);
+	f.append("rotation",rotation);
+	f.append("action","turnImage");
 	f.append("fileId",fileid);
 	$.ajax({
 		url: 'Ajax/post.php',
@@ -224,3 +209,58 @@ function turnAndSend(e, rotation, img) {
 		contentType: false
 	});
 }
+
+// turn the image
+//function turnAndSend(e, rotation, img) {
+//	
+//	$('#lightbox').css('opacity','0');
+//
+//	// init canvas
+//	canvas = document.createElement('canvas');
+//	canvas.width = img.naturalWidth;
+//	canvas.height = img.naturalHeight;
+//	var ctx = canvas.getContext('2d');
+//	ctx.drawImage(img, 0, 0);
+//	
+//	// process canvas
+//	canvas = imageAlgs.turn(canvas, rotation);
+//
+//	var action = "addImage";
+//	var fileid = $(e).closest('.deletable').attr('data-fileid');
+//
+//	imgURL = canvas.toDataURL("image/png");
+//	
+//	f = new FormData();
+//	f.append("image",dataURItoBlob(imgURL));
+//	var uid = $('#info').attr('data-uid');
+//	var fid = $('#info').attr('data-fid');
+//	f.append("uid",uid);
+//	f.append("fid",fid);
+//	f.append("action",action);
+//	console.log(action);
+//	f.append("fileId",fileid);
+//	$.ajax({
+//		url: 'Ajax/post.php',
+//		type: "POST",
+//		data: f,
+//		success: function(data){ 
+//				console.log(data); 
+//				console.log("sent!");
+//				// replace all sent images
+//				$('.deletable[data-fileid="'+fileid+'"] img').each(function(){
+//					var src = this.src.replace(/\?.*/,'') + '?' + Date.now(); 
+//					this.src = src;
+//					var pid = $('#post-viewer').attr('data-id');
+//					var mini = $('.post-mini[data-id="'+pid+'"] .miniature')[0];
+//					if(typeof(mini) !=! "undefined") {
+//						src = mini.src.replace(/\?.*/,'') + '?' + Date.now();
+//						mini.src = src;
+//					}
+//				});
+//				lightbox.enlighten(e);
+//			},
+//		error: function(){ console.log(uid,fid,action); },
+//		processData: false,
+//		contentType: false
+//	});
+//}

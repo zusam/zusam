@@ -73,8 +73,7 @@
 		return file_exists($to);
 	}
 
-	// TODO not used anymore
-	function rotateImage($location, $direction) {
+	function rotateImage($location, $rotation) {
 
 		$im = new \Imagick();
 		try {
@@ -84,14 +83,10 @@
 		} catch(Exception $e) {
 			return false;
 		}
-		if($direction=="right") {
-			$d = 90;
-		} else {
-			$d = -90;
-		}
-		$im->rotateImage(new ImagickPixel('#00000000'), $d);
+		$im->rotateImage(new ImagickPixel('#00000000'), $rotation);
 		unlink(realpath($location));
 		$im->writeImage($location);
+		return file_exists($location);
 	}
 
 	// Specialized miniature creator function

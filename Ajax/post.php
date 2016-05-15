@@ -30,6 +30,26 @@ if($_SESSION['connected']) {
 	
 	if($POST['action'] != null && $POST['action'] != "") {
 
+		if($POST['action'] == "turnImage") {
+			$uid = $POST['uid'];
+			$fileId = $POST['fileId'];
+			$rotation = intval($POST['rotation']);
+
+			$file = file_load(array("fileId"=>$fileId));
+			if($file != null && $rotation != 0) {
+				$r = rotateImage(file_getPath($file), $rotation);
+				unlink(pmini($file['fileId']));
+				unlink(ppi($file['fileId']));
+				gen_miniature("{:".$fileId.":}");
+				echo("image turned !");
+				//var_dump($POST);
+				//var_dump($r);
+			} else {
+				echo("fail");
+			}
+			exit;
+		}
+
 		//TODO protect
 		if($POST['action'] == "removeNotification") {
 			if($POST['uid'] == $_SESSION['uid']) {
