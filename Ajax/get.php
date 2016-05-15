@@ -124,7 +124,7 @@ if($_SESSION['connected']) {
 				echo(json_encode($r));
 			} else {
 				header('Content-Type: text/json; charset=UTF-8');
-				echo("<textarea>".json_encode($r)."</textarea>");
+				echo(json_encode($r));
 			}
 			exit;
 		}

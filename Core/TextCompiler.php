@@ -13,6 +13,9 @@ function compileText($text, $debug) {
 	$str = strip_tags($text);
 	$str = trim($str);
 	$str = preg_replace("/\n/","<br>",$str);
+	if($debug) {
+		var_dump($text);
+	}
 
 	$map = genTextMap($str, $debug);
 	if($debug) {
@@ -88,7 +91,7 @@ function compileText($text, $debug) {
 				$html .= $pre.process_youtube($m[0]);
 			break;
 			case "video":
-				$html .= $pre.process_video($m[0]);
+				$html .= $pre.process_video($m[0], $debug);
 			break;
 			case "image":
 				$output = process_image($m[0]);
@@ -441,7 +444,10 @@ function process_youtube($str) {
 	return $html;
 }
 
-function process_video($str) {
+function process_video($str,$debug) {
+	if($debug) {
+		var_dump($str);
+	}
 	// change gifv into webm
 	$str = preg_replace("/\.gifv/",".webm",$str);
 	gen_miniature($str);
@@ -470,9 +476,10 @@ function process_image($str) {
 }
 
 function process_gif($str) {
-	if(!isAnimated($str)) {
-		$html = process_image($str);
-	} else {
+	// isAnimated is too long...
+	//if(true || !isAnimated($str)) {
+	//	$html = process_image($str);
+	//} else {
 		gen_miniature($str);
 		$xx = p2l(pmini($str));
 		$html = "";
@@ -480,7 +487,7 @@ function process_gif($str) {
 		$html .= '<div onclick="loadImage(this)" data-src="'.$str.'" class="launcher">';
 		$html .= '<img class="inlineImage" src="'.$xx.'" onerror="loadImage(this)"/>';
 		$html .= '</div></span>';
-	}
+	//}
 	return $html;
 }
 

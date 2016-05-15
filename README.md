@@ -11,6 +11,7 @@ requirements :
 - you will need ruby/gem and the sass compiler to build the css files : "gem install sass".
 - nodejs is required to use uglifyJS2 (don't forget to install it : "sudo npm install -g uglify-js".
 - mongdb-tools is necessary for backup and restore db scripts
+- php-fpm is necessary to go along with nginx
 
 usefull bonus :
 - installing svgo for reducing the size of new svg can be good : "sudo npm install -g svgo"

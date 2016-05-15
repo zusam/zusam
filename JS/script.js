@@ -608,6 +608,12 @@ function loadImage(t) {
 		img.off()
 		t.remove();
 	});
+	// TODO handle this nicely
+	img.on('error', function(e) {
+		t.after(typebox.Filter.fail_request(src));
+		t.remove();
+		console.log(e);
+	});
 	t.addClass('launcher-loading');
 }
 
@@ -625,7 +631,10 @@ function loadVideo(t) {
 		vid.off();
 		t.remove();
 	});
+	// TODO handle this nicely
 	vid.on('error', function(e) {
+		t.after(typebox.Filter.fail_request(src));
+		t.remove();
 		console.log(e);
 	});
 	t.addClass('launcher-loading');

@@ -1,5 +1,43 @@
 <?php
 
+//function isAnimatedGif($url) {
+//	$size = 1024*1024;
+//	$headers = array("Range: bytes=0-".$size);
+//	$curl = curl_init($url);
+//	curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+//	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+//	$data = curl_exec($curl);
+//	curl_close($curl);
+//
+//	$filecontents = $data;
+//
+//	$str_loc=0;
+//	$count=0;
+//
+//	// There is no point in continuing after we find a 2nd frame
+//	while ($count < 2) {
+//		$where1=strpos($filecontents,"\x00\x21\xF9\x04", $str_loc);
+//		if ($where1 === FALSE) {
+//			break;
+//		}
+//
+//		$str_loc = $where1+1;
+//		$where2  = strpos($filecontents,"\x00\x2C",$str_loc);
+//		if ($where2 === FALSE) {
+//			break;
+//		} else {
+//			if ($where1+8 == $where2) {
+//				$count++;
+//			}
+//			$str_loc = $where2+1;
+//		}
+//	}
+//
+//	// gif is animated when it has two or more frames
+//	return ($count >= 2); 
+//}
+
+
 function getFileSize($url) {
 	$size = filesize($url);
 	if($size) {
