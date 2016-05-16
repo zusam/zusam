@@ -124,21 +124,25 @@ function forum_removeUser_andSave(&$forum, &$user) {
 	//deleteKey($forum['_id'], $user['forums']);
 	$fid = (String) $forum['_id'];
 	foreach($user['forums'] as $k=>$v) {
-		if($k == $fid) {
+		if($v == $fid) {
 			unset($user['forums'][$k]);
 			continue;
 		}
-		$f = forum_load(array("_id"=>$k));
+		$f = forum_load(array("_id"=>$v));
 		if($f == null || $f == false) {
 			unset($user['forums'][$k]);
 		}
 	}
-	unset($user['forums'][$fid]);
+	// TODO can be used if the method before doesn't work
+	//if(($key = array_search($fid, $user['forums'])) !== false) {
+	//    unset($user['forums'][$key]);
+	//}
+	//$user['forums'] = deleteValue($fid, $user['forums']);
 
 	// these extra precautions are not needed anymore TODO remove them ?
 	if($nbu > count($user['forums']) && $nbf > count($forum['users'])) {
 		forum_save($forum);
-		account_save($user, true);
+		account_save($user);
 		//var_dump($forum['users']);
 		if(count($forum['users']) <= 0) {
 			forum_destroy($forum['_id']);

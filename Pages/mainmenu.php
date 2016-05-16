@@ -5,6 +5,8 @@ require_once('Include.php');
 
 function page_mainmenu(&$u, $page) {
 
+	$uid = (String) $u['_id'];
+
 	$html = "";
 	$html .= '<div id="mainmenu" class="slide slide-menu slidefromleft">';
 	$html .= '<div class="menu-profil">';
@@ -26,27 +28,35 @@ function page_mainmenu(&$u, $page) {
 		if($fid != "") {
 			$f = forum_load(array('_id'=>$fid));
 			if($f != null && $f != false) {
-				$html .= '<div class="section-entry ';
-				if($_SESSION['forum'] == $fid && $page != "profile") {
-					$html .= 'selected';
+				// TODO this verification is optional
+				if(in_array($uid, $f['users'])) {
+					$html .= '<div class="section-entry ';
+					if($_SESSION['forum'] == $fid && $page != "profile") {
+						$html .= 'selected';
+					}
+					$html .= '">';
+					$html .= ' <a class="menu-highlight forum-link ';
+					$html .= '" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'">'.$f['name'];
+					if($f['timestamp'] != null && $v['timestamp'] < $f['timestamp']) {
+						$html .= ' <i class="icon-circle notif"></i>';
+					}
+					$html .= '</a>';
+					$html .= '
+						<a class="forum-settings spin-hover" href="'.$GLOBALS['__ROOT_URL__'].'?fid='.$f['_id'].'&page=forum_settings">
+							<i class="icon-cog">
+							</i>
+						</a>
+					';
+					$html .= '</div>';
+				} else {
+					unset($u['forums'][$fid]);
 				}
-				$html .= '">';
-				$html .= ' <a class="menu-highlight forum-link ';
-				$html .= '" href="'.$_SERVER['PHP_SELF'].'?fid='.$f['_id'].'">'.$f['name'];
-				if($f['timestamp'] != null && $v['timestamp'] < $f['timestamp']) {
-					$html .= ' <i class="icon-circle notif"></i>';
-				}
-				$html .= '</a>';
-				$html .= '
-					<a class="forum-settings spin-hover" href="'.$GLOBALS['__ROOT_URL__'].'?fid='.$f['_id'].'&page=forum_settings">
-						<i class="icon-cog">
-						</i>
-					</a>
-				';
-				$html .= '</div>';
+			} else {
+				unset($u['forums'][$fid]);
 			}
 		}
 	}
+	account_save($u);
 	$notifications = array_reverse(load_notifications($u));
 	if(count($notifications) > 0) {
 		foreach($notifications as $n) {

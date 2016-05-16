@@ -30,7 +30,7 @@ function page_section_forum_settings(&$u, &$forum) {
 	$html .= '</form>';
 
 	$html .= '<form class="change-profile">';
-	$html .= '<span class="formTitle">Lien secret d\'invitation au groupe<div class="help-balise icon-help-circled"><span>Toute personne possédant ce lien pourra le rejoindre sans être invitée</span></div></span>';
+	$html .= '<span class="formTitle">Lien secret d\'invitation au groupe<div class="help-balise icon-help-circled"><span>Toute personne possédant ce lien pourra rejoindre le groupe sans être invitée</span></div></span>';
 	$html .= '<input class="textInput" type="text" onclick="this.setSelectionRange(0, this.value.length); return false;" value="'.$GLOBALS['__ROOT_URL__'].'?il='.$forum['link'].'" readonly="readonly">';
 	$html .= '<input type="submit" onclick="changeSecretLink(); return false;" value="Réinitialiser le lien secret">';
 	$html .= '</form>';

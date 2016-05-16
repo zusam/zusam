@@ -230,7 +230,7 @@ function takeAction($data) {
 		case "join_forum" :
 			$u = account_load(array('_id'=>$data['uid']));
 			if(isset($data['il'])) {
-				$f = forum_load(array('link'=>$GET['il']));
+				$f = forum_load(array('link'=>$data['il']));
 			}
 			if(isset($data['ii'])) {
 				$n = notification_load(array('link'=>$data['ii']));
@@ -279,7 +279,24 @@ function takeAction($data) {
 
 		case "forum_settings" :
 			$u = account_load(array('_id'=>$data['uid']));
+			$uid = (String) $u['_id'];
 			$f = forum_load(array('_id'=>$data['fid']));
+			$fid = (String) $f['_id'];
+			
+			// Is it a valid forum ?
+			if($f == null || $f == false || !in_array($uid, $f['users'])) {
+				unset($u['forums'][$fid]);
+				account_save($u);
+				$fid = array_keys($u['forums'])[0];
+				if($fid != null && $fid != "") {
+					$data['action'] = "forum";
+					$data['fid'] = $fid;
+				} else {
+					$data['action'] = "void";
+				}
+				takeAction($data);
+			}
+
 			echo('<body>');
 			echo('<div class="hidden" id="info" data-uid="'.$u['_id'].'" data-avatar="'.account_getAvatar($u).'" data-fid="'.$_SESSION['forum'].'" data-action="'.$data['action'].'"></div>');
 			echo(page_mainmenu($u, "forum_settings"));
@@ -298,11 +315,29 @@ function takeAction($data) {
 
 		case "forum" :
 			$u = account_load(array('_id'=>$data['uid']));
+			$uid = (String) $u['_id'];
 			$f = forum_load(array('_id'=>$data['fid']));
+			$fid = (String) $f['_id'];
+
+			// Is it a valid forum ?
+			if($f == null || $f == false || !in_array($uid, $f['users'])) {
+				unset($u['forums'][$fid]);
+				account_save($u);
+				$fid = array_keys($u['forums'])[0];
+				if($fid != null && $fid != "") {
+					$data['action'] = "forum";
+					$data['fid'] = $fid;
+				} else {
+					$data['action'] = "void";
+				}
+				takeAction($data);
+			}
 			
 			// update timestamp
 			account_updateTimestamp($u);
 			account_save($u);
+
+			$_SESSION['forum'] = $fid;
 
 			// update timestamp of visited forum
 			if($_SESSION['forum'] != "") {
@@ -312,7 +347,7 @@ function takeAction($data) {
 			}
 
 			echo('<body>');
-			echo('<div class="hidden" id="info" data-uid="'.$u['_id'].'" data-avatar="'.account_getAvatar($u).'" data-fid="'.$_SESSION['forum'].'" data-action="'.$data['action'].'"></div>');
+			echo('<div class="hidden" id="info" data-uid="'.$uid.'" data-avatar="'.account_getAvatar($u).'" data-fid="'.$_SESSION['forum'].'" data-action="'.$data['action'].'"></div>');
 			echo(page_mainmenu($u, "forum"));
 			echo('<div id="newavatar" class="newavatar"><div id="retoucheBox"></div></div>');
 			echo('<div id="slidepostviewer" class="slide slide-over slidefromright"></div>');
@@ -352,78 +387,24 @@ function takeAction($data) {
 			echo($footer);
 			exit();
 			break;
+	
+		case "void" : 
+			$u = account_load(array('_id'=>$data['uid']));
+			$uid = (String) $u['_id'];
+			$_SESSION['forum'] = "";
+			
+			echo('<body>');
+			echo('<div class="hidden" id="info" data-uid="'.$uid.'" data-avatar="'.account_getAvatar($u).'" data-action="'.$data['action'].'"></div>');
+			echo(page_mainmenu($u, ""));
+			echo('<div id="main_page">');
+			echo('<nav>');
+			echo(page_nav($u));
+			echo('</nav>');
+			echo('</div>');
+			$footer = html_footer($GLOBALS['__ROOT_URL__']);
+			echo($footer);
+			exit();
+			break;
 	}
-}
 
-//function main(&$u,&$forum,&$GET,&$POST) {
-//	// BODY
-//	echo('<body>');
-//
-//	// SOME INFOS FOR JAVASCRIPT 
-//	echo('
-//	<div class="hidden" id="info" data-uid="'.$u['_id'].'" data-avatar="'.account_getAvatar($u).'" data-fid="'.$_SESSION['forum'].'"></div>
-//	');
-//
-//	// MAIN MENU
-//	echo(page_mainmenu($u, $GET['page']));
-//
-//	// NEW AVATAR
-//	echo('<div id="newavatar" class="newavatar"><div id="retoucheBox"></div></div>');
-//
-//	// POST VIEWER
-//	echo('<div id="slidepostviewer" class="slide slide-over slidefromright"></div>');
-//
-//	// NEW POST
-//	echo('
-//	<div id="slidenewpost" class="slide slide-over slidefromright">
-//		<div class="nano">
-//			<div class="nano-content">
-//				<div id="newpost" class="newpost">
-//					<div id="typeBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Partagez quelque chose..."></div></div>
-//					<div class="menu">
-//						<div class="menu-cell">
-//							<button class="cancel" onclick="push_hidenewpost()">Annuler</button>
-//						</div>
-//						<div class="menu-cell">
-//							<button onclick="inputFile(\'#typeBox\')" class="action"><i class="icon-attach"></i></button>
-//						</div>
-//						<div class="menu-cell">
-//							<button class="send" onclick="sendIt(\'#typeBox\')">Envoyer</button>
-//						</div>
-//					</div>
-//				</div>
-//			</div>
-//		</div>
-//	</div>
-//	');
-//
-//	// MAIN_PAGE
-//	echo('<div id="main_page">');
-//
-//	// NAVBAR
-//	echo('<nav>');
-//	echo(page_nav($u, $forum));
-//	echo('</nav>');
-//
-//	// MAIN SECTION
-//	echo('<section>');
-//	switch($GET['page']) {
-//		case "profile": 
-//			echo(page_section_profile($u));
-//			break;
-//		case "forum_settings":
-//			echo(page_section_forum_settings($u, $forum));
-//			break;
-//		default:
-//			echo(page_section_forum($u, $forum));
-//			break;
-//	}
-//	echo('</section>');
-//
-//	// MAIN_PAGE
-//	echo('</div>');
-//
-//	// FOOTER
-//	$footer = html_footer($GLOBALS['__ROOT_URL__']);
-//	echo($footer);
-//}
+}
