@@ -178,6 +178,19 @@ function view() {
 	});
 }
 
+// TODO make a map of the dynamicbox
+//function map(t) {
+//	var box = $(t).closest('.dynamicBox');	
+//	var map = {};
+//	box.children().each(function() {
+//		if(this.tagName == 'DIV') {
+//			continue;
+//		}
+//		var d = $(this);
+//		var str = d.attr('data-src');
+//	});
+//}
+
 // TODO read and understand.
 // ref : http://stackoverflow.com/questions/6690752/insert-html-at-caret-in-a-contenteditable-div/6691294#6691294
 // This is a replacement for insertHTML that doesn't exists in ie11

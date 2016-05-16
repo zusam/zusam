@@ -559,9 +559,11 @@ function handleFileSelect(evt) {
 
 function startProcessingFileFromQueue() {
 	if(typeof(fileQueue) == "undefined" || fileQueue.length == 0) {
+		$('#newpost .menu .send').removeAttr('disabled');
 		return;
 	}
 	console.log("queue length : "+fileQueue.length);
+	$('#newpost .menu .send').attr('disabled','true');
 	setTimeout(function() {
 		var processObject = fileQueue.shift();
 		handleFile(processObject.file, processObject.id, processObject.fileId);
