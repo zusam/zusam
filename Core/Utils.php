@@ -123,6 +123,12 @@ function cutIfTooLong($str, $n) {
 }
 
 function fgc($url, $bytes, $header) {
+	if(!isset($bytes)) {
+		$bytes = "";
+	}
+	if(!isset($header)) {
+		$header = false;
+	}
 	$ch = curl_init($url);
 	if($header == true) {
 		curl_setopt($ch, CURLOPT_HEADER, true);

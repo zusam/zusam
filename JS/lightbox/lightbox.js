@@ -138,7 +138,7 @@ function enlighten(id) {
 				evt.stopPropagation();
 				console.log(e);
 				//lightbox.turnAndSend(e,"ccw",this_img);
-				lightbox.turnAndSend(e,270);
+				lightbox.turnImage(e,270);
 			});
 		}
 		var r = new RegExp("/"+origin_url+"/" ,'gi');
@@ -193,15 +193,16 @@ function turnImage(e, rotation) {
 				console.log("sent!");
 				// replace all sent images
 				$('.deletable[data-fileid="'+fileid+'"] img').each(function(){
-					var src = this.src.replace(/\?.*/,'') + '?' + Date.now(); 
+					var src = this.src.replace(/\?.*/,'') + '?' + Math.floor(Date.now()/1000); 
 					this.src = src;
 					var pid = $('#post-viewer').attr('data-id');
 					var mini = $('.post-mini[data-id="'+pid+'"] .miniature')[0];
 					if(typeof(mini) !=! "undefined") {
-						src = mini.src.replace(/\?.*/,'') + '?' + Date.now();
+						src = mini.src.replace(/\?.*/,'') + '?' + Math.floor(Date.now()/1000);
 						mini.src = src;
 					}
 				});
+				e.dataset.lightbox = e.dataset.lightbox.replace(/\?.*/,'') + '?' + Math.floor(Date.now()/1000);
 				lightbox.enlighten(e);
 			},
 		error: function(){ console.log(uid,fid,action); },

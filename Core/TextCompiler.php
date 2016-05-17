@@ -73,7 +73,7 @@ function compileText($text, $debug) {
 				$html .= $pre.process_googleDrive($m[0]);
 			break;
 			case "soundcloud":
-				$html .= $pre.process_soundcloud($m[0]);
+				$html .= $pre.process_soundcloud($m[0], $debug);
 			break;
 			case "vine":
 				$html .= $pre.process_vine($m[0]);
@@ -349,19 +349,19 @@ function fail_request($url) {
 	return $e;
 }
 
-function process_soundcloud($str) {
-	gen_miniature($str);
+function process_soundcloud($str, $debug) {
+	gen_miniature($str, $debug);
 	$xx = p2l(pmini($str));
 	$code = "";
 	$code .= '<div class="embed-responsive embed-responsive-16by9">';
 	$code .= '<div onclick="loadIframe(this)" class="launcher">';
-	$code .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
+	$code .= '<img src="'.$xx.'" onerror="loadIframeNoPlay(this)"/>';
 	$code .= '</div></div>';
 	$html = '
 		<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">
 			<script>
 				console.log("soundcloud");
-				SC.oEmbed("'.$str.'", { auto_play: true }, function(oEmbed) {
+				SC.oEmbed("'.$str.'", { auto_play: false }, function(oEmbed) {
 					console.log(oEmbed);
 					var song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,"$1");
 					console.log(song_url);
@@ -370,6 +370,7 @@ function process_soundcloud($str) {
 					var dropin = $(\''.$code.'\');
 					console.log(dropin);
 					dropin.find(".launcher").attr("data-src",w);
+					dropin.find(".launcher").attr("data-srcnoplay",song_url);
 					$("#'.md5($str).'").html(dropin);
 				});
 			</script>

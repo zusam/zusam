@@ -180,8 +180,8 @@ var Filter = {
 					var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 					var o = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 					o += '<div class="embed-responsive embed-responsive-16by9">';
-					o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
-					o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
+					o += '<div onclick="loadIframe(this)" data-src="'+w+'" data-srcnoplay="'+song_url+'" class="launcher">';
+					o += '<img src="'+xx+'" onerror="loadIframeNoPlay(this)"/>';
 					o += '</div></div></span>';
 					$('#'+str2md5(str)).html(o);
 				});

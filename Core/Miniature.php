@@ -34,11 +34,14 @@ function search_miniature($text) {
 	return $miniatures[0];
 }
 
-function gen_miniature($url) {
+function gen_miniature($url, $debug) {
+	if(!isset($debug)) {
+		$debug = false;
+	}
 	if(empty($url)) {
 		return "";
 	}
-	$link = filtre($url);
+	$link = filtre($url, $debug);
 	return $link;
 }
 

@@ -10,12 +10,15 @@ function genAuthToken(&$u) {
 			$u['token'] = md5(bin2hex(openssl_random_pseudo_bytes(16)));
 			account_save($u);
 		}
-		setcookie("auth_token",$u['token'],time()+60*60*24*30);
+		$r = setcookie("auth_token",$u['token'],time()+60*60*24*30);
+		return $r;
 	}
+	return false;
 }
 
 // return true if connected, false if not.
 // tries to populate SESSION if connected 
+// TODO review
 function isConnected() {
 	
 	// if not connected then attempt to connect
@@ -61,9 +64,18 @@ function isConnected() {
 		unset($_SESSION);
 		session_destroy();
 		return false;
+	} else {
+		if(isset($_SESSION['uid'])) {
+			$u = account_load(array('_id'=>$_SESSION['uid']));
+			if(isset($u) && $u != null && $u != false) {
+				$_SESSION['uid'] = (String) $u['_id'];
+				genAuthToken($u);
+				return true;
+			}
+		} else {
+			return false;
+		}
 	}
-
-	return true;
 }
 
 // decide which action should be done

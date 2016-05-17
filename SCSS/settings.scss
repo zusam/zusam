@@ -17,7 +17,7 @@
 	
 	.invitations-resume, .users-resume {
 		display: flex;
-		flex-flow: column;
+		flex-flow: row wrap;
 		border-left: 1px solid lightgrey;
 		height: auto;
 		padding: 15px;
@@ -42,7 +42,7 @@
 			text-align: center;
 			display: flex;
 			align-items: center;
-			width: 100%;
+			//width: 100%;
 
 			img, svg {
 				width: 40px;

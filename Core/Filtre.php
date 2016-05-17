@@ -47,7 +47,11 @@ function create_post_miniature($url, $file) {
 	}
 }
 
-function filtre($url) {
+function filtre($url, $debug) {
+	
+	if(!isset($debug)) {
+		$debug = false;
+	}
 	
 	$regex = $GLOBALS['regex'];
 
@@ -151,13 +155,19 @@ function filtre($url) {
 	// SOUNDCLOUD //
 	if(preg_match(r2ep($regex['soundcloud']),$url)==1) {
 		$track_url = $url;
-		$client = new Services_Soundcloud('01af1b3315ad8177aefecab596621e09', 'f41efa7352f151e040d01a55c8c29b75');
-		$client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
-		$embed_info = json_decode($client->get('resolve', array('url' => $track_url)));
+		$client_id = '01af1b3315ad8177aefecab596621e09';
+		$client_secret = 'f41efa7352f151e040d01a55c8c29b75';
+		$embed_info = json_decode(fgc("https://api.soundcloud.com/resolve?url=".$track_url."&client_id=".$client_id));
 		$link = preg_replace("/large/","t500x500",$embed_info->artwork_url);
 		if($link == "") {
 			$user = $embed_info->user;
 			$link = preg_replace("/large/","t500x500",$user->avatar_url);
+		}
+		if($debug) {
+			var_dump("https://api.soundcloud.com/resolve?url=".$track_url."&client_id=".$client_id);
+			var_dump($link);
+			var_dump($embed_info);
+			var_dump($url);
 		}
 		$ret = get_mini_from_link($url, $link);
 		return $ret;

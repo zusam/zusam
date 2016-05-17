@@ -653,6 +653,16 @@ function loadIframe(t) {
 	$('iframe:not([src])').remove();
 }
 
+function loadIframeNoPlay(t) {
+	t = $(t).closest('.launcher');
+	var src = t.attr('data-srcnoplay');
+	var iframe = $('<iframe class="embed-responsive-item" seamless allowfullscreen frameborder="0" scrollable="no" allowTransparency="true" src="'+src+'"/><iframe>');
+	t.after(iframe);
+	t.remove();
+	// iframe bug
+	$('iframe:not([src])').remove();
+}
+
 function evaluateURL() {
 	if(window.location.href.match(/\#[a-zA-Z0-9]+$/)) {
 		var tag = window.location.href.replace(/.*\#([a-zA-Z0-9]+)/,"$1");
