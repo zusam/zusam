@@ -119,13 +119,8 @@ if($_SESSION['connected']) {
 			if(isset($GET['debug'])) {
 				$r->debug = compileText(trim($p['text']), true);
 			}
-			if(!isset($GET['debug'])) {
-				header('Content-Type: text/json; charset=UTF-8');
-				echo(json_encode($r));
-			} else {
-				header('Content-Type: text/json; charset=UTF-8');
-				echo(json_encode($r));
-			}
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($r));
 			exit;
 		}
 

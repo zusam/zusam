@@ -182,7 +182,7 @@ function genTextMap($str, $debug) {
 }
 
 function process_gfycat($str) {
-	gen_miniature($str);
+	gen_miniature($str, false);
 
 	$url = preg_replace("/(.*)\?.*$/",'$1',$str);
 	$id = preg_replace("/.*\/([a-zA-Z]+)$/","$1",$url);
@@ -198,7 +198,7 @@ function process_gfycat($str) {
 }
 
 function process_facebook_video($str) {
-	gen_miniature($str);
+	gen_miniature($str, false);
 	$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$o = '<iframe src="https://www.facebook.com/plugins/video.php?href='.$str.'&show_text=0&width=600" width="600" height="337" style="border:none;overflow:hidden" onload="keepFormat(this, 16/9)" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>';
 	$a = '</span>';
@@ -380,7 +380,7 @@ function process_soundcloud($str, $debug) {
 }
 
 function process_vine($str) {
-	gen_miniature($str);
+	gen_miniature($str, false);
 	$html = "";
 	$w .= preg_replace('/(https?:\/\/vine.co\/v\/)([\w\-]+)/','$1$2/embed/simple',$str);
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
@@ -392,7 +392,7 @@ function process_vine($str) {
 }
 
 function process_dailymotion($str) {
-	gen_miniature($str);
+	gen_miniature($str, false);
 	$html = "";
 	$w = preg_replace('/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/','https://www.dailymotion.com/embed/video/$2?autoplay=1',$str);
 	$xx = p2l(pmini($str));
@@ -405,7 +405,7 @@ function process_dailymotion($str) {
 }
 
 function process_vimeo($str) {
-	gen_miniature($str);
+	gen_miniature($str, false);
 	$html = "";
 	$w = preg_replace('/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/','https://player.vimeo.com/video/$3?autoplay=1',$str);
 	$xx = p2l(pmini($str));
@@ -418,7 +418,7 @@ function process_vimeo($str) {
 }
 
 function process_youtube2($str) {
-	gen_miniature($str);
+	gen_miniature($str, false);
 	$html = "";
 	$v = preg_replace('/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/','$2',$str);
 	$w = 'https://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
@@ -432,7 +432,7 @@ function process_youtube2($str) {
 }
 
 function process_youtube($str) {
-	gen_miniature($str);
+	gen_miniature($str, false);
 	$html = "";
 	$v = preg_replace('/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/','$4',$str);
 	$w = 'https://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
@@ -451,7 +451,7 @@ function process_video($str,$debug) {
 	}
 	// change gifv into webm
 	$str = preg_replace("/\.gifv/",".webm",$str);
-	gen_miniature($str);
+	gen_miniature($str, false);
 	$html = "";
 	$xx = p2l(pmini($str));
 	$html = "";
@@ -463,7 +463,7 @@ function process_video($str,$debug) {
 }
 
 function process_image($str) {
-	gen_miniature($str);
+	gen_miniature($str, false);
 	if(file_exists(ppi($str))) {
 		$postImage = p2l(ppi($str));
 	} else {
@@ -481,7 +481,7 @@ function process_gif($str) {
 	//if(true || !isAnimated($str)) {
 	//	$html = process_image($str);
 	//} else {
-		gen_miniature($str);
+		gen_miniature($str, false);
 		$xx = p2l(pmini($str));
 		$html = "";
 		$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
@@ -493,7 +493,7 @@ function process_gif($str) {
 }
 
 function process_albumImage($str) {
-	gen_miniature($str);
+	gen_miniature($str, false);
 	$fileId = preg_replace('/\{\:([a-zA-Z0-9]+)\:\}/','$1',$str);
 	$file = file_load(array('fileId' => $fileId));	
 	$uid = $_SESSION['uid'];
@@ -515,7 +515,7 @@ function process_albumImage($str) {
 }
 
 function process_file($str) {
-	gen_miniature($str);
+	gen_miniature($str, false);
 	$fileId = preg_replace('/\{\:([a-zA-Z0-9]+)\:\}/','$1',$str);
 	$file = file_load(array('fileId' => $fileId));	
 	$uid = $_SESSION['uid'];

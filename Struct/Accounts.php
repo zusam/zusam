@@ -34,21 +34,25 @@ function account_addUnread(&$ac, $pid) {
 
 function account_readPost(&$ac, $pid) {
 	$pid = (String) $pid;
-	foreach($ac['unread'] as $k=>$v) {
-		if($v == $pid) {
-			unset($ac['unread'][$k]);
-			continue;
+	if(isset($ac['unread']) && !empty($ac['unread'])) {
+		foreach($ac['unread'] as $k=>$v) {
+			if($v == $pid) {
+				unset($ac['unread'][$k]);
+				continue;
+			}
+			$p = post_load(array('_id'=>$pid));
+			if($p == false || $p == null) {
+				unset($ac['unread'][$k]);
+				continue;
+			}
+			// TODO : this was temporary to fix the database. Can be erased in 1 month (the 22 April 2016)
+			if((String) $p['uid'] == (String) $ac['_id'] && count($p['children']) == 0) {
+				unset($ac['unread'][$k]);
+				continue;
+			}
 		}
-		$p = post_load(array('_id'=>$pid));
-		if($p == false || $p == null) {
-			unset($ac['unread'][$k]);
-			continue;
-		}
-		// TODO : this was temporary to fix the database. Can be erased in 1 month (the 22 April 2016)
-		if((String) $p['uid'] == (String) $ac['_id'] && count($p['children']) == 0) {
-			unset($ac['unread'][$k]);
-			continue;
-		}
+	} else {
+		$ac['unread'] = [];
 	}
 
 	$ac['unread'] = array_values($ac['unread']);
