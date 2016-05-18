@@ -1,3 +1,13 @@
+@media (max-width: 350px) {
+	section {
+		padding: 10px 0px !important;
+		width: 100% !important;
+		
+		.post-mini {
+			margin: 20px 0px !important;
+		}
+	}
+}
 section {
 	position: relative;
 	top: 40px;
@@ -5,14 +15,6 @@ section {
 	width: calc(100% - 20px);
 	padding: 10px;
 	
-	//.big-title {
-	//	display: block;
-	//	color: grey;
-	//	font-size: 30px;
-	//	width: 100%;
-	//	text-align: center;
-	//	margin-bottom: 20px;
-	//}
 	#container {
 		display: flex;
 		flex-flow: wrap;
@@ -32,7 +34,6 @@ section {
 	}
 	.post-mini {
 		display: block;
-		//overflow: hidden;
 		margin: 20px;
 		cursor: pointer;
 		width: 320px;

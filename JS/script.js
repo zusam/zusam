@@ -385,8 +385,8 @@ function calcNbToLoad() {
 	var height = window.innerHeight + window.scrollY;
 	var margin = 10;
 
-	var ncol = parseInt(width / (320+margin));
-	var nlin = parseInt(height / (180+margin));
+	var ncol = Math.max(parseInt(width / (320+margin)), 1);
+	var nlin = Math.max(parseInt(height / (180+margin)), 1);
 
 	var viewing = Math.min(ncol * nlin, loaded);
 	var goal = ncol * 2;
@@ -397,7 +397,7 @@ function calcNbToLoad() {
 	var toView = loaded - viewing;
 	var toLoad = parseInt(Math.max(0, goal - toView));
 
-	//console.log(viewing, loaded, toLoad);
+	console.log(nlin, ncol, toView, goal, viewing, loaded, toLoad);
 
 	return toLoad;
 }
