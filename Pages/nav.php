@@ -12,7 +12,7 @@ function page_nav(&$u, &$forum, $page) {
 	$html .= '<a href="'.$_SERVER['REQUEST_URI'].'"><img class="logo" src="Assets/logo.png"/></a>';
 	$html .= '</div>';
 	if($_SESSION['forum'] != "") {
-		$html .= '<div class="forum-name"><span>'.$forum['name'].'<span></div>';
+		$html .= '<div class="forum-name"><span>'.$forum['name'].'</span></div>';
 		$html .= '<div class="right-module-nav">';
 		if($page != "profile" && $page = "forum_settings") {
 			$html .= '<button class="action" onclick="push_shownewpost()"><i class="icon-pencil"></i></button>';

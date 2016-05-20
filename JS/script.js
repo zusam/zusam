@@ -382,7 +382,7 @@ function calcNbToLoad() {
 	if(width > 680) {
 		width = width - 200;
 	}
-	var height = window.innerHeight + window.scrollY;
+	var height = window.innerHeight + window.pageYOffset;
 	var margin = 10;
 
 	var ncol = Math.max(parseInt(width / (320+margin)), 1);

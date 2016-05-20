@@ -276,6 +276,9 @@ function showpostviewer(id) {
 }
 
 function hidepostviewer() {
+	// this line is added for ie11 (issue with closing soundcloud widget)
+	$('iframe').attr('src','');
+
 	unblockBody();
 	hideslidefromright('#slidepostviewer');
 	var spv = $('#slidepostviewer');

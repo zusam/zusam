@@ -174,7 +174,7 @@ var Filter = {
 		substitution = function(str) {
 			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">'+typebox.genAjaxLoader()+'</span>';
 			setTimeout( function() {
-				SC.oEmbed(str, { auto_play: true }, function(oEmbed) {
+				SC.oEmbed(str, { auto_play: false }, function(oEmbed) {
 					song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,'$1');
 					var w = song_url.replace(/auto_play=false/,"auto_play=true");
 					var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';

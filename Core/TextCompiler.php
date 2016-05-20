@@ -365,7 +365,7 @@ function process_soundcloud($str, $debug) {
 					console.log(oEmbed);
 					var song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,"$1");
 					console.log(song_url);
-					var w = song_url.replace("/auto_play=false/","auto_play=true");
+					var w = song_url.replace(/auto_play=false/,"auto_play=true");
 					console.log(w);
 					var dropin = $(\''.$code.'\');
 					console.log(dropin);
