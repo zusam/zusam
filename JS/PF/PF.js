@@ -70,7 +70,7 @@ function sendVideo(vidBlob, fileId) {
 			xhr.upload.onload = function(){ 
 				console.log('done !');
 				content.find('.progressBar').remove();
-			}
+			};
 			return xhr;
 		}
 	});
@@ -92,8 +92,8 @@ function loadGif(file,id, fileId) {
 
 function showGif(img, id, fileId) {
 	var content = $('span[data-src="{:'+fileId+':}"]');
-	if(content.length == 0) {
-		var content = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
+	if(content.length === 0) {
+		content = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
 	}
 	content.html(img);
 	$(id).append(content);	
@@ -139,7 +139,7 @@ function sendGif(file, fileId) {
 					content = $('*[data-src="{:'+fileId+':}"]');
 					content.find('.progressBar').remove();
 				}, 1000);
-			}
+			};
 			return xhr;
 		}
 	});
@@ -178,8 +178,8 @@ function loadImage(file,id, fileId) {
 
 function showImage(canvas, id, fileId) {
 	var content = $('span[data-src="{:'+fileId+':}"]');
-	if(content.length == 0) {
-		var content = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
+	if(content.length === 0) {
+		content = $('<span data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
 	}
 	content.html(canvas);
 	$(id).append(content);	
@@ -189,7 +189,6 @@ function showImage(canvas, id, fileId) {
 function sendImage(canvas, fileId) {
 	console.log("send image "+name);
 	var imgURL = canvas.toDataURL("image/png");
-	delete canvas;
 	var f = new FormData();
 	var uid = $('#info').attr('data-uid');
 	f.append("image",dataURItoBlob(imgURL));
@@ -227,7 +226,7 @@ function sendImage(canvas, fileId) {
 					content = $('*[data-src="{:'+fileId+':}"]');
 					content.find('.progressBar').remove();
 				}, 1000);
-			}
+			};
 			return xhr;
 		}
 	});

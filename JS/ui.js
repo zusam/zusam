@@ -11,7 +11,7 @@ function blockBody() {
 	if(!locks) {
 		locks = 0;
 	}
-	var locks = locks+1;
+	locks = locks+1;
 	//console.log(locks);
 	$('body').attr('data-locks',locks);
 	$('body').css({'overflow':'hidden','max-height':'100%'});
@@ -21,7 +21,7 @@ function unblockBody() {
 	if(!locks) {
 		locks = 0;
 	}
-	var locks = locks-1;
+	locks = locks-1;
 	//console.log(locks);
 	if(locks < 1) {
 		$('body').attr('data-locks',0);
@@ -135,7 +135,7 @@ function shownewpost() {
 	hideAll();
 	showslidefromright('#slidenewpost');
 	typebox.start('#typeBox');
-	invite = $('<div contenteditable="true" data-placeholder="Partagez quelque chose..."></div>')
+	invite = $('<div contenteditable="true" data-placeholder="Partagez quelque chose..."></div>');
 	$('#typeBox').html(invite);
 	e.addClass('active');
 	addMask("push_hidenewpost()",0.75);
@@ -152,24 +152,25 @@ function push_hidenewpost(sent) {
 }
 
 function hidenewpost(sent) {
-	if($('#newpost').length != 0) {
+	var answer;
+	if($('#newpost').length !== 0) {
 		if(sent) {
-			var answer = true;
+			answer = true;
 		} else {
 			var nbc = document.getElementById('typeBox').childNodes.length;
-			var fc = document.getElementById('typeBox').childNodes[0].innerHTML.replace(/\<br\>/,'');
-			if(nbc == 1 && fc == "") {
-				var answer = true;
+			var fc = document.getElementById('typeBox').childNodes[0].innerHTML.replace(/<br>/,'');
+			if(nbc == 1 && fc === "") {
+				answer = true;
 			} else {
 				console.log(fc);
-				var answer = confirm('Voulez-vous vraiment annuler le message ?');
+				answer = confirm('Voulez-vous vraiment annuler le message ?');
 			}
 		}
-		if(answer == true) {
+		if(answer === true) {
 			e = $('#newpost');
 			hideslidefromright('#slidenewpost');
 			$('#newpost').removeClass('active');	
-			invite = $('<div contenteditable="true" data-placeholder="Partagez quelque chose..."></div>')
+			invite = $('<div contenteditable="true" data-placeholder="Partagez quelque chose..."></div>');
 			$('#typeBox').html(invite);
 			typebox.stop('#typeBox');
 			removeMask();
@@ -184,7 +185,7 @@ function hidenewcommentsection(id) {
 }
 
 function shownewcommentsection(id) {
-	if(id == null) {
+	if(id === null) {
 		id = $('#post-viewer .new-comment-section').get(0);
 	}
 	t = $(id);
@@ -238,7 +239,7 @@ function showpostviewer(id) {
 		success: function(data) {
 			console.log('loaded post data');
 			console.log(data);
-			if(data == null || data == "" || data['html'] == "") {
+			if(data === null || data === "" || data.html === "") {
 				// do something else : we need an error message
 				console.log("no post to show !");
 				push_hideAll();
@@ -248,7 +249,7 @@ function showpostviewer(id) {
 
 				$('#post-viewer .spinner').remove();
 				$('#mask').addClass('dark-mask');
-				var plop = $(data['html']);
+				var plop = $(data.html);
 				$('#post-viewer').append(plop);
 				var opimg = $('#info').attr('data-avatar');
 				$('#post-viewer').append(fakeComment());
@@ -290,20 +291,20 @@ function hidepostviewer() {
 }
 
 function addMask(func, darkness, zindex, id) {
-	if(id == null) {
+	if(id === null) {
 		id = "mask";
 	}
 	mask = $('<div class="mask" id="'+id+'" onclick="'+func+'"></div>');
 	$('body').append(mask);
 	blockBody();
 	$('#'+id).css('background','rgba(0,0,0,'+darkness+')');
-	if(zindex != null) {
+	if(zindex !== null) {
 		$('#'+id).css('z-index',zindex);
 	}
 }
 
 function removeMask(id) {
-	if(id == null) {
+	if(id === null) {
 		id = "mask";
 	}
 	$('#'+id).remove();
@@ -326,24 +327,25 @@ function lazyload(e) {
 }
 
 function unveil(e) {
-	if(e.src == "") {
+	if(e.src === "") {
 		console.log("load :"+e.dataset.src);
 		e.src = e.dataset.src;	
 		e.onload = function() {
 			e.style.opacity = 1;
 			e.removeAttribute('width');
 			e.removeAttribute('height');
-		}
+		};
 	}
 }
 
 function fakeComment() {
 	var opimg = $('#info').attr('data-avatar');
-	if(opimg == "") {
+	var fc;
+	if(opimg === "") {
 		opimg = $('.my_avatar').html();
-		var fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><div class="op-img">'+opimg+'</div><span>Ecrire un commentaire...</span></div></div>');
+		fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><div class="op-img">'+opimg+'</div><span>Ecrire un commentaire...</span></div></div>');
 	} else {
-		var fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><img class="op-img" src="'+opimg+'"/><span>Ecrire un commentaire...</span></div></div>');
+		fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><img class="op-img" src="'+opimg+'"/><span>Ecrire un commentaire...</span></div></div>');
 	}
 	return fc;
 }

@@ -68,10 +68,10 @@ function start(id) {
 				//console.log(e);
 				cpos = Control.getCpos(document.activeElement);
 				console.log("cpos before :"+cpos);
-				if(e.target.innerHTML.trim().match(/\<br\>$/)) {
+				if(e.target.innerHTML.trim().match(/<br>$/)) {
 					typebox.pasteHtmlAtCaret('<br>', false);
 				} else {
-					console.log(e.target.innerHTML.trim().match(/\<br\>$/));
+					console.log(e.target.innerHTML.trim().match(/<br>$/));
 					console.log(e.target.innerHTML);
 					typebox.pasteHtmlAtCaret('<br>', false);
 					e.target.innerHTML = e.target.innerHTML+'<br>';
@@ -106,14 +106,14 @@ function start(id) {
 			if($(":focus").parent().is(id)) {
 
 				//prevent deselecting when erasing nothing (with backspace) // TODO still needed ? -- yes
-				if(e.keyCode == 8 && $(":focus").html() == "") {
+				if(e.keyCode == 8 && $(":focus").html() === "") {
 					e.preventDefault();
 					e.stopPropagation();
 					return false;
 				}
 				
 				// window.typed is the last state of the typebox (if it did not change, do nothing)
-				if(window.typed == null || window.typed != $(id).html()) {
+				if(window.typed === null || window.typed != $(id).html()) {
 
 					// if there's nothing to do, do nothing
 					//console.log(e.target.textContent);
@@ -127,13 +127,13 @@ function start(id) {
 						// we decide here what type of filters we use
 						if(e.keyCode == 13) {
 							//document.execCommand('insertHTML', false, '<br>');
-							Control.filter_out_ending(t)
+							Control.filter_out_ending(t);
 							//return false;
 						} else {
 							Control.filter_out_search(t);
 						}
 
-						if(cpos != false) {
+						if(cpos !== false) {
 							//re-set the cursor position to the right place
 							// TODO still necessary ? (when we pass a line, everything was already evaluated right ?)
 							if(e.keyCode == 13) {
@@ -160,7 +160,7 @@ function start(id) {
 }
 
 function limitHeight(t) {
-	console.log(t.offsetHeight, window.innerHeight)
+	console.log(t.offsetHeight, window.innerHeight);
 	if(t.offsetHeight > (window.innerHeight*2)) {
 		$(t).css('max-height',Math.floor(window.innerHeight*0.75) + "px");
 		$(t).append('<div class="seeMore" onclick="this.parentNode.style.maxHeight = \'none\'; $(this).remove()"><span>Voir plus</span></div>');

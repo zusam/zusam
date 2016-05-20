@@ -1,15 +1,9 @@
-URL = window.URL || window.webkitURL;
-
 // just get an image from the user and pass the file to the retouchebox
 function changeAvatar() {
 	r = $('#retoucheBox');
 	r.attr('data-w',128);
 	r.attr('data-h',128);
 	r.attr('data-action',"changeAvatar");
-	console.log("ca1");
-
-	//retouche.restart("#retoucheBox");
-	console.log("ca2");
 
 	var input = $('<input id="avatarchangeinput" class="hidden" type="file" accept="image/*">');
 	input.on('change', function(evt) {
@@ -19,7 +13,6 @@ function changeAvatar() {
 		console.log(file);
 		retouche.loadImage(file, id);
 		$('#avatarchangeinput').remove();
-		console.log("ca3");
 		pv = $('#newavatar');
 		pv.addClass('active');
 		pv.css('display','block');
@@ -39,7 +32,7 @@ function effectivTurn(id, rotation) {
 	$(cv).css("height", canvas.style.width);
 	$(canvas).after(cv);
 	$(canvas).remove();
-	if($(id).find('.zone').length != 0) {
+	if($(id).find('.zone').length !== 0) {
 		retouche.initHandles(id);
 	}
 }
@@ -52,27 +45,27 @@ function turncw(id) {
 }
 
 function initHandles(id) {
-	z = $(id+' > .zone')[0];
-	x = document.querySelector(id).offsetHeight;
-	y = document.querySelector(id).offsetWidth;
-	w = parseInt($(id).attr('data-w'));
-	h = parseInt($(id).attr('data-h'));
-	if(w == null || h == null) {
+	var z = $(id+' > .zone')[0];
+	var x = document.querySelector(id).offsetHeight;
+	var y = document.querySelector(id).offsetWidth;
+	var w = parseInt($(id).attr('data-w'));
+	var h = parseInt($(id).attr('data-h'));
+	if(w === null || h === null) {
 		w = h = 128;
 	}
 	setZone(z, (x-h)/2, (y-w)/2, w, h);
 }
 
 function addHandles(id) {
-	zone = $('<div data-movable="true" class="zone"></div>');
-	cachetop = $('<div class="cachetop cache"></div>');
-	cachebottom = $('<div class="cachebottom cache"></div>');
-	cacheleft = $('<div class="cacheleft cache"></div>');
-	cacheright = $('<div class="cacheright cache"></div>');
-	handletl = $('<div class="unselectable handlecontainer handletl"><div class="handle"></div></div>');
-	handletr = $('<div class="unselectable handlecontainer handletr"><div class="handle"></div></div>');
-	handlebl = $('<div class="unselectable handlecontainer handlebl"><div class="handle"></div></div>');
-	handlebr = $('<div class="unselectable handlecontainer handlebr"><div class="handle"></div></div>');
+	var zone = $('<div data-movable="true" class="zone"></div>');
+	var cachetop = $('<div class="cachetop cache"></div>');
+	var cachebottom = $('<div class="cachebottom cache"></div>');
+	var cacheleft = $('<div class="cacheleft cache"></div>');
+	var cacheright = $('<div class="cacheright cache"></div>');
+	var handletl = $('<div class="unselectable handlecontainer handletl"><div class="handle"></div></div>');
+	var handletr = $('<div class="unselectable handlecontainer handletr"><div class="handle"></div></div>');
+	var handlebl = $('<div class="unselectable handlecontainer handlebl"><div class="handle"></div></div>');
+	var handlebr = $('<div class="unselectable handlecontainer handlebr"><div class="handle"></div></div>');
 
 	$(id).append(zone);
 	$(id).append(cachetop);
@@ -83,7 +76,7 @@ function addHandles(id) {
 	$(id).append(handletr);
 	$(id).append(handlebl);
 	$(id).append(handlebr);
-	z = $(id+' > .zone')[0];
+	var z = $(id+' > .zone')[0];
 	setAsType(z,"movable",null,id);
 	
 	retouche.initHandles(id);
@@ -148,7 +141,6 @@ function loadImage(file, id) {
 
 function handleFileSelect(evt) {
 	id = evt.data;
-	console.log(id);
 	var file = evt.target.files[0];
 	if(file.type.match('image.*')) {
 		$(id+' > i').removeClass('fa-photo').addClass('fa-cog fa-spin').css({'top':'calc(50% - 25px)','left':'calc(50% - 25px)'});	
@@ -159,7 +151,7 @@ function handleFileSelect(evt) {
 // move the handles
 function setZone(d, x, y, w, h) {
 
-	p = d.parentNode;
+	var p = d.parentNode;
 	w = Math.max(w,64);
 	h = Math.max(h,64);
 	w = Math.min(w, p.offsetWidth);
@@ -183,48 +175,48 @@ function setZone(d, x, y, w, h) {
 	h = parseInt(h);
 
 	// set the size
-	d.style.width = w;
-	d.style.height = h;
+	d.style.width = w + "px";
+	d.style.height = h + "px";
 
 	// set the zone position
-	d.style.top = x;
-	d.style.left = y;
+	d.style.top = x + "px";
+	d.style.left = y + "px";
 
 	// set caches position
 	ct = d.nextSibling;
-	ct.style.height = x;
+	ct.style.height = x + "px";
 	
 	cb = ct.nextSibling;
-	cb.style.top = x + h;
+	cb.style.top = x + h + "px";
 	
 	cl = cb.nextSibling;
-	cl.style.height = h;
-	cl.style.width = y;
-	cl.style.top = x;
+	cl.style.height = h + "px";
+	cl.style.width = y + "px";
+	cl.style.top = x + "px";
 
 	cr = cl.nextSibling;
-	cr.style.height = h;
-	cr.style.top = x;
-	cr.style.left = y + w;
+	cr.style.height = h + "px";
+	cr.style.top = x + "px";
+	cr.style.left = y + w + "px";
 	
 	//set handels position
 	htl = cr.nextSibling;
-	htl.style.top = x-12;
-	htl.style.left = y-12;
+	htl.style.top = x-12 + "px";
+	htl.style.left = y-12 + "px";
 	htr = htl.nextSibling;
-	htr.style.top = x-12;
-	htr.style.left = y-12+w;
+	htr.style.top = x-12 + "px";
+	htr.style.left = y-12+w + "px";
 	hbl = htr.nextSibling;
-	hbl.style.top = x-12+h;
-	hbl.style.left = y-12;
+	hbl.style.top = x-12+h + "px";
+	hbl.style.left = y-12 + "px";
 	hbr = hbl.nextSibling;
-	hbr.style.top = x-12+h;
-	hbr.style.left = y-12+w;
+	hbr.style.top = x-12+h + "px";
+	hbr.style.left = y-12+w + "px";
 }
 
 // record this event. In order to move the handles accordingly
 function downEvent(e,d,t,a,id) {
-	window.s = new Object();
+	window.s = {};
 	window.s.elmt = e.target;
 	window.s.type = t;
 	window.blockScroll = true;
@@ -265,6 +257,7 @@ function downEvent(e,d,t,a,id) {
 
 // when the mouse moves, record it to move the handles accordingly
 function moveEvent(e) {
+	//if(typeof(window.s) != 'undefined' && window.s !== null && typeof(window.s.type) != 'undefined') { //window.s !== null && window.s.type !== null) {
 	if(window.s != null && window.s.type != null) {
 
 		if(e.type == "mousemove") {
@@ -323,7 +316,6 @@ function moveEvent(e) {
 
 
 // EVENTS
-
 
 function setAsType(d,t,a,id) {
 	d.addEventListener("mousedown", function(e) {
@@ -399,7 +391,7 @@ function sendCanvas(id) {
 		data = ctx.getImageData(l, t, w, h);
 		var nw = $(id).attr('data-w');
 		var nh = $(id).attr('data-h');
-		if(nw != null && nh != null) {
+		if(nw !== null && nh !== null) {
 			g = Math.min(Math.max(w, nw)/w, Math.max(h, nh)/h);
 		} else {
 			g = Math.min(Math.max(w, 2048)/w, Math.max(h, 2048)/h);
@@ -422,7 +414,6 @@ function sendCanvas(id) {
 	if(g < 0.9) {
 		c3 = imageAlgs.downScaleCanvas(c2,g);
 		imgURL = c3.toDataURL("image/png");
-		delete c3; 
 	} else {
 		imgURL = c2.toDataURL("image/png");
 	}

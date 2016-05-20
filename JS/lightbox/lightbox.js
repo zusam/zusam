@@ -43,10 +43,11 @@ function enlighten(id) {
 	var owner = $(e).closest('.deletable').attr('data-owner');
 
 	console.log(e.dataset.lightbox);
-	if(e.dataset.lightbox != null) {
-		var lightbox_src = e.dataset.lightbox;	
+	var lightbox_src;
+	if(e.dataset.lightbox !== null) {
+		lightbox_src = e.dataset.lightbox;	
 	} else {
-		var lightbox_src = e.src;
+		lightbox_src = e.src;
 	}
 	//if(refresh) {
 	//	lightbox_src = lightbox_src.replace(/\?.*/,'') + "?" + Date.now();
@@ -62,7 +63,7 @@ function enlighten(id) {
 	var node = e;
 	var yy = node.offsetTop - 10;
 	console.log(node.parentNode);
-	while(node.parentNode != null && !node.parentNode.className.match(/\.nano-content/) && node.parentNode != document.body) {
+	while(node.parentNode !== null && !node.parentNode.className.match(/\.nano-content/) && node.parentNode != document.body) {
 		node = node.parentNode;
 		yy += node.offsetTop; 
 	}
@@ -79,6 +80,11 @@ function enlighten(id) {
 	var img = new Image();
 
 	img.onload = function(){
+
+		var next;
+		var prev;
+		var turncw;
+		var turnccw;
 
 		var this_img = this;
 
@@ -97,7 +103,7 @@ function enlighten(id) {
 		if(typeof(prev_img) != "undefined") {
 			$(prev_img).addClass("lightbox_prev");
 			unveil(prev_img);
-			var prev = $('<div onclick="lightbox.enlighten(\'.lightbox_prev\')" class="prev"><i class="icon-left-open"></i></div>');
+			prev = $('<div onclick="lightbox.enlighten(\'.lightbox_prev\')" class="prev"><i class="icon-left-open"></i></div>');
 			$(window).on('keydown', function(e) {
 				if(e.which == 37) {
 					prev.click();
@@ -107,7 +113,7 @@ function enlighten(id) {
 		if(typeof(next_img) != "undefined") {
 			$(next_img).addClass("lightbox_next");
 			unveil(next_img);
-			var next = $('<div onclick="lightbox.enlighten(\'.lightbox_next\')" class="next"><i class="icon-right-open"></i></div>');
+			next = $('<div onclick="lightbox.enlighten(\'.lightbox_next\')" class="next"><i class="icon-right-open"></i></div>');
 			$(window).on('keydown', function(e) {
 				if(e.which == 39) {
 					next.click();
@@ -126,14 +132,14 @@ function enlighten(id) {
 			"height" : lbh + "px",
 		});
 		if(owner == $('#info').attr('data-uid')) {
-			var turncw = $('<button contentditable="false" class="material-shadow editIMG cw"><i class="icon-cw"></i></button>');
+			turncw = $('<button contentditable="false" class="material-shadow editIMG cw"><i class="icon-cw"></i></button>');
 			turncw.on("click", function(evt) {
 				evt.stopPropagation();
 				console.log(e);
 				//lightbox.turnAndSend(e,"cw",this_img);
 				lightbox.turnImage(e,90);
 			});
-			var turnccw = $('<button contentditable="false" class="material-shadow editIMG ccw"><i class="icon-ccw"></i></button>');
+			turnccw = $('<button contentditable="false" class="material-shadow editIMG ccw"><i class="icon-ccw"></i></button>');
 			turnccw.on("click", function(evt) {
 				evt.stopPropagation();
 				console.log(e);
@@ -142,10 +148,11 @@ function enlighten(id) {
 			});
 		}
 		var r = new RegExp("/"+origin_url+"/" ,'gi');
+		var dl;
 		if(lightbox_src.match(r)) {
-			var dl = $('<a class="material-shadow dl-button" target="_blank" href="download.php?fileId='+name.replace(/\.jpg/,'')+'">Télécharger</a>');
+			dl = $('<a class="material-shadow dl-button" target="_blank" href="download.php?fileId='+name.replace(/\.jpg/,'')+'">Télécharger</a>');
 		} else {
-			var dl = $('<a class="material-shadow dl-button" href="'+lightbox_src+'" download="'+name+'">Télécharger</a>');
+			dl = $('<a class="material-shadow dl-button" href="'+lightbox_src+'" download="'+name+'">Télécharger</a>');
 		}
 		if($('.lightbox-mask').length > 0)  {
 			lb.append(next).append(prev).append(this_img).append(close).append(turncw).append(turnccw).append(dl);
@@ -197,7 +204,7 @@ function turnImage(e, rotation) {
 					this.src = src;
 					var pid = $('#post-viewer').attr('data-id');
 					var mini = $('.post-mini[data-id="'+pid+'"] .miniature')[0];
-					if(typeof(mini) !=! "undefined") {
+					if(typeof(mini) != "undefined") {
 						src = mini.src.replace(/\?.*/,'') + '?' + Math.floor(Date.now()/1000);
 						mini.src = src;
 					}

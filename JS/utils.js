@@ -304,7 +304,7 @@ function htmlentities(string, quote_style, charset, double_encode) {
 
 	var hash_map = this.get_html_translation_table('HTML_ENTITIES', quote_style),
 		symbol = '';
-	string = string == null ? '' : string + '';
+	string = (string === null || string === undefined) ? '' : string + '';
 
 	if (!hash_map) {
 		return false;
@@ -314,7 +314,7 @@ function htmlentities(string, quote_style, charset, double_encode) {
 		hash_map["'"] = '&#039;';
 	}
 
-	if ( !! double_encode || double_encode == null) {
+	if ( !! double_encode || (double_encode === null || double_encode === undefined)) {
 		for (symbol in hash_map) {
 			if (hash_map.hasOwnProperty(symbol)) {
 				string = string.split(symbol)
@@ -553,7 +553,7 @@ function decode(input) {
 	return br2nl(html_entity_decode(input, "ENT_NOQUOTES"));
 }
 function encode(input) {
-	return nl2br(htmlentities(input, "ENT_NOQUOTES"))
+	return nl2br(htmlentities(input, "ENT_NOQUOTES"));
 }
 function dataURItoBlob(dataURI) {
 	var byteString = atob(dataURI.split(",")[1]);
@@ -575,7 +575,7 @@ String.prototype.hashCode = function() {
 		hash |= 0;
 	}
 	return hash;
-}
+};
 function createId() {
 	var dateId = Date.now().toString(36);
 	var randomId = Math.random().toString(36).slice(2);

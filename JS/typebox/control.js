@@ -3,7 +3,7 @@ var Control = {
 	mergeEditableNodes : function(e) {
 		for(i = 0; i<e.childNodes.length; i++) {
 			if(e.childNodes[i].tagName == 'DIV') {
-				if(e.childNodes[i-1] != null && e.childNodes[i-1].tagName == 'DIV') {
+				if(e.childNodes[i-1] !== null && e.childNodes[i-1].tagName == 'DIV') {
 					e.childNodes[i-1].innerHTML += "<br>"+e.childNodes[i].innerHTML;
 					e.removeChild(e.childNodes[i]);
 				}
@@ -47,7 +47,7 @@ var Control = {
 				if(output.length > 1) {
 					for(j = (output.length-1); j > 0; j--) {
 						node.insertAdjacentHTML('afterend', output[j]);
-						if(foeID == "") {
+						if(foeID === "") {
 							//firstOutputElement = node.nextSibling;
 							foeID = node.nextSibling.id;
 						}
@@ -62,11 +62,13 @@ var Control = {
 				} else {
 					node.innerHTML = output[0];
 				}
-				if(!viewer && foeID != "") {
+				if(!viewer && foeID !== "") {
 					var tid = setInterval(function() {
 						var tmp = document.getElementById(foeID);
 						if(tmp.scrollHeight > 0) {
-							tmp.nextSibling.scrollIntoView(false);
+							if(typeof(tmp.nextSibling) == "undefined") {
+								tmp.nextSibling.scrollIntoView(false);
+							}
 							clearInterval(tid);
 						}
 					}, 100);
@@ -75,7 +77,7 @@ var Control = {
 					}, 10000);
 				}
 			}
-			if(viewer == null || viewer == false) {
+			if(viewer === null || viewer === false) {
 				Control.refocus(e);
 			}
 		}
@@ -104,7 +106,7 @@ var Control = {
 			preCaretTextRange.setEndPoint("EndToEnd", textRange);
 			caretOffset = preCaretTextRange.text.length;
 		}
-		var lignes = $(element).find("br").length
+		var lignes = $(element).find("br").length;
 		caretOffset = caretOffset + lignes;
 		//console.log("getpos:"+caretOffset);
 		return caretOffset;
@@ -113,23 +115,26 @@ var Control = {
 	// set cursor
 	setCpos : function(e, c) {
 		
+		var node;
+		var range;
+		var sel;
 		//console.log("-----");
 		var placed = false;
 		c = parseInt(c);
 		if(c < 0) { c = 0; }
 		count = 0;
 		for(i=0; i<e.childNodes.length; i++) {
-			var node = e.childNodes[i];
+			node = e.childNodes[i];
 			//console.log("node:"+node);
 			//console.log("node tagname:"+node.tagName);
 			if(typeof(node.tagName) == "undefined") {
 			//console.log(c,count)
 				if(node.length >= (c-count)) {
-					var range = document.createRange();
+					range = document.createRange();
 					range.setStart(node, c-count);
 					range.setEnd(node, c-count);
 					//console.log(range)
-					var sel = window.getSelection();
+					sel = window.getSelection();
 					sel.removeAllRanges();
 					sel.addRange(range);
 			//		console.log(sel);
@@ -143,10 +148,10 @@ var Control = {
 			//console.log(c,count)
 				if(c-count <= 1) {
 					$(node).after(document.createTextNode(' '));
-					var range = document.createRange();
+					range = document.createRange();
 					range.setStartAfter(node);
 					range.setEndAfter(node); 
-					var sel = window.getSelection();
+					sel = window.getSelection();
 					sel.removeAllRanges();
 					sel.addRange(range);
 					placed = true;
@@ -159,11 +164,11 @@ var Control = {
 		if(!placed) {
 			//console.log("non placé");
 			node = e.childNodes[e.childNodes.length-1];
-			var range = document.createRange();
+			range = document.createRange();
 			range.setStart(node, node.length);
 			range.setEnd(node, node.length);
 			//console.log(range)
-			var sel = window.getSelection();
+			sel = window.getSelection();
 			sel.removeAllRanges();
 			sel.addRange(range);
 			//console.log(sel);
@@ -184,7 +189,7 @@ var Control = {
 
 	refreshContent : function(viewer, t) {
 		t = $(t);
-		if(viewer == null || viewer == false) {
+		if(viewer === null || viewer === false) {
 			// flush eventListeners
 			t.find('*[contenteditable]').off();
 			t.find('.deletable').off();
@@ -231,7 +236,7 @@ var Control = {
 		if(!$(t).is("[contenteditable]")) {
 			Control.refocus(t);
 		} else {
-			if($(t).html() == "") {
+			if($(t).html() === "") {
 				t = t.parentNode;
 				Control.refocus(t);
 			}
@@ -286,15 +291,15 @@ var Control = {
 
 	searchMatch : function(args) {
 
-		var callerName = args['callerName'];
-		var inner = args['inner'];
-		var regex = args['regex'];
-		var substitution = args['substitution'];
-		var callback = args['callback'];
-		var fail = args['fail'];
-		var ajax_url = args['ajax_url'];
-		var ajax_var = args['ajax_var'];
-		var ajax_method = args['ajax_method'];
+		var callerName = args.callerName;
+		var inner = args.inner;
+		var regex = args.regex;
+		var substitution = args.substitution;
+		var callback = args.callback;
+		var fail = args.fail;
+		var ajax_url = args.ajax_url;
+		var ajax_var = args.ajax_var;
+		var ajax_method = args.ajax_method;
 		if(typeof(ajax_method) == "undefined") {
 			ajax_method = "post";
 		}
@@ -307,7 +312,7 @@ var Control = {
 		xhrs = [];
 
 
-		if(prem != null) {
+		if(prem !== null) {
 			for(j=0;j<prem.length;j++) {
 				m.push(prem[j].replace(/[\s]*/gi,''));
 			}
@@ -318,7 +323,7 @@ var Control = {
 			console.log("from inner:'"+inner+"'");
 			console.log(m);
 		}
-		if(m.length != 0) {
+		if(m.length !== 0) {
 			var str = inner;
 			for(j=0;j<m.length;j++) {
 				var pos = str.indexOf(m[j]);
@@ -327,7 +332,7 @@ var Control = {
 					before = "";
 				}
 				// TODO this is necessary because the first output is not processed like the others...
-				if(j==0) {
+				if(j===0) {
 					output.push(encode(before));
 				} else {
 					output.push('<div contenteditable="true">'+encode(before)+'</div>');
@@ -341,18 +346,18 @@ var Control = {
 			}
 
 			for(j=0;j<m.length;j++) {
-				settings = new Object();
+				settings = {};
 				var param = [];
 				if(typeof(ajax_var) != "undefined") {
 					param = ajax_var;
 				}
-				param['url'] = m[j];
+				param.url = m[j];
 				if(typeof(ajax_url) != "undefined") {
 					settings.url = ajax_url;
 					settings.data = param;
 					settings.method = ajax_method;
 					console.log(settings);
-					if(callback != null) {
+					if(callback !== null) {
 						settings.success = function(data){ 
 							callback(data); 
 						};
@@ -361,10 +366,10 @@ var Control = {
 							console.log(data); 
 						};
 					}
-					if(fail != null) {
+					if(fail !== null) {
 						settings.error = function(){ fail(m[j]); };
 					}
-					if(callback != null) {
+					if(callback !== null) {
 						$.ajax(settings);
 					}
 				}
@@ -375,4 +380,4 @@ var Control = {
 		}
 		return output;
 	}
-}
+};

@@ -1,7 +1,7 @@
 function removeNotification(e) {
 	var nid = $(e).attr('data-nid');
 	var uid = $('#info').attr('data-uid');
-	if(nid == null || nid == "") {
+	if(nid === null || nid === "") {
 		return false;
 	}
 	$.ajax({
@@ -61,7 +61,7 @@ function getMoreComments(pid) {
 		data: {"action":"getMoreComments", "uid":uid, "fid":fid, "pid":pid},
 		success: function(data) {
 			console.log(data);
-			$('#post-viewer .more_comments').after(data['html']);
+			$('#post-viewer .more_comments').after(data.html);
 			$('#post-viewer .more_comments').remove();
 			lazyload($('.nano-content')[0]);
 		},
@@ -83,18 +83,18 @@ function updatePostStats(pid) {
 			console.log(data);
 			if(typeof(data) != "undefined") {
 				var p = $('#container .post-mini[data-id="'+pid+'"] .post-info');
-				if(data['coms'] != 0) {
+				if(data.coms !== 0) {
 					var pci = p.find('.comments-indicator');
-					pci.html('<div>'+data['coms']+' <i class="icon-comment-empty"></i></div>');
+					pci.html('<div>'+data.coms+' <i class="icon-comment-empty"></i></div>');
 				} else {
 					p.find('.comments-indicator').html('');
 				}
-				if(data['unread'] == true) {
+				if(data.unread === true) {
 					p.addClass('newcom');
 				} else {
 					p.removeClass('newcom');
 				}
-				p.find('.date').html(data['date']);
+				p.find('.date').html(data.date);
 			}
 		}
 	});
@@ -135,7 +135,7 @@ function removeUserFromForum() {
 }
 
 function destroyAccount(t) {
-	if(t == null) {
+	if(t === null) {
 		return false;
 	}
 	var uid = $('#info').attr('data-uid');
@@ -143,11 +143,10 @@ function destroyAccount(t) {
 	$(t).closest('.change-profile').find('input').each(function() {
 		data[$(this).attr('name')] = $(this).val();	
 	});
-	var password = data['password'];
-	if(password == null || password.match(/^\s*$/)) {
+	var password = data.password;
+	if(password === null || password.match(/^\s*$/)) {
 		return false;
 	}
-	var uid = $('#info').attr('data-uid');
 	console.log(password,uid);
 	$.ajax({
 		url: "Ajax/post.php",
@@ -162,7 +161,7 @@ function destroyAccount(t) {
 
 function changeforumname(id) {
 	name = $(id).val();
-	if(name == null || name.match(/^\s*$/)) {
+	if(name === null || name.match(/^\s*$/)) {
 		return false;
 	}
 	var uid = $('#info').attr('data-uid');
@@ -179,7 +178,7 @@ function changeforumname(id) {
 }
 
 function changeProfile(t) {
-	if(t == null) {
+	if(t === null) {
 		return false;
 	}
 	var uid = $('#info').attr('data-uid');
@@ -211,7 +210,7 @@ function inviteUser(id) {
 	} else {
 		mail = $(id).val();
 	}
-	if(mail == "" || typeof(mail) == 'undefined') {
+	if(mail === "" || typeof(mail) == 'undefined') {
 		return false;
 	}
 	console.log(mail);
@@ -233,15 +232,13 @@ function inviteUser(id) {
 
 function sendIt(id) {
 	var msg = "";
+	var parentID = 0;
+	var pid = 0;
 	if(id == "#commentBox" || id == "#editBox") {
-		var parentID = $('#post-viewer').attr('data-id');
-	} else {
-		var parentID = 0;
-	}
+		parentID = $('#post-viewer').attr('data-id');
+	} 
 	if(id == "#editBox") {
-		var pid = $(id).parent().attr('data-id');
-	} else {
-		var pid = 0;
+		pid = $(id).closest('.post').attr('data-id');
 	}
 	var t = $(id);
 	for(i=0;i<t.children().length;i++) {
@@ -261,53 +258,55 @@ function sendIt(id) {
 		type: "POST",
 		data: {"text":msg,"forum":forum,"uid":uid,"parent":parentID,"pid":pid},
 		success: function(data) {
+			var balise;
+			var p;
 			console.log(data);
-				if(data['parent'] == 0 || data['parent'] == null) {
-					var balise = $('#container div[data-balise="'+baliseId+'"]');
-					balise.after(data['mini_html']);
+				if(data.parent == "0" || data.parent === null) {
+					balise = $('#container div[data-balise="'+baliseId+'"]');
+					balise.after(data.mini_html);
 					balise.remove();
 					hidepostviewer();
 				} else {
-					if(data['pid'] == 0 || data['pid'] == null) {
+					if(data.pid == "0" || data.pid === null) {
 						console.log("new com");
-						var balise = $('.child-post[data-balise="'+baliseId+'"]');
-						balise.after(data['html']);
+						balise = $('.child-post[data-balise="'+baliseId+'"]');
+						balise.after(data.html);
 						balise.remove();
 						typebox.view();
-						var p = $('#container .post-mini[data-id='+data['parent']+']');
+						p = $('#container .post-mini[data-id='+data.parent+']');
 						p.remove();
 						$('#container').prepend(p);
-						updatePostStats(data['parent']);
+						updatePostStats(data.parent);
 					} else {
-						if(data['parent'] == data['pid']) {
+						if(data.parent == data.pid) {
 							console.log("edit post");
 							var pp = $('.parent-post');
-							pp.after(data['html']);
+							pp.after(data.html);
 							pp.remove();
 							typebox.view();
-							var p = $('#container .post-mini[data-id='+data['pid']+']');
-							p.after(data['mini_html']);
+							p = $('#container .post-mini[data-id='+data.pid+']');
+							p.after(data.mini_html);
 							p.remove();
 						} else {
 							console.log("edit com");
-							var balise = $('.child-post[data-id='+data['pid']+']');
-							balise.after(data['html']);
+							balise = $('.child-post[data-id='+data.pid+']');
+							balise.after(data.html);
 							balise.remove();
 						}
 					}
 				}
 				setpostsviewable();
 			},
-		error: function(a,b,c){ console.log(a,b,c) }
+		error: function(a,b,c){ console.log(a,b,c); }
 	});
-	if(parentID == 0 || parentID == null) {
-		if(pid == 0 || pid == null) {
+	if(parentID === 0) {
+		if(pid === 0) {
 			var post_loading = $('<div data-balise="'+baliseId+'" class="post-mini"><div class="spinner"><div class="bg-orange bounce1"></div><div class="bg-orange bounce2"></div><div class="bg-orange bounce3"></div></div></div>');
 			$('#container').prepend(post_loading);
 			push_hidenewpost(true);
 		}
 	} else {
-		if(pid == 0 || pid == null) {
+		if(pid === 0) {
 			hidenewcommentsection($('.new-comment-section'));
 			var com_loading = $('<div class="post child-post" data-balise="'+baliseId+'"><div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div></div>');
 			$('.new-comment-section').before(com_loading);
@@ -319,7 +318,7 @@ function setpostsviewable() {
 	$('.post-mini').off();
 	$('.post-mini').on("click",function(e) {
 		var id = $(e.currentTarget).attr('data-id');
-		push_showpost(id)
+		push_showpost(id);
 	});
 }
 
@@ -358,7 +357,7 @@ function editPost(t) {
 		data: {"action":"getRaw","pid":pid},
 		success: function(data) {
 			box = '<div id="editBox" class="dynamicBox">';
-			box += '<div contenteditable="true" data-placeholder="Ecrivez quelque chose...">'+data['raw']+'</div>';
+			box += '<div contenteditable="true" data-placeholder="Ecrivez quelque chose...">'+data.raw+'</div>';
 			box += '</div>';
 			box += '<div class="menu">';
 			box += '<div class="menu-cell">';
@@ -390,7 +389,7 @@ function calcNbToLoad() {
 
 	var viewing = Math.min(ncol * nlin, loaded);
 	var goal = ncol * 2;
-	if(loaded == 0) {
+	if(loaded === 0) {
 		goal = ncol * (nlin + 1);
 	}
 
@@ -420,12 +419,12 @@ function loadMorePosts() {
 				data: {'action':'morePost','fid':fid,'list':list,'number':number},
 				success: function(data) {
 					console.log(data);
-					if(typeof(data) != 'undefined' && data != "") {
-						if(data['count'] > 0) {
-							$('#container').append(data['html']);
+					if(typeof(data) != 'undefined' && data !== "") {
+						if(data.count > 0) {
+							$('#container').append(data.html);
 						}
-						console.log('loaded ('+data['count']+')');
-						if(data['end'] == true) {
+						console.log('loaded ('+data.count+')');
+						if(data.end === true) {
 							console.log('all posts are here !');
 							$(document).unbind('scroll');
 						}
@@ -459,7 +458,7 @@ function disconnect() {
 				document.cookie = 'auth_token' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 				window.location = location.protocol + "//" + location.host + location.pathname;
 			}
-	})
+	});
 }
 
 function cancelAsk() {
@@ -487,7 +486,7 @@ function ask(question, maxlength, callback, args) {
 }
 
 function addForum(name) {
-	if(name == null || name.match(/^\s*$/)) {
+	if(name === null || name.match(/^\s*$/)) {
 		return false;
 	} 
 	uid = $('#info').attr('data-uid');
@@ -499,7 +498,7 @@ function addForum(name) {
 				console.log(data);
 				console.log("success!");
 				if(typeof(data) != "undefined") {
-					window.location.href = data['link']; 
+					window.location.href = data.link; 
 				} else {
 					window.location.reload(true); 
 				}
@@ -519,7 +518,7 @@ function addUserToForum(t) {
 				console.log(data);
 				console.log("success!");
 				if(typeof(data) != "undefined") {
-					window.location.href = data['link']; 
+					window.location.href = data.link; 
 				} else {
 					window.location.reload(true); 
 				}
@@ -558,7 +557,7 @@ function handleFileSelect(evt) {
 }
 
 function startProcessingFileFromQueue() {
-	if(typeof(fileQueue) == "undefined" || fileQueue.length == 0) {
+	if(typeof(fileQueue) == "undefined" || fileQueue.length === 0) {
 		$('#newpost .menu .send').removeAttr('disabled');
 		return;
 	}
@@ -607,7 +606,7 @@ function loadImage(t) {
 	var img = $('<img class="inlineImage" onerror="error_im(this)" src="'+src+'"/>');
 	img.on('load', function() {
 		t.after(img);
-		img.off()
+		img.off();
 		t.remove();
 	});
 	// TODO handle this nicely

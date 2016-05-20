@@ -28,7 +28,7 @@ $(window).ready(function() {
 				console.log("fail record");
 			}
 		});
-	}
+	};
 
 	// close menus when outside is clicked
 	$('body').on('click',function(e) {
@@ -47,7 +47,7 @@ $(window).ready(function() {
 
 	//small code to permit keyboard shortcuts with ctrlKey
 	// necessary to not intefere with typebox. (see typebox code)
-	window.ctrl = false
+	window.ctrl = false;
 	$(window).keydown(function(e) {
 		if(e.keyCode != 17 && e.ctrlKey) {
 			window.ctrl = true;
@@ -82,10 +82,10 @@ $(window).ready(function() {
 		}
 
 		// view post if url says so
-		if($('#info').length != 0) {
-			evaluateURL()
+		if($('#info').length !== 0) {
+			evaluateURL();
 			$(window).on("popstate", function() {
-				evaluateURL()
+				evaluateURL();
 			});
 		}
 
@@ -103,10 +103,10 @@ $(window).ready(function() {
 		setInterval(function() {
 			// check for active post-viewer nanoscroller
 			var pv = document.getElementById('post-viewer');
-			if(pv == null) {
+			if(pv === null) {
 				pv = document.getElementById('newpost');
 			}
-			if(pv != null) {
+			if(pv !== null) {
 				if(pv.offsetHeight > window.innerHeight) {
 					$(pv).closest('.nano').nanoScroller({
 						preventPageScrolling: true,

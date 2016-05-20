@@ -11,7 +11,7 @@ function start(redirect_url) {
 		if($(this).attr('data-action') != "passwordReset") {	
 			console.log(mail.match(/[\.\-\w]+\@[\.\-\w]+\.[\.\-\w]+/));
 			if(mail.match(/[\.\-\w]+\@[\.\-\w]+\.[\.\-\w]+/)) {
-				if($(".password-confirmation").hasClass("hidden") || password == password_conf || password_conf == "") {
+				if($(".password-confirmation").hasClass("hidden") || password == password_conf || password_conf === "") {
 					console.log("submitted");
 					$.ajax({
 						url: "Ajax/connect.php",
@@ -29,7 +29,7 @@ function start(redirect_url) {
 						error: function() {
 								console.log("fail");
 							}
-					})
+					});
 				} else {
 					console.log("passwords do not match");
 					$('.form-notif').html("Les mots de passe ne correspondent pas");
@@ -53,8 +53,7 @@ function start(redirect_url) {
 				error: function() {
 						console.log("fail");
 					}
-			})
-			
+			});
 		}
 	});
 }

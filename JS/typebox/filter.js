@@ -21,7 +21,7 @@ var Filter = {
 			o += '</div></div>';
 			var a = '</span>';
 			return b+o+a;
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchGfycat", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
@@ -36,7 +36,7 @@ var Filter = {
 			var o = '<iframe src="https://www.facebook.com/plugins/video.php?href='+str+'&show_text=0&width=600" width="600" height="337" style="border:none;overflow:hidden" onload="keepFormat(this, 16/9)" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>';
 			var a = '</span>';
 			return b+o+a;
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchFacebook_video", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
@@ -50,12 +50,12 @@ var Filter = {
 		substitution = function(str) {
 			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+baliseId+'">'+typebox.genAjaxLoader()+'</span>';
 			return output;
-		}
+		};
 		var ajax_url = "Ajax/post.php";
 		var ajax_var = {"action":"getImgur"};
 		callback = function(data) {
 			console.log(data);
-			e = $(data['html']);
+			e = $(data.html);
 			balise = $('#'+baliseId);
 			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
 				balise.html(e);
@@ -74,7 +74,7 @@ var Filter = {
 				balise.html(e);
 				balise.append(Control.genDelBtn());
 			}
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchImgur", "inner":inner, "regex":r1, "ajax_url":ajax_url, "ajax_var":ajax_var, "substitution":substitution, "callback":callback, "fail":fail});
 		return output;
 	},
@@ -88,12 +88,12 @@ var Filter = {
 		substitution = function(str) {
 			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+baliseId+'">'+typebox.genAjaxLoader()+'</span>';
 			return output;
-		}
+		};
 		var ajax_url = "Ajax/post.php";
 		var ajax_var = {"action":"getInstagram"};
 		callback = function(data) {
 			console.log(data);
-			e = $('<a class="mediaLink material-shadow" href="'+data['url']+'" target="_blank"><i class="fa fa-instagram"></i></a><img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+data['thumbnail_url']+'"/>');
+			e = $('<a class="mediaLink material-shadow" href="'+data.url+'" target="_blank"><i class="fa fa-instagram"></i></a><img class="zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+data.thumbnail_url+'"/>');
 			balise = $('#'+baliseId);
 			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
 				balise.html(e);
@@ -112,7 +112,7 @@ var Filter = {
 				balise.html(e);
 				balise.append(Control.genDelBtn());
 			}
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchInstagram", "inner":inner, "regex":r1, "ajax_url":ajax_url, "ajax_var":ajax_var, "substitution":substitution, "callback":callback, "fail":fail});
 		return output;
 	},
@@ -148,10 +148,11 @@ var Filter = {
 			r1 = new RegExp(regex.googleDrive+'[\s]','gi');
 		}
 		substitution = function(str) {
+			var id;
 			if(str.match(/open\?id=/)) {
-				var id = str.replace(/(https?:\/\/drive.google.com\/open\?id=)(\w+)/,'$2');
+				id = str.replace(/(https?:\/\/drive.google.com\/open\?id=)(\w+)/,'$2');
 			} else {
-				var id = str.replace(/(https?:\/\/drive.google.com\/file\/d\/)([\w]+)(\/)([^\s]+)/,'$2');
+				id = str.replace(/(https?:\/\/drive.google.com\/file\/d\/)([\w]+)(\/)([^\s]+)/,'$2');
 			}
 			if(id.match(/^\w+$/)) {
 				var b = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
@@ -161,7 +162,7 @@ var Filter = {
 			} else {
 				return Filter.fail_request(str);
 			}
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchGoogleDrive", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
@@ -172,7 +173,7 @@ var Filter = {
 			r1 = new RegExp(regex.soundcloud+'[\s]','gi');
 		}
 		substitution = function(str) {
-			output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">'+typebox.genAjaxLoader()+'</span>';
+			//output = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">'+typebox.genAjaxLoader()+'</span>';
 			setTimeout( function() {
 				SC.oEmbed(str, { auto_play: false }, function(oEmbed) {
 					song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,'$1');
@@ -190,8 +191,7 @@ var Filter = {
 			var o = str.replace(/(https?:\/\/vine.co\/v\/)([\w\-]+)/,'<div class="embed-responsive embed-responsive-square"><iframe seamless class="embed-responsive-item" src="$1$2/embed/simple" frameborder="0"></iframe></div><script async src="//platform.vine.co/static/scripts/embed.js" charset="utf-8"></script>');
 			var a = '</span>';
 			return b+o+a;
-			return output;
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchSoundcloud", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
@@ -206,7 +206,7 @@ var Filter = {
 			var o = str.replace(/(https?:\/\/vine.co\/v\/)([\w\-]+)/,'<div class="embed-responsive embed-responsive-square"><iframe seamless class="embed-responsive-item" src="$1$2/embed/simple" frameborder="0"></iframe></div><script async src="//platform.vine.co/static/scripts/embed.js" charset="utf-8"></script>');
 			var a = '</span>';
 			return b+o+a;
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchVine", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 		
@@ -226,7 +226,7 @@ var Filter = {
 			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
 			o += '</div></div></span>';
 			return o;
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchDailymotion", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 		
@@ -246,7 +246,7 @@ var Filter = {
 			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
 			o += '</div></div></span>';
 			return o;
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchVimeo", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 		
@@ -267,7 +267,7 @@ var Filter = {
 			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
 			o += '</div></div></span>';
 			return o;
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchYoutube2", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 		
@@ -288,7 +288,7 @@ var Filter = {
 			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
 			o += '</div></div></span>';
 			return o;
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchYoutube", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 		
@@ -310,7 +310,7 @@ var Filter = {
 				o += '<img src="'+xx+'" onerror="loadVideo(this)"/>';
 				o += '</div></span>';
 				return o;
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchVideo", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
@@ -322,7 +322,7 @@ var Filter = {
 		}
 		substitution = function(str) {
 				return '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+str+'"/></span>';
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
@@ -339,7 +339,7 @@ var Filter = {
 				o += '<img src="'+xx+'" onerror="loadImage(this)"/>';
 				o += '</div></span>';
 				return o;
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
@@ -354,16 +354,16 @@ var Filter = {
 		var ajax_var = {"action":"getFile", "viewer":viewer};
 		callback = function(data) {
 			console.log(data);
-			console.log(data['html']);
-			balise = $('#'+str2md5(decodeURI(data['url'])));
+			console.log(data.html);
+			balise = $('#'+str2md5(decodeURI(data.url)));
 			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
-				balise.html(data['html']);
+				balise.html(data.html);
 			} else {
-				balise.html(data['html']);
+				balise.html(data.html);
 				balise.append(Control.genDelBtn());
 			}
 			console.log(viewer);
-			if(viewer != false) {
+			if(viewer !== false) {
 				$('img.lazyload').each(function(){
 					console.log(this.dataset.src);
 					this.src = this.dataset.src;
@@ -393,36 +393,37 @@ var Filter = {
 	},
 
 	open_graph_build : function(data, viewer) {
-		base_url = data['base_url'];
-		if(typeof(viewer) == "undefined") {
-			//var basic_link_button = '<button onclick="toBasicLink(this,event)" class="basic_link_button"><i class="icon-eye-off"></i></button>';
-			var basic_link_button = '';
-		} else {
-			var basic_link_button = '';
-		}
+		base_url = data.base_url;
+		var basic_link_button = '';
+		//if(typeof(viewer) == "undefined") {
+		//	//var basic_link_button = '<button onclick="toBasicLink(this,event)" class="basic_link_button"><i class="icon-eye-off"></i></button>';
+		//	var basic_link_button = '';
+		//} else {
+		//	var basic_link_button = '';
+		//}
 		var preview = ""; 
-		if(typeof(data['image']) != "undefined") {
-			if(typeof(data['image']['url']) != "undefined" && !data['image']['url'].match(/^\s*$/)) {
-				var xx = origin_url+'Data/miniature/'+str2md5(data['url'])+'.jpg';
+		if(typeof(data.image) != "undefined") {
+			if(typeof(data.image.url) != "undefined" && !data.image.url.match(/^\s*$/)) {
+				var xx = origin_url+'Data/miniature/'+str2md5(data.url)+'.jpg';
 				preview = '<div class="preview"><img src="'+xx+'" onerror="error_im(this)"/></div>';
 			}
 		}
-		if(typeof(data['title']) != "undefined" && data['title'] != "") {
-			title = '<div class="title">'+html_entity_decode(data['title'])+'</div>'
+		if(typeof(data.title) != "undefined" && data.title !== "") {
+			title = '<div class="title">'+html_entity_decode(data.title)+'</div>';
 		} else { title = ""; }
-		if(typeof(data['description']) != "undefined" && data['description'] != "") {
-			description = '<div class="description">'+data['description']+'</div>';
+		if(typeof(data.description) != "undefined" && data.description !== "") {
+			description = '<div class="description">'+data.description+'</div>';
 		} else { description = ""; }
 		console.log(viewer, basic_link_button);
-		if(preview != "" || (title != "" && description != "")) {
-			e = $('<a class="article_big" href="'+decodeURI(data['url'])+'" target="_blank">'+basic_link_button+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
-			if(typeof(data['image']) != "undefined") {
-				if(data['image']['url'] != "" && data['image']['width'] != null && data['image']['height'] != null && parseInt(data['image']['width']) < 380) {
-					e = $('<a class="article_small" href="'+decodeURI(data['url'])+'" target="_blank">'+basic_link_button+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
+		if(preview !== "" || (title !== "" && description !== "")) {
+			e = $('<a class="article_big" href="'+decodeURI(data.url)+'" target="_blank">'+basic_link_button+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
+			if(typeof(data.image) != "undefined") {
+				if(data.image.url !== "" && data.image.width !== null && data.image.height !== null && parseInt(data.image.width) < 380) {
+					e = $('<a class="article_small" href="'+decodeURI(data.url)+'" target="_blank">'+basic_link_button+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
 				} 
 			}
 		} else {
-			e = Filter.fail_request(data['url']);
+			e = Filter.fail_request(data.url);
 		}
 		return e;
 	},
@@ -442,7 +443,7 @@ var Filter = {
 		callback = function(data) {
 			console.log(data);
 			e = Filter.open_graph_build(data, viewer);
-			balise = $('*[data-src="'+data['url']+'"]');
+			balise = $('*[data-src="'+data.url+'"]');
 			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
 				balise.html(e);
 			} else {
@@ -460,8 +461,8 @@ var Filter = {
 				balise.html(e);
 				balise.append(Control.genDelBtn());
 			}
-		}
+		};
 		output = Control.searchMatch({"callerName":"searchLink", "inner":inner, "regex":r1, "substitution":substitution, "ajax_var":ajax_var, "ajax_url":ajax_url, "callback":callback, "fail":fail});
 		return output;
 	}
-}
+};

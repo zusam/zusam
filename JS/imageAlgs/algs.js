@@ -192,14 +192,27 @@
 
 // returns a new canvas with the image turned
 function turn(cv, rotation) {
+	var ctx;
+	var canvas;
+	var sBuffer;
+	var tBuffer;
+	var sIndex;
+	var sy;
+	var sx;
+	var tIndex;
+	var resCV;
+	var resCtx;
+	var imgRes;
+	var tByteBuffer;
+	var pxIndex;
 	
-	var ctx = cv.getContext('2d');
+	ctx = cv.getContext('2d');
 	//var img = ctx.getImageData(0, 0, cv.width, cv.height);
-	var canvas = document.createElement('canvas');
+	canvas = document.createElement('canvas');
 	
-	var sBuffer = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data;
-	var tBuffer = new Float32Array(3 * cv.height * cv.width);
-	var sIndex = 0;
+	sBuffer = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data;
+	tBuffer = new Float32Array(3 * cv.height * cv.width);
+	sIndex = 0;
 	for(sy = 0; sy < cv.height; sy++) {
 		for(sx = 0; sx < cv.width; sx++, sIndex += 4) {
 			if(rotation == "cw") {
@@ -214,14 +227,14 @@ function turn(cv, rotation) {
 	}
 	
 	// create result canvas
-	var resCV = document.createElement('canvas');
+	resCV = document.createElement('canvas');
 	resCV.width = cv.height;
 	resCV.height = cv.width;
-	var resCtx = resCV.getContext('2d');
-	var imgRes = resCtx.getImageData(0, 0, cv.height, cv.width);
-	var tByteBuffer = imgRes.data;
+	resCtx = resCV.getContext('2d');
+	imgRes = resCtx.getImageData(0, 0, cv.height, cv.width);
+	tByteBuffer = imgRes.data;
 	// convert float32 array into a UInt8Clamped Array
-	var pxIndex = 0;
+	pxIndex = 0;
 	for (sIndex = 0, tIndex = 0; pxIndex < cv.height * cv.width; sIndex += 3, tIndex += 4, pxIndex++) {
 		tByteBuffer[tIndex] = Math.ceil(tBuffer[sIndex]);
 		tByteBuffer[tIndex + 1] = Math.ceil(tBuffer[sIndex + 1]);
@@ -235,10 +248,11 @@ function turn(cv, rotation) {
 
 //name: Fast Hermite resize (without alpha channel)
 function downScaleCanvas(canvas, scale){
+
 	if(scale == 1) { 
 		return canvas;
 	}
-	if(!(scale < 1) || !(scale > 0)) throw ('scale must be a positive number <1 ');
+	if(scale > 1 || scale <= 0) throw ('scale must be a positive number <1 ');
 	var W = canvas.width;
 	var H = canvas.height;
 	var W2 = W * scale;
@@ -262,7 +276,10 @@ function downScaleCanvas(canvas, scale){
 			var weight = 0;
 			var weights = 0;
 			var weights_alpha = 0;
-			var gx_r = gx_g = gx_b = gx_a = 0;
+			var gx_r = 0;
+			var gx_g = 0;
+			var gx_b = 0;
+			var gx_a = 0;
 			var center_y = (j + 0.5) * ratio_h;
 			
 			var myy = (j + 1) * ratio_h;
