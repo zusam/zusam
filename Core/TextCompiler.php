@@ -471,7 +471,7 @@ function process_image($str) {
 	}
 	$html = "";
 	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
-	$html .= '<img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" data-lightbox="'.$str.'" src="'.$postImage.'"/>';
+	$html .= '<img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" data-postimage="'.$postImage.'" data-lightbox="'.$str.'" src="'.$postImage.'"/>';
 	$html .= '</span>';
 	return $html;
 }

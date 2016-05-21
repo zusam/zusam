@@ -27,9 +27,9 @@ function create_post_miniature($url, $file) {
 	}
 	if(!file_exists(ppi($url))) {
 		if(exif_imagetype($source) != IMAGETYPE_GIF) {
-			if(getFileSize($source) > 1024*700) { // > 700K
+			//if(getFileSize($source) > 1024*700) { // > 700K
 				createPostImage($source, ppi($url), 600, 6000, 70);  
-			}
+			//}
 		}
 	}
 	if(!file_exists(pmini($url))) {
@@ -175,7 +175,8 @@ function filtre($url, $debug) {
 
 	// WEB IMAGE & GIF //
 	if(preg_match(r2ep($regex['image']),$url)==1 || preg_match(r2ep($regex['gif']),$url)==1) {
-		$ret = create_post_miniature($url);
+		//$ret = create_post_miniature($url);
+		$ret = get_mini_from_link($url, $url);
 		return $ret;
 	}
 

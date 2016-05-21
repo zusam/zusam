@@ -34,6 +34,18 @@ function searchPrevious(e) {
 	return img;
 }
 
+function resizeLightBox(lb) {
+
+		lb = $(lb);
+		var ratio = lb.attr('data-ratio');
+		var lbw = window.innerWidth - 40;
+		var lbh = Math.min(lbw/ratio, window.innerHeight - 40);
+		lb.css({
+			"width" : lbw + "px",
+			"height" : lbh + "px",
+		});
+}
+
 
 function enlighten(id) {
 
@@ -48,6 +60,11 @@ function enlighten(id) {
 		lightbox_src = e.dataset.lightbox;	
 	} else {
 		lightbox_src = e.src;
+	}
+
+	// select the postimage if the device has a small screen.
+	if(window.innerWidth < 640 && typeof(e.dataset.postimage) != "undefined" && e.dataset.postimage !== "") {
+		lightbox_src = e.dataset.postimage;
 	}
 
 	var name = lightbox_src.replace(/.*\/([^\/]+)$/,'$1');
@@ -81,14 +98,7 @@ function enlighten(id) {
 
 		var nw = this.naturalWidth;
 		var nh = this.naturalHeight;
-		//var ratio = Math.max(nw/nh, 1.3);
 		var ratio = nw/nh;
-		//console.log(ratio, nw/nh);
-
-		//var width = Math.min(nw,(window.innerWidth-10)*0.95);
-		//nh = width/nw * nh;
-		//var height = Math.min(nh,(window.innerHeight-10)*0.95);
-		//width = height/nh * width;
 
 		$('body').css({'overflow':'hidden','max-height':'100%'});
 		var lb = $('<div id="lightbox"></div>');
@@ -114,28 +124,25 @@ function enlighten(id) {
 		}
 		var close = $('<div class="close material-shadow" onclick="lightbox.darken()"><i class="icon-cancel"></i></div>');
 		$(this).attr('onclick','lightbox.darken()').addClass('zoomedImage');
-		var lbw = window.innerWidth - 40;
-		var lbh = Math.min(lbw/ratio, window.innerHeight - 40);
-		//lbw = lbh * ratio;
-		lb.css({
-			//"top" : (window.innerHeight-height)/2 + "px",
-			//"left" : (window.innerWidth-width)/2 + "px",
-			"width" : lbw + "px",
-			"height" : lbh + "px",
-		});
+		lb.attr('data-ratio',ratio);
+		lightbox.resizeLightBox(lb);
+		//var lbw = window.innerWidth - 40;
+		//var lbh = Math.min(lbw/ratio, window.innerHeight - 40);
+		//lb.css({
+		//	"width" : lbw + "px",
+		//	"height" : lbh + "px",
+		//});
 		if(owner == $('#info').attr('data-uid')) {
 			turncw = $('<button contentditable="false" class="material-shadow editIMG cw"><i class="icon-cw"></i></button>');
 			turncw.on("click", function(evt) {
 				evt.stopPropagation();
 				console.log(e);
-				//lightbox.turnAndSend(e,"cw",this_img);
 				lightbox.turnImage(e,90);
 			});
 			turnccw = $('<button contentditable="false" class="material-shadow editIMG ccw"><i class="icon-ccw"></i></button>');
 			turnccw.on("click", function(evt) {
 				evt.stopPropagation();
 				console.log(e);
-				//lightbox.turnAndSend(e,"ccw",this_img);
 				lightbox.turnImage(e,270);
 			});
 		}

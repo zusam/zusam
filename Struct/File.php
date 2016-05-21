@@ -80,7 +80,12 @@ function file_getHeight(&$file) {
 function file_albumImage(&$file) {
 	$imgsrc = p2l(file_getPath($file));
 	$xx = p2l(pmini($file['fileId']));
-	$html = '<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.$xx.'" data-lightbox="'.$imgsrc.'"/>';
+	if(file_exists(ppi($file['fileId']))) {
+		$postImage = p2l(ppi($file['fileId'])).'?m='.filemtime(ppi($file['fileId']));
+	} else {
+		$postImage = "";
+	}
+	$html .= '<img class="zoomPossible" onclick="lightbox.enlighten(this)" src="'.$xx.'" data-postimage="'.$postImage.'" data-lightbox="'.$imgsrc.'?m='.filemtime(file_getPath($file)).'"/>';
 	return $html;
 }
 
@@ -99,12 +104,18 @@ function file_print(&$file) {
 		$xx = p2l(pmini($file['fileId']));
 
 		if(file_exists(ppi($file['fileId']))) {
-			$postImage = p2l(ppi($file['fileId']));
+			$postImage = p2l(ppi($file['fileId'])).'?m='.filemtime(ppi($file['fileId']));
 		} else {
-			$postImage = $imgsrc.'?m='.filemtime(file_getPath($file));
+			$postImage = "";
 		}
 
-		$html .= '<img width="'.$nw.'" height="'.$nh.'" class="inlineImage zoomPossible lazyload" onclick="lightbox.enlighten(this)" data-src="'.$postImage.'" data-lightbox="'.$imgsrc.'?m='.filemtime(file_getPath($file)).'"/>';
+		if($postImage != "") {
+			$src = $postImage;
+		} else {
+			$src = $imgsrc.'?m='.filemtime(file_getPath($file));
+		}
+
+		$html .= '<img width="'.$nw.'" height="'.$nh.'" class="inlineImage zoomPossible lazyload" onclick="lightbox.enlighten(this)" data-src="'.$src.'" data-postimage="'.$postImage.'" data-lightbox="'.$imgsrc.'?m='.filemtime(file_getPath($file)).'"/>';
 	}
 	if($file['type'] == "webm") {
 		if(file_exists(file_getPath($file))) {

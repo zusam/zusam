@@ -70,6 +70,9 @@ $(window).ready(function() {
 
 		$(window).on('resize', function() {
 			loadMorePosts();
+			if($('#lightbox').length == 1) {
+				lightbox.resizeLightBox($('#lightbox'));
+			}
 		});
 
 		// INITIALISATION OF EXTERNAL LIBRARIES

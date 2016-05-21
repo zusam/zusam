@@ -21,61 +21,46 @@ function genAuthToken(&$u) {
 // TODO review
 function isConnected() {
 	
-	// if not connected then attempt to connect
-
-	if($_SESSION['connected'] != true) {
-
-		// connect if good auth_token is present
-		if(isset($_COOKIE['auth_token'])) {
-			$token = (String) $_COOKIE['auth_token'];
-			$u = account_load(array('token'=>$token));
-			if($u != null && $u != false) {
-				$_SESSION['connected'] = true;
-				$_SESSION['uid'] = (String) $u['_id'];
-				genAuthToken($u);
-				return true;
-			} else {
-				unset($_COOKIE['auth_token']);
-			}
+	// RELOAD FROM COOKIE
+	if(isset($_COOKIE['auth_token'])) {
+		$token = (String) $_COOKIE['auth_token'];
+		$u = account_load(array('token'=>$token));
+		if($u != null && $u != false) {
+			$_SESSION['connected'] = true;
+			$_SESSION['uid'] = (String) $u['_id'];
+			genAuthToken($u);
+			return true;
+		} else {
+			unset($_COOKIE['auth_token']);
 		}
-			
-		// load account if not loaded with auth_token
-		if($_SESSION['connected'] == "true") {
-			if(!isset($u) || $u == null || $u == false) {
-				if(isset($_SESSION['uid'])) {
-					$u = account_load(array('_id'=>$_SESSION['uid']));
-				} else {
-					if(isset($_SESSION['mail'])) {
-						$u = account_load(array("mail" => $_SESSION['mail']));
-					}
-				}
-				if(isset($u) && $u != null && $u != false) {
-					$_SESSION['uid'] = (String) $u['_id'];
-					genAuthToken($u);
-					return true;
-				}
-			} else {
-				$_SESSION['uid'] = (String) $u['_id'];
-				genAuthToken($u);
-				return true;
-			}
-		}
+	}
 	
-		unset($_SESSION);
-		session_destroy();
-		return false;
-	} else {
-		if(isset($_SESSION['uid'])) {
-			$u = account_load(array('_id'=>$_SESSION['uid']));
+	// RELOAD FROM SESSION
+	if($_SESSION['connected'] == "true") {
+		if(!isset($u) || $u == null || $u == false) {
+			if(isset($_SESSION['uid'])) {
+				$u = account_load(array('_id'=>$_SESSION['uid']));
+			} else {
+				if(isset($_SESSION['mail'])) {
+					$u = account_load(array("mail" => $_SESSION['mail']));
+				}
+			}
 			if(isset($u) && $u != null && $u != false) {
 				$_SESSION['uid'] = (String) $u['_id'];
 				genAuthToken($u);
 				return true;
 			}
 		} else {
-			return false;
+			$_SESSION['uid'] = (String) $u['_id'];
+			genAuthToken($u);
+			return true;
 		}
 	}
+	
+	// NOT CONNECTED
+	unset($_SESSION);
+	session_destroy();
+	return false;
 }
 
 // decide which action should be done
