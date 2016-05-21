@@ -49,11 +49,6 @@ function enlighten(id) {
 	} else {
 		lightbox_src = e.src;
 	}
-	//if(refresh) {
-	//	lightbox_src = lightbox_src.replace(/\?.*/,'') + "?" + Date.now();
-	//} else {
-	//	lightbox_src = lightbox_src.replace(/\?.*/,'');// + "?" + Date.now();
-	//}
 
 	var name = lightbox_src.replace(/.*\/([^\/]+)$/,'$1');
 	
@@ -67,10 +62,6 @@ function enlighten(id) {
 		node = node.parentNode;
 		yy += node.offsetTop; 
 	}
-	console.log(node);
-	console.log(node.parentNode);
-	console.log(yy);
-	console.log(owner == $('#info').attr('data-uid'));
 	// TODO select nano-content more precisely
 	$('.nano-content')[0].scrollTop = yy;
 	
@@ -90,8 +81,9 @@ function enlighten(id) {
 
 		var nw = this.naturalWidth;
 		var nh = this.naturalHeight;
-		var ratio = Math.max(nw/nh, 1.3);
-		console.log(ratio, nw/nh);
+		//var ratio = Math.max(nw/nh, 1.3);
+		var ratio = nw/nh;
+		//console.log(ratio, nw/nh);
 
 		//var width = Math.min(nw,(window.innerWidth-10)*0.95);
 		//nh = width/nw * nh;
@@ -124,7 +116,7 @@ function enlighten(id) {
 		$(this).attr('onclick','lightbox.darken()').addClass('zoomedImage');
 		var lbw = window.innerWidth - 40;
 		var lbh = Math.min(lbw/ratio, window.innerHeight - 40);
-		lbw = lbh * ratio;
+		//lbw = lbh * ratio;
 		lb.css({
 			//"top" : (window.innerHeight-height)/2 + "px",
 			//"left" : (window.innerWidth-width)/2 + "px",

@@ -387,7 +387,7 @@ function takeAction($data) {
 			');
 			echo('<div id="main_page">');
 			echo('<nav>');
-			echo(page_nav($u, $f));
+			echo(page_nav($u, $f, ""));
 			echo('</nav>');
 			echo('<section>');
 			//echo(page_section_forum($u, $f));
@@ -410,7 +410,7 @@ function takeAction($data) {
 			echo(page_mainmenu($u, ""));
 			echo('<div id="main_page">');
 			echo('<nav>');
-			echo(page_nav($u));
+			echo(page_nav($u, null, ""));
 			echo('</nav>');
 			echo('</div>');
 			$footer = html_footer($GLOBALS['__ROOT_URL__']);

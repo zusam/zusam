@@ -18,11 +18,11 @@ function html_head($root_url) {
 
 	// font
 	$html .= '<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">';
-	$html .= '<link href="Fonts/fonticon.css" rel="stylesheet">';
+	$html .= '<link href="Fonts/fonticon.css?'.filemtime("Fonts/fonticon.css").'" rel="stylesheet">';
 
 
 	// css
-	$html .= '<link href="style.css?'.time().'" rel="stylesheet">';
+	$html .= '<link href="style.css?'.filemtime("style.css").'" rel="stylesheet">';
 
 	// ogp
 	$html .= '<meta property="og:title" content="'.$title.'" />';
@@ -77,8 +77,8 @@ function html_footer($root_url) {
 	$html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>';
 	//masonry incoming ?
 	//$html .= '<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.min.js"></script>';
-	$html .= '<script src="JS.js?'.time().'"></script>';
-	$html .= '<script src="LIBJS.js?'.time().'"></script>';
+	$html .= '<script src="JS.js?'.filemtime("JS.js").'"></script>';
+	$html .= '<script src="LIBJS.js?'.filemtime("LIBJS.js").'"></script>';
 	$html .= '<script src="https://connect.soundcloud.com/sdk.js"></script>';
 	$html .= '</body>';
 	$html .= '</html>';

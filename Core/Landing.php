@@ -1,6 +1,6 @@
 <?php
 
-function landing($warning, $redirect_url) {
+function landing($warning) {
 	//$head = html_head($GLOBALS['__ROOT_URL__']);
 	//echo($head);
 	echo('
