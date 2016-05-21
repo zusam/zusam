@@ -41,6 +41,7 @@ function print_full_post($id, $uid) {
 	}
 
 	$count_hidden = 0;
+	$count_shown = 0;
 	foreach($p['children'] as $cid) {
 
 		// TODO correct removing child posts in order to not do this
@@ -54,7 +55,11 @@ function print_full_post($id, $uid) {
 			} else {
 				$child_html = print_post($cid, $uid);
 				if($child_html != "") {
+					if($count_shown == 0 && $count_hidden == 0) {
+						$html_data .= '<div class="post-separator"></div>';
+					}
 					$html_data .= $child_html;
+					$count_shown++;
 				}
 			}
 		}

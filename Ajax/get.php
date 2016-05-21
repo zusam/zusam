@@ -9,6 +9,9 @@ $GET = [];
 foreach($_GET as $K=>$V) {
 	$GET[$K] = (String) $V;
 }
+
+//$GET['action'] = "getPost";
+//$GET['id'] = "57365d52376c87742000050c";
 		
 if($_SESSION['connected']) {
 

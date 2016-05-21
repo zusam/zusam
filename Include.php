@@ -25,7 +25,6 @@ require_once('Filtre/web_video.php');
 
 require_once('LibPHP/Ganon/ganon.php');
 require_once('LibPHP/PHPMailer-5.2.14/PHPMailerAutoload.php');
-require_once('LibPHP/Soundcloud.php');
 
 require_once('Pages/forum.php');
 require_once('Pages/main.php');

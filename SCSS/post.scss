@@ -72,7 +72,7 @@
 	width: 100%;
 	margin: 0px;
 	padding: 0px;
-	height: 5px;
+	height: 1px;
 }
 .post-options {
 	display: flex;
@@ -106,6 +106,8 @@
 	cursor: default;
 }
 .post {
+	padding-bottom: 2px;
+
 	.post-menu {
 		display: flex;
 		justify-content: space-between;
@@ -291,4 +293,7 @@
 			}
 		}
 	}
+}
+.new-comment-section {
+	margin-top: 1px;
 }

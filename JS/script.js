@@ -342,6 +342,7 @@ function deletePost(t) {
 					}
 					var ppid = $('#post-viewer').attr('data-id');
 					updatePostStats(ppid);
+					loadMorePosts();
 				}
 		});
 	}
@@ -362,6 +363,9 @@ function editPost(t) {
 			box += '<div class="menu">';
 			box += '<div class="menu-cell">';
 			box += '<button id="cancelit" onclick="hidepostviewer()">Annuler</button>';
+			box += '</div>';
+			box += '<div class="menu-cell">';
+			box += '<button onclick="inputFile(\'#editBox\')" class="action"><i class="icon-attach"></i></button>';
 			box += '</div>';
 			box += '<div class="menu-cell">';
 			box += '<button id="sendit" onclick="sendIt(\'#editBox\')">Envoyer</button>';
@@ -538,6 +542,7 @@ function inputFile(id) {
 function handleFileSelect(evt) {
 	var files = evt.target.files;
 	var id = evt.target.dataset.id;
+	console.log(id);
 	console.log("change!");
 	file = files[0];
 	console.log(file);
