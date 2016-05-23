@@ -119,7 +119,7 @@ function loadCanvas(img, id) {
 		}
 
 		var menu = $('<div class="menu"></div>');
-		var cancelit = $('<div class="menu-cell"><button onclick="togglenewavatar()" class="material-button">Annuler</button></div>');
+		var cancelit = $('<div class="menu-cell"><button onclick="hidenewavatar()" class="material-button">Annuler</button></div>');
 		var turnleft = $('<div class="menu-cell"><button onclick="retouche.turnccw(\''+id+'\')" class="material-button"><i class="icon-ccw"></i></button></div>');
 		var turnright = $('<div class="menu-cell"><button onclick="retouche.turncw(\''+id+'\')" class="material-button"><i class="icon-cw"></i></button></div>');
 		var sendit = $('<div class="menu-cell"><button onclick="retouche.sendCanvas(\''+id+'\')" class="material-button">Envoyer</button></div>');

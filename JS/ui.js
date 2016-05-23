@@ -6,31 +6,6 @@ function hideAll() {
 	lightbox.darken();
 }
 
-function blockBody() {
-	var locks = parseInt($('body').attr('data-locks'));
-	if(!locks) {
-		locks = 0;
-	}
-	locks = locks+1;
-	//console.log(locks);
-	$('body').attr('data-locks',locks);
-	$('body').css({'overflow':'hidden','max-height':'100%'});
-}
-function unblockBody() {
-	var locks = parseInt($('body').attr('data-locks'));
-	if(!locks) {
-		locks = 0;
-	}
-	locks = locks-1;
-	//console.log(locks);
-	if(locks < 1) {
-		$('body').attr('data-locks',0);
-		$('body').css({'overflow':'auto','max-height':'none'});
-	} else {
-		$('body').attr('data-locks',locks);
-	}
-}
-
 // TODO erase
 //function toggleoptionsmenu(id) {
 //	g = $(id).find('.options-menu');
@@ -84,14 +59,14 @@ function hideslidefromleft(id) {
 	removeMask();
 }
 
-function toggleslidefromright(id) {
-	g = $(id);
-	if(!g.hasClass('active')) {
-		showslidefromright(id);
-	} else {
-		hideslidefromright(id);
-	}
-}
+//function toggleslidefromright(id) {
+//	g = $(id);
+//	if(!g.hasClass('active')) {
+//		showslidefromright(id);
+//	} else {
+//		hideslidefromright(id);
+//	}
+//}
 
 function showslidefromright(id) {
 	hideAll();
@@ -106,14 +81,14 @@ function hideslidefromright(id) {
 	g.removeClass('active');
 }
 
-function togglenewavatar() {
-	pv = $('#newavatar');
-	if(pv.hasClass('active')) {
-		hideimageeditor();
-	} else {
-		showimageeditor("#retouchebox");
-	}
-}
+//function togglenewavatar() {
+//	pv = $('#newavatar');
+//	if(pv.hasClass('active')) {
+//		hideimageeditor();
+//	} else {
+//		showimageeditor("#retouchebox");
+//	}
+//}
 
 function hideimageeditor() {
 	pv = $('#newavatar');
@@ -180,7 +155,7 @@ function hidenewpost(sent) {
 
 function hidenewcommentsection(id) {
 	var t = $(id);
-	t.after(fakeComment());
+	t.after(genFakeComment());
 	t.remove();
 }
 
@@ -193,17 +168,18 @@ function shownewcommentsection(id) {
 	if(fc.hasClass('fake-comment')) {
 		fc.remove();
 		var cb = $('<div id="commentBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Ecrire un commentaire..."></div></div>');
-		var np_menu = $('<div class="menu"></div>');
-		var np_cell1 = $('<div class="menu-cell"></div>');
-		np_cell1.append('<button class="cancel" onclick="hidenewcommentsection($(\'.new-comment-section\'))">Annuler</button>');
-		var np_cell2 = $('<div class="menu-cell"></div>');
-		np_cell2.append('<button onclick="inputFile(\'#commentBox\')" class="action"><i class="icon-attach"></i></button>');
-		var np_cell3 = $('<div class="menu-cell"></div>');
-		np_cell3.append('<button class="send" onclick="sendIt(\'#commentBox\')">Envoyer</button>');
-		np_menu.append(np_cell1);
-		np_menu.append(np_cell2);
-		np_menu.append(np_cell3);
-		t.append(cb).append(np_menu);
+		//var np_menu = $('<div class="menu"></div>');
+		//var np_cell1 = $('<div class="menu-cell"></div>');
+		//np_cell1.append('<button class="cancel" onclick="hidenewcommentsection($(\'.new-comment-section\'))">Annuler</button>');
+		//var np_cell2 = $('<div class="menu-cell"></div>');
+		//np_cell2.append('<button onclick="inputFile(\'#commentBox\')" class="action"><i class="icon-attach"></i></button>');
+		//var np_cell3 = $('<div class="menu-cell"></div>');
+		//np_cell3.append('<button class="send" onclick="sendIt(\'#commentBox\')">Envoyer</button>');
+		//np_menu.append(np_cell1);
+		//np_menu.append(np_cell2);
+		//np_menu.append(np_cell3);
+		var menu = genMenu("hidenewcommentsection($(\'.new-comment-section\'))","inputFile(\'#commentBox\')","sendIt(\'#commentBox\')");
+		t.append(cb).append(menu);
 		typebox.start('#commentBox');
 		// require typebox module
 		typebox.Control.niceFocus('#commentBox');
@@ -252,7 +228,7 @@ function showpostviewer(id) {
 				var plop = $(data.html);
 				$('#post-viewer').append(plop);
 				var opimg = $('#info').attr('data-avatar');
-				$('#post-viewer').append(fakeComment());
+				$('#post-viewer').append(genFakeComment());
 
 				updatePostStats(id);
 				
@@ -288,64 +264,4 @@ function hidepostviewer() {
 	removeMask();
 	typebox.stop('#commentBox');
 	active_post = 0;
-}
-
-function addMask(func, darkness, zindex, id) {
-	if(id === null) {
-		id = "mask";
-	}
-	mask = $('<div class="mask" id="'+id+'" onclick="'+func+'"></div>');
-	$('body').append(mask);
-	blockBody();
-	$('#'+id).css('background','rgba(0,0,0,'+darkness+')');
-	if(zindex !== null) {
-		$('#'+id).css('z-index',zindex);
-	}
-}
-
-function removeMask(id) {
-	if(id === null) {
-		id = "mask";
-	}
-	$('#'+id).remove();
-	unblockBody();
-}
-
-function lazyload(e) {
-	$(e).find('img.lazyload:not([src])').each(function() {
-		var y = e.scrollTop + window.screen.height;
-		var node = this;
-		var yy = node.offsetTop - 10;
-		while(!node.parentNode.className.match(/\.nano-content/) && node.parentNode != document.body) {
-			node = node.parentNode;
-			yy += node.offsetTop; 
-		}
-		if(yy < y) {
-			unveil(this);
-		}
-	});
-}
-
-function unveil(e) {
-	if(e.src === "") {
-		console.log("load :"+e.dataset.src);
-		e.src = e.dataset.src;	
-		e.onload = function() {
-			e.style.opacity = 1;
-			e.removeAttribute('width');
-			e.removeAttribute('height');
-		};
-	}
-}
-
-function fakeComment() {
-	var opimg = $('#info').attr('data-avatar');
-	var fc;
-	if(opimg === "") {
-		opimg = $('.my_avatar').html();
-		fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><div class="op-img">'+opimg+'</div><span>Ecrire un commentaire...</span></div></div>');
-	} else {
-		fc = $('<div onclick="shownewcommentsection(this)" onfocus="shownewcommentsection(this)" class="new-comment-section" tabindex="1"><div class="fake-comment"><img class="op-img" src="'+opimg+'"/><span>Ecrire un commentaire...</span></div></div>');
-	}
-	return fc;
 }

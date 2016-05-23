@@ -190,11 +190,12 @@
 				cursor: pointer;
 				position: relative;
 				right: 10px;
+				padding: 5px;
 
 				.options-menu {
 					display: none;
 					position: absolute;
-					top: 150%;
+					top: 100%;
 					left: calc(100% - 110px);
 					width: 100px;
 					background: #FFF none repeat scroll 0% 0%;

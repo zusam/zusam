@@ -20,7 +20,6 @@ function html_head($root_url) {
 	$html .= '<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">';
 	$html .= '<link href="Fonts/fonticon.css?'.filemtime("Fonts/fonticon.css").'" rel="stylesheet">';
 
-
 	// css
 	$html .= '<link href="style.css?'.filemtime("style.css").'" rel="stylesheet">';
 

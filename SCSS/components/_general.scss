@@ -1,0 +1,68 @@
+.help-balise {
+	display: inline-block;
+	position: relative;
+	color: black;
+	border-radius: 100%;
+	font-size: 17px;
+	margin: 0px 3px;
+	
+	span {
+		display: none;
+		position: absolute;
+		top: 0px;
+		left: calc(100% + 5px);
+		border: 1px solid black;
+		border-radius: 10px;
+		padding: 5px;
+		font-size: 15px;
+		width: 150px;
+		background: white;
+		z-index: 700;
+	}
+	&:hover span {
+		display: block;
+	}
+}
+.menu {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	background: #eee;
+	margin: 0;
+	padding: 0;
+	
+	.menu-cell {
+		margin: 0;
+		padding: 5px 20px;
+		text-align: center;
+
+		.action {
+			border: none;
+			width: 30px;
+			height: 30px;
+			background: none;
+			font-size: 24px;
+			cursor: pointer;
+			display: block;
+			padding: 2px;
+			overflow: hidden;
+			
+			&:hover {
+				background: lightgrey;
+			}
+		}
+		.material-button { 
+			display: inline-block;
+			border-radius: 0;
+			cursor: pointer;
+			border: 1px solid black;
+			box-shadow: 1px 1px 3px black;
+			background-color: white;
+			
+			&:hover {
+				box-shadow: 0px 0px 1px black;
+			}
+		}
+	}
+}

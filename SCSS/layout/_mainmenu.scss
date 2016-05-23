@@ -13,19 +13,12 @@
 		cursor: default;
 		height: 20px;
 	}
-}
-.slide-menu > * {
-	display: block;
-	text-align: left;
-	text-decoration: none;
-}
-@media (min-width: 680px) {
-	#mainmenu {
-		transform: none !important;
+	
+	& > * {
+		display: block;
+		text-align: left;
+		text-decoration: none;
 	}
-}
-#mainmenu * {
-	color: lightgrey;
 }
 #mainmenu {
 	background-color: #444444;
@@ -33,6 +26,14 @@
 	width: 200px; 
 	box-shadow: inset -10px 0px 10px -8px rgba(0,0,0,0.8);
 	font-size: 16px;
+	
+	@media (min-width: 680px) {
+		left: 200px;
+	}
+
+	* {
+		color: lightgrey;
+	}
 
 	.section-separator {
 		display: block;
@@ -58,6 +59,16 @@
 			width: 100%;
 			height: 100%;
 			overflow: hidden;
+		
+			&:hover {
+				background-color: rgba(0,0,0,0.2);
+				//color: #F7A71B;
+			}
+
+			.selected {
+				background-color: rgba(0,0,0,0.5);
+				//color: #F7A71B;
+			}
 
 			img, svg {
 				height: 24px;
@@ -73,18 +84,15 @@
 				}
 			}
 		}
-		.profil:hover {
-			background-color: rgba(0,0,0,0.2);
-			//color: #F7A71B;
-		}
-		.profil.selected {
-		    background-color: rgba(0,0,0,0.5);
-			//color: #F7A71B;
-		}
 		.disconnect {
 			padding: 8px 10px 8px 0px;
 			cursor: pointer;
 			font-size: 20px;
+			
+			&:hover {
+				background-color: rgba(0,0,0,0.2);
+				//color: #F7A71B;
+			}
 			
 			a {
 				text-decoration: none;
@@ -94,14 +102,10 @@
 				background: none;
 				margin: 0px 5px;
 				cursor: pointer;
+				&:hover {
+					color: white;
+				}
 			}
-			a:hover {
-				color: white;
-			}
-		}
-		.disconnect:hover {
-			background-color: rgba(0,0,0,0.2);
-			//color: #F7A71B;
 		}
 	}
 	.action {
@@ -116,6 +120,10 @@
 		height: 100%;
 		overflow: auto;
 		
+		.selected {
+			background-color: rgba(0,0,0,0.5) !important;
+		}
+		
 		.section-title {
 			width: calc(100% - 20px);
 			margin: 7px 10px;
@@ -124,9 +132,6 @@
 			align-items: center;
 			justify-content: space-between;
 		}
-		.section-entry:hover {
-			background-color: rgba(0,0,0,0.1);
-		}
 		.section-entry {
 			display: flex;
 			justify-content: space-between;
@@ -134,6 +139,10 @@
 			width: 100%;
 			border-bottom: 2px solid rgba(0,0,0,0.1);
 			border-top: 1px solid rgba(255,255,255,0.1);
+		
+			&:hover {
+				background-color: rgba(0,0,0,0.1);
+			}
 		
 			.forum-link {
 				text-decoration: none;
@@ -160,14 +169,12 @@
 				text-decoration: none;
 				margin: 0px 5px;
 				cursor: pointer;
+				
+				&:hover i {
+					animation: fa-spin 2s infinite linear;
+					color: white;
+				}
 			}
-			.forum-settings:hover i {
-				animation: fa-spin 2s infinite linear;
-				color: white;
-			}
-		}
-		.selected {
-			background-color: rgba(0,0,0,0.5) !important;
 		}
 	}
 	.news-highlight {
@@ -191,9 +198,6 @@
 			padding: 6px 10px;
 			cursor: pointer;
 		}
-		.remove:hover i {
-			color: white;
-		}
 		.remove {
 			display: flex;
 			flex-direction: column;
@@ -201,6 +205,9 @@
 			width: 20%;
 			text-align: center;
 			cursor: pointer;
+			&:hover i {
+				color: white;
+			}
 		}
 	}
 }
