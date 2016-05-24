@@ -1,19 +1,14 @@
-@media (max-width: 350px) {
-	section {
-		padding: 10px 0px !important;
-		width: 100% !important;
-		
-		.post-mini {
-			margin: 10px 0px !important;
-		}
-	}
-}
 section {
 	position: relative;
 	top: 40px;
 	transition: all 0.5s;
 	width: calc(100% - 20px);
 	padding: 10px;
+
+	@media (max-width: 350px) {
+		padding: 10px 0px !important;
+		width: 100% !important;
+	}
 	
 	#container {
 		display: flex;
@@ -42,16 +37,15 @@ section {
 		position: relative;
 		text-decoration: none;
 
+		@media (max-width: 350px) {
+			margin: 10px 0px !important;
+		}
 
 		.post-inside {
 			display: block;
 			width: 320px;
 			height: calc(180px + 30px);
 		
-			.newcom .comments-indicator {
-				//color: #F7A71B !important;
-				color: #EC9909 !important; // - 5% luminosity
-			}
 			
 			.post-info {
 				position: relative;
@@ -65,16 +59,15 @@ section {
 				padding: 5px;
 				height: 20px;
 				border-top: 1px solid lightgrey;
-
-				.date {
-					color: grey;
-					font-size: 14px;
-				}
+				color: grey;
+				font-size: 14px;
 			
 				.comments-indicator {
 					min-width: 25px;
-					color: grey;
-					font-size: 14px;
+					
+					.newcom {
+						color: #EC9909; // !important;
+					}
 				}
 
 				.op-avatar {
@@ -88,6 +81,10 @@ section {
 					left: 4px;
 					border: 2px solid white;
 					transition: all 0.25s;
+
+					&:hover {
+						transform: scale(2);
+					}
 					
 					img, svg {
 						height: 40px;
@@ -101,10 +98,6 @@ section {
 							fill: #fff;
 						}
 					}
-				}
-
-				.op-avatar:hover {
-					transform: scale(2);
 				}
 
 				img {
@@ -151,9 +144,10 @@ section {
 								font-size: 15px;
 								padding: 16px 15px 0 15px;
 								color: rgb(0, 0, 0);
-							}
-							div:first-letter {
-								text-transform: capitalize;
+							
+								&:first-letter {
+									text-transform: capitalize;
+								}
 							}
 						}
 					}

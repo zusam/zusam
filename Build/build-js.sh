@@ -15,6 +15,7 @@ else
 	opt="--beautify"
 fi
 
+#JS
 A=(`echo $JS/*`)
 for p in "${A[@]}";
 do
@@ -30,6 +31,8 @@ uglifyjs $JS/$libname/*.js $opt --wrap=$libname --export-all > $JS'/'$libname$b
 		fi
 	fi
 done
+
+# LIBJS
 A=(`echo $LIBJS/*`)
 for p in "${A[@]}";
 do
@@ -45,5 +48,11 @@ uglifyjs $LIBJS/$libname/*.js $opt --wrap=$libname --export-all > $LIBJS'/'$libn
 		fi
 	fi
 done
+
+#ASSEMBLE
 cat $JS/*.js | uglifyjs - $opt > "JS.js"
 cat $LIBJS/*.js | uglifyjs - $opt > "LIBJS.js"
+
+#CLEAN
+rm $JS/*.min.js 
+rm $LIBJS/*.min.js 

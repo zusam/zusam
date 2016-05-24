@@ -55,9 +55,9 @@ function print_full_post($id, $uid) {
 			} else {
 				$child_html = print_post($cid, $uid);
 				if($child_html != "") {
-					if($count_shown == 0 && $count_hidden == 0) {
-						$html_data .= '<div class="post-separator"></div>';
-					}
+					//if($count_shown == 0 && $count_hidden == 0) {
+					//	$html_data .= '<div class="post-separator"></div>';
+					//}
 					$html_data .= $child_html;
 					$count_shown++;
 				}
@@ -213,11 +213,7 @@ function print_post_mini(&$p, $unread) {
 		// get the user
 		$op = account_load(array('_id' => $p['uid']));
 		
-		if($unread) {
-			$inside .= '<div class="post-info newcom">';
-		} else {
-			$inside .= '<div class="post-info">';
-		}
+		$inside .= '<div class="post-info">';
 
 		$inside .= '<div class="op-avatar">'.account_getAvatarHTML($op).'</div>';
 
@@ -227,7 +223,7 @@ function print_post_mini(&$p, $unread) {
 		$c = count($p['children']);
 		if($c > 0) {
 			if($unread) {
-				$inside .= '<div>'.$c.' <i class="icon-comment"></i></div>';
+				$inside .= '<div class="newcom">'.$c.' <i class="icon-comment"></i></div>';
 			} else {
 				$inside .= '<div>'.$c.' <i class="icon-comment-empty"></i></div>';
 			}

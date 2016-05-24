@@ -82,9 +82,10 @@
 			cursor: pointer;
 			padding: 10px;
 			text-decoration: none;
-		}
-		.action:hover {
-			color: #F7A71B;
+		
+			&:hover {
+				color: #F7A71B;
+			}
 		}
 	}
 
@@ -202,15 +203,16 @@
 					margin: 0px auto;
 					position: relative;
 					top: 10px;
+					
+					&:hover {
+						background-color: rgb(255,175,35);
+						box-shadow: 0px 0px 25px black;
+					}
 					i {
 						position: relative;
 						right: 2px;
 						bottom: 1px;
 					}
-				}
-				.submit:hover {
-					background-color: rgb(255,175,35);
-					box-shadow: 0px 0px 25px black;
 				}
 			}
 		}

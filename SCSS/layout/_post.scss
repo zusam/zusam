@@ -1,14 +1,3 @@
-.more_comments {
-	padding: 5px;
-    text-align: center;
-	color: black;
-	background-color: lightgrey;
-	cursor: pointer;
-}
-.more_comments:hover {
-	text-decoration: underline;
-}
-
 #slidenewpost {
 	width: 600px;
 	max-width: 100%;
@@ -27,13 +16,218 @@
 	width: 600px;
 	max-width: 100%;
 	
-	#post-viewer:focus {
-		outline: none;
-	}
 	#post-viewer {
 		display: block;
 		width: 100%;
 		z-index: 10;
+	
+		&:focus {
+			outline: none;
+		}
+		.post {
+			padding-bottom: 2px;
+
+			.post-menu {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				background: none;
+				color: black;
+				
+				.op {
+					display: flex;
+					margin: 0px;
+					padding: 0px;
+					align-content: center;
+
+					.avatar {
+						transition: transform 0.2s;
+						z-index: 50;
+						position: relative;
+						
+						img, svg {
+							//border-radius: 100%;
+							width: 100%;
+							height: 100%;
+							//margin: 6px;
+
+							.bg {
+								fill: #f7a71b;
+							}
+							.letter {
+								fill: #fff;
+							}
+						}
+					}
+					.post-info {
+						padding-left: 10px;
+						
+						.first-line {
+							.author {
+								font-weight: bold;
+							}
+						}
+						.second-line {
+							position: relative;
+							margin: 0px;
+							padding: 0px;
+							display: flex;
+							align-items: center;
+							color: grey;
+							font-size: 12px;
+
+							.date {
+								font-size: 14px;
+								line-height: 22px;
+							}
+							.circle-separator {
+								font-size: 5px;
+								margin: 0px 5px;
+								position: relative;
+								top: 1px;
+							}
+							.butterfly-button {
+								cursor: pointer;
+								margin: 0px 2px;
+								display: inline;
+								fill: grey;
+								svg {
+									width: 100%;
+									height: 100%;
+								}
+							}
+						}
+					}
+				}
+				.right-menu {
+					display: flex;
+					align-items: center;
+					
+					.options {
+						width: 30px;
+						text-align:center;
+						cursor: pointer;
+						position: relative;
+						right: 10px;
+						padding: 5px;
+
+						.options-menu {
+							display: none;
+							position: absolute;
+							top: 100%;
+							left: calc(100% - 110px);
+							width: 100px;
+							background: #FFF none repeat scroll 0% 0%;
+							z-index: 600;
+							border: 1px solid grey;
+							box-shadow: 0px 0px 5px black;
+							
+							& > a {
+								display: block;
+								margin: 8px 2px;
+								
+								&:hover {
+									color :red;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		.parent-post {
+			background: white;
+			width: 100%;
+
+			.post-menu {
+				width: calc(100% - 10px);
+				height: 45px;
+				padding: 5px;
+
+				.op {
+					.avatar {
+						height: 45px;
+						width: 45px;
+					}
+					.post-info {
+						.author {
+							height: 20px;
+							line-height: 22px;
+						}
+						.second-line {
+							height: 21px;
+							
+							.butterfly-button {
+								height: 15px;
+								width: 15px;
+							}
+
+							.date {
+								font-size: 14px;
+								line-height: 22px;
+								color: grey;
+							}
+						}
+					}
+				}
+			}
+		}
+		.child-post {
+			background: #F0F0F0;
+			padding: 8px 5px 2px 5px;
+			position: relative;
+			min-height: 40px;
+			max-width: 100%;
+
+			.post-com-text {
+				margin-left: 5px;
+				margin-top: 2px;
+				width: 450px;
+				width: calc(100% - 43px);
+			}
+			.post-menu {
+				width: calc(100% - 10px);
+				height: 30px;
+				padding: 0px 5px;
+
+				.op {
+					.avatar {
+						height: 30px;
+						width: 30px;
+					}
+					.author {
+						height: 15px;
+						line-height: 12px;
+					}
+					.second-line {
+						height: 16px;
+
+						.butterfly-button {
+							height: 12px;
+							width: 12px;
+						}
+					
+						.date {
+							font-size: 12px;
+							line-height: 16px;
+							color: grey;
+						}
+					}
+				}
+			}
+		}
+
+		.more_comments {
+			padding: 5px;
+			text-align: center;
+			color: black;
+			background-color: lightgrey;
+			cursor: pointer;
+			
+			&:hover {
+				text-decoration: underline;
+			}
+		}
 		
 		.fake-comment {
 			color: black;
@@ -67,234 +261,45 @@
 		}
 	}
 }
-.post-separator {
-	display: block;
-	width: 100%;
-	margin: 0px;
-	padding: 0px;
-	height: 1px;
-}
-.post-options {
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: center;
-	align-items: center;
-	position: fixed;
-	width: 100%;
-	z-index: 5000;
-
-	.cell {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-grow: 2;
-		font-size: 14px;
-		cursor: pointer;
-		background-color: black;
-		color: #F7A71B;
-		text-align: center;
-		height: 30px;
-		transition: all 0.2s;
-	}
-	.cell:hover {
-		background-color: #F7A71B;
-		color: black;
-	}
-}
-.sgf-viewer {
-	max-height: 750px;
-	cursor: default;
-}
-.post {
-	padding-bottom: 2px;
-
-	.post-menu {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		background: none;
-		color: black;
-		
-		.op {
-			display: flex;
-			margin: 0px;
-			padding: 0px;
-			align-content: center;
-
-			.avatar {
-				transition: transform 0.2s;
-				z-index: 50;
-				position: relative;
-				
-				img, svg {
-					//border-radius: 100%;
-					width: 100%;
-					height: 100%;
-					//margin: 6px;
-
-					.bg {
-						fill: #f7a71b;
-					}
-					.letter {
-						fill: #fff;
-					}
-				}
-			}
-			.post-info {
-				padding-left: 10px;
-				
-				.first-line {
-					.author {
-						font-weight: bold;
-					}
-				}
-				.second-line {
-					position: relative;
-					margin: 0px;
-					padding: 0px;
-					display: flex;
-					align-items: center;
-					color: grey;
-					font-size: 12px;
-
-					.date {
-						font-size: 14px;
-						line-height: 22px;
-					}
-					.circle-separator {
-						font-size: 5px;
-						margin: 0px 5px;
-						position: relative;
-						top: 1px;
-					}
-					.butterfly-button {
-						cursor: pointer;
-						margin: 0px 2px;
-						display: inline;
-						fill: grey;
-						svg {
-							width: 100%;
-							height: 100%;
-						}
-					}
-				}
-			}
-		}
-		.right-menu {
-			display: flex;
-			align-items: center;
-			
-			.options {
-				width: 30px;
-				text-align:center;
-				cursor: pointer;
-				position: relative;
-				right: 10px;
-				padding: 5px;
-
-				.options-menu {
-					display: none;
-					position: absolute;
-					top: 100%;
-					left: calc(100% - 110px);
-					width: 100px;
-					background: #FFF none repeat scroll 0% 0%;
-					z-index: 600;
-					border: 1px solid grey;
-					box-shadow: 0px 0px 5px black;
-				}
-				.options-menu > a {
-					display: block;
-					margin: 8px 2px;
-				}
-				.options-menu > a:hover {
-					color :red;
-				}
-			}
-		}
-	}
-}
-.parent-post {
-	background: white;
-	width: 100%;
-
-	.post-menu {
-		width: calc(100% - 10px);
-		height: 45px;
-		padding: 5px;
-
-		.op {
-			.avatar {
-				height: 45px;
-				width: 45px;
-			}
-			.post-info {
-				.author {
-					height: 20px;
-					line-height: 22px;
-				}
-				.second-line {
-					height: 21px;
-					
-					.butterfly-button {
-						height: 15px;
-						width: 15px;
-					}
-
-					.date {
-						font-size: 14px;
-						line-height: 22px;
-						color: grey;
-					}
-				}
-			}
-		}
-	}
-}
-.child-post {
-	background: #F0F0F0;
-	padding: 8px 5px 2px 5px;
-	position: relative;
-	min-height: 40px;
-	max-width: 100%;
-
-	.post-com-text {
-		margin-left: 5px;
-		margin-top: 2px;
-		width: 450px;
-		width: calc(100% - 43px);
-	}
-	.post-menu {
-		width: calc(100% - 10px);
-		height: 30px;
-		padding: 0px 5px;
-
-		.op {
-			.avatar {
-				height: 30px;
-				width: 30px;
-			}
-			.author {
-				height: 15px;
-				line-height: 12px;
-			}
-			.second-line {
-				height: 16px;
-
-				.butterfly-button {
-					height: 12px;
-					width: 12px;
-				}
-			
-				.date {
-					font-size: 12px;
-					line-height: 16px;
-					color: grey;
-				}
-			}
-		}
-	}
-}
+//.post-separator {
+//	display: block;
+//	width: 100%;
+//	margin: 0px;
+//	padding: 0px;
+//	height: 1px;
+//}
+//.post-options {
+//	display: flex;
+//	flex-flow: row wrap;
+//	justify-content: center;
+//	align-items: center;
+//	position: fixed;
+//	width: 100%;
+//	z-index: 5000;
+//
+//	.cell {
+//		display: flex;
+//		align-items: center;
+//		justify-content: center;
+//		flex-grow: 2;
+//		font-size: 14px;
+//		cursor: pointer;
+//		background-color: black;
+//		color: #F7A71B;
+//		text-align: center;
+//		height: 30px;
+//		transition: all 0.2s;
+//		
+//		&:hover {
+//			background-color: #F7A71B;
+//			color: black;
+//		}
+//	}
+//}
+//.sgf-viewer {
+//	max-height: 750px;
+//	cursor: default;
+//}
 .new-comment-section {
 	margin-top: 1px;
 }

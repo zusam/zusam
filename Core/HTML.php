@@ -73,9 +73,7 @@ function html_footer($root_url) {
 		</script>
 	';
 
-	$html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>';
-	//masonry incoming ?
-	//$html .= '<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.min.js"></script>';
+	$html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>';
 	$html .= '<script src="JS.js?'.filemtime("JS.js").'"></script>';
 	$html .= '<script src="LIBJS.js?'.filemtime("LIBJS.js").'"></script>';
 	$html .= '<script src="https://connect.soundcloud.com/sdk.js"></script>';

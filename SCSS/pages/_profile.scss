@@ -1,8 +1,5 @@
 .profile_wrapper {
-    //overflow-x: hidden;
-	//overflow-y: auto;
 	max-width: 100%;
-
 
 	.change-profile {
 		display: block;
@@ -52,6 +49,11 @@
 		height: 200px;
 		overflow: hidden;
 
+		&:hover {
+			filter: sepia(100%);
+			-webkit-filter: sepia(100%);
+			transition: all 0s;
+		}
 		img, svg {
 			height: 200px;
 			width: 200px;
@@ -64,11 +66,6 @@
 			}
 		}
 	}
-	.change-avatar:hover {
-		filter: sepia(100%);
-		-webkit-filter: sepia(100%);
-		transition: all 0s;
-	}
 }
 .newavatar {
 	display: none;
@@ -78,20 +75,6 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 	z-index: 700;
-	//max-width: calc(80% - 20px);
-	//max-height: calc(80% - 20px);
 	padding: 10px;
 	background: white;
-	
-	//.menu {
-	//	width: 100%;
-	//	position: absolute;
-	//	top: 100%;
-	//	left: 0px;
-	//}
-	//.menu-cell {
-	//	display: inline-block;
-	//	width: 50%;
-	//	text-align: center;
-	//}
 }
