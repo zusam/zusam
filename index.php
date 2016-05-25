@@ -14,9 +14,6 @@ foreach($_POST as $K=>$V) {
 }
 
 $data = crossroad($GET, $POST, $FILES);
-//var_dump($data);
-//var_dump($_SESSION);
-//var_dump($_COOKIE);
 
 // HTML
 echo('<!DOCTYPE html>');
@@ -25,6 +22,5 @@ echo('<!DOCTYPE html>');
 $head = html_head($GLOBALS['__ROOT_URL__']);
 echo($head);
 takeAction($data);
-//main($u,$forum,$GET,$POST);
 
 ?>

@@ -4,9 +4,11 @@ loc=`pwd`
 JS="JS"
 LIBJS="LibJS"
 
-# first, clean the selected directories
-rm $JS/*.min.js
-#rm $LIBJS/*.min.js
+#CLEAN
+{
+	rm $JS/*.min.js 
+	rm $LIBJS/*.min.js
+} &> /dev/null
 
 if [[ "$1" == "compress" ]]
 then
@@ -54,5 +56,7 @@ cat $JS/*.js | uglifyjs - $opt > "JS.js"
 cat $LIBJS/*.js | uglifyjs - $opt > "LIBJS.js"
 
 #CLEAN
-rm $JS/*.min.js 
-rm $LIBJS/*.min.js 
+{
+	rm $JS/*.min.js 
+	rm $LIBJS/*.min.js
+} &> /dev/null

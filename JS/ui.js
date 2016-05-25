@@ -6,16 +6,6 @@ function hideAll() {
 	lightbox.darken();
 }
 
-// TODO erase
-//function toggleoptionsmenu(id) {
-//	g = $(id).find('.options-menu');
-//	if(!g.hasClass('active')) {
-//		showoptionsmenu(id);
-//	} else {
-//		hideoptionsmenu(id);
-//	}
-//}
-
 function showoptionsmenu(id) {
 	g = $(id).find('.options-menu');
 	g.css("display","block");
@@ -59,15 +49,6 @@ function hideslidefromleft(id) {
 	removeMask();
 }
 
-//function toggleslidefromright(id) {
-//	g = $(id);
-//	if(!g.hasClass('active')) {
-//		showslidefromright(id);
-//	} else {
-//		hideslidefromright(id);
-//	}
-//}
-
 function showslidefromright(id) {
 	hideAll();
 	g = $(id);
@@ -80,15 +61,6 @@ function hideslidefromright(id) {
 	g.css({"transform":"translateX(100%)","right":"0px"});
 	g.removeClass('active');
 }
-
-//function togglenewavatar() {
-//	pv = $('#newavatar');
-//	if(pv.hasClass('active')) {
-//		hideimageeditor();
-//	} else {
-//		showimageeditor("#retouchebox");
-//	}
-//}
 
 function hideimageeditor() {
 	pv = $('#newavatar');
@@ -168,21 +140,11 @@ function shownewcommentsection(id) {
 	if(fc.hasClass('fake-comment')) {
 		fc.remove();
 		var cb = $('<div id="commentBox" class="dynamicBox"><div contenteditable="true" data-placeholder="Ecrire un commentaire..."></div></div>');
-		//var np_menu = $('<div class="menu"></div>');
-		//var np_cell1 = $('<div class="menu-cell"></div>');
-		//np_cell1.append('<button class="cancel" onclick="hidenewcommentsection($(\'.new-comment-section\'))">Annuler</button>');
-		//var np_cell2 = $('<div class="menu-cell"></div>');
-		//np_cell2.append('<button onclick="inputFile(\'#commentBox\')" class="action"><i class="icon-attach"></i></button>');
-		//var np_cell3 = $('<div class="menu-cell"></div>');
-		//np_cell3.append('<button class="send" onclick="sendIt(\'#commentBox\')">Envoyer</button>');
-		//np_menu.append(np_cell1);
-		//np_menu.append(np_cell2);
-		//np_menu.append(np_cell3);
 		var menu = genMenu("hidenewcommentsection($(\'.new-comment-section\'))","inputFile(\'#commentBox\')","sendIt(\'#commentBox\')");
 		t.append(cb).append(menu);
 		typebox.start('#commentBox');
 		// require typebox module
-		typebox.Control.niceFocus('#commentBox');
+		typebox.niceFocus('#commentBox');
 	}
 }
 
@@ -239,8 +201,8 @@ function showpostviewer(id) {
 					lazyload(e.currentTarget);
 				});
 				setTimeout(function() {
-					$('.viewerBox').each(function() {
-						typebox.limitHeight(this);
+					$('.post-text').each(function() {
+						limitHeight(this);
 					});
 				}, 100);
 				$('#post-viewer').focus();

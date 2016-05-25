@@ -168,8 +168,9 @@ function print_post($id, $uid) {
 	} else {
 		$html_data .= 'post-parent-text ';
 	}
-	$html_data .= 'dynamicBox viewerBox" data-id="'.$p['_id'].'">'.compileText(trim($p['text']), false).'</div>';
-
+	$html_data .= 'post-text">';
+	$html_data .= '<div class="dynamicBox viewerBox" data-id="'.$p['_id'].'">'.compileText(trim($p['text']), false).'</div>';
+	$html_data .= '</div>';
 	$html_data .= '</div>';
 
 	return $html_data;

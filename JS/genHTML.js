@@ -23,3 +23,14 @@ function genMenu(cancel,action,send) {
 	np_menu.append(np_cell3);
 	return np_menu;
 }
+
+function genAjaxLoader() {
+	var loader = '<div class="ajax-loader"><div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div></div>';
+	return loader;
+}
+
+function genDelBtn() {
+	var btn = $('<div onclick="$(this).closest(\'.deletable\').remove();" class="delete-btn"><i class="icon-cancel"></i></div>');
+	return btn;
+}
+

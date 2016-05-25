@@ -188,7 +188,7 @@ function process_gfycat($str) {
 	$id = preg_replace("/.*\/([a-zA-Z]+)$/","$1",$url);
 	$w = "https://gfycat.com/ifr/".$id;
 	$xx = p2l(pmini($str));
-	$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$b = '<span class="deletable deletable-block" data-type="gfycat" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$o = '<div class="embed-responsive embed-responsive-16by9">';
 	$o .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$o .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
@@ -199,7 +199,7 @@ function process_gfycat($str) {
 
 function process_facebook_video($str) {
 	gen_miniature($str, false);
-	$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$b = '<span class="deletable deletable-block" data-type="gfycat" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$o = '<iframe src="https://www.facebook.com/plugins/video.php?href='.$str.'&show_text=0&width=600" width="600" height="337" style="border:none;overflow:hidden" onload="keepFormat(this, 16/9)" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>';
 	$a = '</span>';
 	return $b.$o.$a;
@@ -218,7 +218,7 @@ function process_imgur($str,$debug) {
 		$data = json_decode($data,true);
 		if($data['success']) {
 			if($data['data']['is_album'] == false) {
-				$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+				$b = '<span class="deletable deletable-block" data-type="imgur" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 				if($data['data']['webm'] != "") {
 					$xx = p2l(pmini($data['data']['webm']));
 					gen_miniature($data['data']['webm']);
@@ -260,7 +260,7 @@ function process_instagram($str) {
 	$data = fgc("https://api.instagram.com/oembed/?url=".$str);
 	$data = json_decode($data,true);
 
-	$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$b = '<span class="deletable deletable-block" data-type="instagram" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$o = '<a class="mediaLink material-shadow" href="'.$str.'" target="_blank"><i class="icon-link-ext-alt"></i></a><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'.$data['thumbnail_url'].'"/>';
 	$a = '</span>';
 	$output = $b.$o.$a;
@@ -297,7 +297,7 @@ function process_googleDrive($str) {
 		$id = preg_replace("/(https?:\/\/drive.google.com\/file\/d\/)([\w]+)(\/)([^\s]+)/","$2",$str);
 	}
 	if(preg_match("/^\w+$/",$id)==1) {
-		$b = '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		$b = '<span class="deletable deletable-block" data-type="googleDrive" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 		$o = '<div class="embed-responsive embed-responsive-square"><iframe seamless class="embed-responsive-item" src="https://drive.google.com/file/d/'.$id.'/preview" frameborder="0"></iframe></div>';
 		$a = '</span>';
 		$output = $b.$o.$a;
@@ -311,7 +311,7 @@ function process_link($str) {
 	$data = handleLink($str);
 	$e = open_graph_build($data);
 	$html = "";
-	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-type="link" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= $e;
 	$html .= '</span>';
 	return $html;
@@ -358,7 +358,7 @@ function process_soundcloud($str, $debug) {
 	$code .= '<img src="'.$xx.'" onerror="loadIframeNoPlay(this)"/>';
 	$code .= '</div></div>';
 	$html = '
-		<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">
+		<span class="deletable deletable-block" data-type="soundcloud" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">
 			<script>
 				console.log("soundcloud");
 				SC.oEmbed("'.$str.'", { auto_play: false }, function(oEmbed) {
@@ -383,7 +383,7 @@ function process_vine($str) {
 	gen_miniature($str, false);
 	$html = "";
 	$w .= preg_replace('/(https?:\/\/vine.co\/v\/)([\w\-]+)/','$1$2/embed/simple',$str);
-	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-type="vine" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-square">';
 	$html .= '<iframe seamless class="embed-responsive-item" src="'.$w.'" frameborder="0"></iframe>';
 	$html .= '<script async src="//platform.vine.co/static/scripts/embed.js charset="utf-8"></script>';
@@ -396,7 +396,7 @@ function process_dailymotion($str) {
 	$html = "";
 	$w = preg_replace('/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/','https://www.dailymotion.com/embed/video/$2?autoplay=1',$str);
 	$xx = p2l(pmini($str));
-	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-type="dailymotion" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
@@ -409,7 +409,7 @@ function process_vimeo($str) {
 	$html = "";
 	$w = preg_replace('/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/','https://player.vimeo.com/video/$3?autoplay=1',$str);
 	$xx = p2l(pmini($str));
-	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-type="vimeo" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
@@ -423,7 +423,7 @@ function process_youtube2($str) {
 	$v = preg_replace('/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/','$2',$str);
 	$w = 'https://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
 	$xx = p2l(pmini($str));
-	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-type="youtube2" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
@@ -437,7 +437,7 @@ function process_youtube($str) {
 	$v = preg_replace('/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/','$4',$str);
 	$w = 'https://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
 	$xx = p2l(pmini($str));
-	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-type="youtube" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
 	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
@@ -455,7 +455,7 @@ function process_video($str,$debug) {
 	$html = "";
 	$xx = p2l(pmini($str));
 	$html = "";
-	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-type="video" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div onclick="loadVideo(this)" data-src="'.$str.'" class="launcher">';
 	$html .= '<img src="'.$xx.'" onerror="loadVideo(this)"/>';
 	$html .= '</div></span>';
@@ -470,7 +470,7 @@ function process_image($str) {
 		$postImage = $str;
 	}
 	$html = "";
-	$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+	$html .= '<span class="deletable deletable-block" data-type="image" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" data-postimage="'.$postImage.'" data-lightbox="'.$str.'" src="'.$postImage.'"/>';
 	$html .= '</span>';
 	return $html;
@@ -484,7 +484,7 @@ function process_gif($str) {
 		gen_miniature($str, false);
 		$xx = p2l(pmini($str));
 		$html = "";
-		$html .= '<span class="deletable deletable-block" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
+		$html .= '<span class="deletable deletable-block" data-type="gif" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 		$html .= '<div onclick="loadImage(this)" data-src="'.$str.'" class="launcher">';
 		$html .= '<img class="inlineImage" src="'.$xx.'" onerror="loadImage(this)"/>';
 		$html .= '</div></span>';
@@ -501,7 +501,7 @@ function process_albumImage($str) {
 	$h = file_getHeight($file);
 	if($file) {
 		$html = "";
-		$html .= '<span data-owner="'.$file['owner'].'" class="deletable flexible-image" data-width="'.$w.'" data-height="'.$h.'" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" style="width:'.intval($w*130/$h).'px" contenteditable="false" id="'.md5($str).'">';
+		$html .= '<span data-owner="'.$file['owner'].'" class="deletable flexible-image" data-width="'.$w.'" data-height="'.$h.'" data-type="albumImage" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" style="width:'.intval($w*130/$h).'px" contenteditable="false" id="'.md5($str).'">';
 		if($uid == (String) $file['owner']) {
 			$html .= file_albumImage($file);
 		} else {
@@ -521,7 +521,7 @@ function process_file($str) {
 	$uid = $_SESSION['uid'];
 	if($file) {
 		$html = "";
-		$html .= '<span data-owner="'.$file['owner'].'" class="deletable deletable-block" data-width="'.$w.'" data-height="'.$h.'" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" contenteditable="false" id="'.md5($str).'">';
+		$html .= '<span data-owner="'.$file['owner'].'" class="deletable deletable-block" data-width="'.$w.'" data-height="'.$h.'" data-type="file" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" contenteditable="false" id="'.md5($str).'">';
 		$html .= file_print($file);
 		$html .= '</span>';
 		return $html;

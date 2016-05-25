@@ -32,7 +32,7 @@ function keepFormat(e,f) {
 //	var url = d.find('a').attr('href');
 //	var bl = typebox.Filter.fail_request(url); //$('<a class="b-link" href="'+url.replace(/\s/," ")+'" target="_blank">'+url+'</a>');
 //	d.html(bl);
-//	typebox.Control.refreshContent(false, d.closest('.dynamicBox'));
+//	typebox.refreshContent(false, d.closest('.dynamicBox'));
 //	ev.stopPropagation();
 //	ev.preventDefault();
 //	return false;
@@ -661,3 +661,13 @@ function evaluateURL() {
 		hideAll();
 	}
 }
+
+function limitHeight(p) {
+	p = $(p);
+	console.log(p.outerHeight(), window.innerHeight*2);
+	if(p.outerHeight() > (window.innerHeight*2)) {
+		$(p).css('max-height',Math.floor(window.innerHeight*0.75) + "px");
+		$(p).append('<div class="seeMore" onclick="this.parentNode.style.maxHeight = \'none\'; $(this).remove()"><span>Voir plus</span></div>');
+	}
+}
+
