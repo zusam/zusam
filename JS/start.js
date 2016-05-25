@@ -9,14 +9,14 @@ loading_posts = false;
 
 fileQueue = [];
 
-console.log(origin_url);
+//console.log(origin_url);
 
 $(window).ready(function() {
 
 	// output loading time
 	document.body.onload = function() {
 		var loadingTime = new Date().getTime() - window.startLoading;
-		console.log("loaded in "+loadingTime);
+		//console.log("loaded in "+loadingTime);
 		$.ajax({
 			url:"Ajax/post.php",
 			type:"post",
@@ -25,7 +25,7 @@ $(window).ready(function() {
 				//console.log(data);
 			},
 			error: function() {
-				console.log("fail record");
+				console.log("fail record loading");
 			}
 		});
 	};

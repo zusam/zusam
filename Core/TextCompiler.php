@@ -360,15 +360,10 @@ function process_soundcloud($str, $debug) {
 	$html = '
 		<span class="deletable deletable-block" data-type="soundcloud" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">
 			<script>
-				console.log("soundcloud");
 				SC.oEmbed("'.$str.'", { auto_play: false }, function(oEmbed) {
-					console.log(oEmbed);
 					var song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,"$1");
-					console.log(song_url);
 					var w = song_url.replace(/auto_play=false/,"auto_play=true");
-					console.log(w);
 					var dropin = $(\''.$code.'\');
-					console.log(dropin);
 					dropin.find(".launcher").attr("data-src",w);
 					dropin.find(".launcher").attr("data-srcnoplay",song_url);
 					$("#'.md5($str).'").html(dropin);
@@ -395,11 +390,12 @@ function process_dailymotion($str) {
 	gen_miniature($str, false);
 	$html = "";
 	$w = preg_replace('/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/','https://www.dailymotion.com/embed/video/$2?autoplay=1',$str);
+	$wnoplay = preg_replace('/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/','https://www.dailymotion.com/embed/video/$2',$str);
 	$xx = p2l(pmini($str));
 	$html .= '<span class="deletable deletable-block" data-type="dailymotion" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
-	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
-	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
+	$html .= '<div onclick="loadIframe(this)" data-srcnoplay="'.$wnoplay.'" data-src="'.$w.'" class="launcher">';
+	$html .= '<img src="'.$xx.'" onerror="loadIframeNoPlay(this)"/>';
 	$html .= '</div></div></span>';
 	return $html;
 }
@@ -407,12 +403,14 @@ function process_dailymotion($str) {
 function process_vimeo($str) {
 	gen_miniature($str, false);
 	$html = "";
-	$w = preg_replace('/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/','https://player.vimeo.com/video/$3?autoplay=1',$str);
+	$vid = preg_replace('/(https?:\/\/vimeo.com\/)([^\s]+\/)?([0-9]+)$/','$3',$str);
+	$w = 'https://player.vimeo.com/video/'.$vid.'?autoplay=1';
+	$wnoplay = 'https://player.vimeo.com/video/'.$vid;
 	$xx = p2l(pmini($str));
 	$html .= '<span class="deletable deletable-block" data-type="vimeo" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
-	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
-	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
+	$html .= '<div onclick="loadIframe(this)" data-srcnoplay="'.$wnoplay.'" data-src="'.$w.'" class="launcher">';
+	$html .= '<img src="'.$xx.'" onerror="loadIframeNoPlay(this)"/>';
 	$html .= '</div></div></span>';
 	return $html;
 }
@@ -422,11 +420,12 @@ function process_youtube2($str) {
 	$html = "";
 	$v = preg_replace('/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/','$2',$str);
 	$w = 'https://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
+	$wnoplay = 'https://www.youtube.com/embed/'.$v.'?controls=2&wmode=opaque';
 	$xx = p2l(pmini($str));
 	$html .= '<span class="deletable deletable-block" data-type="youtube2" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
-	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
-	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
+	$html .= '<div onclick="loadIframe(this)" data-src="'.$wnoplay.'" data-src="'.$w.'" class="launcher">';
+	$html .= '<img src="'.$xx.'" onerror="loadIframeNoPlay(this)"/>';
 	$html .= '</div></div></span>';
 	return $html;
 }
@@ -436,11 +435,12 @@ function process_youtube($str) {
 	$html = "";
 	$v = preg_replace('/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/','$4',$str);
 	$w = 'https://www.youtube.com/embed/'.$v.'?autoplay=1&controls=2&wmode=opaque';
+	$wnoplay = 'https://www.youtube.com/embed/'.$v.'?controls=2&wmode=opaque';
 	$xx = p2l(pmini($str));
 	$html .= '<span class="deletable deletable-block" data-type="youtube" data-src="'.$str.'" contenteditable="false" id="'.md5($str).'">';
 	$html .= '<div class="embed-responsive embed-responsive-16by9">';
-	$html .= '<div onclick="loadIframe(this)" data-src="'.$w.'" class="launcher">';
-	$html .= '<img src="'.$xx.'" onerror="loadIframe(this)"/>';
+	$html .= '<div onclick="loadIframe(this)" data-srcnoplay="'.$wnoplay.'" data-src="'.$w.'" class="launcher">';
+	$html .= '<img src="'.$xx.'" onerror="loadIframeNoPlay(this)"/>';
 	$html .= '</div></div></span>';
 	return $html;
 }

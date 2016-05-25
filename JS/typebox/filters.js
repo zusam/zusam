@@ -236,8 +236,11 @@ var Filter = {
 		if(!ending) {
 			r1 = new RegExp(regex.vimeo+'[\s]','gi');
 		}
+		console.log(r1);
 		substitution = function(str) {
-			var w = str.replace(/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/,'https://player.vimeo.com/video/$3?autoplay=1');
+			var vid = str.replace(/(https?:\/\/vimeo.com\/)([^\s]+\/)?([0-9]+)$/,'$3');
+			console.log(vid);
+			var w = 'https://player.vimeo.com/video/'+vid+'?autoplay=1';
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 			var o = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			o += '<div class="embed-responsive embed-responsive-16by9">';

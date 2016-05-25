@@ -23,7 +23,7 @@ function keepFormat(e,f) {
 	var w = $(e).width();
 	//var h = $(e).height();
 	var nh = Math.round(w/f);
-	console.log(nh);
+	//console.log(nh);
 	$(e).attr('height',nh+"px");
 }
 
@@ -400,7 +400,7 @@ function calcNbToLoad() {
 	var toView = loaded - viewing;
 	var toLoad = parseInt(Math.max(0, goal - toView));
 
-	console.log(nlin, ncol, toView, goal, viewing, loaded, toLoad);
+	//console.log(nlin, ncol, toView, goal, viewing, loaded, toLoad);
 
 	return toLoad;
 }
@@ -416,18 +416,18 @@ function loadMorePosts() {
 		// calculate number of posts to load
 		var number = calcNbToLoad();
 		if(number > 0) {
-			console.log("trying to load posts");
+			//console.log("trying to load posts");
 			$.ajax({
 				url: 'Ajax/post.php',
 				type: 'POST',
 				data: {'action':'morePost','fid':fid,'list':list,'number':number},
 				success: function(data) {
-					console.log(data);
+					//console.log(data);
 					if(typeof(data) != 'undefined' && data !== "") {
 						if(data.count > 0) {
 							$('#container').append(data.html);
 						}
-						console.log('loaded ('+data.count+')');
+						//console.log('loaded ('+data.count+')');
 						if(data.end === true) {
 							console.log('all posts are here !');
 							$(document).unbind('scroll');

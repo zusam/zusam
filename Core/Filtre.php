@@ -117,7 +117,7 @@ function filtre($url, $debug) {
 
 	// VIMEO //
 	if(preg_match(r2ep($regex['vimeo']),$url)==1) {
-		$id = preg_replace("/(https?:\/\/vimeo.com\/)(channels\/staffpicks\/)?([0-9]+)/","$3",$url);
+		$id = preg_replace("/(https?:\/\/vimeo.com\/)([^\s]+\/)?([0-9]+)$/","$3",$url);
 		$hash = unserialize(file_get_contents("http://vimeo.com/api/v2/video/$id.php"));
 		$link = $hash[0]['thumbnail_large'];  
 		$ret = get_mini_from_link($url, $link);

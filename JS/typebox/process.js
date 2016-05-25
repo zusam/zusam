@@ -21,7 +21,7 @@ function useFilter(e, filter, viewer, ending) {
 		output[0] = "";
 		
 		output = filter(node.innerHTML, ending, viewer);
-		//console.log(output);
+		console.log(output);
 		if(output.length > 1 || output[0] != node.innerHTML) {
 			hasChanged = true;
 		} else {
@@ -88,7 +88,7 @@ function applyFilter(args) {
 	} else {
 		output[0] = '<div contenteditable="true">'+encode(inner)+'</div>';
 	}
-	//console.log(callerName);
+	console.log(callerName);
 	return output;
 }
 
@@ -141,7 +141,7 @@ function open_graph_build(data, viewer) {
 	if(typeof(data.description) != "undefined" && data.description !== "") {
 		description = '<div class="description">'+data.description+'</div>';
 	} else { description = ""; }
-	console.log(viewer, basic_link_button);
+	//console.log(viewer, basic_link_button);
 	if(preview !== "" || (title !== "" && description !== "")) {
 		e = $('<a class="article_big" href="'+decodeURI(data.url)+'" target="_blank">'+basic_link_button+preview+title+description+'<div class="base_url">'+base_url+'</div></a>');
 		if(typeof(data.image) != "undefined") {

@@ -1,6 +1,7 @@
 function evaluate(id) {
 	var t = $(id)[0];
 	filter_out_all(t);
+	console.log('----evaluate----');
 }
 
 function stop(id) {
@@ -38,6 +39,7 @@ function start(id) {
 		// following line should not work in ie11 (replaced with the line before this one)
 		//document.execCommand('insertHTML', false, $(text).html());
 		filter_out_all(t, false, false);
+		console.log('----paste----');
 		return false;
 	});
 
@@ -75,7 +77,7 @@ function start(id) {
 	tt.on("keyup", function(e) {
 
 		//exception for ctrl+v which is paste most of the time
-		if((e.ctrlKey || e.keyCode == 17 || window.ctrl) && (e.keyCode != 86)) {
+		if((e.ctrlKey || e.keyCode == 17 || window.ctrl) && (e.keyCode == 86)) {
 			return true;
 		}
 			
@@ -114,6 +116,7 @@ function start(id) {
 		} else {
 			filter_out_search(t, false, false);
 		}
+		console.log('----typebox up----');
 
 		if(cpos !== false) {
 			//re-set the cursor position to the right place
@@ -142,6 +145,7 @@ function view() {
 	$('.post .dynamicBox').each(function() {
 		console.log(this);
 		filter_out_all(this, true);
+		console.log('----view----');
 		$(this).find('*[contenteditable=true]').removeAttr('contenteditable');
 		lazyload($(this).closest('.nano-content')[0]);
 		limitHeight($(this).closest('.post-text'));

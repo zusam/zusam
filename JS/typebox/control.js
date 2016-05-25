@@ -132,6 +132,7 @@ function filter_out_search(t, viewer, ending) {
 	for(var i=0; i<filters.length; i++) {
 		var f = typebox.Filter[filters[i]];
 		useFilter(t, f, viewer, ending);
+		//console.log(t.outerHTML);
 	}
 }
 
