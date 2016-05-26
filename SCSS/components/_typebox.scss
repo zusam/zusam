@@ -21,9 +21,11 @@
 	
 	.progressBar {
 		display: block;
-		position: relative;
+		position: absolute;
 		width: 100%;
 		height: 15px;
+		bottom: 0px;
+		left: 0px;
 
 		.progress, .conversion {
 			position:absolute;
@@ -82,8 +84,8 @@ img.lazyload {
 .dynamicBox > span > a, .dynamicBox > span > a:focus, .dynamicBox > span > a:hover {
 	text-decoration: none;
 }
-.dynamicBox > span > canvas { 
-	max-width: 100%; 
+.dynamicBox > span > canvas, .dynamicBox > span > img { 
+	width: 100%; 
 }
 .flexible-image {
 	display: block;
@@ -96,7 +98,7 @@ img.lazyload {
 	height: 130px;
 	outline: 1px solid white;
 
-	img {
+	img,canvas {
 		position: absolute;
 		top: 50%;
 		left: 50%;

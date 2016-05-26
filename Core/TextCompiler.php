@@ -501,7 +501,7 @@ function process_albumImage($str) {
 	$h = file_getHeight($file);
 	if($file) {
 		$html = "";
-		$html .= '<span data-owner="'.$file['owner'].'" class="deletable flexible-image" data-width="'.$w.'" data-height="'.$h.'" data-type="albumImage" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" style="width:'.intval($w*130/$h).'px" contenteditable="false" id="'.md5($str).'">';
+		$html .= '<span data-filetype="'.$file['type'].'" data-owner="'.$file['owner'].'" class="deletable flexible-image" data-width="'.$w.'" data-height="'.$h.'" data-type="albumImage" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" style="width:'.intval($w*130/$h).'px" contenteditable="false" id="'.$file['fileId'].'">';
 		if($uid == (String) $file['owner']) {
 			$html .= file_albumImage($file);
 		} else {
@@ -521,7 +521,7 @@ function process_file($str) {
 	$uid = $_SESSION['uid'];
 	if($file) {
 		$html = "";
-		$html .= '<span data-owner="'.$file['owner'].'" class="deletable deletable-block" data-width="'.$w.'" data-height="'.$h.'" data-type="file" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" contenteditable="false" id="'.md5($str).'">';
+		$html .= '<span data-filetype="'.$file['type'].'" data-owner="'.$file['owner'].'" class="deletable deletable-block" data-width="'.$w.'" data-height="'.$h.'" data-type="file" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" contenteditable="false" id="'.$file['fileId'].'">';
 		$html .= file_print($file);
 		$html .= '</span>';
 		return $html;

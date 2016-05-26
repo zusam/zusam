@@ -92,29 +92,89 @@ function applyFilter(args) {
 	return output;
 }
 
+function arrangeDynamicBox(t) {
+	var map = typebox.mapDynamicBox(t);
+	var type = ""
+
+	// remove empty divs
+	$(t).find('div').each(function() {
+		if(this.innerHTML === "") {
+			$(this).remove();
+		}
+	});
+
+	if(map[0].type != "text") {
+		$(t).prepend('<div contenteditable="true"></div>');
+	}
+	// just looking for albums right now
+	for(i=0;i<map.length;i++) {
+		if(map[i].type == "filejpg" && map[i].suite > 3 && $('#'+map[i].id).attr('data-width') !== null) {
+			var w = parseInt($('#'+map[i].id).attr('data-width'));
+			var h = parseInt($('#'+map[i].id).attr('data-height'));
+			var nw = Math.floor(130/h*w);
+			$('#'+map[i].id).addClass('flexible-image').removeClass('deletable-block').css('width',nw+'px');
+		}
+		if(i+1 >= map.length) {
+			$('#'+map[i].id).after('<div contenteditable="true"></div>');
+		} else {
+			if(map[i+1].type != map[i].type && map[i+1].type != "text") {
+				$('#'+map[i].id).after('<div contenteditable="true"></div>');
+			}
+		}
+	}
+}
+
 function mapDynamicBox(t) {
 	var map = [];
 	var curr;
 	var node;
 	
+	var suite = 0;
+	var suitetype = "";
 	for(i = 0; i<t.childNodes.length; i++) {
 		curr = t.childNodes[i];
 		node = {};
 		switch(curr.tagName) {
 			case 'DIV' :
-				node.type = "text";
-				node.src = curr.innerHTML;
-				node.id = str2md5(curr.innerHTML); // useless for now
-				map.push(node);
+				if(curr.innerHTML !== "") {
+					node.type = "text";
+					node.src = curr.innerHTML;
+					node.id = str2md5(curr.innerHTML); // useless for now
+					if(suitetype != node.type) {
+						for(j=1;j<=suite;j++) {
+							map[map.length-j].suite = suite;
+						}
+						suite = 1;
+						suitetype = node.type;
+					} else {
+						suite++;
+					}
+					map.push(node);
+				}
 				break;
 			case 'SPAN': 
 				node.type = curr.dataset.type;
 				node.src = curr.dataset.src;
-				node.id = curr.dataset.id;
+				node.id = curr.id;
+				if(node.type == "file") {
+					node.type += curr.dataset.filetype;
+				}
+				if(suitetype != node.type) {
+					for(j=1;j<=suite;j++) {
+						map[map.length-j].suite = suite;
+					}
+					suite = 1;
+					suitetype = node.type;
+				} else {
+					suite++;
+				}
 				map.push(node);
 				break;
 			default:
 		}
+	}
+	for(j=1;j<=suite;j++) {
+		map[map.length-j].suite = suite;
 	}
 	return map;
 }

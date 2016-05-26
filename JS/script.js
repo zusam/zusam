@@ -521,8 +521,7 @@ function handleFileSelect(evt) {
 	console.log(id);
 	console.log("change!");
 	file = files[0];
-	console.log(file);
-	console.log(files);
+	// Can soon be increased TODO
 	if(files.length > 20) {
 		alert('Le nombre maximum de fichier que vous pouvez envoyer en même temps est 20');
 		return false;
@@ -530,7 +529,6 @@ function handleFileSelect(evt) {
 		for(var i=0;i<files.length;i++) {
 			var fileId = createId();
 			fileQueue.push({"file":files[i],"id":id,"fileId":fileId});
-			//handleFile(files[i],id, fileId);
 		}
 		startProcessingFileFromQueue();
 	}

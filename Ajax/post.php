@@ -242,7 +242,7 @@ if($_SESSION['connected']) {
 			$uid = $POST['uid'];
 			$fileId = $POST['fileId'];
 		
-			if($_FILES["image"]["size"] < 1024*1024*31 && $_FILES["image"]["type"] == "image/png") {
+			if($_FILES["image"]["size"] < 1024*1024*31 && ($_FILES["image"]["type"] == "image/png" || $_FILES["image"]["type"] == "image/jpeg")) {
 				$u = account_load(array('_id' => $uid));
 				if($u != null && $u != false) {
 					$file = file_load(array("fileId"=>$fileId));
@@ -250,12 +250,12 @@ if($_SESSION['connected']) {
 						$file = file_initialize($fileId, "jpg", $u['_id']);
 					}
 					$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['fileId'], 'ext' => 'jpg', 'param' => 'file')), 2048, 2048);
-					unlink(pmini($file['fileId']));
-					unlink(ppi($file['fileId']));
-					gen_miniature("{:".$fileId.":}");
 					if($r) {
 						file_save($file);
 						echo($file['fileId']);
+						unlink(pmini($file['fileId']));
+						unlink(ppi($file['fileId']));
+						gen_miniature("{:".$fileId.":}");
 					}
 				}
 			}

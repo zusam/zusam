@@ -247,82 +247,128 @@ function turn(cv, rotation) {
 }
 
 //name: Fast Hermite resize (without alpha channel)
-function downScaleCanvas(canvas, scale){
+//function downScaleCanvas(canvas, scale){
+//
+//	if(scale == 1) { 
+//		return canvas;
+//	}
+//	if(scale > 1 || scale <= 0) throw ('scale must be a positive number <1 ');
+//	var W = canvas.width;
+//	var H = canvas.height;
+//	var W2 = W * scale;
+//	var H2 = H * scale;
+//
+//	var time1 = Date.now();
+//	W2 = Math.round(W2);
+//	H2 = Math.round(H2);
+//	var img = canvas.getContext("2d").getImageData(0, 0, W, H);
+//	var img2 = canvas.getContext("2d").getImageData(0, 0, W2, H2);
+//	var data = img.data;
+//	var data2 = img2.data;
+//	var ratio_w = W / W2;
+//	var ratio_h = H / H2;
+//	var ratio_w_half = Math.ceil(ratio_w/2);
+//	var ratio_h_half = Math.ceil(ratio_h/2);
+//
+//	for(var j = 0; j < H2; j++){
+//		for(var i = 0; i < W2; i++){
+//			var x2 = (i + j*W2) * 4;
+//			var weight = 0;
+//			var weights = 0;
+//			var weights_alpha = 0;
+//			var gx_r = 0;
+//			var gx_g = 0;
+//			var gx_b = 0;
+//			var gx_a = 0;
+//			var center_y = (j + 0.5) * ratio_h;
+//			
+//			var myy = (j + 1) * ratio_h;
+//
+//			for(var yy = Math.floor(j * ratio_h); yy < myy; yy++){
+//				var dy = Math.abs(center_y - (yy + 0.5)) / ratio_h_half;
+//				var center_x = (i + 0.5) * ratio_w;
+//				var w0 = dy*dy; //pre-calc part of w
+//				var w1 = yy*W; //pre-calc part of w
+//				var mxx = (i + 1) * ratio_w;
+//					for(var xx = Math.floor(i * ratio_w); xx < mxx; xx++){
+//						var dx = Math.abs(center_x - (xx + 0.5)) / ratio_w_half;
+//						var w = Math.sqrt(w0 + dx*dx);
+//						//var w = (dx+dy)/2;
+//						if(w >= -1/2 && w <= 1){
+//							//hermite filter
+//							weight = 2 * w*w*w - 3*w*w + 1;
+//							//if(weight > 0){
+//								dx = 4*(xx + w1);
+//								//alpha
+//								//gx_a += weight * data[dx + 3];
+//								//weights_alpha += weight;
+//								//colors
+//								//if(data[dx + 3] < 255)
+//									//weight = weight * data[dx + 3] / 250;
+//								gx_r += weight * data[dx];
+//								gx_g += weight * data[dx + 1];
+//								gx_b += weight * data[dx + 2];
+//								weights += weight;
+//							//}
+//						}
+//					}		
+//			}
+//			data2[x2]     = gx_r / weights;
+//			data2[x2 + 1] = gx_g / weights;
+//			data2[x2 + 2] = gx_b / weights;
+//			data2[x2 + 3] = 255; //gx_a / weights_alpha;
+//		}
+//	}
+//	console.log("hermitev2 = "+(Math.round(Date.now() - time1)/1000)+" s");
+//	canvas.getContext("2d").clearRect(0, 0, Math.max(W, W2), Math.max(H, H2));
+//	canvas.width = W2;
+//	canvas.height = H2;
+//	canvas.getContext("2d").putImageData(img2, 0, 0);
+//	return canvas;
+//}
 
-	if(scale == 1) { 
-		return canvas;
-	}
-	if(scale > 1 || scale <= 0) throw ('scale must be a positive number <1 ');
-	var W = canvas.width;
-	var H = canvas.height;
-	var W2 = W * scale;
-	var H2 = H * scale;
+// src : img element
+// return : imageData
+function resize_image(src, NW, NH) {
+	var cW, cH;
+	var imgdata;
 
-	var time1 = Date.now();
-	W2 = Math.round(W2);
-	H2 = Math.round(H2);
-	var img = canvas.getContext("2d").getImageData(0, 0, W, H);
-	var img2 = canvas.getContext("2d").getImageData(0, 0, W2, H2);
-	var data = img.data;
-	var data2 = img2.data;
-	var ratio_w = W / W2;
-	var ratio_h = H / H2;
-	var ratio_w_half = Math.ceil(ratio_w/2);
-	var ratio_h_half = Math.ceil(ratio_h/2);
+	cW = src.naturalWidth;
+	cH = src.naturalHeight;
 
-	for(var j = 0; j < H2; j++){
-		for(var i = 0; i < W2; i++){
-			var x2 = (i + j*W2) * 4;
-			var weight = 0;
-			var weights = 0;
-			var weights_alpha = 0;
-			var gx_r = 0;
-			var gx_g = 0;
-			var gx_b = 0;
-			var gx_a = 0;
-			var center_y = (j + 0.5) * ratio_h;
-			
-			var myy = (j + 1) * ratio_h;
+	var c = [];
+	c.push(document.createElement('canvas'));
+	c[0].width = cW;
+	c[0].height = cH;
+	c.push(document.createElement('canvas'));
+	var ctx;
 
-			for(var yy = Math.floor(j * ratio_h); yy < myy; yy++){
-				var dy = Math.abs(center_y - (yy + 0.5)) / ratio_h_half;
-				var center_x = (i + 0.5) * ratio_w;
-				var w0 = dy*dy; //pre-calc part of w
-				var w1 = yy*W; //pre-calc part of w
-				var mxx = (i + 1) * ratio_w;
-					for(var xx = Math.floor(i * ratio_w); xx < mxx; xx++){
-						var dx = Math.abs(center_x - (xx + 0.5)) / ratio_w_half;
-						var w = Math.sqrt(w0 + dx*dx);
-						//var w = (dx+dy)/2;
-						if(w >= -1/2 && w <= 1){
-							//hermite filter
-							weight = 2 * w*w*w - 3*w*w + 1;
-							//if(weight > 0){
-								dx = 4*(xx + w1);
-								//alpha
-								//gx_a += weight * data[dx + 3];
-								//weights_alpha += weight;
-								//colors
-								//if(data[dx + 3] < 255)
-									//weight = weight * data[dx + 3] / 250;
-								gx_r += weight * data[dx];
-								gx_g += weight * data[dx + 1];
-								gx_b += weight * data[dx + 2];
-								weights += weight;
-							//}
-						}
-					}		
-			}
-			data2[x2]     = gx_r / weights;
-			data2[x2 + 1] = gx_g / weights;
-			data2[x2 + 2] = gx_b / weights;
-			data2[x2 + 3] = 255; //gx_a / weights_alpha;
+	ctx = c[0].getContext('2d');
+	ctx.drawImage(src, 0, 0);
+	var i = 0;
+	while(i<10) { 
+		i++;
+
+		cW /= 2;
+		cH /= 2;
+
+		if(cW < NW) {
+			cW = NW;
+			cH = NH; 
+		}
+		if(cH < NH) {
+			cH = NH;
+			cW = NW;
+		}
+
+		c[i%2].width = cW;
+		c[i%2].height = cH;
+		ctx = c[i%2].getContext('2d');
+		ctx.drawImage(c[(i+1)%2], 0, 0, cW, cH);
+		if(cW <= NW || cH <= NH) {
+			//imgdata = nc.toDataURL('image/jpeg');
+			return c[i%2].toDataURL('image/jpeg');
+			//break;
 		}
 	}
-	console.log("hermitev2 = "+(Math.round(Date.now() - time1)/1000)+" s");
-	canvas.getContext("2d").clearRect(0, 0, Math.max(W, W2), Math.max(H, H2));
-	canvas.width = W2;
-	canvas.height = H2;
-	canvas.getContext("2d").putImageData(img2, 0, 0);
-	return canvas;
 }

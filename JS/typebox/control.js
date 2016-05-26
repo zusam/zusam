@@ -78,25 +78,28 @@ function setCpos(e, c) {
 }
 
 function refreshContent(viewer, t) {
-	t = $(t);
 	if(viewer === null || viewer === false) {
 		// flush eventListeners
-		t.find('*[contenteditable]').off();
-		t.find('.deletable').off();
+		$(t).find('*[contenteditable]').off();
+		$(t).find('.deletable').off();
 
 		//prevent drag and drop into contentEditable
-		t.find('*[contenteditable]').on('dragover drop', function(event){
+		$(t).find('*[contenteditable]').on('dragover drop', function(event){
 				event.preventDefault();
 				return false;
 				});
 
 		// activating deletable content
-		t.find('.deletable').children('.delete-btn').remove();
-		t.find('.deletable').append(genDelBtn());
+		$(t).find('.deletable').children('.delete-btn').remove();
+		$(t).find('.deletable').append(genDelBtn());
 
 	}
 	//erase empty iframes (bug with youtube)
-	t.find('iframe:not([src])').remove();
+	$(t).find('iframe:not([src])').remove();
+	
+	// remap the dynamicBox
+	typebox.arrangeDynamicBox(t);
+
 }
 
 function niceFocus(t) {

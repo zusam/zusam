@@ -55,23 +55,6 @@ function filtre($url, $debug) {
 	
 	$regex = $GLOBALS['regex'];
 
-	// GFYCAT //
-	if(preg_match(r2ep($regex['gfycat']),$url)==1) {
-		$str = preg_replace("/(.*)\?.*$/",'$1',$url);
-		$id = preg_replace("/.*\/([a-zA-Z]+)$/","$1",$str);
-		$link = "https://thumbs.gfycat.com/".$id."-mobile.jpg";
-		$ret = get_mini_from_link($url, $link);
-		return $ret;
-	}
-
-	// FACEBOOK VIDEO //
-	if(preg_match(r2ep($regex['facebook_video']),$url)==1) {
-		$vid = preg_replace("/.*videos\/([0-9]+).*/","$1",$url);
-		$link = "http://graph.facebook.com/".$vid."/picture";
-		$ret = get_mini_from_link($url, $link);
-		return $ret;
-	}
-
 	// FILE //
 	if(preg_match(r2ep($regex['file']),$url)==1) {
 		$link = preg_replace("/(\{\:)([A-Za-z0-9]+)(\:\})/","$2",$url);
@@ -88,6 +71,23 @@ function filtre($url, $debug) {
 				$ret = pathTo2(array('url' => $link, 'ext' => 'jpg', 'param' => 'mini'));
 			}
 		}
+		return $ret;
+	}
+
+	// GFYCAT //
+	if(preg_match(r2ep($regex['gfycat']),$url)==1) {
+		$str = preg_replace("/(.*)\?.*$/",'$1',$url);
+		$id = preg_replace("/.*\/([a-zA-Z]+)$/","$1",$str);
+		$link = "https://thumbs.gfycat.com/".$id."-mobile.jpg";
+		$ret = get_mini_from_link($url, $link);
+		return $ret;
+	}
+
+	// FACEBOOK VIDEO //
+	if(preg_match(r2ep($regex['facebook_video']),$url)==1) {
+		$vid = preg_replace("/.*videos\/([0-9]+).*/","$1",$url);
+		$link = "http://graph.facebook.com/".$vid."/picture";
+		$ret = get_mini_from_link($url, $link);
 		return $ret;
 	}
 

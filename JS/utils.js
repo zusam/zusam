@@ -555,9 +555,11 @@ function decode(input) {
 function encode(input) {
 	return nl2br(htmlentities(input, "ENT_NOQUOTES"));
 }
-function dataURItoBlob(dataURI) {
+function dataURItoBlob(dataURI, mimeString) {
 	var byteString = atob(dataURI.split(",")[1]);
-	var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+	if(mimeString === null) {
+		mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+	}
 	var ab = new ArrayBuffer(byteString.length);
 	var ia = new Uint8Array(ab);
 	for (var i = 0; i < byteString.length; i++) {
