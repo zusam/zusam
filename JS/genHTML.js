@@ -29,8 +29,27 @@ function genAjaxLoader() {
 	return loader;
 }
 
-function genDelBtn() {
-	var btn = $('<div onclick="$(this).closest(\'.deletable\').remove();" class="delete-btn"><i class="icon-cancel"></i></div>');
+function genDelBtn(action) {
+	var action = "typebox.removeDeletable(this)";
+	var btn = $('<div onclick="'+action+'" class="delete-btn"><i class="icon-cancel"></i></div>');
 	return btn;
 }
 
+function genProgressBar(height, color, addClass) {
+	if(typeof(color) == "undefined") {
+		color = "";
+	} else {
+		color = "background:"+color+';'
+	}
+	if(typeof(addClass) == "undefined") {
+		addClass = "";
+	}
+	var pb = $('<div style="height:'+height+'px;'+color+'" class="progressBar '+addClass+'"><div class="progress"></div></div>');
+	return pb;
+}
+
+function genLoadingBalise() {
+	var lb = $('<span class="deletable deletable-block" data-type="imageDump" contenteditable="false"><div class="loading-balise"><div class="uploading-img"></div><div class="uploading-info"><div class="info-title">Envoi d\'images en cours...</div><div class="info-text"></div></div><span></span></div></span>');
+	lb.find('.loading-balise').append(genProgressBar(5));
+	return lb;
+}

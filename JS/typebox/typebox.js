@@ -1,6 +1,7 @@
 function evaluate(id) {
 	var t = $(id)[0];
 	filter_out_all(t);
+	typebox.refreshContent(false, t);
 	console.log('----evaluate----');
 }
 

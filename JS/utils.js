@@ -581,6 +581,6 @@ String.prototype.hashCode = function() {
 function createId() {
 	var dateId = Date.now().toString(36);
 	var randomId = Math.random().toString(36).slice(2);
-	var htmlId = document.documentElement.innerHTML.hashCode().toString(36).slice(1);
-	return dateId+randomId+htmlId;
+	var navigatorId = navigator.userAgent.hashCode().toString(18).slice(1);
+	return navigatorId+dateId+randomId;
 }

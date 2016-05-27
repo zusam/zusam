@@ -501,7 +501,7 @@ function process_albumImage($str) {
 	$h = file_getHeight($file);
 	if($file) {
 		$html = "";
-		$html .= '<span data-filetype="'.$file['type'].'" data-owner="'.$file['owner'].'" class="deletable flexible-image" data-width="'.$w.'" data-height="'.$h.'" data-type="albumImage" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" style="width:'.intval($w*130/$h).'px" contenteditable="false" id="'.$file['fileId'].'">';
+		$html .= '<span data-filetype="'.$file['type'].'" data-owner="'.$file['owner'].'" class="deletable flexible-image" data-width="'.$w.'" data-height="'.$h.'" data-type="file" data-src="'.p2l(file_getPath($file)).'" data-fileid="'.$file['fileId'].'" style="width:'.intval($w*130/$h).'px" contenteditable="false" id="'.$file['fileId'].'">';
 		if($uid == (String) $file['owner']) {
 			$html .= file_albumImage($file);
 		} else {

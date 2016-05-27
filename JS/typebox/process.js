@@ -10,10 +10,6 @@ function useFilter(e, filter, viewer, ending) {
 		}
 	}
 	
-	//if(toProcess.length > 0) {
-	//	console.log(toProcess);
-	//}
-	
 	for(i=0;i<toProcess.length;i++) {
 
 		node = toProcess[i];
@@ -21,7 +17,6 @@ function useFilter(e, filter, viewer, ending) {
 		output[0] = "";
 		
 		output = filter(node.innerHTML, ending, viewer);
-		console.log(output);
 		if(output.length > 1 || output[0] != node.innerHTML) {
 			hasChanged = true;
 		} else {
@@ -88,17 +83,17 @@ function applyFilter(args) {
 	} else {
 		output[0] = '<div contenteditable="true">'+encode(inner)+'</div>';
 	}
-	console.log(callerName);
 	return output;
 }
 
 function arrangeDynamicBox(t) {
+	console.log("-----arrange-----");
 	var map = typebox.mapDynamicBox(t);
 	var type = ""
 
 	// remove empty divs
 	$(t).find('div').each(function() {
-		if(this.innerHTML === "") {
+		if(this.innerHTML.match(/^\s*$/)) {
 			$(this).remove();
 		}
 	});
@@ -106,14 +101,37 @@ function arrangeDynamicBox(t) {
 	if(map[0].type != "text") {
 		$(t).prepend('<div contenteditable="true"></div>');
 	}
-	// just looking for albums right now
+
 	for(i=0;i<map.length;i++) {
-		if(map[i].type == "filejpg" && map[i].suite > 3 && $('#'+map[i].id).attr('data-width') !== null) {
+		
+		// image -> albumImage
+		if(map[i].type == "filejpg" && map[i].suite > 3) {
+			console.log("albumImage",map[i]);
 			var w = parseInt($('#'+map[i].id).attr('data-width'));
 			var h = parseInt($('#'+map[i].id).attr('data-height'));
-			var nw = Math.floor(130/h*w);
-			$('#'+map[i].id).addClass('flexible-image').removeClass('deletable-block').css('width',nw+'px');
+			if(isNaN(w) || isNaN(h)) {
+				w = parseInt($('#'+map[i].id).find('img')[0].naturalWidth);
+				h = parseInt($('#'+map[i].id).find('img')[0].naturalHeight);
+			}
+			if(!isNaN(w) && !isNaN(h) && w !== 0 && h !== 0) {
+				var nw = Math.floor(130/h*w);
+				$('#'+map[i].id).addClass('flexible-image').removeClass('deletable-block').css('width',nw+'px');
+				$('#'+map[i].id).find('img').removeClass('inlineImage');
+			}
 		}
+	
+		// albumImage -> image
+		if(map[i].type == "filejpg" && map[i].suite < 4) {
+			console.log("simpleImage",map[i]);
+			var postImage = $('#'+map[i].id).find('img').attr('data-postimage');
+			console.log(postImage);
+			if(typeof(postImage) != "undefined" && postImage !== "") {
+				$('#'+map[i].id).find('img').attr('src',postImage);
+			}
+			$('#'+map[i].id).removeClass('flexible-image').addClass('deletable-block').css('width','');
+			$('#'+map[i].id).find('img').addClass('inlineImage');
+		}
+
 		if(i+1 >= map.length) {
 			$('#'+map[i].id).after('<div contenteditable="true"></div>');
 		} else {
@@ -121,6 +139,7 @@ function arrangeDynamicBox(t) {
 				$('#'+map[i].id).after('<div contenteditable="true"></div>');
 			}
 		}
+
 	}
 }
 

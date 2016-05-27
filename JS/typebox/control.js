@@ -85,9 +85,9 @@ function refreshContent(viewer, t) {
 
 		//prevent drag and drop into contentEditable
 		$(t).find('*[contenteditable]').on('dragover drop', function(event){
-				event.preventDefault();
-				return false;
-				});
+			event.preventDefault();
+			return false;
+		});
 
 		// activating deletable content
 		$(t).find('.deletable').children('.delete-btn').remove();
@@ -99,7 +99,13 @@ function refreshContent(viewer, t) {
 	
 	// remap the dynamicBox
 	typebox.arrangeDynamicBox(t);
+}
 
+function removeDeletable(t) {
+	var dbox = $(t).closest('.dynamicBox')[0];
+	console.log(dbox);
+	$(t).closest('.deletable').remove();
+	typebox.arrangeDynamicBox(dbox);
 }
 
 function niceFocus(t) {

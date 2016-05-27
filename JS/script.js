@@ -231,6 +231,9 @@ function inviteUser(id) {
 }
 
 function sendIt(id) {
+	// reset queue position
+	positionInQueue = 1;
+	var node;
 	var msg = "";
 	var parentID = 0;
 	var pid = 0;
@@ -240,17 +243,24 @@ function sendIt(id) {
 	if(id == "#editBox") {
 		pid = $(id).closest('.post').attr('data-id');
 	}
-	var t = $(id);
-	for(i=0;i<t.children().length;i++) {
-		c = $(t.children()[i]);
-		if(c.hasClass("deletable")) {
-			msg += " "+c.attr('data-src');
+	var t = $(id)[0];
+	for(i=0;i<t.childNodes.length;i++) {
+		node = t.childNodes[i];
+		if(node.tagName == 'SPAN') {
+			if(node.dataset.type == "imageDump") {
+				msg += " "+node.getElementsByTagName('SPAN')[0].innerHTML;
+				console.log(msg);
+			} else {
+				msg += " "+node.dataset.src;
+			}
 		} else {
-			msg += " "+decode(c.html());
+			if(typeof(node.innerHTML) != "undefined") {
+				msg += " "+decode(node.innerHTML);
+			}
 		}
 	}
-	var uid = $('#info').eq(0).attr('data-uid');
-	var forum = $('#info').eq(0).attr('data-fid');
+	var uid = $('#info').attr('data-uid');
+	var forum = $('#info').attr('data-fid');
 	console.log("text:"+msg+",forum:"+forum+",uid:"+uid+",parent:"+parentID+",pid:"+pid);
 	var baliseId = createId();
 	$.ajax({
@@ -352,30 +362,37 @@ function editPost(t) {
 	recordUsage("edit");
 	var p = $(t).closest('.post');
 	var pid = p.attr('data-id');
-	$.ajax({
-		url: "Ajax/get.php",
-		type: "get",
-		data: {"action":"getRaw","pid":pid},
-		success: function(data) {
-			box = '<div id="editBox" class="dynamicBox">';
-			box += '<div contenteditable="true" data-placeholder="Ecrivez quelque chose...">'+data.raw+'</div>';
-			box += '</div>';
-			box += '<div class="menu">';
-			box += '<div class="menu-cell">';
-			box += '<button id="cancelit" onclick="hidepostviewer()">Annuler</button>';
-			box += '</div>';
-			box += '<div class="menu-cell">';
-			box += '<button onclick="inputFile(\'#editBox\')" class="action"><i class="icon-attach"></i></button>';
-			box += '</div>';
-			box += '<div class="menu-cell">';
-			box += '<button id="sendit" onclick="sendIt(\'#editBox\')">Envoyer</button>';
-			box += '</div>';
-			box += '</div>';
-			p.html(box);
-			typebox.start("#editBox");
-			typebox.evaluate("#editBox");
-		}
-	});
+	//$.ajax({
+	//	url: "Ajax/get.php",
+	//	type: "get",
+	//	data: {"action":"getRaw","pid":pid},
+	//	success: function(data) {
+	//		box = '<div id="editBox" class="dynamicBox">';
+	//		box += '<div contenteditable="true" data-placeholder="Ecrivez quelque chose...">'+data.raw+'</div>';
+	//		box += '</div>';
+	//		box += '<div class="menu">';
+	//		box += '<div class="menu-cell">';
+	//		box += '<button id="cancelit" onclick="hidepostviewer()">Annuler</button>';
+	//		box += '</div>';
+	//		box += '<div class="menu-cell">';
+	//		box += '<button onclick="inputFile(\'#editBox\')" class="action"><i class="icon-attach"></i></button>';
+	//		box += '</div>';
+	//		box += '<div class="menu-cell">';
+	//		box += '<button id="sendit" onclick="sendIt(\'#editBox\')">Envoyer</button>';
+	//		box += '</div>';
+	//		box += '</div>';
+	//		p.html(box);
+	//		typebox.start("#editBox");
+	//		typebox.evaluate("#editBox");
+	//	}
+	//});
+
+	var box = $('<div id="editBox" class="dynamicBox"></div>');
+	box.append(p.find('.post-text .dynamicBox').html());
+	p.html(box);
+	p.append(genMenu("hidepostviewer()","inputFile(\'#editBox\')","sendIt(\'#editBox\')"));
+	typebox.start("#editBox");
+	typebox.evaluate("#editBox");
 }
 
 function calcNbToLoad() {
@@ -510,69 +527,36 @@ function addUserToForum(t) {
 
 function inputFile(id) {
 	input = $('<input class="hidden" data-id="'+id+'" type="file" multiple></input>');
-	input.on('change', handleFileSelect);
+	input.on('change', PF.handleFileSelect);
 	$('body').append(input);
 	input.click();
 }
 
-function handleFileSelect(evt) {
-	var files = evt.target.files;
-	var id = evt.target.dataset.id;
-	console.log(id);
-	console.log("change!");
-	file = files[0];
-	// Can soon be increased TODO
-	if(files.length > 20) {
-		alert('Le nombre maximum de fichier que vous pouvez envoyer en même temps est 20');
-		return false;
-	} else {
-		for(var i=0;i<files.length;i++) {
-			var fileId = createId();
-			fileQueue.push({"file":files[i],"id":id,"fileId":fileId});
-		}
-		startProcessingFileFromQueue();
-	}
-	evt.target.value = null;
-}
-
-function startProcessingFileFromQueue() {
-	if(typeof(fileQueue) == "undefined" || fileQueue.length === 0) {
-		$('#newpost .menu .send').removeAttr('disabled');
-		return;
-	}
-	console.log("queue length : "+fileQueue.length);
-	$('#newpost .menu .send').attr('disabled','true');
-	setTimeout(function() {
-		var processObject = fileQueue.shift();
-		handleFile(processObject.file, processObject.id, processObject.fileId);
-	}, 0);
-}
-
-function handleFile(file,id, fileId) {
-	console.log(file);
-	var fileTypeHandled = false;
-	if(file.type.match(/image/)) {
-		fileTypeHandled = true;
-		if(file.size > 1024*1024*30) {
-			alert("fichier image trop lourd (max 30Mo)");
+function evaluateURL() {
+	if(window.location.href.match(/\#[a-zA-Z0-9]+$/)) {
+		var tag = window.location.href.replace(/.*\#([a-zA-Z0-9]+)/,"$1");
+		if(tag.length == 24) {
+			var pid = tag;
+			if(active_post != pid) {
+				showpostviewer(pid);
+			}
 		} else {
-			if(file.type.match(/gif/)) {
-				PF.loadGif(file,id, fileId);
-			} else {
-				PF.loadImage(file,id, fileId);
+			if(tag == "newpost") {
+				shownewpost();
 			}
 		}
+	} else {
+		console.log("hideAll from evaluate");
+		hideAll();
 	}
-	if(file.type.match(/video/)) {
-		fileTypeHandled = true;
-		if(file.size > 1024*1024*300) {
-			alert("fichier vidéo trop lourd (max 300Mo)");
-		} else {
-			PF.loadVideo(file,id, fileId);
-		}
-	}
-	if(!fileTypeHandled) {
-		alert("Le format du fichier n'est pas supporté");
+}
+
+function limitHeight(p) {
+	p = $(p);
+	console.log(p.outerHeight(), window.innerHeight*2);
+	if(p.outerHeight() > (window.innerHeight*2)) {
+		$(p).css('max-height',Math.floor(window.innerHeight*0.75) + "px");
+		$(p).append('<div class="seeMore" onclick="this.parentNode.style.maxHeight = \'none\'; $(this).remove()"><span>Voir plus</span></div>');
 	}
 }
 
@@ -639,33 +623,5 @@ function loadIframeNoPlay(t) {
 	t.remove();
 	// iframe bug
 	$('iframe:not([src])').remove();
-}
-
-function evaluateURL() {
-	if(window.location.href.match(/\#[a-zA-Z0-9]+$/)) {
-		var tag = window.location.href.replace(/.*\#([a-zA-Z0-9]+)/,"$1");
-		if(tag.length == 24) {
-			var pid = tag;
-			if(active_post != pid) {
-				showpostviewer(pid);
-			}
-		} else {
-			if(tag == "newpost") {
-				shownewpost();
-			}
-		}
-	} else {
-		console.log("hideAll from evaluate");
-		hideAll();
-	}
-}
-
-function limitHeight(p) {
-	p = $(p);
-	console.log(p.outerHeight(), window.innerHeight*2);
-	if(p.outerHeight() > (window.innerHeight*2)) {
-		$(p).css('max-height',Math.floor(window.innerHeight*0.75) + "px");
-		$(p).append('<div class="seeMore" onclick="this.parentNode.style.maxHeight = \'none\'; $(this).remove()"><span>Voir plus</span></div>');
-	}
 }
 

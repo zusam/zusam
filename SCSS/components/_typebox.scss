@@ -1,5 +1,4 @@
 .dynamicBox{
-	//display: inline-block;
 	padding:0px;
 	position:relative;
 	min-height:66px;
@@ -13,11 +12,9 @@
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: initial;
-	//align-items: center;
 	display: -webkit-flex;
 	-webkit-flex-flow: row wrap;
 	-webkit-justify-content: initial;
-	//-webkit-align-items: center;
 	
 	.progressBar {
 		display: block;
@@ -26,8 +23,9 @@
 		height: 15px;
 		bottom: 0px;
 		left: 0px;
+		z-index: 10;
 
-		.progress, .conversion {
+		.progress {
 			position:absolute;
 			top: 0;
 			left: 0;
@@ -40,10 +38,6 @@
 		}
 		.progress {
 			background-color: #F7A71B;
-		}
-		.conversion {
-			background-color: red;
-			z-index: 2;
 		}
 	}
 }
@@ -84,7 +78,7 @@ img.lazyload {
 .dynamicBox > span > a, .dynamicBox > span > a:focus, .dynamicBox > span > a:hover {
 	text-decoration: none;
 }
-.dynamicBox > span > canvas, .dynamicBox > span > img { 
+.dynamicBox > span > canvas { //, .dynamicBox > span > img { 
 	width: 100%; 
 }
 .flexible-image {
@@ -104,19 +98,15 @@ img.lazyload {
 		left: 50%;
 		transform: translate(-50%, -50%);
 		-webkit-transform: translate(-50%, -50%);
-		//width: 100px;
 		min-width: 100%;
+		max-width: 250%;
 		min-height: 100%;
 	}
 }
 .deletable-block {
-	//display: block;
 	position: relative;
 	width: 100%;
-	//text-align: center;
 	cursor: default;
-	//margin: 1px 0px;
-	//overflow: hidden;
 }
 .deletable {
 	

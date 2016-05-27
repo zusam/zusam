@@ -140,27 +140,59 @@ function sendGif(file, fileId) {
 	});
 	window.sending = window.sending + 1;
 }
+function fastLoadImage(file, id, fileId) {
+	var img = new Image();
+	img.onload = function() {
+		if(file.size > 5*1024*1024) {
+			converts++;
+			var w = Math.min(this.naturalWidth, 2048);
+			var h = Math.min(this.naturalHeight, 2048);
+			var g = Math.min(w/this.naturalWidth, h/this.naturalHeight);
+			var nw = Math.floor(this.naturalWidth*g);
+			var nh = Math.floor(this.naturalHeight*g);
+			var imgdata = imageAlgs.resize_image(this, nw, nh);
+			PF.fastShowImage(imgdata, id, fileId);
+			PF.sendImage(imgdata, fileId);
+			startProcessingFileFromQueue();
+		} else {
+			PF.fastShowImage(this, id, fileId);
+			PF.sendImage(file, fileId);
+			startProcessingFileFromQueue();
+		}
+	};
+	img.src = URL.createObjectURL(file);
+}
+
+function fastShowImage(imgdata, id, fileId) {
+	var balise = $(id).find('.loading-balise');
+	if(typeof(imgdata) == "string") {
+		var img = new Image();
+		img.onload = function() {
+			balise.find('.info-title').html("Envoi d'images en cours...");
+			balise.find('.uploading-img').html(this);
+			balise.find('.info-text').html(positionInQueue+'/'+(fileQueue.length+positionInQueue));
+			balise.find('.progressBar .progress').css('width',100*positionInQueue/(fileQueue.length+positionInQueue)+"%");
+			balise.find('span')[0].innerHTML += ' {:'+fileId+':} ';
+		}
+		img.src = imgdata;
+	} else {
+		balise.find('.info-title').html("Envoi d'images en cours...");
+		balise.find('.uploading-img').html(this);
+		balise.find('.info-text').html(positionInQueue+'/'+(fileQueue.length+positionInQueue));
+		balise.find('.progressBar .progress').css('width',100*positionInQueue/(fileQueue.length+positionInQueue)+"%");
+		balise.find('span')[0].innerHTML += ' {:'+fileId+':} ';
+	}
+	//$('#'+fileId).remove();
+}
 
 function loadImage(file, id, fileId) {
 	var img = new Image();
 	img.onload = function() {
-		// find new_width and new_height
-		var w = Math.min(this.naturalWidth, 2048);
-		var h = Math.min(this.naturalHeight, 2048);
-		var g = Math.min(w/this.naturalWidth, h/this.naturalHeight);
-		//
-		//canvas.width = img.width;
-		//canvas.height = img.height;
-		//var ctx = canvas.getContext('2d');
-		//ctx.drawImage(img, 0, 0);
-		//console.log(g);
-		//if(g < 0.9) {
-		//	canvas = imageAlgs.downScaleCanvas(canvas, g);
-		//}
-
-		console.log(g,file.size)
-		if(g < 0.9 && file.size > 1024*1024) {
-		console.log("yes");
+		if(file.size > 3*1024*1024) {
+			converts++;
+			var w = Math.min(this.naturalWidth, 2048);
+			var h = Math.min(this.naturalHeight, 2048);
+			var g = Math.min(w/this.naturalWidth, h/this.naturalHeight);
 			var nw = Math.floor(this.naturalWidth*g);
 			var nh = Math.floor(this.naturalHeight*g);
 			var imgdata = imageAlgs.resize_image(this, nw, nh);
@@ -168,7 +200,6 @@ function loadImage(file, id, fileId) {
 			startProcessingFileFromQueue();
 			PF.sendImage(imgdata, fileId);
 		} else {
-		console.log("no");
 			PF.showImage(this, id, fileId);
 			startProcessingFileFromQueue();
 			PF.sendImage(file, fileId);
@@ -204,7 +235,7 @@ function showImage(imgdata, id, fileId) {
 			content.html(this);
 			$(id).append(content);	
 			$(id).append('<div contenteditable="true"></div>');
-			typebox.arrangeDynamicBox($(id)[0]);
+			typebox.refreshContent(false, $(id)[0]);
 		}
 		img.src = imgdata;
 	} else {
@@ -213,7 +244,7 @@ function showImage(imgdata, id, fileId) {
 		content.html(imgdata);
 		$(id).append(content);	
 		$(id).append('<div contenteditable="true"></div>');
-		typebox.arrangeDynamicBox($(id)[0]);
+		typebox.refreshContent(false, $(id)[0]);
 	}
 }
 
@@ -231,7 +262,7 @@ function sendImage(imgdata, fileId) {
 	f.append("uid",uid);
 	f.append("action","addImage");
 	var progressBar = $('<div class="progressBar"><div class="progress"></div></div>');
-	$('*[data-src="{:'+fileId+':}"]').append(progressBar);
+	$('#'+fileId).append(progressBar);
 	$.ajax({
 		url: "Ajax/post.php",
 		type: "POST",

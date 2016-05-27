@@ -7,12 +7,9 @@ var Filter = {
 		}
 		substitution = function(str) {
 			var url = str.replace(/(.*)\?.*$/,'$1');
-			console.log(url);
 			var id = url.replace(/.*\/([a-zA-Z]+)$/,"$1");
-			console.log(id);
 			var w = "https://gfycat.com/ifr/"+id;
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-			console.log(xx);
 			var b = '<span class="deletable deletable-block" data-type="gfycat" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			var o = '<div class="embed-responsive embed-responsive-16by9">';
 			o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
@@ -235,10 +232,8 @@ var Filter = {
 		if(!ending) {
 			r1 = new RegExp(regex.vimeo+'[\s]','gi');
 		}
-		console.log(r1);
 		substitution = function(str) {
 			var vid = str.replace(/(https?:\/\/vimeo.com\/)([^\s]+\/)?([0-9]+)$/,'$3');
-			console.log(vid);
 			var w = 'https://player.vimeo.com/video/'+vid+'?autoplay=1';
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
 			var o = '<span class="deletable deletable-block" data-type="vimeo" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
@@ -354,20 +349,18 @@ var Filter = {
 		var ajax_url = "Ajax/post.php";
 		var ajax_var = {"action":"getFile", "viewer":viewer};
 		callback = function(data) {
-			console.log(data);
-			console.log(data.html);
+			//console.log(data);
 			balise = $('#'+str2md5(decodeURI(data.url)));
 			if(balise.closest('.dynamicBox').hasClass('viewerBox')) {
 				balise.attr('data-filetype',data.filetype);
 				balise.html(data.html);
 			} else {
+				balise.attr('data-filetype',data.filetype);
 				balise.html(data.html);
 				balise.append(genDelBtn());
 			}
-			console.log(viewer);
 			if(viewer !== false) {
 				$('img.lazyload').each(function(){
-					console.log(this.dataset.src);
 					this.src = this.dataset.src;
 					this.style.opacity = 1;
 				});

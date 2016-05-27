@@ -150,6 +150,7 @@ if($_SESSION['connected']) {
 			$response = new StdClass();
 			$response->url = $url;
 			$response->html = $html;
+			$response->filetype = $file['type'];
 
 			header('Content-Type: text/json; charset=UTF-8');
 			echo(json_encode($response));

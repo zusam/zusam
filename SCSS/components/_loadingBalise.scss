@@ -1,0 +1,52 @@
+.loading-balise {
+	height: 96px;
+	width: 256px;
+	border: 1px solid lightgrey;
+	position: relative;
+	margin: 10px auto;
+	background: whitesmoke;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	& > span {
+		display: none;
+	}
+
+	.uploading-img {
+		height: 96px;
+		width: 96px;
+		overflow: hidden;
+		flex-grow: 0;
+		flex-shrink: 0;
+
+		img {
+			min-width: 100%;
+			min-height: 100%;
+			max-width: 130%;
+			transform: translate(-50%, -50%);
+			position: relative;
+			top: 50%;
+			left: 50%;
+		}
+	}
+
+	.uploading-info {
+		width: 100%;
+		padding: 0px;
+		position: relative;
+		height: 100%;
+		.info-title {
+			width: 80%;
+			position: absolute;
+			top: 10px;
+			left: 10px;
+		}
+		.info-text {
+			color: grey;
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+		}
+	}
+}
