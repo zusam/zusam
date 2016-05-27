@@ -4,9 +4,8 @@ function handleFileSelect(evt) {
 	console.log(id);
 	console.log("change!");
 	file = files[0];
-	// Choose the right max number TODO
-	if(files.length > 100) {
-		alert('Le nombre maximum de fichier que vous pouvez envoyer en même temps est 100');
+	if(files.length > 1000) {
+		alert('Le nombre maximum de fichier que vous pouvez envoyer en même temps est 1000');
 		return false;
 	} else {
 		for(var i=0;i<files.length;i++) {
@@ -16,6 +15,11 @@ function handleFileSelect(evt) {
 		startProcessingFileFromQueue();
 	}
 	evt.target.value = null;
+}
+
+function stopFileQueue() {
+	fileQueue = [];
+	positionInQueue = 1;
 }
 
 function startProcessingFileFromQueue() {
@@ -29,7 +33,6 @@ function startProcessingFileFromQueue() {
 		}, 100);
 		return;
 	}
-	console.log("queue length : "+fileQueue.length);
 	$('.send').attr('disabled','true');
 	setTimeout(function() {
 		var processObject = fileQueue.shift();
@@ -39,7 +42,6 @@ function startProcessingFileFromQueue() {
 }
 
 function handleFile(file,id, fileId) {
-	console.log(file);
 	var fileTypeHandled = false;
 	if(file.type.match(/image/)) {
 		fileTypeHandled = true;

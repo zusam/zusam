@@ -114,6 +114,7 @@ function hidenewpost(sent) {
 			}
 		}
 		if(answer === true) {
+			PF.stopFileQueue();
 			e = $('#newpost');
 			hideslidefromright('#slidenewpost');
 			$('#newpost').removeClass('active');	
@@ -126,6 +127,7 @@ function hidenewpost(sent) {
 }
 
 function hidenewcommentsection(id) {
+	PF.stopFileQueue();
 	var t = $(id);
 	t.after(genFakeComment());
 	t.remove();

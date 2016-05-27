@@ -6,7 +6,6 @@ URL = window.URL || window.webkitURL;
 sending = 0;
 active_post = 0;
 loading_posts = false;
-converts = 0;
 
 fileQueue = [];
 positionInQueue = 1;

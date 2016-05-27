@@ -140,56 +140,79 @@ function sendGif(file, fileId) {
 	});
 	window.sending = window.sending + 1;
 }
+
 function fastLoadImage(file, id, fileId) {
-	var img = new Image();
-	img.onload = function() {
-		if(file.size > 5*1024*1024) {
-			converts++;
-			var w = Math.min(this.naturalWidth, 2048);
-			var h = Math.min(this.naturalHeight, 2048);
-			var g = Math.min(w/this.naturalWidth, h/this.naturalHeight);
-			var nw = Math.floor(this.naturalWidth*g);
-			var nh = Math.floor(this.naturalHeight*g);
-			var imgdata = imageAlgs.resize_image(this, nw, nh);
-			PF.fastShowImage(imgdata, id, fileId);
-			PF.sendImage(imgdata, fileId);
-			startProcessingFileFromQueue();
-		} else {
-			PF.fastShowImage(this, id, fileId);
-			PF.sendImage(file, fileId);
-			startProcessingFileFromQueue();
+	//if(positionInQueue == 1) {
+	//	var img = new Image();
+	//	img.onload = function() {
+	//		var balise = $(id).find('.loading-balise');
+	//		balise.find('.uploading-img').html(img);
+	//	};
+	//	img.src = URL.createObjectURL(file);
+	//}
+	PF.fastSendImage(file, fileId, id);
+}
+
+function fastSendImage(imgdata, fileId, id) {
+	var f = new FormData();
+	var uid = $('#info').attr('data-uid');
+	f.append("image",imgdata);
+	f.append("fileId",fileId);
+	f.append("uid",uid);
+	f.append("action","addImage");
+	var progressBar = $('<div class="progressBar"><div class="progress"></div></div>');
+	$('#'+fileId).append(progressBar);
+	$.ajax({
+		url: "Ajax/post.php",
+		type: "POST",
+		data: f,
+		success: function(data){ 
+				console.log(data);
+				window.sending = window.sending - 1;
+				PF.startProcessingFileFromQueue();
+				PF.fastShowImage(data.url, id, fileId);
+			},
+		error: function(){ 
+				console.log("fail"); 
+				window.sending = window.sending - 1;
+				PF.startProcessingFileFromQueue();
+			},
+		processData: false,
+		contentType: false,
+		xhr: function(){
+			var xhr = $.ajaxSettings.xhr();
+			xhr.upload.onprogress = function(evt){ 
+				var p = parseInt(evt.loaded/evt.total*100);
+				content = $('#'+fileId);
+				content.find('.progressBar .progress').css('width', p+"%");
+
+			};
+			xhr.upload.onload = function(){ 
+				console.log('done !');
+				setTimeout(function() {
+					content = $('#'+fileId);
+					content.find('.progressBar').remove();
+				}, 1000);
+			};
+			return xhr;
 		}
-	};
-	img.src = URL.createObjectURL(file);
+	});
+	window.sending = window.sending + 1;
 }
 
 function fastShowImage(imgdata, id, fileId) {
 	var balise = $(id).find('.loading-balise');
-	if(typeof(imgdata) == "string") {
-		var img = new Image();
-		img.onload = function() {
-			balise.find('.info-title').html("Envoi d'images en cours...");
-			balise.find('.uploading-img').html(this);
-			balise.find('.info-text').html(positionInQueue+'/'+(fileQueue.length+positionInQueue));
-			balise.find('.progressBar .progress').css('width',100*positionInQueue/(fileQueue.length+positionInQueue)+"%");
-			balise.find('span')[0].innerHTML += ' {:'+fileId+':} ';
-		}
-		img.src = imgdata;
-	} else {
-		balise.find('.info-title').html("Envoi d'images en cours...");
-		balise.find('.uploading-img').html(this);
-		balise.find('.info-text').html(positionInQueue+'/'+(fileQueue.length+positionInQueue));
-		balise.find('.progressBar .progress').css('width',100*positionInQueue/(fileQueue.length+positionInQueue)+"%");
-		balise.find('span')[0].innerHTML += ' {:'+fileId+':} ';
-	}
-	//$('#'+fileId).remove();
+	balise.find('.info-title').html("Envoi d'images en cours...");
+	balise.find('.uploading-img').html('<img src="'+imgdata+'"/>');
+	balise.find('.info-text').html(positionInQueue+'/'+(fileQueue.length+positionInQueue));
+	balise.find('.progressBar .progress').css('width',100*positionInQueue/(fileQueue.length+positionInQueue)+"%");
+	balise.find('span')[0].innerHTML += ' {:'+fileId+':} ';
 }
 
 function loadImage(file, id, fileId) {
 	var img = new Image();
 	img.onload = function() {
-		if(file.size > 3*1024*1024) {
-			converts++;
+		//if(file.size > 3*1024*1024) {
 			var w = Math.min(this.naturalWidth, 2048);
 			var h = Math.min(this.naturalHeight, 2048);
 			var g = Math.min(w/this.naturalWidth, h/this.naturalHeight);
@@ -199,11 +222,11 @@ function loadImage(file, id, fileId) {
 			PF.showImage(imgdata, id, fileId);
 			startProcessingFileFromQueue();
 			PF.sendImage(imgdata, fileId);
-		} else {
-			PF.showImage(this, id, fileId);
-			startProcessingFileFromQueue();
-			PF.sendImage(file, fileId);
-		}
+		//} else {
+		//	PF.showImage(this, id, fileId);
+		//	startProcessingFileFromQueue();
+		//	PF.sendImage(file, fileId);
+		//}
 	};
 	img.src = URL.createObjectURL(file);
 	var loading = $('<span data-filetype="jpg" data-type="file" id="'+fileId+'" data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false">'+genAjaxLoader()+'</span>');
@@ -218,20 +241,8 @@ function showImage(imgdata, id, fileId) {
 	if(typeof(imgdata) == "string") {
 		var img = new Image();
 		img.onload = function() {
-			//var c = document.createElement('canvas');
-			//var w = Math.min(img.naturalWidth, 300);
-			//var h = Math.min(img.naturalHeight, 300);
-			//var g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
-			//var nw = Math.floor(img.naturalWidth*g);
-			//var nh = Math.floor(img.naturalHeight*g);
-			//c.width = nw;
-			//c.height = nh;
-			//ctx = c.getContext('2d');
-			//ctx.drawImage(img, 0, 0, nw, nh);
-			//content.html(c);
 			content.attr('data-width',img.naturalWidth);
 			content.attr('data-height',img.naturalHeight);
-			//$(id).append(content);	
 			content.html(this);
 			$(id).append(content);	
 			$(id).append('<div contenteditable="true"></div>');
@@ -253,10 +264,10 @@ function sendImage(imgdata, fileId) {
 	var uid = $('#info').attr('data-uid');
 	if(typeof(imgdata) == "string") {
 		var imageblob = dataURItoBlob(imgdata,'image/jpeg');
-		console.log(imageblob.size);
 	} else {
 		var imageblob = imgdata;
 	}
+	console.log("sending file, size : "+imageblob.size);
 	f.append("image",imageblob);
 	f.append("fileId",fileId);
 	f.append("uid",uid);

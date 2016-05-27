@@ -253,10 +253,13 @@ if($_SESSION['connected']) {
 					$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['fileId'], 'ext' => 'jpg', 'param' => 'file')), 2048, 2048);
 					if($r) {
 						file_save($file);
-						echo($file['fileId']);
 						unlink(pmini($file['fileId']));
 						unlink(ppi($file['fileId']));
 						gen_miniature("{:".$fileId.":}");
+						$r = new StdClass();
+						$r->url = p2l(pmini($file['fileId']));
+						header('Content-Type: text/json; charset=UTF-8');
+						echo(json_encode($r));
 					}
 				}
 			}
