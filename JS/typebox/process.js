@@ -106,7 +106,7 @@ function arrangeDynamicBox(t) {
 		
 		// image -> albumImage
 		if(map[i].type == "filejpg" && map[i].suite > 3) {
-			console.log("albumImage",map[i]);
+			//console.log("albumImage",map[i]);
 			var w = parseInt($('#'+map[i].id).attr('data-width'));
 			var h = parseInt($('#'+map[i].id).attr('data-height'));
 			if(isNaN(w) || isNaN(h)) {
@@ -122,9 +122,9 @@ function arrangeDynamicBox(t) {
 	
 		// albumImage -> image
 		if(map[i].type == "filejpg" && map[i].suite < 4) {
-			console.log("simpleImage",map[i]);
+			//console.log("simpleImage",map[i]);
 			var postImage = $('#'+map[i].id).find('img').attr('data-postimage');
-			console.log(postImage);
+			//console.log(postImage);
 			if(typeof(postImage) != "undefined" && postImage !== "") {
 				$('#'+map[i].id).find('img').attr('src',postImage);
 			}

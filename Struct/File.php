@@ -22,7 +22,6 @@ function file_save(&$file) {
 }
 
 function file_destroy($fid) {
-	$mid = mongo_id($fid);
 	$f = file_load(array('_id'=>$fid));
 	if($f != false && $f != null) {
 		unlink(file_getPath($f));	

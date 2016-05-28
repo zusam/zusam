@@ -4,8 +4,8 @@ function handleFileSelect(evt) {
 	console.log(id);
 	console.log("change!");
 	file = files[0];
-	if(files.length > 1000) {
-		alert('Le nombre maximum de fichier que vous pouvez envoyer en même temps est 1000');
+	if(files.length > 200) {
+		alert('Le nombre maximum de fichier que vous pouvez envoyer en même temps est 200');
 		return false;
 	} else {
 		for(var i=0;i<files.length;i++) {

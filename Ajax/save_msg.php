@@ -54,7 +54,25 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 		} else {
 			// editing (parent or child)
 			$p = post_load(array('_id'=>$pid));
+			$files = post_listFIles($p);
 			post_update($p, array('text'=>$text,'preview'=>$preview));
+			$newfiles = post_listFIles($p);
+			// find files that have been removed
+			$lostFiles = [];
+			foreach($files as $f) {
+				$fid = (String) $f['_id'];
+				$present = false;
+				foreach($newfiles as $nf) {
+					$nfid = (String) $nf['_id'];
+					if($fid == $nfid) {
+						$present = true;
+						break;
+					}
+				}
+				if(!$present) {
+					file_destroy($fid);	
+				}
+			}
 			post_save($p);
 		}
 

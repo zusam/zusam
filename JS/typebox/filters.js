@@ -10,7 +10,7 @@ var Filter = {
 			var id = url.replace(/.*\/([a-zA-Z]+)$/,"$1");
 			var w = "https://gfycat.com/ifr/"+id;
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-			var b = '<span class="deletable deletable-block" data-type="gfycat" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			var b = '<span class="deletable deletable-block" data-type="gfycat" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			var o = '<div class="embed-responsive embed-responsive-16by9">';
 			o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
 			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
@@ -28,7 +28,7 @@ var Filter = {
 			r1 = new RegExp(regex.facebook_video+'[\s]','gi');
 		}
 		substitution = function(str) {
-			var b = '<span class="deletable deletable-block" data-type="facebook_video" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			var b = '<span class="deletable deletable-block" data-type="facebook_video" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			var o = '<iframe src="https://www.facebook.com/plugins/video.php?href='+str+'&show_text=0&width=600" width="600" height="337" style="border:none;overflow:hidden" onload="keepFormat(this, 16/9)" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>';
 			var a = '</span>';
 			return b+o+a;
@@ -44,7 +44,7 @@ var Filter = {
 			r1 = new RegExp(regex.imgur+'[\s]','gi');
 		}
 		substitution = function(str) {
-			output = '<span class="deletable deletable-block" data-type="imgur" data-src="'+str+'" contenteditable="false" id="'+baliseId+'">'+genAjaxLoader()+'</span>';
+			output = '<span class="deletable deletable-block" data-type="imgur" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+baliseId+'">'+genAjaxLoader()+'</span>';
 			return output;
 		};
 		var ajax_url = "Ajax/post.php";
@@ -82,7 +82,7 @@ var Filter = {
 			r1 = new RegExp(regex.instagram+'[\s]','gi');
 		}
 		substitution = function(str) {
-			output = '<span class="deletable deletable-block" data-type="instagram" data-src="'+str+'" contenteditable="false" id="'+baliseId+'">'+genAjaxLoader()+'</span>';
+			output = '<span class="deletable deletable-block" data-type="instagram" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+baliseId+'">'+genAjaxLoader()+'</span>';
 			return output;
 		};
 		var ajax_url = "Ajax/post.php";
@@ -151,7 +151,7 @@ var Filter = {
 				id = str.replace(/(https?:\/\/drive.google.com\/file\/d\/)([\w]+)(\/)([^\s]+)/,'$2');
 			}
 			if(id.match(/^\w+$/)) {
-				var b = '<span class="deletable deletable-block" data-type="googleDrive" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+				var b = '<span class="deletable deletable-block" data-type="googleDrive" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 				var o = '<div class="embed-responsive embed-responsive-square"><iframe seamless class="embed-responsive-item" src="https://drive.google.com/file/d/'+id+'/preview" frameborder="0"></iframe></div>';
 				var a = '</span>';
 				return b+o+a;
@@ -174,7 +174,7 @@ var Filter = {
 					song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,'$1');
 					var w = song_url.replace(/auto_play=false/,"auto_play=true");
 					var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-					var o = '<span class="deletable deletable-block" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+					var o = '<span class="deletable deletable-block" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 					o += '<div class="embed-responsive embed-responsive-16by9">';
 					o += '<div onclick="loadIframe(this)" data-src="'+w+'" data-srcnoplay="'+song_url+'" class="launcher">';
 					o += '<img src="'+xx+'" onerror="loadIframeNoPlay(this)"/>';
@@ -182,7 +182,7 @@ var Filter = {
 					$('#'+str2md5(str)).html(o);
 				});
 			}, 50);
-			var b = '<span class="deletable deletable-block" data-type="soundcloud" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			var b = '<span class="deletable deletable-block" data-type="soundcloud" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			var o = str.replace(/(https?:\/\/vine.co\/v\/)([\w\-]+)/,'<div class="embed-responsive embed-responsive-square"><iframe seamless class="embed-responsive-item" src="$1$2/embed/simple" frameborder="0"></iframe></div><script async src="//platform.vine.co/static/scripts/embed.js" charset="utf-8"></script>');
 			var a = '</span>';
 			return b+o+a;
@@ -197,7 +197,7 @@ var Filter = {
 			r1 = new RegExp(regex.vine+'[\s]','gi');
 		}
 		substitution = function(str) {
-			var b = '<span class="deletable deletable-block" data-type="vine" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			var b = '<span class="deletable deletable-block" data-type="vine" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			var o = str.replace(/(https?:\/\/vine.co\/v\/)([\w\-]+)/,'<div class="embed-responsive embed-responsive-square"><iframe seamless class="embed-responsive-item" src="$1$2/embed/simple" frameborder="0"></iframe></div><script async src="//platform.vine.co/static/scripts/embed.js" charset="utf-8"></script>');
 			var a = '</span>';
 			return b+o+a;
@@ -215,7 +215,7 @@ var Filter = {
 		substitution = function(str) {
 			var w = str.replace(/(https?:\/\/www.dailymotion.com\/video\/)([\w\-]+)/,'https://www.dailymotion.com/embed/video/$2?autoplay=1');
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-			var o = '<span class="deletable deletable-block" data-type="dailymotion" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			var o = '<span class="deletable deletable-block" data-type="dailymotion" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			o += '<div class="embed-responsive embed-responsive-16by9">';
 			o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
 			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
@@ -236,7 +236,7 @@ var Filter = {
 			var vid = str.replace(/(https?:\/\/vimeo.com\/)([^\s]+\/)?([0-9]+)$/,'$3');
 			var w = 'https://player.vimeo.com/video/'+vid+'?autoplay=1';
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-			var o = '<span class="deletable deletable-block" data-type="vimeo" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			var o = '<span class="deletable deletable-block" data-type="vimeo" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			o += '<div class="embed-responsive embed-responsive-16by9">';
 			o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
 			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
@@ -257,7 +257,7 @@ var Filter = {
 			var v = str.replace(/(https?:\/\/youtu\.be\/)([\w\-]+)([^\s]*)/,"$2");
 			var w = 'https://www.youtube.com/embed/'+v+'?autoplay=1&controls=2&wmode=opaque';
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-			var o = '<span class="deletable deletable-block" data-type="youtube2" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			var o = '<span class="deletable deletable-block" data-type="youtube2" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			o += '<div class="embed-responsive embed-responsive-16by9">';
 			o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
 			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
@@ -278,7 +278,7 @@ var Filter = {
 			var v = str.replace(/(https?:\/\/(www|m).youtube.com\/watch\?)([^\s]*)v=([\w\-]+)([^\s]*)/,"$4");
 			var w = 'https://www.youtube.com/embed/'+v+'?autoplay=1&controls=2&wmode=opaque';
 			var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-			var o = '<span class="deletable deletable-block" data-type="youtube" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+			var o = '<span class="deletable deletable-block" data-type="youtube" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 			o += '<div class="embed-responsive embed-responsive-16by9">';
 			o += '<div onclick="loadIframe(this)" data-src="'+w+'" class="launcher">';
 			o += '<img src="'+xx+'" onerror="loadIframe(this)"/>';
@@ -301,7 +301,7 @@ var Filter = {
 					video_link = str.replace(/\.gifv/,".webm");
 				}
 				var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-				var o = '<span class="deletable deletable-block" data-type="video" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+				var o = '<span class="deletable deletable-block" data-type="video" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 				o += '<div onclick="loadVideo(this)" data-src="'+video_link+'" class="launcher">';
 				o += '<img src="'+xx+'" onerror="loadVideo(this)"/>';
 				o += '</div></span>';
@@ -317,7 +317,7 @@ var Filter = {
 			r1 = new RegExp(regex.image+'[\s]','gi');
 		}
 		substitution = function(str) {
-				return '<span class="deletable deletable-block" data-type="image" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+str+'"/></span>';
+				return '<span class="deletable deletable-block" data-type="image" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+str+'"/></span>';
 		};
 		output = applyFilter({"callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
@@ -330,7 +330,7 @@ var Filter = {
 		}
 		substitution = function(str) {
 				var xx = origin_url+'Data/miniature/'+str2md5(str)+'.jpg';
-				var o = '<span class="deletable deletable-block" idata-type="gif" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
+				var o = '<span class="deletable deletable-block" data-type="gif" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'">';
 				o += '<div onclick="loadImage(this)" data-src="'+str+'" class="launcher">';
 				o += '<img src="'+xx+'" onerror="loadImage(this)"/>';
 				o += '</div></span>';
@@ -343,7 +343,7 @@ var Filter = {
 	searchFile : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.file,'gi');
 		substitution = function(str) {
-			output = '<span class="deletable deletable-block" data-type="file" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'">'+genAjaxLoader()+'</span>';
+			output = '<span class="deletable deletable-block" data-type="file" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str.replace(/#.+$/,''))+'">'+genAjaxLoader()+'</span>';
 			return output;
 		};
 		var ajax_url = "Ajax/post.php";
@@ -386,7 +386,7 @@ var Filter = {
 			r1 = new RegExp(regex.link+'[\s]','gi');
 		}
 		substitution = function(str) {
-			output = '<span class="deletable deletable-block" data-type="link" data-src="'+str+'" contenteditable="false" id="'+baliseId+'">'+genAjaxLoader()+'</span>';
+			output = '<span class="deletable deletable-block" data-type="link" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+baliseId+'">'+genAjaxLoader()+'</span>';
 			return output;
 		};
 		var ajax_url = "Ajax/post.php";

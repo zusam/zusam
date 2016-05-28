@@ -251,7 +251,7 @@ function sendIt(id) {
 				msg += " "+node.getElementsByTagName('SPAN')[0].innerHTML;
 				console.log(msg);
 			} else {
-				msg += " "+node.dataset.src;
+				msg += " "+node.dataset.txt;
 			}
 		} else {
 			if(typeof(node.innerHTML) != "undefined") {
