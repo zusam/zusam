@@ -30,6 +30,20 @@ if($_SESSION['connected']) {
 	
 	if($POST['action'] != null && $POST['action'] != "") {
 
+		if($POST['action'] == "loadMoreImages") {
+			$dump = json_decode($POST['dump'], true);
+			//var_dump($dump);
+			$html = "";
+			foreach($dump as $str) {
+				$html .= process_albumImage($str);
+			}
+			$r = new StdClass();
+			$r->html = $html;
+			header('Content-Type: text/json; charset=UTF-8');
+			echo(json_encode($r));
+			exit;
+		}
+
 		if($POST['action'] == "turnImage") {
 			$uid = $POST['uid'];
 			$fileId = $POST['fileId'];
@@ -78,7 +92,6 @@ if($_SESSION['connected']) {
 		// TODO protect ?
 		if($POST['action'] == "morePost") {
 			$r = new StdClass();
-			
 
 			$u = account_load(array('_id'=>$_SESSION['uid']));
 			$list = json_decode($POST['list'], true);
@@ -104,8 +117,8 @@ if($_SESSION['connected']) {
 							$i++;
 							if(in_array((String) $p['_id'], $u['unread'])) {
 								$html .= print_post_mini($p, true);
-							$r->debug1 = json_encode($u['unread']);
-							$r->debug2 = json_encode((String) $p['_id']);
+								//$r->debug1 = json_encode($u['unread']);
+								//$r->debug2 = json_encode((String) $p['_id']);
 							} else {
 								$html .= print_post_mini($p, false);
 							}

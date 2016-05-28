@@ -89,6 +89,11 @@ function enlighten(id) {
 
 	img.onload = function(){
 
+		// check if this is a failed img
+		if(lightbox_url !== "" && lightbox_url != this.src) {
+			return;
+		}
+
 		var next;
 		var prev;
 		var turncw;
@@ -126,12 +131,6 @@ function enlighten(id) {
 		$(this).attr('onclick','lightbox.darken()').addClass('zoomedImage');
 		lb.attr('data-ratio',ratio);
 		lightbox.resizeLightBox(lb);
-		//var lbw = window.innerWidth - 40;
-		//var lbh = Math.min(lbw/ratio, window.innerHeight - 40);
-		//lb.css({
-		//	"width" : lbw + "px",
-		//	"height" : lbh + "px",
-		//});
 		if(owner == $('#info').attr('data-uid')) {
 			turncw = $('<button contentditable="false" class="material-shadow editIMG cw"><i class="icon-cw"></i></button>');
 			turncw.on("click", function(evt) {
@@ -165,6 +164,7 @@ function enlighten(id) {
 	};
 	
 	img.src = lightbox_src+"#"+Date.now();
+	lightbox_url = img.src;
 	mask = $('<div class="lightbox-mask" onclick="lightbox.darken()"></div>');
 	mask.append('<div class="spinner"><div class="bg-white bounce1"></div><div class="bg-white bounce2"></div><div class="bg-white bounce3"></div></div>');
 	$('body').append(mask);
@@ -216,58 +216,3 @@ function turnImage(e, rotation) {
 		contentType: false
 	});
 }
-
-// turn the image
-//function turnAndSend(e, rotation, img) {
-//	
-//	$('#lightbox').css('opacity','0');
-//
-//	// init canvas
-//	canvas = document.createElement('canvas');
-//	canvas.width = img.naturalWidth;
-//	canvas.height = img.naturalHeight;
-//	var ctx = canvas.getContext('2d');
-//	ctx.drawImage(img, 0, 0);
-//	
-//	// process canvas
-//	canvas = imageAlgs.turn(canvas, rotation);
-//
-//	var action = "addImage";
-//	var fileid = $(e).closest('.deletable').attr('data-fileid');
-//
-//	imgURL = canvas.toDataURL("image/png");
-//	
-//	f = new FormData();
-//	f.append("image",dataURItoBlob(imgURL));
-//	var uid = $('#info').attr('data-uid');
-//	var fid = $('#info').attr('data-fid');
-//	f.append("uid",uid);
-//	f.append("fid",fid);
-//	f.append("action",action);
-//	console.log(action);
-//	f.append("fileId",fileid);
-//	$.ajax({
-//		url: 'Ajax/post.php',
-//		type: "POST",
-//		data: f,
-//		success: function(data){ 
-//				console.log(data); 
-//				console.log("sent!");
-//				// replace all sent images
-//				$('.deletable[data-fileid="'+fileid+'"] img').each(function(){
-//					var src = this.src.replace(/\?.*/,'') + '?' + Date.now(); 
-//					this.src = src;
-//					var pid = $('#post-viewer').attr('data-id');
-//					var mini = $('.post-mini[data-id="'+pid+'"] .miniature')[0];
-//					if(typeof(mini) !=! "undefined") {
-//						src = mini.src.replace(/\?.*/,'') + '?' + Date.now();
-//						mini.src = src;
-//					}
-//				});
-//				lightbox.enlighten(e);
-//			},
-//		error: function(){ console.log(uid,fid,action); },
-//		processData: false,
-//		contentType: false
-//	});
-//}

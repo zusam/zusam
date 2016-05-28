@@ -216,7 +216,7 @@ function print_post_mini(&$p, $unread) {
 		
 		$inside .= '<div class="post-info">';
 
-		$inside .= '<div class="op-avatar">'.account_getAvatarHTML($op).'</div>';
+		$inside .= '<div class="material-shadow op-avatar">'.account_getAvatarHTML($op).'</div>';
 
 		$inside .= '<div class="date">'.convertDate(date('Y-m-d H:i:s', $p['date']->toDateTime()->getTimestamp())).'</div>';
 		

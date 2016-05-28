@@ -622,3 +622,33 @@ function loadIframeNoPlay(t) {
 	$('iframe:not([src])').remove();
 }
 
+function loadMoreImages(t) {
+	var stock = t.getElementsByTagName('span')[0];
+	var dump = stock.innerHTML.match(/\{\:[a-zA-Z0-9]+\:\}/g);
+	var toLoad = [];
+	var l = dump.length;
+	for(i=0;(i<10 && i<l);i++) {
+		toLoad.push(dump.shift());	
+	}
+	console.log(JSON.stringify(toLoad));
+	$.ajax({
+		url: "Ajax/post.php",
+		type: "post",
+		data: {"action":"loadMoreImages","dump":JSON.stringify(toLoad)},
+		success: function(data) {
+			console.log(data);
+			$(t).closest('.deletable').before(data.html);
+			if(stock.innerHTML === "") {
+				$(t).closest('.deletable').remove();
+			}
+		},
+		error: function() {
+			console.log('fail to retrieve more images');
+		}
+	});
+	var rest = "";
+	for(i=0;i<dump.length;i++) {
+		rest += " "+dump[i];
+	}
+	stock.innerHTML = rest;
+}

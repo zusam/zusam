@@ -2,13 +2,19 @@
 
 // canvas conversions
 URL = window.URL || window.webkitURL;
+
 // scripts states
 sending = 0;
 active_post = 0;
 loading_posts = false;
 
+// fileQueue
 fileQueue = [];
 positionInQueue = 1;
+
+// lightbox
+lightbox_url = "";
+
 
 //console.log(origin_url);
 

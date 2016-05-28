@@ -1,0 +1,44 @@
+.imageDump {
+	height: 130px;
+	overflow: hidden;
+	position: relative;
+	margin: 1px 0px;
+	cursor: pointer;
+	background-color: grey;
+
+	&:hover div {
+		background-color: rgba(0,0,0,0.8);
+		box-shadow: 0px 0px 20px black;
+		font-size: 26px;
+	}
+
+	div {
+		color: white;
+		box-shadow: 0px 0px 10px #444;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 3;
+		background-color: rgba(0,0,0,0.6);
+		padding: 20px;
+		font-size: 25px;
+		transition: all 0.2s;
+		border-radius: 10px;
+	}
+
+	img {
+		min-width: calc(100% + 5px);
+		min-height: calc(100% + 5px);
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		-webkit-filter: grayscale(1) blur(1px);
+		filter: grayscale(1) blur(1px);
+	}
+
+	span {
+		display: none;
+	}
+}

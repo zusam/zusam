@@ -119,9 +119,9 @@ if($_SESSION['connected']) {
 			account_save($u);
 			$html_data = print_full_post($id, $u['_id']);
 			$r->html = $html_data;
-			if(isset($GET['debug'])) {
-				$r->debug = compileText(trim($p['text']), true);
-			}
+			//if(isset($GET['debug'])) {
+			//	$r->debug = compileText(trim($p['text']), true);
+			//}
 			header('Content-Type: text/json; charset=UTF-8');
 			echo(json_encode($r));
 			exit;

@@ -7,22 +7,28 @@ function compileText($text, $debug) {
 
 	if(!isset($debug)) {
 		$debug = false;
+	} else {
+		$debug = true;
 	}
 
 	$r = $GLOBALS['regex'];
+
 	$str = strip_tags($text);
 	$str = trim($str);
 	$str = preg_replace("/\n/","<br>",$str);
-	if($debug) {
-		var_dump($text);
-	}
+
+	//if($debug) {
+	//	var_dump($text);
+	//}
 
 	$map = genTextMap($str, $debug);
-	if($debug) {
-		var_dump($map);
-	}
+	//if($debug) {
+	//	var_dump($map);
+	//}
 	$html = "";
 	$text = false;
+	$number_albumImage = 0;
+	$imageDump = [];
 	foreach($map as $m) {
 		if($m[1] != "text") {
 			if($text) {
@@ -46,7 +52,17 @@ function compileText($text, $debug) {
 			break;
 			case "file_jpg":
 				if($m[2] > 3) {
-					$html .= $pre.process_albumImage($m[0]);	
+					$number_albumImage++;
+					if($number_albumImage > 30) {
+						array_push($imageDump, $m[0]);
+					} else {
+						$html .= $pre.process_albumImage($m[0]);	
+					}
+					if($number_albumImage == $m[2] && count($imageDump) > 0) {
+						$html .= $pre.process_imageDump($imageDump);
+						$number_albumImage = 0;
+						$imageDump = [];
+					}
 				} else {
 					$html .= $pre.process_file($m[0]);	
 				}
@@ -96,10 +112,10 @@ function compileText($text, $debug) {
 			case "image":
 				$output = process_image($m[0]);
 				$html .= $pre.$output;
-				if($debug) {
-					var_dump($output);
-					echo('______________________________________');
-				}
+				//if($debug) {
+				//	var_dump($output);
+				//	echo('______________________________________');
+				//}
 			break;
 			case "gif":
 				$html .= $pre.process_gif($m[0]);
@@ -168,9 +184,9 @@ function genTextMap($str, $debug) {
 			$suite = array($k);
 			$suiteType = $type;
 		}
-		if($debug) {
-			var_dump($elmt);
-		}
+		//if($debug) {
+		//	var_dump($elmt);
+		//}
 	}
 	
 	$n = count($suite);
@@ -210,11 +226,11 @@ function process_imgur($str,$debug) {
 	$id = preg_replace("/.*\/(\w+)\/?$/","$1",$str);
 	if($id != "") {
 		$data = fgc("https://api.imgur.com/3/gallery/".$id);
-		if($debug) {
-			echo('-');
-			var_dump($data);
-			echo('-');
-		}
+		//if($debug) {
+		//	echo('-');
+		//	var_dump($data);
+		//	echo('-');
+		//}
 		$data = json_decode($data,true);
 		if($data['success']) {
 			if($data['data']['is_album'] == false) {
@@ -446,9 +462,9 @@ function process_youtube($str) {
 }
 
 function process_video($str,$debug) {
-	if($debug) {
-		var_dump($str);
-	}
+	//if($debug) {
+	//	var_dump($str);
+	//}
 	// change gifv into webm
 	$str = preg_replace("/\.gifv/",".webm",$str);
 	gen_miniature($str, false);
@@ -489,6 +505,30 @@ function process_gif($str) {
 		$html .= '<img class="inlineImage" src="'.$xx.'" onerror="loadImage(this)"/>';
 		$html .= '</div></span>';
 	//}
+	return $html;
+}
+
+function process_imageDump($dump) {
+	$html = "";
+	$str = end($dump);
+	reset($dump);
+	$fileId = preg_replace('/\{\:([a-zA-Z0-9]+)\:\}/','$1',$str);
+	$file = file_load(array('fileId' => $fileId));	
+	if($file) {
+		$url = p2l(pmini($fileId));
+	}
+
+	$html .= '<span class="deletable deletable-block" data-type="imageDump" contenteditable="false">';
+	$html .= '<div onclick="loadMoreImages(this)" class="imageDump">';
+	$html .= '<div>Voir plus d\'images</div>';
+	$html .= '<img src="'.$url.'"/>';
+	$html .= '<span>';
+	foreach($dump as $str) {
+		$html .= " ".$str." ";
+	}
+	$html .= '</span>';
+	$html .= '</div>';
+	$html .= '</span>';
 	return $html;
 }
 
