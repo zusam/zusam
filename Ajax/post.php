@@ -215,6 +215,7 @@ if($_SESSION['connected']) {
 					var_dump($r);
 						if($r) {
 							file_save($file);
+							recordUpload(array("uid"=>$uid, "type"=>"gif"));
 						} else {
 							echo('fail move file');
 						}
@@ -228,6 +229,7 @@ if($_SESSION['connected']) {
 						unlink(pmini($file['fileId']));
 						gen_miniature("{:".$fileId.":}");
 						if($r) {
+							recordUpload(array("uid"=>$uid, "type"=>"image"));
 							file_save($file);
 							echo($file['fileId']);
 						}
@@ -252,6 +254,7 @@ if($_SESSION['connected']) {
 					}
 					$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array('url' => $file['fileId'], 'ext' => 'jpg', 'param' => 'file')), 2048, 2048);
 					if($r) {
+						recordUpload(array("uid"=>$uid, "type"=>"image"));
 						file_save($file);
 						unlink(pmini($file['fileId']));
 						unlink(ppi($file['fileId']));
@@ -279,6 +282,7 @@ if($_SESSION['connected']) {
 					$ext = ".".pathinfo($_FILES['video']['name'], PATHINFO_EXTENSION);
 				$r = move_uploaded_file($_FILES['video']['tmp_name'], pathTo2(array('url'=>$file['fileId'], 'ext'=>$ext, 'param'=>'uploaded')));
 					if($r) {
+						recordUpload(array("uid"=>$uid, "type"=>"video"));
 						file_save($file);
 					} else {
 						echo('fail move file');

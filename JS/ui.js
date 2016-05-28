@@ -185,8 +185,6 @@ function showpostviewer(id) {
 				push_hideAll();
 			} else {
 
-				recordUsage("post");
-
 				$('#post-viewer .spinner').remove();
 				$('#mask').addClass('dark-mask');
 				var plop = $(data.html);

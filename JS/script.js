@@ -359,7 +359,6 @@ function deletePost(t) {
 }
 
 function editPost(t) {
-	recordUsage("edit");
 	var p = $(t).closest('.post');
 	var pid = p.attr('data-id');
 	//$.ajax({
@@ -424,7 +423,6 @@ function calcNbToLoad() {
 
 function loadMorePosts() {
 	if(!window.loading_posts) {
-		recordUsage("morePosts");
 		window.loading_posts = true;
 		var list = $('.post-mini').map(function(){ var t = this.dataset.id; return t; }).get();
 		list = JSON.stringify(list);
@@ -470,7 +468,6 @@ function loadMorePosts() {
 }
 	
 function disconnect() {
-	recordUsage("disconnect");
 	$.ajax({
 		url: "Ajax/connect.php",
 		type: "POST",

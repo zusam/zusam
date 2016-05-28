@@ -9,6 +9,8 @@ foreach($_GET as $K=>$V) {
 	$GET[$K] = (String) $V;
 }
 
+recordUsage(array('usage'=>'download'));
+
 
 $file = file_load(array('fileId'=>$GET['fileId']));
 if($file != null) {

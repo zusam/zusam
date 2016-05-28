@@ -18,6 +18,17 @@ function recordStat($array) {
 	mongo_save("records", $record);
 }
 
+function recordUpload($array) {
+	$record = [];
+	$record['_id'] = mongo_id();
+	$record['date'] = mongo_date();
+	$record['uid'] = $array['uid'];
+	$record['type'] = $array['type'];
+
+	mongo_save("upload", $record);
+
+}
+
 function recordUsage($array) {
 	$record = [];
 	$record['_id'] = mongo_id();
