@@ -229,14 +229,14 @@ function loadImage(file, id, fileId) {
 		//}
 	};
 	img.src = URL.createObjectURL(file);
-	var loading = $('<span data-filetype="jpg" data-type="file" id="'+fileId+'" data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false">'+genAjaxLoader()+'</span>');
+	var loading = $('<span data-filetype="jpg" data-type="file" id="'+fileId+'" data-txt="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false">'+genAjaxLoader()+'</span>');
 	$(id).append(loading);
 }
 
 function showImage(imgdata, id, fileId) {
 	var content = $('#'+fileId);
 	if(content.length === 0) {
-		content = $('<span data-filetype="jpg" data-type="file" id="'+fileId+'" data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
+		content = $('<span data-filetype="jpg" data-type="file" id="'+fileId+'" data-txt="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
 	}
 	if(typeof(imgdata) == "string") {
 		var img = new Image();
@@ -247,6 +247,17 @@ function showImage(imgdata, id, fileId) {
 			$(id).append(content);	
 			$(id).append('<div contenteditable="true"></div>');
 			typebox.refreshContent(false, $(id)[0]);
+			
+			//scroll to image
+			var node = img;
+			var yy = node.offsetTop - 10;
+			console.log(node.parentNode);
+			while(node.parentNode !== null && !node.parentNode.className.match(/\.nano-content/) && node.parentNode != document.body) {
+				node = node.parentNode;
+				yy += node.offsetTop; 
+			}
+			// TODO select nano-content more precisely
+			$('.nano-content')[0].scrollTop = yy;
 		}
 		img.src = imgdata;
 	} else {
@@ -256,6 +267,16 @@ function showImage(imgdata, id, fileId) {
 		$(id).append(content);	
 		$(id).append('<div contenteditable="true"></div>');
 		typebox.refreshContent(false, $(id)[0]);
+		//scroll to image
+		var node = img;
+		var yy = node.offsetTop - 10;
+		console.log(node.parentNode);
+		while(node.parentNode !== null && !node.parentNode.className.match(/\.nano-content/) && node.parentNode != document.body) {
+			node = node.parentNode;
+			yy += node.offsetTop; 
+		}
+		// TODO select nano-content more precisely
+		$('.nano-content')[0].scrollTop = yy;
 	}
 }
 

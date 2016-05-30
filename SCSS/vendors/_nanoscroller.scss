@@ -9,7 +9,7 @@ $contentClass: "nano-content" !default;
 
 .#{$nanoClass} {
     width: 100%;
-    height: calc(100% - 1px);
+    height: 100%;
     position: relative;
     overflow: hidden;
 

@@ -1,4 +1,10 @@
 function searchNext(e) {
+
+	// if there is an image dump, load images from it
+	if($(e).closest(".deletable").next().next().attr('data-type') == "imageDump") {
+		$(e).closest(".deletable").next().next().find('.imageDump').click();
+	}
+
 	// search in the same post
 	var img = $(e).closest(".deletable").nextAll('.deletable').first().find('img.zoomPossible')[0];
 	
@@ -79,6 +85,7 @@ function enlighten(id) {
 		node = node.parentNode;
 		yy += node.offsetTop; 
 	}
+	
 	// TODO select nano-content more precisely
 	$('.nano-content')[0].scrollTop = yy;
 	
