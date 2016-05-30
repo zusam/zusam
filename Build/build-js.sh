@@ -13,7 +13,7 @@ rnd=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
 if [[ "$1" == "compress" ]]
 then
-	opt="--compress drop_console --mangle"
+	opt="--screw-ie8 --compress drop_console --mangle"
 else
 	opt="--beautify"
 fi

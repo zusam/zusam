@@ -40,7 +40,6 @@ function videoThumbnail($url, $to) {
 	$out = escapeshellcmd($to);
 	$tmp = escapeshellcmd("tmp/".dechex(time()).dechex(rand(1,65536)));
 	exec("/usr/bin/ffmpeg -v -1 -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -y ".$tmp);
-	//createPreview(320, $tmp, $out, 9/16, 70);
 	createMini($tmp, $out);
 	exec("/usr/bin/rm ".$tmp);
 	$r = filesize($out);
