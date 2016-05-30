@@ -258,7 +258,7 @@ function takeAction($data) {
 			$u = account_load(array('_id'=>$data['uid']));
 			$f = forum_load(array('_id'=>$data['fid']));
 			echo('<body>');
-			echo('<div class="hidden" id="info" data-uid="'.$u['_id'].'" data-avatar="'.account_getAvatar($u).'" data-fid="'.$_SESSION['forum'].'" data-action="'.$data['action'].'"></div>');
+			echo(printInfos($u,$data['action']));
 			echo(page_mainmenu($u, "profile"));
 			echo('<div id="newavatar" class="newavatar"><div id="retoucheBox"></div></div>');
 			echo('<div id="main_page">');
@@ -295,7 +295,7 @@ function takeAction($data) {
 			}
 
 			echo('<body>');
-			echo('<div class="hidden" id="info" data-uid="'.$u['_id'].'" data-avatar="'.account_getAvatar($u).'" data-fid="'.$_SESSION['forum'].'" data-action="'.$data['action'].'"></div>');
+			echo(printInfos($u,$data['action']));
 			echo(page_mainmenu($u, "forum_settings"));
 			echo('<div id="main_page">');
 			echo('<nav>');
@@ -344,7 +344,7 @@ function takeAction($data) {
 			}
 
 			echo('<body>');
-			echo('<div class="hidden" id="info" data-uid="'.$uid.'" data-avatar="'.account_getAvatar($u).'" data-fid="'.$_SESSION['forum'].'" data-action="'.$data['action'].'"></div>');
+			echo(printInfos($u,$data['action']));
 			echo(page_mainmenu($u, "forum"));
 			echo('<div id="newavatar" class="newavatar"><div id="retoucheBox"></div></div>');
 			echo('<div id="slidepostviewer" class="slide slide-over slidefromright"></div>');
@@ -391,7 +391,7 @@ function takeAction($data) {
 			$_SESSION['forum'] = "";
 			
 			echo('<body>');
-			echo('<div class="hidden" id="info" data-uid="'.$uid.'" data-avatar="'.account_getAvatar($u).'" data-action="'.$data['action'].'"></div>');
+			echo(printInfos($u,$data['action']));
 			echo(page_mainmenu($u, ""));
 			echo('<div id="main_page">');
 			echo('<nav>');
@@ -403,5 +403,33 @@ function takeAction($data) {
 			exit();
 			break;
 	}
+
+}
+
+function printInfos(&$u, $action) {
+	$html = "";
+	$html .= '<div class="hidden" id="info"';
+
+	$html .= 'data-uid="'.$u['_id'].'"';
+	$html .= 'data-avatar="'.account_getAvatar($u).'"';
+	$html .= 'data-fid="'.$_SESSION['forum'].'"';
+	$html .= 'data-action="'.$action.'"';
+
+	$html .= '>';
+
+	$html .= '<span class="forums">';
+	$list = [];
+	foreach($u['forums'] as $k=>$v) {
+		$f = forum_load(array('_id'=>$k));
+		if($f != false && $f != null) {
+			array_push($list,array("value"=>$k,"name"=>$f['name']));
+		}
+	}
+	$html .= json_encode($list);
+	$html .= '</span>';
+
+	$html .= '</div>';
+
+	return $html;
 
 }

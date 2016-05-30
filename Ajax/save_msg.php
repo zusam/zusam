@@ -16,7 +16,7 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 	$f = forum_load(array('_id'=>$forum));
 	$u = account_load(array('_id' => mongo_id($uid)));
 
-	if($_SESSION['forum'] == $f['_id'] && $u['forums'][$forum] != null) {
+	if($u['forums'][$forum] != null) {
 
 		account_updateTimestamp($u);
 		account_usageTimestamp($u);
@@ -35,6 +35,12 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				$u['forums'][$forum]['timestamp'] = time();
 				account_save($u);
 				forum_addUnread($f, $p['_id'], $uid);
+				// add link to files
+				$files = post_listFiles($p);
+				foreach($files as $f) {
+					$f['links'] = $f['links'] + 1;
+					file_save($f);
+				}
 			} else {
 				// new com
 				$pp = post_load(array('_id'=>$parent));
@@ -50,6 +56,12 @@ if($_SESSION['connected'] && $_SESSION['uid'] == $uid) {
 				$u['forums'][$forum]['timestamp'] = time();
 				account_readPost($u, $id);
 				account_save($u);
+				// add link to files
+				$files = post_listFiles($p);
+				foreach($files as $f) {
+					$f['links'] = $f['links'] + 1;
+					file_save($f);
+				}
 			}
 		} else {
 			// editing (parent or child)

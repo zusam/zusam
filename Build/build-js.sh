@@ -3,6 +3,7 @@
 loc=`pwd`
 JS="JS"
 LIBJS="LibJS"
+rnd=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
 #CLEAN
 {
@@ -25,12 +26,15 @@ do
 	then
 		libname=$(basename "$p")
 		b=`echo ".min.js"`
-		if [[ -f "$p/uglify.order" ]]
-		then
-cat $(cat "$p/uglify.order" | sed -r "s/[a-zA-Z0-9_.]+/$JS\/${libname}\/&/g") | uglifyjs - $opt --wrap=$libname --export-all > $JS'/'$libname$b
-		else
-uglifyjs $JS/$libname/*.js $opt --wrap=$libname --export-all > $JS'/'$libname$b
-		fi
+		#if [[ -f "$p/uglify.order" ]]
+		#then
+		#	cat $(cat "$p/uglify.order" | sed -r "s/[a-zA-Z0-9_.]+/$JS\/${libname}\/&/g") > "tmp/$rnd"
+		#	echo $rnd
+		#	cat "tmp/$rnd" | uglifyjs - $opt --wrap=$libname --export-all > $JS'/'$libname$b
+		#else
+			echo "$JS/$libname"
+			uglifyjs $JS/$libname/*.js $opt --wrap=$libname --export-all > $JS'/'$libname$b
+		#fi
 	fi
 done
 
@@ -42,17 +46,20 @@ do
 	then
 		libname=$(basename "$p")
 		b=`echo ".min.js"`
-		if [[ -f "$p/uglify.order" ]]
-		then
-cat $(cat "$p/uglify.order" | sed -r "s/[a-zA-Z0-9_.]+/$LIBJS\/${libname}\/&/g") | uglifyjs - $opt --wrap=$libname --export-all > $LIBJS'/'$libname$b
-		else
-uglifyjs $LIBJS/$libname/*.js $opt --wrap=$libname --export-all > $LIBJS'/'$libname$b
-		fi
+		#if [[ -f "$p/uglify.order" ]]
+		#then
+#cat $(cat "$p/uglify.order" | sed -r "s/[a-zA-Z0-9_.]+/$LIBJS\/${libname}\/&/g") | uglifyjs - $opt --wrap=$libname --export-all > $LIBJS'/'$libname$b
+		#else
+			echo "$JS/$libname"
+			uglifyjs $LIBJS/$libname/*.js $opt --wrap=$libname --export-all > $LIBJS'/'$libname$b
+		#fi
 	fi
 done
 
 #ASSEMBLE
-cat $JS/*.js | uglifyjs - $opt > "JS.js"
+cat $JS/*.js > "/tmp/$rnd"
+echo "/tmp/$rnd"
+cat "/tmp/$rnd" | uglifyjs - $opt > "JS.js"
 cat $LIBJS/*.js | uglifyjs - $opt > "LIBJS.js"
 
 #CLEAN

@@ -9,7 +9,7 @@ function file_initialize($fileId, $type, $uid) {
 	$file['date'] = mongo_date();
 	$file['type'] = $type;
 	$file['owner'] = mongo_id($uid);
-	$file['links'] = 1;
+	$file['links'] = 0;
 	$file['fileId'] = $fileId;
 	$file['timestamp'] = time();
 

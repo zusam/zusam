@@ -131,7 +131,7 @@ $(window).ready(function() {
 					}
 				}
 			}
-		}, 1000);
+		}, 500);
 
 		// load posts
 		loadMorePosts();

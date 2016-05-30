@@ -156,6 +156,7 @@ function print_post($id, $uid) {
 						<div class="options-menu">
 							<a onclick="editPost(this)">Editer</a>
 							<a onclick="deletePost(this)">Supprimer</a>
+							<a onclick="rePost(this)">Partager</a>
 						</div>
 					</div>
 			';

@@ -1,3 +1,42 @@
+function rePost(e) {
+	var list = JSON.parse($('#info .forums').html());
+	for(i=0;i<list.length;i++) {
+		list[i].text = list[i].name;
+	}
+	var p = $(e).closest('.post');
+	var msg = "";
+	var t = p.find('.dynamicBox')[0];
+	for(i=0;i<t.childNodes.length;i++) {
+		node = t.childNodes[i];
+		if(node.tagName == 'SPAN') {
+			if(node.dataset.type == "imageDump") {
+				msg += " "+node.getElementsByTagName('SPAN')[0].innerHTML;
+			} else {
+				msg += " "+node.dataset.txt;
+			}
+		} else {
+			if(typeof(node.innerHTML) != "undefined") {
+				msg += " "+decode(node.innerHTML);
+			}
+		}
+	}
+	askList("Partager dans quel groupe ?",list,sendRePost,{"msg":msg});
+}
+
+function sendRePost(fid,args) {
+	var uid = $('#info').attr('data-uid');
+	console.log(fid,args,uid);
+	$.ajax({
+		url: "Ajax/save_msg.php",
+		type: "POST",
+		data: {"text":args.msg,"forum":fid,"uid":uid,"parent":0,"pid":0},
+		success: function(data) {
+			console.log(data);
+		},
+		error: function(){ console.log("fail repost"); }
+	});
+}
+
 function removeNotification(e) {
 	var nid = $(e).attr('data-nid');
 	var uid = $('#info').attr('data-uid');
@@ -361,31 +400,6 @@ function deletePost(t) {
 function editPost(t) {
 	var p = $(t).closest('.post');
 	var pid = p.attr('data-id');
-	//$.ajax({
-	//	url: "Ajax/get.php",
-	//	type: "get",
-	//	data: {"action":"getRaw","pid":pid},
-	//	success: function(data) {
-	//		box = '<div id="editBox" class="dynamicBox">';
-	//		box += '<div contenteditable="true" data-placeholder="Ecrivez quelque chose...">'+data.raw+'</div>';
-	//		box += '</div>';
-	//		box += '<div class="menu">';
-	//		box += '<div class="menu-cell">';
-	//		box += '<button id="cancelit" onclick="hidepostviewer()">Annuler</button>';
-	//		box += '</div>';
-	//		box += '<div class="menu-cell">';
-	//		box += '<button onclick="inputFile(\'#editBox\')" class="action"><i class="icon-attach"></i></button>';
-	//		box += '</div>';
-	//		box += '<div class="menu-cell">';
-	//		box += '<button id="sendit" onclick="sendIt(\'#editBox\')">Envoyer</button>';
-	//		box += '</div>';
-	//		box += '</div>';
-	//		p.html(box);
-	//		typebox.start("#editBox");
-	//		typebox.evaluate("#editBox");
-	//	}
-	//});
-
 	var box = $('<div id="editBox" class="dynamicBox"></div>');
 	box.append(p.find('.post-text .dynamicBox').html());
 	p.html(box);
