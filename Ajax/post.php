@@ -357,8 +357,9 @@ if($_SESSION['connected']) {
 			$uid = $POST['uid'];
 
 			if($_SESSION['uid'] == $uid) {
-				if($_FILES["image"]["size"] < 1024*1024*2 && $_FILES["image"]["type"] == "image/png") {
+				if($_FILES["image"]["size"] < 1024*1024*2 && ($_FILES["image"]["type"] == "image/png" || $_FILES['image']['type'] == 'image/jpeg')) {
 					$r = saveImage($_FILES["image"]["tmp_name"], pathTo2(array("url"=>$uid, "param"=>"avatar", "ext"=>"jpg")), 256, 256);
+					var_dump($r);
 				}
 			} else {
 				echo('no credentials');

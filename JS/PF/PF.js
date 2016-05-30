@@ -258,7 +258,7 @@ function showImage(imgdata, id, fileId) {
 			}
 			// TODO select nano-content more precisely
 			$('.nano-content')[0].scrollTop = yy;
-		}
+		};
 		img.src = imgdata;
 	} else {
 		content.attr('data-width',imgdata.naturalWidth);
@@ -268,7 +268,7 @@ function showImage(imgdata, id, fileId) {
 		$(id).append('<div contenteditable="true"></div>');
 		typebox.refreshContent(false, $(id)[0]);
 		//scroll to image
-		var node = img;
+		var node = imgdata;
 		var yy = node.offsetTop - 10;
 		console.log(node.parentNode);
 		while(node.parentNode !== null && !node.parentNode.className.match(/\.nano-content/) && node.parentNode != document.body) {
@@ -283,10 +283,11 @@ function showImage(imgdata, id, fileId) {
 function sendImage(imgdata, fileId) {
 	var f = new FormData();
 	var uid = $('#info').attr('data-uid');
+	var imageblob;
 	if(typeof(imgdata) == "string") {
-		var imageblob = dataURItoBlob(imgdata,'image/jpeg');
+		imageblob = dataURItoBlob(imgdata,'image/jpeg');
 	} else {
-		var imageblob = imgdata;
+		imageblob = imgdata;
 	}
 	console.log("sending file, size : "+imageblob.size);
 	f.append("image",imageblob);

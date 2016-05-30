@@ -63,7 +63,7 @@ function handleFile(file,id, fileId) {
 					i++;
 				}
 				if(count > 10 || $(id).find('.loading-balise').length > 0) {
-					if($(id).find('.loading-balise').length == 0) {
+					if($(id).find('.loading-balise').length === 0) {
 						$(id).append(genLoadingBalise());
 					}
 					PF.fastLoadImage(file, id, fileId);

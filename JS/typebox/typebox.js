@@ -49,7 +49,7 @@ function start(id) {
 	tt.on("keydown", function(e) {
 		// trap the return key being pressed
 		if(e.keyCode === 13) {
-			e.preventDefault()
+			e.preventDefault();
 			e.stopPropagation();
 			if(e.ctrlKey) {
 				// submit if ctrl+enter
@@ -83,7 +83,7 @@ function start(id) {
 		}
 			
 		// is the focus on the dynamicBox ?
-		if($(":focus").parent().is(id).length == 0) {
+		if($(":focus").parent().is(id).length === 0) {
 			return true;
 		}
 

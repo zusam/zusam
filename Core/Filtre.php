@@ -163,12 +163,6 @@ function filtre($url, $debug) {
 			$user = $embed_info->user;
 			$link = preg_replace("/large/","t500x500",$user->avatar_url);
 		}
-		if($debug) {
-			var_dump("https://api.soundcloud.com/resolve?url=".$track_url."&client_id=".$client_id);
-			var_dump($link);
-			var_dump($embed_info);
-			var_dump($url);
-		}
 		$ret = get_mini_from_link($url, $link);
 		return $ret;
 	}

@@ -258,7 +258,8 @@ function downEvent(e,d,t,a,id) {
 // when the mouse moves, record it to move the handles accordingly
 function moveEvent(e) {
 	//if(typeof(window.s) != 'undefined' && window.s !== null && typeof(window.s.type) != 'undefined') { //window.s !== null && window.s.type !== null) {
-	if(window.s != null && window.s.type != null) {
+	//if(window.s != null && window.s.type != null) {
+	if(typeof(window.s) != "undefined" && window.s !== null && window.s.type !== null) {
 
 		if(e.type == "mousemove") {
 			cx = e.clientX;
@@ -391,13 +392,13 @@ function sendCanvas(id) {
 		data = ctx.getImageData(l, t, w, h);
 		var nw = $(id).attr('data-w');
 		var nh = $(id).attr('data-h');
-		if(nw !== null && nh !== null) {
-			g = Math.min(Math.max(w, nw)/w, Math.max(h, nh)/h);
-		} else {
-			g = Math.min(Math.max(w, 2048)/w, Math.max(h, 2048)/h);
-		}
+		//if(nw !== null && nh !== null) {
+		//	g = Math.min(Math.max(w, nw)/w, Math.max(h, nh)/h);
+		//} else {
+		//	g = Math.min(Math.max(w, 2048)/w, Math.max(h, 2048)/h);
+		//}
 	} else {
-		g = 1;
+		//g = 1;
 		w = $(id).find('canvas').attr('data-w');
 		h = $(id).find('canvas').attr('data-h');
 		data = ctx.getImageData(0, 0, canvas.dataset.w, canvas.dataset.h);
@@ -410,16 +411,15 @@ function sendCanvas(id) {
 	c2.height = parseInt(h);
 	ctx2 = c2.getContext('2d');
 	ctx2.putImageData(data, 0, 0);
-	console.log(g);
-	if(g < 0.9) {
-		c3 = imageAlgs.downScaleCanvas(c2,g);
-		imgURL = c3.toDataURL("image/png");
-	} else {
-		imgURL = c2.toDataURL("image/png");
-	}
+
+	///
 	
+	//imgURL = imageAlgs.resize_image(c2, nw, nh);
+	imgURL = c2.toDataURL('image/jpeg');
+	
+	var imageblob = dataURItoBlob(imgURL,'image/jpeg');
 	f = new FormData();
-	f.append("image",dataURItoBlob(imgURL));
+	f.append("image",imageblob);
 	var uid = $('#info').attr('data-uid');
 	var fid = $('#info').attr('data-fid');
 	f.append("uid",uid);
@@ -433,7 +433,6 @@ function sendCanvas(id) {
 		data: f,
 		success: function(data){ 
 				console.log(data); 
-				console.log("sent!");
 				location.reload();
 			},
 		error: function(){ console.log(uid,fid,action); },

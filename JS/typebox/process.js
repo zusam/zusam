@@ -87,9 +87,8 @@ function applyFilter(args) {
 }
 
 function arrangeDynamicBox(t) {
-	console.log("-----arrange-----");
 	var map = typebox.mapDynamicBox(t);
-	var type = ""
+	var type = "";
 
 	// remove empty divs
 	$(t).find('div').each(function() {

@@ -169,6 +169,7 @@ var Filter = {
 			r1 = new RegExp(regex.soundcloud+'[\s]','gi');
 		}
 		substitution = function(str) {
+		console.log(str);
 			setTimeout( function() {
 				SC.oEmbed(str, { auto_play: false }, function(oEmbed) {
 					song_url = oEmbed.html.replace(/.*src="([^"]+)".*/,'$1');
