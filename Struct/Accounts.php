@@ -85,6 +85,10 @@ function account_bulkLoad($array) {
 
 function account_load($array) {
 	$ac = mongo_load("accounts", $array);
+
+	if($ac['unread'] === null) {
+		$ac['unread'] = [];
+	}
 	return $ac;
 }
 
