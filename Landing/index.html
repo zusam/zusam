@@ -4,134 +4,94 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 	<meta name="description" content="Un espace réellement privé pour vous et votre famille. Echangez photos, vidéos, liens en toute simplicité avec vos proches."/>
 	<title>Zusam</title>
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-	<link href="bootstrap.css" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-	<script src="bootstrap.js"></script>
-	<link href="bootstrap-theme.css" rel="stylesheet">
-	<style>
-		.navbar {
-			border: none !important;
-		}
-		.navbar-brand {
-			padding: 12px !important;
-		}
-		.jumbotron {
-			overflow: hidden;
-			background-image: url('oldtree.png');
-			background-size: cover;
-		}
-		.jumbotron .container {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-		}
-		.jumbotron p {
-			color: white;
-		}
-		.brand-image {
-			height: 100%;
-		}
-		.fixed-height {
-			vertical-align: bottom;
-			height: 100%;
-			position: relative;
-		}
-		.intro-message {
-			padding-top: 15vh;
-			padding-bottom: 15vh;
-		}
-		.logo {
-			max-width: 100%;
-			width: 430px;
-		}
-		.thumbnail {
-			border: none;
-		}
-		.separation {
-			background-color: #f7a71b;
-			height: 80px;
-			width: 100%;
-			margin: 0px;
-		}
-	</style>
+	<link href="_normalize.css" rel="stylesheet">
+	<link href="style.css" rel="stylesheet">
 </head>
 <body>
 
-<nav class="navbar navbar-default navbar-fixed-top">
-	<div class="container-fluid">
-	<!-- Brand and toggle get grouped for better mobile display -->
-	<div class="navbar-header">
-	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-	<span class="sr-only"></span>
-	<span class="icon-bar"></span>
-	<span class="icon-bar"></span>
-	<span class="icon-bar"></span>
-	</button>
-	<a class="navbar-brand" href="#"><img class="brand-image" alt="zusam" src="logo_white.png"/></a>
+<div class="landing">
+	
+	<!-- LANDING BACKGROUND -->
+	<div class="background"><img src="oldtree.png"/></div>
+
+
+	<!-- NAVIGATION -->
+	<nav>
+		<div class="left">
+			<img class="small_logo" src="zusam_white.png" alt="logo zusam"/>
+		</div>
+		<div class="right">
+			<!--
+			<li class="apercu"><a href="#">Un aperçu</a></li>
+			<li class="question"><a href="#">Des questions ?</a></li>
+			-->
+			<li><a class="connect" href="#">Se connecter</a></li>
+		</div>
+	</nav>
+
+	<!-- LANDING -->
+	<div class="landingText">
+		<h1 class="slogan">Un espace réellement privé à partager avec votre famille.</h1>
+		<button class="callToAction material-shadow">S'inscrire</button>
 	</div>
 
-	<!-- Collect the nav links, forms, and other content for toggling -->
-	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		<ul class="nav navbar-nav navbar-right">
-			<li><a href="#">Un aperçu</a></li>
-			<li><a href="#">Des questions ?</a></li>
-			<li><a href="#">Se connecter</a></li>
-		</ul>
-	</div><!-- /.navbar-collapse -->
-	</div><!-- /.container-fluid -->
-</nav>
-
-<div class="jumbotron fixed-height">
-	<div class="container">
-		<div class="row">
-		<div class="col-lg-12">
-			<div class="intro-message text-center">
-				<h1><img class="logo" src="zusam_white.png"/></h1>
-				<p>Un espace réellement privé à partager avec votre famille.</p>
-				<p><a class="btn btn-primary btn-lg" href="#" role="button">S'inscrire</a></p>
-			</div>
-		</div>
-		</div>
-	</div>
 </div>
 
 
-<div class="container">
-		<div class="row">
-			<div class="col-xs-12 col-md-4 text-center">
-				<div class="thumbnail">
-					<img class="img-circle" src="https://placehold.it/200">
-					<div class="caption">
-						<h3>Familial</h3>
-						<p class="text-justify">Zusam a été pensé pour s'adapter à tous les membres de la famille. Une interface simple et chaleureuse alliée à des fonctionnalités vitales pour l'organisation de la vie familiale. Partager des photos ou organiser un anniversaire n'a jamais été aussi facile.</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-12 col-md-4 text-center">
-				<div class="thumbnail">
-					<img class="img-circle" src="https://placehold.it/200">
-					<div class="caption">
-						<h3>Confidentiel</h3>
-						<p class="text-justify">Zusam vous permet de créer des groupes privés. Séparé de votre vie professionnelle, la communication de votre famille peut s'épanouir dans un espace de confiance.</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-12 col-md-4 text-center">
-				<div class="thumbnail">
-					<img class="img-circle" src="https://placehold.it/200">
-					<div class="caption">
-						<h3>Moderne</h3>
-						<p class="text-justify">Zusam est riche en fonctionnalités. Entre l'envoi de vidéos, la création d'albums photos, le partage d'articles venant du web ou la création de calendriers de groupe, tous les outils pour une bonne organisation de la vie familiale sont là.</p>
-					</div>
-				</div>
-			</div>
+<article class="separationText">
+	<h2>
+		Confiance et sérénité.	
+	</h2>
+	<p>
+		Zusam n'est pas une plateforme d'échange comme les autres: c'est une façon saine de partager avec ceux qui nous sont chers.
+	</p>
+</article>
+
+<!-- DESCRIPTION -->
+<article class="row">
+	<section class="argument">
+		<div class="inner-argument">
+			<h3>Familial</h3>
+			<p>
+			Zusam a été pensé pour s'adapter à tous les membres de la famille. Une interface simple et chaleureuse alliée à des fonctionnalités vitales pour l'organisation de la vie familiale. Partager des photos ou organiser un anniversaire n'a jamais été aussi facile.
+			</p>
 		</div>
-</div>
+	</section>
+	<div class="illustration">
+		<!--<img src="http://i4.mirror.co.uk/incoming/article6247109.ece/ALTERNATES/s615/Children-with-their-Grandpa-using-a-tablet.jpg"/>-->
+		<img src="http://www.swnsdigital.com/wp-content/uploads/2016/03/Young-family_84649149_sml.jpg"/>
+	</div>
+</article>
+<article class="row">
+	<div class="illustration">
+		<img src=""/>
+	</div>
+	<section class="argument">
+		<div class="inner-argument">
+			<h3>Confidentiel</h3>
+			<p>
+			Zusam vous permet de créer des groupes privés. Séparée de votre vie professionnelle, la communication de votre famille peut s'épanouir dans un espace de confiance.
+			</p>
+		</div>
+	</section>
+</article>
+<article class="row">
+	<section class="argument">
+		<div class="inner-argument">
+			<h3>Moderne</h3>
+			<p>
+			Zusam est riche en fonctionnalités. Entre l'envoi de vidéos, la création d'albums photos, le partage d'articles venant du web ou la création de calendriers de groupe, tous les outils pour une bonne organisation de la vie familiale sont là.
+			</p>
+		</div>
+	</section>
+	<div class="illustration">
+		<img src="http://www.exquisitememorybox.com/images/lightbox/zoom-memorial1d.jpg"/>
+	</div>
+</article>
 
 <div class="separation"></div>
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
