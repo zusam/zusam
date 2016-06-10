@@ -124,11 +124,11 @@ function forum_removeUser_andSave(&$forum, &$user) {
 	//deleteKey($forum['_id'], $user['forums']);
 	$fid = (String) $forum['_id'];
 	foreach($user['forums'] as $k=>$v) {
-		if($v == $fid) {
+		if($k == $fid) {
 			unset($user['forums'][$k]);
 			continue;
 		}
-		$f = forum_load(array("_id"=>$v));
+		$f = forum_load(array("_id"=>$k));
 		if($f == null || $f == false) {
 			unset($user['forums'][$k]);
 		}

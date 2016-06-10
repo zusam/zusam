@@ -294,9 +294,11 @@ if($_SESSION['connected']) {
 					$file = file_initialize($fileId, "webm", $u['_id']);
 					$ext = ".".pathinfo($_FILES['video']['name'], PATHINFO_EXTENSION);
 				$r = move_uploaded_file($_FILES['video']['tmp_name'], pathTo2(array('url'=>$file['fileId'], 'ext'=>$ext, 'param'=>'uploaded')));
+				var_dump($r);
 					if($r) {
 						recordUpload(array("uid"=>$uid, "type"=>"video"));
 						file_save($file);
+						var_dump($file);
 					} else {
 						echo('fail move file');
 					}

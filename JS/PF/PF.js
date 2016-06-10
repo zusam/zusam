@@ -20,14 +20,14 @@ function loadVideo(file,id, fileId) {
 }
 
 function showPlaceHolderVideo(id, fileId) {
-	var content = $('<span data-filetype="webm" data-type="file" id="'+fileId+'" data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
+	var content = $('<span data-filetype="webm" data-type="file" id="'+fileId+'" data-txt="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
 	content.append('<div class="placeHolderVideo"><i class="icon-video"></i></div>');
 	$(id).append(content);
 	$(id).append('<div contenteditable="true"></div>');
 }
 
 function showVideo(vid, id, fileId) {
-	var content = $('<span data-filetype="webm" data-type="file" id="'+fileId+'" data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
+	var content = $('<span data-filetype="webm" data-type="file" id="'+fileId+'" data-txt="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
 	content.append(vid);
 	$(id).append(content);
 	$(id).append('<div contenteditable="true"></div>');
@@ -83,14 +83,14 @@ function loadGif(file,id, fileId) {
 		PF.sendGif(file, fileId);
 	};
 	img.src = URL.createObjectURL(file);
-	var loading = $('<span data-filetype="webm" data-type="file" id="'+fileId+'" data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"><div class="spinner"><div class="bg-orange bounce1"></div><div class="bg-orange bounce2"></div><div class="bg-orange bounce3"></div></div></div></span>');
+	var loading = $('<span data-filetype="webm" data-type="file" id="'+fileId+'" data-txt="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"><div class="spinner"><div class="bg-orange bounce1"></div><div class="bg-orange bounce2"></div><div class="bg-orange bounce3"></div></div></div></span>');
 	$(id).append(loading);
 }
 
 function showGif(img, id, fileId) {
 	var content = $('#'+fileId);
 	if(content.length === 0) {
-		content = $('<span data-filetype="webm" data-type="file" id="'+fileId+'" data-src="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
+		content = $('<span data-filetype="webm" data-type="file" id="'+fileId+'" data-txt="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
 	}
 	content.html(img);
 	$(id).append(content);	

@@ -42,7 +42,8 @@ function landing($warning) {
 		</script>
 	');
 	echo('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>');
-	echo('<script src="JS/landing.min.js"></script>');
+	echo('<script src="JS.js"></script>');
+	echo('<script src="LIBJS.js"></script>');
 	echo('
 		<script>landing.start();</script>
 		</body>

@@ -5,11 +5,11 @@ require_once('Include.php');
 
 function compileText($text, $debug) {
 
-	if(!isset($debug)) {
-		$debug = false;
-	} else {
-		$debug = true;
-	}
+	//if(!isset($debug) || !$debug) {
+	//	$debug = false;
+	//} else {
+	//	$debug = true;
+	//}
 
 	$r = $GLOBALS['regex'];
 
@@ -18,6 +18,9 @@ function compileText($text, $debug) {
 	$str = preg_replace("/\n/","<br>",$str);
 
 	$map = genTextMap($str, $debug);
+	if($debug) {
+		//var_dump($map);
+	}
 	$html = "";
 	$text = false;
 	$number_albumImage = 0;
@@ -42,6 +45,7 @@ function compileText($text, $debug) {
 			case "file_unknown":
 				// nothing is done in order to quietly discard these
 				// TODO properly do something
+				$html .= $pre;
 			break;
 			case "file_jpg":
 				if($m[2] > 3) {
@@ -145,6 +149,9 @@ function genTextMap($str, $debug) {
 				if($kr == "file") {
 					$fileId = preg_replace('/\{\:([a-zA-Z0-9]+)\:\}/','$1',$elmt);
 					$file = file_load(array('fileId' => $fileId));	
+					if($debug) {
+						//var_dump($file);
+					}
 					if($file) {
 						$type = "file_".$file['type'];
 					} else {
@@ -159,7 +166,7 @@ function genTextMap($str, $debug) {
 				$type = "text";
 			}
 		}
-		if($type == $suiteType) {
+		if($type == $suiteType || $type == "file_unknown") {
 			array_push($suite, $k);	
 			$map[$k] = array($elmt, $type);
 		} else {

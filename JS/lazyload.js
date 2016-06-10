@@ -1,12 +1,12 @@
 function lazyload(e) {
 	$(e).find('img.lazyload:not([src])').each(function() {
 		var y = e.scrollTop + window.screen.height;
-		var node = this;
-		var yy = node.offsetTop - 10;
-		while(!node.parentNode.className.match(/\.nano-content/) && node.parentNode != document.body) {
-			node = node.parentNode;
-			yy += node.offsetTop; 
-		}
+		//var node = this;
+		var yy = this.offsetTop - 10;
+		//while(!node.parentNode.classList.contains('nano-content') && node.parentNode != document.body) {
+		//	node = node.parentNode;
+		//	yy += node.offsetTop; 
+		//}
 		if(yy < y) {
 			unveil(this);
 		}
