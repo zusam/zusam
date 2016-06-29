@@ -147,6 +147,11 @@ function view() {
 		console.log(this);
 		filter_out_all(this, true);
 		console.log('----view----');
+		$(this).find('*[contenteditable=true]').each(function() {
+			if(this.innerHTML.match(/^\s*$/)) {
+				$(this).remove();
+			}
+		});
 		$(this).find('*[contenteditable=true]').removeAttr('contenteditable');
 		lazyload($(this).closest('.nano-content')[0]);
 		limitHeight($(this).closest('.post-text'));

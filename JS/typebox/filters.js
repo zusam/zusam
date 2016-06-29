@@ -1,6 +1,6 @@
 var Filter = {
 
-	searchGfycat : function(inner, ending) {
+	searchGfycat : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.gfycat ,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.gfycat+'[\s]','gi');
@@ -18,11 +18,11 @@ var Filter = {
 			var a = '</span>';
 			return b+o+a;
 		};
-		output = applyFilter({"callerName":"searchGfycat", "inner":inner, "regex":r1, "substitution":substitution});
+		output = applyFilter({"viewer":viewer, "callerName":"searchGfycat", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
 
-	searchFacebook_video : function(inner, ending) {
+	searchFacebook_video : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.facebook_video ,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.facebook_video+'[\s]','gi');
@@ -33,11 +33,11 @@ var Filter = {
 			var a = '</span>';
 			return b+o+a;
 		};
-		output = applyFilter({"callerName":"searchFacebook_video", "inner":inner, "regex":r1, "substitution":substitution});
+		output = applyFilter({"viewer":viewer, "callerName":"searchFacebook_video", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
 	
-	searchImgur : function(inner, ending) {
+	searchImgur : function(inner, ending, viewer) {
 		var baliseId = createId();
 		var r1 = new RegExp(regex.imgur,'gi');
 		if(!ending) {
@@ -71,11 +71,11 @@ var Filter = {
 				balise.append(genDelBtn());
 			}
 		};
-		output = applyFilter({"callerName":"searchImgur", "inner":inner, "regex":r1, "ajax_url":ajax_url, "ajax_var":ajax_var, "substitution":substitution, "callback":callback, "fail":fail});
+		output = applyFilter({"viewer":viewer, "callerName":"searchImgur", "inner":inner, "regex":r1, "ajax_url":ajax_url, "ajax_var":ajax_var, "substitution":substitution, "callback":callback, "fail":fail});
 		return output;
 	},
 
-	searchInstagram : function(inner, ending) {
+	searchInstagram : function(inner, ending, viewer) {
 		var baliseId = createId();
 		var r1 = new RegExp(regex.instagram,'gi');
 		if(!ending) {
@@ -109,11 +109,11 @@ var Filter = {
 				balise.append(genDelBtn());
 			}
 		};
-		output = applyFilter({"callerName":"searchInstagram", "inner":inner, "regex":r1, "ajax_url":ajax_url, "ajax_var":ajax_var, "substitution":substitution, "callback":callback, "fail":fail});
+		output = applyFilter({"viewer":viewer, "callerName":"searchInstagram", "inner":inner, "regex":r1, "ajax_url":ajax_url, "ajax_var":ajax_var, "substitution":substitution, "callback":callback, "fail":fail});
 		return output;
 	},
 
-	//searchOnedrive : function(inner, ending) {
+	//searchOnedrive : function(inner, ending, viewer) {
 	//	var r1 = new RegExp(regex.onedrive,'gi');
 	//	if(!ending) {
 	//		r1 = new RegExp(regex.onedrive+'[\s]','gi');
@@ -134,11 +134,11 @@ var Filter = {
 	//			return fail_request(str);
 	//		}
 	//	}
-	//	output = applyFilter({"callerName":"searchOnedrive", "inner":inner, "regex":r1, "substitution":substitution});
+	//	output = applyFilter({"viewer":viewer, "callerName":"searchOnedrive", "inner":inner, "regex":r1, "substitution":substitution});
 	//	return output;
 	//},
 
-	searchGoogleDrive : function(inner, ending) {
+	searchGoogleDrive : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.googleDrive,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.googleDrive+'[\s]','gi');
@@ -159,11 +159,11 @@ var Filter = {
 				return fail_request(str);
 			}
 		};
-		output = applyFilter({"callerName":"searchGoogleDrive", "inner":inner, "regex":r1, "substitution":substitution});
+		output = applyFilter({"viewer":viewer, "callerName":"searchGoogleDrive", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
 	
-	searchSoundcloud : function(inner, ending) {
+	searchSoundcloud : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.soundcloud,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.soundcloud+'[\s]','gi');
@@ -188,11 +188,11 @@ var Filter = {
 			var a = '</span>';
 			return b+o+a;
 		};
-		output = applyFilter({"callerName":"searchSoundcloud", "inner":inner, "regex":r1, "substitution":substitution});
+		output = applyFilter({"viewer":viewer, "callerName":"searchSoundcloud", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
 
-	searchVine : function(inner, ending) {
+	searchVine : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.vine ,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.vine+'[\s]','gi');
@@ -203,12 +203,12 @@ var Filter = {
 			var a = '</span>';
 			return b+o+a;
 		};
-		output = applyFilter({"callerName":"searchVine", "inner":inner, "regex":r1, "substitution":substitution});
+		output = applyFilter({"viewer":viewer, "callerName":"searchVine", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 		
 	},
 
-	searchDailymotion : function(inner, ending) {
+	searchDailymotion : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.dailymotion,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.dailymotion+'[\s]','gi');
@@ -223,12 +223,12 @@ var Filter = {
 			o += '</div></div></span>';
 			return o;
 		};
-		output = applyFilter({"callerName":"searchDailymotion", "inner":inner, "regex":r1, "substitution":substitution});
+		output = applyFilter({"viewer":viewer, "callerName":"searchDailymotion", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 		
 	},
 
-	searchVimeo : function(inner, ending) {
+	searchVimeo : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.vimeo,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.vimeo+'[\s]','gi');
@@ -244,12 +244,12 @@ var Filter = {
 			o += '</div></div></span>';
 			return o;
 		};
-		output = applyFilter({"callerName":"searchVimeo", "inner":inner, "regex":r1, "substitution":substitution});
+		output = applyFilter({"viewer":viewer, "callerName":"searchVimeo", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 		
 	},
 
-	searchYoutube2 : function(inner, ending) {
+	searchYoutube2 : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.youtube2,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.youtube2+'[\s]','gi');
@@ -265,12 +265,12 @@ var Filter = {
 			o += '</div></div></span>';
 			return o;
 		};
-		output = applyFilter({"callerName":"searchYoutube2", "inner":inner, "regex":r1, "substitution":substitution});
+		output = applyFilter({"viewer":viewer, "callerName":"searchYoutube2", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 		
 	},
 
-	searchYoutube : function(inner, ending) {
+	searchYoutube : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.youtube,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.youtube+'[\s]','gi');
@@ -286,12 +286,12 @@ var Filter = {
 			o += '</div></div></span>';
 			return o;
 		};
-		output = applyFilter({"callerName":"searchYoutube", "inner":inner, "regex":r1, "substitution":substitution});
+		output = applyFilter({"viewer":viewer, "callerName":"searchYoutube", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 		
 	},
 
-	searchVideo : function(inner, ending) {
+	searchVideo : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.video,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.video+'[\s]','gi');
@@ -308,11 +308,11 @@ var Filter = {
 				o += '</div></span>';
 				return o;
 		};
-		output = applyFilter({"callerName":"searchVideo", "inner":inner, "regex":r1, "substitution":substitution});
+		output = applyFilter({"viewer":viewer, "callerName":"searchVideo", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
 
-	searchImage : function(inner, ending) {
+	searchImage : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.image,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.image+'[\s]','gi');
@@ -320,11 +320,11 @@ var Filter = {
 		substitution = function(str) {
 				return '<span class="deletable deletable-block" data-type="image" data-txt="'+str+'" data-src="'+str+'" contenteditable="false" id="'+str2md5(str)+'"><img class="inlineImage zoomPossible" onclick="lightbox.enlighten(this)" onerror="error_im(this)" src="'+str+'"/></span>';
 		};
-		output = applyFilter({"callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});
+		output = applyFilter({"viewer":viewer, "callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
 
-	searchGif : function(inner, ending) {
+	searchGif : function(inner, ending, viewer) {
 		var r1 = new RegExp(regex.gif,'gi');
 		if(!ending) {
 			r1 = new RegExp(regex.gif+'[\s]','gi');
@@ -337,7 +337,7 @@ var Filter = {
 				o += '</div></span>';
 				return o;
 		};
-		output = applyFilter({"callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});
+		output = applyFilter({"viewer":viewer, "callerName":"searchImage", "inner":inner, "regex":r1, "substitution":substitution});
 		return output;
 	},
 
@@ -376,7 +376,7 @@ var Filter = {
 					balise.append(genDelBtn());
 				}
 		};
-		output = applyFilter({"callerName":"searchFile", "inner":inner, "regex":r1, "substitution":substitution, "ajax_url":ajax_url, "ajax_var":ajax_var, "callback":callback, "fail":fail});
+		output = applyFilter({"viewer":viewer, "callerName":"searchFile", "inner":inner, "regex":r1, "substitution":substitution, "ajax_url":ajax_url, "ajax_var":ajax_var, "callback":callback, "fail":fail});
 		return output;
 	},
 
@@ -414,7 +414,7 @@ var Filter = {
 				balise.append(genDelBtn());
 			}
 		};
-		output = applyFilter({"callerName":"searchLink", "inner":inner, "regex":r1, "substitution":substitution, "ajax_var":ajax_var, "ajax_url":ajax_url, "callback":callback, "fail":fail});
+		output = applyFilter({"viewer":viewer, "callerName":"searchLink", "inner":inner, "regex":r1, "substitution":substitution, "ajax_var":ajax_var, "ajax_url":ajax_url, "callback":callback, "fail":fail});
 		return output;
 	}
 };

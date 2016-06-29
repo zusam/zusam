@@ -21,7 +21,7 @@ function loadVideo(file,id, fileId) {
 
 function showPlaceHolderVideo(id, fileId) {
 	var content = $('<span data-filetype="webm" data-type="file" id="'+fileId+'" data-txt="{:'+fileId+':}" class="deletable deletable-block" contenteditable="false"></span>');
-	content.append('<div class="placeHolderVideo"><i class="icon-video"></i></div>');
+	content.append('<div class="file-placeholder"><span>Vidéo en cours d\'envoi</span></div>');
 	$(id).append(content);
 	$(id).append('<div contenteditable="true"></div>');
 }
@@ -68,6 +68,7 @@ function sendVideo(vidBlob, fileId) {
 			xhr.upload.onload = function(){ 
 				console.log('done !');
 				content.find('.progressBar').remove();
+				content.find('.file-placeholder span').html('Vidéo envoyée');
 			};
 			return xhr;
 		}

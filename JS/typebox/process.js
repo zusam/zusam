@@ -41,6 +41,7 @@ function applyFilter(args) {
 	var fail = args.fail;
 	var ajax_url = args.ajax_url;
 	var ajax_var = args.ajax_var;
+	var viewer = args.viewer;
 	var ajax_method = args.ajax_method || "post";
 	var output = [];
 	var xhrs = [];
