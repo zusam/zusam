@@ -73,7 +73,7 @@ function enlighten(id) {
 		lightbox_src = e.dataset.postimage;
 	}
 
-	var name = lightbox_src.replace(/.*\/([^\/]+)$/,'$1');
+	var name = lightbox_src.replace(/.*\/([^\/]+)$/,'$1').replace(/(\.jpg).*/,'$1');
 	
 	lightbox.darken();
 

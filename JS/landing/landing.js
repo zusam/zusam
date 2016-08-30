@@ -13,6 +13,7 @@ function start(redirect_url) {
 			if(mail.match(/[\.\-\w]+\@[\.\-\w]+\.[\.\-\w]+/)) {
 				if($(".password-confirmation").hasClass("hidden") || password == password_conf || password_conf === "") {
 					console.log("submitted");
+					console.log(action, mail, password);
 					$.ajax({
 						url: "Ajax/connect.php",
 						type: "POST",

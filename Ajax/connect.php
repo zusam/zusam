@@ -16,10 +16,12 @@ if($action == "logout" || $mail == "" || $password == "") {
 
 if($password_conf == "") {
 	$action = "login";
+	echo("login");
 }
 
 if($action == "signup") {
 	if(mailAlreadyExists($mail)) {
+		echo("mail already exists");
 		verifyACL($mail, $password);
 	} else {
 		//create account !
@@ -31,6 +33,7 @@ if($action == "signup") {
 			$_SESSION['password'] = $password;
 			$_SESSION['uid'] = (String) $ac['_id'];
 			account_save($ac);
+			echo("signup");
 		} else {
 			echo("fail");
 		}
