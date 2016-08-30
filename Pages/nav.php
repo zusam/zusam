@@ -11,10 +11,10 @@ function page_nav(&$u, &$forum, $page) {
 	$html .= '<div class="my_avatar" onclick="toggleslidefromleft(\'#mainmenu\')">'.account_getAvatarHTML($u).'</div>';
 	$html .= '<a href="'.$_SERVER['REQUEST_URI'].'"><img class="logo" src="Assets/logo.png"/></a>';
 	$html .= '</div>';
-	if($_SESSION['forum'] != "") {
+	if($_SESSION['forum'] != "" && $forum != null && $forum != "") {
 		$html .= '<div class="forum-name"><span>'.$forum['name'].'</span></div>';
 		$html .= '<div class="right-module-nav">';
-		if($page != "profile" && $page = "forum_settings") {
+		if($page != "profile" && $page == "forum_settings") {
 			$html .= '<button class="action" onclick="push_shownewpost()"><i class="icon-pencil"></i></button>';
 		}
 		$html .= '</div>';
