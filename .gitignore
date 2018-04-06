@@ -10,3 +10,7 @@
 ###> symfony/web-server-bundle ###
 /api/.web-server-pid
 ###< symfony/web-server-bundle ###
+
+# EXEC
+/.composer
+/.bash_history
