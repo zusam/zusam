@@ -1,0 +1,42 @@
+#!/bin/sh
+
+cdroot() {
+    if ! [ -d ".git" ] && [ "$(pwd)" != "/" ]; then
+        cd ..
+        cdroot
+    fi
+}
+
+start_docker_service() {
+    if [ -n "$(which systemctl 2>/dev/null)" ]; then
+        sudo systemctl start docker
+        return
+    fi
+    if [ -n "$(which service 2>/dev/null)" ]; then
+        sudo service docker start
+        return
+    fi
+}
+
+isDockerRunning() {
+    if [ -n "$(sudo docker info 2>&1 1>/dev/null)" ] && [ -z "$(sudo docker info)" ]
+    then
+        echo "the docker daemon is not running"
+        exit 1
+    fi
+}
+
+set -e
+
+t0=$(date +%s)
+
+start_docker_service
+isDockerRunning
+
+cdroot
+pathToProject=$(pwd)
+cd "docker/exec" || exit
+
+if sudo docker build -t "exec" .; then
+    sudo docker run --init --rm -it -e UID="$(id -u)" -e GID="$(id -g)" -e USER="$(id -un)" -e GROUP="$(id -gn)" -v "${pathToProject}":/data --name "exec" "exec" "$@"
+fi
