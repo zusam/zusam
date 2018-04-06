@@ -14,3 +14,12 @@
 # EXEC
 /.composer
 /.bash_history
+/.ash_history
+/.cache
+/.yarnrc
+
+# APP
+/app/node_modules/
+/app/yarn.lock
+/app/dist/
+/app/.cache

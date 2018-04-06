@@ -1,0 +1,34 @@
+{
+	"name": "zusam-app",
+	"version": "0.1.0",
+	"scripts": {
+		"build": "babel src -d dist"
+	},
+	"babel": {
+		"presets": [
+			"env"
+		],
+		"plugins": [
+			[
+				"transform-react-jsx",
+				{
+					"pragma": "h"
+				}
+			]
+		]
+	},
+	"browserslist": [
+		"Chrome >= 60",
+		"ChromeAndroid >= 60",
+		"Edge >= 12",
+		"Firefox >= 50",
+		"FirefoxAndroid >= 50"
+	],
+	"dependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-plugin-transform-react-jsx": "^6.24.1",
+		"babel-preset-env": "^1.6.1",
+		"hyperapp": "^1.2.5",
+		"parcel-bundler": "^1.7.0"
+	}
+}
