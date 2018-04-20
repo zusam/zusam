@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -19,13 +20,23 @@ class File
      */
     private $id;
 
-    /** @ORM\Column(type="datetime") */
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
+     * @Assert\NotNull()
+     */
     private $createdAt;
 
-    /** @ORM\Column(type="string") */
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     */
     private $type;
 
-    /** @ORM\Column(type="string") */
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     */
     private $name;
 
     /**
@@ -51,6 +62,6 @@ class File
         $this->groups = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->files = new ArrayCollection();
-        $this->createdAt = new \DateTime();
+        $this->createdAt = time();
     }
 }

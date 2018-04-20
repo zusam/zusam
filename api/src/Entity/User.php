@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
@@ -18,21 +19,29 @@ class User
      */
     private $id;
 
-    /** @ORM\Column(type="datetime") */
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
+     * @Assert\NotNull()
+     */
     private $createdAt;
 
 	/**
 	 * @ORM\Column(type="string", unique=true)
+     * @Assert\NotBlank()
 	 */
 	private $login;
 
 	/**
 	 * @ORM\Column(type="string")
+     * @Assert\NotBlank()
 	 */
 	private $password;
 
 	/**
-	 * @ORM\Column(type="datetime", nullable=true)
+	 * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Type("integer")
+     * @Assert\NotNull()
 	 */
 	private $lastConnection;
 
@@ -57,6 +66,7 @@ class User
 		$this->groups = new ArrayCollection();
 		$this->messages = new ArrayCollection();
 		$this->files = new ArrayCollection();
-        $this->createdAt = new \DateTime();
+        $this->createdAt = time();
+        $this->lastConnection = time();
 	}
 }

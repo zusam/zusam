@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -19,8 +20,18 @@ class Message
      */
     private $id;
 
-    /** @ORM\Column(type="datetime") */
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
+     * @Assert\NotNull()
+     */
     private $createdAt;
+
+    /**
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     */
+    private $data;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
@@ -52,6 +63,6 @@ class Message
     {
         $this->children = new ArrayCollection();
         $this->files = new ArrayCollection();
-        $this->createdAt = new \DateTime();
+        $this->createdAt = time();
     }
 }
