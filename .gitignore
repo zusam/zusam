@@ -17,6 +17,7 @@
 /.ash_history
 /.cache
 /.yarnrc
+/.sqlite_history
 
 # APP
 /app/node_modules/
