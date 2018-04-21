@@ -3,8 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use Doctrine\ORM\Mapping as ORM;
+use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,8 +16,8 @@ class Message
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue()
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank()
      */
     private $id;
 
@@ -61,6 +62,7 @@ class Message
 
     public function __construct()
     {
+        $this->id = Uuid::uuidv4();
         $this->children = new ArrayCollection();
         $this->files = new ArrayCollection();
         $this->createdAt = time();
