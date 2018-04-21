@@ -37,7 +37,7 @@ class Message
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
      */
-    private $user;
+    private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="messages")

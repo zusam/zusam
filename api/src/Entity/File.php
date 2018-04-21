@@ -42,9 +42,9 @@ class File
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
-    private $user;
+    private $owner;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="messages")
