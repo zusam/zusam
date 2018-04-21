@@ -22,14 +22,27 @@ class Uuid
      * 
      * @return string
      */
-    public static function uuidv4()
+    public static function uuidv4(string $seed = null): string
     {
+        if (null == $seed) {
+            return implode('-', [
+                bin2hex(random_bytes(4)),
+                bin2hex(random_bytes(2)),
+                bin2hex(chr((ord(random_bytes(1)) & 0x0F) | 0x40)) . bin2hex(random_bytes(1)),
+                bin2hex(chr((ord(random_bytes(1)) & 0x3F) | 0x80)) . bin2hex(random_bytes(1)),
+                bin2hex(random_bytes(6))
+            ]);
+        }
+
+        // if we have a seed, use it to generate the uuidv4
+        $str = hash("sha512", $seed);
+        $num = intval(preg_replace("/[^\d]/", "", substr($str, 0, 10)));
         return implode('-', [
-            bin2hex(random_bytes(4)),
-            bin2hex(random_bytes(2)),
-            bin2hex(chr((ord(random_bytes(1)) & 0x0F) | 0x40)) . bin2hex(random_bytes(1)),
-            bin2hex(chr((ord(random_bytes(1)) & 0x3F) | 0x80)) . bin2hex(random_bytes(1)),
-            bin2hex(random_bytes(6))
+            substr($str, 0, 8),
+            substr($str, 8, 4),
+            4 . substr($str, 12, 3),
+            [8, 9, "A", "B"][$num % 4] . substr($str, 15, 3),
+            substr($str, 18, 12),
         ]);
     }
 }
