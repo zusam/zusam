@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Service\Uuid;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -75,4 +77,105 @@ class User
         $this->createdAt = time();
         $this->lastConnection = time();
 	}
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getCreatedAt(): int
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(int $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getLogin(): string
+    {
+        return $this->login;
+    }
+
+    public function setLogin(string $login): self
+    {
+        $this->login = $login;
+        return $this;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    public function getLastConnection(): int
+    {
+        return $this->lastConnection;
+    }
+
+    public function setLastConnection(int $lastConnection): self
+    {
+        $this->lastConnection = $lastConnection;
+        return $this;
+    }
+
+    public function addGroup(Group $group): self
+    {
+        $this->groups[] = $group;
+        return $this;
+    }
+
+    public function removeGroup(Group $group): self
+    {
+        $this->groups->removeElement($group);
+        return $this;
+    }
+
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        $this->messages[] = $message;
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        $this->messages->removeElement($message);
+        return $this;
+    }
+
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addFile(File $file): self
+    {
+        $this->files[] = $file;
+        return $this;
+    }
+
+    public function removeFile(File $file): self
+    {
+        $this->files->removeElement($file);
+        return $this;
+    }
+
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
 }
