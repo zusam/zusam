@@ -402,7 +402,7 @@ class ImportOldData extends ContainerAwareCommand
             if (empty($file["group"])) {
                 continue;
             }
-            $query = "INSERT INTO `file` (id, owner_id, group_id, message_id, created_at, type, name) VALUES ("
+            $query = "INSERT INTO `file` (id, created_at, type, name) VALUES ("
                 ."'".$file["id"]."'"
                 .", "."'".$file["owner"]."'"
                 .", "."'".$file["group"]."'"
@@ -417,6 +417,38 @@ class ImportOldData extends ContainerAwareCommand
                 echo "\n";
                 die("fail to insert file\n");
             };
+        }
+
+        echo "Linking users & files...\n";
+        foreach($users as $user) {
+            foreach($user["files"] as $fid) {
+                $query = "INSERT INTO `users_files` (user_id, file_id) VALUES ("
+                    ."'".$user["id"]."'"
+                    .", "."'".$fid."'"
+                    .");";
+                $this->pdo->exec($query) or function () use ($fid) {
+                    echo "\n";
+                    var_dump($fid);
+                    echo "\n";
+                    die("fail to insert users_files\n");
+                };
+            }
+        }
+
+        echo "Linking messages & files...\n";
+        foreach($messages as $message) {
+            foreach($message["files"] as $fid) {
+                $query = "INSERT INTO `messages_files` (message_id, file_id) VALUES ("
+                    ."'".$message["id"]."'"
+                    .", "."'".$fid."'"
+                    .");";
+                $this->pdo->exec($query) or function () use ($fid) {
+                    echo "\n";
+                    var_dump($fid);
+                    echo "\n";
+                    die("fail to insert messages_files\n");
+                };
+            }
         }
 
         echo "Done.\n";
