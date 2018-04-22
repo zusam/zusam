@@ -40,12 +40,6 @@ class File
      */
     private $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="files")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
-     */
-    private $owner;
-
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
