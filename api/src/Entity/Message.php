@@ -56,7 +56,6 @@ class Message
     private $children;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\File", mappedBy="group")
      * @ORM\ManyToMany(targetEntity="App\Entity\File")
      * @ORM\JoinTable(name="messages_files",
      *      joinColumns={@ORM\JoinColumn(name="message_id", referencedColumnName="id")},

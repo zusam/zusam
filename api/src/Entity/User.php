@@ -53,12 +53,12 @@ class User
 	private $groups;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="user")
+	 * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="author")
 	 */
 	private $messages;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\File", mappedBy="user")
+	 * @ORM\OneToMany(targetEntity="App\Entity\File", mappedBy="owner")
 	 */
 	private $files;
 
