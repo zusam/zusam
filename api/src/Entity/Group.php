@@ -44,17 +44,11 @@ class Group
      */
     private $messages;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\File", mappedBy="group")
-     */
-    private $files;
-
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
         $this->users = new ArrayCollection();
         $this->messages = new ArrayCollection();
-        $this->files = new ArrayCollection();
         $this->createdAt = time();
     }
 }

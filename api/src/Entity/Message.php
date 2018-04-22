@@ -57,6 +57,12 @@ class Message
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\File", mappedBy="group")
+     * @ORM\ManyToMany(targetEntity="App\Entity\File")
+     * @ORM\JoinTable(name="messages_files",
+     *      joinColumns={@ORM\JoinColumn(name="message_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id", unique=true)}
+     *      )
+     *
      */
     private $files;
 

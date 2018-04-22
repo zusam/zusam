@@ -46,23 +46,10 @@ class File
      */
     private $owner;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="messages")
-     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
-     */
-    private $group;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Message", inversedBy="messages")
-     * @ORM\JoinColumn(name="message_id", referencedColumnName="id")
-     */
-    private $message;
-
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
         $this->groups = new ArrayCollection();
-        $this->messages = new ArrayCollection();
         $this->files = new ArrayCollection();
         $this->createdAt = time();
     }
