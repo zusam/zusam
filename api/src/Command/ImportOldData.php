@@ -165,10 +165,10 @@ class ImportOldData extends ContainerAwareCommand
             $m["data"] = $post["text"];
             $files = [];
             $m["files"] = [];
-            if (preg_match_all("/{:[\d\w]+:}/", $m["data"], $files)) {
+            if (preg_match_all("/{:[^\s]+:}/", $m["data"], $files)) {
                 foreach($files[0] as $file) {
                     $fid = substr($file, 2, -2);
-                    $m["files"][] = $fid;
+                    $m["files"][] = $fid; // store fileNames for now (fileId)
                     $fileList[] = $fid;
                 }
             }
@@ -273,35 +273,35 @@ class ImportOldData extends ContainerAwareCommand
         // give users and group their messages and files
         foreach($messages as $kkk=>$message) {
             if (!empty($message["files"])) {
-                foreach($message["files"] as $k=>$fileId) {
+                $fileList = [];
+                foreach($message["files"] as $fileId) {
                     foreach($files as $kk=>$file) {
                         if ($file["name"] === $fileId) {
-                            $messages[$kkk]["files"][$k] = $file["id"];
-                            if (empty($messages[$kkk]["group"])) {
-                                var_dump($messages[$kkk]);
-                                exit;
-                            }
-                            $files[$kk]["group"] = $messages[$kkk]["group"];
-                            $files[$kk]["message"] = $messages[$kkk]["id"];
+                            $fileList[] = $file["id"];
                             break;
                         }
                     }
                 }
+                $messages[$kkk]["files"] = $fileList;
             }
 
             foreach($groups as $kgroup=>$group) {
                 if ($group["id"] === $message["group"]) {
                     $groups[$kgroup]["messages"][] = $message["id"];
-                    $groups[$kgroup]["files"] = array_merge($groups[$kgroup]["files"], $message["files"]);
                 }
             }
 
             foreach($users as $kuser=>$user) {
                 if ($user["id"] === $message["author"]) {
                     $users[$kuser]["messages"][] = $message["id"];
-                    $users[$kuser]["files"] = array_merge($users[$kuser]["files"], $message["files"]);
                 }
             }
+        }
+
+
+        // now that messages have their files, we can remove them from the data
+        foreach($messages as $k=>$m) {
+            $messages[$k]["data"] = preg_replace("/{:[^\s]+:}/", "", $m["data"]);
         }
 
         echo "Pushing users...\n";
@@ -366,7 +366,7 @@ class ImportOldData extends ContainerAwareCommand
                 .", "."'".$message["group"]."'"
                 .", "."'".$message["author"]."'"
                 .", ".$message["createdAt"]
-                .", ".$this->pdo->quote($message["data"])
+                .", ".$this->pdo->quote(trim($message["data"]))
                 .");";
             $this->pdo->exec($query) or function () use ($message) {
                 echo "\n";
@@ -399,14 +399,8 @@ class ImportOldData extends ContainerAwareCommand
 
         echo "Pushing files...\n";
         foreach($files as $file) {
-            if (empty($file["group"])) {
-                continue;
-            }
             $query = "INSERT INTO `file` (id, created_at, type, name) VALUES ("
                 ."'".$file["id"]."'"
-                .", "."'".$file["owner"]."'"
-                .", "."'".$file["group"]."'"
-                .", "."'".$file["message"]."'"
                 .", ".$file["createdAt"]
                 .", 'file'"
                 .", ".$this->pdo->quote($file["name"])
@@ -417,22 +411,6 @@ class ImportOldData extends ContainerAwareCommand
                 echo "\n";
                 die("fail to insert file\n");
             };
-        }
-
-        echo "Linking users & files...\n";
-        foreach($users as $user) {
-            foreach($user["files"] as $fid) {
-                $query = "INSERT INTO `users_files` (user_id, file_id) VALUES ("
-                    ."'".$user["id"]."'"
-                    .", "."'".$fid."'"
-                    .");";
-                $this->pdo->exec($query) or function () use ($fid) {
-                    echo "\n";
-                    var_dump($fid);
-                    echo "\n";
-                    die("fail to insert users_files\n");
-                };
-            }
         }
 
         echo "Linking messages & files...\n";

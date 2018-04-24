@@ -62,7 +62,6 @@ class Message
      *      joinColumns={@ORM\JoinColumn(name="message_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id", unique=true)}
      *      )
-     *
      */
     private $files;
 

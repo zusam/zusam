@@ -59,15 +59,6 @@ class User
 	 */
 	private $messages;
 
-	/**
-     * @ORM\ManyToMany(targetEntity="App\Entity\File")
-     * @ORM\JoinTable(name="users_files",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id", unique=true)}
-     *      )
-	 */
-	private $files;
-
 	public function __construct()
 	{
         $this->id = Uuid::uuidv4();
@@ -160,22 +151,4 @@ class User
     {
         return $this->messages;
     }
-
-    public function addFile(File $file): self
-    {
-        $this->files[] = $file;
-        return $this;
-    }
-
-    public function removeFile(File $file): self
-    {
-        $this->files->removeElement($file);
-        return $this;
-    }
-
-    public function getFiles(): Collection
-    {
-        return $this->files;
-    }
-
 }
