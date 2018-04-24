@@ -11,6 +11,9 @@
             "ref": "b50f8aa321cc40c380dda7605aa5cef66f476802"
         }
     },
+    "composer/ca-bundle": {
+        "version": "1.1.1"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -55,6 +58,9 @@
     },
     "doctrine/orm": {
         "version": "v2.6.0"
+    },
+    "embed/embed": {
+        "version": "v3.3.1"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
