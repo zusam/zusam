@@ -8,12 +8,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * @ORM\Table(name="`user`")
  * @ORM\Entity()
- * @ApiResource()
+ * @ApiResource(
+ *     attributes={"access_control"="is_granted('ROLE_USER')"},
+ * )
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -47,6 +51,12 @@ class User
      * @Assert\NotNull()
 	 */
 	private $lastConnection;
+    
+    /**
+     * @ORM\Column(type="string", unique=true)
+     * @Assert\NotBlank()
+     */
+    private $apiKey;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
@@ -67,6 +77,7 @@ class User
 		$this->files = new ArrayCollection();
         $this->createdAt = time();
         $this->lastConnection = time();
+        $this->apiKey = Uuid::uuidv4();
 	}
 
     public function getId(): string
@@ -118,6 +129,16 @@ class User
         return $this;
     }
 
+    public function getApiKey(): string
+    {
+        return $this->apiKey;
+    }
+
+    public function resetApiKey(): self
+    {
+        $this->apiKey = Uuid::uuidv4();
+    }
+
     public function addGroup(Group $group): self
     {
         $this->groups[] = $group;
@@ -150,5 +171,48 @@ class User
     public function getMessages(): Collection
     {
         return $this->messages;
+    }
+ 
+    // necessary for UserInterface
+    public function getUsername()
+    {
+        return $this->login;
+    }
+
+    // necessary for UserInterface
+    public function getSalt()
+    {
+        return null;
+    }
+
+    // necessary for UserInterface
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    // necessary for UserInterface
+    public function eraseCredentials()
+    {
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->login,
+            $this->password,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->login,
+            $this->password,
+        ) = unserialize($serialized, ['allowed_classes' => false]);
     }
 }

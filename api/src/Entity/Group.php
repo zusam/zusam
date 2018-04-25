@@ -12,7 +12,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="`group`")
  * @ORM\Entity
- * @ApiResource()
+ * @ApiResource(
+ *     attributes={"access_control"="is_granted('ROLE_USER')"},
+ * )
  */
 class Group
 {
