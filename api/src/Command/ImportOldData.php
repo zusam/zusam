@@ -306,12 +306,13 @@ class ImportOldData extends ContainerAwareCommand
 
         echo "Pushing users...\n";
         foreach($users as $user) {
-            $query = "INSERT INTO `user` (id, created_at, login, password, last_connection) VALUES ("
+            $query = "INSERT INTO `user` (id, created_at, login, password, last_connection, api_key) VALUES ("
                 ."'".$user["id"]."'"
                 .", ".$user["createdAt"]
                 .", "."'".$user["login"]."'"
                 .", "."'".$user["password"]."'"
                 .", ".time()
+                .", '".Uuid::uuidv4()."'"
                 .");";
             $this->pdo->exec($query) or function () use ($user) {
                 echo "\n";
