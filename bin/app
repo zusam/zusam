@@ -39,5 +39,8 @@ if [ -n "$(sudo docker ps -a | grep "$CONTAINER_NAME")" ]; then
 fi
 
 if sudo docker build -t "$CONTAINER_NAME" .; then
-    sudo docker run --init --rm -it -p 80:8080 -p 443:8443 --tmpfs /tmp -e UID="$(id -u)" -e GID="$(id -g)" -v "${pathToProject}":/www --name "$CONTAINER_NAME" "$CONTAINER_NAME"
+    sudo docker run --init --rm -it \
+        -p 80:8080 -p 443:8443 --tmpfs /tmp \
+        -e UID="$(id -u)" -e GID="$(id -g)" \
+        -v "${pathToProject}":/www --name "$CONTAINER_NAME" "$CONTAINER_NAME"
 fi
