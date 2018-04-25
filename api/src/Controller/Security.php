@@ -14,8 +14,9 @@ class Security extends Controller
      */
     public function login(Request $request)
     {
-        $login = $request->request->get("login");
-        $password = $request->request->get("password");
+        $data = json_decode($request->getContent(), true);
+        $login = $data["login"] ?? "";
+        $password = $data["password"] ?? "";
 
         if (empty($login)) {
             return new JsonResponse(["message" => "Login cannot be empty"], JsonResponse::HTTP_BAD_REQUEST);
