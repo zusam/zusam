@@ -32,7 +32,7 @@ isDockerRunning
 
 cdroot
 pathToProject=$(pwd)
-cd "docker/full" || exit
+cd "docker/zusam" || exit
 
 if [ -n "$(sudo docker ps -a | grep "$CONTAINER_NAME")" ]; then
     sudo docker stop "$CONTAINER_NAME" && sudo docker rm "$CONTAINER_NAME"
