@@ -32,6 +32,7 @@ class ImportOldData extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $filesDir = realpath($this->getContainer()->getParameter("kernel.project_dir")."/../public/files/");
         $dsn = $this->getContainer()->getParameter("database_url");
         $this->pdo = new \PDO($dsn, null, null);
         $this->output = $output;
@@ -271,6 +272,7 @@ class ImportOldData extends ContainerAwareCommand
 
         // give messages the right files and files their group
         // give users and group their messages and files
+        echo "Link files and messages...\n";
         foreach($messages as $kkk=>$message) {
             if (!empty($message["files"])) {
                 $fileList = [];
@@ -298,11 +300,31 @@ class ImportOldData extends ContainerAwareCommand
             }
         }
 
-
         // now that messages have their files, we can remove them from the data
+        echo "Removing files from messages...\n";
         foreach($messages as $k=>$m) {
             $messages[$k]["data"] = preg_replace("/{:[^\s]+:}/", "", $m["data"]);
         }
+
+        // we need to adjust files to their new and content-type as they were imported
+        echo "Searching files...\n";
+        $extensions = [".jpg", ".webm"];
+        foreach($files as $k => $file) {
+            $flag = false;
+            foreach ($extensions as $ext) {
+                if (file_exists($filesDir."/".$file["name"].$ext)) {
+                    $files[$k]["name"] .= $ext;
+                    $files[$k]["type"] = mime_content_type($filesDir."/".$file["name"].$ext);
+                    $flag = true;
+                    break;
+                }
+            }
+            if (!$flag) {
+                unset($files[$k]);
+            }
+        }
+
+        echo "\n";
 
         echo "Pushing users...\n";
         foreach($users as $user) {
@@ -403,7 +425,7 @@ class ImportOldData extends ContainerAwareCommand
             $query = "INSERT INTO `file` (id, created_at, type, name) VALUES ("
                 ."'".$file["id"]."'"
                 .", ".$file["createdAt"]
-                .", 'file'"
+                .", '".$file["type"]."'"
                 .", ".$this->pdo->quote($file["name"])
                 .");";
             $this->pdo->exec($query) or function () use ($file) {
