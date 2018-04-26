@@ -17,6 +17,7 @@
 /.cache
 /.yarnrc
 /.sqlite_history
+/.php_history
 
 # APP
 /app/node_modules/
