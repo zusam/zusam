@@ -2,7 +2,6 @@
 
 ###> symfony/framework-bundle ###
 /api/.env
-/api/public/bundles/
 /api/var/
 /api/vendor/
 ###< symfony/framework-bundle ###
@@ -24,3 +23,11 @@
 /app/yarn.lock
 /app/dist/
 /app/.cache
+
+# PUBLIC
+/public/api/bundles/
+/public/files/
+/public/*.js
+/public/*.map
+/public/*.css
+/public/*.html
