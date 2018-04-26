@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class Security extends Controller
 {
     /**
-     * @Route("/api/login", name="login")
+     * @Route("/login", name="login")
      */
     public function login(Request $request)
     {

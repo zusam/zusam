@@ -42,7 +42,7 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install --symlink --relative %BUNDLES_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -58,6 +58,8 @@
         "symfony": {
             "id": "01C5H3JVRPCD6FHNWDVX23PAAA",
             "allow-contrib": false
-        }
+        },
+        "public-dir": "../public/api/",
+        "bundles-dir": "../public/api/"
     }
 }

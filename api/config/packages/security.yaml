@@ -11,8 +11,8 @@ security:
         main:
             anonymous: ~
             form_login:
-                login_path: api/login
-                check_path: api/login
+                login_path: /login
+                check_path: /login
             logout:
                 path:   /logout
                 target: /
