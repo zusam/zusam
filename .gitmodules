@@ -1,3 +1,3 @@
 [submodule "bootstrap-light"]
-	path = bootstrap-light
+	path = app/bootstrap-light
 	url = git@github.com:nrobinaubertin/bootstrap-light.git
