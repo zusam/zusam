@@ -3,7 +3,9 @@
 	"version": "0.1.0",
 	"scripts": {
 		"build": "parcel build src/index.html",
-		"serve": "shx cp dist/* ../public"
+        "clean": "shx rm -f {public,app/dist}/*.{js,css,map,html}",
+		"serve": "shx cp dist/*.{js,css,map,html} ../public",
+        "full": "yarn clean && yarn build && yarn serve"
 	},
 	"browserslist": [
 		"Chrome >= 60",
