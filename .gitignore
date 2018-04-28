@@ -18,6 +18,7 @@
 /.yarnrc
 /.sqlite_history
 /.php_history
+/.config
 
 # APP
 /app/node_modules/
