@@ -5,26 +5,37 @@ const state = {
     currentMessage: null,
 }
 
+const router = {
+    getSegments: () => window.location.pathname.slice(1).split("/")
+}
+
+const http = {
+    getMessage: (id, apiKey) => fetch("/api/messages/"+id, {
+        method: "GET",
+        headers: new Headers({
+            "Content-type": "application/json",
+            "X-AUTH-TOKEN": apiKey,
+        })
+    })
+}
+
 const actions = {
-    getCurrentMessage: id => async (state, actions) => {
-        fetch("/api/messages/fffcb3e1-92e8-4a45-87bb-9f65469994f3", {
-            method: "GET",
-            headers: new Headers({
-                "Content-type": "application/json",
-                "X-AUTH-TOKEN": state.apiKey,
-            })
-        }).then(
-            res => res.json().then(res => {
-                actions.updateCurrentMessage(res);
-            })
-        ).catch(e => console.log(e));
-    },
-    updateCurrentMessage: msg => state => ({currentMessage: msg})
+    setCurrentMessage: msg => state => ({currentMessage: msg}),
+    syncWithRoute: () => (state, actions) => {
+        const segments = router.getSegments();
+        if (segments[0] === "messages" && segments[1]) {
+            http.getMessage(segments[1], state.apiKey).then(
+                res => res.json().then(res => {
+                    console.log(res);
+                    actions.setCurrentMessage(res);
+                })
+            ).catch(e => console.warn(e));
+        }
+    }
 }
 
 const view = (state, actions) => (
-    <div>
-        <button onclick={() => actions.getCurrentMessage()}>click</button>
+    <div oncreate={() => actions.syncWithRoute()}>
         <pre>
             {JSON.stringify(state.currentMessage)}
         </pre>
