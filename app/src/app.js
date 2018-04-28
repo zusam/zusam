@@ -34,12 +34,25 @@ const actions = {
     }
 }
 
-const view = (state, actions) => (
-    <div oncreate={() => actions.syncWithRoute()}>
-        <pre>
-            {JSON.stringify(state.currentMessage)}
-        </pre>
+const MessageCard = ({author, data}) => (
+    <div class="card">
+        <div class="card-header">
+            { author }
+        </div>
+        <div class="card-body">
+            <p class="card-text">{ data }</p>
+        </div>
     </div>
 )
+
+const view = (state, actions) => {
+    return (
+        <div oncreate={() => actions.syncWithRoute()}>
+            {
+                state.currentMessage ? (<MessageCard author={state.currentMessage.author} data={state.currentMessage.data} />) : ""
+            }
+        </div>
+    );
+}
 
 app(state, actions, view, document.body)
