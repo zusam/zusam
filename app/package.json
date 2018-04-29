@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"scripts": {
 		"build": "parcel build src/index.html",
-		"clean": "shx rm -f {public,app/dist}/*.{js,css,map,html}",
+		"clean": "shx rm -f {../public,dist}/*.{js,css,map,html}",
 		"serve": "shx cp dist/*.{js,css,map,html} ../public",
 		"full": "yarn clean && yarn build && yarn serve"
 	},
@@ -16,10 +16,10 @@
 	],
 	"dependencies": {
 		"babel-preset-env": "^1.6.1",
-		"babel-preset-hyperapp": "^2.3.0",
-		"hyperapp": "^1.2.5",
+		"babel-preset-preact": "^1.1.0",
 		"node-sass": "^4.9.0",
 		"parcel-bundler": "^1.7.0",
+		"preact": "^8.2.7",
 		"shx": "^0.2.2"
 	}
 }

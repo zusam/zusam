@@ -1,14 +1,9 @@
 {
     "presets": [
         "env",
-        "hyperapp"
+        "preact"
     ],
     "plugins": [
-        [
-            "transform-react-jsx",
-        {
-            "pragma": "h"
-        }
-        ]
+        ["transform-react-jsx", { "pragma": "h" }]
     ]
 }
