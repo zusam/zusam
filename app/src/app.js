@@ -1,58 +1,72 @@
-import { h, app } from "hyperapp"
+import { h, render, Component } from "preact"
 
-const state = {
-    apiKey: "1f1e49e6-0d22-4e3b-9cdd-adf7bd0a53b9",
-    currentMessage: null,
+class MessageCard extends Component {
+    render(props) {
+        return (
+            <div class="card">
+                <div class="card-header">
+                    { props.author }
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{ props.data }</p>
+                </div>
+            </div>
+        );
+    }
 }
 
-const router = {
-    getSegments: () => window.location.pathname.slice(1).split("/")
-}
+class App extends Component {
+    constructor() {
+        super();
+        this.state = {
+            apiKey: "1f1e49e6-0d22-4e3b-9cdd-adf7bd0a53b9",
+            currentMessage: null,
+        }
 
-const http = {
-    getMessage: (id, apiKey) => fetch("/api/messages/"+id, {
-        method: "GET",
-        headers: new Headers({
-            "Content-type": "application/json",
-            "X-AUTH-TOKEN": apiKey,
-        })
-    })
-}
+        this.router = {
+            getSegments: () => window.location.pathname.slice(1).split("/")
+        }
 
-const actions = {
-    setCurrentMessage: msg => state => ({currentMessage: msg}),
-    syncWithRoute: () => (state, actions) => {
-        const segments = router.getSegments();
+        this.http = {
+            getMessage: (id, apiKey) => fetch("/api/messages/"+id, {
+                method: "GET",
+                headers: new Headers({
+                    "Content-type": "application/json",
+                    "X-AUTH-TOKEN": apiKey,
+                })
+            })
+        }
+    }
+
+    syncWithRoute() {
+        const segments = this.router.getSegments();
         if (segments[0] === "messages" && segments[1]) {
-            http.getMessage(segments[1], state.apiKey).then(
+            this.http.getMessage(segments[1], this.state.apiKey).then(
                 res => res.json().then(res => {
-                    console.log(res);
-                    actions.setCurrentMessage(res);
+                    this.setState({currentMessage: res});
                 })
             ).catch(e => console.warn(e));
         }
     }
+
+    render(props, state) {
+        return (
+            <div> {
+                state.currentMessage ?
+                    (
+                        <MessageCard 
+                            author={state.currentMessage.author}
+                            data={state.currentMessage.data}
+                        />
+                    )
+                    : ""
+            } </div>
+        );
+    }
+
+    componentDidMount() {
+        this.syncWithRoute();
+    }
 }
 
-const MessageCard = ({author, data}) => (
-    <div class="card">
-        <div class="card-header">
-            { author }
-        </div>
-        <div class="card-body">
-            <p class="card-text">{ data }</p>
-        </div>
-    </div>
-)
-
-const view = (state, actions) => {
-    return (
-        <div oncreate={() => actions.syncWithRoute()}>
-            {
-                state.currentMessage ? (<MessageCard author={state.currentMessage.author} data={state.currentMessage.data} />) : ""
-            }
-        </div>
-    );
-}
-
-app(state, actions, view, document.body)
+render(<App />, document.body);
