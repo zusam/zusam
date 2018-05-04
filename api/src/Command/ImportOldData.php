@@ -27,12 +27,14 @@ class ImportOldData extends ContainerAwareCommand
             ->addArgument("accounts", InputArgument::REQUIRED, "Where is the accounts file in json format ?")
             ->addArgument("forums", InputArgument::REQUIRED, "Where is the accounts file in json format ?")
             ->addArgument("posts", InputArgument::REQUIRED, "Where is the accounts file in json format ?")
-            ->addArgument("files", InputArgument::REQUIRED, "Where is the accounts file in json format ?");
+            ->addArgument("files", InputArgument::REQUIRED, "Where is the accounts file in json format ?")
+            ->addArgument("importedFilesDir", InputArgument::REQUIRED, "Where is the imported files directory ?");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $filesDir = realpath($this->getContainer()->getParameter("kernel.project_dir")."/../public/files/");
+        $importedFilesDir = realpath($input->getArgument("importedFilesDir"));
         $dsn = $this->getContainer()->getParameter("database_url");
         $this->pdo = new \PDO($dsn, null, null);
         $this->output = $output;
@@ -312,9 +314,11 @@ class ImportOldData extends ContainerAwareCommand
         foreach($files as $k => $file) {
             $flag = false;
             foreach ($extensions as $ext) {
-                if (file_exists($filesDir."/".$file["name"].$ext)) {
-                    $files[$k]["name"] .= $ext;
-                    $files[$k]["type"] = mime_content_type($filesDir."/".$file["name"].$ext);
+                if (file_exists($importedFilesDir."/".$file["name"].$ext)) {
+                    $files[$k]["extension"] = $ext;
+                    // move the file to it's new place
+                    $files[$k]["type"] = mime_content_type($importedFilesDir."/".$file["name"].$ext);
+                    copy($importedFilesDir."/".$file["name"].$ext, $filesDir."/".$file["id"].$ext);
                     $flag = true;
                     break;
                 }
@@ -422,11 +426,11 @@ class ImportOldData extends ContainerAwareCommand
 
         echo "Pushing files...\n";
         foreach($files as $file) {
-            $query = "INSERT INTO `file` (id, created_at, type, name) VALUES ("
+            $query = "INSERT INTO `file` (id, created_at, type, extension) VALUES ("
                 ."'".$file["id"]."'"
                 .", ".$file["createdAt"]
                 .", '".$file["type"]."'"
-                .", ".$this->pdo->quote($file["name"])
+                .", ".$this->pdo->quote($file["extension"])
                 .");";
             $this->pdo->exec($query) or function () use ($file) {
                 echo "\n";

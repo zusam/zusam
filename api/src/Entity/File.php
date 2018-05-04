@@ -41,7 +41,7 @@ class File
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
-    private $name;
+    private $extension;
 
     public function __construct()
     {
@@ -78,14 +78,14 @@ class File
         return $this;
     }
 
-    public function getName(): string
+    public function getExtension(): string
     {
-        return $this->name;
+        return $this->extension;
     }
 
-    public function setName(string $name): self
+    public function setExtension(string $extension): self
     {
-        $this->name = $name;
+        $this->extension = $extension;
         return $this;
     }
 }
