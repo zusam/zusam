@@ -18,11 +18,6 @@ class Image
         $im->destroy();
     }
 
-    private static function getCacheId(string $input): string
-    {
-        return Uuid::uuidv4($input);
-    }
-
     private static function loadImage(string $input): ?\Imagick
     {
         $im = new \Imagick();
@@ -51,47 +46,3 @@ class Image
         }
     }
 }
-
-function createPostImage($from, $to, $w, $max_height, $q) {
-    if($q == null) {
-        $q = 90;
-    }
-
-    $im = new \Imagick();
-    try {
-        if(!$im->readImage($from)) {
-            throw new Exception("");
-        }
-    } catch(Exception $e) {
-        return false;
-    }
-
-    $width = $im->getImageWidth();
-    $height = $im->getImageHeight();
-
-    $hw = $height / $width;
-    $wh = $width / $height;
-
-    //then we shorten the image 
-    $new_width = min($width, $w); 
-    $new_height = $hw*$new_width; 
-    $final_height = min($new_height, $max_height); 
-
-    $im->thumbnailImage($new_width, $new_height);
-    $im->cropImage($new_width, $final_height, 0, 0);
-    $im->setImageFormat("jpeg");
-    $im->stripImage();
-    $im->setImageCompression(Imagick::COMPRESSION_JPEG);
-    $im->setImageCompressionQuality($q);
-    try {
-        $im->writeImage($to);
-    } catch (\Exception $e) {
-        $im->destroy();
-        return false;
-    }
-    $im->destroy();
-
-    return file_exists($to);
-}
-
-
