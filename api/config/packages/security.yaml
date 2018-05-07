@@ -12,12 +12,6 @@ security:
             anonymous: ~
             access_denied_handler: App\Security\AccessDeniedHandler
             entry_point: App\Security\EntryPointService 
-            form_login:
-                login_path: /login
-                check_path: /login
-            logout:
-                path:   /logout
-                target: /
             guard:
                 authenticators:
                     - App\Security\TokenAuthenticator
