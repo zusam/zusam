@@ -19,6 +19,7 @@
 /.sqlite_history
 /.php_history
 /.config
+/.npm
 
 # APP
 /app/node_modules/
