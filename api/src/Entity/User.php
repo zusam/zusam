@@ -185,7 +185,7 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getAvatar(): User
+    public function getAvatar(): File
     {
         return $this->avatar;
     }
