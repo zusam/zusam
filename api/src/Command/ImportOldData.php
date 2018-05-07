@@ -46,10 +46,15 @@ class ImportOldData extends ContainerAwareCommand
         $postsData = json_decode(file_get_contents($input->getArgument("posts")), true);
         $filesData = json_decode(file_get_contents($input->getArgument("files")), true);
 
+        $users = [];
+        $files = [];
+        $messages = [];
+        $groups = [];
+        //$now = date("Y-m-d H:i:s");
+
         echo "Parsing users...\n";
 
         // first pass on the users
-        $users = [];
         foreach($accountsData as $account) {
             if (
                 empty($account["_id"]['$oid'])
@@ -76,12 +81,22 @@ class ImportOldData extends ContainerAwareCommand
             foreach($account["forums"] as $k=>$v) {
                 $u["groups"][] = Uuid::uuidv4($k);
             }
+            // look for an avatar
+            $u["avatar_id"] = null;
+            if (file_exists($importedFilesDir."/".$account["_id"]['$oid'].".jpg")) {
+                $file = [];
+                $file["id"] = Uuid::uuidv4();
+                $file["name"] = $account["_id"]['$oid'];
+                $file["type"] = "file";
+                $file["createdAt"] = time();
+                $u["avatar_id"] = $file["id"];
+                $files[] = $file;
+            }
             $users[] = $u;
         }
 
         echo "Parsing groups...\n";
 
-        $groups = [];
         foreach($forumsData as $forum) {
             if (
                 empty($forum["_id"]['$oid'])
@@ -146,7 +161,6 @@ class ImportOldData extends ContainerAwareCommand
 
         echo "Parsing messages...\n";
 
-        $messages = [];
         $fileList = [];
         foreach($postsData as $post) {
             if (
@@ -166,10 +180,10 @@ class ImportOldData extends ContainerAwareCommand
                 $m["createdAt"] = time();
             }
             $m["data"] = $post["text"];
-            $files = [];
+            $msgfiles = [];
             $m["files"] = [];
-            if (preg_match_all("/{:[^\s]+:}/", $m["data"], $files)) {
-                foreach($files[0] as $file) {
+            if (preg_match_all("/{:[^\s]+:}/", $m["data"], $msgfiles)) {
+                foreach($msgfiles[0] as $file) {
                     $fid = substr($file, 2, -2);
                     $m["files"][] = $fid; // store fileNames for now (fileId)
                     $fileList[] = $fid;
@@ -225,7 +239,6 @@ class ImportOldData extends ContainerAwareCommand
 
         echo "Parsing files\n";
 
-        $files = [];
         foreach($filesData as $file) {
             if (
                 empty($file["_id"]['$oid'])
@@ -332,13 +345,14 @@ class ImportOldData extends ContainerAwareCommand
 
         echo "Pushing users...\n";
         foreach($users as $user) {
-            $query = "INSERT INTO `user` (id, created_at, login, password, last_connection, api_key) VALUES ("
+            $query = "INSERT INTO `user` (id, created_at, login, password, last_connection, api_key, avatar_id) VALUES ("
                 ."'".$user["id"]."'"
                 .", ".$user["createdAt"]
                 .", "."'".$user["login"]."'"
                 .", "."'".$user["password"]."'"
                 .", ".time()
                 .", '".Uuid::uuidv4()."'"
+                .", "."'".$user["avatar_id"]."'"
                 .");";
             $this->pdo->exec($query) or function () use ($user) {
                 echo "\n";

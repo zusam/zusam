@@ -69,6 +69,12 @@ class User implements UserInterface, \Serializable
 	 */
 	private $messages;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\File")
+     * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
+     */
+    private $avatar;
+
 	public function __construct()
 	{
         $this->id = Uuid::uuidv4();
@@ -172,6 +178,18 @@ class User implements UserInterface, \Serializable
     {
         return $this->messages;
     }
+
+    public function setAvatar(File $avatar): self
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    public function getAvatar(): User
+    {
+        return $this->avatar;
+    }
+
  
     // necessary for UserInterface
     public function getUsername()
