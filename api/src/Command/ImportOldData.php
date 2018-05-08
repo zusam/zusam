@@ -76,6 +76,7 @@ class ImportOldData extends ContainerAwareCommand
             }
             $u["login"] = $account["mail"];
             $u["password"] = $account["password"];
+            $u["name"] = $account["name"];
             $u["files"] = [];
             $u["groups"] = [];
             foreach($account["forums"] as $k=>$v) {
@@ -345,7 +346,7 @@ class ImportOldData extends ContainerAwareCommand
 
         echo "Pushing users...\n";
         foreach($users as $user) {
-            $query = "INSERT INTO `user` (id, created_at, login, password, last_connection, api_key, avatar_id) VALUES ("
+            $query = "INSERT INTO `user` (id, created_at, login, password, last_connection, api_key, avatar_id, name) VALUES ("
                 ."'".$user["id"]."'"
                 .", ".$user["createdAt"]
                 .", "."'".$user["login"]."'"
@@ -353,6 +354,7 @@ class ImportOldData extends ContainerAwareCommand
                 .", ".time()
                 .", '".Uuid::uuidv4()."'"
                 .", "."'".$user["avatar_id"]."'"
+                .", ".$this->pdo->quote($user["name"])
                 .");";
             $this->pdo->exec($query) or function () use ($user) {
                 echo "\n";
