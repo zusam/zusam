@@ -1,15 +1,19 @@
 import { h, render, Component } from "preact"
 
 class MessageCard extends Component {
+    displayLinks(text) {
+        return {
+            __html: text.replace(/ (https?:\/\/[^\s]+)/gi, " <a href=\"$1\">$1</a>")
+        };
+    }
     render() {
-        console.log(this.props);
         return (
             <div class="card">
                 <div class="card-header">
-                    <img src={ "/files/" + this.props.author.avatar }/> <span>{ this.props.author.name }</span>
+                    <img class="w-3" src={ "/files/" + this.props.author.avatar }/> <span class="capitalize ml-1">{ this.props.author.name }</span>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">{ this.props.text }</p>
+                    <p class="card-text" dangerouslySetInnerHTML={this.displayLinks(this.props.text)}></p>
                 </div>
             </div>
         );
@@ -20,7 +24,7 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            apiKey: "2bccc8f9-cd6f-4a7e-920e-1d6b39ad1f27",
+            apiKey: "87c601fe-98cb-4757-8f9e-4b8200707296",
             currentMessage: null,
         }
 
@@ -54,7 +58,7 @@ class App extends Component {
                         this.setState({
                             currentMessage: {
                                 author: {
-                                    name: author.login,
+                                    name: author.name,
                                     avatar: avatar.id + avatar.extension
                                 },
                                 text: msg.data
