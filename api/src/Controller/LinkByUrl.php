@@ -2,7 +2,9 @@
 namespace App\Controller;
 
 use App\Entity\Link;
+use App\Entity\File;
 use App\Service\Url;
+use App\Service\Image;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +20,7 @@ class LinkByUrl extends Controller
         $data = json_decode($request->getContent(), true);
         $url = $data["url"] ?? "";
         $rescan = $data["rescan"] ?? false;
+        $onlyData = $data["onlyData"] ?? false;
         $em = $this->getDoctrine()->getManager();
         $link = $this->getDoctrine()->getRepository(Link::class)->findOneByUrl($url);
         if (empty($link) || $rescan) {
@@ -27,14 +30,28 @@ class LinkByUrl extends Controller
             $data = Url::getData($url);
             $link->setData(json_encode($data));
             $link->setUpdatedAt(time());
+            if (!empty($data["image"])) {
+                $preview = new File();
+                $preview->setType("image/jpeg");
+                $preview->setExtension(".jpg");
+                $publicDir = realpath($this->getParameter("kernel.project_dir")."/../public/");
+                Image::createThumbnail($data["image"], $publicDir."/".$preview->getPath(), 2048, 2048);
+                $link->setPreview($preview);
+                $em->persist($preview);
+            }
             $em->persist($link);
             $em->flush();
         }
-        return new JsonResponse([
-            "id" => "/api/links/".$link->getId(),
-            "data" => json_encode($link->getData()),
-            "url" => $url,
-            "updatedAt" => $link->getUpdatedAt(),
-        ], JsonResponse::HTTP_OK);
+        if (!$onlyData) {
+            return new JsonResponse([
+                "id" => "/api/links/".$link->getId(),
+                "data" => $link->getData(),
+                "url" => $url,
+                "updatedAt" => $link->getUpdatedAt(),
+                "preview" => $link->getPreview() ? $link->getPreview()->getPath() : "",
+            ], JsonResponse::HTTP_OK);
+        } else {
+            return new JsonResponse(json_decode($link->getData(), true), JsonResponse::HTTP_OK);
+        }
     }
 }
