@@ -9,7 +9,13 @@ class Image
         $im = self::loadImage($input);
 
         if ($respectFormat) {
-            $im->thumbnailImage($w, $h, true);
+            $im->resizeImage(
+                min($im->getImageWidth(), $w),
+                min($im->getImageHeight(), $h),
+                \Imagick::FILTER_LANCZOS,
+                1,
+                true
+            );
         } else {
             $im->cropThumbnailImage($w, $h);
         }
@@ -21,12 +27,18 @@ class Image
     private static function loadImage(string $input): ?\Imagick
     {
         $im = new \Imagick();
-        if (is_readable($input)) {
-            if ($im->readImage($input)) {
+        try {
+            if (is_readable($input)) {
+                if ($im->readImage($input)) {
+                    return $im;
+                }
+            }
+            if ($im->readImageBlob(file_get_contents($input))) {
                 return $im;
             }
+        } catch(\Exception $e) {
+            throw new \Exception("Could not read input image");
         }
-        throw new \Exception("Could not read input image");
     }
 
     private static function saveImage(\Imagick $im, string $output)
@@ -37,7 +49,9 @@ class Image
         $im->setImageCompression(\Imagick::COMPRESSION_JPEG);
         $im->setImageCompressionQuality(85);
         $im->setSamplingFactors(["2x2", "1x1", "1x1"]);
-        $im->setImageColorspace(\Imagick::COLORSPACE_RGB);
+        if ($im->getImageColorspace() == \Imagick::COLORSPACE_CMYK) {
+            $im->transformimagecolorspace(\Imagick::COLORSPACE_SRGB);
+        }
         $im->setInterlaceScheme(\Imagick::INTERLACE_JPEG);
         // set the image background to white by default
         $im->setImageBackgroundColor(new \ImagickPixel("white"));
