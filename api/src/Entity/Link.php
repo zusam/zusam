@@ -53,13 +53,10 @@ class Link
     private $url;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\File")
-     * @ORM\JoinTable(name="links_files",
-     *      joinColumns={@ORM\JoinColumn(name="link_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id", unique=true)}
-     *      )
+     * @ORM\OneToOne(targetEntity="App\Entity\File")
+     * @ORM\JoinColumn(name="preview_id", referencedColumnName="id")
      */
-    private $files;
+    private $preview;
 
     public function __construct(string $url)
     {
@@ -119,20 +116,14 @@ class Link
         return $this;
     }
 
-    public function addFile(File $file): self
+    public function setPreview(File $preview): self
     {
-        $this->files[] = $file;
+        $this->preview = $preview;
         return $this;
     }
 
-    public function removeFile(File $file): self
+    public function getPreview(): File
     {
-        $this->files->removeElement($file);
-        return $this;
-    }
-
-    public function getFiles(): Collection
-    {
-        return $this->files;
+        return $this->preview;
     }
 }

@@ -46,8 +46,6 @@ class File
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
-        $this->groups = new ArrayCollection();
-        $this->files = new ArrayCollection();
         $this->createdAt = time();
     }
 
@@ -87,5 +85,10 @@ class File
     {
         $this->extension = $extension;
         return $this;
+    }
+
+    public function getPath(): string
+    {
+        return "/files/".$this->getId().$this->getExtension();
     }
 }
