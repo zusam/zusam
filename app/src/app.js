@@ -53,18 +53,33 @@ class MessageCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            url: props.url,
             regex: {
                 link: /\b(https?:\/\/[^\s]+)\b/gi
             },
+            message: {},
+            author: {},
+            author_avatar: "",
             preview: {}
         }
+        http.get(this.state.url).then(msg => {
+            this.setState({message: msg});
+            this.updatePreviewBlock(this.state.message.data);
+            http.get(msg.author).then(author => {
+                this.setState({author: author});
+                http.get(author.avatar).then(avatar => this.setState({author_avatar: avatar.id + avatar.extension}))
+            });
+        });
     }
-    displayLinks(text) {
+    displayMessageText() {
         return {
-            __html: text.replace(this.state.regex.link, "<a href=\"$1\">$1</a>")
+            __html: this.state.message.data.replace(this.state.regex.link, "<a href=\"$1\">$1</a>")
         };
     }
     getFirstLink(text) {
+        if (!text) {
+            return null;
+        }
         let matches = text.match(this.state.regex.link);
         if (matches && matches.length > 0) {
             return matches[0];
@@ -90,24 +105,24 @@ class MessageCard extends Component {
         );
     }
     displayDate(timestamp) {
+        if (!timestamp) {
+            return null;
+        }
         let date = new Date(timestamp*1000);
         return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-    }
-    componentDidMount() {
-        this.updatePreviewBlock(this.props.text);
     }
     render() {
         return (
             <div class="card">
                 <div class="card-header d-flex">
-                    <img class="rounded w-3" src={ "/files/" + this.props.author.avatar }/>
+                    <img class="rounded w-3" src={ "/files/" + this.state.author_avatar }/>
                     <div class="d-flex flex-column">
-                        <span class="capitalize ml-1">{ this.props.author.name }</span>
-                        <span class="ml-1">{ this.displayDate(this.props.date) }</span>
+                        <span class="capitalize ml-1">{ this.state.author.name }</span>
+                        <span class="ml-1">{ this.displayDate(this.state.message.createdAt) }</span>
                     </div>
                 </div>
                 <div class="card-body">
-                    <p class="card-text" dangerouslySetInnerHTML={this.displayLinks(this.props.text)}></p>
+                    { this.state.message.data ? (<p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>): null }
                     { this.state.preview.display ? <PreviewBlock {...this.state.preview} /> : null}
                 </div>
             </div>
@@ -119,7 +134,8 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            currentMessage: null,
+            show: null,
+            url: null,
         }
 
         this.router = {
@@ -130,30 +146,18 @@ class App extends Component {
     syncWithRoute() {
         const segments = this.router.getSegments();
         if (segments[0] === "messages" && segments[1]) {
-            http.get("/api/" + segments[0] + "/" + segments[1]).then(msg =>
-                http.get(msg.author).then(author =>
-                    http.get(author.avatar).then(avatar =>
-                        this.setState({
-                            currentMessage: {
-                                author: {
-                                    name: author.name,
-                                    avatar: avatar.id + avatar.extension
-                                },
-                                text: msg.data,
-                                date: msg.createdAt
-                            }
-                        })
-                    )
-                )
-            );
+            this.setState({
+                show: "message",
+                url: "/api/" + segments[0] + "/" + segments[1],
+            });
         }
     }
 
-    render(_, state) {
+    render() {
         return (
-            <div> {
-                state.currentMessage ?  (<MessageCard {...state.currentMessage} />) : ""
-            } </div>
+            <div>
+                { this.state.show === "message" && this.state.url ? (<MessageCard url={this.state.url} />) : null }
+            </div>
         );
     }
 
