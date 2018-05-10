@@ -1,4 +1,6 @@
-@import "../bootstrap-light/dist/css/bootstrap.min.css";
+@import "../bootstrap-light/scss/functions";
+@import "custom";
+@import "../bootstrap-light/scss/bootstrap.scss";
 
 .w-3 {
     width: 3rem !important;
@@ -10,4 +12,11 @@
 
 .capitalize {
     text-transform: capitalize;
+}
+
+.seamless-link {
+    &, &:hover {
+        color: inherit;
+        text-decoration: none;
+    }
 }
