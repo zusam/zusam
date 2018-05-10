@@ -28,7 +28,9 @@ window.http = {
         ).catch(
             err => console.warn(err)
         );
-    }
+    },
+    thumbnail: (url, width, height) => "/api/images/thumbnail/" + width + "/" + height + "/" + url.split("/")[2],
+    crop: (url, width, height) => "/api/images/crop/" + width + "/" + height + "/" + url.split("/")[2],
 }
 
 class PreviewBlock extends Component {
@@ -36,7 +38,7 @@ class PreviewBlock extends Component {
         return (
             <a class="seamless-link" target="_blank" href={ this.props.url }>
                 <div class="card">
-                    <img class="card-img-top" src={ this.props.image } />
+                    <img class="card-img-top" src={ http.crop(this.props.image, 320, 180) } />
                     <div class="card-body">
                         <h5>{ this.props.title }</h5>
                         <p><small>{ this.props.description }</small></p>
