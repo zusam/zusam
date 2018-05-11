@@ -76,7 +76,7 @@ class ImportOldData extends ContainerAwareCommand
             }
             $u["login"] = $account["mail"];
             $u["password"] = $account["password"];
-            $u["name"] = $account["name"];
+            $u["name"] = html_entity_decode($account["name"]);
             $u["files"] = [];
             $u["groups"] = [];
             foreach($account["forums"] as $k=>$v) {
