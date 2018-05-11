@@ -122,7 +122,7 @@ class Link
         return $this;
     }
 
-    public function getPreview(): File
+    public function getPreview(): ?File
     {
         return $this->preview;
     }
