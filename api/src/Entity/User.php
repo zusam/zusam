@@ -7,6 +7,7 @@ use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -14,7 +15,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="`user`")
  * @ORM\Entity()
  * @ApiResource(
- *     attributes={"access_control"="is_granted('ROLE_USER')"},
+ *     attributes={
+ *        "access_control"="is_granted('ROLE_USER')",
+ *        "normalization_context"={"groups"={"read"}},
+ *        "denormalization_context"={"groups"={"write"}}
+ *     },
  * )
  */
 class User implements UserInterface, \Serializable
@@ -22,75 +27,83 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Id
      * @ORM\Column(type="string")
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read", "write"})
      * @Assert\Type("integer")
      * @Assert\NotNull()
      */
     private $createdAt;
 
-	/**
-	 * @ORM\Column(type="string", unique=true)
+    /**
+     * @ORM\Column(type="string", unique=true)
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
-	 */
-	private $login;
+     */
+    private $login;
 
-	/**
-	 * @ORM\Column(type="string")
+    /**
+     * @ORM\Column(type="string")
+     * @Groups({"write"})
      * @Assert\NotBlank()
-	 */
-	private $password;
+     */
+    private $password;
 
-	/**
-	 * @ORM\Column(type="integer", nullable=true)
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read", "write"})
      * @Assert\Type("integer")
      * @Assert\NotNull()
-	 */
-	private $lastConnection;
-    
+     */
+    private $lastConnection;
+
     /**
      * @ORM\Column(type="string", unique=true)
      * @Assert\NotBlank()
      */
     private $apiKey;
 
-	/**
-	 * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
-	 * @ORM\JoinTable(name="users_groups")
-	 */
-	private $groups;
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
+     * @ORM\JoinTable(name="users_groups")
+     * @Groups({"read", "write"})
+     */
+    private $groups;
 
-	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="author")
-	 */
-	private $messages;
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="author")
+     */
+    private $messages;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
+     * @Groups({"read", "write"})
      */
     private $avatar;
 
-	/**
-	 * @ORM\Column(type="string")
+    /**
+     * @ORM\Column(type="string")
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
-	 */
-	private $name;
+     */
+    private $name;
 
-	public function __construct()
-	{
+    public function __construct()
+    {
         $this->id = Uuid::uuidv4();
-		$this->groups = new ArrayCollection();
-		$this->messages = new ArrayCollection();
-		$this->files = new ArrayCollection();
+        $this->groups = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->files = new ArrayCollection();
         $this->createdAt = time();
         $this->lastConnection = time();
         $this->apiKey = Uuid::uuidv4();
-	}
+    }
 
     public function getId(): string
     {
