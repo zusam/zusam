@@ -29,8 +29,9 @@ window.http = {
             err => console.warn(err)
         );
     },
-    thumbnail: (url, width, height) => "/api/images/thumbnail/" + width + "/" + height + "/" + url.split("/")[2],
-    crop: (url, width, height) => "/api/images/crop/" + width + "/" + height + "/" + url.split("/")[2],
+    getId: url => url.split("/").pop().replace(/\?.*$/, "").replace(/\.\w+$/, ""),
+    // thumbnail: (url, width, height) => "/api/images/thumbnail/" + width + "/" + height + "/" + http.getId(url),
+    crop: (url, width, height) => "/api/images/crop/" + width + "/" + height + "/" + http.getId(url),
 }
 
 class PreviewBlock extends Component {
@@ -38,7 +39,7 @@ class PreviewBlock extends Component {
         return (
             <a class="seamless-link" target="_blank" href={ this.props.url }>
                 <div class="card">
-                    <img class="card-img-top" src={ http.crop(this.props.image, 320, 180) } />
+                    { this.props.image && <img class="card-img-top" src={ http.crop(this.props.image, 320, 180) } /> }
                     <div class="card-body">
                         <h5>{ this.props.title }</h5>
                         <p><small>{ this.props.description }</small></p>
@@ -59,7 +60,6 @@ class MessageCard extends Component {
             },
             message: {},
             author: {},
-            author_avatar: "",
             preview: {}
         }
         http.get(this.state.url).then(msg => {
@@ -67,7 +67,6 @@ class MessageCard extends Component {
             this.updatePreviewBlock(this.state.message.data);
             http.get(msg.author).then(author => {
                 this.setState({author: author});
-                http.get(author.avatar).then(avatar => this.setState({author_avatar: avatar.id + avatar.extension}))
             });
         });
     }
@@ -113,18 +112,36 @@ class MessageCard extends Component {
     }
     render() {
         return (
-            <div class="card">
+            <div class="card mb-1">
                 <div class="card-header d-flex">
-                    <img class="rounded w-3" src={ "/files/" + this.state.author_avatar }/>
+                    {
+                        this.state.author &&
+                        this.state.author.avatar &&
+                        <img class="rounded w-3" src={ http.crop(this.state.author.avatar, 50, 50) }/>
+                    }
                     <div class="d-flex flex-column">
                         <span class="capitalize ml-1">{ this.state.author.name }</span>
                         <span class="ml-1">{ this.displayDate(this.state.message.createdAt) }</span>
                     </div>
                 </div>
                 <div class="card-body">
-                    { this.state.message.data ? (<p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>): null }
-                    { this.state.preview.display ? <PreviewBlock {...this.state.preview} /> : null}
+                    { this.state.message.data && <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p> }
+                    { this.state.preview.display && <PreviewBlock {...this.state.preview} />}
                 </div>
+                {
+                    this.state.message &&
+                    this.state.message.children &&
+                    this.state.message.children.length > 0 &&
+                    (
+                        <div class="card-footer">
+                            {
+                                this.state.message.children.map(e => {
+                                    return (<MessageCard url={e} />);
+                                })
+                            }
+                        </div>
+                    )
+                }
             </div>
         );
     }
@@ -156,7 +173,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                { this.state.show === "message" && this.state.url ? (<MessageCard url={this.state.url} />) : null }
+                { this.state.show === "message" && this.state.url && <MessageCard url={this.state.url} /> }
             </div>
         );
     }

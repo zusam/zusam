@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class Files extends Controller
 {
     /**
-     * @Route("/images/{type}/{width}/{height}/{id}.jpg", name="images")
+     * @Route("/images/{type}/{width}/{height}/{id}", name="images")
      */
     public function image(string $id, int $width, int $height, string $type)
     {
