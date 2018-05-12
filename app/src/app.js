@@ -1,7 +1,8 @@
 import { h, render, Component } from "preact"
+// import "babel-polyfill";
 
 window.http = {
-    apiKey: "d7f59396-67e0-4364-98a0-5586c841e25e",
+    apiKey: "f759248b-de35-4cc0-ae4b-f37805f72a85",
     get: url => {
         return fetch(url, {
             method: "GET",
@@ -36,17 +37,20 @@ window.http = {
 
 class PreviewBlock extends Component {
     render() {
-        return (
-            <a class="seamless-link" target="_blank" href={ this.props.url }>
-                <div class="card">
-                    { this.props.image && <img class="card-img-top" src={ http.crop(this.props.image, 320, 180) } /> }
-                    <div class="card-body">
-                        <h5>{ this.props.title }</h5>
-                        <p><small>{ this.props.description }</small></p>
+        if (this.props.title && (this.props.image || this.props.description)) {
+            return (
+                <a class="seamless-link" target="_blank" href={ this.props.url }>
+                    <div class="card">
+                        { this.props.image && <img class="card-img-top" src={ http.crop(this.props.image, 320, 180) } /> }
+                        <div class="card-body">
+                            <h5>{ this.props.title }</h5>
+                            <p><small>{ this.props.description }</small></p>
+                        </div>
                     </div>
-                </div>
-            </a>
-        );
+                </a>
+            );
+        }
+        return null;
     }
 }
 
@@ -60,14 +64,18 @@ class MessageCard extends Component {
             },
             message: {},
             author: {},
-            preview: {}
+            preview: {},
+            displayedChildren: [],
         }
         http.get(this.state.url).then(msg => {
-            this.setState({message: msg});
-            this.updatePreviewBlock(this.state.message.data);
+            this.setState({
+                message: msg,
+                displayedChildren: msg.children
+            });
             http.get(msg.author).then(author => {
                 this.setState({author: author});
             });
+            this.updatePreviewBlock(this.state.message.data);
         });
     }
     displayMessageText() {
@@ -129,13 +137,11 @@ class MessageCard extends Component {
                     { this.state.preview.display && <PreviewBlock {...this.state.preview} />}
                 </div>
                 {
-                    this.state.message &&
-                    this.state.message.children &&
-                    this.state.message.children.length > 0 &&
+                    this.state.displayedChildren.length > 0 &&
                     (
                         <div class="card-footer">
                             {
-                                this.state.message.children.map(e => {
+                                this.state.displayedChildren.map(e => {
                                     return (<MessageCard url={e} />);
                                 })
                             }
