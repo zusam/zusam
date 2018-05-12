@@ -1,7 +1,19 @@
 {
     "presets": [
-        "env",
-        "preact"
+        [
+            "env",
+            {
+                "targets": {
+                    "browsers": [
+                        "Chrome >= 62",
+                        "ChromeAndroid >= 62",
+                        "Edge >= 16",
+                        "Firefox >= 57",
+                        "FirefoxAndroid >= 57"
+                    ]
+                }
+            }
+        ]
     ],
     "plugins": [
         ["transform-react-jsx", { "pragma": "h" }]

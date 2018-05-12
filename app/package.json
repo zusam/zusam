@@ -7,14 +7,8 @@
 		"serve": "shx cp dist/*.{js,css,map,html} ../public",
 		"full": "yarn clean && yarn build && yarn serve"
 	},
-	"browserslist": [
-		"Chrome >= 60",
-		"ChromeAndroid >= 60",
-		"Edge >= 12",
-		"Firefox >= 50",
-		"FirefoxAndroid >= 50"
-	],
 	"dependencies": {
+		"babel-polyfill": "^6.26.0",
 		"babel-preset-env": "^1.6.1",
 		"babel-preset-preact": "^1.1.0",
 		"node-sass": "^4.9.0",
