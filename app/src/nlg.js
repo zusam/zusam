@@ -51,7 +51,7 @@ let nlg = {
             opacity: 0;
             transition: 300ms;
         }
-        #nlg-modal > .media {
+        #nlg-modal > .nlg-media {
             position: relative;
             left: 0;
             transition: 300ms;
@@ -108,6 +108,7 @@ let nlg = {
     },
     start: () => {
         nlg.stop();
+		nlg.list = [];
         document.querySelectorAll("[data-nlg]").forEach(
             elm => {
                 nlg.list.push(elm);
@@ -133,6 +134,7 @@ let nlg = {
 			default:
 				media = document.createElement("img");
 		}
+		media.classList.add("nlg-media");
         if (side) {
             media.classList.add("nlg-"+side);
         }
@@ -211,8 +213,8 @@ let nlg = {
                 modal.appendChild(prev);
             }
             modal.style.cssText = `
-                top: ${document.body.scrollTop + Math.floor(window.innerHeight/2 - media.scrollHeight/2)}px;
-                padding: 0 ${document.body.scrollLeft + Math.floor(window.innerWidth/2 - media.scrollWidth/2)}px;
+                top: ${window.scrollY + Math.floor(window.innerHeight/2 - media.scrollHeight/2)}px;
+                padding: 0 ${window.scrollX + Math.floor(window.innerWidth/2 - media.scrollWidth/2)}px;
                 opacity: 1;
             `;
             setTimeout(nlg.center, 1);
@@ -238,14 +240,12 @@ let nlg = {
             window.removeEventListener("keypress", nlg.keyPressClose);
         }
     },
-    moveLeft: () => document.querySelector("#nlg-modal > .media").classList.add("nlg-left"),
-    moveRight: () => document.querySelector("#nlg-modal > .media").classList.add("nlg-right"),
+    moveLeft: () => document.querySelector("#nlg-modal > .nlg-media").classList.add("nlg-left"),
+    moveRight: () => document.querySelector("#nlg-modal > .nlg-media").classList.add("nlg-right"),
     center: () => {
-        let media = document.querySelector("#nlg-modal > .media");
-		if (media) {
-			media.classList.remove("nlg-right");
-			media.classList.remove("nlg-left");
-		}
+        let media = document.querySelector("#nlg-modal > .nlg-media");
+		media.classList.remove("nlg-right");
+		media.classList.remove("nlg-left");
     },
 };
 export default nlg;
