@@ -35,12 +35,15 @@
     }
 }
 
+.contained-height {
+    max-height: calc(100vh - 50px);
+}
+
 .file-grid {
     display: flex;
     flex-flow: row wrap;
     a {
         display: block;
-        border-radius: 5px;
         overflow: hidden;
         $gutter: 5px;
         margin: 0 $gutter $gutter 0;
@@ -53,9 +56,5 @@
                 xl: 6
             )
         );
-
-        img {
-            width: 100%;
-        }
     }
 }
