@@ -4,6 +4,7 @@
 /api/.env
 /api/var/
 /api/vendor/
+/api/auth.json
 ###< symfony/framework-bundle ###
 
 ###> symfony/web-server-bundle ###
