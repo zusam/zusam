@@ -31,13 +31,17 @@ window.http = {
         );
     },
     getId: url => url.split("/").pop().replace(/\?.*$/, "").replace(/\.\w+$/, ""),
-    // thumbnail: (url, width, height) => "/api/images/thumbnail/" + width + "/" + height + "/" + http.getId(url),
+    thumbnail: (url, width, height) => "/api/images/thumbnail/" + width + "/" + height + "/" + http.getId(url),
     crop: (url, width, height) => "/api/images/crop/" + width + "/" + height + "/" + http.getId(url),
 }
 
 class PreviewBlock extends Component {
     render() {
-        if (this.props.title && (this.props.image || this.props.description)) {
+        if (
+            this.props.title
+            && this.props.display
+            && (this.props.image || this.props.description)
+        ) {
             return (
                 <a class="seamless-link" target="_blank" href={ this.props.url }>
                     <div class="card">
@@ -51,6 +55,27 @@ class PreviewBlock extends Component {
             );
         }
         return null;
+    }
+}
+
+class FileGrid extends Component {
+    render() {
+        if (!this.props.files || this.props.files.length === 0) {
+            return null;
+        }
+        return (
+            <div class="file-grid">
+                { this.props.files.map(e => (
+                    <a data-nlg href={ http.thumbnail(e, 1024, 1024) }>
+                        <img src={ http.crop(e, 240, 240) } />
+                    </a>
+                ))}
+            </div>
+        );
+    }
+    componentDidUpdate() {
+        // start the nano-lightbox-gallery
+        nlg.start();
     }
 }
 
@@ -134,17 +159,14 @@ class MessageCard extends Component {
                 </div>
                 <div class="card-body">
                     { this.state.message.data && <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p> }
-                    { this.state.preview.display && <PreviewBlock {...this.state.preview} />}
+                    <PreviewBlock {...this.state.preview} />
+                    <FileGrid files={this.state.message.files}/>
                 </div>
                 {
                     this.state.displayedChildren.length > 0 &&
                     (
                         <div class="card-footer">
-                            {
-                                this.state.displayedChildren.map(e => {
-                                    return (<MessageCard url={e} />);
-                                })
-                            }
+                            { this.state.displayedChildren.map(e => <MessageCard url={e} /> ) }
                         </div>
                     )
                 }

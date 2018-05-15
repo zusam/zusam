@@ -2,6 +2,16 @@
 @import "custom";
 @import "../bootstrap-light/scss/bootstrap.scss";
 
+// pass in a map to define number of columns for each breakpoint
+@mixin cols-per-breakpoint($params:()) {
+    $gutter: 5px;
+    @each $value in $params {
+        @media (min-width: #{map-get($grid-breakpoints, nth($value, 1))}) {
+            width: calc(#{100 / nth($value, 2)}% - #{$gutter});
+        }
+    }
+}
+
 .w-3 {
     width: 3rem !important;
 }
@@ -22,5 +32,30 @@
     &, &:hover {
         color: inherit;
         text-decoration: none;
+    }
+}
+
+.file-grid {
+    display: flex;
+    flex-flow: row wrap;
+    a {
+        display: block;
+        border-radius: 5px;
+        overflow: hidden;
+        $gutter: 5px;
+        margin: 0 $gutter $gutter 0;
+        @include cols-per-breakpoint(
+            (
+                xs: 2,
+                sm: 3,
+                md: 4,
+                lg: 5,
+                xl: 6
+            )
+        );
+
+        img {
+            width: 100%;
+        }
     }
 }
