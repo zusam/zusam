@@ -1,5 +1,5 @@
 // nano lightbox gallery
-window.nlg = {
+let nlg = {
     list: [],
     bodyStyle: "",
     nlgStyles: `
@@ -248,3 +248,4 @@ window.nlg = {
 		}
     },
 };
+export default nlg;
