@@ -51,7 +51,7 @@ window.nlg = {
             opacity: 0;
             transition: 300ms;
         }
-        #nlg-modal > img {
+        #nlg-modal > .media {
             position: relative;
             left: 0;
             transition: 300ms;
@@ -123,9 +123,18 @@ window.nlg = {
     },
     show: (e, keepBackground = false, side = null) => {
         let url = e.dataset.src || e.src || e.href;
-        let img = new Image();
+		let media;
+		switch (true) {
+			case /\.(webm|mp4)$/.test(url):
+				media = document.createElement("video");
+				media.setAttribute("controls", true);
+				break;
+			case /\.(jpg|jpeg|png|bmp|webp|gif)$/.test(url):
+			default:
+				media = document.createElement("img");
+		}
         if (side) {
-            img.classList.add("nlg-"+side);
+            media.classList.add("nlg-"+side);
         }
         nlg.bodyStyle = document.body.style.cssText;
         document.body.style.cssText = "overflow: hidden";
@@ -159,12 +168,12 @@ window.nlg = {
         document.getElementById("nlg-modal-bg").appendChild(spinner);
         let modal = document.createElement("div");
         modal.id = "nlg-modal";
-        img.addEventListener("load", () => {
+        let mediaIsLoadedFn = () => {
             document.querySelector(".nlg-spinner").outerHTML = "";
-            if (window.innerWidth/window.innerHeight > img.width/img.height) {
-                img.height = window.innerHeight;
+            if (window.innerWidth/window.innerHeight > media.width/media.height) {
+                media.height = window.innerHeight;
             } else {
-                img.width = window.innerWidth;
+                media.width = window.innerWidth;
             }
             let currentIndex = nlg.list.findIndex(e => url === (e.dataset.src || e.src || e.href));
             let nextElmt = nlg.list[currentIndex + 1];
@@ -202,19 +211,21 @@ window.nlg = {
                 modal.appendChild(prev);
             }
             modal.style.cssText = `
-                top: ${document.body.scrollTop + Math.floor(window.innerHeight/2 - img.scrollHeight/2)}px;
-                padding: 0 ${document.body.scrollLeft + Math.floor(window.innerWidth/2 - img.scrollWidth/2)}px;
+                top: ${document.body.scrollTop + Math.floor(window.innerHeight/2 - media.scrollHeight/2)}px;
+                padding: 0 ${document.body.scrollLeft + Math.floor(window.innerWidth/2 - media.scrollWidth/2)}px;
                 opacity: 1;
             `;
             setTimeout(nlg.center, 1);
-        });
+        };
+		media.addEventListener("load", mediaIsLoadedFn);
+		media.addEventListener("canplay", mediaIsLoadedFn);
         modal.addEventListener("click", e => {
             if (e.currentTarget != e.target) { return; }
             nlg.hide();
         });
-        modal.appendChild(img);
+        modal.appendChild(media);
         document.body.appendChild(modal);
-        img.src = url;
+        media.src = url;
     },
     hide: (keepBackground = false) => {
         window.removeEventListener("keypress", nlg.keyPressRight);
@@ -227,11 +238,13 @@ window.nlg = {
             window.removeEventListener("keypress", nlg.keyPressClose);
         }
     },
-    moveLeft: () => document.querySelector("#nlg-modal > img").classList.add("nlg-left"),
-    moveRight: () => document.querySelector("#nlg-modal > img").classList.add("nlg-right"),
+    moveLeft: () => document.querySelector("#nlg-modal > .media").classList.add("nlg-left"),
+    moveRight: () => document.querySelector("#nlg-modal > .media").classList.add("nlg-right"),
     center: () => {
-        let img = document.querySelector("#nlg-modal > img");
-        img.classList.remove("nlg-right");
-        img.classList.remove("nlg-left");
+        let media = document.querySelector("#nlg-modal > .media");
+		if (media) {
+			media.classList.remove("nlg-right");
+			media.classList.remove("nlg-left");
+		}
     },
 };
