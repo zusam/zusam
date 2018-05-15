@@ -59,17 +59,27 @@ class PreviewBlock extends Component {
 }
 
 class FileGrid extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {files: []};
+		if (props.files && props.files.length > 0) {
+			props.files.forEach(e => http.get(e).then(r => this.setState({files: [...this.state.files, r]})))
+		}
+	}
     render() {
-        if (!this.props.files || this.props.files.length === 0) {
+        if (!this.state.files || this.state.files.length === 0) {
             return null;
         }
         return (
             <div class="file-grid">
-                { this.props.files.map(e => (
-                    <a data-nlg href={ http.thumbnail(e, 1024, 1024) }>
-                        <img src={ http.crop(e, 240, 240) } />
-                    </a>
-                ))}
+                { this.state.files.map(e => {
+					let url = /\.jpg$/.test(e.path) ? http.thumbnail(e.path, 1024, 1024) : e.path;
+					return (
+						<a data-nlg href={ url }>
+							<img src={ http.crop(e.path, 240, 240) } />
+						</a>
+					);
+				})}
             </div>
         );
     }
@@ -160,7 +170,7 @@ class MessageCard extends Component {
                 <div class="card-body">
                     { this.state.message.data && <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p> }
                     <PreviewBlock {...this.state.preview} />
-                    <FileGrid files={this.state.message.files}/>
+                    { this.state.message.files && <FileGrid files={this.state.message.files}/> }
                 </div>
                 {
                     this.state.displayedChildren.length > 0 &&
