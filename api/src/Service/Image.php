@@ -2,11 +2,23 @@
 
 namespace App\Service;
 
+use FFMpeg\FFMpeg;
+use FFMpeg\Media\Video;
+use FFMpeg\Coordinate\TimeCode;
+
 class Image
 {
-    public static function createThumbnail(string $input, string $output, $w, $h, $respectFormat = true)
+	private $ffmpegPath;
+	private $ffprobePath;
+
+	public function __construct($binaries) {
+		$this->ffmpegPath = $binaries["ffmpeg"];
+		$this->ffprobePath = $binaries["ffprobe"];
+	}
+
+    public function createThumbnail(string $input, string $output, $w, $h, $respectFormat = true)
     {
-        $im = self::loadImage($input);
+        $im = $this->loadImage($input);
 
         if ($respectFormat) {
             $im->resizeImage(
@@ -20,15 +32,26 @@ class Image
             $im->cropThumbnailImage($w, $h);
         }
         
-        self::saveImage($im, $output);
+        $this->saveImage($im, $output);
         $im->destroy();
     }
 
-    private static function loadImage(string $input): ?\Imagick
+    private function loadImage(string $input): ?\Imagick
     {
         $im = new \Imagick();
         try {
             if (is_readable($input)) {
+                if (preg_match("/video/", mime_content_type($input))) {
+                    $ffmpeg = FFMpeg::create([
+						"ffmpeg.binaries" => $this->ffmpegPath,
+						"ffprobe.binaries" => $this->ffprobePath
+					]);
+                    $video = $ffmpeg->open($input);
+                    $frame = $video->frame(TimeCode::fromSeconds(0));
+                    $tmpfname = tempnam(sys_get_temp_dir(), 'zusam_temp');
+					$frame->save($tmpfname);
+					$input = $tmpfname;
+                }
                 if ($im->readImage($input)) {
                     return $im;
                 }
@@ -37,11 +60,12 @@ class Image
                 return $im;
             }
         } catch(\Exception $e) {
+			var_dump($e->getMessage());
             throw new \Exception("Could not read input image");
         }
     }
 
-    private static function saveImage(\Imagick $im, string $output)
+    private function saveImage(\Imagick $im, string $output)
     {
         // https://developers.google.com/speed/docs/insights/OptimizeImages
         $im->setImageFormat("jpeg");

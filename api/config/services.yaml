@@ -3,6 +3,9 @@
 parameters:
     locale: 'en'
     database_url: '%env(resolve:DATABASE_URL)%'
+    binaries:
+        ffmpeg: '%env(resolve:FFMPEG_PATH)%'
+        ffprobe: '%env(resolve:FFPROBE_PATH)%'
 
 services:
     # default configuration for services in *this* file
@@ -27,3 +30,7 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\Image:
+        arguments:
+            - '%binaries%'

@@ -4,7 +4,7 @@ namespace App\Controller;
 use App\Entity\Link;
 use App\Entity\File;
 use App\Service\Url;
-use App\Service\Image;
+use App\Service\Image as ImageService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,7 +15,7 @@ class LinkByUrl extends Controller
     /**
      * @Route("/links/by_url", name="api_links_post_by_url")
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request, ImageService $imageService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $url = $data["url"] ?? "";
@@ -35,7 +35,7 @@ class LinkByUrl extends Controller
                 $preview->setType("image/jpeg");
                 $preview->setExtension(".jpg");
                 $publicDir = realpath($this->getParameter("kernel.project_dir")."/../public/");
-                Image::createThumbnail($data["image"], $publicDir."/".$preview->getPath(), 2048, 2048);
+                $imageService->createThumbnail($data["image"], $publicDir."/".$preview->getPath(), 2048, 2048);
                 $link->setPreview($preview);
                 $em->persist($preview);
             }

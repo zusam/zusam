@@ -1,7 +1,8 @@
 <?php
 namespace App\Controller;
 
-use App\Service\Image;
+use App\Entity\File;
+use App\Service\Image as ImageService;
 use App\Service\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,7 +14,7 @@ class Files extends Controller
     /**
      * @Route("/images/{type}/{width}/{height}/{id}", name="images")
      */
-    public function image(string $id, int $width, int $height, string $type)
+    public function image(string $id, int $width, int $height, string $type, ImageService $imageService)
     {
         $publicDir = realpath($this->getParameter("kernel.project_dir")."/../public/");
         $cacheDir = realpath($this->getParameter("kernel.project_dir")."/var/cache/");
@@ -21,13 +22,18 @@ class Files extends Controller
         if (is_readable($cacheFile)) {
             return new BinaryFileResponse($cacheFile, 200, ["Content-Type" => mime_content_type($cacheFile)]);
         }
-        $sourceImage = $publicDir."/files/".$id.".jpg";
-        if (is_readable($sourceImage)) {
+        $sourceFile = $this->getDoctrine()->getRepository(File::class)->findOneById($id);
+		if (empty($sourceFile)) {
+			return new JsonResponse(["message" => "Not Found"], JsonResponse::HTTP_NOT_FOUND);
+		}
+        $sourceFilePath = $publicDir.$sourceFile->getPath();
+        // $sourceFilePath = $publicDir."/files/".$id.".jpg";
+        if (is_readable($sourceFilePath)) {
             if ("thumbnail" === $type) {
-                Image::createThumbnail($sourceImage, $cacheFile, $width, $height);
+                $imageService->createThumbnail($sourceFilePath, $cacheFile, $width, $height);
             }
             if ("crop" === $type) {
-                Image::createThumbnail($sourceImage, $cacheFile, $width, $height, false);
+                $imageService->createThumbnail($sourceFilePath, $cacheFile, $width, $height, false);
             }
         }
         if (is_readable($cacheFile)) {
