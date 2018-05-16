@@ -25,7 +25,14 @@ export default class MessageCard extends Component {
             http.get(msg.author).then(author => {
                 this.setState({author: author});
             });
-            this.updatePreviewBlock(this.state.message.data);
+            if (msg.data) {
+                let previewUrl = msg.data.match(this.state.regex.link);
+                if (previewUrl[0]) {
+                    http.post("/api/links/by_url", {
+                        url: previewUrl[0]
+                    }).then(r => this.setState({preview: r}));
+                }
+            }
         });
     }
 
@@ -33,36 +40,6 @@ export default class MessageCard extends Component {
         return {
             __html: this.state.message.data.replace(this.state.regex.link, "<a href=\"$1\">$1</a>")
         };
-    }
-
-    getFirstLink(text) {
-        if (!text) {
-            return null;
-        }
-        let matches = text.match(this.state.regex.link);
-        if (matches && matches.length > 0) {
-            return matches[0];
-        }
-        return null;
-    }
-
-    updatePreviewBlock(text) {
-        let preview = {url: this.getFirstLink(text)};
-        if (!preview.url) {
-            return;
-        }
-        http.post("/api/links/by_url", {url: preview.url}).then(
-            res => {
-                if (res && res.data) {
-                    preview.display = true;
-                    preview.image = res.preview;
-                    let data = JSON.parse(res.data);
-                    preview.title = data["title"];
-                    preview.description = data["description"];
-                    this.setState({preview: preview});
-                }
-            }
-        );
     }
 
     displayDate(timestamp) {
