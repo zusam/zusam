@@ -19,6 +19,9 @@ class LinkByUrl extends Controller
     {
         $data = json_decode($request->getContent(), true);
         $url = $data["url"] ?? "";
+		if (!$url) {
+            return new JsonResponse(["message" => "Invalid url"], JsonResponse::HTTP_BAD_REQUEST);
+		}
         $rescan = $data["rescan"] ?? false;
         $onlyData = $data["onlyData"] ?? false;
         $em = $this->getDoctrine()->getManager();
