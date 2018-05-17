@@ -28,9 +28,7 @@ export default class MessageCard extends Component {
             if (msg.data) {
                 let previewUrl = msg.data.match(this.state.regex.link);
                 if (previewUrl[0]) {
-                    http.post("/api/links/by_url", {
-                        url: previewUrl[0]
-                    }).then(r => this.setState({preview: r}));
+                    http.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => this.setState({preview: r}));
                 }
             }
         });

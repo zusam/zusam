@@ -1,8 +1,7 @@
 "use strict";
 import { h, render, Component } from "preact";
-import http from "./http.js";
 import MessageCard from "./message-card.component.js";
-// import "babel-polyfill";
+import GroupBoard from "./group-board.component.js";
 
 class App extends Component {
 
@@ -16,28 +15,33 @@ class App extends Component {
         this.router = {
             getSegments: () => window.location.pathname.slice(1).split("/")
         }
-    }
-
-    syncWithRoute() {
-        const segments = this.router.getSegments();
-        if (segments[0] === "messages" && segments[1]) {
-            this.setState({
-                show: "message",
-                url: "/api/" + segments[0] + "/" + segments[1],
-            });
-        }
+        
+		const segments = this.router.getSegments();
+		switch (segments[0]) {
+			case "messages":
+				this.setState({
+					show: "message",
+					url: "/api/messages/" + segments[1],
+				});
+				break;
+			case "groups":
+				this.setState({
+					show: "group",
+					url: "/api/groups/" + segments[1],
+				});
+				break;
+			default:
+				console.log("unknown url");
+		}
     }
 
     render() {
         return (
             <div>
                 { this.state.show === "message" && this.state.url && <MessageCard url={this.state.url} /> }
+                { this.state.show === "group" && this.state.url && <GroupBoard url={this.state.url} /> }
             </div>
         );
-    }
-
-    componentDidMount() {
-        this.syncWithRoute();
     }
 }
 
