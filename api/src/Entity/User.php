@@ -17,8 +17,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ApiResource(
  *     attributes={
  *        "access_control"="is_granted('ROLE_USER')",
- *        "normalization_context"={"groups"={"read"}},
- *        "denormalization_context"={"groups"={"write"}}
+ *        "normalization_context"={"groups"={"read_user"}},
+ *        "denormalization_context"={"groups"={"write_user"}}
  *     },
  * )
  */
@@ -27,14 +27,14 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Id
      * @ORM\Column(type="string")
-     * @Groups({"read", "write"})
+     * @Groups({"read_user", "write_user"})
      * @Assert\NotBlank()
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"read", "write"})
+     * @Groups({"read_user", "write_user"})
      * @Assert\Type("integer")
      * @Assert\NotNull()
      */
@@ -42,21 +42,21 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", unique=true)
-     * @Groups({"read", "write"})
+     * @Groups({"read_user", "write_user"})
      * @Assert\NotBlank()
      */
     private $login;
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"write"})
+     * @Groups({"write_user"})
      * @Assert\NotBlank()
      */
     private $password;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read", "write"})
+     * @Groups({"read_user", "write_user"})
      * @Assert\Type("integer")
      * @Assert\NotNull()
      */
@@ -71,7 +71,7 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
      * @ORM\JoinTable(name="users_groups")
-     * @Groups({"read", "write"})
+     * @Groups({"read_user", "write_user"})
      */
     private $groups;
 
@@ -83,13 +83,13 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
-     * @Groups({"read", "write"})
+     * @Groups({"read_user", "write_user"})
      */
     private $avatar;
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"read", "write"})
+     * @Groups({"read_user", "write_user"})
      * @Assert\NotBlank()
      */
     private $name;
