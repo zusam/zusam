@@ -28,6 +28,13 @@ export default class PreviewBlock extends Component {
             return null;
         }
         let data = JSON.parse(this.props.data);
+        if (data["type"] == "photo") {
+            return (
+                <div class="container d-flex justify-content-center flex-wrap">
+                    <img src={ this.props.url } />
+                </div>
+            );
+        }
         if (data["code"]) {
             return <div class="embed-container" ref={e => this.embedContainer = e} dangerouslySetInnerHTML={{__html: data["code"]}}></div>;
         }

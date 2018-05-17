@@ -10,7 +10,7 @@ export default class MessageCard extends Component {
         this.state = {
             url: props.url,
             regex: {
-                link: /\b(https?:\/\/[^\s]+)\b/gi
+                link: /(https?:\/\/[^\s]+)/gi
             },
             message: {},
             author: {},
@@ -34,10 +34,22 @@ export default class MessageCard extends Component {
         });
     }
 
+    shortenUrl(url) {
+        if (url.length < 50) {
+            return url;
+        }
+        return url.slice(0, 25) + "..." + url.slice(-24);
+    }
+
     displayMessageText() {
-        return {
-            __html: this.state.message.data.replace(this.state.regex.link, "<a href=\"$1\">$1</a>")
-        };
+        let txt = this.state.message.data;
+        let matches = txt.match(this.state.regex.link);
+        if (matches) {
+            matches.forEach(url => {
+                txt = txt.replace(url, "<a href=\"" + url + "\">" + this.shortenUrl(url) + "</a>");
+            });
+        }
+        return {__html: txt};
     }
 
     displayDate(timestamp) {
