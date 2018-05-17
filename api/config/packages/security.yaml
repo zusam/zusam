@@ -12,7 +12,7 @@ security:
             stateless: true
             anonymous: ~
             access_denied_handler: App\Security\AccessDeniedHandler
-            entry_point: App\Security\EntryPointService 
+            entry_point: App\Security\EntryPointService
             guard:
                 authenticators:
                     - App\Security\TokenAuthenticator

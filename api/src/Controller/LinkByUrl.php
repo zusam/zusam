@@ -17,6 +17,7 @@ class LinkByUrl extends Controller
      */
     public function getLinkByPost(Request $request, ImageService $imageService): JsonResponse
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
         $data = json_decode($request->getContent(), true);
         $url = $data["url"] ?? "";
         if (!$url) {
@@ -32,6 +33,7 @@ class LinkByUrl extends Controller
      */
     public function getLinkByGet(Request $request, ImageService $imageService): JsonResponse
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
         $data = json_decode($request->getContent(), true);
         $url = $request->query->get("url") ?? "";
         if (!$url) {

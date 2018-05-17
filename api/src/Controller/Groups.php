@@ -15,6 +15,7 @@ class Groups extends Controller
      */
     public function index($id): JsonResponse
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
         $group = $this->getDoctrine()->getRepository(Group::class)->findOneById($id);
         if (empty($group)) {
             return new JsonResponse(["message" => "Not found"], JsonResponse::HTTP_NOT_FOUND);
