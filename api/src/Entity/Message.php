@@ -54,7 +54,7 @@ class Message
      */
     private $parent;
 
-     /**
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="parent")
      */
     private $children;
@@ -67,6 +67,8 @@ class Message
      *      )
      */
     private $files;
+
+    private $lastActivityDate;
 
     public function __construct()
     {
@@ -168,5 +170,22 @@ class Message
     public function getFiles(): Collection
     {
         return $this->files;
+    }
+
+    public function getLastActivityDate(): int
+    {
+        if ($this->lastActivityDate) {
+            return $this->lastActivityDate;
+        }
+        $lastActivityDate = $this->getCreatedAt();
+        if (count($this->getChildren()) > 0) {
+            foreach($this->getChildren() as $child) {
+                $lad = $child->getLastActivityDate();
+                if ($lad > $lastActivityDate) {
+                    $lastActivityDate = $lad;
+                }
+            }            
+        }
+        return $lastActivityDate;
     }
 }
