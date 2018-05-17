@@ -8,12 +8,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Table(name="`group`")
  * @ORM\Entity
  * @ApiResource(
- *     attributes={"access_control"="is_granted('ROLE_USER')"},
+ *     attributes={
+ *        "access_control"="is_granted('ROLE_USER')",
+ *        "normalization_context"={"groups"={"read_group"}},
+ *        "denormalization_context"={"groups"={"write_group"}}
+ *     },
  * )
  */
 class Group
@@ -21,12 +26,14 @@ class Group
     /**
      * @ORM\Id
      * @ORM\Column(type="string")
+     * @Groups({"read_group", "write_group"})
      * @Assert\NotBlank()
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read_group", "write_group"})
      * @Assert\Type("integer")
      * @Assert\NotNull()
      */
@@ -34,17 +41,20 @@ class Group
 
     /**
      * @ORM\Column(type="string")
+     * @Groups({"read_group", "write_group"})
      * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="groups")
+     * @Groups({"read_group", "write_group"})
      */
     private $users;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="group")
+     * @Groups({""})
      */
     private $messages;
 
