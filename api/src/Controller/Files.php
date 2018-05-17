@@ -16,7 +16,6 @@ class Files extends Controller
      */
     public function image(string $id, int $width, int $height, string $type, ImageService $imageService)
     {
-        $this->denyAccessUnlessGranted("ROLE_USER");
         $publicDir = realpath($this->getParameter("kernel.project_dir")."/../public/");
         $cacheDir = realpath($this->getParameter("kernel.project_dir")."/var/cache/");
         $cacheFile = $cacheDir."/images/".Uuid::uuidv4($id.$width."x".$height.$type).".jpg";
