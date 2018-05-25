@@ -34,7 +34,6 @@ class LinkByUrl extends Controller
     public function getLinkByGet(Request $request, ImageService $imageService): JsonResponse
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
-        $data = json_decode($request->getContent(), true);
         $url = $request->query->get("url") ?? "";
         if (!$url) {
             return new JsonResponse(["message" => "Invalid url"], JsonResponse::HTTP_BAD_REQUEST);
