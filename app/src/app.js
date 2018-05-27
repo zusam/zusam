@@ -1,6 +1,6 @@
 "use strict";
 import { h, render, Component } from "preact";
-import MessageCard from "./message-card.component.js";
+import Message from "./message.component.js";
 import GroupBoard from "./group-board.component.js";
 
 class App extends Component {
@@ -38,7 +38,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                { this.state.show === "message" && this.state.url && <MessageCard url={this.state.url} /> }
+                { this.state.show === "message" && this.state.url && <Message url={this.state.url} /> }
                 { this.state.show === "group" && this.state.url && <GroupBoard url={this.state.url} /> }
             </div>
         );
