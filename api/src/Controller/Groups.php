@@ -30,7 +30,7 @@ class Groups extends Controller
 
         // sort messages by lastActivityDate
         usort($messages, function($a, $b) {
-            if ($a->getLastActivityDate() > $b->getLastActivityDate()) {
+            if ($a->getLastActivityDate() < $b->getLastActivityDate()) {
                 return 1;
             }
             return -1;

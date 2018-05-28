@@ -15,17 +15,7 @@ export default class GroupBoard extends Component {
         http.get(props.url).then(
             res => {
                 this.setState({group: res});
-                http.get("/api/groups/" + res["id"] + "/messages").then(res => {
-                    res.slice(0, 20).forEach((url, i) => http.get(url).then(m => {
-                        this.setState({
-                            messages: [
-                                ...this.state.messages.slice(0, i),
-                                m,
-                                ...this.state.messages.slice(i+1)
-                            ]
-                        });
-                    }));
-                });
+                http.get("/api/groups/" + res["id"] + "/messages").then(res => this.setState({messages: res.slice(0, 20)}));
             }
         );
     }
@@ -33,7 +23,7 @@ export default class GroupBoard extends Component {
     render() {
         return (
             <div class="container d-flex flex-wrap">
-                { this.state.messages.map(message => <MessagePreview {...message} />) }
+                { this.state.messages.map(url => <MessagePreview url={url}/>) }
             </div>
         );
     }
