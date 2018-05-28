@@ -87,7 +87,7 @@ export default class Message extends Component {
                     (
                         <div class="card-footer">
                             { this.state.displayedChildren < this.state.message.children.length &&
-                                <button onClick={this.displayMoreChildren}>Voir plus de commentaires</button>
+                                <button class="btn btn-default mb-1" onClick={this.displayMoreChildren}>Voir plus de commentaires</button>
                             }
                             { this.state.message.children.slice(-1 * this.state.displayedChildren).map(e => <Message url={e} key={e}/>) }
                         </div>
