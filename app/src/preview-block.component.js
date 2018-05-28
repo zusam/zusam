@@ -1,5 +1,7 @@
 import { h, render, Component } from "preact";
 import http from "./http.js";
+import YoutubeEmbed from "./youtube-embed.js";
+import SoundcloudEmbed from "./soundcloud-embed.js";
 
 export default class PreviewBlock extends Component {
 
@@ -28,15 +30,29 @@ export default class PreviewBlock extends Component {
             return null;
         }
         let data = JSON.parse(this.props.data);
-        if (data["type"] == "photo") {
+        if (data["type"] == "photo" && !data["code"]) {
             return (
                 <div class="container d-flex justify-content-center flex-wrap">
                     <img src={ this.props.url } />
                 </div>
             );
         }
+        if (data["type"] == "video" && !data["code"]) {
+            return (
+                <div class="container d-flex justify-content-center flex-wrap">
+                    <video controls src={ this.props.url } />
+                </div>
+            );
+        }
         if (data["code"]) {
-            return <div class="embed-container" ref={e => this.embedContainer = e} dangerouslySetInnerHTML={{__html: data["code"]}}></div>;
+            switch (data["providerName"]) {
+                case "YouTube":
+                    return <YoutubeEmbed preview={this.props.preview} url={data["url"]}/>;
+                case "SoundCloud":
+                    return <SoundcloudEmbed preview={this.props.preview} url={data["code"].match(/https:\/\/[^\"\s]+/)[0] + "&auto_play=true"}/>;
+                default:
+                    return <div class="embed-container" ref={e => this.embedContainer = e} dangerouslySetInnerHTML={{__html: data["code"]}}></div>;
+            }
         }
         if (data["title"] && (this.props.preview || data["description"])) {
             return (

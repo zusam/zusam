@@ -83,7 +83,7 @@ export default class Message extends Component {
                     { this.state.message.files && <FileGrid files={this.state.message.files}/> }
                 </div>
                 {
-                    this.state.message.children &&
+                    this.state.message.children && this.state.message.children.length > 0 &&
                     (
                         <div class="card-footer">
                             { this.state.displayedChildren < this.state.message.children.length &&
