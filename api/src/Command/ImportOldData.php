@@ -342,6 +342,11 @@ class ImportOldData extends ContainerAwareCommand
             }
         }
 
+        echo "Enriching messages...\n";
+        foreach($messages as $k => $m) {
+            $messages[$k]["data"] = json_encode(["text" => $m["data"]]);
+        }
+
         echo "\n";
 
         echo "Pushing users...\n";

@@ -12,7 +12,7 @@ export default class MessagePreview extends Component {
                     this.setState({preview: http.crop(msg.files[0], 320, 180)});
                 } else {
                     if (msg.data) {
-                        let previewUrl = msg.data.match(/https?:\/\/[^\s]+/gi);
+                        let previewUrl = JSON.parse(msg.data)["text"].match(/https?:\/\/[^\s]+/gi);
                         if (previewUrl) {
                             http.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
                                 return this.setState({preview: r["preview"]});
