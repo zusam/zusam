@@ -25,7 +25,9 @@ export default class Message extends Component {
                 this.setState({author: author});
             });
             if (msg.data) {
-                let previewUrl = JSON.parse(msg.data)["text"].match(/(https?:\/\/[^\s]+)/gi);
+                const data = JSON.parse(msg.data);
+                this.setState({data: data});
+                let previewUrl = data["text"].match(/(https?:\/\/[^\s]+)/gi);
                 if (previewUrl) {
                     http.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => this.setState({preview: r}));
                 }
@@ -47,8 +49,11 @@ export default class Message extends Component {
     }
 
     displayMessageText() {
+        if (!this.state.data) {
+            return "";
+        }
         // escape html a little (just enough to avoid injection)
-        let txt = JSON.parse(this.state.message.data)["text"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        let txt = this.state.data["text"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
         let matches = txt.match(/(https?:\/\/[^\s]+)/gi);
         if (matches) {
             matches.forEach(url => {
