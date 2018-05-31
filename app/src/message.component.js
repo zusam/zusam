@@ -1,5 +1,6 @@
 import { h, render, Component } from "preact";
 import http from "./http.js";
+import lang from "./lang.js";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";
 
@@ -61,8 +62,15 @@ export default class Message extends Component {
         if (!timestamp) {
             return null;
         }
+        const duration = Date.now() - timestamp*1000;
+        if (duration < 1000 * 60 * 60) {
+            return lang.fr["there_is"] + " " + Math.floor(duration/1000/60) + "mn";
+        }
+        if (duration < 1000 * 60 * 60 * 24) {
+            return lang.fr["there_is"] + " " + Math.floor(duration/1000/60/60) + "h";
+        }
         let date = new Date(timestamp*1000);
-        return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+        return ("0" + date.getDate()).slice(-2) + "/" + ("0" + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
     }
 
     render() {
@@ -87,7 +95,7 @@ export default class Message extends Component {
                     (
                         <div class="card-footer">
                             { this.state.displayedChildren < this.state.message.children.length &&
-                                <button class="btn btn-default mb-1" onClick={this.displayMoreChildren}>Voir plus de commentaires</button>
+                                <button class="btn btn-default mb-1" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</button>
                             }
                             { this.state.message.children.slice(-1 * this.state.displayedChildren).map(e => <Message url={e} key={e}/>) }
                         </div>
