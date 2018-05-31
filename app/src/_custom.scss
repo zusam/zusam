@@ -42,15 +42,15 @@ $enable-grid-classes:       $enable-grid !default;
 
 // stylelint-disable
 $white:    #fff !default;
-$gray-100: #f8f9fa !default;
-$gray-200: #e9ecef !default;
-$gray-300: #dee2e6 !default;
-$gray-400: #ced4da !default;
-$gray-500: #adb5bd !default;
-$gray-600: #6c757d !default;
-$gray-700: #495057 !default;
-$gray-800: #343a40 !default;
-$gray-900: #212529 !default;
+$gray-100: #f9f9f9 !default;
+$gray-200: #ececec !default;
+$gray-300: #dedede !default;
+$gray-400: #cecece !default;
+$gray-500: #adadad !default;
+$gray-600: #6c6c6c !default;
+$gray-700: #494949 !default;
+$gray-800: #343434 !default;
+$gray-900: #212121 !default;
 $black:    #000 !default;
 
 $grays: () !default;
@@ -159,7 +159,7 @@ $sizes: map-merge((
 //
 // Settings for the `<body>` element.
 
-$body-bg:                   $white !default;
+$body-bg:                   $gray-200 !default;
 $body-color:                $gray-900 !default;
 
 // Links
@@ -706,7 +706,7 @@ $jumbotron-bg:                      $gray-200 !default;
 // Cards
 
 $card-spacer-y:                     .75rem !default;
-$card-spacer-x:                     1.25rem !default;
+$card-spacer-x:                     .35rem !default;
 $card-border-width:                 $border-width !default;
 $card-border-radius:                $border-radius !default;
 $card-border-color:                 rgba($black, .125) !default;

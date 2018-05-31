@@ -37,10 +37,10 @@ class App extends Component {
 
     render() {
         return (
-            <div>
+            <main>
                 { this.state.show === "message" && this.state.url && <Message url={this.state.url} /> }
                 { this.state.show === "group" && this.state.url && <GroupBoard url={this.state.url} /> }
-            </div>
+            </main>
         );
     }
 }
