@@ -28,6 +28,9 @@ export default class MessagePreview extends Component {
     }
 
     getTitle() {
+        if (!this.state.data) {
+            return false;
+        }
         if (!this.state.data.title || this.state.data.title.length < 30) {
             return this.state.data.title && " ";
         }
@@ -39,8 +42,10 @@ export default class MessagePreview extends Component {
             <a class="d-block mb-1 ml-1 seamless-link" href={ "/messages/" + this.state.message.id }>
                 <div class="card message-preview shadow-sm">
                     { this.state.author && this.state.author.avatar && <img class="avatar material-shadow" src={ http.crop(this.state.author.avatar, 80, 80) } /> }
-                    { this.state.preview && <img class="card-img-top" src={ http.crop(this.state.preview, 320, 180) } /> }
-                    { !this.state.preview && <img class="card-img-top" src="https://zus.am/Assets/placeholder-mini-post.png" /> }
+                    { this.state.preview ? 
+                            <img class="card-img-top" src={ http.crop(this.state.preview, 320, 180) } />
+                            : <div style={"width:318px;height:180px;background: linear-gradient(" + Math.random()*360 + "deg, #888, #ddd);"} class="card-img-top"></div>
+                    }
                     <div class="card-body border-top d-flex justify-content-between">
                         <span class="left-buffer"></span>
                         <span class="title">{ this.getTitle() }</span>
