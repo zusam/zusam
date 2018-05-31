@@ -10,20 +10,34 @@ export default class GroupBoard extends Component {
         this.state = {
             url: props.url,
             group: {},
-            messages: []
+            messages: [],
+            loaded: 20,
         };
         http.get(props.url).then(
             res => {
                 this.setState({group: res});
-                http.get("/api/groups/" + res["id"] + "/messages").then(res => this.setState({messages: res.slice(0, 20)}));
+                http.get("/api/groups/" + res["id"] + "/messages").then(res => this.setState({messages: res}));
             }
         );
     }
 
+    componentDidMount() {
+        const key = "loadMoreMessagesOnScroll";
+        window.addEventListener("scroll", () => {
+            if (!window.sessionStorage.getItem(key)) {
+                window.sessionStorage.setItem(key, true);
+                if (window.scrollMaxY - 300 < window.scrollY && this.state.loaded < this.state.messages.length) {
+                    this.setState({loaded: this.state.loaded + 10});
+                }
+                setTimeout(() => window.sessionStorage.removeItem(key), 500);
+            }
+        });
+    }
+
     render() {
         return (
-            <div class="container d-flex flex-wrap">
-                { this.state.messages.map(url => <MessagePreview url={url}/>) }
+            <div id="messagesContainer" class="container d-flex flex-wrap">
+                { this.state.messages.slice(0, this.state.loaded).map(url => <MessagePreview key={url} url={url}/>) }
             </div>
         );
     }
