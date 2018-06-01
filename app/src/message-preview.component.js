@@ -1,11 +1,14 @@
 import { h, render, Component } from "preact";
 import http from "./http.js";
+import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class MessagePreview extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            url: this.props.url.replace(/^\/api/,"")
+        };
         http.get(this.props.url).then(
             msg => {
                 this.setState({message: msg});
@@ -39,7 +42,7 @@ export default class MessagePreview extends Component {
 
     render() {
         return this.state.message && (
-            <a class="d-block mb-1 seamless-link message-preview">
+            <a class="d-block mb-1 seamless-link message-preview" onClick={() => router.navigate(this.state.url)}>
                 <div class="card shadow-sm">
                     { this.state.author && this.state.author.avatar && <img class="avatar material-shadow" src={ http.crop(this.state.author.avatar, 80, 80) } /> }
                     { this.state.preview ? 
