@@ -36,7 +36,7 @@ export default class GroupBoard extends Component {
 
     render() {
         return (
-            <div id="messagesContainer" class="container d-flex flex-wrap">
+            <div id="messagesContainer" class="container d-flex flex-wrap justify-content-center">
                 { this.state.messages.slice(0, this.state.loaded).map(url => <MessagePreview key={url} url={url}/>) }
             </div>
         );

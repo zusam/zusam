@@ -39,7 +39,7 @@ export default class MessagePreview extends Component {
 
     render() {
         return this.state.message && (
-            <a class="d-block mb-1 ml-1 seamless-link" href={ "/messages/" + this.state.message.id }>
+            <a class="d-block mb-1 seamless-link" href={ "/messages/" + this.state.message.id }>
                 <div class="card message-preview shadow-sm">
                     { this.state.author && this.state.author.avatar && <img class="avatar material-shadow" src={ http.crop(this.state.author.avatar, 80, 80) } /> }
                     { this.state.preview ? 

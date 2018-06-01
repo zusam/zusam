@@ -12,6 +12,10 @@
     }
 }
 
+.p-1 {
+    padding: 1rem;
+}
+
 .w-3 {
     width: 3rem !important;
 }
@@ -161,9 +165,14 @@
 }
 
 .message-preview {
-    max-width: 100%;
-    width: 320px;
+    width: 100%;
+    max-width: 320px;
     min-height: 215px;
+    margin-left: 1rem;
+
+    @media (max-width: map-get($grid-breakpoints, "sm")) {
+        margin-left: 0;
+    }
 
 	.avatar {
 		display: block;
@@ -208,4 +217,39 @@
 .material-shadow {
 	&:hover {
 	}
+}
+
+main {
+    position: absolute;
+    width: 100%;
+
+    nav {
+        width: 100%;
+        background-color: #f7a71b;
+        position: fixed;
+        z-index: 100;
+        height: 40px;
+
+        .avatar {
+            height: 100%;
+            position: relative;
+            bottom: 1px;
+        }
+
+        .write {
+            margin-left: auto;
+        }
+    }
+
+    .nav-buffer {
+        margin-top: calc(50px + 1rem);
+    }
+}
+
+#messagesContainer {
+    padding-right: 1rem;
+
+    @media (max-width: map-get($grid-breakpoints, "sm")) {
+        padding-right: 0;
+    }
 }
