@@ -10,7 +10,7 @@ const http = {
 		}).then(
 			res => res.json()
 		).catch(
-			err => console.warn(err)
+			err => console.warn("ERROR for " + url, err)
 		);
 	},
 	post: (url, data) => {
@@ -24,7 +24,7 @@ const http = {
 		}).then(
 			res => res.json()
 		).catch(
-			err => console.warn(err)
+			err => console.warn("ERROR for " + url, err)
 		);
 	},
 	// get the id of an object from an url
