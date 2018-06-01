@@ -3,13 +3,14 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\UserSpecial;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Table(name="`user`")
@@ -20,6 +21,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *        "normalization_context"={"groups"={"read_user"}},
  *        "denormalization_context"={"groups"={"write_user"}}
  *     },
+ *     itemOperations={
+ *          "get",
+ *          "put",
+ *          "delete",
+ *          "special"={
+ *              "method"="GET",
+ *              "path"="/me",
+ *              "controller"=UserSpecial::class,
+ *              "defaults"={"_api_receive"=false}
+ *          }
+ *     }
  * )
  */
 class User implements UserInterface, \Serializable
