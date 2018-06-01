@@ -80,7 +80,7 @@ export default class Message extends Component {
 
     render() {
         return this.state.message && (
-            <div class="card shadow-sm mb-1">
+            <div class="card shadow-sm mb-1 message">
                 { this.state.author && (
                     <div class="card-header d-flex">
                         <img class="rounded w-3" src={ http.crop(this.state.author.avatar, 50, 50) }/>

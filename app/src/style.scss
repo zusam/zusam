@@ -167,50 +167,66 @@
 .message-preview {
     width: 100%;
     max-width: 320px;
-    min-height: 215px;
     margin-left: 1rem;
 
     @media (max-width: map-get($grid-breakpoints, "sm")) {
         margin-left: 0;
     }
 
-	.avatar {
-		display: block;
-		width: 40px;
-		height: 40px;
-		position: absolute;
-		left: 10px;
-		top: calc(180px - 20px);
-		border-radius: 50%;
-		overflow: hidden;
-		background: white;
-		border: 2px solid white;
-		box-shadow: 0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.24);
-		transition: all 0.2s ease-in-out;
+    img.card-img-top {
+        height: 180px;
+    }
 
-		&:hover {
-			transform: scale(2);
-			box-shadow: 0 10px 20px rgba(0,0,0,0.19),0 6px 6px rgba(0,0,0,0.23);
-		}
-	}
-    .left-buffer {
-        width: 60px;
-        flex-shrink: 0;
-        height: 22px;
-    }
-	.title, .children {
-		font-size: 90%;
-		color: $gray-600;
-	}
-    .title {
+    & > div {
         width: 100%;
-        flex-shrink: 10;
-        text-align: center;
-    }
-    .children {
-        width: 47px;
-        text-align: right;
-        flex-shrink: 0;
+        max-width: 320px;
+        min-height: 215px;
+
+        .avatar {
+            display: block;
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            left: 10px;
+            top: calc(180px - 20px);
+            border-radius: 50%;
+            overflow: hidden;
+            background: white;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.24);
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                transform: scale(2);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.19),0 6px 6px rgba(0,0,0,0.23);
+            }
+        }
+        .left-buffer {
+            width: 60px;
+            flex-shrink: 0;
+            height: 22px;
+        }
+        .title, .children {
+            font-size: 90%;
+            color: $gray-600;
+        }
+        .title {
+            width: 100%;
+            flex-shrink: 10;
+            text-align: center;
+        }
+        .children {
+            width: 47px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .placeholder {
+            width: 100%;
+            max-width: 318px;
+            height: 180px;
+            background: linear-gradient(15deg, #999, #ddd);
+        }
     }
 }
 
@@ -246,10 +262,6 @@ main {
     }
 }
 
-#messagesContainer {
-    padding-right: 1rem;
-
-    @media (max-width: map-get($grid-breakpoints, "sm")) {
-        padding-right: 0;
-    }
+.message {
+    width: 100%;
 }

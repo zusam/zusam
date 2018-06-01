@@ -39,12 +39,12 @@ export default class MessagePreview extends Component {
 
     render() {
         return this.state.message && (
-            <a class="d-block mb-1 seamless-link" href={ "/messages/" + this.state.message.id }>
-                <div class="card message-preview shadow-sm">
+            <a class="d-block mb-1 seamless-link message-preview">
+                <div class="card shadow-sm">
                     { this.state.author && this.state.author.avatar && <img class="avatar material-shadow" src={ http.crop(this.state.author.avatar, 80, 80) } /> }
                     { this.state.preview ? 
                             <img class="card-img-top" src={ http.crop(this.state.preview, 320, 180) } />
-                            : <div style={"width:318px;height:180px;background: linear-gradient(" + Math.random()*360 + "deg, #888, #ddd);"} class="card-img-top"></div>
+                            : <div class="card-img-top placeholder"></div>
                     }
                     <div class="card-body border-top d-flex justify-content-between">
                         <span class="left-buffer"></span>
