@@ -16,9 +16,16 @@ class Image
 		$this->ffprobePath = $binaries["ffprobe"];
 	}
 
-    public function createThumbnail(string $input, string $output, $w, $h, $respectFormat = true)
+    public function createThumbnail(string $input, string $output, $w, $h, $respectFormat = true): void
     {
-        $im = $this->loadImage($input);
+        try {
+            $im = $this->loadImage($input);
+        } catch (\Exception $e) {
+            return;
+        }
+        if (!$im) {
+            return;
+        }
 
         if ($respectFormat) {
             $im->resizeImage(
@@ -56,12 +63,10 @@ class Image
                     return $im;
                 }
             }
-            if ($im->readImageBlob(file_get_contents($input))) {
-                return $im;
-            }
+            $im->readImageBlob(file_get_contents($input));
+            return $im;
         } catch(\Exception $e) {
-			var_dump($e->getMessage());
-            throw new \Exception("Could not read input image");
+            throw new \Exception("Could not read input image: " + $e->getMessage());
         }
     }
 
