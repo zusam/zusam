@@ -10,7 +10,7 @@ export default class GroupBoard extends Component {
             url: props.url,
             group: {},
             messages: [],
-            loaded: 20,
+            loaded: Math.floor((window.screen.width * window.screen.height) / (320 * 180))
         };
         http.get(props.url).then(
             res => {
