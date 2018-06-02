@@ -1,5 +1,6 @@
 import { h, render, Component } from "preact";
 import http from "./http.js";
+import store from "./store.js";
 import MessagePreview from "./message-preview.component.js";
 
 export default class GroupBoard extends Component {
@@ -12,10 +13,10 @@ export default class GroupBoard extends Component {
             messages: [],
             loaded: Math.floor((window.screen.width * window.screen.height) / (320 * 180))
         };
-        http.get(props.url).then(
+        store.get(props.url).then(
             res => {
                 this.setState({group: res});
-                http.get("/api/groups/" + res["id"] + "/messages").then(res => this.setState({messages: res}));
+                store.get("/api/groups/" + res["id"] + "/messages").then(res => this.setState({messages: res}));
             }
         );
     }

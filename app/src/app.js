@@ -13,11 +13,15 @@ class App extends Component {
     constructor() {
         super();
         this.onRouterStateChange = this.onRouterStateChange.bind(this);
-        this.onStoreStateChange = this.onStoreStateChange.bind(this);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
-        window.addEventListener("storeStateChange", this.onStoreStateChange);
         window.addEventListener("popstate", router.sync);
-        store.getCurrentUser();
+        store.get("/api/me").then(user => {
+            this.setState({currentUser: user});
+            store.get("/api/users/" + user.id + "/groups").then(
+                groups => this.setState({groups: groups})
+            );
+            router.sync();
+        });
     }
 
     onRouterStateChange() {
@@ -27,14 +31,6 @@ class App extends Component {
             family: family,
             url: url
         });
-    }
-
-    onStoreStateChange() {
-        this.setState({currentUser: store.currentUser});
-        http.get("/api/users/" + store.currentUser.id + "/groups").then(
-            groups => this.setState({groups: groups})
-        );
-        router.sync();
     }
 
     render() {

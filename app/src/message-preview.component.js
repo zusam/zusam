@@ -1,15 +1,16 @@
 import { h, render, Component } from "preact";
 import http from "./http.js";
+import store from "./store.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class MessagePreview extends Component {
     constructor(props) {
         super(props);
-        http.get(this.props.url).then(
+        store.get(this.props.url).then(
             msg => {
                 this.setState({message: msg});
-                http.get(msg.author).then(author => this.setState({author: author}));
+                store.get(msg.author).then(author => this.setState({author: author}));
                 if (msg.files && msg.files.length > 0) {
                     this.setState({preview: http.crop(msg.files[0], 320, 180)});
                 } else {
@@ -17,7 +18,7 @@ export default class MessagePreview extends Component {
                         this.setState({data: JSON.parse(msg.data)});
                         let previewUrl = JSON.parse(msg.data)["text"].match(/https?:\/\/[^\s]+/gi);
                         if (previewUrl) {
-                            http.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
+                            store.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
                                 return this.setState({preview: r["preview"]});
                             });
                         }

@@ -16,12 +16,12 @@ export default class Message extends Component {
             preview: {},
             displayedChildren: 0,
         }
-        http.get(props.url).then(msg => {
+        store.get(props.url).then(msg => {
             this.setState({
                 message: msg,
                 displayedChildren: msg.children && 5 // display 5 first children
             });
-            http.get(msg.author).then(author => {
+            store.get(msg.author).then(author => {
                 this.setState({author: author});
             });
             if (msg.data) {
@@ -29,7 +29,7 @@ export default class Message extends Component {
                 this.setState({data: data});
                 let previewUrl = data["text"].match(/(https?:\/\/[^\s]+)/gi);
                 if (previewUrl) {
-                    http.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => this.setState({preview: r}));
+                    store.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => this.setState({preview: r}));
                 }
             }
         });
