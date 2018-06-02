@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Controller\UserSpecial;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -83,7 +84,8 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
      * @ORM\JoinTable(name="users_groups")
-     * @Groups({"read_user", "write_user"})
+     * @Groups({"read_user"})
+     * @ApiSubresource
      */
     private $groups;
 
@@ -95,7 +97,8 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
-     * @Groups({"read_user", "write_user"})
+     * @Groups({"read_user"})
+     * @ApiSubresource
      */
     private $avatar;
 
