@@ -15,6 +15,7 @@ class App extends Component {
         this.onRouterStateChange = this.onRouterStateChange.bind(this);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
+        store.retrieveData();
         store.get("/api/me").then(user => {
             this.setState({currentUser: user});
             store.get("/api/users/" + user.id + "/groups").then(
