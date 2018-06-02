@@ -15,14 +15,14 @@ const router = {
                 }
                 break;
             default:
-                if (store.currentUser && store.currentUser.groups) {
-                    const url = "/groups/" + http.getId(store.currentUser.groups[0]);
+                store.get("/api/me").then(user => {
+                    const url = "/groups/" + http.getId(user.groups[0]);
                     if (replace) {
                         history.replaceState(null, "", url);
                     } else {
                         history.pushState(null, "", url);
                     }
-                }
+                });
         }
         window.dispatchEvent(new Event("routerStateChange"));
     },

@@ -11,6 +11,11 @@ export default class MessagePreview extends Component {
             msg => {
                 this.setState({message: msg});
                 store.get(msg.author).then(author => this.setState({author: author}));
+                store.get("message_" + msg.id).then(
+                    lastVisit => this.setState({
+                        hasNews: !!lastVisit && lastVisit.timestamp < msg.lastActivityDate
+                    })
+                );
                 if (msg.files && msg.files.length > 0) {
                     this.setState({preview: http.crop(msg.files[0], 320, 180)});
                 } else {
@@ -38,11 +43,6 @@ export default class MessagePreview extends Component {
         return this.state.data.title.slice(0, 27) + "...";
     }
 
-    hasNews() {
-        const lastVisit = store.get("message_" + this.state.message.id);
-        return lastVisit && lastVisit.data.timestamp < this.state.message.lastActivityDate;
-    }
-
     render() {
         return this.state.message && (
             <a class="d-block mb-1 seamless-link message-preview" onClick={() => router.navigate(this.props.url)}>
@@ -55,7 +55,7 @@ export default class MessagePreview extends Component {
                     <div class="card-body border-top d-flex justify-content-between">
                         <span class="left-buffer"></span>
                         <span class="title">{ this.getTitle() }</span>
-                        <span className={"children" + (this.hasNews() ? " text-warning" : "")}>
+                        <span className={"children" + (this.state.hasNews ? " text-warning" : "")}>
                             { !!this.state.message.children.length && (
                                 <span>
                                     { this.state.message.children.length + " " }

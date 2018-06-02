@@ -23,7 +23,6 @@ export default class Message extends Component {
                 displayedChildren: msg.children && 5 // display 5 first children
             });
             store.set("message_" + msg.id, {timestamp: Date.now()});
-            // store.saveData();
             store.get(msg.author).then(author => {
                 this.setState({author: author});
             });
