@@ -3,6 +3,7 @@ import store from "./store.js";
 const router = {
     getSegments: () => window.location.pathname.slice(1).split("/"),
     navigate: (url, replace = false) => {
+        url = url.replace(/^\/api/,"");
         const [family, id] = url.slice(1).split("/")
         switch (family) {
             case "messages":

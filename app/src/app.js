@@ -1,5 +1,6 @@
 "use strict";
 import { h, render, Component } from "preact";
+import lang from "./lang.js";
 import http from "./http.js";
 import store from "./store.js";
 import router from "./router.js";
@@ -30,27 +31,38 @@ class App extends Component {
 
     onStoreStateChange() {
         this.setState({currentUser: store.currentUser});
+        http.get("/api/users/" + store.currentUser.id + "/groups").then(
+            groups => this.setState({groups: groups})
+        );
         router.sync();
     }
 
     render() {
         return (
             <main>
-                <nav class="nav align-items-center shadow-sm">
+                <ul class="nav align-items-center shadow-sm">
                     { this.state.currentUser && <img class="avatar" src={ http.crop(this.state.currentUser.avatar, 80, 80) }/> }
-                    <a class="nav-link" href="#">Settings</a>
-                    <a class="nav-link groups">Groups</a>
-                    <a class="write nav-link btn" role="button"><FaIcon family={"solid"} icon={"pencil-alt"}/></a>
-                </nav>
+                    { this.state.currentUser && (
+                        <li class="nav-link groups">
+                            <a>{ lang.fr.groups }</a>
+                            <ul>
+                                { this.state.groups && this.state.groups["hydra:member"].map(
+                                    e => <li onClick={() => router.navigate(e["@id"])}>{ e.name }</li>
+                                )}
+                            </ul>
+                        </li>
+                    )}
+                    <li class="write nav-link btn" role="button"><FaIcon family={"solid"} icon={"pencil-alt"}/></li>
+                </ul>
                 <div class="nav-buffer"></div>
                 { this.state.url && (
                     <article class="d-flex justify-content-center">
                         { this.state.family === "messages" && (
                             <div class="container d-flex justify-content-center">
-                                <Message url={this.state.url} />
+                                <Message key={this.state.url} url={this.state.url} />
                             </div>
                         )}
-                        { this.state.family === "groups" && <GroupBoard url={this.state.url} /> }
+                        { this.state.family === "groups" && <GroupBoard key={this.state.url} url={this.state.url} /> }
                     </article>
                 )}
             </main>
