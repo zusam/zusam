@@ -23,12 +23,14 @@ export default class GroupBoard extends Component {
     componentDidMount() {
         const key = "loadMoreMessagesOnScroll";
         window.addEventListener("scroll", () => {
-            if (!window.sessionStorage.getItem(key)) {
-                window.sessionStorage.setItem(key, true);
-                if (window.scrollMaxY - 300 < window.scrollY && this.state.loaded < this.state.messages.length) {
+            if (
+                !window.sessionStorage.getItem(key)
+                && window.scrollMaxY - 300 < window.scrollY
+                && this.state.loaded < this.state.messages.length
+            ) {
+                    window.sessionStorage.setItem(key, true);
                     this.setState({loaded: this.state.loaded + 10});
-                }
-                setTimeout(() => window.sessionStorage.removeItem(key), 500);
+                    setTimeout(() => window.sessionStorage.removeItem(key), 500);
             }
         });
     }
