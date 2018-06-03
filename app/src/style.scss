@@ -291,6 +291,19 @@ main {
                 background-color: adjust-hue($zusam_color, 5deg);
             }
         }
+
+        .back {
+            font-size: 1.5rem;
+            padding: 0px 1rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            &:hover {
+                background-color: adjust-hue($zusam_color, 5deg);
+            }
+        }
     }
 
     .nav-buffer {

@@ -28,16 +28,20 @@ class App extends Component {
     onRouterStateChange() {
         const [family, id] = router.getSegments();
         const url = "/api/" + family + "/" + id;
-        this.setState({
-            family: family,
-            url: url
-        });
+        store.get(url).then(
+            res => this.setState({
+                family: family,
+                url: url,
+                res: res
+            })
+        );
     }
 
     render() {
         return (
             <main>
                 <ul class="nav align-items-center shadow-sm">
+                    { this.state.family === "messages" && <a class="back" onClick={() => router.navigate(this.state.res.group)}><FaIcon family={"solid"} icon={"arrow-left"}/></a> }
                     { this.state.currentUser && <img class="avatar" src={ http.crop(this.state.currentUser.avatar, 80, 80) }/> }
                     { this.state.currentUser && (
                         <li class="nav-link groups">
