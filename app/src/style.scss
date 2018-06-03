@@ -280,14 +280,16 @@ main {
             display: block;
         }
 
-        li ul li {
-            display: block;
-            padding: 5px 10px;
-            cursor: pointer;
-            white-space: nowrap;
+        li ul {
+            li, a {
+                display: block;
+                padding: 5px 10px;
+                cursor: pointer;
+                white-space: nowrap;
 
-            &:hover {
-                background-color: adjust-hue($zusam_color, 10deg);
+                &:hover {
+                    background-color: adjust-hue($zusam_color, 10deg);
+                }
             }
         }
 

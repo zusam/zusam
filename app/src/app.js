@@ -13,6 +13,7 @@ class App extends Component {
     constructor() {
         super();
         this.onRouterStateChange = this.onRouterStateChange.bind(this);
+        this.back = this.back.bind(this);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
         store.retrieveData();
@@ -25,7 +26,7 @@ class App extends Component {
         });
     }
 
-    onRouterStateChange() {
+    onRouterStateChange(e) {
         const [family, id] = router.getSegments();
         const url = "/api/" + family + "/" + id;
         store.get(url).then(
@@ -37,22 +38,30 @@ class App extends Component {
         );
     }
 
+    back(e) {
+        router.onClick(e);
+    }
+
     render() {
         return (
             <main>
                 <ul class="nav align-items-center shadow-sm">
-                        { this.state.family === "messages" && <a class="back" onClick={() => router.navigate(this.state.res.group)}><FaIcon family={"solid"} icon={"arrow-left"}/></a> }
-                        { this.state.currentUser && (
-                            <li class="nav-link groups">
-                                <a>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></a>
-                                <ul>
-                                    { this.state.groups && this.state.groups["hydra:member"].map(
-                                        e => <li onClick={() => router.navigate(e["@id"])}>{ e.name }</li>
-                                    )}
-                                </ul>
-                            </li>
-                        )}
-                    { this.state.family === "groups" && <span class="title">{ this.state.res.name }</span> }
+                    { this.state.family === "messages" && (
+                        <a class="seamless-link back" href={router.toApp(this.state.res.group)} onClick={this.back}>
+                            <FaIcon family={"solid"} icon={"arrow-left"}/>
+                        </a>
+                    )}
+                    { this.state.currentUser && (
+                        <li class="nav-link groups">
+                            <a>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></a>
+                            <ul>
+                                { this.state.groups && this.state.groups["hydra:member"].map(
+                                    e => <a class="seamless-link" href={router.toApp(e["@id"])} onClick={router.onClick}>{e.name}</a>
+                                )}
+                            </ul>
+                        </li>
+                    )}
+                    { this.state.family === "groups" && <span class="title">{this.state.res.name}</span> }
                     { this.state.currentUser && <img class="avatar" src={ http.crop(this.state.currentUser.avatar, 80, 80) }/> }
                 </ul>
                 <div class="nav-buffer"></div>
