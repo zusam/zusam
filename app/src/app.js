@@ -13,37 +13,85 @@ class App extends Component {
         super();
         this.onRouterStateChange = this.onRouterStateChange.bind(this);
         this.back = this.back.bind(this);
+        this.sendLoginForm = this.sendLoginForm.bind(this);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
         bee.retrieveData();
-        bee.set("apiKey", "cf912e30-3a08-4e52-b372-0ef351408f27");
-        bee.get("/api/me").then(user => {
-            this.setState({currentUser: user});
-            bee.get("/api/users/" + user.id + "/groups").then(
-                groups => this.setState({groups: groups})
-            );
-            router.sync();
+        // bee.set("apiKey", "cf912e30-3a08-4e52-b372-0ef351408f27");
+        bee.get("apiKey").then(apiKey => {
+            if (!apiKey) {
+                this.setState({apiKey: ""});
+                router.navigate("/login");
+            } else {
+				this.start();
+            }
         });
     }
 
-    onRouterStateChange(e) {
+	start() {
+		bee.get("/api/me").then(user => {
+			this.setState({currentUser: user});
+			bee.get("/api/users/" + user.id + "/groups").then(
+				groups => this.setState({groups: groups})
+			);
+			router.sync();
+		});
+	}
+
+    onRouterStateChange() {
         const [family, id] = router.getSegments();
-        const url = "/api/" + family + "/" + id;
-        bee.get(url).then(
-            res => this.setState({
-                family: family,
-                url: url,
-                res: res
-            })
-        );
+		this.setState({family: family})
+		if (family && id) {
+			const url = "/api/" + family + "/" + id;
+			bee.get(url).then(
+				res => this.setState({
+					url: url,
+					res: res
+				})
+			);
+		}
     }
 
     back(e) {
         router.onClick(e);
     }
 
+	sendLoginForm(e) {
+		e.preventDefault();
+		const login = document.getElementById("login").value;
+		const password = document.getElementById("password").value;
+		bee.http.post("/api/login", {login: login, password: password}).then(res => {
+			if (res) {
+				bee.set("apiKey", res.api_key);
+				router.navigate("/");
+				this.start();
+			}
+		})
+	}
+
     render() {
-        return !!this.state.currentUser && (
+        if (!this.state.family) {
+            return;
+        }
+        if (this.state.family === "login") {
+            return (
+                <div class="login">
+                    <div class="container">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="login" placeholder={lang.fr.login_placeholder} />
+                                <small class="form-text text-muted">{lang.fr.login_help}</small>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="password" placeholder={lang.fr.password_placeholder} />
+                            </div>
+                            <button type="submit" class="btn btn-primary" onClick={this.sendLoginForm}>{lang.fr.submit}</button>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+        return !!this.state.currentUser && !!this.state.res && (
             <main>
                 <ul class="nav align-items-center shadow-sm">
                     { this.state.family === "messages" && (

@@ -7,11 +7,13 @@ const router = {
         switch (family) {
             case "messages":
             case "groups":
+            case "login":
                 if (replace) {
                     history.replaceState(null, "", url);
                 } else {
                     history.pushState(null, "", url);
                 }
+				setTimeout(() => window.dispatchEvent(new Event("routerStateChange")), 1);
                 break;
             default:
                 bee.get("/api/me").then(user => {
@@ -21,9 +23,9 @@ const router = {
                     } else {
                         history.pushState(null, "", url);
                     }
+					setTimeout(() => window.dispatchEvent(new Event("routerStateChange")), 1);
                 });
         }
-        setTimeout(() => window.dispatchEvent(new Event("routerStateChange")), 1);
     },
     sync: () => {
         router.navigate(window.location.pathname, true);
