@@ -7,6 +7,7 @@ export default class GroupBoard extends Component {
 
     constructor(props) {
         super(props);
+        this.loadMoreMessages = this.loadMoreMessages.bind(this);
         this.state = {
             url: props.url,
             group: {},
@@ -21,19 +22,25 @@ export default class GroupBoard extends Component {
         );
     }
 
-    componentDidMount() {
+    loadMoreMessages() {
         const key = "loadMoreMessagesOnScroll";
-        window.addEventListener("scroll", () => {
-            if (
-                !window.sessionStorage.getItem(key)
-                && window.scrollMaxY - 300 < window.scrollY
-                && this.state.loaded < this.state.messages.length
-            ) {
-                    window.sessionStorage.setItem(key, true);
-                    this.setState({loaded: this.state.loaded + 10});
-                    setTimeout(() => window.sessionStorage.removeItem(key), 500);
-            }
-        });
+        if (
+            !window.sessionStorage.getItem(key)
+            && window.scrollMaxY - 300 < window.scrollY
+            && this.state.loaded < this.state.messages.length
+        ) {
+            window.sessionStorage.setItem(key, true);
+            this.setState({loaded: this.state.loaded + 10});
+            setTimeout(() => window.sessionStorage.removeItem(key), 500);
+        }
+    }
+
+    componentDidMount() {
+        window.addEventListener("scroll", this.loadMoreMessages);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("scroll", this.loadMoreMessages);
     }
 
     render() {
