@@ -46,7 +46,7 @@ export default class MessagePreview extends Component {
     render() {
         return this.state.message && (
             <a class="d-block mb-1 seamless-link message-preview" onClick={() => router.navigate(this.props.url)}>
-                <div class="card shadow-sm">
+                <div class="card material-shadow">
                     { this.state.author && this.state.author.avatar && <img class="avatar material-shadow" src={ http.crop(this.state.author.avatar, 80, 80) } /> }
                     { this.state.preview ? 
                             <img class="card-img-top" src={ http.crop(this.state.preview, 320, 180) } />
