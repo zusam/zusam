@@ -13,7 +13,13 @@ const store = {
             store.saveData();
         }
     },
-    get: (url, cacheDuration = 60*1000, persistant = false) => {
+    get: (url, cacheDuration, persistant = false) => {
+        if (!cacheDuration) {
+            cacheDuration = 60 * 1000;
+            if (/^\/api\/messages/.test(url)) {
+                cacheDuration *= 5;
+            }
+        }
         if (store.data[url] && store.data[url].timestamp + store.data[url].cacheDuration > Date.now()) {
             return new Promise(r => r(store.data[url].data));
         }
