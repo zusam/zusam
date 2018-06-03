@@ -1,8 +1,7 @@
 "use strict";
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
-import http from "./http.js";
-import store from "./store.js";
+import bee from "./bee.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
 import Message from "./message.component.js";
@@ -16,10 +15,11 @@ class App extends Component {
         this.back = this.back.bind(this);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
-        store.retrieveData();
-        store.get("/api/me").then(user => {
+        bee.retrieveData();
+        bee.set("apiKey", "cf912e30-3a08-4e52-b372-0ef351408f27");
+        bee.get("/api/me").then(user => {
             this.setState({currentUser: user});
-            store.get("/api/users/" + user.id + "/groups").then(
+            bee.get("/api/users/" + user.id + "/groups").then(
                 groups => this.setState({groups: groups})
             );
             router.sync();
@@ -29,7 +29,7 @@ class App extends Component {
     onRouterStateChange(e) {
         const [family, id] = router.getSegments();
         const url = "/api/" + family + "/" + id;
-        store.get(url).then(
+        bee.get(url).then(
             res => this.setState({
                 family: family,
                 url: url,
@@ -43,7 +43,7 @@ class App extends Component {
     }
 
     render() {
-        return (
+        return !!this.state.currentUser && (
             <main>
                 <ul class="nav align-items-center shadow-sm">
                     { this.state.family === "messages" && (
@@ -51,18 +51,16 @@ class App extends Component {
                             <FaIcon family={"solid"} icon={"arrow-left"}/>
                         </a>
                     )}
-                    { this.state.currentUser && (
-                        <li class="nav-link groups">
-                            <a>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></a>
-                            <ul>
-                                { this.state.groups && this.state.groups["hydra:member"].map(
-                                    e => <a class="seamless-link" href={router.toApp(e["@id"])} onClick={router.onClick}>{e.name}</a>
-                                )}
-                            </ul>
-                        </li>
-                    )}
+                    <li class="nav-link groups">
+                        <a>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></a>
+                        <ul>
+                            { this.state.groups && this.state.groups["hydra:member"] && this.state.groups["hydra:member"].map(
+                                e => <a class="seamless-link" href={router.toApp(e["@id"])} onClick={router.onClick}>{e.name}</a>
+                            )}
+                        </ul>
+                    </li>
                     { this.state.family === "groups" && <span class="title">{this.state.res.name}</span> }
-                    { this.state.currentUser && <img class="avatar" src={ http.crop(this.state.currentUser.avatar, 80, 80) }/> }
+                    <img class="avatar" src={ bee.crop(this.state.currentUser.avatar, 80, 80) }/>
                 </ul>
                 <div class="nav-buffer"></div>
                 { this.state.url && (

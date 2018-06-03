@@ -1,29 +1,28 @@
 import { h, render, Component } from "preact";
-import http from "./http.js";
-import store from "./store.js";
+import bee from "./bee.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class MessagePreview extends Component {
     constructor(props) {
         super(props);
-        store.get(this.props.url).then(
+        bee.get(this.props.url).then(
             msg => {
                 this.setState({message: msg});
-                store.get(msg.author).then(author => this.setState({author: author}));
-                store.get("message_" + msg.id).then(
+                bee.get(msg.author).then(author => this.setState({author: author}));
+                bee.get("message_" + msg.id).then(
                     lastVisit => this.setState({
                         hasNews: !!lastVisit && lastVisit.timestamp < msg.lastActivityDate
                     })
                 );
                 if (msg.files && msg.files.length > 0) {
-                    this.setState({preview: http.crop(msg.files[0], 320, 180)});
+                    this.setState({preview: bee.crop(msg.files[0], 320, 180)});
                 } else {
                     if (msg.data) {
                         this.setState({data: JSON.parse(msg.data)});
                         let previewUrl = JSON.parse(msg.data)["text"].match(/https?:\/\/[^\s]+/gi);
                         if (previewUrl) {
-                            store.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
+                            bee.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
                                 return this.setState({preview: r["preview"]});
                             });
                         }
@@ -47,9 +46,9 @@ export default class MessagePreview extends Component {
         return this.state.message && (
             <a class="d-block mb-1 seamless-link message-preview" href={router.toApp(this.props.url)} onClick={router.onClick}>
                 <div class="card material-shadow">
-                    { this.state.author && this.state.author.avatar && <img class="avatar material-shadow" src={ http.crop(this.state.author.avatar, 80, 80) } /> }
+                    { this.state.author && this.state.author.avatar && <img class="avatar material-shadow" src={ bee.crop(this.state.author.avatar, 80, 80) } /> }
                     { this.state.preview ? 
-                            <img class="card-img-top" src={ http.crop(this.state.preview, 320, 180) } />
+                            <img class="card-img-top" src={ bee.crop(this.state.preview, 320, 180) } />
                             : <div class="card-img-top placeholder"></div>
                     }
                     <div class="card-body border-top d-flex justify-content-between">

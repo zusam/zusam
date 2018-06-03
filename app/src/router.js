@@ -1,5 +1,4 @@
-import http from "./http.js";
-import store from "./store.js";
+import bee from "./bee.js";
 const router = {
     toApp: url => url.replace(/^\/api/,""),
     getSegments: () => window.location.pathname.slice(1).split("/"),
@@ -15,8 +14,8 @@ const router = {
                 }
                 break;
             default:
-                store.get("/api/me").then(user => {
-                    const url = "/groups/" + http.getId(user.groups[0]);
+                bee.get("/api/me").then(user => {
+                    const url = "/groups/" + bee.getId(user.groups[0]);
                     if (replace) {
                         history.replaceState(null, "", url);
                     } else {

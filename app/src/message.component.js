@@ -1,7 +1,6 @@
 import { h, render, Component } from "preact";
-import http from "./http.js";
 import lang from "./lang.js";
-import store from "./store.js";
+import bee from "./bee.js";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";
 
@@ -17,13 +16,13 @@ export default class Message extends Component {
             preview: {},
             displayedChildren: 0,
         }
-        store.get(props.url).then(msg => {
+        bee.get(props.url).then(msg => {
             this.setState({
                 message: msg,
                 displayedChildren: msg.children && 5 // display 5 first children
             });
-            store.set("message_" + msg.id, {timestamp: Date.now()});
-            store.get(msg.author).then(author => {
+            bee.set("message_" + msg.id, {timestamp: Date.now()});
+            bee.get(msg.author).then(author => {
                 this.setState({author: author});
             });
             if (msg.data) {
@@ -31,7 +30,7 @@ export default class Message extends Component {
                 this.setState({data: data});
                 let previewUrl = data["text"].match(/(https?:\/\/[^\s]+)/gi);
                 if (previewUrl) {
-                    store.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => this.setState({preview: r}));
+                    bee.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => this.setState({preview: r}));
                 }
             }
         });
@@ -85,7 +84,7 @@ export default class Message extends Component {
             <div class="card shadow-sm mb-1 message">
                 { this.state.author && (
                     <div class="card-header d-flex">
-                        <img class="rounded w-3" src={ http.crop(this.state.author.avatar, 50, 50) }/>
+                        <img class="rounded w-3" src={ bee.crop(this.state.author.avatar, 50, 50) }/>
                         <div class="d-flex flex-column">
                             <span class="capitalize ml-1">{ this.state.author.name }</span>
                             <span class="ml-1">{ this.displayDate(this.state.message.createdAt) }</span>

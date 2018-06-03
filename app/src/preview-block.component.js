@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import http from "./http.js";
+import bee from "./bee.js";
 import YoutubeEmbed from "./youtube-embed.js";
 import SoundcloudEmbed from "./soundcloud-embed.js";
 
@@ -58,7 +58,7 @@ export default class PreviewBlock extends Component {
             return (
                 <a class="seamless-link d-inline-block" target="_blank" href={ this.props.url }>
                     <div class="card" style="max-width: 480px">
-                        { this.props.preview && <img class="card-img-top" src={ http.crop(this.props.preview, 320, 180) } /> }
+                        { this.props.preview && <img class="card-img-top" src={ bee.crop(this.props.preview, 320, 180) } /> }
                         <div class="card-body">
                             <h5>{ data["title"] }</h5>
                             <p><small>{ data["description"] }</small></p>
