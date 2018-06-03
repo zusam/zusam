@@ -41,19 +41,19 @@ class App extends Component {
         return (
             <main>
                 <ul class="nav align-items-center shadow-sm">
-                    { this.state.family === "messages" && <a class="back" onClick={() => router.navigate(this.state.res.group)}><FaIcon family={"solid"} icon={"arrow-left"}/></a> }
+                        { this.state.family === "messages" && <a class="back" onClick={() => router.navigate(this.state.res.group)}><FaIcon family={"solid"} icon={"arrow-left"}/></a> }
+                        { this.state.currentUser && (
+                            <li class="nav-link groups">
+                                <a>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></a>
+                                <ul>
+                                    { this.state.groups && this.state.groups["hydra:member"].map(
+                                        e => <li onClick={() => router.navigate(e["@id"])}>{ e.name }</li>
+                                    )}
+                                </ul>
+                            </li>
+                        )}
+                    { this.state.family === "groups" && <span class="title">{ this.state.res.name }</span> }
                     { this.state.currentUser && <img class="avatar" src={ http.crop(this.state.currentUser.avatar, 80, 80) }/> }
-                    { this.state.currentUser && (
-                        <li class="nav-link groups">
-                            <a>{ lang.fr.groups }</a>
-                            <ul>
-                                { this.state.groups && this.state.groups["hydra:member"].map(
-                                    e => <li onClick={() => router.navigate(e["@id"])}>{ e.name }</li>
-                                )}
-                            </ul>
-                        </li>
-                    )}
-                    <li class="write nav-link btn" role="button"><FaIcon family={"solid"} icon={"pencil-alt"}/></li>
                 </ul>
                 <div class="nav-buffer"></div>
                 { this.state.url && (
