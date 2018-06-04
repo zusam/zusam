@@ -76,16 +76,16 @@ class App extends Component {
         if (this.state.family === "login") {
             return (
                 <div class="login">
-                    <div class="container">
+                    <div class="login-form">
+                        <img src="zusam_logo.svg"/>
                         <form>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="login" placeholder={lang.fr.login_placeholder} />
-                                <small class="form-text text-muted">{lang.fr.login_help}</small>
                             </div>
                             <div class="form-group">
                                 <input type="password" class="form-control" id="password" placeholder={lang.fr.password_placeholder} />
                             </div>
-                            <button type="submit" class="btn btn-primary" onClick={this.sendLoginForm}>{lang.fr.submit}</button>
+                            <button type="submit" class="btn btn-light" onClick={this.sendLoginForm}>{lang.fr.submit}</button>
                         </form>
                     </div>
                 </div>
