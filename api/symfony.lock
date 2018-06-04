@@ -191,6 +191,9 @@
     "symfony/lts": {
         "version": "4-dev"
     },
+    "symfony/polyfill-ctype": {
+        "version": "v1.8.0"
+    },
     "symfony/polyfill-mbstring": {
         "version": "v1.7.0"
     },
