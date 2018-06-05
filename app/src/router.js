@@ -15,6 +15,9 @@ const router = {
                 }
 				setTimeout(() => window.dispatchEvent(new Event("routerStateChange")), 1);
                 break;
+            case "logout":
+                bee.resetData();
+                history.pushState(null, "", url);
             default:
                 bee.get("/api/me").then(user => {
                     const url = "/groups/" + bee.getId(user.groups[0]);

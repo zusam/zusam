@@ -100,6 +100,7 @@ const bee = {
             return v;
         }
         return undefined;
-    }))
+    })),
+    resetData: () => bee.data = {} && window.localStorage.removeItem("data"),
 };
 export default bee;
