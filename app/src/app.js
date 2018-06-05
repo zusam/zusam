@@ -11,7 +11,6 @@ class App extends Component {
     constructor() {
         super();
         this.onRouterStateChange = this.onRouterStateChange.bind(this);
-        this.back = this.back.bind(this);
         this.sendLoginForm = this.sendLoginForm.bind(this);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
@@ -48,16 +47,6 @@ class App extends Component {
 				})
 			);
 		}
-    }
-
-    back(e) {
-        router.onClick(e);
-    }
-
-    goToGroup(e) {
-        e.currentTarget.blur();
-        document.querySelector(".nav .groups").blur();
-        router.onClick(e);
     }
 
 	sendLoginForm(e) {
@@ -97,26 +86,25 @@ class App extends Component {
         }
         return !!this.state.currentUser && !!this.state.res && (
             <main>
-                <ul class="nav align-items-center shadow-sm">
+                <div class="nav align-items-center shadow-sm">
                     <div class="avatar">
                         <img class="rounded-circle" src={ bee.crop(this.state.currentUser.avatar, 80, 80) }/>
                     </div>
                     { this.state.family === "messages" && (
-                        <a class="seamless-link back" href={router.toApp(this.state.res.group)} onClick={this.back}>
+                        <a class="seamless-link back" href={router.toApp(this.state.res.group)} onClick={router.onClick}>
                             <FaIcon family={"solid"} icon={"arrow-left"}/>
                         </a>
                     )}
                     { this.state.family === "groups" && <span class="title">{this.state.res.name}</span> }
-                    <li class="nav-link groups">
-                        <a>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></a>
-                        <ul>
+                    <div class="nav-link dropdown groups" tabindex="-1">
+                        <div>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></div>
+                        <div class="dropdown-menu">
                             { this.state.groups && this.state.groups["hydra:member"] && this.state.groups["hydra:member"].map(
-                                e => <a class="seamless-link" href={router.toApp(e["@id"])} onClick={this.goToGroup}>{e.name}</a>
+                                e => <a class="seamless-link" href={router.toApp(e["@id"])} onClick={router.onClick}>{e.name}</a>
                             )}
-                        </ul>
-                    </li>
-                </ul>
-                <div class="nav-buffer"></div>
+                        </div>
+                    </div>
+                </div>
                 { this.state.url && (
                     <article class="d-flex justify-content-center">
                         { this.state.family === "messages" && (
