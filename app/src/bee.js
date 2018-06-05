@@ -63,13 +63,16 @@ const bee = {
     },
     get: (url, cacheDuration, persistant = false) => {
         if (!cacheDuration) {
-            cacheDuration = 60 * 1000;
+            cacheDuration = 60 * 1000; // 1mn default cache
             if (/^\/api\/messages/.test(url)) {
-                cacheDuration *= 5;
+                cacheDuration *= 10; // 10mn for a message (not likely to be changed often)
             }
         }
-        if (bee.data[url] && bee.data[url].timestamp + bee.data[url].cacheDuration > Date.now()) {
-            return new Promise(r => r(bee.data[url].data));
+        if (bee.data[url]) {
+            let c = bee.data[url].cacheDuration || Infinity;
+            if (bee.data[url].timestamp > Date.now() - c) {
+                return new Promise(r => r(bee.data[url].data));
+            }
         }
         // if it's an api resource, refresh it
         if (/^\/api/.test(url)) {

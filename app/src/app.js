@@ -1,4 +1,3 @@
-"use strict";
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import bee from "./bee.js";
@@ -17,7 +16,6 @@ class App extends Component {
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
         bee.retrieveData();
-        // bee.set("apiKey", "cf912e30-3a08-4e52-b372-0ef351408f27");
         bee.get("apiKey").then(apiKey => {
             if (!apiKey) {
                 this.setState({apiKey: ""});
