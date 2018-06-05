@@ -54,6 +54,12 @@ class App extends Component {
         router.onClick(e);
     }
 
+    goToGroup(e) {
+        e.currentTarget.blur();
+        document.querySelector(".nav .groups").blur();
+        router.onClick(e);
+    }
+
 	sendLoginForm(e) {
 		e.preventDefault();
 		const login = document.getElementById("login").value;
@@ -105,7 +111,7 @@ class App extends Component {
                         <a>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></a>
                         <ul>
                             { this.state.groups && this.state.groups["hydra:member"] && this.state.groups["hydra:member"].map(
-                                e => <a class="seamless-link" href={router.toApp(e["@id"])} onClick={router.onClick}>{e.name}</a>
+                                e => <a class="seamless-link" href={router.toApp(e["@id"])} onClick={this.goToGroup}>{e.name}</a>
                             )}
                         </ul>
                     </li>
