@@ -38,9 +38,9 @@ const router = {
         const t = e.target.closest("a")
         if (t) {
             if (e.ctrlKey) {
-                window.open(t.getAttribute("href"),"_blank")
+                window.open(router.toApp(t.getAttribute("href")),"_blank")
             } else {
-                router.navigate(t.getAttribute("href"));
+                router.navigate(router.toApp(t.getAttribute("href")));
             }
         }
     },

@@ -283,7 +283,7 @@ $zusam_color: #f7a71b;
         height: 100%;
         line-height: 200%;
 
-        &:focus {
+        &.active {
             background-color: adjust-hue($zusam_color, 5deg);
             .dropdown-menu {
                 display: block;
@@ -299,16 +299,11 @@ $zusam_color: #f7a71b;
             position: absolute;
             display: none;
             width: inherit;
-            position: absolute;
             right: 0;
             top: 100%;
             padding: 0;
             background-color: adjust-hue($zusam_color, 5deg);
             text-align: left;
-
-            &:hover {
-                display: block;
-            }
 
             a {
                 display: block;

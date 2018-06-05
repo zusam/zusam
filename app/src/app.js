@@ -36,10 +36,10 @@ class App extends Component {
 	}
 
     onRouterStateChange() {
-        const [family, id] = router.getSegments();
-		this.setState({family: family})
-		if (family && id) {
-			const url = "/api/" + family + "/" + id;
+        const [route, id] = router.getSegments();
+		this.setState({route: route})
+		if (route && id) {
+			const url = "/api/" + route + "/" + id;
 			bee.get(url).then(
 				res => this.setState({
 					url: url,
@@ -63,10 +63,10 @@ class App extends Component {
 	}
 
     render() {
-        if (!this.state.family) {
+        if (!this.state.route) {
             return;
         }
-        if (this.state.family === "login") {
+        if (this.state.route === "login") {
             return (
                 <div class="login">
                     <div class="login-form">
@@ -90,13 +90,17 @@ class App extends Component {
                     <div class="avatar">
                         <img class="rounded-circle" src={ bee.crop(this.state.currentUser.avatar, 80, 80) }/>
                     </div>
-                    { this.state.family === "messages" && (
+                    { this.state.route === "messages" && (
                         <a class="seamless-link back" href={router.toApp(this.state.res.group)} onClick={router.onClick}>
                             <FaIcon family={"solid"} icon={"arrow-left"}/>
                         </a>
                     )}
-                    { this.state.family === "groups" && <span class="title">{this.state.res.name}</span> }
-                    <div class="nav-link dropdown groups" tabindex="-1">
+                    { this.state.route === "groups" && <span class="title">{this.state.res.name}</span> }
+                    <div
+                        class="nav-link dropdown groups" tabindex="0"
+                        onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
+                        onClick={e => e.currentTarget.classList.toggle("active")}
+                    >
                         <div>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></div>
                         <div class="dropdown-menu">
                             { this.state.groups && this.state.groups["hydra:member"] && this.state.groups["hydra:member"].map(
@@ -107,12 +111,12 @@ class App extends Component {
                 </div>
                 { this.state.url && (
                     <article class="d-flex justify-content-center">
-                        { this.state.family === "messages" && (
+                        { this.state.route === "messages" && (
                             <div class="container d-flex justify-content-center">
                                 <Message key={this.state.url} url={this.state.url} />
                             </div>
                         )}
-                        { this.state.family === "groups" && <GroupBoard key={this.state.url} url={this.state.url} /> }
+                        { this.state.route === "groups" && <GroupBoard key={this.state.url} url={this.state.url} /> }
                     </article>
                 )}
             </main>
