@@ -92,11 +92,15 @@ class App extends Component {
         return !!this.state.currentUser && !!this.state.res && (
             <main>
                 <ul class="nav align-items-center shadow-sm">
+                    <div class="avatar">
+                        <img class="rounded-circle" src={ bee.crop(this.state.currentUser.avatar, 80, 80) }/>
+                    </div>
                     { this.state.family === "messages" && (
                         <a class="seamless-link back" href={router.toApp(this.state.res.group)} onClick={this.back}>
                             <FaIcon family={"solid"} icon={"arrow-left"}/>
                         </a>
                     )}
+                    { this.state.family === "groups" && <span class="title">{this.state.res.name}</span> }
                     <li class="nav-link groups">
                         <a>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></a>
                         <ul>
@@ -105,8 +109,6 @@ class App extends Component {
                             )}
                         </ul>
                     </li>
-                    { this.state.family === "groups" && <span class="title">{this.state.res.name}</span> }
-                    <img class="avatar" src={ bee.crop(this.state.currentUser.avatar, 80, 80) }/>
                 </ul>
                 <div class="nav-buffer"></div>
                 { this.state.url && (

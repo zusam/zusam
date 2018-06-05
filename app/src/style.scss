@@ -260,46 +260,52 @@ main {
         }
 
         .avatar {
-            margin-left: auto;
-            height: 100%;
-        }
+            margin-left: 5px;
+            height: calc(100% - 10px);
+            position: relative;
 
-        /* Sub Menus */
-        li ul {
-            position: absolute;
-            display: none;
-            width: inherit;
-            position: absolute;
-            left: 0;
-            top: 100%;
-            padding: 0;
-            background-color: inherit;
-        }
-
-        li:hover ul {
-            display: block;
-        }
-
-        li ul {
-            li, a {
-                display: block;
-                padding: 5px 10px;
-                cursor: pointer;
-                white-space: nowrap;
-
-                &:hover {
-                    background-color: adjust-hue($zusam_color, 10deg);
-                }
+            img {
+                height: 100%;
             }
         }
 
         .groups {
             cursor: pointer;
+            position: relative;
+            margin-left: auto;
+
             &:hover {
                 background-color: adjust-hue($zusam_color, 5deg);
+                ul {
+                    display: block;
+                }
             }
+
             .fa-icon {
                 font-size: 0.7rem;
+            }
+
+            /* Sub Menus */
+            ul {
+                position: absolute;
+                display: none;
+                width: inherit;
+                position: absolute;
+                right: 0;
+                top: 100%;
+                padding: 0;
+                background-color: inherit;
+
+                li, a {
+                    display: block;
+                    padding: 5px 10px;
+                    cursor: pointer;
+                    white-space: nowrap;
+
+                    &:hover {
+                        background-color: adjust-hue($zusam_color, 10deg);
+                    }
+                }
             }
         }
 
