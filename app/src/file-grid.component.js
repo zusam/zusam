@@ -33,7 +33,7 @@ export default class FileGrid extends Component {
         if (!this.state.files || this.state.files.length === 0) {
             return null;
         }
-        if (this.state.files.length > 3) {
+        if (this.props.files.length > 3) {
             return (
                 <div class="file-grid">
                     { this.state.files.map(e => this.renderFile(e, true)) }

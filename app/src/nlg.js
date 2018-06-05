@@ -99,7 +99,11 @@ let nlg = {
     `,
     clickFn: e => {
         e.preventDefault();
-        nlg.show(e.currentTarget);
+        if (e.ctrlKey) {
+            window.open(e.currentTarget.href, "_blank");
+        } else {
+            nlg.show(e.currentTarget);
+        }
     },
     stop: () => {
         document.querySelectorAll("[data-nlg]").forEach(
