@@ -40,7 +40,7 @@ fi
 
 if sudo docker build -t "$CONTAINER_NAME" .; then
     sudo docker run --init -d \
-        --tmpfs /tmp \
+        -p 80:8080 --tmpfs /tmp \
         -e UID="$(id -u)" -e GID="$(id -g)" \
         -v "${pathToProject}":/www --name "$CONTAINER_NAME" "$CONTAINER_NAME"
 fi

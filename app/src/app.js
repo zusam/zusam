@@ -2,9 +2,10 @@ import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import bee from "./bee.js";
 import router from "./router.js";
-import FaIcon from "./fa-icon.component.js";
 import Message from "./message.component.js";
 import GroupBoard from "./group-board.component.js";
+import Login from "./login.component.js";
+import Navbar from "./navbar.component.js";
 
 class App extends Component {
 
@@ -17,25 +18,24 @@ class App extends Component {
         bee.retrieveData();
         bee.get("apiKey").then(apiKey => {
             if (!apiKey) {
-                this.setState({apiKey: ""});
                 router.navigate("/login");
             } else {
-				this.start();
+                router.sync();
             }
         });
     }
 
-	start() {
-		bee.get("/api/me").then(user => {
-			this.setState({currentUser: user});
-			bee.get("/api/users/" + user.id + "/groups").then(
-				groups => this.setState({groups: groups})
-			);
-			router.sync();
-		});
-	}
-
     onRouterStateChange() {
+        bee.get("apiKey").then(apiKey => {
+            if (apiKey) {
+                bee.get("/api/me").then(user => {
+                    this.setState({currentUser: user});
+                    bee.get("/api/users/" + user.id + "/groups").then(
+                        groups => this.setState({groups: groups})
+                    );
+                });
+            }
+        });
         const [route, id] = router.getSegments();
 		this.setState({route: route})
 		if (route && id) {
@@ -67,48 +67,16 @@ class App extends Component {
             return;
         }
         if (this.state.route === "login") {
-            return (
-                <div class="login">
-                    <div class="login-form">
-                        <img src="zusam_logo.svg"/>
-                        <form>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="login" placeholder={lang.fr.login_placeholder} />
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" id="password" placeholder={lang.fr.password_placeholder} />
-                            </div>
-                            <button type="submit" class="btn btn-light" onClick={this.sendLoginForm}>{lang.fr.submit}</button>
-                        </form>
-                    </div>
-                </div>
-            );
+            return <Login />;
         }
         return !!this.state.currentUser && !!this.state.res && (
             <main>
-                <div class="nav align-items-center shadow-sm">
-                    <div class="avatar">
-                        <img class="rounded-circle" src={ bee.crop(this.state.currentUser.avatar, 80, 80) }/>
-                    </div>
-                    { this.state.route === "messages" && (
-                        <a class="seamless-link back" href={router.toApp(this.state.res.group)} onClick={router.onClick}>
-                            <FaIcon family={"solid"} icon={"arrow-left"}/>
-                        </a>
-                    )}
-                    { this.state.route === "groups" && <span class="title">{this.state.res.name}</span> }
-                    <div
-                        class="nav-link dropdown groups" tabindex="0"
-                        onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
-                        onClick={e => e.currentTarget.classList.toggle("active")}
-                    >
-                        <div>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></div>
-                        <div class="dropdown-menu">
-                            { this.state.groups && this.state.groups["hydra:member"] && this.state.groups["hydra:member"].map(
-                                e => <a class="seamless-link" href={router.toApp(e["@id"])} onClick={router.onClick}>{e.name}</a>
-                            )}
-                        </div>
-                    </div>
-                </div>
+                <Navbar
+                    route={this.state.route}
+                    res={this.state.res}
+                    currentUser={this.state.currentUser}
+                    groups={this.state.groups}
+                />
                 { this.state.url && (
                     <article class="d-flex justify-content-center">
                         { this.state.route === "messages" && (
