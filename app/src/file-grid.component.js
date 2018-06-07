@@ -7,7 +7,7 @@ export default class FileGrid extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {files: []};
-		if (props.files && props.files.length > 0) {
+		if (Array.isArray(props.files)) {
 			props.files.forEach(e => bee.get(e).then(r => this.setState({files: [...this.state.files, r]})))
 		}
 	}
@@ -33,7 +33,7 @@ export default class FileGrid extends Component {
         if (!this.state.files || this.state.files.length === 0) {
             return null;
         }
-        if (this.props.files.length > 3) {
+        if (this.props.files && this.props.files.length > 3) {
             return (
                 <div class="file-grid">
                     { this.state.files.map(e => this.renderFile(e, true)) }

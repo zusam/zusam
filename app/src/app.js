@@ -36,6 +36,11 @@ class App extends Component {
                 });
             }
         });
+        bee.get(window.location.pathname).then(page => {
+            if (page && page.scrollY) {
+                window.scrollY = page.scrollY;
+            }
+        })
         const [route, id] = router.getSegments();
 		this.setState({route: route})
 		if (route && id) {
@@ -66,10 +71,10 @@ class App extends Component {
         if (!this.state.route) {
             return;
         }
-        if (this.state.route === "login") {
+        if (this.state.route == "login") {
             return <Login />;
         }
-        return !!this.state.currentUser && !!this.state.res && (
+        return !!this.state.currentUser && !!this.state.res && !!this.state.groups && (
             <main>
                 <Navbar
                     route={this.state.route}
@@ -79,12 +84,14 @@ class App extends Component {
                 />
                 { this.state.url && (
                     <article class="d-flex justify-content-center">
-                        { this.state.route === "messages" && (
+                        { this.state.route == "messages" && this.state.res["@type"] == "Message" && (
                             <div class="container d-flex justify-content-center">
                                 <Message key={this.state.url} url={this.state.url} />
                             </div>
                         )}
-                        { this.state.route === "groups" && <GroupBoard key={this.state.url} url={this.state.url} /> }
+                        { this.state.route == "groups" && this.state.res["@type"] == "Group" && (
+                            <GroupBoard key={this.state.url} url={this.state.url} />
+                        )}
                     </article>
                 )}
             </main>

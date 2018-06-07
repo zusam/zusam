@@ -30,7 +30,9 @@ export default class Message extends Component {
                 this.setState({data: data});
                 let previewUrl = data["text"].match(/(https?:\/\/[^\s]+)/gi);
                 if (previewUrl) {
-                    bee.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => this.setState({preview: r}));
+                    bee.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
+                        this.setState({preview: r});
+                    });
                 }
             }
         });
@@ -43,7 +45,7 @@ export default class Message extends Component {
     }
 
     shortenUrl(url) {
-        if (url.length < 50) {
+        if (!url || url.length < 50) {
             return url;
         }
         return url.slice(0, 25) + "..." + url.slice(-24);

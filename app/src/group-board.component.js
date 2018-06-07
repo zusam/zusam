@@ -16,7 +16,7 @@ export default class GroupBoard extends Component {
         bee.get(props.url).then(
             res => {
                 this.setState({group: res});
-                bee.get("/api/groups/" + res["id"] + "/messages").then(res => this.setState({messages: res}));
+                bee.get("/api/groups/" + res.id + "/messages").then(res => this.setState({messages: res}));
             }
         );
     }

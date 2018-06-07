@@ -37,6 +37,7 @@ const router = {
         e.preventDefault();
         const t = e.target.closest("a")
         if (t) {
+            bee.set(window.location.pathname, {"scrollY": window.scrollY}, Infinity, false);
             if (e.ctrlKey) {
                 window.open(router.toApp(t.getAttribute("href")),"_blank")
             } else {

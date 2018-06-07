@@ -26,7 +26,7 @@ export default class PreviewBlock extends Component {
 	}
 
     render() {
-        if (typeof(this.props.data) == "undefined" || !this.props.data) {
+        if (!this.props.url || !this.props.data || !this.props.preview) {
             return null;
         }
         let data = JSON.parse(this.props.data);

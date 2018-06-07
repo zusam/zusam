@@ -23,7 +23,7 @@ const bee = {
                         "X-AUTH-TOKEN": apiKey || "",
                     }),
                 }).then(
-                    res => res.json()
+                    res => res.ok && res.json()
                 ).catch(
                     err => console.warn("ERROR for " + url, err)
                 )
@@ -39,7 +39,7 @@ const bee = {
                         "X-AUTH-TOKEN": apiKey || "",
                     }),
                 }).then(
-                    res => res.json()
+                    res => res.ok && res.json()
                 ).catch(
                     err => console.warn("ERROR for " + url, err)
                 )
@@ -61,13 +61,7 @@ const bee = {
             bee.saveData();
         }
     },
-    get: (url, cacheDuration, persistant = false) => {
-        if (!cacheDuration) {
-            cacheDuration = 60 * 1000; // 1mn default cache
-            if (/^\/api\/messages/.test(url)) {
-                cacheDuration *= 10; // 10mn for a message (not likely to be changed often)
-            }
-        }
+    get: url => {
         if (bee.data[url]) {
             let c = bee.data[url].cacheDuration || Infinity;
             if (bee.data[url].timestamp > Date.now() - c) {
@@ -76,7 +70,11 @@ const bee = {
         }
         // if it's an api resource, refresh it
         if (/^\/api/.test(url)) {
-            return bee.update(url, cacheDuration, persistant);
+            let cacheDuration = 60 * 1000; // 1mn default cache
+            if (/^\/api\/messages/.test(url)) {
+                cacheDuration *= 10; // 10mn for a message (not likely to be changed often)
+            }
+            return bee.update(url, cacheDuration, false);
         }
         // if it's too old, remove it and return null
         bee.remove(url);
