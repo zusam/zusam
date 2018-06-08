@@ -79,6 +79,7 @@ class ImportOldData extends ContainerAwareCommand
             $u["name"] = html_entity_decode($account["name"]);
             $u["files"] = [];
             $u["groups"] = [];
+            $u["data"] = json_encode(["mail" => $account["mail"]]);
             foreach($account["forums"] as $k=>$v) {
                 $u["groups"][] = Uuid::uuidv4($k);
             }
@@ -178,7 +179,7 @@ class ImportOldData extends ContainerAwareCommand
             $m["id"] = Uuid::uuidv4($post["_id"]['$oid']);
             $m["createdAt"] = strtotime($post["date"]['$date']);
             if (!$m["createdAt"]) {
-                $m["createdAt"] = time();
+                $m["createdAt"] = 0;
             }
             $m["data"] = $post["text"];
             $msgfiles = [];
@@ -246,8 +247,6 @@ class ImportOldData extends ContainerAwareCommand
                 || empty($file["date"]['$date'])
                 || empty($file["fileId"])
                 || empty($file["owner"]['$oid'])
-                || empty($file["links"])
-                || !intval($file["links"])
             ) {
                 continue;
             }
@@ -351,7 +350,7 @@ class ImportOldData extends ContainerAwareCommand
 
         echo "Pushing users...\n";
         foreach($users as $user) {
-            $query = "INSERT INTO `user` (id, created_at, login, password, last_connection, api_key, avatar_id, name) VALUES ("
+            $query = "INSERT INTO `user` (id, created_at, login, password, last_connection, api_key, avatar_id, name, data) VALUES ("
                 ."'".$user["id"]."'"
                 .", ".$user["createdAt"]
                 .", "."'".$user["login"]."'"
@@ -360,6 +359,7 @@ class ImportOldData extends ContainerAwareCommand
                 .", '".Uuid::uuidv4()."'"
                 .", "."'".$user["avatar_id"]."'"
                 .", ".$this->pdo->quote($user["name"])
+                .", ".$this->pdo->quote($user["data"])
                 .");";
             $this->pdo->exec($query) or function () use ($user) {
                 echo "\n";
