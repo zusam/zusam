@@ -36,11 +36,6 @@ class App extends Component {
                 });
             }
         });
-        bee.get(window.location.pathname).then(page => {
-            if (page && page.scrollY) {
-                window.scrollY = page.scrollY;
-            }
-        })
         const [route, id] = router.getSegments();
 		this.setState({route: route})
 		if (route && id) {
@@ -67,6 +62,13 @@ class App extends Component {
 		})
 	}
 
+    displayMessage() {
+        if (this.state.route != "messages" || this.state.res["@type"] != "Message") {
+            return "d-none";
+        }
+        return "d-flex";
+    }
+
     render() {
         if (!this.state.route) {
             return;
@@ -74,7 +76,15 @@ class App extends Component {
         if (this.state.route == "login") {
             return <Login />;
         }
-        return !!this.state.currentUser && !!this.state.res && !!this.state.groups && (
+        if (
+            !this.state.currentUser
+            || !this.state.res
+            || !this.state.groups
+            || !this.state.url
+        ) {
+            return;
+        }
+        return (
             <main>
                 <Navbar
                     route={this.state.route}
@@ -82,18 +92,12 @@ class App extends Component {
                     currentUser={this.state.currentUser}
                     groups={this.state.groups}
                 />
-                { this.state.url && (
-                    <article class="d-flex justify-content-center">
-                        { this.state.route == "messages" && this.state.res["@type"] == "Message" && (
-                            <div class="container d-flex justify-content-center">
-                                <Message key={this.state.url} url={this.state.url} />
-                            </div>
-                        )}
-                        { this.state.route == "groups" && this.state.res["@type"] == "Group" && (
-                            <GroupBoard key={this.state.url} url={this.state.url} />
-                        )}
-                    </article>
-                )}
+                <article class={"justify-content-center " + this.displayMessage()}>
+                    <div class="container">
+                        <Message key={this.state.url} url={this.state.url} />
+                    </div>
+                </article>
+                <GroupBoard displayed={this.state.route == "groups" && this.state.res["@type"] == "Group"} key={this.state.url} url={this.state.url} />
             </main>
         );
     }

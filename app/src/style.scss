@@ -13,6 +13,7 @@
 }
 
 $zusam_color: #f7a71b;
+$navbar_height: 50px;
 
 .fa-icon {
     display: inline-block;
@@ -255,8 +256,7 @@ $zusam_color: #f7a71b;
     position: sticky;
     top: 0;
     z-index: 100;
-    margin-bottom: 2rem;
-    height: 50px;
+    height: $navbar_height;
     color: white;
 
     .title {
@@ -381,4 +381,15 @@ $zusam_color: #f7a71b;
     &:focus {
         outline: none;
     }
+}
+
+body {
+    height: 100vh;
+    overflow: hidden;
+}
+
+article {
+    overflow-y: auto;
+    padding-top: 2rem;
+    height: calc(100vh - #{$navbar_height});
 }

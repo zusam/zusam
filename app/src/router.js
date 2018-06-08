@@ -13,7 +13,7 @@ const router = {
                 } else {
                     history.pushState(null, "", url);
                 }
-				setTimeout(() => window.dispatchEvent(new Event("routerStateChange")), 1);
+				setTimeout(() => window.dispatchEvent(new Event("routerStateChange")), 0);
                 break;
             case "logout":
                 bee.resetData();
@@ -26,7 +26,7 @@ const router = {
                     } else {
                         history.pushState(null, "", url);
                     }
-					setTimeout(() => window.dispatchEvent(new Event("routerStateChange")), 1);
+					setTimeout(() => window.dispatchEvent(new Event("routerStateChange")), 0);
                 });
         }
     },
@@ -37,7 +37,6 @@ const router = {
         e.preventDefault();
         const t = e.target.closest("a")
         if (t) {
-            bee.set(window.location.pathname, {"scrollY": window.scrollY}, Infinity, false);
             if (e.ctrlKey) {
                 window.open(router.toApp(t.getAttribute("href")),"_blank")
             } else {

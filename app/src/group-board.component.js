@@ -7,46 +7,72 @@ export default class GroupBoard extends Component {
     constructor(props) {
         super(props);
         this.loadMoreMessages = this.loadMoreMessages.bind(this);
+        if (!props.displayed) {
+            return;
+        }
         this.state = {
             url: props.url,
             group: {},
             messages: [],
-            loaded: Math.floor((window.screen.width * window.screen.height) / (320 * 180))
+            loaded: 0,
+            scrollTop: 0,
         };
-        bee.get(props.url).then(
-            res => {
-                this.setState({group: res});
-                bee.get("/api/groups/" + res.id + "/messages").then(res => this.setState({messages: res}));
+        bee.get(props.url).then(res => res && bee.get("group_" + res.id).then(groupData => {
+            let loaded = Math.floor((window.screen.width * window.screen.height) / (320 * 180));
+            let scrollTop = 0;
+            if (groupData) {
+                loaded = groupData.loaded || loaded;
+                scrollTop = groupData.scrollTop || scrollTop;
             }
-        );
+            this.setState({
+                group: res,
+                loaded: loaded,
+                scrollTop: scrollTop
+            });
+            bee.get("/api/groups/" + res.id + "/messages").then(res => {
+                if(Array.isArray(res)) {
+                    this.setState({messages: res});
+                    // scrollTo the right place but leave a bit of time for the dom to construct
+                    setTimeout(() => document.getElementById("group").scrollTo(0, scrollTop), 50);
+                }
+            });
+        }));
     }
 
     loadMoreMessages() {
-        const key = "loadMoreMessagesOnScroll";
-        if (
-            !window.sessionStorage.getItem(key)
-            && window.scrollMaxY - 300 < window.scrollY
-            && this.state.loaded < this.state.messages.length
-        ) {
-            window.sessionStorage.setItem(key, true);
-            this.setState({loaded: this.state.loaded + 10});
-            setTimeout(() => window.sessionStorage.removeItem(key), 500);
+        const key = "onScroll";
+        const groupContainer = document.getElementById("group");
+        if (!window.sessionStorage.getItem(key)) {
+            window.sessionStorage.setItem(key, Date.now());
+            return;
+        }
+        if (parseInt(window.sessionStorage.getItem(key)) + 500 < Date.now()) {
+            window.sessionStorage.setItem(key, Date.now());
+            if (groupContainer.scrollTop > this.state.scrollTop + 100) {
+                bee.set("group_" + this.state.group.id, {
+                    loaded: this.state.loaded + 10,
+                    scrollTop: groupContainer.scrollTop
+                }, Infinity, false);
+                this.setState({scrollTop: groupContainer.scrollTop});
+            }
+            if (
+                Array.isArray(this.state.messages)
+                && this.props.displayed
+                && groupContainer.scrollHeight - window.screen.height - 300 < groupContainer.scrollTop
+                && this.state.loaded < this.state.messages.length
+            ) {
+                this.setState({loaded: this.state.loaded + 10});
+            }
         }
     }
 
-    componentDidMount() {
-        window.addEventListener("scroll", this.loadMoreMessages);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener("scroll", this.loadMoreMessages);
-    }
-
     render() {
-        return !!this.state.messages && (
-            <div class="message-container d-flex flex-wrap justify-content-center">
-                { this.state.messages.slice(0, this.state.loaded).map(url => <MessagePreview key={url} url={url}/>) }
-            </div>
+        return Array.isArray(this.state.messages) && (
+            <article id="group" class={"justify-content-center " + (this.props.displayed ? "d-flex" : "d-none")} onScroll={this.loadMoreMessages}>
+                <div class="message-container flex-wrap justify-content-center d-flex">
+                    { this.state.messages.slice(0, this.state.loaded).map(url => <MessagePreview key={url} url={url}/>) }
+                </div>
+            </article>
         );
     }
 }
