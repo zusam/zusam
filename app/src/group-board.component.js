@@ -48,13 +48,11 @@ export default class GroupBoard extends Component {
         }
         if (parseInt(window.sessionStorage.getItem(key)) + 500 < Date.now()) {
             window.sessionStorage.setItem(key, Date.now());
-            if (groupContainer.scrollTop > this.state.scrollTop + 100) {
-                bee.set("group_" + this.state.group.id, {
-                    loaded: this.state.loaded + 10,
-                    scrollTop: groupContainer.scrollTop
-                }, Infinity, false);
-                this.setState({scrollTop: groupContainer.scrollTop});
-            }
+            bee.set("group_" + this.state.group.id, {
+                loaded: this.state.loaded + 10,
+                scrollTop: groupContainer.scrollTop
+            }, Infinity, false);
+            this.setState({scrollTop: groupContainer.scrollTop});
             if (
                 Array.isArray(this.state.messages)
                 && this.props.displayed

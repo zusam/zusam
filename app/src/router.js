@@ -5,9 +5,10 @@ const router = {
     navigate: (url, replace = false) => {
         const [family, id] = router.toApp(url).slice(1).split("/")
         switch (family) {
+            case "login":
+                bee.remove("apiKey");
             case "messages":
             case "groups":
-            case "login":
                 if (replace) {
                     history.replaceState(null, "", url);
                 } else {
@@ -20,6 +21,10 @@ const router = {
                 history.pushState(null, "", url);
             default:
                 bee.get("/api/me").then(user => {
+                    if (!user) {
+                        router.navigate("/login");
+                        return;
+                    }
                     const url = "/groups/" + bee.getId(user.groups[0]);
                     if (replace) {
                         history.replaceState(null, "", url);

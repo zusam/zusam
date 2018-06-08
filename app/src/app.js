@@ -17,7 +17,7 @@ class App extends Component {
         window.addEventListener("popstate", router.sync);
         bee.retrieveData();
         bee.get("apiKey").then(apiKey => {
-            if (!apiKey) {
+            if (!apiKey && this.state.route != "login") {
                 router.navigate("/login");
             } else {
                 router.sync();
@@ -26,16 +26,6 @@ class App extends Component {
     }
 
     onRouterStateChange() {
-        bee.get("apiKey").then(apiKey => {
-            if (apiKey) {
-                bee.get("/api/me").then(user => {
-                    this.setState({currentUser: user});
-                    bee.get("/api/users/" + user.id + "/groups").then(
-                        groups => this.setState({groups: groups})
-                    );
-                });
-            }
-        });
         const [route, id] = router.getSegments();
 		this.setState({route: route})
 		if (route && id) {
@@ -47,6 +37,24 @@ class App extends Component {
 				})
 			);
 		}
+        bee.get("apiKey").then(apiKey => {
+            if (apiKey) {
+                bee.get("/api/me").then(user => {
+                    if (!user && route != "login") {
+                        router.navigate("/login");
+                        return;
+                    }
+                    this.setState({currentUser: user});
+                    bee.get("/api/users/" + user.id + "/groups").then(
+                        groups => this.setState({groups: groups})
+                    );
+                });
+            } else {
+                if (route != "login") {
+                    router.navigate("/login");
+                }
+            }
+        });
     }
 
 	sendLoginForm(e) {
