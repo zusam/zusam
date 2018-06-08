@@ -109,6 +109,12 @@ class User implements UserInterface, \Serializable
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     */
+    private $data;
+
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
@@ -233,6 +239,17 @@ class User implements UserInterface, \Serializable
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getData(): string
+    {
+        return $this->data;
+    }
+
+    public function setData(string $data): self
+    {
+        $this->data = $data;
+        return $this;
     }
 
     // necessary for UserInterface
