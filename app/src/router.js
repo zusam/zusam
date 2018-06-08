@@ -19,6 +19,7 @@ const router = {
             case "logout":
                 bee.resetData();
                 history.pushState(null, "", url);
+                break;
             default:
                 bee.get("/api/me").then(user => {
                     if (!user) {

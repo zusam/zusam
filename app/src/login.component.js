@@ -12,7 +12,7 @@ export default class Login extends Component {
 		bee.http.post("/api/login", {login: login, password: password}).then(res => {
 			if (res) {
 				bee.set("apiKey", res.api_key);
-                setTimeout(() => router.navigate("/"), 0);
+                setTimeout(() => router.navigate("/"), 100);
 			}
 		})
 	}
