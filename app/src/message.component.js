@@ -63,6 +63,8 @@ export default class Message extends Component {
                 txt = txt.replace(url, "<a href=\"" + url + "\">" + this.shortenUrl(url) + "</a>");
             });
         }
+        // replace line returns
+        txt = txt.replace(/\n/g, "<br/>");
         return {__html: txt};
     }
 
