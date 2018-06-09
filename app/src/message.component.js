@@ -103,9 +103,9 @@ export default class Message extends Component {
                                 </div>
                             </div>
                         )}
-                        <div class="p-1 message-body">
+                        <div class="message-body">
                             { this.state.message.data && <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p> }
-                            { this.state.preview && <PreviewBlock {...this.state.preview} /> }
+                            { this.state.preview && <p class="card-text"><PreviewBlock {...this.state.preview} /></p> }
                             { this.state.message.files && <FileGrid files={this.state.message.files}/> }
                         </div>
                     </div>
@@ -135,7 +135,7 @@ export default class Message extends Component {
                             </div>
                         </div>
                     )}
-                    <div class="p-1 message-body">
+                    <div class="message-body">
                         { this.state.message.data && <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p> }
                         { this.state.preview && <PreviewBlock {...this.state.preview} /> }
                         { this.state.message.files && <FileGrid files={this.state.message.files}/> }

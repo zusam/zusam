@@ -4,7 +4,7 @@
 
 // pass in a map to define number of columns for each breakpoint
 @mixin cols-per-breakpoint($params:()) {
-    $gutter: 5px;
+    $gutter: 6px;
     @each $value in $params {
         @media (min-width: #{map-get($grid-breakpoints, nth($value, 1))}) {
             width: calc(#{100 / nth($value, 2)}% - #{$gutter});
@@ -14,6 +14,12 @@
 
 $zusam_color: #f7a71b;
 $navbar_height: 50px;
+
+@media (max-width: map-get($grid-breakpoints, "md")) {
+    .container {
+        padding: 0;
+    }
+}
 
 .fa-icon {
     display: inline-block;
@@ -58,11 +64,12 @@ $navbar_height: 50px;
 .file-grid {
     display: flex;
     flex-flow: row wrap;
+    padding: 1rem;
     a {
         display: block;
         overflow: hidden;
-        $gutter: 5px;
-        margin: 0 $gutter $gutter 0;
+        $gutter: 3px;
+        margin: $gutter;
         @include cols-per-breakpoint(
             (
                 xs: 2,
@@ -200,6 +207,7 @@ $navbar_height: 50px;
             width: 100%;
             max-width: 320px;
             min-height: 215px;
+            border: none;
 
             .avatar {
                 display: block;
@@ -405,6 +413,15 @@ article {
 
     .message-body {
         width: 100%;
+        padding-bottom: 1rem;
+
+        p {
+            margin: 0;
+        }
+
+        .card-text {
+            padding: 1rem 1rem 0 1rem;
+        }
     }
 
     .avatar {
@@ -453,6 +470,10 @@ article {
             .message-body {
                 top: 0;
                 box-shadow: none;
+
+                &:hover .infos {
+                    display: none;
+                }
             }
         }
     }

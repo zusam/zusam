@@ -22,10 +22,14 @@ export default class FileGrid extends Component {
             );
         }
         if (/video/.test(file.type)) {
-            return <video class="img-fluid contained-height" controls="true" src={url}></video>
+            return <video class="img-fluid contained-height mb-1" controls="true" src={url}></video>
         }
         if (/image/.test(file.type)) {
-            return <img class="rounded mb-1" src={url}></img>
+            return (
+                <a class="mb-1" data-nlg href={url}>
+                    <img class="img-fluid" src={url}></img>
+                </a>
+            );
         }
     }
 
