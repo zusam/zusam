@@ -212,12 +212,10 @@ $navbar_height: 50px;
                 overflow: hidden;
                 background: white;
                 border: 2px solid white;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.24);
                 transition: all 0.2s ease-in-out;
 
                 &:hover {
                     transform: scale(2);
-                    box-shadow: 0 10px 20px rgba(0,0,0,0.19),0 6px 6px rgba(0,0,0,0.23);
                 }
             }
             .left-buffer {
@@ -332,15 +330,14 @@ $navbar_height: 50px;
     }
 }
 
-.message {
-    width: 100%;
-}
+$material_shadow: 0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.24);
+$material_shadow_hover: 0 10px 20px rgba(0,0,0,0.19),0 6px 6px rgba(0,0,0,0.23);
 
 .material-shadow {
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: $material_shadow;
     transition: all 0.2s ease-in-out;
     &:hover {
-        box-shadow: 0 10px 20px rgba(0,0,0,0.19),0 6px 6px rgba(0,0,0,0.23);
+        box-shadow: $material_shadow_hover;
     }
 }
 
@@ -392,4 +389,71 @@ article {
     overflow-y: auto;
     padding-top: 2rem;
     height: calc(100vh - #{$navbar_height});
+}
+
+.message {
+    width: 100%;
+    margin-bottom: 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    background-color: #fff;
+    box-shadow: $material_shadow;
+
+    .message-body {
+        width: 100%;
+    }
+
+    .avatar {
+        position: relative;
+        z-index: 10;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+            transform: scale(2);
+        }
+    }
+
+    &.child {
+        background-color: transparent;
+        flex-direction: row;
+        box-shadow: none;
+
+        .message-body {
+            background-color: whitesmoke;
+            position: relative;
+            top: 1rem;
+            box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1),0 1px 2px rgba(255, 255, 255, 0.2);
+
+            .infos {
+                font-size: .8rem;
+                color: #555;
+                display: none;
+                position: absolute;
+                bottom: 5px;
+                right: 5px;
+                span {
+                    margin-left: .5rem;
+                }
+            }
+
+            &:hover {
+                .infos {
+                    display: flex;
+                }
+            }
+        }
+
+        @media (max-width: map-get($grid-breakpoints, "md")) {
+            background-color: #fff;
+            flex-direction: column;
+            box-shadow: $material_shadow;
+            .message-body {
+                top: 0;
+                box-shadow: none;
+            }
+        }
+    }
 }

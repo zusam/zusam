@@ -82,33 +82,67 @@ export default class Message extends Component {
     }
 
     render() {
-        return this.state.message && (
-            <div class="card shadow-sm mb-1 message">
-                { this.state.author && (
-                    <div class="card-header d-flex">
-                        <img class="rounded w-3" src={ bee.crop(this.state.author.avatar, 50, 50) }/>
-                        <div class="d-flex flex-column">
-                            <span class="capitalize ml-1">{ this.state.author.name }</span>
-                            <span class="ml-1">{ this.displayDate(this.state.message.createdAt) }</span>
+        if (!this.state.message || !this.state.message.id) {
+            return;
+        }
+        if (!this.state.message.parent) {
+            return (
+                <div>
+                    <div class="message">
+                        { this.state.author && (
+                            <div class="message-head p-1 d-flex">
+                                <img
+                                    class="rounded-circle w-3 material-shadow avatar"
+                                    src={ bee.crop(this.state.author.avatar, 100, 100) }
+                                />
+                                <div class="d-flex flex-column">
+                                    <span class="capitalize ml-1">{ this.state.author.name }</span>
+                                    <span class="ml-1">{ this.displayDate(this.state.message.createdAt) }</span>
+                                </div>
+                            </div>
+                        )}
+                        <div class="p-1 message-body">
+                            { this.state.message.data && <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p> }
+                            { this.state.preview && <PreviewBlock {...this.state.preview} /> }
+                            { this.state.message.files && <FileGrid files={this.state.message.files}/> }
                         </div>
                     </div>
-                )}
-                <div class="card-body p-1">
-                    { this.state.message.data && <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p> }
-                    { this.state.preview && <PreviewBlock {...this.state.preview} /> }
-                    { this.state.message.files && <FileGrid files={this.state.message.files}/> }
-                </div>
-                {
-                    this.state.message.children && this.state.message.children.length > 0 &&
-                    (
-                        <div class="card-footer">
-                            { this.state.displayedChildren < this.state.message.children.length &&
-                                <button class="btn btn-default mb-1" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</button>
-                            }
+                    { this.state.message.children && this.state.message.children.length > 0 && (
+                        <div>
+                            { this.state.displayedChildren < this.state.message.children.length && (
+                                <button class="btn btn-outline-secondary mb-1" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</button>
+                            )}
                             { this.state.message.children.slice(-1 * this.state.displayedChildren).map(e => <Message url={e} key={e}/>) }
                         </div>
-                    )
-                }
+                    )}
+                </div>
+            );
+        }
+        return (
+            <div>
+                <div class="message child">
+                    { this.state.author && (
+                        <div class="message-head p-1 d-flex d-md-block">
+                            <img
+                                class="rounded-circle w-3 material-shadow avatar"
+                                src={ bee.crop(this.state.author.avatar, 100, 100) }
+                            />
+                            <div class="d-flex d-md-none flex-column">
+                                <span class="capitalize ml-1">{ this.state.author.name }</span>
+                                <span class="ml-1">{ this.displayDate(this.state.message.createdAt) }</span>
+                            </div>
+                        </div>
+                    )}
+                    <div class="p-1 message-body">
+                        { this.state.message.data && <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p> }
+                        { this.state.preview && <PreviewBlock {...this.state.preview} /> }
+                        { this.state.message.files && <FileGrid files={this.state.message.files}/> }
+                        <div class="infos">
+                            <span class="capitalize">{ this.state.author.name }</span>
+                            <span>{ this.displayDate(this.state.message.createdAt) }</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

@@ -1,6 +1,6 @@
 const lang = {
     "fr": {
-        "more_coms": "Voir plus de commentaires",
+        "more_coms": "Voir les commentaires précédents",
         "there_is": "Il y a",
         "groups": "Groupes",
         "login_placeholder": "identifiant",
