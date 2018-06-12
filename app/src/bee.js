@@ -49,56 +49,51 @@ const bee = {
 
     // data store AND cache
     data: {},
-    remove: id => delete(bee.data[id]),
+    remove: id => window.localStorage.removeItem(id),
     set: (id, data, cacheDuration = Infinity, persistant = true) => {
-        bee.data[id] = {
+        const storageBox = {
             data: data,
             timestamp: Date.now(),
-            cacheDuration: cacheDuration,
-            persistant: persistant,
+            cacheDuration: cacheDuration
         };
         if (persistant) {
-            bee.saveData();
+            window.localStorage.setItem(id, JSON.stringify(storageBox));
+        } else {
+            bee.data[id] = storageBox;
         }
     },
-    get: url => {
-        if (bee.data[url]) {
-            let c = bee.data[url].cacheDuration || Infinity;
-            if (bee.data[url].timestamp > Date.now() - c) {
-                return new Promise(r => r(bee.data[url].data));
+    get: id => {
+        // not persistant data has more priority
+        let data = bee.data[id];
+        if (!data) {
+            data = window.localStorage.getItem(id);
+            data = data ? JSON.parse(data) : null;
+        }
+        if (data) {
+            let c = data.cacheDuration || Infinity;
+            if (data.timestamp > Date.now() - c) {
+                return new Promise(r => r(data.data));
             }
         }
         // if it's an api resource, refresh it
-        if (/^\/api/.test(url)) {
+        if (/^\/api/.test(id)) {
             let cacheDuration = 60 * 1000; // 1mn default cache
-            if (/^\/api\/messages/.test(url)) {
+            if (/^\/api\/messages/.test(id)) {
                 cacheDuration *= 10; // 10mn for a message (not likely to be changed often)
             }
-            return bee.update(url, cacheDuration, false);
+            if (/^\/api\/(users|links)/.test(id)) {
+                cacheDuration *= 60; // 60mn for a user
+            }
+            return bee.update(id, cacheDuration, false);
         }
         // if it's too old, remove it and return null
-        bee.remove(url);
+        bee.remove(id);
         return new Promise(r => r(null));
     },
     update: (url, cacheDuration = 60*1000, persistant = false) => bee.http.get(url).then(res => {
-        bee.data[url] = {
-            data: res,
-            timestamp: Date.now(),
-            cacheDuration: cacheDuration,
-            persistant: persistant
-        };
-        if (persistant) {
-            bee.saveData();
-        }
+        bee.set(url, res, cacheDuration, persistant);
         return new Promise(r => r(res));
     }),
-    retrieveData: () => bee.data = JSON.parse(window.localStorage.getItem("data") || "{}") || {},
-    saveData: () => window.localStorage.setItem("data", JSON.stringify(bee.data, (_,v) => {
-        if (typeof(v) !== "object" || (v && v.persistant !== false)) {
-            return v;
-        }
-        return undefined;
-    })),
-    resetData: () => bee.data = {} && window.localStorage.removeItem("data"),
+    resetData: () => window.localStorage.clear(),
 };
 export default bee;
