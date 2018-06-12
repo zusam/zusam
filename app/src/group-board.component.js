@@ -33,7 +33,7 @@ export default class GroupBoard extends Component {
                 if(Array.isArray(res)) {
                     this.setState({messages: res});
                     // scrollTo the right place but leave a bit of time for the dom to construct
-                    setTimeout(() => document.getElementById("group").scrollTo(0, scrollTop), 50);
+                    setTimeout(() => document.getElementById("group").scrollTo(0, scrollTop), 10);
                 }
             });
         }));
@@ -56,7 +56,7 @@ export default class GroupBoard extends Component {
             if (
                 Array.isArray(this.state.messages)
                 && this.props.displayed
-                && groupContainer.scrollHeight - window.screen.height - 300 < groupContainer.scrollTop
+                && groupContainer.scrollHeight - window.screen.height - 400 < groupContainer.scrollTop
                 && this.state.loaded < this.state.messages.length
             ) {
                 this.setState({loaded: this.state.loaded + 10});

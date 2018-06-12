@@ -15,7 +15,6 @@ class App extends Component {
         this.sendLoginForm = this.sendLoginForm.bind(this);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
-        bee.retrieveData();
         bee.get("apiKey").then(apiKey => {
             if (!apiKey && this.state.route != "login") {
                 router.navigate("/login");

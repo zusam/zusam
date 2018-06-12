@@ -184,10 +184,22 @@ $navbar_height: 50px;
 }
 
 .message-container {
+    width: 100%;
     margin-right: 2rem;
 
     @media (max-width: map-get($grid-breakpoints, "sm")) {
         margin-right: 0;
+    }
+
+    .message-preview-placeholder {
+        width: 100%;
+        max-width: 320px;
+        height: 215px;
+        margin: 0 0 2rem 2rem;
+
+        @media (max-width: map-get($grid-breakpoints, "sm")) {
+            margin-left: 0;
+        }
     }
 
     .message-preview {
@@ -272,8 +284,8 @@ $navbar_height: 50px;
     }
 
     .avatar {
-        margin-left: 5px;
-        height: calc(100% - 10px);
+        margin-left: 8px;
+        height: calc(100% - 15px);
         position: relative;
 
         img {
@@ -421,6 +433,7 @@ article {
 
         .card-text {
             padding: 1rem 1rem 0 1rem;
+            line-height: .5rem;
         }
     }
 
@@ -437,19 +450,22 @@ article {
         background-color: transparent;
         flex-direction: row;
         box-shadow: none;
+        align-items: center;
+        margin-bottom: 1rem;
 
         .message-body {
             background-color: whitesmoke;
-            position: relative;
-            top: 1rem;
             box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1),0 1px 2px rgba(255, 255, 255, 0.2);
+            padding-bottom: 2rem;
+            position: relative;
+            top: 8px;
 
             .infos {
                 font-size: .8rem;
                 color: #555;
                 display: none;
                 position: absolute;
-                bottom: 5px;
+                bottom: 0px;
                 right: 5px;
                 span {
                     margin-left: .5rem;
@@ -467,9 +483,12 @@ article {
             background-color: #fff;
             flex-direction: column;
             box-shadow: $material_shadow;
+            align-items: start;
+
             .message-body {
                 top: 0;
                 box-shadow: none;
+                padding-bottom: 1rem;
 
                 &:hover .infos {
                     display: none;

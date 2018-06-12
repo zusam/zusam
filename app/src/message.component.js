@@ -11,9 +11,9 @@ export default class Message extends Component {
         this.displayMoreChildren = this.displayMoreChildren.bind(this);
         this.state = {
             url: props.url,
-            message: {},
-            author: {},
-            preview: {},
+            message: null,
+            author: null,
+            preview: null,
             displayedChildren: 0,
         }
         bee.get(props.url).then(msg => {
@@ -30,9 +30,7 @@ export default class Message extends Component {
                 this.setState({data: data});
                 let previewUrl = data["text"].match(/(https?:\/\/[^\s]+)/gi);
                 if (previewUrl) {
-                    bee.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
-                        this.setState({preview: r});
-                    });
+                    bee.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => r && this.setState({preview: r}));
                 }
             }
         });
@@ -137,10 +135,10 @@ export default class Message extends Component {
                     )}
                     <div class="message-body">
                         { this.state.message.data && <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p> }
-                        { this.state.preview && <PreviewBlock {...this.state.preview} /> }
+                        { this.state.preview && <p class="card-text"><PreviewBlock {...this.state.preview} /></p> }
                         { this.state.message.files && <FileGrid files={this.state.message.files}/> }
                         <div class="infos">
-                            <span class="capitalize">{ this.state.author.name }</span>
+                            {this.state.author && <span class="capitalize">{ this.state.author.name }</span> }
                             <span>{ this.displayDate(this.state.message.createdAt) }</span>
                         </div>
                     </div>
