@@ -94,8 +94,12 @@ class Message
         return $this;
     }
 
-    public function getData(): string
+    public function getData(bool $asArray = false)
     {
+        if ($asArray) {
+            $data = json_decode($this->getData(), true);
+            return $data ? $data : [];
+        }
         return $this->data;
     }
 
