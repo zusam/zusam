@@ -346,6 +346,20 @@ class ImportOldData extends ContainerAwareCommand
             $messages[$k]["data"] = json_encode(["text" => $m["data"]]);
         }
 
+        echo "Setting lastActivityDate of all messages...\n";
+        foreach($messages as $k => $m) {
+            $lastActivityDate = empty($m["lastActivityDate"]) ? $m["createdAt"] : max($m["createdAt"], $m["lastActivityDate"]);
+            if (!empty($m["parent"])) {
+                foreach($messages as $kp => $parent) {
+                    if ($parent["id"] === $m["parent"]) {
+                        $messages[$kp]["lastActivityDate"] = empty($parent["lastActivityDate"]) ? $lastActivityDate : max($lastActivityDate, $parent["lastActivityDate"]);
+                        break;
+                    }
+                }
+            }
+            $messages[$k]["lastActivityDate"] = $lastActivityDate;
+        }
+
         echo "\n";
 
         echo "Pushing users...\n";
@@ -409,12 +423,13 @@ class ImportOldData extends ContainerAwareCommand
                 // var_dump($message);
                 continue;
             }
-            $query = "INSERT INTO `message` (id, group_id, author_id, created_at, data) VALUES ("
+            $query = "INSERT INTO `message` (id, group_id, author_id, created_at, data, last_activity_date) VALUES ("
                 ."'".$message["id"]."'"
                 .", "."'".$message["group"]."'"
                 .", "."'".$message["author"]."'"
                 .", ".$message["createdAt"]
                 .", ".$this->pdo->quote(trim($message["data"]))
+                .", ".$message["lastActivityDate"]
                 .");";
             $this->pdo->exec($query) or function () use ($message) {
                 echo "\n";
@@ -429,13 +444,14 @@ class ImportOldData extends ContainerAwareCommand
             if (empty($message["parent"])) {
                 continue;
             }
-            $query = "INSERT INTO `message` (id, group_id, parent_id, author_id, created_at, data) VALUES ("
+            $query = "INSERT INTO `message` (id, group_id, parent_id, author_id, created_at, data, last_activity_date) VALUES ("
                 ."'".$message["id"]."'"
                 .", "."'".$message["group"]."'"
                 .", "."'".$message["parent"]."'"
                 .", "."'".$message["author"]."'"
                 .", ".$message["createdAt"]
                 .", ".$this->pdo->quote($message["data"])
+                .", ".$message["lastActivityDate"]
                 .");";
             $this->pdo->exec($query) or function () use ($message) {
                 echo "\n";

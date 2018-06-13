@@ -11,9 +11,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="`message`")
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity
  * @ApiResource(
- *     attributes={"access_control"="is_granted('ROLE_USER')"},
+ *     attributes={
+ *          "access_control"="is_granted('ROLE_USER')",
+ *          "order"={"lastActivityDate": "DESC"}
+ *     },
  * )
  */
 class Message
@@ -68,6 +72,11 @@ class Message
      */
     private $files;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
+     * @Assert\NotNull()
+     */
     private $lastActivityDate;
 
     public function __construct()
@@ -178,18 +187,12 @@ class Message
 
     public function getLastActivityDate(): int
     {
-        if ($this->lastActivityDate) {
-            return $this->lastActivityDate;
-        }
-        $lastActivityDate = $this->getCreatedAt();
-        if (count($this->getChildren()) > 0) {
-            foreach($this->getChildren() as $child) {
-                $lad = $child->getLastActivityDate();
-                if ($lad > $lastActivityDate) {
-                    $lastActivityDate = $lad;
-                }
-            }            
-        }
-        return $lastActivityDate;
+        return $this->lastActivityDate;
+    }
+
+    public function setLastActivityDate(int $lastActivityDate): self
+    {
+        $this->lastActivityDate = $lastActivityDate;
+        return $this;
     }
 }
