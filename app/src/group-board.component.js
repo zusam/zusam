@@ -17,7 +17,7 @@ export default class GroupBoard extends Component {
             loaded: 0,
             scrollTop: 0,
         };
-        bee.get(props.url).then(res => res && bee.get("group_" + res.id).then(groupData => {
+        bee.get(props.url).then(group => group && bee.get("group_" + group.id).then(groupData => {
             let loaded = Math.floor((window.screen.width * window.screen.height) / (320 * 215));
             let scrollTop = 0;
             if (groupData) {
@@ -25,13 +25,14 @@ export default class GroupBoard extends Component {
                 scrollTop = groupData.scrollTop || scrollTop;
             }
             this.setState({
-                group: res,
+                group: group,
                 loaded: loaded,
-                scrollTop: scrollTop
+                scrollTop: scrollTop,
+                page: 1,
             });
-            bee.get("/api/groups/" + res.id + "/messages").then(res => {
-                if(Array.isArray(res)) {
-                    this.setState({messages: res});
+            bee.get("/api/groups/" + group.id + "/messages?page=1").then(res => {
+                if(res && Array.isArray(res["hydra:member"])) {
+                    this.setState({messages: res["hydra:member"]});
                     // scrollTo the right place but leave a bit of time for the dom to construct
                     setTimeout(() => document.getElementById("group").scrollTo(0, scrollTop), 0);
                 }
@@ -59,6 +60,16 @@ export default class GroupBoard extends Component {
                 && this.state.loaded < this.state.messages.length
             ) {
                 this.setState({loaded: this.state.loaded + 10});
+                if (this.state.loaded + 30 > this.state.messages.length) {
+                    bee.get("/api/groups/" + this.state.group.id + "/messages?page=" + (this.state.page + 1)).then(res => {
+                        if(res && Array.isArray(res["hydra:member"])) {
+                            this.setState({
+                                messages: [...this.state.messages, ...res["hydra:member"]],
+                                page: this.state.page + 1,
+                            });
+                        }
+                    });
+                }
             }
         }
     }
@@ -67,8 +78,8 @@ export default class GroupBoard extends Component {
         return Array.isArray(this.state.messages) && (
             <article id="group" class="justify-content-center d-flex" onScroll={this.loadMoreMessages}>
                 <div class="message-container flex-wrap justify-content-center d-flex">
-                    { this.state.messages.slice(0, this.state.loaded).map((url, i) => {
-                        return <MessagePreview tabindex={i + 1} key={url} url={url}/>;
+                    { this.state.messages.slice(0, this.state.loaded).map((msg, i) => {
+                        return <MessagePreview tabindex={i + 1} key={msg.id} message={msg}/>;
                     })}
                 </div>
             </article>

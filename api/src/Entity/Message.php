@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="`message`")
- * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity
  * @ApiResource(
  *     attributes={

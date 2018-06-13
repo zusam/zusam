@@ -9,6 +9,7 @@ export default class Login extends Component {
 		e.preventDefault();
 		const login = document.getElementById("login").value;
 		const password = document.getElementById("password").value;
+        bee.set("apiKey", "");
 		bee.http.post("/api/login", {login: login, password: password}).then(res => {
 			if (res) {
 				bee.set("apiKey", res.api_key);

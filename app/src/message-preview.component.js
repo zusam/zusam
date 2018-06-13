@@ -7,17 +7,29 @@ export default class MessagePreview extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            url: props.url,
+            message: props.message,
         };
-        bee.get(props.url.replace(/messages/, "message-previews")).then(
-            msgp => {
-                this.setState(Object.assign({}, msgp));
-                bee.get("message_" + bee.getId(props.url)).then(
-                    lastVisit => this.setState({
-                        hasNews: !!lastVisit && lastVisit.timestamp < msgp.lastActivityDate
-                    })
-                );
+        if (props.message.author) {
+            bee.get(props.message.author).then(author => author && this.setState({author: author}));
+        }
+        const msgData = JSON.parse(props.message.data);
+        this.setState({title: msgData.title || ""});
+        if (props.message.files.length) {
+            this.setState({preview: props.message.files[0]});
+        } else {
+            if (msgData.text) {
+                const links = msgData.text.match(/https?:\/\/[^\s]+/gi);
+                if (links) {
+                    bee.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(
+                        r => this.setState({preview: r["preview"]})
+                    )
+                }
             }
+        }
+        bee.get("message_" + props.message.id).then(
+            lastVisit => this.setState({
+                hasNews: !!lastVisit && lastVisit.timestamp < props.message.lastActivityDate
+            })
         );
     }
 
@@ -29,14 +41,14 @@ export default class MessagePreview extends Component {
     }
 
     render() {
-        if (!this.state["@id"]) {
-            return <a href={this.state.url} class="message-preview-placeholder material-shadow"></a>;
+        if (!this.state.author) {
+            return <a href={router.toApp(this.state.message["@id"])} class="message-preview-placeholder material-shadow"></a>;
         }
 
         return (
             <a
                 class="d-block seamless-link message-preview"
-                href={router.toApp(this.state.url)}
+                href={router.toApp(this.state.message["@id"])}
                 onClick={router.onClick}
             >
                 <div tabindex={this.props.tabindex} class="card material-shadow">
@@ -66,9 +78,9 @@ export default class MessagePreview extends Component {
                         <span class="left-buffer"></span>
                         <span class="title">{ this.getTitle() }</span>
                         <span className={"children" + (this.state.hasNews ? " text-warning" : "")}>
-                            { !!this.state.children_count && (
+                            { !!this.state.message.children.length && (
                                 <span>
-                                    { this.state.children_count + " " }
+                                    { this.state.message.children.length + " " }
                                     <FaIcon family={"regular"} icon={"comment"} />
                                 </span>
                             )}
