@@ -68,7 +68,10 @@ export default class GroupBoard extends Component {
         return Array.isArray(this.state.messages) && (
             <article id="group" class={"justify-content-center " + (this.props.displayed ? "d-flex" : "d-none")} onScroll={this.loadMoreMessages}>
                 <div class="message-container flex-wrap justify-content-center d-flex">
-                    { this.state.messages.slice(0, this.state.loaded).map(url => <MessagePreview key={url} url={url}/>) }
+                    { this.state.messages.slice(0, this.state.loaded).map(url => {
+                        url = url.replace(/messages/, "message-previews");
+                        return <MessagePreview key={url} url={url}/>;
+                    })}
                 </div>
             </article>
         );

@@ -10,40 +10,26 @@ export default class MessagePreview extends Component {
             url: props.url,
         };
         bee.get(props.url).then(
-            msg => {
-                this.setState({message: msg});
-                bee.get(msg.author).then(author => this.setState({author: author}));
-                bee.get("message_" + msg.id).then(
+            msgp => {
+                this.setState(Object.assign({}, msgp));
+                bee.get("message_" + bee.getId(props.url)).then(
                     lastVisit => this.setState({
-                        hasNews: !!lastVisit && lastVisit.timestamp < msg.lastActivityDate
+                        hasNews: !!lastVisit && lastVisit.timestamp < msgp.lastActivityDate
                     })
                 );
-                this.setState({data: JSON.parse(msg.data)});
-                if (msg.files && msg.files.length > 0) {
-                    this.setState({preview: bee.crop(msg.files[0], 320, 180)});
-                } else {
-                    if (msg.data) {
-                        let previewUrl = JSON.parse(msg.data)["text"].match(/https?:\/\/[^\s]+/gi);
-                        if (previewUrl) {
-                            bee.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(
-                                r => this.setState({preview: r["preview"]})
-                            )
-                        }
-                    }
-                }
             }
         );
     }
 
     getTitle() {
-        if (!this.state.data.title || this.state.data.title.length < 30) {
-            return this.state.data.title && " ";
+        if (!this.state.title || this.state.title.length < 30) {
+            return this.state.title && " ";
         }
-        return this.state.data.title.slice(0, 27) + "...";
+        return this.state.title.slice(0, 27) + "...";
     }
 
     render() {
-        if (!this.state.message || !this.state.data) {
+        if (!this.state["@id"]) {
             return <a href={this.state.url} class="message-preview-placeholder material-shadow"></a>;
         }
 
@@ -76,9 +62,9 @@ export default class MessagePreview extends Component {
                         <span class="left-buffer"></span>
                         <span class="title">{ this.getTitle() }</span>
                         <span className={"children" + (this.state.hasNews ? " text-warning" : "")}>
-                            { !!this.state.message.children.length && (
+                            { !!this.state.children_count && (
                                 <span>
-                                    { this.state.message.children.length + " " }
+                                    { this.state.children_count + " " }
                                     <FaIcon family={"regular"} icon={"comment"} />
                                 </span>
                             )}
