@@ -35,3 +35,6 @@
 /public/*.map
 /public/*.css
 /public/*.html
+/public/*.svg
+/public/*.png
+/public/*.jpg
