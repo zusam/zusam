@@ -29,6 +29,9 @@ class App extends Component {
 		this.setState({route: route})
 		if (route && id) {
 			const url = "/api/" + route + "/" + id;
+            if (route == "groups") {
+                this.setState({group: url});
+            }
 			bee.get(url).then(
 				res => this.setState({
 					url: url,
@@ -104,7 +107,9 @@ class App extends Component {
                         <Message key={this.state.url} url={this.state.url} />
                     </div>
                 </article>
-                <GroupBoard displayed={this.state.route == "groups" && this.state.res["@type"] == "Group"} key={this.state.url} url={this.state.url} />
+                <div class={this.state.route == "groups" && this.state.res["@type"] == "Group" ? "d-block" : "d-none"}>
+                    <GroupBoard key={this.state.group} url={this.state.group} />
+                </div>
             </main>
         );
     }

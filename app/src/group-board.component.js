@@ -7,7 +7,7 @@ export default class GroupBoard extends Component {
     constructor(props) {
         super(props);
         this.loadMoreMessages = this.loadMoreMessages.bind(this);
-        if (!props.displayed) {
+        if (this.state.messages && this.state.messages.length > 0) {
             return;
         }
         this.state = {
@@ -33,7 +33,7 @@ export default class GroupBoard extends Component {
                 if(Array.isArray(res)) {
                     this.setState({messages: res});
                     // scrollTo the right place but leave a bit of time for the dom to construct
-                    setTimeout(() => document.getElementById("group").scrollTo(0, scrollTop), 10);
+                    setTimeout(() => document.getElementById("group").scrollTo(0, scrollTop), 0);
                 }
             });
         }));
@@ -55,7 +55,6 @@ export default class GroupBoard extends Component {
             this.setState({scrollTop: groupContainer.scrollTop});
             if (
                 Array.isArray(this.state.messages)
-                && this.props.displayed
                 && groupContainer.scrollHeight - window.screen.height - 400 < groupContainer.scrollTop
                 && this.state.loaded < this.state.messages.length
             ) {
@@ -66,10 +65,9 @@ export default class GroupBoard extends Component {
 
     render() {
         return Array.isArray(this.state.messages) && (
-            <article id="group" class={"justify-content-center " + (this.props.displayed ? "d-flex" : "d-none")} onScroll={this.loadMoreMessages}>
+            <article id="group" class="justify-content-center d-flex" onScroll={this.loadMoreMessages}>
                 <div class="message-container flex-wrap justify-content-center d-flex">
                     { this.state.messages.slice(0, this.state.loaded).map(url => {
-                        url = url.replace(/messages/, "message-previews");
                         return <MessagePreview key={url} url={url}/>;
                     })}
                 </div>

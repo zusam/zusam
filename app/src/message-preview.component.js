@@ -9,7 +9,7 @@ export default class MessagePreview extends Component {
         this.state = {
             url: props.url,
         };
-        bee.get(props.url).then(
+        bee.get(props.url.replace(/messages/, "message-previews")).then(
             msgp => {
                 this.setState(Object.assign({}, msgp));
                 bee.get("message_" + bee.getId(props.url)).then(
