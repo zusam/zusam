@@ -36,7 +36,10 @@ class Image
                 true
             );
         } else {
-            $im->cropThumbnailImage($w, $h);
+            $im->cropThumbnailImage(
+                min($im->getImageWidth(), $w),
+                min($im->getImageHeight(), $h)
+            );
         }
         
         $this->saveImage($im, $output);
