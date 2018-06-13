@@ -9,7 +9,7 @@ export default class Navbar extends Component {
     render() {
         return (
             <div class="nav align-items-center shadow-sm">
-                { this.props.currentUser && this.props.currentUser.avatar && (
+                { this.props.currentUser && this.props.currentUser.avatar && this.props.route != "messages" && (
                     <div class="avatar">
                         <img class="rounded-circle" src={ bee.crop(this.props.currentUser.avatar, 80, 80) }/>
                     </div>
@@ -24,7 +24,7 @@ export default class Navbar extends Component {
                 )}
                 { this.props.groups && (
                     <div
-                        class="nav-link dropdown groups" tabindex="0"
+                        class="nav-link dropdown groups" tabindex="-1"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >

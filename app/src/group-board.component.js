@@ -18,7 +18,7 @@ export default class GroupBoard extends Component {
             scrollTop: 0,
         };
         bee.get(props.url).then(res => res && bee.get("group_" + res.id).then(groupData => {
-            let loaded = Math.floor((window.screen.width * window.screen.height) / (320 * 180));
+            let loaded = Math.floor((window.screen.width * window.screen.height) / (320 * 215));
             let scrollTop = 0;
             if (groupData) {
                 loaded = groupData.loaded || loaded;
@@ -46,7 +46,7 @@ export default class GroupBoard extends Component {
             window.sessionStorage.setItem(key, Date.now());
             return;
         }
-        if (parseInt(window.sessionStorage.getItem(key)) + 500 < Date.now()) {
+        if (parseInt(window.sessionStorage.getItem(key)) + 300 < Date.now()) {
             window.sessionStorage.setItem(key, Date.now());
             bee.set("group_" + this.state.group.id, {
                 loaded: this.state.loaded + 10,
@@ -67,8 +67,8 @@ export default class GroupBoard extends Component {
         return Array.isArray(this.state.messages) && (
             <article id="group" class="justify-content-center d-flex" onScroll={this.loadMoreMessages}>
                 <div class="message-container flex-wrap justify-content-center d-flex">
-                    { this.state.messages.slice(0, this.state.loaded).map(url => {
-                        return <MessagePreview key={url} url={url}/>;
+                    { this.state.messages.slice(0, this.state.loaded).map((url, i) => {
+                        return <MessagePreview tabindex={i + 1} key={url} url={url}/>;
                     })}
                 </div>
             </article>

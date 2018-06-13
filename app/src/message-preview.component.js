@@ -34,8 +34,12 @@ export default class MessagePreview extends Component {
         }
 
         return (
-            <a class="d-block seamless-link message-preview" href={router.toApp(this.state.url)} onClick={router.onClick}>
-                <div class="card material-shadow">
+            <a
+                class="d-block seamless-link message-preview"
+                href={router.toApp(this.state.url)}
+                onClick={router.onClick}
+            >
+                <div tabindex={this.props.tabindex} class="card material-shadow">
                     { this.state.author && this.state.author.avatar && <img class="avatar material-shadow" src={ bee.crop(this.state.author.avatar, 100, 100) } /> }
                     { this.state.preview ?
                             <img class="card-img-top" src={ bee.crop(this.state.preview, 320, 180) } />
