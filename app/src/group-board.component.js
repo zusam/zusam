@@ -30,7 +30,7 @@ export default class GroupBoard extends Component {
                 scrollTop: scrollTop,
                 page: 1,
             });
-            bee.get("/api/groups/" + group.id + "/messages?page=1").then(res => {
+            bee.get("/api/groups/" + group.id + "/messages?parent[exists]=0&page=1").then(res => {
                 if(res && Array.isArray(res["hydra:member"])) {
                     this.setState({messages: res["hydra:member"]});
                     // scrollTo the right place but leave a bit of time for the dom to construct
@@ -61,7 +61,7 @@ export default class GroupBoard extends Component {
             ) {
                 this.setState({loaded: this.state.loaded + 10});
                 if (this.state.loaded + 30 > this.state.messages.length) {
-                    bee.get("/api/groups/" + this.state.group.id + "/messages?page=" + (this.state.page + 1)).then(res => {
+                    bee.get("/api/groups/" + this.state.group.id + "/messages?parent[exists]=0&page=" + (this.state.page + 1)).then(res => {
                         if(res && Array.isArray(res["hydra:member"])) {
                             this.setState({
                                 messages: [...this.state.messages, ...res["hydra:member"]],
