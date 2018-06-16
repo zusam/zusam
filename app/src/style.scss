@@ -422,6 +422,10 @@ article {
         width: 100%;
         padding-bottom: 1rem;
 
+        a.image {
+            margin: 5px;
+        }
+
         p {
             margin: 0;
         }
@@ -435,6 +439,8 @@ article {
         position: relative;
         z-index: 10;
         transition: all 0.2s ease-in-out;
+        height: 3rem;
+        width: 3rem;
         &:hover {
             transform: scale(2);
         }
@@ -489,5 +495,17 @@ article {
                 }
             }
         }
+    }
+}
+
+.more-coms {
+    margin: 0 0 1rem 1rem;
+    font-size: 85%;
+    color: #555 !important;
+    display: inline-block;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline !important;
     }
 }

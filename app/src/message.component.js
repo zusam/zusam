@@ -92,7 +92,7 @@ export default class Message extends Component {
                         { this.state.author && (
                             <div class="message-head p-1 d-flex">
                                 <img
-                                    class="rounded-circle w-3 material-shadow avatar"
+                                    class="rounded-circle material-shadow avatar"
                                     src={ bee.crop(this.state.author.avatar, 100, 100) }
                                 />
                                 <div class="d-flex flex-column">
@@ -110,7 +110,7 @@ export default class Message extends Component {
                     { this.state.message.children && this.state.message.children.length > 0 && (
                         <div>
                             { this.state.displayedChildren < this.state.message.children.length && (
-                                <button class="btn btn-outline-secondary mb-1" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</button>
+                                <a class="more-coms" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</a>
                             )}
                             { this.state.message.children.slice(-1 * this.state.displayedChildren).map(e => <Message url={e} key={e}/>) }
                         </div>

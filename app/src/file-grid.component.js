@@ -13,7 +13,7 @@ export default class FileGrid extends Component {
 	}
 
     renderFile(file, miniature = false) {
-        let url = /image/.test(file.path) ? bee.thumbnail(file.path, 1024, 1024) : file.path;
+        let url = /image/.test(file.type) ? bee.thumbnail(file.path, 1024, 768) : file.path;
         if (miniature == true) {
             return (
                 <a data-nlg href={url}>
@@ -26,7 +26,7 @@ export default class FileGrid extends Component {
         }
         if (/image/.test(file.type)) {
             return (
-                <a class="mb-1" data-nlg href={url}>
+                <a class="image" data-nlg href={url}>
                     <img class="img-fluid" src={url}></img>
                 </a>
             );
