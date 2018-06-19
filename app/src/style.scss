@@ -509,3 +509,82 @@ article {
         text-decoration: underline !important;
     }
 }
+
+.write {
+    position: fixed;
+    z-index: 500;
+    bottom: 2rem;
+    right: 2rem;
+    border-radius: 100%;
+    font-size: 2rem;
+    background-color: $zusam_color;
+    padding: 16px;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    &:hover {
+        background-color: adjust-hue($zusam_color, -15deg);
+    }
+}
+
+.writer {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 1rem;
+
+    #title {
+        width: 100%;
+        padding: 10px;
+        display: inline;
+        border: none;
+        border-bottom: 1px solid #eee;
+        &::placeholder {
+            color: #999;
+        }
+    }
+
+    #text {
+        resize: none;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #eee;
+        &::placeholder {
+            color: #999;
+        }
+    }
+
+    .options {
+        padding: 5px 0;
+        display: flex;
+        align-content: center;
+
+        .option {
+            background: none;
+            border: none;
+            margin: 0 5px;
+            color: #888;
+            font-size: 1.3rem;
+            cursor: pointer;
+            &:hover {
+                color: #444;
+            }
+        }
+
+        .submit {
+            margin-left: auto;
+            background-color: #f7a71b;
+            border: none;
+            border-radius: 2px;
+            color: white;
+            padding: 4px 10px;
+            cursor: pointer;
+            &:hover {
+                background-color: adjust-hue($zusam_color, -15deg);
+            }
+        }
+    }
+}
