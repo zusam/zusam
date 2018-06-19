@@ -3,8 +3,8 @@ const router = {
     toApp: url => url.replace(/^\/api/,""),
     getSegments: () => window.location.pathname.slice(1).split("/"),
     navigate: (url, replace = false) => {
-        const [family, id] = router.toApp(url).slice(1).split("/")
-        switch (family) {
+        const [route, id, action] = router.toApp(url).slice(1).split("/")
+        switch (route) {
             case "login":
                 bee.remove("apiKey");
             case "messages":

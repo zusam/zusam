@@ -9,13 +9,13 @@ export default class Navbar extends Component {
     render() {
         return (
             <div class="nav align-items-center shadow-sm">
-                { this.props.currentUser && this.props.currentUser.avatar && this.props.route != "messages" && (
+                { this.props.currentUser && this.props.currentUser.avatar && !this.props.backUrl && (
                     <div class="avatar">
                         <img class="rounded-circle" src={ bee.crop(this.props.currentUser.avatar, 80, 80) }/>
                     </div>
                 )}
-                { this.props.route == "messages" && this.props.res && this.props.res["@type"] == "Message" && (
-                    <a class="seamless-link back" href={router.toApp(this.props.res.group)} onClick={router.onClick}>
+                { this.props.backUrl && (
+                    <a class="seamless-link back" href={this.props.backUrl} onClick={router.onClick}>
                         <FaIcon family={"solid"} icon={"arrow-left"}/>
                     </a>
                 )}

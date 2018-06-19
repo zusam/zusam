@@ -6,6 +6,8 @@ import Message from "./message.component.js";
 import GroupBoard from "./group-board.component.js";
 import Login from "./login.component.js";
 import Navbar from "./navbar.component.js";
+import FaIcon from "./fa-icon.component.js";
+import Writer from "./writer.component.js";
 
 class App extends Component {
 
@@ -25,18 +27,37 @@ class App extends Component {
     }
 
     onRouterStateChange() {
-        const [route, id] = router.getSegments();
-		this.setState({route: route})
+        const [route, id, action] = router.getSegments();
+		this.setState({route: route, action: action})
 		if (route && id) {
-			const url = "/api/" + route + "/" + id;
-            if (route == "groups") {
-                this.setState({group: url});
+            let url = "/" + route + "/" + id;
+            let backUrl = "";
+            const entityUrl = "/api/" + route + "/" + id;
+            if (action) {
+                backUrl = url;
+                url += "/" + action;
             }
-			bee.get(url).then(
-				res => this.setState({
-					url: url,
-					res: res
-				})
+            if (route == "groups") {
+                this.setState({group: entityUrl});
+            }
+			bee.get(entityUrl).then(
+                res => {
+                    if (!backUrl) {
+                        switch (res["@type"]) {
+                            case "Message":
+                                backUrl = router.toApp(this.props.res.group);
+                                break;
+                            case "Group":
+                            default:
+                        }
+                    }
+                    this.setState({
+                        url: url,
+                        res: res,
+                        backUrl: backUrl,
+                        entityUrl: entityUrl,
+                    });
+                }
 			);
 		}
         bee.get("apiKey").then(apiKey => {
@@ -101,14 +122,33 @@ class App extends Component {
                     res={this.state.res}
                     currentUser={this.state.currentUser}
                     groups={this.state.groups}
+                    backUrl={this.state.backUrl}
                 />
                 <article class={"justify-content-center " + this.displayMessage()}>
                     <div class="container">
                         <Message key={this.state.url} url={this.state.url} />
                     </div>
                 </article>
-                <div class={this.state.route == "groups" && this.state.res["@type"] == "Group" ? "d-block" : "d-none"}>
+                <div class={
+                        this.state.route == "groups" 
+                        && this.state.action != "write"
+                        && this.state.res["@type"] == "Group" 
+                        ? "d-block" : "d-none"
+                }>
                     <GroupBoard key={this.state.group} url={this.state.group} />
+                    <a class="write material-shadow seamless-link" href={this.state.url + "/write"} onClick={router.onClick}>
+                        <FaIcon family={"solid"} icon={"pencil-alt"}/>
+                    </a>
+                </div>
+                <div class={
+                        this.state.route == "groups"
+                        && this.state.action == "write"
+                        && this.state.res["@type"] == "Group"
+                        ? "d-block" : "d-none"
+                }>
+                    <div class="container">
+                        <Writer currentUser={this.state.currentUser} />
+                    </div>
                 </div>
             </main>
         );
