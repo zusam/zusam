@@ -44,16 +44,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v2.2.6",
+            "version": "v2.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "9d712177fea904b84cf08f1570584ee03d0b95e1"
+                "reference": "e8e4ce20336978c07a86116c658615caf442e880"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/9d712177fea904b84cf08f1570584ee03d0b95e1",
-                "reference": "9d712177fea904b84cf08f1570584ee03d0b95e1",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/e8e4ce20336978c07a86116c658615caf442e880",
+                "reference": "e8e4ce20336978c07a86116c658615caf442e880",
                 "shasum": ""
             },
             "require": {
@@ -110,7 +110,7 @@
                 "symfony/twig-bundle": "^3.1 || ^4.0",
                 "symfony/validator": "^3.3 || ^4.0",
                 "symfony/yaml": "^3.3 || ^4.0",
-                "webonyx/graphql-php": "^0.11.5"
+                "webonyx/graphql-php": ">=0.12 <1.0"
             },
             "suggest": {
                 "friendsofsymfony/user-bundle": "To use the FOSUserBundle bridge.",
@@ -157,7 +157,7 @@
                 "rest",
                 "swagger"
             ],
-            "time": "2018-05-14T13:11:32+00:00"
+            "time": "2018-06-18T07:29:19+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -1004,16 +1004,16 @@
         },
         {
             "name": "embed/embed",
-            "version": "v3.3.3",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oscarotero/Embed.git",
-                "reference": "d180045daf923980bf254b2973ea13c421435d11"
+                "reference": "46e19804e330065c899657c047288f792e2bca02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/d180045daf923980bf254b2973ea13c421435d11",
-                "reference": "d180045daf923980bf254b2973ea13c421435d11",
+                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/46e19804e330065c899657c047288f792e2bca02",
+                "reference": "46e19804e330065c899657c047288f792e2bca02",
                 "shasum": ""
             },
             "require": {
@@ -1053,7 +1053,7 @@
                 "opengraph",
                 "twitter cards"
             ],
-            "time": "2018-05-31T17:17:30+00:00"
+            "time": "2018-06-18T21:12:45+00:00"
         },
         {
             "name": "evenement/evenement",
