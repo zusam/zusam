@@ -14,13 +14,14 @@ const bee = {
 
     // http methods
     http: {
-        get: url => {
+        get: (url, nocache) => {
             return bee.get("apiKey").then(apiKey =>
                 url && fetch(url, {
                     method: "GET",
                     headers: new Headers({
                         "Content-type": "application/json",
                         "X-AUTH-TOKEN": apiKey || "",
+                        "X-NOCACHE": nocache,
                     }),
                 }).then(
                     res => res.ok && res.json()
@@ -77,12 +78,12 @@ const bee = {
         }
         // if it's an api resource, refresh it
         if (/^\/api/.test(id)) {
-            let cacheDuration = 60 * 1000; // 1mn default cache
+            let cacheDuration = 1; // no cache by default (1ms)
             if (/^\/api\/messages/.test(id)) {
-                cacheDuration *= 10; // 10mn for a message (not likely to be changed often)
+                cacheDuration = 10 * 60 * 1000; // 10mn for a message (not likely to be changed often)
             }
             if (/^\/api\/(users|links)/.test(id)) {
-                cacheDuration *= 60; // 60mn for a user
+                cacheDuration = 60 * 60 * 1000; // 60mn for a user
             }
             return bee.update(id, cacheDuration, false);
         }
