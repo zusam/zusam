@@ -2,19 +2,22 @@ import bee from "./bee.js";
 const router = {
     toApp: url => url.replace(/^\/api/,""),
     getSegments: () => window.location.pathname.slice(1).split("/"),
-    navigate: (url, replace = false) => {
+    navigate: (url, options = {}) => {
+        const from = window.location.pathname;
         const [route, id, action] = router.toApp(url).slice(1).split("/")
         switch (route) {
             case "login":
                 bee.remove("apiKey");
             case "messages":
             case "groups":
-                if (replace) {
+                if (options.replace) {
                     history.replaceState(null, "", url);
                 } else {
                     history.pushState(null, "", url);
                 }
-				setTimeout(() => window.dispatchEvent(new Event("routerStateChange")), 0);
+                setTimeout(() => window.dispatchEvent(new CustomEvent("routerStateChange", {detail : {
+                    from: from,
+                }})), 0);
                 break;
             case "logout":
                 bee.resetData();
@@ -27,17 +30,19 @@ const router = {
                         return;
                     }
                     const url = "/groups/" + bee.getId(user.groups[0]);
-                    if (replace) {
+                    if (options.replace) {
                         history.replaceState(null, "", url);
                     } else {
                         history.pushState(null, "", url);
                     }
-					setTimeout(() => window.dispatchEvent(new Event("routerStateChange")), 0);
+                    setTimeout(() => window.dispatchEvent(new CustomEvent("routerStateChange", {detail : {
+                        from: from,
+                    }})), 0);
                 });
         }
     },
     sync: () => {
-        router.navigate(window.location.pathname, true);
+        router.navigate(window.location.pathname, {replace: true});
     },
     onClick: e => {
         e.preventDefault();
