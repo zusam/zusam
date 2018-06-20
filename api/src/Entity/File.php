@@ -43,6 +43,15 @@ class File
      */
     private $extension;
 
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     * Statuses are :
+     *      - raw: file just uploaded and validated but not converted to something acceptable to be used
+     *      - ready: file in its final form before beeing used.
+     */
+    private $status;
+
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
@@ -84,6 +93,17 @@ class File
     public function setExtension(string $extension): self
     {
         $this->extension = $extension;
+        return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
         return $this;
     }
 

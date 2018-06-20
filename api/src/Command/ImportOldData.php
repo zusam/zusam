@@ -463,11 +463,12 @@ class ImportOldData extends ContainerAwareCommand
 
         echo "Pushing files...\n";
         foreach($files as $file) {
-            $query = "INSERT INTO `file` (id, created_at, type, extension) VALUES ("
+            $query = "INSERT INTO `file` (id, created_at, type, extension, status) VALUES ("
                 ."'".$file["id"]."'"
                 .", ".$file["createdAt"]
                 .", '".$file["type"]."'"
                 .", ".$this->pdo->quote($file["extension"])
+                .", 'ready'"
                 .");";
             $this->pdo->exec($query) or function () use ($file) {
                 echo "\n";
