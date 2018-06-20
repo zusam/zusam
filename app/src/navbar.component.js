@@ -19,8 +19,8 @@ export default class Navbar extends Component {
                         <FaIcon family={"solid"} icon={"arrow-left"}/>
                     </a>
                 )}
-                { this.props.route == "groups" && this.props.res && this.props.res.name && (
-                    <span class="title">{this.props.res.name}</span>
+                { this.props.route == "groups" && this.props.entity && this.props.entity.name && (
+                    <span class="title">{this.props.entity.name}</span>
                 )}
                 { this.props.groups && (
                     <div

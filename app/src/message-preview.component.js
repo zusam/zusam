@@ -34,10 +34,10 @@ export default class MessagePreview extends Component {
     }
 
     getTitle() {
-        if (!this.state.title || this.state.title.length < 30) {
-            return this.state.title && " ";
+        if (!this.state.title || this.state.title.length < 24) {
+            return this.state.title || " ";
         }
-        return this.state.title.slice(0, 27) + "...";
+        return this.state.title.slice(0, 21) + "...";
     }
 
     render() {
@@ -50,6 +50,7 @@ export default class MessagePreview extends Component {
                 class="d-block seamless-link message-preview"
                 href={router.toApp(this.state.message["@id"])}
                 onClick={router.onClick}
+                title={this.state.title}
             >
                 <div tabindex={this.props.tabindex} class="card material-shadow">
                     { this.state.author && this.state.author.avatar && <img class="avatar material-shadow" src={ bee.crop(this.state.author.avatar, 100, 100) } /> }

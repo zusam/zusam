@@ -26,40 +26,8 @@ class App extends Component {
         });
     }
 
-    onRouterStateChange() {
+    onRouterStateChange(event) {
         const [route, id, action] = router.getSegments();
-		this.setState({route: route, action: action})
-		if (route && id) {
-            let url = "/" + route + "/" + id;
-            let backUrl = "";
-            const entityUrl = "/api/" + route + "/" + id;
-            if (action) {
-                backUrl = url;
-                url += "/" + action;
-            }
-            if (route == "groups") {
-                this.setState({group: entityUrl});
-            }
-			bee.get(entityUrl).then(
-                res => {
-                    if (!backUrl) {
-                        switch (res["@type"]) {
-                            case "Message":
-                                backUrl = router.toApp(this.props.res.group);
-                                break;
-                            case "Group":
-                            default:
-                        }
-                    }
-                    this.setState({
-                        url: url,
-                        res: res,
-                        backUrl: backUrl,
-                        entityUrl: entityUrl,
-                    });
-                }
-			);
-		}
         bee.get("apiKey").then(apiKey => {
             if (apiKey) {
                 bee.get("/api/me").then(user => {
@@ -78,6 +46,44 @@ class App extends Component {
                 }
             }
         });
+		this.setState({route: route, action: action})
+        // route and id must be defined from here on
+		if (!route && !id) {
+            return;
+        }
+        let url = "/" + route + "/" + id;
+        let backUrl = "";
+        const entityUrl = "/api/" + route + "/" + id;
+        if (action) {
+            backUrl = url;
+            url += "/" + action;
+        }
+        if (route == "groups") {
+            this.setState({group: entityUrl});
+            // soft update message list of the group
+            if (this.groupRef && !action && /\/write$/.test(event.detail.from)) {
+                this.groupRef.hardUpdate();
+            }
+        }
+        bee.get(entityUrl).then(
+            res => {
+                if (!backUrl) {
+                    switch (res["@type"]) {
+                        case "Message":
+                            backUrl = router.toApp(res.group);
+                            break;
+                        default:
+                            // nothing
+                    }
+                }
+                this.setState({
+                    url: url,
+                    entity: res,
+                    backUrl: backUrl,
+                    entityUrl: entityUrl,
+                });
+            }
+        );
     }
 
 	sendLoginForm(e) {
@@ -94,7 +100,7 @@ class App extends Component {
 	}
 
     displayMessage() {
-        if (this.state.route != "messages" || this.state.res["@type"] != "Message") {
+        if (this.state.route != "messages" || this.state.entity["@type"] != "Message") {
             return "d-none";
         }
         return "d-flex";
@@ -109,7 +115,7 @@ class App extends Component {
         }
         if (
             !this.state.currentUser
-            || !this.state.res
+            || !this.state.entity
             || !this.state.groups
             || !this.state.url
         ) {
@@ -119,23 +125,23 @@ class App extends Component {
             <main>
                 <Navbar
                     route={this.state.route}
-                    res={this.state.res}
+                    entity={this.state.entity}
                     currentUser={this.state.currentUser}
                     groups={this.state.groups}
                     backUrl={this.state.backUrl}
                 />
                 <article class={"justify-content-center " + this.displayMessage()}>
                     <div class="container">
-                        <Message key={this.state.url} url={this.state.url} />
+                        <Message key={this.state.url} url={this.state.entityUrl} />
                     </div>
                 </article>
                 <div class={
                         this.state.route == "groups" 
-                        && this.state.action != "write"
-                        && this.state.res["@type"] == "Group" 
+                        && !this.state.action
+                        && this.state.entity["@type"] == "Group" 
                         ? "d-block" : "d-none"
                 }>
-                    <GroupBoard key={this.state.group} url={this.state.group} />
+                    <GroupBoard ref={g => this.groupRef = g} key={this.state.group} url={this.state.group} />
                     <a class="write material-shadow seamless-link" href={this.state.url + "/write"} onClick={router.onClick}>
                         <FaIcon family={"solid"} icon={"pencil-alt"}/>
                     </a>
@@ -143,11 +149,11 @@ class App extends Component {
                 <div class={
                         this.state.route == "groups"
                         && this.state.action == "write"
-                        && this.state.res["@type"] == "Group"
+                        && this.state.entity["@type"] == "Group"
                         ? "d-block" : "d-none"
                 }>
                     <div class="container">
-                        <Writer currentUser={this.state.currentUser} />
+                        <Writer currentUser={this.state.currentUser} group={this.state.group} backUrl={this.state.backUrl} />
                     </div>
                 </div>
             </main>

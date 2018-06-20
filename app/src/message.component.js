@@ -95,10 +95,15 @@ export default class Message extends Component {
                                     class="rounded-circle material-shadow avatar"
                                     src={ bee.crop(this.state.author.avatar, 100, 100) }
                                 />
-                                <div class="d-flex flex-column">
+                                <div class="infos">
                                     <span class="capitalize ml-1">{ this.state.author.name }</span>
                                     <span class="ml-1">{ this.displayDate(this.state.message.createdAt) }</span>
                                 </div>
+                                { this.state.data && this.state.data.title && (
+                                    <div class="title">
+                                        <span>{ this.state.data.title }</span>
+                                    </div>
+                                )}
                             </div>
                         )}
                         <div class="message-body">

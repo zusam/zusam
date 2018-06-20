@@ -7,9 +7,7 @@ export default class GroupBoard extends Component {
     constructor(props) {
         super(props);
         this.loadMoreMessages = this.loadMoreMessages.bind(this);
-        if (this.state.messages && this.state.messages.length > 0) {
-            return;
-        }
+        this.hardUpdate = this.hardUpdate.bind(this);
         this.state = {
             url: props.url,
             group: {},
@@ -38,6 +36,17 @@ export default class GroupBoard extends Component {
                 }
             });
         }));
+    }
+
+    hardUpdate() {
+        bee.http.get("/api/groups/" + bee.getId(this.state.url) + "/messages?parent[exists]=0&page=1", "nocache").then(res => {
+            if(res && Array.isArray(res["hydra:member"])) {
+                this.setState({messages: [
+                    ...res["hydra:member"],
+                    ...this.state.messages.filter(m => res["hydra:member"].find(mm => mm.id == m.id))
+                ]});
+            }
+        });
     }
 
     loadMoreMessages() {
