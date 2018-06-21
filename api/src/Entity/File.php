@@ -48,7 +48,7 @@ class File
      * @Assert\NotBlank()
      * Statuses are :
      *      - raw: file just uploaded and validated but not converted to something acceptable to be used
-     *      - ready: file in its final form before beeing used.
+     *      - ready: (default) file in its final form before beeing used.
      */
     private $status;
 
@@ -56,6 +56,7 @@ class File
     {
         $this->id = Uuid::uuidv4();
         $this->createdAt = time();
+        $this->status = "ready";
     }
 
     public function getId(): string

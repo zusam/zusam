@@ -16,8 +16,8 @@ class Files extends Controller
      */
     public function image(string $id, int $width, int $height, string $type, ImageService $imageService)
     {
-        $publicDir = realpath($this->getParameter("kernel.project_dir")."/../public/");
-        $cacheDir = realpath($this->getParameter("kernel.project_dir")."/var/cache/");
+        $publicDir = realpath($this->getParameter("dir.public"));
+        $cacheDir = realpath($this->getParameter("dir.cache"));
         $cacheFile = $cacheDir."/images/".Uuid::uuidv4($id.$width."x".$height.$type).".jpg";
         if (is_readable($cacheFile)) {
             return new BinaryFileResponse($cacheFile, 200, ["Content-Type" => mime_content_type($cacheFile)]);
@@ -27,7 +27,6 @@ class Files extends Controller
 			return new JsonResponse(["message" => "Not Found"], JsonResponse::HTTP_NOT_FOUND);
 		}
         $sourceFilePath = $publicDir.$sourceFile->getPath();
-        // $sourceFilePath = $publicDir."/files/".$id.".jpg";
         if (is_readable($sourceFilePath)) {
             if ("thumbnail" === $type) {
                 $imageService->createThumbnail($sourceFilePath, $cacheFile, $width, $height);
