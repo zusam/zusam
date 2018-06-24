@@ -64,7 +64,9 @@ $navbar_height: 50px;
 .file-grid {
     display: flex;
     flex-flow: row wrap;
+    justify-content: center;
     padding: 1rem;
+
     a {
         display: block;
         overflow: hidden;
@@ -79,6 +81,14 @@ $navbar_height: 50px;
                 xl: 6
             )
         );
+
+        .miniature {
+			background-color: grey;
+			width: 240px;
+			padding-bottom: 100%;
+			background-size: cover;
+			background-position: center;
+		}
     }
 }
 
@@ -550,7 +560,6 @@ article {
     background-color: white;
     padding: 10px;
     border-radius: 5px;
-    margin-top: 1rem;
 
     #title {
         width: 100%;

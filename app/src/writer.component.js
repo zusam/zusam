@@ -4,6 +4,7 @@ import bee from "./bee.js";
 import FaIcon from "./fa-icon.component.js";
 import router from "./router.js";
 import PreviewBlock from "./preview-block.component.js";
+import FileGrid from "./file-grid.component.js";
 
 export default class Writer extends Component {
 
@@ -11,6 +12,10 @@ export default class Writer extends Component {
         super(props);
         this.postMessage = this.postMessage.bind(this);
         this.getPreview = this.getPreview.bind(this);
+        this.inputImages = this.inputImages.bind(this);
+        this.state = {
+            files: [],
+        };
     }
 
     postMessage() {
@@ -19,7 +24,7 @@ export default class Writer extends Component {
             author: this.props.currentUser["@id"],
             group: this.props.group,
             children: [],
-            files: [],
+            files: this.state.files.map(e => e["@id"]),
             data: {
                 text: document.getElementById("text").value
             },
@@ -47,9 +52,27 @@ export default class Writer extends Component {
                 bee.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => r && this.setState({
                     link: links[0],
                     preview: r,
+                    id: f.name,
                 }));
             }
         }, 0);
+    }
+
+    inputImages(event) {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.multiple = "multiple";
+        input.accept = "image/*";
+        input.addEventListener("change", event => {
+            Array.from(event.target.files).forEach(f => {
+				const formData = new FormData();
+                formData.append("file", f);
+                bee.http.post("/api/files/upload", formData, false).then(file => {
+                    this.setState({files: [...this.state.files, file]});
+                });
+            })
+        });
+        input.click();
     }
 
     render() {
@@ -65,10 +88,33 @@ export default class Writer extends Component {
                     autofocus
                 ></textarea>
                 { this.state.preview && <p class="card-text"><PreviewBlock {...this.state.preview} /></p> }
+                { !!this.state.files.length && <FileGrid key={this.state.files.reduce((a,c) => a + c.id)} files={this.state.files}/> }
                 <div class="options">
-                    <button class="option"><FaIcon family={"regular"} icon={"images"}/></button>
-                    <button class="option"><FaIcon family={"solid"} icon={"film"}/></button>
-                    <button class="option"><FaIcon family={"regular"} icon={"calendar-alt"}/></button>
+                    <button
+                        class="option"
+                        onClick={this.inputImages}
+                        title={lang.fr["upload_image"]}
+                    >
+                        <FaIcon family={"regular"} icon={"images"}/>
+                    </button>
+                    <button
+                        class="option"
+                        title={lang.fr["upload_video"]}
+                    >
+                        <FaIcon family={"solid"} icon={"film"}/>
+                    </button>
+                    <button
+                        class="option"
+                        title={lang.fr["upload_music"]}
+                    >
+                        <FaIcon family={"solid"} icon={"music"}/>
+                    </button>
+                    <button
+                        class="option"
+                        title={lang.fr["add_date"]}
+                    >
+                        <FaIcon family={"regular"} icon={"calendar-alt"}/>
+                    </button>
                     <button type="submit" class="submit" onClick={this.postMessage}>{lang.fr.submit}</button>
                 </div>
             </div>
