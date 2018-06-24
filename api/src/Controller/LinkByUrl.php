@@ -78,9 +78,10 @@ class LinkByUrl extends Controller
             if (!empty($data["image"])) {
                 $preview = new File();
                 $preview->setType("image/jpeg");
-                $preview->setExtension(".jpg");
-                $publicDir = realpath($this->getParameter("kernel.project_dir")."/../public/");
+                $preview->setContentUrl($preview->getId().".jpeg");
+                $publicDir = realpath($this->getParameter("dir.public"));
                 $this->imageService->createThumbnail($data["image"], $publicDir."/".$preview->getPath(), 2048, 2048);
+                $preview->setSize(filesize($publicDir.$preview->getPath()));
                 $link->setPreview($preview);
                 $this->em->persist($preview);
             }
