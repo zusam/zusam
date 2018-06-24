@@ -15,7 +15,8 @@
         "symfony/framework-bundle": "^4.0",
         "symfony/lts": "^4@dev",
         "symfony/monolog-bundle": "^3.3",
-        "symfony/yaml": "^4.0"
+        "symfony/yaml": "^4.0",
+        "vich/uploader-bundle": "^1.8"
     },
     "require-dev": {
         "symfony/dotenv": "^4.0",
