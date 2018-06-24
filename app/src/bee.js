@@ -30,21 +30,28 @@ const bee = {
                 )
             );
         },
-        post: (url, data) => {
-            return bee.get("apiKey").then(apiKey =>
-                url && fetch(url, {
+        post: (url, data, contentType = "application/json") => {
+            return bee.get("apiKey").then(apiKey => {
+                if (!url) {
+                    return;
+                }
+                let h = {};
+                if (apiKey) {
+                    h["X-AUTH-TOKEN"] = apiKey;
+                }
+                if (contentType) {
+                    h["Content-type"] = contentType;
+                }
+                return fetch(url, {
                     method: "POST",
-                    body: JSON.stringify(data),
-                    headers: new Headers({
-                        "Content-type": "application/json",
-                        "X-AUTH-TOKEN": apiKey || "",
-                    }),
+                    body: (typeof(data) == "object" && data.constructor.name == "Object") ? JSON.stringify(data) : data,
+                    headers: new Headers(h),
                 }).then(
                     res => res.ok && res.json()
                 ).catch(
                     err => console.warn("ERROR for " + url, err)
                 )
-            );
+            });
         },
     },
 
