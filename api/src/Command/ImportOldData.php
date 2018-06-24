@@ -331,6 +331,8 @@ class ImportOldData extends ContainerAwareCommand
                     $files[$k]["extension"] = $ext;
                     // move the file to it's new place
                     $files[$k]["type"] = mime_content_type($importedFilesDir."/".$file["name"].$ext);
+                    $files[$k]["size"] = filesize($importedFilesDir."/".$file["name"].$ext);
+                    $files[$k]["contentUrl"] = $file["id"].$ext;
                     copy($importedFilesDir."/".$file["name"].$ext, $filesDir."/".$file["id"].$ext);
                     $flag = true;
                     break;
@@ -463,12 +465,13 @@ class ImportOldData extends ContainerAwareCommand
 
         echo "Pushing files...\n";
         foreach($files as $file) {
-            $query = "INSERT INTO `file` (id, created_at, type, extension, status) VALUES ("
+            $query = "INSERT INTO `file` (id, created_at, type, size, status, content_url) VALUES ("
                 ."'".$file["id"]."'"
                 .", ".$file["createdAt"]
                 .", '".$file["type"]."'"
-                .", ".$this->pdo->quote($file["extension"])
+                .", '".$file["size"]."'"
                 .", 'ready'"
+                .", ".$this->pdo->quote($file["contentUrl"])
                 .");";
             $this->pdo->exec($query) or function () use ($file) {
                 echo "\n";
