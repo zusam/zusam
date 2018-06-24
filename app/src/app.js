@@ -14,7 +14,6 @@ class App extends Component {
     constructor() {
         super();
         this.onRouterStateChange = this.onRouterStateChange.bind(this);
-        this.sendLoginForm = this.sendLoginForm.bind(this);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
         bee.get("apiKey").then(apiKey => {
@@ -43,6 +42,7 @@ class App extends Component {
             } else {
                 if (route != "login") {
                     router.navigate("/login");
+					return;
                 }
             }
         });
@@ -65,39 +65,28 @@ class App extends Component {
                 this.groupRef.hardUpdate();
             }
         }
-        bee.get(entityUrl).then(
-            res => {
-                if (!backUrl) {
-                    switch (res["@type"]) {
-                        case "Message":
-                            backUrl = router.toApp(res.group);
-                            break;
-                        default:
-                            // nothing
+        if (id) {
+            bee.get(entityUrl).then(
+                res => {
+                    if (!backUrl) {
+                        switch (res["@type"]) {
+                            case "Message":
+                                backUrl = router.toApp(res.group);
+                                break;
+                            default:
+                                // nothing
+                        }
                     }
+                    this.setState({
+                        url: url,
+                        entity: res,
+                        backUrl: backUrl,
+                        entityUrl: entityUrl,
+                    });
                 }
-                this.setState({
-                    url: url,
-                    entity: res,
-                    backUrl: backUrl,
-                    entityUrl: entityUrl,
-                });
-            }
-        );
+            );
+        }
     }
-
-	sendLoginForm(e) {
-		e.preventDefault();
-		const login = document.getElementById("login").value;
-		const password = document.getElementById("password").value;
-		bee.http.post("/api/login", {login: login, password: password}).then(res => {
-			if (res) {
-				bee.set("apiKey", res.api_key);
-				router.navigate("/");
-				this.start();
-			}
-		})
-	}
 
     displayMessage() {
         if (this.state.route != "messages" || this.state.entity["@type"] != "Message") {
@@ -146,7 +135,7 @@ class App extends Component {
                         <FaIcon family={"solid"} icon={"pencil-alt"}/>
                     </a>
                 </div>
-                <div class={
+                <article class={
                         this.state.route == "groups"
                         && this.state.action == "write"
                         && this.state.entity["@type"] == "Group"
@@ -155,7 +144,7 @@ class App extends Component {
                     <div class="container">
                         <Writer currentUser={this.state.currentUser} group={this.state.group} backUrl={this.state.backUrl} />
                     </div>
-                </div>
+                </article>
             </main>
         );
     }

@@ -4,20 +4,30 @@ import bee from "./bee.js";
 
 export default class FileGrid extends Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {files: []};
-		if (Array.isArray(props.files)) {
-			props.files.forEach(e => bee.get(e).then(r => this.setState({files: [...this.state.files, r]})))
-		}
-	}
+    constructor(props) {
+        super(props);
+        this.state = {files: []};
+        if (Array.isArray(props.files)) {
+            props.files.forEach(e => {
+                if (typeof(e) == "string") {
+                    bee.get(e).then(r => this.setState({files: [...this.state.files, r]}));
+                }
+                if (typeof(e) == "object") {
+                    this.setState({files: [...this.state.files, e]});
+                }
+            });
+        }
+    }
 
     renderFile(file, miniature = false) {
-        let url = /image/.test(file.type) ? bee.thumbnail(file.path, 1024, 768) : file.path;
+        let url = file.path;
+        if (/image/.test(file.type)) {
+            url = bee.thumbnail(file.path, 1024, 768);
+        }
         if (miniature == true) {
             return (
-                <a data-nlg href={url}>
-                    <img class="rounded img-fluid" src={ bee.crop(file.path, 240, 240) } />
+                <a data-nlg href={url} class="rounded">
+                    <div class="miniature" style={"background-image:url('" + bee.crop(file.path, 240, 240) + "')"}></div>
                 </a>
             );
         }
@@ -46,7 +56,7 @@ export default class FileGrid extends Component {
         }
         return (
             <div class="container d-flex justify-content-center flex-wrap">
-                { this.state.files.map(e => this.renderFile(e)) }
+            { this.state.files.map(e => this.renderFile(e)) }
             </div>
         );
     }
