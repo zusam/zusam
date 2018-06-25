@@ -13,9 +13,15 @@ export default class Writer extends Component {
         this.postMessage = this.postMessage.bind(this);
         this.getPreview = this.getPreview.bind(this);
         this.inputImages = this.inputImages.bind(this);
-        this.state = {
-            files: [],
-        };
+        this.state = {files: []};
+    }
+
+    componentWillMount() {
+        this.setState({files: []});
+    }
+
+    componentDidMount() {
+        document.getElementById("text").value = "";
     }
 
     postMessage() {

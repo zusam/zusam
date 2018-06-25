@@ -125,9 +125,9 @@ class App extends Component {
                     </div>
                 </article>
                 <div class={
-                        this.state.route == "groups" 
+                        this.state.route == "groups"
                         && !this.state.action
-                        && this.state.entity["@type"] == "Group" 
+                        && this.state.entity["@type"] == "Group"
                         ? "d-block" : "d-none"
                 }>
                     <GroupBoard ref={g => this.groupRef = g} key={this.state.group} url={this.state.group} />
@@ -135,16 +135,13 @@ class App extends Component {
                         <FaIcon family={"solid"} icon={"pencil-alt"}/>
                     </a>
                 </div>
-                <article class={
-                        this.state.route == "groups"
-                        && this.state.action == "write"
-                        && this.state.entity["@type"] == "Group"
-                        ? "d-block" : "d-none"
-                }>
-                    <div class="container">
-                        <Writer currentUser={this.state.currentUser} group={this.state.group} backUrl={this.state.backUrl} />
-                    </div>
-                </article>
+                { this.state.route == "groups" && this.state.action == "write" && this.state.entity["@type"] == "Group" && (
+                    <article>
+                        <div class="container">
+                            <Writer currentUser={this.state.currentUser} group={this.state.group} backUrl={this.state.backUrl} />
+                        </div>
+                    </article>
+                )}
             </main>
         );
     }
