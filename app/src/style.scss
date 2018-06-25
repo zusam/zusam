@@ -556,6 +556,12 @@ article {
     }
 }
 
+.message.child .writer {
+    position: relative;
+    top: 8px;
+    width: 100%;
+}
+
 .writer {
     background-color: white;
     padding: 10px;

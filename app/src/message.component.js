@@ -3,12 +3,17 @@ import lang from "./lang.js";
 import bee from "./bee.js";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";
+import Writer from "./writer.component.js";
 
 export default class Message extends Component {
 
     constructor(props) {
         super(props);
         this.displayMoreChildren = this.displayMoreChildren.bind(this);
+        this.onNewMessage = this.onNewMessage.bind(this);
+        if (!props.parent) {
+            window.addEventListener("newMessage", this.onNewMessage);
+        }
         this.state = {
             url: props.url,
             message: null,
@@ -34,6 +39,18 @@ export default class Message extends Component {
                 }
             }
         });
+    }
+
+    onNewMessage(event) {
+        const newMsg = event.detail;
+        let msg = this.state.message;
+        if (newMsg.parent && newMsg.parent == msg["@id"]) {
+            msg.children = [...msg.children, newMsg["@id"]];
+            this.setState({
+                displayedChildren: this.state.displayedChildren + 1,
+                message: msg
+            });
+        }
     }
 
     displayMoreChildren() {
@@ -120,6 +137,21 @@ export default class Message extends Component {
                             { this.state.message.children.slice(-1 * this.state.displayedChildren).map(e => <Message url={e} key={e}/>) }
                         </div>
                     )}
+                    <div class="message child">
+                        { this.props.currentUser && (
+                            <div class="message-head p-1 d-flex d-md-block">
+                                <img
+                                    class="rounded-circle w-3 material-shadow avatar"
+                                    src={ bee.crop(this.props.currentUser.avatar, 100, 100) }
+                                />
+                            </div>
+                        )}
+                        <Writer
+                            parent={this.state.message.id}
+                            currentUser={this.props.currentUser}
+                            group={this.state.message.group}
+                        />
+                    </div>
                 </div>
             );
         }

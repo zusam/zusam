@@ -121,7 +121,7 @@ class App extends Component {
                 />
                 <article class={"justify-content-center " + this.displayMessage()}>
                     <div class="container">
-                        <Message key={this.state.url} url={this.state.entityUrl} />
+                        <Message currentUser={this.state.currentUser} key={this.state.url} url={this.state.entityUrl} />
                     </div>
                 </article>
                 <div class={

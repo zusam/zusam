@@ -17,7 +17,11 @@ export default class Writer extends Component {
     }
 
     componentWillMount() {
-        this.setState({files: []});
+        this.setState({
+            files: [],
+            link: null,
+            preview: null
+        });
     }
 
     componentDidMount() {
@@ -37,13 +41,25 @@ export default class Writer extends Component {
             lastActivityDate: Math.floor(Date.now()/1000)
         };
         if (!this.props.parent) {
-            msg.parent = bee.getId(this.props.parent);
             msg.data.title = document.getElementById("title").value;
+        } else {
+            msg.parent = "/api/messages/" + bee.getId(this.props.parent);
         }
         msg.data = JSON.stringify(msg.data);
         bee.http.post("/api/messages", msg).then(res => {
-            router.navigate(this.props.backUrl);
+            if (res) {
+                window.dispatchEvent(new CustomEvent("newMessage", {detail : res}));
+            }
+            if (this.props.backUrl) {
+                router.navigate(this.props.backUrl);
+            }
         });
+        this.setState({
+            files: [],
+            link: null,
+            preview: null
+        });
+        document.getElementById("text").value = "";
     }
 
     getPreview(event) {
@@ -57,8 +73,7 @@ export default class Writer extends Component {
             if (links && links[0] != this.state.link) {
                 bee.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => r && this.setState({
                     link: links[0],
-                    preview: r,
-                    id: f.name,
+                    preview: r
                 }));
             }
         }, 0);
