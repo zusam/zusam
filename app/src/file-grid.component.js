@@ -1,5 +1,4 @@
 import { h, render, Component } from "preact";
-import nlg from "./nlg.js";
 import bee from "./bee.js";
 
 export default class FileGrid extends Component {
@@ -63,6 +62,6 @@ export default class FileGrid extends Component {
 
     componentDidUpdate() {
         // start the nano-lightbox-gallery
-        nlg.start();
+        import("./nlg.js").then(nlg => nlg.default.start());
     }
 }
