@@ -47,7 +47,7 @@ export default class MessagePreview extends Component {
 
         return (
             <a
-                class="d-block seamless-link message-preview"
+                class="d-inline-block seamless-link message-preview"
                 href={router.toApp(this.state.message["@id"])}
                 onClick={router.onClick}
                 title={this.state.title}
@@ -55,9 +55,9 @@ export default class MessagePreview extends Component {
                 <div tabindex={this.props.tabindex} class="card material-shadow">
                     { this.state.author && this.state.author.avatar && <img class="avatar material-shadow" src={ bee.crop(this.state.author.avatar, 100, 100) } /> }
                     { this.state.preview ?
-                            <img class="card-img-top" src={ bee.crop(this.state.preview, 320, 180) } />
+                            <div class="card-miniature" style={"background-image: url('" + bee.crop(this.state.preview, 320, 180) + "')" } />
                             : (
-                                <svg fill="#ccc" class="card-img-top" viewBox="0 0 320 180">
+                                <svg fill="#ccc" class="svg-miniature" viewBox="0 0 320 180">
                                     <path d="M67,13.4v14.4h-7.5l-0.7-7.5H44.3v51.4l7.3,1.3v5.7H28.2v-5.7l7.3-1.3V20.4H20.9l-0.6,7.5h-7.6V13.4H67z"/>
                                     <rect x="76" y="14" width="78" height="11"/>
                                     <rect x="76" y="34" width="78" height="11"/>

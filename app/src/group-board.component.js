@@ -86,7 +86,7 @@ export default class GroupBoard extends Component {
     render() {
         return Array.isArray(this.state.messages) && (
             <article id="group" class="justify-content-center d-flex" onScroll={this.loadMoreMessages}>
-                <div class="message-container flex-wrap justify-content-center d-flex">
+                <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
                     { this.state.messages.slice(0, this.state.loaded).map((msg, i) => {
                         return <MessagePreview tabindex={i + 1} key={msg.id} message={msg}/>;
                     })}
