@@ -88,13 +88,6 @@ class App extends Component {
         }
     }
 
-    displayMessage() {
-        if (this.state.route != "messages" || this.state.entity["@type"] != "Message") {
-            return "d-none";
-        }
-        return "d-flex";
-    }
-
     render() {
         if (!this.state.route) {
             return;
@@ -119,11 +112,13 @@ class App extends Component {
                     groups={this.state.groups}
                     backUrl={this.state.backUrl}
                 />
-                <article class={"justify-content-center " + this.displayMessage()}>
-                    <div class="container">
-                        <Message currentUser={this.state.currentUser} key={this.state.url} url={this.state.entityUrl} />
-                    </div>
-                </article>
+                { this.state.route == "messages" && this.state.entity["@type"] == "Message" && (
+                    <article class="justify-content-center d-flex">
+                        <div class="container">
+                            <Message currentUser={this.state.currentUser} key={this.state.url} url={this.state.entityUrl} />
+                        </div>
+                    </article>
+                )}
                 <div class={
                         this.state.route == "groups"
                         && !this.state.action
