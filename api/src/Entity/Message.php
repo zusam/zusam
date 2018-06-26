@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use App\Controller\NewMessage;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,6 +19,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *          "access_control"="is_granted('ROLE_USER')",
  *          "order"={"lastActivityDate": "DESC"}
+ *     },
+ *     collectionOperations={
+ *          "get",
+ *          "post"={
+ *              "method"="POST",
+ *              "path"="/messages.{_format}",
+ *              "controller"=NewMessage::class
+ *          },
  *     },
  * )
  * @ApiFilter(ExistsFilter::class, properties={"parent"})
