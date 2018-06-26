@@ -171,6 +171,26 @@ $navbar_height: 50px;
         margin: -10px 0 0 -8px;
     }
 
+    .twitch::before {
+        background: #212121;
+        height: 100%;
+        width: 100%;
+        opacity: .8;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    &:hover > .twitch::after {
+        border-color: transparent transparent transparent #a991d4 !important;
+    }
+
+    .twitch::after {
+        border-width: 20px 0 20px 35px;
+        margin: -20px 0 0 -17px;
+        transition: all .25s;
+    }
+
     .soundcloud::before {
         background: #f60;
         height: 50px;
