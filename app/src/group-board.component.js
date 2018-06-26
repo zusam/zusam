@@ -56,7 +56,7 @@ export default class GroupBoard extends Component {
             window.sessionStorage.setItem(key, Date.now());
             return;
         }
-        if (parseInt(window.sessionStorage.getItem(key)) + 300 < Date.now()) {
+        if (parseInt(window.sessionStorage.getItem(key)) + 100 < Date.now()) {
             window.sessionStorage.setItem(key, Date.now());
             bee.set("group_" + this.state.group.id, {
                 loaded: this.state.loaded + 10,
@@ -65,7 +65,7 @@ export default class GroupBoard extends Component {
             this.setState({scrollTop: groupContainer.scrollTop});
             if (
                 Array.isArray(this.state.messages)
-                && groupContainer.scrollHeight - window.screen.height - 400 < groupContainer.scrollTop
+                && groupContainer.scrollHeight - window.screen.height - 500 < groupContainer.scrollTop
                 && this.state.loaded < this.state.messages.length
             ) {
                 this.setState({loaded: this.state.loaded + 10});
