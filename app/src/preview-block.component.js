@@ -1,7 +1,7 @@
 import { h, render, Component } from "preact";
 import bee from "./bee.js";
-import YoutubeEmbed from "./youtube-embed.js";
-import SoundcloudEmbed from "./soundcloud-embed.js";
+import YoutubeEmbed from "./youtube-embed.component.js";
+import SoundcloudEmbed from "./soundcloud-embed.component.js";
 import TwitchEmbed from "./twitch-embed.component.js";
 
 export default class PreviewBlock extends Component {
