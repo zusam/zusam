@@ -26,7 +26,7 @@ export default class FileGrid extends Component {
         if (miniature == true) {
             return (
                 <a data-nlg href={url} class="rounded">
-                    <div class="miniature" style={"background-image:url('" + bee.crop(file.path, 240, 240) + "')"}></div>
+                    <div class="miniature" style={"background-image:url('" + bee.crop(file.path, 160, 160) + "')"}></div>
                 </a>
             );
         }
