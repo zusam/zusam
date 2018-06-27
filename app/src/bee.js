@@ -15,20 +15,26 @@ const bee = {
     // http methods
     http: {
         get: (url, nocache) => {
-            return bee.get("apiKey").then(apiKey =>
-                url && fetch(url, {
+            return bee.get("apiKey").then(apiKey => {
+                if (!url) {
+                    return;
+                }
+                let h = {};
+                if (apiKey) {
+                    h["X-AUTH-TOKEN"] = apiKey;
+                }
+                if (nocache) {
+                    h["X-NOCACHE"] = nocache;
+                }
+                return fetch(url, {
                     method: "GET",
-                    headers: new Headers({
-                        "Content-type": "application/json",
-                        "X-AUTH-TOKEN": apiKey || "",
-                        "X-NOCACHE": nocache,
-                    }),
+                    headers: new Headers(h),
                 }).then(
                     res => res.ok && res.json()
                 ).catch(
                     err => console.warn("ERROR for " + url, err)
                 )
-            );
+            });
         },
         post: (url, data, contentType = "application/json") => {
             return bee.get("apiKey").then(apiKey => {
@@ -55,8 +61,15 @@ const bee = {
         },
     },
 
-    // data store AND cache
+    // reactive data store AND cache
     data: {},
+    events: {},
+    register: (event, resolve) => {
+        if (typeof bee.events[event] === "undefined") {
+            bee.events[event] = [];
+        }
+        bee.events[event].push(resolve);
+    },
     remove: id => window.localStorage.removeItem(id),
     set: (id, data, cacheDuration = Infinity, persistant = true) => {
         const storageBox = {
@@ -78,6 +91,9 @@ const bee = {
             data = data ? JSON.parse(data) : null;
         }
         if (data) {
+            if (data.status == "pending") {
+                return new Promise(r => bee.register(id, r));
+            }
             let c = data.cacheDuration || Infinity;
             if (data.timestamp > Date.now() - c) {
                 return new Promise(r => r(data.data));
@@ -98,10 +114,18 @@ const bee = {
         bee.remove(id);
         return new Promise(r => r(null));
     },
-    update: (url, cacheDuration = 60*1000, persistant = false) => bee.http.get(url).then(res => {
-        bee.set(url, res, cacheDuration, persistant);
-        return new Promise(r => r(res));
-    }),
+    update: (url, cacheDuration = 60*1000, persistant = false) => {
+        bee.data[url] = Object.assign({status: "pending"}, bee.data[url]);
+        return bee.http.get(url).then(res => {
+            bee.set(url, res, cacheDuration, persistant);
+            bee.data[url] = Object.assign({status: "ready"}, bee.data[url]);
+            if (Array.isArray(bee.events[url])) {
+                bee.events[url].forEach(r => r.call(null, bee.data[url].data));
+            }
+            delete(bee.events[url]);
+            return new Promise(r => r(res));
+        });
+    },
     resetData: () => window.localStorage.clear(),
 };
 export default bee;
