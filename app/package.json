@@ -13,7 +13,7 @@
 		"babel-preset-preact": "^1.1.0",
 		"node-sass": "^4.9.0",
 		"npm-check-updates": "^2.14.2",
-		"parcel-bundler": "=1.8.1",
+		"parcel-bundler": "^1.8.1",
 		"preact": "^8.2.9",
 		"shx": "^0.2.2"
 	}
