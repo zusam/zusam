@@ -12,6 +12,7 @@ const lang = {
         "upload_video": "Ajouter des vidéos",
         "upload_music": "Ajouter des musiques",
         "add_date": "Préciser une date",
+        "logout": "Se déconnecter",
     }
 };
 export default lang;

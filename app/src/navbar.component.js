@@ -10,8 +10,15 @@ export default class Navbar extends Component {
         return (
             <div class="nav align-items-center shadow-sm">
                 { this.props.currentUser && this.props.currentUser.avatar && !this.props.backUrl && (
-                    <div class="avatar">
+                    <div
+                        class="avatar dropdown" tabindex="-1"
+                        onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
+                        onClick={e => e.currentTarget.classList.toggle("active")}
+                    >
                         <img class="rounded-circle" src={ bee.crop(this.props.currentUser.avatar, 80, 80) }/>
+                        <div class="dropdown-menu">
+                            <a class="seamless-link" href="/logout" onClick={router.onClick}>{lang.fr["logout"]}</a>
+                        </div>
                     </div>
                 )}
                 { this.props.backUrl && (

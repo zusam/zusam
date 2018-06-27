@@ -323,6 +323,35 @@ $navbar_height: 50px;
         img {
             height: 100%;
         }
+
+        &.active {
+            .dropdown-menu {
+                display: block;
+            }
+        }
+
+        /* Sub Menus */
+        .dropdown-menu {
+            position: absolute;
+            display: none;
+            width: inherit;
+            left: -8px;
+            top: calc(100% + 7px);
+            padding: 0;
+            background-color: adjust-hue($zusam_color, 5deg);
+            text-align: left;
+
+            a {
+                display: block;
+                padding: 5px 10px;
+                cursor: pointer;
+                white-space: nowrap;
+
+                &:hover {
+                    background-color: adjust-hue($zusam_color, 10deg);
+                }
+            }
+        }
     }
 
     .groups {
