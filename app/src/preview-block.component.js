@@ -39,15 +39,15 @@ export default class PreviewBlock extends Component {
         let data = JSON.parse(this.props.data);
         if (data["type"] == "photo") {
             return (
-                <div class="container d-flex justify-content-center flex-wrap">
-                    <img src={ this.props.url } />
+                <div class="container d-flex justify-content-center flex-wrap align-items-center">
+                    <img class="img-fluid" src={ this.props.url } />
                 </div>
             );
         }
         if (data["type"] == "video" && !data["code"]) {
             return (
-                <div class="container d-flex justify-content-center flex-wrap">
-                    <video controls src={ this.props.url } />
+                <div class="container d-flex justify-content-center flex-wrap align-items-center">
+                    <video class="img-fluid" controls src={ this.props.url } />
                 </div>
             );
         }
