@@ -8,6 +8,7 @@ import Login from "./login.component.js";
 import Navbar from "./navbar.component.js";
 import FaIcon from "./fa-icon.component.js";
 import Writer from "./writer.component.js";
+import Settings from "./settings.component.js";
 
 class App extends Component {
 
@@ -48,7 +49,7 @@ class App extends Component {
         });
 		this.setState({route: route, action: action})
         // route and id must be defined from here on
-		if (!route && !id) {
+		if (!route || !id) {
             return;
         }
         let url = "/" + route + "/" + id;
@@ -95,12 +96,7 @@ class App extends Component {
         if (this.state.route == "login") {
             return <Login />;
         }
-        if (
-            !this.state.currentUser
-            || !this.state.entity
-            || !this.state.groups
-            || !this.state.url
-        ) {
+        if (!this.state.currentUser || !this.state.groups) {
             return;
         }
         return (
@@ -112,6 +108,13 @@ class App extends Component {
                     groups={this.state.groups}
                     backUrl={this.state.backUrl}
                 />
+                { this.state.route == "settings" && (
+                    <article class="justify-content-center d-flex">
+                        <div class="container">
+                            <Settings {...this.state.currentUser} />
+                        </div>
+                    </article>
+                )}
                 { this.state.route == "messages" && this.state.entity["@type"] == "Message" && (
                     <article class="justify-content-center d-flex">
                         <div class="container">

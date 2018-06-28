@@ -673,3 +673,26 @@ article {
         }
     }
 }
+
+.identite {
+    .avatar {
+        margin-top: 1rem;
+    }
+    form {
+        border-left: 1px solid #ddd;
+        padding-left: 1rem;
+        margin-top: 1rem;
+        @media (max-width: map-get($grid-breakpoints, "sm")) {
+            border: none !important;
+            padding-left: 0;
+        }
+    }
+}
+
+input:invalid {
+    border-left: 5px solid #a94442;
+}
+
+input:valid {
+    border-left: 5px solid #42A948;
+}

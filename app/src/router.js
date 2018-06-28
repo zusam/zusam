@@ -10,6 +10,7 @@ const router = {
                 bee.remove("apiKey");
             case "messages":
             case "groups":
+            case "settings":
                 if (options.replace) {
                     history.replaceState(null, "", url);
                 } else {
