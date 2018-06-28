@@ -215,30 +215,26 @@ $navbar_height: 50px;
 
 .message-container {
 
-    @media (max-width: map-get($grid-breakpoints, "sm")) {
-        margin-right: 0;
-    }
-
     .message-preview-placeholder {
         display: block;
         width: 100%;
         max-width: 320px;
         height: 215px;
-        margin: 0 0 2rem 2rem;
+        margin: 1rem;
         background: linear-gradient(15deg, #999, #ddd);
 
         @media (max-width: map-get($grid-breakpoints, "sm")) {
-            margin-left: 0;
+            margin: 1rem 0;
         }
     }
 
     .message-preview {
         width: 100%;
         max-width: 320px;
-        margin: 0 0 2rem 2rem;
+        margin: 1rem;
 
         @media (max-width: map-get($grid-breakpoints, "sm")) {
-            margin-left: 0;
+            margin: 1rem 0;
         }
 
         .card-miniature {
