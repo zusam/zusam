@@ -686,13 +686,13 @@ article {
             border: none !important;
             padding-left: 0;
         }
+
+        input:invalid {
+            border-left: 5px solid #a94442;
+        }
+
+        input:valid {
+            border-left: 5px solid #42A948;
+        }
     }
-}
-
-input:invalid {
-    border-left: 5px solid #a94442;
-}
-
-input:valid {
-    border-left: 5px solid #42A948;
 }
