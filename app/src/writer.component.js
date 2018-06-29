@@ -118,24 +118,26 @@ export default class Writer extends Component {
                     >
                         <FaIcon family={"regular"} icon={"images"}/>
                     </button>
-                    <button
-                        class="option"
-                        title={lang.fr["upload_video"]}
-                    >
-                        <FaIcon family={"solid"} icon={"film"}/>
-                    </button>
-                    <button
-                        class="option"
-                        title={lang.fr["upload_music"]}
-                    >
-                        <FaIcon family={"solid"} icon={"music"}/>
-                    </button>
-                    <button
-                        class="option"
-                        title={lang.fr["add_date"]}
-                    >
-                        <FaIcon family={"regular"} icon={"calendar-alt"}/>
-                    </button>
+                    {/*
+                        <button
+                            class="option"
+                            title={lang.fr["upload_video"]}
+                        >
+                            <FaIcon family={"solid"} icon={"film"}/>
+                        </button>
+                        <button
+                            class="option"
+                            title={lang.fr["upload_music"]}
+                        >
+                            <FaIcon family={"solid"} icon={"music"}/>
+                        </button>
+                        <button
+                            class="option"
+                            title={lang.fr["add_date"]}
+                        >
+                            <FaIcon family={"regular"} icon={"calendar-alt"}/>
+                        </button>
+                    */}
                     <button type="submit" class="submit" onClick={this.postMessage}>{lang.fr.submit}</button>
                 </div>
             </div>
