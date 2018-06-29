@@ -17,7 +17,7 @@ export default class GroupBoard extends Component {
             totalMessages: 0,
         };
         bee.get(props.url).then(group => group && bee.get("group_" + group.id).then(groupData => {
-            let loaded = Math.floor((window.screen.width * window.screen.height) / (320 * 215));
+            let loaded = 1 + Math.floor((window.screen.width * window.screen.height) / (320 * 215));
             let scrollTop = 0;
             if (groupData) {
                 loaded = groupData.loaded || loaded;
