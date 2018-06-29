@@ -14,6 +14,10 @@ class App extends Component {
 
     constructor() {
         super();
+        this.state = {
+            entity: {},
+            url: "",
+        }
         this.onRouterStateChange = this.onRouterStateChange.bind(this);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);

@@ -5,6 +5,33 @@ import FaIcon from "./fa-icon.component.js";
 
 export default class Settings extends Component {
 
+    constructor(props) {
+        super(props);
+        this.updateSettings = this.updateSettings.bind(this);
+        this.state = Object.assign({}, props);
+    }
+
+    updateSettings(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        const name = document.querySelector("#settings_form input[name='name']").value;
+        const login = document.querySelector("#settings_form input[name='email']").value;
+        const password = document.querySelector("#settings_form input[name='password']").value;
+        let user = {};
+        if (name) {
+            user.name = name;
+        }
+        if (login) {
+            user.login = login;
+        }
+        if (password) {
+            user.password = password;
+        }
+        bee.http.put("/api/users/" + this.state.id, user).then(res => {
+            this.setState(Object.assign(this.state, res));
+        });
+    }
+
     render() {
         return (
             <div class="card">
@@ -14,11 +41,11 @@ export default class Settings extends Component {
                             <div class="col-12 col-md-2">
                                 <img
                                     class="rounded-circle material-shadow avatar"
-                                    src={ bee.crop(this.props.avatar, 100, 100) }
+                                    src={ bee.crop(this.state.avatar, 100, 100) }
                                 />
                             </div>
                             <div class="col-12 col-md-10">
-                                <form>
+                                <form id="settings_form">
                                     <div class="form-group">
                                         <label for="name">{lang.fr["name"]}: </label>
                                         <input
@@ -27,7 +54,7 @@ export default class Settings extends Component {
                                             minlength="1"
                                             maxlength="128"
                                             placeholder={lang.fr["name_input"]}
-                                            value={this.props.name}
+                                            value={this.state.name}
                                             class="form-control"
                                         ></input>
                                     </div>
@@ -37,7 +64,7 @@ export default class Settings extends Component {
                                             type="email"
                                             name="email"
                                             placeholder={lang.fr["email_input"]}
-                                            value={this.props.login}
+                                            value={this.state.login}
                                             class="form-control"
                                         ></input>
                                     </div>
@@ -53,7 +80,7 @@ export default class Settings extends Component {
                                             class="form-control"
                                         ></input>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">{lang.fr["save_changes"]}</button>
+                                    <button onClick={this.updateSettings} class="btn btn-primary">{lang.fr["save_changes"]}</button>
                                 </form>
                             </div>
                         </div>

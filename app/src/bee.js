@@ -36,7 +36,9 @@ const bee = {
                 )
             });
         },
-        post: (url, data, contentType = "application/json") => {
+        post: (url, data, contentType = "application/json") => bee.http.request(url, data, "POST", contentType),
+        put: (url, data, contentType = "application/json") => bee.http.request(url, data, "PUT", contentType),
+        request: (url, data, method, contentType = "application/json") => {
             return bee.get("apiKey").then(apiKey => {
                 if (!url) {
                     return;
@@ -49,7 +51,7 @@ const bee = {
                     h["Content-type"] = contentType;
                 }
                 return fetch(url, {
-                    method: "POST",
+                    method: method,
                     body: (typeof(data) == "object" && data.constructor.name == "Object") ? JSON.stringify(data) : data,
                     headers: new Headers(h),
                 }).then(
