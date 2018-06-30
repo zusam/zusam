@@ -124,7 +124,7 @@ export default class Message extends Component {
                             </div>
                         )}
                         <div class="message-body">
-                            { this.state.message.data && this.state.message.data.text && (
+                            { this.state.data && this.state.data.text && (
                                 <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
                             )}
                             { this.state.preview && <p class="card-text"><PreviewBlock {...this.state.preview} /></p> }
@@ -173,7 +173,7 @@ export default class Message extends Component {
                         </div>
                     )}
                     <div class="message-body">
-                        { this.state.message.data && this.state.message.data.text && (
+                        { this.state.data && this.state.data.text && (
                             <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
                         )}
                         { this.state.preview && <p class="card-text"><PreviewBlock {...this.state.preview} /></p> }
