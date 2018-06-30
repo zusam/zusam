@@ -105,6 +105,9 @@ $navbar_height: 50px;
 .embed-container {
     width: 100%;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     & > * {
         max-width: 100%;
     }
@@ -469,13 +472,12 @@ $material_shadow_hover: 0 10px 20px rgba(0,0,0,0.19),0 6px 6px rgba(0,0,0,0.23);
 
 body {
     height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 article {
-    overflow-y: auto;
     padding-top: 2rem;
-    height: calc(100vh - #{$navbar_height});
 }
 
 .message {
