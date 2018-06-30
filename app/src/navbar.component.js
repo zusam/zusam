@@ -8,7 +8,7 @@ export default class Navbar extends Component {
 
     render() {
         return (
-            <div class="nav align-items-center shadow-sm">
+            <div class="nav align-items-center shadow-sm z-index-100">
                 { this.props.currentUser && this.props.currentUser.avatar && !this.props.backUrl && (
                     <div
                         class="avatar dropdown" tabindex="-1"
