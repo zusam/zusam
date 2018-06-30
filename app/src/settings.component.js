@@ -12,7 +12,6 @@ export default class Settings extends Component {
     }
 
     updateSettings(event) {
-        event.stopPropagation();
         event.preventDefault();
         const name = document.querySelector("#settings_form input[name='name']").value;
         const login = document.querySelector("#settings_form input[name='email']").value;
