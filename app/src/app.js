@@ -112,38 +112,40 @@ class App extends Component {
                     groups={this.state.groups}
                     backUrl={this.state.backUrl}
                 />
-                { this.state.route == "settings" && (
-                    <article class="justify-content-center d-flex">
-                        <div class="container">
-                            <Settings {...this.state.currentUser} />
-                        </div>
-                    </article>
-                )}
-                { this.state.route == "messages" && this.state.entity["@type"] == "Message" && (
-                    <article class="justify-content-center d-flex">
-                        <div class="container">
-                            <Message currentUser={this.state.currentUser} key={this.state.url} url={this.state.entityUrl} />
-                        </div>
-                    </article>
-                )}
-                <div class={
-                        this.state.route == "groups"
-                        && !this.state.action
-                        && this.state.entity["@type"] == "Group"
-                        ? "d-block" : "d-none"
-                }>
-                    <GroupBoard ref={g => this.groupRef = g} key={this.state.group} url={this.state.group} />
-                    <a class="write material-shadow seamless-link" href={this.state.url + "/write"} onClick={router.onClick}>
-                        <FaIcon family={"solid"} icon={"pencil-alt"}/>
-                    </a>
+                <div class="content">
+                    { this.state.route == "settings" && (
+                        <article class="justify-content-center d-flex">
+                            <div class="container">
+                                <Settings {...this.state.currentUser} />
+                            </div>
+                        </article>
+                    )}
+                    { this.state.route == "messages" && this.state.entity["@type"] == "Message" && (
+                        <article class="justify-content-center d-flex">
+                            <div class="container">
+                                <Message currentUser={this.state.currentUser} key={this.state.url} url={this.state.entityUrl} />
+                            </div>
+                        </article>
+                    )}
+                    <div class={
+                            this.state.route == "groups"
+                            && !this.state.action
+                            && this.state.entity["@type"] == "Group"
+                            ? "d-block" : "d-none"
+                    }>
+                        <GroupBoard ref={g => this.groupRef = g} key={this.state.group} url={this.state.group} />
+                        <a class="write material-shadow seamless-link" href={this.state.url + "/write"} onClick={router.onClick}>
+                            <FaIcon family={"solid"} icon={"pencil-alt"}/>
+                        </a>
+                    </div>
+                    { this.state.route == "groups" && this.state.action == "write" && this.state.entity["@type"] == "Group" && (
+                        <article>
+                            <div class="container">
+                                <Writer currentUser={this.state.currentUser} group={this.state.group} backUrl={this.state.backUrl} />
+                            </div>
+                        </article>
+                    )}
                 </div>
-                { this.state.route == "groups" && this.state.action == "write" && this.state.entity["@type"] == "Group" && (
-                    <article>
-                        <div class="container">
-                            <Writer currentUser={this.state.currentUser} group={this.state.group} backUrl={this.state.backUrl} />
-                        </div>
-                    </article>
-                )}
             </main>
         );
     }

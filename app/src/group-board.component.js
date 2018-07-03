@@ -21,12 +21,12 @@ export default class GroupBoard extends Component {
             let scrollTop = 0;
             if (groupData) {
                 loaded = groupData.loaded || loaded;
-                scrollTop = groupData.scrollTop || scrollTop;
+                pageYOffset = groupData.pageYOffset || pageYOffset;
             }
             this.setState({
                 group: group,
                 loaded: loaded,
-                scrollTop: scrollTop,
+                pageYOffset: pageYOffset,
                 page: 1,
             });
             bee.get("/api/groups/" + group.id + "/messages?parent[exists]=0&page=1").then(res => {
@@ -36,10 +36,18 @@ export default class GroupBoard extends Component {
                         totalMessages: res["hydra:totalItems"]
                     });
                     // scrollTo the right place but leave a bit of time for the dom to construct
-                    setTimeout(() => document.getElementById("group").scrollTo(0, scrollTop), 0);
+                    setTimeout(() => window.scrollTo(0, pageYOffset), 0);
                 }
             });
         }));
+    }
+
+    componentDidMount() {
+        window.addEventListener("scroll", this.loadMoreMessages);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("scroll", this.loadMoreMessages);
     }
 
     hardUpdate() {
@@ -54,8 +62,10 @@ export default class GroupBoard extends Component {
     }
 
     loadMoreMessages() {
+        if (window.getComputedStyle(document.getElementById("group").parentNode).display == "none") {
+            return;
+        }
         const key = "onScroll";
-        const groupContainer = document.getElementById("group");
         if (!window.sessionStorage.getItem(key)) {
             window.sessionStorage.setItem(key, Date.now());
             return;
@@ -63,13 +73,13 @@ export default class GroupBoard extends Component {
         if (parseInt(window.sessionStorage.getItem(key)) + 100 < Date.now()) {
             window.sessionStorage.setItem(key, Date.now());
             bee.set("group_" + this.state.group.id, {
-                loaded: this.state.loaded + 10,
-                scrollTop: groupContainer.scrollTop
+                loaded: this.state.loaded,
+                pageYOffset: window.pageYOffset
             }, Infinity, false);
-            this.setState({scrollTop: groupContainer.scrollTop});
+            this.setState({pageYOffset: window.pageYOffset});
             if (
                 Array.isArray(this.state.messages)
-                && groupContainer.scrollHeight - window.screen.height - 500 < groupContainer.scrollTop
+                && document.body.scrollHeight - window.screen.height - 500 < window.pageYOffset
                 && this.state.loaded < this.state.totalMessages
             ) {
                 this.setState({loaded: this.state.loaded + 10});
@@ -89,7 +99,7 @@ export default class GroupBoard extends Component {
 
     render() {
         return Array.isArray(this.state.messages) && (
-            <article id="group" class="justify-content-center d-flex" onScroll={this.loadMoreMessages}>
+            <article id="group" class="justify-content-center d-flex">
                 <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
                     { this.state.messages.slice(0, this.state.loaded).map((msg, i) => {
                         return <MessagePreview tabindex={i + 1} key={msg.id} message={msg}/>;
