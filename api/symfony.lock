@@ -65,6 +65,9 @@
     "dragonmantank/cron-expression": {
         "version": "v2.2.0"
     },
+    "egulias/email-validator": {
+        "version": "2.1.4"
+    },
     "embed/embed": {
         "version": "v3.3.1"
     },
@@ -127,6 +130,9 @@
             "version": "4.0",
             "ref": "aaddfdf43cdecd4cf91f992052d76c2cadc04543"
         }
+    },
+    "swiftmailer/swiftmailer": {
+        "version": "v6.1.0"
     },
     "symfony/asset": {
         "version": "v4.0.4"
@@ -271,6 +277,15 @@
     },
     "symfony/stopwatch": {
         "version": "v4.0.9"
+    },
+    "symfony/swiftmailer-bundle": {
+        "version": "2.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.5",
+            "ref": "3db029c03e452b4a23f7fc45cec7c922c2247eb8"
+        }
     },
     "symfony/templating": {
         "version": "v4.1.0"
