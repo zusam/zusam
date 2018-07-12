@@ -71,7 +71,7 @@ export default class Message extends Component {
             return "";
         }
         // escape html a little (just enough to avoid injection)
-        let txt = this.state.data["text"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        let txt = this.state.data["text"].replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
         let matches = txt.match(/(https?:\/\/[^\s]+)/gi);
         if (matches) {
             matches.forEach(url => {
@@ -107,7 +107,7 @@ export default class Message extends Component {
                 <div>
                     <div class="message">
                         { this.state.author && (
-                            <div class="message-head p-1 d-flex">
+                            <div class="message-head d-flex">
                                 <img
                                     class="rounded-circle material-shadow avatar"
                                     src={ bee.crop(this.state.author.avatar, 100, 100) }
@@ -161,9 +161,9 @@ export default class Message extends Component {
             <div>
                 <div class="message child">
                     { this.state.author && (
-                        <div class="message-head p-1 d-flex d-md-block">
+                        <div class="message-head d-flex d-md-block">
                             <img
-                                class="rounded-circle w-3 material-shadow avatar"
+                                class="rounded-circle material-shadow avatar"
                                 src={ bee.crop(this.state.author.avatar, 100, 100) }
                             />
                             <div class="d-flex d-md-none flex-column">

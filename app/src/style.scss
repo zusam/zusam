@@ -493,6 +493,7 @@ article {
     box-shadow: $material_shadow;
 
     .message-head {
+        padding: 1rem 1rem 0 1rem;
         .infos {
             display: flex;
             flex-flow: column;
@@ -577,6 +578,7 @@ article {
             align-items: start;
 
             .message-body {
+                background-color: #fff;
                 top: 0;
                 box-shadow: none;
                 padding-bottom: 1rem;
