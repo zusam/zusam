@@ -493,7 +493,10 @@ article {
     box-shadow: $material_shadow;
 
     .message-head {
+        width: 100%;
         padding: 1rem 1rem 0 1rem;
+        flex-shrink: 10;
+
         .infos {
             display: flex;
             flex-flow: column;
@@ -561,6 +564,48 @@ article {
 
         .card-text {
             padding: 1rem 1rem 0 1rem;
+        }
+        
+        .options {
+            cursor: pointer;
+            margin-left: auto;
+            width: 2rem;
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            top: 10px;
+            right: 5px;
+            z-index: 500;
+
+            &.active {
+                .dropdown-menu {
+                    display: block;
+                }
+            }
+
+            /* Sub Menus */
+            .dropdown-menu {
+                background-color: #fff;
+                display: none;
+                padding: 0;
+                position: absolute;
+                right: 10px;
+                text-align: center;
+                top: 20px;
+                box-shadow: $material_shadow;
+
+                a {
+                    display: block;
+                    padding: 7px 14px;
+                    cursor: pointer;
+                    white-space: nowrap;
+                    font-size: 1.1rem;
+
+                    &:hover {
+                        background-color: whitesmoke;
+                    }
+                }
+            }
         }
     }
 

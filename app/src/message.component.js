@@ -49,7 +49,11 @@ export default class Message extends Component {
         if(window.confirm(lang.fr["ask_delete_message"])) {
             bee.http.delete(this.state.message["@id"]);
             bee.remove(this.state.message["@id"]);
-            router.navigate(router.toApp(this.state.message.group), {data: {hardUpdate: true}});
+            if (this.state.message.parent) {
+                this.setState({isRemoved: true});
+            } else {
+                router.navigate(router.toApp(this.state.message.group), {data: {hardUpdate: true}});
+            }
         }
     }
 
@@ -111,7 +115,7 @@ export default class Message extends Component {
     }
 
     render() {
-        if (!this.state.message || !this.state.message.id) {
+        if (!this.state.message || !this.state.message.id || this.state.isRemoved) {
             return;
         }
         if (!this.state.message.parent) {
@@ -133,7 +137,7 @@ export default class Message extends Component {
                                         <span>{ this.state.data.title }</span>
                                     </div>
                                 )}
-                                { this.state.author && this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
+                                { this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
                                     <div tabindex="-1"
                                         class="options dropdown"
                                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
@@ -160,7 +164,7 @@ export default class Message extends Component {
                             { this.state.displayedChildren < this.state.message.children.length && (
                                 <a class="more-coms" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</a>
                             )}
-                            { this.state.message.children.slice(-1 * this.state.displayedChildren).map(e => <Message url={e} key={e}/>) }
+                            { this.state.message.children.slice(-1 * this.state.displayedChildren).map(e => <Message currentUser={this.props.currentUser} url={e} key={e}/>) }
                         </div>
                     )}
                     <div class="message child">
@@ -194,9 +198,33 @@ export default class Message extends Component {
                                 <span class="capitalize ml-1">{ this.state.author.name }</span>
                                 <span class="ml-1">{ this.displayDate(this.state.message.createdAt) }</span>
                             </div>
+                            { this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
+                                <div tabindex="-1"
+                                    class="options dropdown d-md-none"
+                                    onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
+                                    onClick={e => e.currentTarget.classList.toggle("active")}
+                                >
+                                    <FaIcon family="solid" icon="caret-down"/>
+                                    <div class="dropdown-menu">
+                                        <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
                     <div class="message-body">
+                        { this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
+                            <div tabindex="-1"
+                                class="options dropdown d-none d-md-flex"
+                                onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
+                                onClick={e => e.currentTarget.classList.toggle("active")}
+                            >
+                                <FaIcon family="solid" icon="caret-down"/>
+                                <div class="dropdown-menu">
+                                    <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
+                                </div>
+                            </div>
+                        )}
                         { this.state.data && this.state.data.text && (
                             <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
                         )}
