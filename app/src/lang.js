@@ -23,6 +23,7 @@ const lang = {
         "save_changes": "Sauvegardez les changements",
         "password": "Mot de passe",
         "password_input": "Entrez un nouveau mot de passe",
+        "Invalid login/password": "Identifiant et/ou mot de passe invalide",
     }
 };
 export default lang;

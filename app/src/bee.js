@@ -55,7 +55,7 @@ const bee = {
                     body: (typeof(data) == "object" && data.constructor.name == "Object") ? JSON.stringify(data) : data,
                     headers: new Headers(h),
                 }).then(
-                    res => res.ok && res.json()
+                    res => res.json()
                 ).catch(
                     err => console.warn("ERROR for " + url, err)
                 )

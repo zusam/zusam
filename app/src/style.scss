@@ -710,3 +710,12 @@ article {
         }
     }
 }
+
+.global-alert {
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    top: 0;
+    left: 0;
+    z-index: 500;
+}

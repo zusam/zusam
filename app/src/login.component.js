@@ -5,17 +5,32 @@ import router from "./router.js";
 
 export default class Login extends Component {
 
+    constructor() {
+        super();
+        this.state = {
+            showAlert: false,
+            error: ""
+        };
+        this.sendLoginForm = this.sendLoginForm.bind(this);
+    }
+
 	sendLoginForm(e) {
 		e.preventDefault();
+        this.setState({showAlert: false});
 		let login = document.getElementById("login").value || "";
         login.toLowerCase();
 		const password = document.getElementById("password").value;
         bee.set("apiKey", "");
 		bee.http.post("/api/login", {login: login, password: password}).then(res => {
-			if (res) {
+			if (res && !res.message) {
 				bee.set("apiKey", res.api_key);
                 setTimeout(() => router.navigate("/"), 100);
-			}
+            } else {
+                this.setState({
+                    showAlert: true,
+                    error: lang.fr[res.message]
+                });
+            }
 		})
 	}
     
@@ -34,6 +49,11 @@ export default class Login extends Component {
                         <button type="submit" class="btn btn-light" onClick={this.sendLoginForm}>{lang.fr.submit}</button>
                     </form>
                 </div>
+                { this.state.showAlert && (
+                    <div class="global-alert alert alert-danger">
+                        { this.state.error }
+                    </div>
+                )}
             </div>
         );
     }
