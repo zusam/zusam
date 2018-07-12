@@ -16,6 +16,6 @@ export default class TwitchEmbed extends Component {
             }
             return <div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen class="embed-responsive-item" src={embedUrl}></iframe></div>;
         }
-        return <div class="embed-preview" onClick={() => this.setState({revealed: true})}><div class="twitch"></div><img src={ bee.crop(this.props.preview, 320, 180) } /></div>;
+        return <div class="embed-preview" onClick={() => this.setState({revealed: true})}><div class="twitch"></div><img src={ bee.crop(this.props.preview, 1024, 180) } /></div>;
     }
 }
