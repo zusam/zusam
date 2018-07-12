@@ -66,8 +66,13 @@ class App extends Component {
         if (route == "groups") {
             this.setState({group: entityUrl});
             // soft update message list of the group
-            if (this.groupRef && !action && /\/write$/.test(event.detail.from)) {
-                this.groupRef.hardUpdate();
+            if (this.groupRef) {
+                if (
+                    (!action && /\/write$/.test(event.detail.from))
+                    || (event.detail.data && event.detail.data.hardUpdate)
+                ) {
+                    this.groupRef.hardUpdate();
+                }
             }
         }
         if (id) {

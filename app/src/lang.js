@@ -24,6 +24,9 @@ const lang = {
         "password": "Mot de passe",
         "password_input": "Entrez un nouveau mot de passe",
         "Invalid login/password": "Identifiant et/ou mot de passe invalide",
+        "edit": "Editer",
+        "delete": "Supprimer",
+        "ask_delete_message": "Êtes-vous sûr de vouloir supprimer ce message ?",
     }
 };
 export default lang;

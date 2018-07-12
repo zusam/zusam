@@ -508,6 +508,43 @@ article {
             font-weight: bold;
             justify-content: center;
         }
+        .options {
+            cursor: pointer;
+            margin-left: auto;
+            width: 2rem;
+            display: flex;
+            justify-content: center;
+
+            &.active {
+                .dropdown-menu {
+                    display: block;
+                }
+            }
+
+            /* Sub Menus */
+            .dropdown-menu {
+                background-color: #fff;
+                display: none;
+                padding: 0;
+                position: absolute;
+                right: 20px;
+                text-align: center;
+                top: 35px;
+                box-shadow: $material_shadow;
+
+                a {
+                    display: block;
+                    padding: 7px 14px;
+                    cursor: pointer;
+                    white-space: nowrap;
+                    font-size: 1.1rem;
+
+                    &:hover {
+                        background-color: whitesmoke;
+                    }
+                }
+            }
+        }
     }
 
     .message-body {
@@ -547,7 +584,7 @@ article {
 
         .message-body {
             background-color: whitesmoke;
-            box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1),0 1px 2px rgba(255, 255, 255, 0.2);
+            box-shadow: $material_shadow;
             padding-bottom: 1rem;
             position: relative;
             top: 1rem;
@@ -604,21 +641,23 @@ article {
 }
 
 .write {
-    position: fixed;
-    z-index: 500;
-    bottom: 2rem;
-    right: 2rem;
-    border-radius: 100%;
-    font-size: 2rem;
     background-color: $zusam_color;
-    padding: 16px;
-    width: 4rem;
-    height: 4rem;
-    display: flex;
-    justify-content: center;
+    border-radius: 100%;
+    bottom: 2rem;
     cursor: pointer;
+    display: flex;
+    font-size: 1.5rem;
+    height: 4rem;
+    justify-content: center;
+    padding: 19px;
+    position: fixed;
+    right: 2rem;
+    width: 4rem;
+    z-index: 500;
+    color: #fff;
     &:hover {
         background-color: adjust-hue($zusam_color, -15deg);
+        color: #fff;
     }
 }
 

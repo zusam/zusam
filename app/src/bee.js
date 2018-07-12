@@ -38,6 +38,7 @@ const bee = {
         },
         post: (url, data, contentType = "application/json") => bee.http.request(url, data, "POST", contentType),
         put: (url, data, contentType = "application/json") => bee.http.request(url, data, "PUT", contentType),
+        delete: (url, data, contentType = "application/json") => bee.http.request(url, null, "DELETE", contentType),
         request: (url, data, method, contentType = "application/json") => {
             return bee.get("apiKey").then(apiKey => {
                 if (!url) {
@@ -50,11 +51,14 @@ const bee = {
                 if (contentType) {
                     h["Content-type"] = contentType;
                 }
-                return fetch(url, {
+                let fetchOptions = {
                     method: method,
-                    body: (typeof(data) == "object" && data.constructor.name == "Object") ? JSON.stringify(data) : data,
                     headers: new Headers(h),
-                }).then(
+                }
+                if (data) {
+                    fetchOptions.body = (typeof(data) == "object" && data.constructor.name == "Object") ? JSON.stringify(data) : data;
+                }
+                return fetch(url, fetchOptions).then(
                     res => res.json()
                 ).catch(
                     err => console.warn("ERROR for " + url, err)
@@ -72,7 +76,10 @@ const bee = {
         }
         bee.events[event].push(resolve);
     },
-    remove: id => window.localStorage.removeItem(id),
+    remove: id => {
+        delete(bee.data[id]);
+        window.localStorage.removeItem(id);
+    },
     set: (id, data, cacheDuration = Infinity, persistant = true) => {
         const storageBox = {
             data: data,

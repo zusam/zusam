@@ -18,6 +18,7 @@ const router = {
                 }
                 setTimeout(() => window.dispatchEvent(new CustomEvent("routerStateChange", {detail : {
                     from: from,
+                    data: options.data,
                 }})), 0);
                 break;
             case "logout":
@@ -38,6 +39,7 @@ const router = {
                     }
                     setTimeout(() => window.dispatchEvent(new CustomEvent("routerStateChange", {detail : {
                         from: from,
+                        data: options.data,
                     }})), 0);
                 });
         }

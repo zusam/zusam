@@ -4,12 +4,15 @@ import bee from "./bee.js";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";
 import Writer from "./writer.component.js";
+import FaIcon from "./fa-icon.component.js";
+import router from "./router.js";
 
 export default class Message extends Component {
 
     constructor(props) {
         super(props);
         this.displayMoreChildren = this.displayMoreChildren.bind(this);
+        this.deleteMessage = this.deleteMessage.bind(this);
         this.onNewMessage = this.onNewMessage.bind(this);
         if (!props.parent) {
             window.addEventListener("newMessage", this.onNewMessage);
@@ -39,6 +42,15 @@ export default class Message extends Component {
                 }
             }
         });
+    }
+
+    deleteMessage(event) {
+		event.preventDefault();
+        if(window.confirm(lang.fr["ask_delete_message"])) {
+            bee.http.delete(this.state.message["@id"]);
+            bee.remove(this.state.message["@id"]);
+            router.navigate(router.toApp(this.state.message.group), {data: {hardUpdate: true}});
+        }
     }
 
     onNewMessage(event) {
@@ -119,6 +131,18 @@ export default class Message extends Component {
                                 { this.state.data && this.state.data.title && (
                                     <div class="title">
                                         <span>{ this.state.data.title }</span>
+                                    </div>
+                                )}
+                                { this.state.author && this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
+                                    <div tabindex="-1"
+                                        class="options dropdown"
+                                        onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
+                                        onClick={e => e.currentTarget.classList.toggle("active")}
+                                    >
+                                        <FaIcon family="solid" icon="caret-down"/>
+                                        <div class="dropdown-menu">
+                                            <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
+                                        </div>
                                     </div>
                                 )}
                             </div>
