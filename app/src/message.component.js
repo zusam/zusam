@@ -127,7 +127,7 @@ export default class Message extends Component {
                             { this.state.data && this.state.data.text && (
                                 <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
                             )}
-                            { this.state.preview && <p class="card-text"><PreviewBlock {...this.state.preview} /></p> }
+                            { this.state.preview && <p class="text-center card-text"><PreviewBlock {...this.state.preview} /></p> }
                             { this.state.message.files && <FileGrid files={this.state.message.files}/> }
                         </div>
                     </div>
@@ -176,7 +176,7 @@ export default class Message extends Component {
                         { this.state.data && this.state.data.text && (
                             <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
                         )}
-                        { this.state.preview && <p class="card-text"><PreviewBlock {...this.state.preview} /></p> }
+                        { this.state.preview && <p class="card-text text-center"><PreviewBlock {...this.state.preview} /></p> }
                         { this.state.message.files && <FileGrid files={this.state.message.files}/> }
                         <div class="infos">
                             {this.state.author && <span class="capitalize">{ this.state.author.name }</span> }
