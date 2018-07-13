@@ -6,6 +6,7 @@ import FileGrid from "./file-grid.component.js";
 import Writer from "./writer.component.js";
 import FaIcon from "./fa-icon.component.js";
 import router from "./router.js";
+import util from "./util.js";
 
 export default class Message extends Component {
 
@@ -99,21 +100,6 @@ export default class Message extends Component {
         return {__html: txt};
     }
 
-    displayDate(timestamp) {
-        if (!timestamp) {
-            return null;
-        }
-        const duration = Date.now() - timestamp*1000;
-        if (duration < 1000 * 60 * 60) {
-            return lang.fr["there_is"] + " " + Math.floor(duration/1000/60) + "mn";
-        }
-        if (duration < 1000 * 60 * 60 * 24) {
-            return lang.fr["there_is"] + " " + Math.floor(duration/1000/60/60) + "h";
-        }
-        let date = new Date(timestamp*1000);
-        return ("0" + date.getDate()).slice(-2) + "/" + ("0" + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
-    }
-
     render() {
         if (!this.state.message || !this.state.message.id || this.state.isRemoved) {
             return;
@@ -130,7 +116,7 @@ export default class Message extends Component {
                                 />
                                 <div class="infos">
                                     <span class="capitalize ml-1">{ this.state.author.name }</span>
-                                    <span class="ml-1">{ this.displayDate(this.state.message.createdAt) }</span>
+                                    <span class="ml-1">{ util.humanDate(this.state.message.createdAt) }</span>
                                 </div>
                                 { this.state.data && this.state.data.title && (
                                     <div class="title">
@@ -196,7 +182,7 @@ export default class Message extends Component {
                             />
                             <div class="d-flex d-md-none flex-column">
                                 <span class="capitalize ml-1">{ this.state.author.name }</span>
-                                <span class="ml-1">{ this.displayDate(this.state.message.createdAt) }</span>
+                                <span class="ml-1">{ util.humanDate(this.state.message.createdAt) }</span>
                             </div>
                             { this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
                                 <div tabindex="-1"
@@ -213,7 +199,7 @@ export default class Message extends Component {
                         </div>
                     )}
                     <div class="message-body">
-                        { this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
+                        { this.state.author && this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
                             <div tabindex="-1"
                                 class="options dropdown d-none d-md-flex"
                                 onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
@@ -232,7 +218,7 @@ export default class Message extends Component {
                         { this.state.message.files && <FileGrid files={this.state.message.files}/> }
                         <div class="infos">
                             {this.state.author && <span class="capitalize">{ this.state.author.name }</span> }
-                            <span>{ this.displayDate(this.state.message.createdAt) }</span>
+                            <span>{ util.humanDate(this.state.message.createdAt) }</span>
                         </div>
                     </div>
                 </div>

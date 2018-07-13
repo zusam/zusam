@@ -632,7 +632,7 @@ article {
             box-shadow: $material_shadow;
             padding-bottom: 1rem;
             position: relative;
-            top: 1rem;
+            top: calc(1rem - 2px);
 
             .infos {
                 font-size: .8rem;

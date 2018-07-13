@@ -2,6 +2,7 @@ import { h, render, Component } from "preact";
 import bee from "./bee.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
+import util from "./util.js";
 
 export default class MessagePreview extends Component {
     constructor(props) {
@@ -34,8 +35,11 @@ export default class MessagePreview extends Component {
     }
 
     getTitle() {
-        if (!this.state.title || this.state.title.length < 24) {
-            return this.state.title || " ";
+        if (!this.state.title) {
+            return util.humanDate(this.state.message.lastActivityDate);
+        }
+        if (this.state.title.length < 24) {
+            return this.state.title;
         }
         return this.state.title.slice(0, 21) + "...";
     }
