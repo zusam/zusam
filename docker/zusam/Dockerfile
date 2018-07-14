@@ -3,7 +3,6 @@ FROM alpine:3.7
 ENV UID=791 GID=791
 
 VOLUME /www
-EXPOSE 8080
 
 # install core
 RUN set -xe && apk add --no-cache -U s6 su-exec ca-certificates nginx php7-fpm
@@ -19,4 +18,5 @@ COPY nginx /etc/nginx
 
 RUN chmod -R +x /usr/local/bin /etc/s6.d /var/lib/nginx
 
+EXPOSE 8080
 CMD ["run.sh"]
