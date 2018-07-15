@@ -48,6 +48,12 @@ class Message
     private $createdAt;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Type("integer")
+     */
+    private $date;
+
+    /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
@@ -111,6 +117,17 @@ class Message
     public function setCreatedAt(int $createdAt): self
     {
         $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getDate(): ?int
+    {
+        return $this->date;
+    }
+
+    public function setDate(?int $date): self
+    {
+        $this->date = $date;
         return $this;
     }
 
