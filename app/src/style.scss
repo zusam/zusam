@@ -309,7 +309,7 @@ $navbar_height: 50px;
     }
 }
 
-.nav {
+.main-nav {
     width: 100%;
     background-color: $zusam_color;
     position: sticky;
@@ -807,4 +807,53 @@ article {
     top: 0;
     left: 0;
     z-index: 500;
+}
+
+.settings {
+    .nav-link {
+        color: #444;
+    }
+    .nav-link.active {
+        text-decoration: none !important;
+    }
+    a.nav-link:hover {
+        text-decoration: underline;
+    }
+    .group-list {
+        display: block;
+        position: relative;
+        z-index: 30;
+        cursor: pointer;
+
+        &.active {
+            background-color: whitesmoke;
+            .dropdown-menu {
+                display: block;
+            }
+        }
+
+        /* Sub Menus */
+        .dropdown-menu {
+            position: absolute;
+            display: none;
+            width: inherit;
+            left: 0;
+            top: 100%;
+            padding: 0;
+            background-color: $white;
+            text-align: left;
+            box-shadow: $material_shadow;
+
+            a {
+                display: block;
+                padding: 5px 10px;
+                cursor: pointer;
+                white-space: nowrap;
+
+                &:hover {
+                    background-color: whitesmoke;
+                }
+            }
+        }
+    }
 }

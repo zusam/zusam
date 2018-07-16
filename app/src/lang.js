@@ -27,6 +27,8 @@ const lang = {
         "edit": "Editer",
         "delete": "Supprimer",
         "ask_delete_message": "Êtes-vous sûr de vouloir supprimer ce message ?",
+        "account": "Compte",
+        "groups": "Groupes",
     }
 };
 export default lang;

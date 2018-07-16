@@ -60,7 +60,13 @@ class App extends Component {
         let backUrl = "";
         const entityUrl = "/api/" + route + "/" + id;
         if (action) {
-            backUrl = url;
+            switch (route) {
+                case "users":
+                    backUrl = "/";
+                    break;
+                default:
+                    backUrl = url;
+            }
             url += "/" + action;
         }
         if (route == "groups") {
