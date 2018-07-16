@@ -17,8 +17,11 @@ export default class Navbar extends Component {
                     >
                         <img class="rounded-circle" src={ bee.crop(this.props.currentUser.avatar, 80, 80) }/>
                         <div class="dropdown-menu">
+                            <a class="seamless-link"
+                                href={router.toApp(this.props.currentUser["@id"])+"/settings"}
+                                onClick={router.onClick}
+                            >{lang.fr["settings"]}</a>
                             <a class="seamless-link" href="/logout" onClick={router.onClick}>{lang.fr["logout"]}</a>
-                            <a class="seamless-link" href="/settings" onClick={router.onClick}>{lang.fr["settings"]}</a>
                         </div>
                     </div>
                 )}

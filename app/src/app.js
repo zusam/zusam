@@ -118,10 +118,10 @@ class App extends Component {
                     backUrl={this.state.backUrl}
                 />
                 <div class="content">
-                    { this.state.route == "settings" && (
+                    { this.state.action && this.state.action == "settings" && this.state.entityUrl && (
                         <article class="justify-content-center d-flex">
                             <div class="container">
-                                <Settings {...this.state.currentUser} />
+                                <Settings key={this.state.entityUrl} currentUser={this.state.currentUser} />
                             </div>
                         </article>
                     )}
