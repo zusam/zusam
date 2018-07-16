@@ -127,7 +127,7 @@ class App extends Component {
                     { this.state.action && this.state.action == "settings" && this.state.entityUrl && (
                         <article class="justify-content-center d-flex">
                             <div class="container">
-                                <Settings key={this.state.entityUrl} currentUser={this.state.currentUser} />
+                                <Settings key={this.state.entityUrl} currentUser={this.state.currentUser} groups={this.state.groups}/>
                             </div>
                         </article>
                     )}

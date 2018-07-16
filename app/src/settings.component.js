@@ -15,9 +15,6 @@ export default class Settings extends Component {
             return;
         }
         bee.get(this.state.key).then(res => this.setState({entity: res}));
-        this.props.currentUser.groups.forEach(g => bee.get(g).then(
-            group => this.setState({groups: [...this.state.groups, group]}))
-        );
     }
 
     render() {
@@ -31,6 +28,7 @@ export default class Settings extends Component {
                         <a
                             class={ "nav-link" + (this.state.entity["@type"] == "User" ? " active" : "")}
                             href={router.toApp(this.state.currentUser["@id"]) + "/settings"}
+                            onClick={router.onClick}
                         >{lang.fr["account"]}</a>
                     </li>
                     { this.state.groups && (
@@ -41,8 +39,14 @@ export default class Settings extends Component {
                         >
                             <div class={"nav-link" + (this.state.entity["@type"] == "Group" ? " active" : "")}>{ lang.fr.groups }</div>
                             <div class="dropdown-menu">
-                                { this.state.groups.map(
-                                    e => <a class="seamless-link" href={router.toApp(e["@id"]) + "/settings"} onClick={router.onClick}>{e.name}</a>
+                                { Array.isArray(this.state.groups["hydra:member"]) && this.state.groups["hydra:member"].map(
+                                    e => (
+                                        <a
+                                            class="seamless-link"
+                                            href={router.toApp(e["@id"]) + "/settings"}
+                                            onClick={router.onClick}
+                                        >{e.name}</a>
+                                    )
                                 )}
                             </div>
                         </li>

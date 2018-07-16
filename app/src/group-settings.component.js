@@ -27,7 +27,7 @@ export default class GroupSettings extends Component {
         return (
             <div class="group-settings">
                 <div class="card">
-                    <div class="identite card-body">
+                    <div class="card-body">
                         <div class="container-fluid p-1">
                             <div class="row">
                                 <div class="col-12 col-md-10">
@@ -42,6 +42,7 @@ export default class GroupSettings extends Component {
                                                 placeholder={lang.fr["name_input"]}
                                                 value={this.state.name}
                                                 class="form-control"
+                                                required
                                             ></input>
                                         </div>
                                         <button onClick={this.updateSettings} class="btn btn-primary">{lang.fr["save_changes"]}</button>
