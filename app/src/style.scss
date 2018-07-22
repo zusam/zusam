@@ -459,6 +459,18 @@ $material_shadow_hover: 0 10px 20px rgba(0,0,0,0.19),0 6px 6px rgba(0,0,0,0.23);
             text-align: center;
         }
     }
+    .forgot-password {
+        display: block;
+        margin-bottom: 1rem;
+        margin-top: -0.5rem;
+        text-align: right;
+        color: white;
+        font-size: 0.8rem;
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 .dropdown {

@@ -3,8 +3,9 @@ const lang = {
         "more_coms": "Voir les commentaires précédents",
         "there_is": "Il y a",
         "groups": "Groupes",
-        "login_placeholder": "identifiant",
+        "login_placeholder": "email",
         "password_placeholder": "mot de passe",
+        "connect": "Connexion",
 		"submit": "Envoyer",
         "title_placeholder": "Titre de votre message (optionnel)",
         "text_placeholder": "Ecrivez votre message ici",
@@ -29,6 +30,9 @@ const lang = {
         "ask_delete_message": "Êtes-vous sûr de vouloir supprimer ce message ?",
         "account": "Compte",
         "groups": "Groupes",
+        "forgot_password": "Mot de passe oublié ?",
+        "password_reset_mail_sent": "Le mail de réinitialisation a bien été envoyé !",
+        "User not found": "Utilisateur inexistant",
     }
 };
 export default lang;
