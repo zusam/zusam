@@ -30,7 +30,13 @@ class Mailer
                     "password-reset-mail.txt.twig",
                     [
                         "name" => ucfirst($user->getName()),
-                        "url" => "https://".$this->domain."/password-reset/".$user->createResetPasswordKey(),
+                        "url" => "https://"
+                            .$this->domain
+                            ."/password-reset"
+                            ."?mail="
+                            .urlencode($user->getLogin())
+                            ."&key="
+                            .$user->createResetPasswordKey(),
                     ]
                 ),
                 "text/plain"

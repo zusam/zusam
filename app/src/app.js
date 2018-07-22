@@ -9,6 +9,7 @@ import Navbar from "./navbar.component.js";
 import FaIcon from "./fa-icon.component.js";
 import Writer from "./writer.component.js";
 import Settings from "./settings.component.js";
+import ResetPassword from "./reset-password.component.js";
 
 class App extends Component {
 
@@ -22,7 +23,8 @@ class App extends Component {
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
         bee.get("apiKey").then(apiKey => {
-            if (!apiKey && this.state.route != "login") {
+            if (!apiKey && this.state.route && this.state.route != "login" && this.state.route != "password-reset") {
+                console.log("go to login");
                 router.navigate("/login");
             } else {
                 router.sync();
@@ -32,10 +34,12 @@ class App extends Component {
 
     onRouterStateChange(event) {
         const [route, id, action] = router.getSegments();
+        console.log("statechange", route);
         bee.get("apiKey").then(apiKey => {
             if (apiKey) {
                 bee.get("/api/me").then(user => {
-                    if (!user && route != "login") {
+                    if (!user && route != "login" && route != "password-reset") {
+                        console.log("go to login");
                         router.navigate("/login");
                         return;
                     }
@@ -45,7 +49,8 @@ class App extends Component {
                     );
                 });
             } else {
-                if (route != "login") {
+                if (route != "login" && route != "password-reset") {
+                    console.log("go to login");
                     router.navigate("/login");
 					return;
                 }
@@ -105,11 +110,15 @@ class App extends Component {
     }
 
     render() {
+        console.log(this.state.route);
         if (!this.state.route) {
             return;
         }
         if (this.state.route == "login") {
             return <Login />;
+        }
+        if (this.state.route == "password-reset") {
+            return <ResetPassword />;
         }
         if (!this.state.currentUser || !this.state.groups) {
             return;

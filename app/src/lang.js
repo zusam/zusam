@@ -5,6 +5,8 @@ const lang = {
         "groups": "Groupes",
         "login_placeholder": "email",
         "password_placeholder": "mot de passe",
+        "new_password_placeholder": "nouveau mot de passe",
+        "confirm_password_placeholder": "confirmez le mot de passe",
         "connect": "Connexion",
 		"submit": "Envoyer",
         "title_placeholder": "Titre de votre message (optionnel)",
@@ -33,6 +35,7 @@ const lang = {
         "forgot_password": "Mot de passe oublié ?",
         "password_reset_mail_sent": "Le mail de réinitialisation a bien été envoyé !",
         "User not found": "Utilisateur inexistant",
+        "reset_password_title": "Réinitialisation de votre mot de passe",
     }
 };
 export default lang;
