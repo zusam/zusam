@@ -84,11 +84,12 @@ export default class GroupBoard extends Component {
             ) {
                 this.setState({loaded: this.state.loaded + 10});
                 if (this.state.loaded + 30 > this.state.messages.length) {
+                    // update page count right away
+                    this.setState({page: this.state.page + 1});
                     bee.get("/api/groups/" + this.state.group.id + "/messages?parent[exists]=0&page=" + (this.state.page + 1)).then(res => {
                         if(res && Array.isArray(res["hydra:member"])) {
                             this.setState({
                                 messages: [...this.state.messages, ...res["hydra:member"]],
-                                page: this.state.page + 1,
                             });
                         }
                     });
