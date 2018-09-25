@@ -7,13 +7,11 @@
         "api-platform/api-pack": "^1.0",
         "dragonmantank/cron-expression": "^2.2",
         "embed/embed": "^3.3",
-        "php-ffmpeg/binary-driver": "dev-master",
-        "php-ffmpeg/php-ffmpeg": "^0.11.1",
+        "php-ffmpeg/php-ffmpeg": "^0.13",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/console": "^4.0",
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^4.0",
-        "symfony/lts": "^4@dev",
         "symfony/monolog-bundle": "^3.3",
         "symfony/swiftmailer-bundle": "^3.2",
         "symfony/yaml": "^4.0",
@@ -68,11 +66,5 @@
         },
         "public-dir": "../public/api/",
         "bundles-dir": "../public/api/"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/PHP-FFMpeg/BinaryDriver.git"
-        }
-    ]
+    }
 }
