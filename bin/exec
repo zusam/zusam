@@ -38,5 +38,5 @@ pathToProject=$(pwd)
 cd "docker/exec" || exit
 
 if sudo docker build -t "exec" .; then
-    sudo docker run --init --rm -it -e UID="$(id -u)" -e GID="$(id -g)" -e USER="$(id -un)" -e GROUP="$(id -gn)" -v "${pathToProject}":/data --name "exec" "exec" "$@"
+    sudo docker run --rm -it -e UID="$(id -u)" -e GID="$(id -g)" -e USER="$(id -un)" -e GROUP="$(id -gn)" -v "${pathToProject}":/data --name "exec" "exec" "$@"
 fi
