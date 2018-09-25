@@ -36,6 +36,8 @@ const lang = {
         "password_reset_mail_sent": "Le mail de réinitialisation a bien été envoyé !",
         "User not found": "Utilisateur inexistant",
         "reset_password_title": "Réinitialisation de votre mot de passe",
+        "error": "Une erreur est survenue. Veuillez réessayer.",
+        "passwords_dont_match": "Les mots de passe ne sont pas identiques !",
     }
 };
 export default lang;

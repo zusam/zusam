@@ -75,7 +75,7 @@ class Security extends Controller
     public function newPassword(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $mail = $data["mail"] ?? "";
+        $mail = urldecode($data["mail"]) ?? "";
         $password = $data["password"] ?? "";
         $key = $data["key"] ?? "";
         $user = $this->em->getRepository(User::class)->findOneByLogin($mail);
