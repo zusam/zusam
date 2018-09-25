@@ -33,7 +33,7 @@ export default class PreviewBlock extends Component {
 	}
 
     render() {
-        if (!this.props.url || !this.props.data || !this.props.preview) {
+        if (!this.props.url || !this.props.data) {
             return null;
         }
         let data = JSON.parse(this.props.data);

@@ -10,7 +10,6 @@ const router = {
         const from = window.location.pathname;
         const queryParams = window.location.search;
         const [route, id, action] = router.toApp(url).slice(1).split("/")
-        console.log("router", route, id, action);
         switch (route) {
             case "password-reset":
                 // we keep queryParams for the password reset

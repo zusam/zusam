@@ -516,6 +516,8 @@ article {
         width: 100%;
         padding: 1rem 1rem 0 1rem;
         flex-shrink: 10;
+        position: relative;
+        z-index: 100;
 
         .infos {
             display: flex;
@@ -554,6 +556,7 @@ article {
                 text-align: center;
                 top: 35px;
                 box-shadow: $material_shadow;
+                color: #444;
 
                 a {
                     display: block;
@@ -572,7 +575,7 @@ article {
 
     .message-body {
         width: 100%;
-        padding-bottom: 1rem;
+        padding-bottom: 1.2rem;
 
         a.image {
             margin: 5px;
@@ -614,6 +617,7 @@ article {
                 text-align: center;
                 top: 20px;
                 box-shadow: $material_shadow;
+                color: #444;
 
                 a {
                     display: block;
