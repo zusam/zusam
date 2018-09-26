@@ -2,8 +2,8 @@
 	"name": "zusam-app",
 	"version": "0.1.0",
 	"scripts": {
-		"build": "parcel build --no-source-maps src/index.html",
 		"clean": "shx rm -f {../public,dist}/*.{js,css,map,html,png,jpg,svg}",
+		"build": "parcel build --no-source-maps src/index.html",
 		"serve": "shx cp dist/*.{js,css,map,html} ../public && shx cp src/*.{png,jpg,svg} ../public",
 		"full": "yarn clean && yarn build && yarn serve"
 	},

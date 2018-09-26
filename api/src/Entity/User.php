@@ -225,9 +225,12 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getAvatar(): File
+    public function getAvatar(): ?File
     {
-        return $this->avatar;
+        if ($this->avatar && $this->avatar->getId()) {
+            return $this->avatar;
+        }
+        return null;
     }
 
     public function setName(string $name): self
