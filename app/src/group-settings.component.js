@@ -31,7 +31,7 @@ export default class GroupSettings extends Component {
                         <div class="container-fluid p-1">
                             <div class="row">
                                 <div class="col-12 col-md-10">
-                                    <form id="settings_form">
+                                    <form id="settings_form" class="mb-1">
                                         <div class="form-group">
                                             <label for="name">{lang.fr["name"]}: </label>
                                             <input
@@ -46,6 +46,19 @@ export default class GroupSettings extends Component {
                                             ></input>
                                         </div>
                                         <button onClick={this.updateSettings} class="btn btn-primary">{lang.fr["save_changes"]}</button>
+                                    </form>
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="inviteKey">{lang.fr["invitation_link"]}: </label>
+                                            <input
+                                                type="text"
+                                                name="inviteKey"
+                                                value={"https://" + location.hostname + "/invitation/" + this.state.inviteKey}
+                                                class="form-control"
+                                                readonly="readonly"
+                                            ></input>
+                                        </div>
+                                        <button class="btn btn-danger">{lang.fr["reset_invitation_link"]}</button>
                                     </form>
                                 </div>
                             </div>

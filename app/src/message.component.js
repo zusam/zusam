@@ -1,12 +1,12 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
+import util from "./util.js";
 import bee from "./bee.js";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";
 import Writer from "./writer.component.js";
 import FaIcon from "./fa-icon.component.js";
 import router from "./router.js";
-import util from "./util.js";
 
 export default class Message extends Component {
 
@@ -108,35 +108,35 @@ export default class Message extends Component {
             return (
                 <div>
                     <div class="message">
-                        { this.state.author && (
-                            <div class="message-head d-flex">
+                        <div class="message-head d-flex">
+                            { this.state.author && (
                                 <img
                                     class="rounded-circle material-shadow avatar"
-                                    src={ bee.crop(this.state.author.avatar, 100, 100) }
+                                    src={ bee.crop(this.state.author.avatar, 100, 100) || util.defaultAvatar }
                                 />
-                                <div class="infos">
-                                    <span class="capitalize ml-1">{ this.state.author.name }</span>
-                                    <span class="ml-1">{ util.humanDate(this.state.message.createdAt) }</span>
-                                </div>
-                                { this.state.data && this.state.data.title && (
-                                    <div class="title">
-                                        <span>{ this.state.data.title }</span>
-                                    </div>
-                                )}
-                                { this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
-                                    <div tabindex="-1"
-                                        class="options dropdown"
-                                        onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
-                                        onClick={e => e.currentTarget.classList.toggle("active")}
-                                    >
-                                        <FaIcon family="solid" icon="caret-down"/>
-                                        <div class="dropdown-menu">
-                                            <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
-                                        </div>
-                                    </div>
-                                )}
+                            )}
+                            <div class="infos">
+                                { this.state.author && <span class="capitalize ml-1">{ this.state.author.name }</span> }
+                                <span class="ml-1">{ util.humanDate(this.state.message.createdAt) }</span>
                             </div>
-                        )}
+                            { this.state.data && this.state.data.title && (
+                                <div class="title">
+                                    <span>{ this.state.data.title }</span>
+                                </div>
+                            )}
+                            { this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
+                                <div tabindex="-1"
+                                    class="options dropdown"
+                                    onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
+                                    onClick={e => e.currentTarget.classList.toggle("active")}
+                                >
+                                    <FaIcon family="solid" icon="caret-down"/>
+                                    <div class="dropdown-menu">
+                                        <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                         <div class="message-body">
                             { this.state.data && this.state.data.text && (
                                 <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>

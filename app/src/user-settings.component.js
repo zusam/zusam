@@ -1,5 +1,6 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
+import util from "./util.js";
 import bee from "./bee.js";
 import FaIcon from "./fa-icon.component.js";
 
@@ -40,8 +41,8 @@ export default class UserSettings extends Component {
                             <div class="row">
                                 <div class="col-12 col-md-2">
                                     <img
-                                        class="rounded-circle material-shadow avatar"
-                                        src={ bee.crop(this.state.avatar, 100, 100) }
+                                        class="img-fluid rounded-circle material-shadow avatar"
+                                        src={ bee.crop(this.state.avatar, 100, 100) || util.defaultAvatar }
                                     />
                                 </div>
                                 <div class="col-12 col-md-10">

@@ -38,6 +38,10 @@ const lang = {
         "reset_password_title": "Réinitialisation de votre mot de passe",
         "error": "Une erreur est survenue. Veuillez réessayer.",
         "passwords_dont_match": "Les mots de passe ne sont pas identiques !",
+        "invitation_link": "Lien d'invitation",
+        "reset_invitation_link": "Réinitialiser le lien d'invitation",
+        "invitation_welcome": "Bienvenue sur Zusam ! Veuillez vous inscrire avant de rejoindre le groupe.",
+        "signup": "S'inscrire"
     }
 };
 export default lang;

@@ -1,8 +1,8 @@
 import { h, render, Component } from "preact";
 import bee from "./bee.js";
+import util from "./util.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
-import util from "./util.js";
 
 export default class MessagePreview extends Component {
     constructor(props) {
@@ -45,10 +45,6 @@ export default class MessagePreview extends Component {
     }
 
     render() {
-        if (!this.state.author) {
-            return <a href={router.toApp(this.state.message["@id"])} class="message-preview-placeholder material-shadow"></a>;
-        }
-
         return (
             <a
                 class="d-inline-block seamless-link message-preview"
@@ -57,7 +53,7 @@ export default class MessagePreview extends Component {
                 title={this.state.title}
             >
                 <div tabindex={this.props.tabindex} class="card material-shadow">
-                    { this.state.author && this.state.author.avatar && <img class="avatar material-shadow" src={ bee.crop(this.state.author.avatar, 100, 100) } /> }
+                    { this.state.author && <img class="avatar material-shadow" src={ bee.crop(this.state.author.avatar, 100, 100) || util.defaultAvatar } /> }
                     { this.state.preview ?
                             <div class="card-miniature" style={"background-image: url('" + bee.crop(this.state.preview, 320, 180) + "')" } />
                             : (

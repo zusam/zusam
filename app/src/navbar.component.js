@@ -1,5 +1,6 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
+import util from "./util.js";
 import bee from "./bee.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
@@ -9,13 +10,15 @@ export default class Navbar extends Component {
     render() {
         return (
             <div class="main-nav nav align-items-center shadow-sm z-index-100">
-                { this.props.currentUser && this.props.currentUser.avatar && !this.props.backUrl && (
+                { this.props.currentUser && !this.props.backUrl && (
                     <div
-                        class="avatar dropdown" tabindex="-1"
+                        class="menu dropdown" tabindex="-1"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >
-                        <img class="rounded-circle" src={ bee.crop(this.props.currentUser.avatar, 80, 80) }/>
+                        <div class="rounded-circle avatar">
+                            <img class="rounded-circle" src={ bee.crop(this.props.currentUser.avatar, 80, 80) || util.defaultAvatar }/>
+                        </div>
                         <div class="dropdown-menu">
                             <a class="seamless-link"
                                 href={router.toApp(this.props.currentUser["@id"])+"/settings"}

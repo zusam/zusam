@@ -5,6 +5,7 @@ import router from "./router.js";
 import Message from "./message.component.js";
 import GroupBoard from "./group-board.component.js";
 import Login from "./login.component.js";
+import Signup from "./signup.component.js";
 import Navbar from "./navbar.component.js";
 import FaIcon from "./fa-icon.component.js";
 import Writer from "./writer.component.js";
@@ -23,12 +24,23 @@ class App extends Component {
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
         bee.get("apiKey").then(apiKey => {
-            if (!apiKey && this.state.route && this.state.route != "login" && this.state.route != "password-reset") {
-                router.navigate("/login");
-            } else {
+            let route = this.state.route || router.getSegments()[0];
+            if (apiKey || this.isOutsideRoute(route)) {
                 router.sync();
+            } else {
+                // redirect to login if we don't have an apiKey
+                router.navigate("/login");
             }
         });
+    }
+
+    isOutsideRoute(route) {
+        return [
+            "login",
+            "password-reset",
+            "signup",
+            "invitation"
+        ].includes(route);
     }
 
     onRouterStateChange(event) {
@@ -36,7 +48,7 @@ class App extends Component {
         bee.get("apiKey").then(apiKey => {
             if (apiKey) {
                 bee.get("/api/me").then(user => {
-                    if (!user && route != "login" && route != "password-reset") {
+                    if (!user && !this.isOutsideRoute(route)) {
                         router.navigate("/login");
                         return;
                     }
@@ -46,7 +58,7 @@ class App extends Component {
                     );
                 });
             } else {
-                if (route != "login" && route != "password-reset") {
+                if (!this.isOutsideRoute(route)) {
                     router.navigate("/login");
 					return;
                 }
@@ -111,6 +123,9 @@ class App extends Component {
         }
         if (this.state.route == "login") {
             return <Login />;
+        }
+        if (this.state.route == "signup") {
+            return <Signup />;
         }
         if (this.state.route == "password-reset") {
             return <ResetPassword />;

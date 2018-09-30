@@ -5,16 +5,17 @@ const router = {
         let res = window.location.search.substring(1).split("&").find(e => e.split("=")[0] === param);
         return res ? res.split("=")[1] : "";
     },
-    getSegments: () => window.location.pathname.slice(1).split("/"),
+    getSegments: () => window.location.pathname.slice(1).split("?")[0].split("/"),
     navigate: (url, options = {}) => {
         const from = window.location.pathname;
         const queryParams = window.location.search;
-        const [route, id, action] = router.toApp(url).slice(1).split("/")
+        const [route, id, action] = router.toApp(url).slice(1).split("?")[0].split("/");
         switch (route) {
             case "password-reset":
-                // we keep queryParams for the password reset
-                url = url + queryParams;
+            case "signup":
             case "login":
+                // we keep queryParams
+                url = url + queryParams;
                 bee.remove("apiKey");
             case "messages":
             case "groups":
@@ -32,6 +33,17 @@ const router = {
             case "logout":
                 bee.resetData();
                 window.location.href = window.location.origin;
+                break;
+            case "invitation":
+                bee.get("apiKey").then(apiKey => {
+                    if (apiKey) {
+                        bee.http.post("/api/groups/invitation/" + id, {}).then(res => {
+                            window.location.href = window.location.origin;
+                        });
+                    } else {
+                        router.navigate("/signup?inviteKey=" + id);
+                    }
+                });
                 break;
             default:
                 bee.get("/api/me").then(user => {
