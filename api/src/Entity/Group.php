@@ -8,8 +8,8 @@ use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="`group`")
@@ -31,6 +31,13 @@ class Group
      * @Assert\NotBlank()
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string", unique=true)
+     * @Groups({"read_group"})
+     * @Assert\NotBlank()
+     */
+    private $inviteKey;
 
     /**
      * @ORM\Column(type="integer")
@@ -66,11 +73,22 @@ class Group
         $this->users = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->createdAt = time();
+        $this->inviteKey = Uuid::uuidv4();
     }
 
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function getInviteKey(): string
+    {
+        return $this->inviteKey;
+    }
+
+    public function resetInviteKey(): self
+    {
+        $this->inviteKey = Uuid::uuidv4();
     }
 
     public function getCreatedAt(): int

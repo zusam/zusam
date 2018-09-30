@@ -397,8 +397,9 @@ class ImportOldData extends ContainerAwareCommand
 
         echo "Pushing groups...\n";
         foreach($groups as $group) {
-            $query = "INSERT INTO `group` (id, created_at, name) VALUES ("
+            $query = "INSERT INTO `group` (id, invite_key, created_at, name) VALUES ("
                 ."'".$group["id"]."'"
+                .", '".Uuid::uuidv4()."'"
                 .", ".$group["createdAt"]
                 .", ".$this->pdo->quote($group["name"])
                 .");";
