@@ -63,8 +63,15 @@ class ImportOldData extends ContainerAwareCommand
                 || empty($account["password"])
                 || empty($account["forums"]) // Not a legit account if no forum
                 || empty($account["timestamp"]) // Not a legit account if not updated since timestamp update
-                || intval($account["timestamp"]) + 60*60*24*30*12 < time() // Not legit if not connected in the last year
             ) {
+                if (isset($account["mail"])) {
+                    echo $account["mail"] . " is invalid.\n";
+                }
+                continue;
+            }
+
+            if (intval($account["timestamp"]) + 60*60*24*30*12 < time()) { // Not legit if not connected in the last year
+                echo $account["mail"] . " is inactive.\n";
                 continue;
             }
 
@@ -91,7 +98,7 @@ class ImportOldData extends ContainerAwareCommand
                 $file["name"] = $account["_id"]['$oid'];
                 $file["type"] = "file";
                 $file["createdAt"] = time();
-                $u["avatar_id"] = $file["id"];
+                $u["avatar_id"] = $file["id"] ? $file["id"] : null;
                 $files[] = $file;
             }
             $users[] = $u;
@@ -157,6 +164,7 @@ class ImportOldData extends ContainerAwareCommand
                 }
             }
             if (!count($u["groups"])) {
+                echo $u["login"] . " has no group. Removing.\n";
                 unset($users[$kk]);
             }
         }
@@ -215,6 +223,7 @@ class ImportOldData extends ContainerAwareCommand
                     break;
                 }
             }
+            // remove message if the user does not exist
             if (!$flag) {
                 continue;
             }
@@ -366,6 +375,7 @@ class ImportOldData extends ContainerAwareCommand
 
         echo "Pushing users...\n";
         foreach($users as $user) {
+            $avatar = $user["avatar_id"] ? "'".$user["avatar_id"]."'" : "NULL";
             $query = "INSERT INTO `user` (id, created_at, login, password, last_connection, api_key, avatar_id, name, data) VALUES ("
                 ."'".$user["id"]."'"
                 .", ".$user["createdAt"]
@@ -373,7 +383,7 @@ class ImportOldData extends ContainerAwareCommand
                 .", "."'".$user["password"]."'"
                 .", ".time()
                 .", '".Uuid::uuidv4()."'"
-                .", "."'".$user["avatar_id"]."'"
+                .", ".$avatar
                 .", ".$this->pdo->quote($user["name"])
                 .", ".$this->pdo->quote($user["data"])
                 .");";
