@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
-use App\Controller\UserSpecial;
+use App\Controller\Me;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,10 +26,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get",
  *          "put",
  *          "delete",
- *          "special"={
+ *          "me"={
  *              "method"="GET",
  *              "path"="/me",
- *              "controller"=UserSpecial::class,
+ *              "controller"=Me::class,
  *              "defaults"={"_api_receive"=false}
  *          }
  *     }

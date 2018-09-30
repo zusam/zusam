@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Controller\GroupInvitation;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,6 +21,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *        "normalization_context"={"groups"={"read_group"}},
  *        "denormalization_context"={"groups"={"write_group"}}
  *     },
+ *     itemOperations={
+ *        "get",
+ *        "put",
+ *        "invitation"={
+ *            "method"="POST",
+ *            "path"="/groups/invitation/{inviteKey}",
+ *            "controller"=GroupInvitation::class,
+ *            "defaults"={"_api_receive"=false}
+ *        }
+ *     }
  * )
  */
 class Group

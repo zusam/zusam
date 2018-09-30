@@ -2,22 +2,26 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Group;
 use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class Security extends Controller
 {
     private $em;
     private $mailer;
+    private $encoder;
 
-    public function __construct(EntityManagerInterface $em, Mailer $mailer)
+    public function __construct(EntityManagerInterface $em, Mailer $mailer, UserPasswordEncoderInterface $encoder)
     {
         $this->em = $em;
         $this->mailer = $mailer;
+        $this->encoder = $encoder;
     }
 
     /**
@@ -26,7 +30,7 @@ class Security extends Controller
     public function login(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $login = $data["login"] ?? "";
+        $login = urldecode($data["login"]) ?? "";
         $password = $data["password"] ?? "";
 
         if (empty($login)) {
@@ -37,15 +41,63 @@ class Security extends Controller
             return new JsonResponse(["message" => "Password cannot be empty"], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $user = $this->getDoctrine()->getRepository(User::class)->findOneByLogin($login);
+        $user = $this->em->getRepository(User::class)->findOneByLogin($login);
 
         if (empty($user)) {
             return new JsonResponse(["message" => "Invalid login/password"], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
-        if (!password_verify($password, $user->getPassword())) {
+        if (!$this->encoder->isPasswordValid($user, $password)) {
             return new JsonResponse(["message" => "Invalid login/password"], JsonResponse::HTTP_UNAUTHORIZED);
         }
+
+        return new JsonResponse(["api_key" => $user->getApiKey()], JsonResponse::HTTP_OK);
+    }
+
+    /**
+     * @Route("/signup", name="signup")
+     */
+    public function signup(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $login = urldecode($data["login"]) ?? "";
+        $password = $data["password"] ?? "";
+        $inviteKey = $data["invite_key"] ?? "";
+
+        if (empty($login)) {
+            return new JsonResponse(["message" => "Login cannot be empty"], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if (empty($password)) {
+            return new JsonResponse(["message" => "Password cannot be empty"], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if (empty($inviteKey)) {
+            return new JsonResponse(["message" => "You need to have an invite key"], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $user = $this->em->getRepository(User::class)->findOneByLogin($login);
+
+        if (!empty($user)) {
+            return new JsonResponse(["message" => "Login already used !"], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $group = $this->em->getRepository(Group::class)->findOneByInviteKey($inviteKey);
+
+        if (empty($group)) {
+            return new JsonResponse(["message" => "Invalid invite key !"], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $user = new User();
+        $user->setLogin($login);
+        $user->setPassword($this->encoder->encodePassword($user, $password));
+        $user->setName(explode("@", $login)[0]);
+        $user->setData(json_encode(["mail" => $login]));
+        $user->addGroup($group);
+        $group->addUser($user);
+        $this->em->persist($user);
+        $this->em->persist($group);
+        $this->em->flush();
 
         return new JsonResponse(["api_key" => $user->getApiKey()], JsonResponse::HTTP_OK);
     }

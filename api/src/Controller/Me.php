@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class UserSpecial extends Controller
+class Me extends Controller
 {
     public function __invoke(): User
     {
