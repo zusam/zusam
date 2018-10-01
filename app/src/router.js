@@ -20,6 +20,7 @@ const router = {
             case "messages":
             case "groups":
             case "users":
+            case "create-group":
                 if (options.replace) {
                     history.replaceState(null, "", url);
                 } else {

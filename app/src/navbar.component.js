@@ -47,6 +47,7 @@ export default class Navbar extends Component {
                             { Array.isArray(this.props.groups["hydra:member"]) && this.props.groups["hydra:member"].map(
                                 e => <a class="seamless-link" href={router.toApp(e["@id"])} onClick={router.onClick}>{e.name}</a>
                             )}
+                            <a class="seamless-link" href="/create-group" onClick={router.onClick}>{"+ " + lang.fr["create_a_group"]}</a>
                         </div>
                     </div>
                 )}

@@ -24,7 +24,7 @@ export default class Message extends Component {
             author: null,
             preview: null,
             displayedChildren: 0,
-        }
+        };
         bee.get(props.url).then(msg => {
             this.setState({
                 message: msg,
@@ -124,7 +124,7 @@ export default class Message extends Component {
                                     <span>{ this.state.data.title }</span>
                                 </div>
                             )}
-                            { this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
+                            { this.props.currentUser && this.state.author && this.state.author.id == this.props.currentUser.id && (
                                 <div tabindex="-1"
                                     class="options dropdown"
                                     onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}

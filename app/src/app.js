@@ -11,6 +11,7 @@ import FaIcon from "./fa-icon.component.js";
 import Writer from "./writer.component.js";
 import Settings from "./settings.component.js";
 import ResetPassword from "./reset-password.component.js";
+import CreateGroup from "./create-group.component.js";
 
 class App extends Component {
 
@@ -143,6 +144,7 @@ class App extends Component {
                     backUrl={this.state.backUrl}
                 />
                 <div class="content">
+                    { this.state.route == "create-group" && <CreateGroup /> }
                     { this.state.action && this.state.action == "settings" && this.state.entityUrl && (
                         <article class="justify-content-center d-flex">
                             <div class="container">
