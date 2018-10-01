@@ -124,6 +124,7 @@ class User implements UserInterface, \Serializable
         $this->createdAt = time();
         $this->lastConnection = time();
         $this->apiKey = Uuid::uuidv4();
+        $this->data = "{}";
     }
 
     public function getId(): string

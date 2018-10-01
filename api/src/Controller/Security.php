@@ -1,8 +1,8 @@
 <?php
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Group;
+use App\Entity\User;
 use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
