@@ -1,15 +1,11 @@
-# API
+# GLOBAL
+/data
 
-###> symfony/framework-bundle ###
-/api/.env
+# API
 /api/var/
 /api/vendor/
 /api/auth.json
-###< symfony/framework-bundle ###
-
-###> symfony/web-server-bundle ###
 /api/.web-server-pid
-###< symfony/web-server-bundle ###
 
 # EXEC
 /.composer
