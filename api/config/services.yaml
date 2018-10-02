@@ -6,6 +6,9 @@ parameters:
     binaries:
         ffmpeg: '%env(resolve:FFMPEG_PATH)%'
         ffprobe: '%env(resolve:FFPROBE_PATH)%'
+    dir.public: '%kernel.project_dir%/../public'
+    dir.cache: '%kernel.project_dir%/var/cache'
+    dir.files: '%env(resolve:dif_files)'
 
 services:
     # default configuration for services in *this* file
