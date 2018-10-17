@@ -8,7 +8,7 @@ parameters:
         ffprobe: '%env(resolve:FFPROBE_PATH)%'
     dir.public: '%kernel.project_dir%/../public'
     dir.cache: '%kernel.project_dir%/var/cache'
-    dir.files: '%env(resolve:dif_files)'
+    dir.files: '%env(resolve:dir_files)%'
 
 services:
     # default configuration for services in *this* file
