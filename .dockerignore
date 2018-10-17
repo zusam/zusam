@@ -1,9 +1,10 @@
 # GLOBAL
 /data
+/.git
 
 # API
-/api/var/
-/api/vendor/
+/api/var
+/api/vendor
 /api/auth.json
 /api/.web-server-pid
 
@@ -19,20 +20,13 @@
 /.npm
 
 # APP
-/app/node_modules/
+/app/node_modules
 /app/yarn.lock
-/app/dist/
+/app/dist
 /app/.cache
 /app/yarn-error.log
+/app/bootstrap-light/node_modules
 
 # PUBLIC
-/public/api/bundles/
-/public/files/
-/public/thumbnails/
-/public/*.js
-/public/*.map
-/public/*.css
-/public/*.html
-/public/*.svg
-/public/*.png
-/public/*.jpg
+/public/files
+/public/thumbnails
