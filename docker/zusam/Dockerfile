@@ -4,7 +4,7 @@ ENTRYPOINT ["/sbin/tini", "--"]
 
 ENV UID=791 GID=791
 
-VOLUME /www
+VOLUME /zusam
 EXPOSE 8080
 
 # install core
@@ -14,10 +14,9 @@ RUN set -xe && apk add --no-cache ffmpeg imagemagick
 RUN set -xe && mkdir -p /run/nginx
 
 COPY s6.d /etc/s6.d
-COPY run.sh /usr/local/bin/run.sh
-COPY php-fpm.conf /etc/php7/php-fpm.conf
-COPY php.ini /etc/php7/php.ini
+COPY php7 /etc/php7
 COPY nginx /etc/nginx
+COPY run.sh /usr/local/bin/run.sh
 
 RUN chmod -R +x /usr/local/bin /etc/s6.d /var/lib/nginx
 

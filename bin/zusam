@@ -39,15 +39,9 @@ if [ -n "$(sudo docker ps -a | grep "$CONTAINER_NAME")" ]; then
 fi
 
 if sudo docker build -t "$CONTAINER_NAME" .; then
-    if [ -z "$1" ]; then
-        sudo docker run --init -d \
-            -p 80:8080 --tmpfs /tmp \
-            -e UID="$(id -u)" -e GID="$(id -g)" \
-            -v "${pathToProject}":/www --name "$CONTAINER_NAME" "$CONTAINER_NAME"
-    else
-        sudo docker run --init -d \
-            --tmpfs /tmp \
-            -e UID="$(id -u)" -e GID="$(id -g)" \
-            -v "${pathToProject}":/www --name "$CONTAINER_NAME" "$CONTAINER_NAME"
-    fi
+    sudo docker run --init -d --rm \
+        --tmpfs /tmp \
+        -e UID="$(id -u)" -e GID="$(id -g)" \
+        -p 80:8080 \
+        -v "${pathToProject}":/zusam --name "$CONTAINER_NAME" "$CONTAINER_NAME"
 fi
