@@ -158,7 +158,7 @@ export default class Message extends Component {
                             <div class="message-head p-1 d-none d-md-block">
                                 <img
                                     class="rounded-circle w-3 material-shadow avatar"
-                                    src={ bee.crop(this.props.currentUser.avatar, 100, 100) }
+                                    src={ bee.crop(this.props.currentUser.avatar, 100, 100) || util.defaultAvatar }
                                 />
                             </div>
                         )}

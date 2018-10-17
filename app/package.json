@@ -1,20 +1,20 @@
 {
-	"name": "zusam-app",
-	"version": "0.1.0",
-	"scripts": {
-		"clean": "shx rm -f {../public,dist}/*.{js,css,map,html,png,jpg,svg}",
-		"build": "parcel build --no-source-maps src/index.html",
-		"serve": "shx cp dist/*.{js,css,map,html} ../public && shx cp src/*.{png,jpg,svg} ../public",
-		"full": "yarn clean && yarn build && yarn serve"
-	},
-	"dependencies": {
-		"babel-polyfill": "^6.26.0",
-		"babel-preset-env": "^1.6.1",
-		"babel-preset-preact": "^1.1.0",
-		"node-sass": "^4.9.0",
-		"npm-check-updates": "^2.14.2",
-		"parcel-bundler": "^1.8.1",
-		"preact": "^8.2.9",
-		"shx": "^0.2.2"
-	}
+    "name": "zusam-app",
+    "version": "0.1.0",
+    "scripts": {
+        "clean": "shx rm -f {../public,dist}/*.{js,css,map,html,png,jpg,svg}",
+        "build": "parcel build --no-source-maps src/index.html",
+        "serve": "shx cp dist/*.{js,css,map,html} ../public && shx cp src/*.{png,jpg,svg} ../public",
+        "full": "yarn clean && yarn build && yarn serve"
+    },
+    "dependencies": {
+        "babel-polyfill": "~6.26",
+        "babel-preset-env": "~1.6",
+        "babel-preset-preact": "~1.1",
+        "node-sass": "~4.9",
+        "npm-check-updates": "~2.14",
+        "parcel-bundler": "~1.8",
+        "preact": "~8.2",
+        "shx": "~0.2"
+    }
 }
