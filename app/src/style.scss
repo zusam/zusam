@@ -267,6 +267,22 @@ $navbar_height: 50px;
             height: 180px;
         }
 
+        .text-preview {
+            height: 180px;
+            width: 100%;
+            padding: 1rem;
+            overflow: hidden;
+            font-size: .9rem;
+
+            &:first-letter {
+                float: left;
+                font-size: 6rem;
+                color: #555;
+                font-family: serif;
+                margin-right: 10px;
+            }
+        }
+
         & > div {
             width: 100%;
             max-width: 320px;

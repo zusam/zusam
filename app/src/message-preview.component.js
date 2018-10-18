@@ -14,7 +14,10 @@ export default class MessagePreview extends Component {
             bee.get(props.message.author).then(author => author && this.setState({author: author}));
         }
         const msgData = JSON.parse(props.message.data);
-        this.setState({title: msgData.title || ""});
+        this.setState({
+            title: msgData.title || "",
+            text: msgData.text || ""
+        });
         if (props.message.files.length) {
             this.setState({preview: props.message.files[0]});
         } else {
@@ -56,24 +59,7 @@ export default class MessagePreview extends Component {
                     { this.state.author && <img class="avatar material-shadow" src={ bee.crop(this.state.author.avatar, 100, 100) || util.defaultAvatar } /> }
                     { this.state.preview ?
                             <div class="card-miniature" style={"background-image: url('" + bee.crop(this.state.preview, 320, 180) + "')" } />
-                            : (
-                                <svg fill="#ccc" class="svg-miniature" viewBox="0 0 320 180">
-                                    <path d="M67,13.4v14.4h-7.5l-0.7-7.5H44.3v51.4l7.3,1.3v5.7H28.2v-5.7l7.3-1.3V20.4H20.9l-0.6,7.5h-7.6V13.4H67z"/>
-                                    <rect x="76" y="14" width="78" height="11"/>
-                                    <rect x="76" y="34" width="78" height="11"/>
-                                    <rect x="76" y="54" width="78" height="11"/>
-                                    <rect x="76" y="74" width="78" height="11"/>
-                                    <rect x="12" y="94" width="141" height="11"/>
-                                    <rect x="12" y="115" width="141" height="11"/>
-                                    <rect x="12" y="135" width="141" height="11"/>
-                                    <rect x="12" y="155" width="141" height="11"/>
-                                    <rect x="168" y="14" width="141" height="11"/>
-                                    <rect x="168" y="34" width="141" height="11"/>
-                                    <rect x="168" y="54" width="141" height="11"/>
-                                    <rect x="168" y="74" width="141" height="11"/>
-                                    <rect x="168" y="94" width="141" height="72"/>
-                                </svg>
-                            )
+                            : <div class="text-preview">{ this.state.text }</div>
                     }
                     <div class="card-body border-top d-flex justify-content-between">
                         <span class="left-buffer"></span>
