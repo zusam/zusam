@@ -27,7 +27,6 @@
 
 # PUBLIC
 /public/api/bundles/
-/public/files/
 /public/thumbnails/
 /public/*.js
 /public/*.map
