@@ -7,39 +7,8 @@ export default class GroupBoard extends Component {
     constructor(props) {
         super(props);
         this.loadMoreMessages = this.loadMoreMessages.bind(this);
-        this.hardUpdate = this.hardUpdate.bind(this);
-        this.state = {
-            url: props.url,
-            group: {},
-            messages: [],
-            loaded: 0,
-            scrollTop: 0,
-            totalMessages: 0,
-        };
-        bee.get(props.url).then(group => group && bee.get("group_" + group.id).then(groupData => {
-            let loaded = 1 + Math.floor((window.screen.width * window.screen.height) / (320 * 215));
-            let scrollTop = 0;
-            if (groupData) {
-                loaded = groupData.loaded || loaded;
-                pageYOffset = groupData.pageYOffset || pageYOffset;
-            }
-            this.setState({
-                group: group,
-                loaded: loaded,
-                pageYOffset: pageYOffset,
-                page: 1,
-            });
-            bee.get("/api/groups/" + group.id + "/messages?parent[exists]=0&page=1").then(res => {
-                if(res && Array.isArray(res["hydra:member"])) {
-                    this.setState({
-                        messages: res["hydra:member"],
-                        totalMessages: res["hydra:totalItems"]
-                    });
-                    // scrollTo the right place but leave a bit of time for the dom to construct
-                    setTimeout(() => window.scrollTo(0, pageYOffset), 0);
-                }
-            });
-        }));
+        this.resetGroupDisplay = this.resetGroupDisplay.bind(this);
+        this.resetGroupDisplay(props.url);
     }
 
     componentDidMount() {
@@ -50,15 +19,42 @@ export default class GroupBoard extends Component {
         window.removeEventListener("scroll", this.loadMoreMessages);
     }
 
-    hardUpdate() {
-        bee.http.get("/api/groups/" + bee.getId(this.state.url) + "/messages?parent[exists]=0&page=1", "nocache").then(res => {
-            if(res && Array.isArray(res["hydra:member"])) {
-                this.setState({messages: [
-                    ...res["hydra:member"],
-                    ...this.state.messages.filter(m => res["hydra:member"].find(mm => mm.id == m.id))
-                ]});
-            }
+    resetGroupDisplay(url, resetScroll = false, nocache = false) {
+        this.setState({
+            url: url,
+            group: {},
+            messages: [],
+            loaded: 0,
+            scrollTop: 0,
+            totalMessages: 0,
         });
+        bee.get(url).then(group => group && bee.get("group_" + group.id).then(groupData => {
+            let loaded = 1 + Math.floor((window.screen.width * window.screen.height) / (320 * 215));
+            let scrollTop = 0;
+            if (groupData) {
+                loaded = groupData.loaded || loaded;
+                pageYOffset = groupData.pageYOffset || pageYOffset;
+            }
+            if (resetScroll) {
+                pageYOffset = 0;
+            }
+            this.setState({
+                group: group,
+                loaded: loaded,
+                pageYOffset: pageYOffset,
+                page: 1,
+            });
+            bee.get("/api/groups/" + group.id + "/messages?parent[exists]=0&page=1", nocache).then(res => {
+                if(res && Array.isArray(res["hydra:member"])) {
+                    this.setState({
+                        messages: res["hydra:member"],
+                        totalMessages: res["hydra:totalItems"]
+                    });
+                    // scrollTo the right place but leave a bit of time for the dom to construct
+                    setTimeout(() => window.scrollTo(0, pageYOffset), 0);
+                }
+            });
+        }));
     }
 
     loadMoreMessages() {

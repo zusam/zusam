@@ -14,9 +14,9 @@ export default class Message extends Component {
         super(props);
         this.displayMoreChildren = this.displayMoreChildren.bind(this);
         this.deleteMessage = this.deleteMessage.bind(this);
-        this.onNewMessage = this.onNewMessage.bind(this);
+        this.onNewChild = this.onNewChild.bind(this);
         if (!props.parent) {
-            window.addEventListener("newMessage", this.onNewMessage);
+            window.addEventListener("newChild", this.onNewChild);
         }
         this.state = {
             url: props.url,
@@ -53,12 +53,12 @@ export default class Message extends Component {
             if (this.state.message.parent) {
                 this.setState({isRemoved: true});
             } else {
-                router.navigate(router.toApp(this.state.message.group), {data: {hardUpdate: true}});
+                router.navigate(router.toApp(this.state.message.group), {data: {resetGroupDisplay: true}});
             }
         }
     }
 
-    onNewMessage(event) {
+    onNewChild(event) {
         const newMsg = event.detail;
         let msg = this.state.message;
         if (newMsg.parent && newMsg.parent == msg["@id"]) {

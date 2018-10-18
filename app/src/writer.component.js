@@ -47,8 +47,8 @@ export default class Writer extends Component {
         }
         msg.data = JSON.stringify(msg.data);
         bee.http.post("/api/messages", msg).then(res => {
-            if (res) {
-                window.dispatchEvent(new CustomEvent("newMessage", {detail : res}));
+            if (res && this.props.parent) {
+                window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
             }
             if (this.props.backUrl) {
                 router.navigate(this.props.backUrl);

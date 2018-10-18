@@ -14,7 +14,7 @@ const bee = {
 
     // http methods
     http: {
-        get: (url, nocache) => {
+        get: (url, nocache = false) => {
             return bee.get("apiKey").then(apiKey => {
                 if (!url) {
                     return;
@@ -24,7 +24,7 @@ const bee = {
                     h["X-AUTH-TOKEN"] = apiKey;
                 }
                 if (nocache) {
-                    h["X-NOCACHE"] = nocache;
+                    h["X-NOCACHE"] = "nocache";
                 }
                 return fetch(url, {
                     method: "GET",

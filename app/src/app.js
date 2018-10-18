@@ -89,9 +89,9 @@ class App extends Component {
             if (this.groupRef) {
                 if (
                     (!action && /\/write$/.test(event.detail.from))
-                    || (event.detail.data && event.detail.data.hardUpdate)
+                    || (event.detail.data && event.detail.data.resetGroupDisplay)
                 ) {
-                    this.groupRef.hardUpdate();
+                    this.groupRef.resetGroupDisplay(this.groupRef.state.url, true, true);
                 }
             }
         }
