@@ -20,10 +20,8 @@ COPY public/api/index.php /zusam/public/api/index.php
 COPY /docker/standalone/run.sh /usr/local/bin/run.sh
 COPY /docker/standalone/reset.sh /usr/local/bin/reset.sh
 RUN set -xe \
+    && mkdir -p /run/nginx /zusam/data \
     && chmod -R +x /usr/local/bin /etc/s6.d /var/lib/nginx
-
-RUN set -xe \
-    && mkdir -p /run/nginx
 
 COPY api /zusam/api
 COPY docker/standalone/config.yml /zusam/config.yml
