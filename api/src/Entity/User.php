@@ -97,7 +97,7 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
-     * @Groups({"read_user"})
+     * @Groups({"read_user", "write_user"})
      * @ApiSubresource
      */
     private $avatar;

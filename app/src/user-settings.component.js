@@ -10,6 +10,26 @@ export default class UserSettings extends Component {
         super(props);
         this.updateSettings = this.updateSettings.bind(this);
         this.state = Object.assign({}, props);
+        this.inputAvatar = this.inputAvatar.bind(this);
+    }
+
+    inputAvatar(event) {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.addEventListener("change", event => {
+            Array.from(event.target.files).forEach(f => {
+				const formData = new FormData();
+                formData.append("file", f);
+                bee.http.post("/api/files/upload", formData, false).then(file => {
+                    console.log(file);
+                    bee.http.put("/api/users/" + this.state.id, {avatar: file["@id"]}).then(res => {
+                        this.setState({avatar: file["@id"]});
+                    });
+                });
+            })
+        });
+        input.click();
     }
 
     updateSettings(event) {
@@ -43,6 +63,7 @@ export default class UserSettings extends Component {
                                     <img
                                         class="img-fluid rounded-circle material-shadow avatar"
                                         src={ bee.crop(this.state.avatar, 100, 100) || util.defaultAvatar }
+                                        onClick={this.inputAvatar}
                                     />
                                 </div>
                                 <div class="col-12 col-md-10">
