@@ -30,13 +30,12 @@ class CronCommand extends ContainerAwareCommand
         // executed every day
         $dailyCron = CronExpression::factory("@daily");
         if ($dailyCron->isDue()) {
-            // $this->runCommand("lease:keep-up");
+            $this->runCommand("zusam:clean-files");
         }
 
         // executed every hour
         $hourlyCron = CronExpression::factory("@hourly");
         if ($hourlyCron->isDue()) {
-            // $this->runCommand("stripe:charge");
         }
 
         // always executed
