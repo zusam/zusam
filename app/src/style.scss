@@ -765,9 +765,14 @@ article {
 }
 
 .message.child .writer {
-    position: relative;
-    top: 8px;
     width: 100%;
+}
+
+@media (min-width: map-get($grid-breakpoints, "md")) {
+    .message.child .writer {
+        position: relative;
+        top: 12px;
+    }
 }
 
 .writer {
