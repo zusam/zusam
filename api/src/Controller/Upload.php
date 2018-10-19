@@ -47,14 +47,16 @@ class Upload extends Controller
             $this->em->persist($file);
 
             // immediately convert the file if it's an image
+            $newContentUrl = pathinfo($file->getContentUrl(), PATHINFO_FILENAME).".jpg";
             if (substr($file->getType(), 0, 6) == "image/") {
                 $imageService->createThumbnail(
                     $filesDir."/".$file->getContentUrl(),
-                    $filesDir."/".$file->getContentUrl(),
+                    $filesDir."/".$newContentUrl,
                     2048,
                     2048
                 );
                 $file->setStatus(File::STATUS_CONVERTED);
+                $file->setContentUrl($newContentUrl);
             }
 
             $this->em->flush();
