@@ -23,7 +23,6 @@ RUN set -xe \
     && chmod -R +x /usr/local/bin /etc/s6.d /var/lib/nginx
 
 RUN set -xe \
-    && mkdir -p /zusam/data/files \
     && mkdir -p /run/nginx
 
 COPY api /zusam/api

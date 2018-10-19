@@ -18,6 +18,7 @@ sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
        /zusam/config.yml
 
 mv -n /zusam/config.yml /zusam/data/config.yml
+mkdir -p /zusam/data/files
 
 if [ ${INSTANCE_TYPE} == "demo" ] || [ ${INSTANCE_TYPE} == "new" ]; then
     reset.sh
