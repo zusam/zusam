@@ -5,6 +5,7 @@ ENTRYPOINT ["/sbin/tini", "--"]
 ENV UID=791 GID=791
 ENV INSTANCE_TYPE=default
 ENV DOMAIN=localhost
+ENV DATABASE_NAME=data.db
 EXPOSE 8080
 WORKDIR /zusam
 
@@ -17,6 +18,7 @@ RUN set -xe \
 
 COPY public/api/index.php /zusam/public/api/index.php
 COPY /docker/standalone/run.sh /usr/local/bin/run.sh
+COPY /docker/standalone/reset.sh /usr/local/bin/reset.sh
 RUN set -xe \
     && chmod -R +x /usr/local/bin /etc/s6.d /var/lib/nginx
 
