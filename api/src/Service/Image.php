@@ -8,6 +8,9 @@ use FFMpeg\Coordinate\TimeCode;
 
 class Image
 {
+    const MAX_IMAGE_WIDTH = 2048;
+    const MAX_IMAGE_HEIGHT = 2048;
+
 	private $ffmpegPath;
 	private $ffprobePath;
 
@@ -62,6 +65,15 @@ class Image
 					$frame->save($tmpfname);
 					$input = $tmpfname;
                 }
+                
+                // https://secure.php.net/manual/en/imagick.setsize.php#110166
+                $im->pingImage($input);
+                $aspect_ratio = $im->getImageWidth()/$im->getImageHeight();
+                $width = min(self::MAX_IMAGE_WIDTH, $im->getImageWidth());
+                $height = min(self::MAX_IMAGE_HEIGHT, floor($width / $aspect_ratio));
+                $width = floor($height * $aspect_ratio);
+                $im->setSize($width, $height);
+
                 if ($im->readImage($input)) {
                     return $im;
                 }
