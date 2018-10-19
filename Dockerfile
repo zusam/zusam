@@ -40,7 +40,7 @@ RUN set -xe \
 COPY app /zusam/app
 RUN set -xe \
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget yarn \
-    && cd /zusam/app/bootstrap-light && yarn && cd .. && yarn && yarn add json5 && yarn full \
+    && cd /zusam/app/bootstrap-light && yarn && cd .. && yarn && yarn full \
     && rm -rf /zusam/app \
     && apk del .build-deps
 
