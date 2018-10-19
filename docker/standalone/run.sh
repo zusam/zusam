@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # There are 3 possible instance types: "default", "demo" and "new"
-# "new" will create a first user and group.
+# "new" will create a new instance.
 # "demo" will create a new instance that resets every day.
 # "default" will assume you have a working db.
 
@@ -20,7 +20,7 @@ sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
 mv -n /zusam/config.yml /zusam/data/config.yml
 
 if [ ${INSTANCE_TYPE} == "demo" ] || [ ${INSTANCE_TYPE} == "new" ]; then
-    php /zusam/api/bin/console zusam:init "zusam@${DOMAIN}" zusam zusam
+    reset.sh
 fi
 
 # if this is a demo instance, reset it every day
