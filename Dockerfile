@@ -22,9 +22,8 @@ COPY public/api/index.php /zusam/public/api/index.php
 RUN set -xe \
     && apk add --no-cache nginx php7 php7-fpm php7-imagick php7-mbstring php7-gd php7-intl php7-iconv php7-json php7-dom php7-ctype php7-xml php7-posix php7-session php7-tokenizer php7-fileinfo php7-openssl php7-simplexml php7-apcu php7-pdo_sqlite php7-curl php7-apcu php7-opcache ffmpeg openssl \
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar yarn \
-    && mkdir -p /run/nginx /zusam/data /zusam/public/api/thumbnails /zusam/api/var/cache/images \
+    && mkdir -p /run/nginx \
     && cp /zusam/config.yml /zusam/data/config.yml \
-    && ln -s /zusam/data/files /zusam/public/files \
     && cd /zusam/api && php bin/composer install --prefer-dist \
     && cd /zusam/app/bootstrap-light && yarn && cd .. && yarn && yarn full \
     && rm -rf /zusam/app \

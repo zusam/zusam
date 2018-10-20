@@ -39,7 +39,7 @@ if [ -n "$(sudo docker ps -a | grep "$CONTAINER_NAME")" ]; then
 fi
 
 if sudo docker build -t "$CONTAINER_NAME" .; then
-    sudo docker run --init -d --rm \
+    sudo docker run -d --rm \
         --tmpfs /tmp \
         -e UID="$(id -u)" -e GID="$(id -g)" \
         -p 80:8080 \

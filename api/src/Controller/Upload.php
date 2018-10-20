@@ -36,7 +36,7 @@ class Upload extends Controller
         $this->denyAccessUnlessGranted("ROLE_USER");
         $filesDir = realpath($this->getParameter("dir.files"));
         if (!is_writeable($filesDir)) {
-            throw new \Exception("Target directory ($filesDir) is not writable !");
+            throw new \Exception("Target directory ($filesDir [".$this->getParameter("dir.files")."]) is not writable !");
         }
 
         $file = new File();

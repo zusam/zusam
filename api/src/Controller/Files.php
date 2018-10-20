@@ -18,6 +18,9 @@ class Files extends Controller
     {
         $publicDir = realpath($this->getParameter("dir.public"));
         $cacheDir = realpath($this->getParameter("dir.cache"));
+        if (!file_exists($cacheDir."/images")) {
+            mkdir($cacheDir."/images");
+        }
         $cacheFile = $cacheDir."/images/".Uuid::uuidv4($id.$width."x".$height.$type).".jpg";
         if (is_readable($cacheFile)) {
             return new BinaryFileResponse($cacheFile, 200, ["Content-Type" => mime_content_type($cacheFile)]);

@@ -24,10 +24,10 @@ class Image
         try {
             $im = $this->loadImage($input);
         } catch (\Exception $e) {
-            return;
+            throw new \Exception("Could not load image: " + $e->getMessage());
         }
         if (!$im) {
-            return;
+            throw new \Exception("Something went wrong: " + $e->getMessage());
         }
 
         if ($respectFormat) {
