@@ -1,12 +1,12 @@
-APP_ENV=prod
+APP_ENV="<ENV>"
 APP_SECRET="<SECRET>"
 DOMAIN="<DOMAIN>"
 
 DATABASE_URL="<DATABASE_URL>"
 
-CORS_ALLOW_ORIGIN=^https?://localhost:?[0-9]*$
-FFMPEG_PATH=/usr/bin/ffmpeg
-FFPROBE_PATH=/usr/bin/ffprobe
+CORS_ALLOW_ORIGIN="^https?://localhost:?[0-9]*$"
+FFMPEG_PATH="/usr/bin/ffmpeg"
+FFPROBE_PATH="/usr/bin/ffprobe"
 
 # files directory
 dir_files="%kernel.project_dir%/../data/files"

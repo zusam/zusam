@@ -34,6 +34,9 @@ class Upload extends Controller
     public function __invoke(Request $request, ImageService $imageService): File
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
+        if (!file_exists($this->getParameter("dir.files"))) {
+            mkdir($this->getParameter("dir.files"));
+        }
         $filesDir = realpath($this->getParameter("dir.files"));
         if (!is_writeable($filesDir)) {
             throw new \Exception("Target directory ($filesDir [".$this->getParameter("dir.files")."]) is not writable !");
