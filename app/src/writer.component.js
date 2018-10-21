@@ -86,7 +86,7 @@ export default class Writer extends Component {
         input.accept = "image/*";
         input.addEventListener("change", event => {
             Array.from(event.target.files).forEach(f => {
-				const formData = new FormData();
+                const formData = new FormData();
                 formData.append("file", f);
                 bee.http.post("/api/files/upload", formData, false).then(file => {
                     this.setState({files: [...this.state.files, file]});
