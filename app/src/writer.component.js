@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import bee from "./bee.js";
+import util from "./util.js";
 import FaIcon from "./fa-icon.component.js";
 import router from "./router.js";
 import PreviewBlock from "./preview-block.component.js";
@@ -13,6 +14,7 @@ export default class Writer extends Component {
         this.postMessage = this.postMessage.bind(this);
         this.getPreview = this.getPreview.bind(this);
         this.inputImages = this.inputImages.bind(this);
+        this.uploadNextFile = this.uploadNextFile.bind(this);
         this.state = {files: []};
     }
 
@@ -85,15 +87,41 @@ export default class Writer extends Component {
         input.multiple = "multiple";
         input.accept = "image/*";
         input.addEventListener("change", event => {
-            Array.from(event.target.files).forEach(f => {
-                const formData = new FormData();
-                formData.append("file", f);
-                bee.http.post("/api/files/upload", formData, false).then(file => {
-                    this.setState({files: [...this.state.files, file]});
-                });
-            })
+            this.uploadNextFile(Array.from(event.target.files)[Symbol.iterator]());
         });
         input.click();
+    }
+
+    uploadNextFile(list) {
+        let e = list.next();
+        if (e.value) {
+            if (e.value.type.match(/image/) && e.value.size > 1024*1024) {
+                let img = new Image();
+                img.onload = () => {
+                    let w = Math.min(img.naturalWidth, 2048);
+                    let h = Math.min(img.naturalHeight, 2048);
+                    let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
+                    let nw = Math.floor(img.naturalWidth*g);
+                    let nh = Math.floor(img.naturalHeight*g);
+                    util.downsizeImage(img, nw, nh, blob => {
+                        const formData = new FormData();
+                        formData.append("file", new File([blob], e.value.name));
+                        bee.http.post("/api/files/upload", formData, false).then(file => {
+                            this.setState({files: [...this.state.files, file]});
+                            this.uploadNextFile(list);
+                        });
+                    });
+                }
+                img.src = URL.createObjectURL(e.value);
+            } else {
+                const formData = new FormData();
+                formData.append("file", e.value);
+                bee.http.post("/api/files/upload", formData, false).then(file => {
+                    this.setState({files: [...this.state.files, file]});
+                    this.uploadNextFile(list);
+                });
+            }
+        }
     }
 
     render() {
