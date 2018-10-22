@@ -86,6 +86,11 @@ class File
      */
     private $size;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $fileIndex;
+
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
@@ -181,6 +186,17 @@ class File
     public function setSize(int $size): self
     {
         $this->size = $size;
+        return $this;
+    }
+
+    public function getFileIndex(): int
+    {
+        return $this->fileIndex ?? 0;
+    }
+
+    public function setFileIndex(int $fileIndex): self
+    {
+        $this->fileIndex = $fileIndex;
         return $this;
     }
 }

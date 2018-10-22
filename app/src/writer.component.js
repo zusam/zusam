@@ -87,13 +87,14 @@ export default class Writer extends Component {
         input.multiple = "multiple";
         input.accept = "image/*";
         input.addEventListener("change", event => {
-            this.uploadNextFile(Array.from(event.target.files)[Symbol.iterator]());
+            let list = Array.from(event.target.files);
+            this.uploadNextFile(list, list[Symbol.iterator]());
         });
         input.click();
     }
 
-    uploadNextFile(list) {
-        let e = list.next();
+    uploadNextFile(list, it) {
+        let e = it.next();
         if (e.value) {
             if (e.value.type.match(/image/) && e.value.size > 1024*1024) {
                 let img = new Image();
@@ -104,21 +105,29 @@ export default class Writer extends Component {
                     let nw = Math.floor(img.naturalWidth*g);
                     let nh = Math.floor(img.naturalHeight*g);
                     util.downsizeImage(img, nw, nh, blob => {
+                        const index = list.indexOf(e.value);
                         const formData = new FormData();
                         formData.append("file", new File([blob], e.value.name));
+                        formData.append("fileIndex", index);
                         bee.http.post("/api/files/upload", formData, false).then(file => {
-                            this.setState({files: [...this.state.files, file]});
-                            this.uploadNextFile(list);
+                            let a = this.state.files;
+                            a.splice(index, 0, file);
+                            this.setState({files: a})
+                            this.uploadNextFile(list, it);
                         });
                     });
                 }
                 img.src = URL.createObjectURL(e.value);
             } else {
+                const index = list.indexOf(e.value);
                 const formData = new FormData();
                 formData.append("file", e.value);
+                formData.append("fileIndex", index);
                 bee.http.post("/api/files/upload", formData, false).then(file => {
-                    this.setState({files: [...this.state.files, file]});
-                    this.uploadNextFile(list);
+                    let a = this.state.files;
+                    a.splice(index, 0, file);
+                    this.setState({files: a})
+                    this.uploadNextFile(list, it);
                 });
             }
         }

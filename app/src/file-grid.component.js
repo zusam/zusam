@@ -8,12 +8,18 @@ export default class FileGrid extends Component {
         super(props);
         this.state = {files: []};
         if (Array.isArray(props.files)) {
-            props.files.forEach(e => {
+            props.files.forEach((e,i) => {
                 if (typeof(e) == "string") {
-                    bee.get(e).then(r => this.setState({files: [...this.state.files, r]}));
+                    bee.get(e).then(r => {
+                        let a = this.state.files;
+                        a.splice(r.fileIndex, 0, r);
+                        this.setState({files: a})
+                    });
                 }
                 if (typeof(e) == "object") {
-                    this.setState({files: [...this.state.files, e]});
+                    let a = this.state.files;
+                    a.splice(e.fileIndex, 0, e);
+                    this.setState({files: a});
                 }
             });
         }
