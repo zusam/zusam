@@ -26,14 +26,15 @@ export default class FileGrid extends Component {
     }
 
     renderFile(file, miniature = false) {
-        let url = file.path;
+        let filePath = "/files/" + file.contentUrl;
+        let url = filePath;
         if (/image/.test(file.type)) {
-            url = bee.thumbnail(file.path, 1024, 768);
+            url = bee.thumbnail(filePath, 1024, 768);
         }
         if (miniature == true) {
             return (
                 <a data-nlg href={url} class="rounded">
-                    <div class="miniature" style={"background-image:url('" + bee.crop(file.path, 160, 160) + "')"}></div>
+                    <div class="miniature" style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}></div>
                 </a>
             );
         }

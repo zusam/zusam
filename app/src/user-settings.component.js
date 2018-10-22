@@ -22,7 +22,6 @@ export default class UserSettings extends Component {
 				const formData = new FormData();
                 formData.append("file", f);
                 bee.http.post("/api/files/upload", formData, false).then(file => {
-                    console.log(file);
                     bee.http.put("/api/users/" + this.state.id, {avatar: file["@id"]}).then(res => {
                         this.setState({avatar: file["@id"]});
                     });

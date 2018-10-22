@@ -10,6 +10,7 @@ use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -28,6 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "controller"=NewMessage::class
  *          },
  *     },
+ *     normalizationContext={"groups"={"read_message"}},
  * )
  * @ApiFilter(ExistsFilter::class, properties={"parent"})
  */
@@ -37,6 +39,7 @@ class Message
      * @ORM\Id
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
+     * @Groups({"read_message"})
      */
     private $id;
 
@@ -44,39 +47,46 @@ class Message
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotNull()
+     * @Groups({"read_message"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\Type("integer")
+     * @Groups({"read_message"})
      */
     private $date;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
+     * @Groups({"read_message"})
      */
     private $data;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
+     * @Groups({"read_message"})
      */
     private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="messages")
+     * @Groups({"read_message"})
      */
     private $group;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Message", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @Groups({"read_message"})
      */
     private $parent;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="parent")
+     * @Groups({"read_message"})
      */
     private $children;
 
@@ -86,6 +96,7 @@ class Message
      *      joinColumns={@ORM\JoinColumn(name="message_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id", unique=true)}
      *      )
+     * @Groups({"read_message"})
      */
     private $files;
 
@@ -93,6 +104,7 @@ class Message
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotNull()
+     * @Groups({"read_message"})
      */
     private $lastActivityDate;
 

@@ -19,7 +19,7 @@ export default class MessagePreview extends Component {
             text: msgData.text || ""
         });
         if (props.message.files.length) {
-            this.setState({preview: props.message.files[0]});
+            this.setState({preview: props.message.files.find(f => f.fileIndex === 0)["@id"]});
         } else {
             if (msgData.text) {
                 const links = msgData.text.match(/https?:\/\/[^\s]+/gi);

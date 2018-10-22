@@ -62,6 +62,7 @@ class Upload extends Controller
                 $file->setContentUrl($newContentUrl);
             }
 
+            $file->setFileIndex($request->request->get("fileIndex"));
             $this->em->flush();
             // Prevent the serialization of the file property
             $file->setFile(null);

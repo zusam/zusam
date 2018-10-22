@@ -22,7 +22,6 @@ export default class CreateGroup extends Component {
         group.createdAt = Math.floor(Date.now()/1000);
         bee.http.post("/api/groups", group).then(res => {
             bee.http.post("/api/groups/invitation/" + res.inviteKey, {}).then(res => {
-                console.log(res.id);
                 router.navigate("/groups/" + res.id);
             });
         });
