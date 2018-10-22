@@ -22,7 +22,9 @@ sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
        -e "s|<ENV>|${ENV}|g" \
        /zusam/config.yml
 
-cp -n /zusam/config.yml /zusam/data/config.yml
+if ! [ -f /zusam/data/config.yml ]; then
+    cp /zusam/config.yml /zusam/data/config.yml
+fi
 ln -s /zusam/data/files /zusam/public/files
 
 if [ ${INSTANCE_TYPE} == "demo" ] || [ ${INSTANCE_TYPE} == "new" ]; then
