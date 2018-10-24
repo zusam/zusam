@@ -43,7 +43,8 @@ const lang = {
         "invitation_welcome": "Bienvenue sur Zusam ! Veuillez vous inscrire avant de rejoindre le groupe.",
         "signup": "S'inscrire",
         "create_a_group": "Créer un groupe",
-        "create_the_group": "Créer le groupe"
+        "create_the_group": "Créer le groupe",
+        "quit_group": "Quitter le groupe"
     }
 };
 export default lang;

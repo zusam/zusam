@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import bee from "./bee.js";
+import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class GroupSettings extends Component {
@@ -8,6 +9,7 @@ export default class GroupSettings extends Component {
     constructor(props) {
         super(props);
         this.updateSettings = this.updateSettings.bind(this);
+        this.leaveGroup = this.leaveGroup.bind(this);
         this.state = Object.assign({}, props);
     }
 
@@ -23,6 +25,13 @@ export default class GroupSettings extends Component {
         });
     }
 
+    leaveGroup(event) {
+        event.preventDefault();
+        bee.http.post("/api/groups/" + this.state.id + "/leave").then(res => {
+            router.navigate("/");
+        });
+    }
+
     render() {
         return (
             <div class="group-settings">
@@ -31,7 +40,7 @@ export default class GroupSettings extends Component {
                         <div class="container-fluid p-1">
                             <div class="row">
                                 <div class="col-12 col-md-10">
-                                    <form id="settings_form" class="mb-1">
+                                    <form id="settings_form" class="mb-1 border-bottom pb-1">
                                         <div class="form-group">
                                             <label for="name">{lang.fr["name"]}: </label>
                                             <input
@@ -45,20 +54,23 @@ export default class GroupSettings extends Component {
                                                 required
                                             ></input>
                                         </div>
-                                        <button onClick={this.updateSettings} class="btn btn-primary">{lang.fr["save_changes"]}</button>
+                                        <button onClick={this.updateSettings} class="btn btn-outline-secondary">{lang.fr["save_changes"]}</button>
                                     </form>
-                                    <form>
+                                    <form class="mb-1 border-bottom pb-1">
                                         <div class="form-group">
                                             <label for="inviteKey">{lang.fr["invitation_link"]}: </label>
                                             <input
                                                 type="text"
                                                 name="inviteKey"
                                                 value={"https://" + location.hostname + "/invitation/" + this.state.inviteKey}
-                                                class="form-control"
+                                                class="form-control font-size-80"
                                                 readonly="readonly"
                                             ></input>
                                         </div>
-                                        <button class="btn btn-danger">{lang.fr["reset_invitation_link"]}</button>
+                                        <button class="btn btn-outline-secondary">{lang.fr["reset_invitation_link"]}</button>
+                                    </form>
+                                    <form>
+                                        <button onClick={this.leaveGroup} class="btn btn-outline-danger">{lang.fr["quit_group"]}</button>
                                     </form>
                                 </div>
                             </div>

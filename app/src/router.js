@@ -52,16 +52,12 @@ const router = {
                         router.navigate("/login");
                         return;
                     }
-                    const url = "/groups/" + bee.getId(user.groups[0]);
-                    if (options.replace) {
-                        history.replaceState(null, "", url);
+                    console.log(user.groups[0]);
+                    if (user.groups[0]) {
+                        router.navigate("/groups/" + bee.getId(user.groups[0]));
                     } else {
-                        history.pushState(null, "", url);
+                        window.location = "/create-group";
                     }
-                    setTimeout(() => window.dispatchEvent(new CustomEvent("routerStateChange", {detail : {
-                        from: from,
-                        data: options.data,
-                    }})), 0);
                 });
         }
     },

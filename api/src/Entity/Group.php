@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Controller\GroupInvitation;
+use App\Controller\LeaveGroup;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -29,6 +30,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *            "path"="/groups/invitation/{inviteKey}",
  *            "controller"=GroupInvitation::class,
  *            "defaults"={"_api_receive"=false}
+ *        },
+ *        "leave"={
+ *            "method"="POST",
+ *            "path"="/groups/{id}/leave",
+ *            "controller"=LeaveGroup::class,
  *        }
  *     }
  * )

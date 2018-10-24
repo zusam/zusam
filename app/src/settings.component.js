@@ -31,7 +31,7 @@ export default class Settings extends Component {
                             onClick={router.onClick}
                         >{lang.fr["account"]}</a>
                     </li>
-                    { this.state.groups && (
+                    { this.state.groups["hydra:totalItems"] > 0 && (
                         <li
                             class="nav-item dropdown group-list" tabindex="-1"
                             onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}

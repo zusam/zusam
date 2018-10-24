@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class GroupInvitation extends Controller
+class LeaveGroup extends Controller
 {
     private $em;
 
@@ -18,20 +18,14 @@ class GroupInvitation extends Controller
         $this->em = $em;
     }
 
-    public function __invoke(string $inviteKey)
+    public function __invoke(Group $group)
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
-
-        $group = $this->em->getRepository(Group::class)->findOneByInviteKey($inviteKey);
-        if (empty($group)) {
-            return new JsonResponse(["message" => "Invalid invite key !"], JsonResponse::HTTP_BAD_REQUEST);
-        }
-
-        $group->addUser($this->getUser());
-        $this->getUser()->addGroup($group);
+        $group->removeUser($this->getUser());
+        $this->getUser()->removeGroup($group);
         $this->em->persist($this->getUser());
         $this->em->persist($group);
         $this->em->flush();
-        return new JsonResponse(["id" => $group->getId()], JsonResponse::HTTP_OK);
+        return $group;
     }
 }
