@@ -88,12 +88,14 @@ export default class Writer extends Component {
         input.accept = "image/*";
         input.addEventListener("change", event => {
             let list = Array.from(event.target.files);
-            this.uploadNextFile(list, list[Symbol.iterator]());
+            let files = this.state.files;
+            this.uploadNextFile(list, list[Symbol.iterator](), files.length);
+            this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
         });
         input.click();
     }
 
-    uploadNextFile(list, it) {
+    uploadNextFile(list, it, n) {
         let e = it.next();
         if (e.value) {
             if (e.value.type.match(/image/) && e.value.size > 1024*1024) {
@@ -108,12 +110,12 @@ export default class Writer extends Component {
                         const index = list.indexOf(e.value);
                         const formData = new FormData();
                         formData.append("file", new File([blob], e.value.name));
-                        formData.append("fileIndex", index);
+                        formData.append("fileIndex", index + n);
                         bee.http.post("/api/files/upload", formData, false).then(file => {
                             let a = this.state.files;
-                            a.splice(index, 0, file);
+                            a.splice(index + n, 1, file);
                             this.setState({files: a})
-                            this.uploadNextFile(list, it);
+                            this.uploadNextFile(list, it, n);
                         });
                     });
                 }
@@ -125,9 +127,9 @@ export default class Writer extends Component {
                 formData.append("fileIndex", index);
                 bee.http.post("/api/files/upload", formData, false).then(file => {
                     let a = this.state.files;
-                    a.splice(index, 0, file);
+                    a.splice(index + n, 1, file);
                     this.setState({files: a})
-                    this.uploadNextFile(list, it);
+                    this.uploadNextFile(list, it, n);
                 });
             }
         }
