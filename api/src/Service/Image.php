@@ -54,7 +54,15 @@ class Image
             }
             throw new \Exception("Something went wrong while loading $input.");
         } catch(\Exception $e) {
-            throw new \Exception("Could not load input image: " + $e->getMessage());
+            $im = $this->load($input);
+            $im->resizeImage(
+                min($im->getImageWidth(), $w),
+                min($im->getImageHeight(), $h),
+                \Imagick::FILTER_LANCZOS,
+                1,
+                true
+            );
+            return $im;
         }
     }
 
@@ -84,7 +92,7 @@ class Image
             }
             throw new \Exception("Something went wrong while loading $input.");
         } catch(\Exception $e) {
-            throw new \Exception("Could not load input image: " + $e->getMessage());
+            throw new \Exception("Could not load input image: " . $e->getMessage());
         }
     }
 
