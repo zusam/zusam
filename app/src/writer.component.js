@@ -148,7 +148,7 @@ export default class Writer extends Component {
                     autofocus
                 ></textarea>
                 { this.state.preview && <p class="card-text"><PreviewBlock {...this.state.preview} /></p> }
-                { !!this.state.files.length && <FileGrid key={this.state.files.reduce((a,c) => a + c.id)} files={this.state.files}/> }
+                { !!this.state.files.length && <FileGrid key={this.state.files.reduce((a,c) => a + c.id, "")} files={this.state.files}/> }
                 <div class="options">
                     <button
                         class="option"

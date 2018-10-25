@@ -113,18 +113,18 @@ let nlg = {
     start: () => {
         nlg.stop();
 		nlg.list = [];
-        document.querySelectorAll("[data-nlg]").forEach(
-            elm => {
-                nlg.list.push(elm);
-                elm.addEventListener("click", nlg.clickFn);
-            }
-        );
         if (!document.getElementById("nlg-styles")) {
             let nlgStyles = document.createElement("style");
             nlgStyles.id = "nlg-styles";
             nlgStyles.innerHTML = nlg.nlgStyles;
             document.body.append(nlgStyles);
         }
+        document.querySelectorAll("[data-nlg]").forEach(
+            elm => {
+                nlg.list.push(elm);
+                elm.addEventListener("click", nlg.clickFn);
+            }
+        );
     },
     show: (e, keepBackground = false, side = null) => {
         let url = e.dataset.src || e.src || e.href;
