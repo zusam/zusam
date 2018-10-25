@@ -33,7 +33,11 @@ class ImportOldData extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filesDir = realpath($this->getContainer()->getParameter("kernel.project_dir")."/../public/files/");
+        $filesDir = $this->getContainer()->getParameter("kernel.project_dir")."/../data/files/";
+        if (!file_exists($filesDir)) {
+            mkdir($this->getContainer()->getParameter("kernel.project_dir")."/../data/files/");
+        }
+        $filesDir = realpath($filesDir);
         $importedFilesDir = realpath($input->getArgument("importedFilesDir"));
         $dsn = $this->getContainer()->getParameter("database_url");
         $this->pdo = new \PDO($dsn, null, null);
