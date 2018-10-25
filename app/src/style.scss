@@ -859,9 +859,10 @@ article {
     position: fixed;
     width: 100%;
     text-align: center;
-    top: 0;
+    bottom: 0;
     left: 0;
     z-index: 500;
+    margin: 0;
 }
 
 .settings {

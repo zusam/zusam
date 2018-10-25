@@ -2,6 +2,7 @@ import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import util from "./util.js";
 import bee from "./bee.js";
+import alert from "./alert.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class UserSettings extends Component {
@@ -48,6 +49,7 @@ export default class UserSettings extends Component {
         }
         bee.http.put("/api/users/" + this.state.id, user).then(res => {
             this.setState(Object.assign(this.state, res));
+            alert.add(lang.fr["settings_updated"]);
         });
     }
 
@@ -108,6 +110,11 @@ export default class UserSettings extends Component {
                         </div>
                     </div>
                 </div>
+                { this.state.alert && (
+                    <div class="global-alert alert alert-success">
+                        { this.state.alert }
+                    </div>
+                )}
             </div>
         );
     }

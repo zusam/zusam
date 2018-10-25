@@ -44,7 +44,8 @@ const lang = {
         "signup": "S'inscrire",
         "create_a_group": "Créer un groupe",
         "create_the_group": "Créer le groupe",
-        "quit_group": "Quitter le groupe"
+        "quit_group": "Quitter le groupe",
+        "settings_updated": "Vos préférences ont été mises à jour !"
     }
 };
 export default lang;
