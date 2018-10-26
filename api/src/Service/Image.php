@@ -86,9 +86,16 @@ class Image
                 if ($im->readImage($input)) {
                     return $im;
                 }
-            }
-            if ($im->readImageBlob(file_get_contents($input))) {
-                return $im;
+            } else {
+                $client = new \GuzzleHttp\Client();
+                $res = $client->request("GET", $input);
+                if ($res->getStatusCode() == 200) {
+                    if ($im->readImageBlob($res->getBody())) {
+                        return $im;
+                    }
+                } else {
+                    throw new \Exception("Guzzle got status " . $res->getStatusCode() . " while trying to retrieve $input.");
+                }
             }
             throw new \Exception("Something went wrong while loading $input.");
         } catch(\Exception $e) {
