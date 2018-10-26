@@ -6,6 +6,23 @@ export default class FileGrid extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {files: []};
+        if (Array.isArray(props.files)) {
+            props.files.forEach((e,i) => {
+                if (typeof(e) == "string") {
+                    bee.get(e).then(r => {
+                        let a = this.state.files;
+                        a.splice(r.fileIndex, 0, r);
+                        this.setState({files: a})
+                    });
+                }
+                if (typeof(e) == "object") {
+                    let a = this.state.files;
+                    a.splice(e.fileIndex, 0, e);
+                    this.setState({files: a});
+                }
+            });
+        }
     }
 
     renderFile(file, miniature = false) {
@@ -40,13 +57,13 @@ export default class FileGrid extends Component {
         if (this.props.files && this.props.files.length > 3) {
             return (
                 <div class="file-grid">
-                    { this.props.files.sort((a, b) => a.fileIndex > b.fileIndex ? 1 : -1).map(e => this.renderFile(e, true)) }
+                    { this.state.files.sort((a, b) => a.fileIndex > b.fileIndex ? 1 : -1).map(e => this.renderFile(e, true)) }
                 </div>
             );
         }
         return (
             <div class="container d-flex justify-content-center flex-wrap">
-            { this.props.files.sort((a, b) => a.fileIndex > b.fileIndex ? 1 : -1).map(e => this.renderFile(e)) }
+            { this.state.files.sort((a, b) => a.fileIndex > b.fileIndex ? 1 : -1).map(e => this.renderFile(e)) }
             </div>
         );
     }
