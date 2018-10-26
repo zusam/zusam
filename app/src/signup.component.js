@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import bee from "./bee.js";
+import alert from "./alert.js";
 import router from "./router.js";
 
 export default class Signup extends Component {
@@ -27,10 +28,7 @@ export default class Signup extends Component {
 				bee.set("apiKey", res.api_key);
                 setTimeout(() => router.navigate("/"), 100);
             } else {
-                this.setState({
-                    showAlert: true,
-                    error: lang.fr[res.message]
-                });
+                alert.add(lang.fr[res.message]);
             }
 		});
 	}
@@ -51,11 +49,6 @@ export default class Signup extends Component {
                         <button type="submit" class="btn btn-light" onClick={this.sendSignupForm}>{lang.fr.signup}</button>
                     </form>
                 </div>
-                { this.state.showAlert && (
-                    <div class="global-alert alert alert-danger">
-                        { this.state.error }
-                    </div>
-                )}
             </div>
         );
     }
