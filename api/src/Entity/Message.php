@@ -19,17 +19,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *          "access_control"="is_granted('ROLE_USER')",
- *          "order"={"lastActivityDate": "DESC"}
+ *          "order"={"lastActivityDate": "DESC"},
  *     },
  *     collectionOperations={
- *          "get",
+ *          "get"={
+ *              "normalization_context"={"groups"={"collection_read_message"}},
+ *          },
  *          "post"={
  *              "method"="POST",
  *              "path"="/messages.{_format}",
- *              "controller"=NewMessage::class
+ *              "controller"=NewMessage::class,
  *          },
  *     },
- *     normalizationContext={"groups"={"read_message"}},
  * )
  * @ApiFilter(ExistsFilter::class, properties={"parent"})
  */
@@ -39,7 +40,7 @@ class Message
      * @ORM\Id
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
-     * @Groups({"read_message"})
+     * @Groups({"collection_read_message"})
      */
     private $id;
 
@@ -47,46 +48,42 @@ class Message
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotNull()
-     * @Groups({"read_message"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\Type("integer")
-     * @Groups({"read_message"})
+     * @Groups({"collection_read_message"})
      */
     private $date;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
-     * @Groups({"read_message"})
+     * @Groups({"collection_read_message"})
      */
     private $data;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
-     * @Groups({"read_message"})
+     * @Groups({"collection_read_message"})
      */
     private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="messages")
-     * @Groups({"read_message"})
      */
     private $group;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Message", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * @Groups({"read_message"})
      */
     private $parent;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="parent")
-     * @Groups({"read_message"})
      */
     private $children;
 
@@ -96,7 +93,7 @@ class Message
      *      joinColumns={@ORM\JoinColumn(name="message_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id", unique=true)}
      *      )
-     * @Groups({"read_message"})
+     * @Groups({"collection_read_message"})
      */
     private $files;
 
@@ -104,7 +101,7 @@ class Message
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotNull()
-     * @Groups({"read_message"})
+     * @Groups({"collection_read_message"})
      */
     private $lastActivityDate;
 
@@ -234,5 +231,19 @@ class Message
     {
         $this->lastActivityDate = $lastActivityDate;
         return $this;
+    }
+
+    public function getFirstFile(): ?File
+    {
+        if (empty($this->files)) {
+            return null;
+        }
+        $firstFile = null;
+        foreach($this->files as $file) {
+            if (!$firstFile || $file->getFileIndex() < $firstFile->getFileIndex()) {
+                $firstFile = $file;
+            }
+        }
+        return $firstFile;
     }
 }
