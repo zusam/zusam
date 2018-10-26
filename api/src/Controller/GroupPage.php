@@ -6,11 +6,12 @@ use App\Controller\LinkByUrl;
 use App\Entity\Group;
 use App\Entity\Message;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-class GroupPage
+class GroupPage extends Controller
 {
     private $em;
     private $linkByUrl;
@@ -74,7 +75,7 @@ class GroupPage
         $text = $message->getData(true)["text"];
         preg_match("/https?:\/\/[^\s]+/", $text, $links);
         if (!empty($links) && !empty($links[0])) {
-            $e = $this->linkByUrl->getLinkData($links[0], false, false);
+            $e = $this->linkByUrl->getLinkData($links[0], realpath($this->getParameter("dir.public")), false, false);
             return empty($e["preview"]) ? null : $e["preview"];
         }
         return null;
