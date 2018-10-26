@@ -43,12 +43,25 @@ class PreparePreviewsCommand extends ContainerAwareCommand
         });
         $k = 0;
         foreach($messages as $i) {
+            if (memory_get_usage(true) > 1024 * 1024 * 70) {
+                echo "\n";
+                echo "Memory usage went over 70MB. Stopping the script.\n";
+                echo "\n";
+                exit(0);
+            }
             $k++;
             $text = json_decode($i["data"], true)["text"];
             preg_match("/https?:\/\/[^\s]+/", $text, $links);
             if (!empty($links) && !empty($links[0])) {
                 echo "[$k/".count($messages)."]: ".$links[0]."\n";
-                $this->linkByUrl->getLinkData($links[0], $publicDir, false, false);
+                try {
+                    $this->linkByUrl->getLinkData($links[0], $publicDir, false, false);
+                } catch (\Exception $e) {
+                    echo "\n";
+                    echo $e->getMessage()."\n";
+                    echo "\n";
+                    continue;
+                }
             }
         }
     }

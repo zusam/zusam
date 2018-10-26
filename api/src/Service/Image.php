@@ -54,6 +54,7 @@ class Image
             }
             throw new \Exception("Something went wrong while loading $input.");
         } catch(\Exception $e) {
+            $im->destroy(); // remove previous imagick instance
             $im = $this->load($input);
             $im->resizeImage(
                 min($im->getImageWidth(), $w),
