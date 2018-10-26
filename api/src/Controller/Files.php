@@ -23,7 +23,14 @@ class Files extends Controller
         }
         $cacheFile = $cacheDir."/images/".Uuid::uuidv4($id.$width."x".$height.$type).".jpg";
         if (is_readable($cacheFile)) {
-            return new BinaryFileResponse($cacheFile, 200, ["Content-Type" => mime_content_type($cacheFile)]);
+            $response = new BinaryFileResponse($cacheFile, 200, ["Content-Type" => mime_content_type($cacheFile)]);
+            $response->setCache(array(
+                "etag"          => md5($cacheFile),
+                "max_age"       => 0,
+                "s_maxage"      => 3600,
+                "public"        => true,
+            ));
+            return $response;
         }
         $sourceFile = $this->getDoctrine()->getRepository(File::class)->findOneById($id);
 		if (empty($sourceFile)) {
@@ -39,7 +46,14 @@ class Files extends Controller
             }
         }
         if (is_readable($cacheFile)) {
-            return new BinaryFileResponse($cacheFile, 200, ["Content-Type" => mime_content_type($cacheFile)]);
+            $response = new BinaryFileResponse($cacheFile, 200, ["Content-Type" => mime_content_type($cacheFile)]);
+            $response->setCache(array(
+                "etag"          => md5($cacheFile),
+                "max_age"       => 0,
+                "s_maxage"      => 3600,
+                "public"        => true,
+            ));
+            return $response;
         }
         return new JsonResponse(["message" => "Not Found"], JsonResponse::HTTP_NOT_FOUND);
     }
