@@ -87,19 +87,24 @@ class Image
                     return $im;
                 }
             } else {
-                $client = new \GuzzleHttp\Client();
-                $res = $client->request("GET", $input);
-                if ($res->getStatusCode() == 200) {
-                    if ($im->readImageBlob($res->getBody())) {
-                        return $im;
-                    }
+                if (substr($input, 0, 4) == "data") {
+                    $im->readImageBlob(base64_decode(explode(",", $input, 2)[1]));
+                    return $im;
                 } else {
-                    throw new \Exception("Guzzle got status " . $res->getStatusCode() . " while trying to retrieve $input.");
+                    $client = new \GuzzleHttp\Client();
+                    $res = $client->request("GET", $input);
+                    if ($res->getStatusCode() == 200) {
+                        if ($im->readImageBlob($res->getBody())) {
+                            return $im;
+                        }
+                    } else {
+                        throw new \Exception("Guzzle got status " . $res->getStatusCode() . " while trying to retrieve $input.");
+                    }
                 }
             }
             throw new \Exception("Something went wrong while loading $input.");
         } catch(\Exception $e) {
-            throw new \Exception("Could not load input image: " . $e->getMessage());
+            throw new \Exception("Could not load input image: " . $e->getMessage() . ", $input");
         }
     }
 
