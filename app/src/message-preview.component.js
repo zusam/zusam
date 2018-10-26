@@ -18,17 +18,8 @@ export default class MessagePreview extends Component {
             title: msgData.title || "",
             text: msgData.text || ""
         });
-        if (props.message.firstFile) {
-            this.setState({preview: props.message.firstFile});
-        } else {
-            if (msgData.text) {
-                const links = msgData.text.match(/https?:\/\/[^\s]+/gi);
-                if (links) {
-                    bee.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(
-                        r => this.setState({preview: r["preview"]})
-                    )
-                }
-            }
+        if (props.message.preview) {
+            this.setState({preview: props.message.preview});
         }
         bee.get("message_" + props.message.id).then(
             lastVisit => this.setState({
@@ -65,12 +56,10 @@ export default class MessagePreview extends Component {
                         <span class="left-buffer"></span>
                         <span class="title">{ this.getTitle() }</span>
                         <span className={"children" + (this.state.hasNews ? " text-warning" : "")}>
-                            { !!this.state.message.children.length && (
-                                <span>
-                                    { this.state.message.children.length + " " }
-                                    <FaIcon family={"regular"} icon={"comment"} />
-                                </span>
-                            )}
+                            <span>
+                                { this.state.message.children + " " }
+                                <FaIcon family={"regular"} icon={"comment"} />
+                            </span>
                         </span>
                     </div>
                 </div>

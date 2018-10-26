@@ -42,13 +42,13 @@ export default class GroupBoard extends Component {
                 group: group,
                 loaded: loaded,
                 pageYOffset: pageYOffset,
-                page: 1,
+                page: 0,
             });
-            bee.get("/api/groups/" + group.id + "/messages?parent[exists]=0&page=1", nocache).then(res => {
-                if(res && Array.isArray(res["hydra:member"])) {
+            bee.get("/api/groups/" + group.id + "/page/0", nocache).then(res => {
+                if(res && Array.isArray(res["messages"])) {
                     this.setState({
-                        messages: res["hydra:member"],
-                        totalMessages: res["hydra:totalItems"]
+                        messages: res["messages"],
+                        totalMessages: res["totalItems"]
                     });
                     // scrollTo the right place but leave a bit of time for the dom to construct
                     setTimeout(() => window.scrollTo(0, pageYOffset), 0);
@@ -82,7 +82,7 @@ export default class GroupBoard extends Component {
                 if (this.state.loaded + 30 > this.state.messages.length) {
                     // update page count right away
                     this.setState({page: this.state.page + 1});
-                    bee.get("/api/groups/" + this.state.group.id + "/messages?parent[exists]=0&page=" + (this.state.page + 1)).then(res => {
+                    bee.get("/api/groups/" + this.state.group.id + "/page" + (this.state.page + 1)).then(res => {
                         if(res && Array.isArray(res["hydra:member"])) {
                             this.setState({
                                 messages: [...this.state.messages, ...res["hydra:member"]],

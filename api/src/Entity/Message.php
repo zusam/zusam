@@ -22,9 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "order"={"lastActivityDate": "DESC"},
  *     },
  *     collectionOperations={
- *          "get"={
- *              "normalization_context"={"groups"={"collection_read_message"}},
- *          },
+ *          "get",
  *          "post"={
  *              "method"="POST",
  *              "path"="/messages.{_format}",
@@ -36,11 +34,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Message
 {
+    private $linkByUrl;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
-     * @Groups({"collection_read_message"})
      */
     private $id;
 
@@ -54,20 +53,17 @@ class Message
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\Type("integer")
-     * @Groups({"collection_read_message"})
      */
     private $date;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
-     * @Groups({"collection_read_message"})
      */
     private $data;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
-     * @Groups({"collection_read_message"})
      */
     private $author;
 
@@ -93,7 +89,6 @@ class Message
      *      joinColumns={@ORM\JoinColumn(name="message_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id", unique=true)}
      *      )
-     * @Groups({"collection_read_message"})
      */
     private $files;
 
@@ -101,9 +96,10 @@ class Message
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotNull()
-     * @Groups({"collection_read_message"})
      */
     private $lastActivityDate;
+
+    private $preview;
 
     public function __construct()
     {
@@ -233,17 +229,13 @@ class Message
         return $this;
     }
 
-    public function getFirstFile(): ?File
+    public function setPreview($preview): self
     {
-        if (empty($this->files)) {
-            return null;
-        }
-        $firstFile = null;
-        foreach($this->files as $file) {
-            if (!$firstFile || $file->getFileIndex() < $firstFile->getFileIndex()) {
-                $firstFile = $file;
-            }
-        }
-        return $firstFile;
+        $this->preview = $preview;
+    }
+
+    public function getPreview(): ?string
+    {
+        return $this->preview;
     }
 }
