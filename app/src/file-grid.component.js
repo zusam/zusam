@@ -69,8 +69,10 @@ export default class FileGrid extends Component {
     }
 
     componentDidMount() {
-        // start the nano-lightbox-gallery
-        // import("./nlg.js").then(nlg => nlg.default.start()).catch(err => console.error(err));
+        nlg.start();
+    }
+
+    componentDidUpdate() {
         nlg.start();
     }
 }
