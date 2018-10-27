@@ -178,7 +178,7 @@ export default class Message extends Component {
                         <div class="message-head d-flex d-md-block">
                             <img
                                 class="rounded-circle material-shadow avatar"
-                                src={ bee.crop(this.state.author.avatar, 100, 100) }
+                                src={ bee.crop(this.state.author.avatar, 100, 100) || util.defaultAvatar }
                             />
                             <div class="d-flex d-md-none flex-column">
                                 <span class="capitalize ml-1">{ this.state.author.name }</span>
