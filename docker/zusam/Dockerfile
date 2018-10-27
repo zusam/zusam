@@ -3,12 +3,14 @@ RUN apk add --no-cache -U su-exec tini s6
 ENTRYPOINT ["/sbin/tini", "--"]
 
 ENV UID=791 GID=791
-
-VOLUME /zusam
+ENV INSTANCE_TYPE=default
+ENV DOMAIN=localhost
+ENV DATABASE_NAME=data.db
 EXPOSE 8080
+VOLUME /zusam
 
 # install core
-RUN set -xe && apk add --no-cache -U ca-certificates nginx
+RUN set -xe && apk add --no-cache -U nginx php7 openssl ffmpeg
 RUN set -xe && apk add --no-cache \
     php7-apcu \
     php7-common \
