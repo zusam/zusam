@@ -15,34 +15,42 @@ export default class Message extends Component {
         this.displayMoreChildren = this.displayMoreChildren.bind(this);
         this.deleteMessage = this.deleteMessage.bind(this);
         this.onNewChild = this.onNewChild.bind(this);
+        this.getPreview = this.getPreview.bind(this);
         if (!props.parent) {
             window.addEventListener("newChild", this.onNewChild);
         }
         this.state = {
             url: props.url,
-            message: null,
-            author: null,
+            message: props.message,
+            author: props.message ? props.message.author : null,
             preview: null,
-            displayedChildren: 0,
+            displayedChildren: props.message ? props.message.children && 5 : 0,
         };
-        bee.get(props.url).then(msg => {
-            this.setState({
-                message: msg,
-                displayedChildren: msg.children && 5 // display 5 first children
+        if (!props.message) {
+            bee.get(props.url).then(msg => {
+                this.setState({
+                    message: msg,
+                    author: msg.author,
+                    displayedChildren: msg.children && 5 // display 5 first children
+                });
+                setTimeout(this.getPreview);
+                bee.set("message_" + msg.id, {timestamp: Date.now()});
             });
-            bee.set("message_" + msg.id, {timestamp: Date.now()});
-            bee.get(msg.author).then(author => {
-                this.setState({author: author});
-            });
-            if (msg.data) {
-                const data = JSON.parse(msg.data);
-                this.setState({data: data});
-                let previewUrl = data["text"].match(/(https?:\/\/[^\s]+)/gi);
-                if (previewUrl) {
-                    bee.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => r && this.setState({preview: r}));
-                }
+        } else {
+            this.getPreview();
+            bee.set("message_" + this.state.message.id, {timestamp: Date.now()});
+        }
+    }
+
+    getPreview() {
+        if (this.state.message.data) {
+            const data = JSON.parse(this.state.message.data);
+            this.setState({data: data});
+            let previewUrl = data["text"].match(/(https?:\/\/[^\s]+)/gi);
+            if (previewUrl) {
+                bee.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => r && this.setState({preview: r}));
             }
-        });
+        }
     }
 
     deleteMessage(event) {
@@ -112,7 +120,7 @@ export default class Message extends Component {
                             { this.state.author && (
                                 <img
                                     class="rounded-circle material-shadow avatar"
-                                    src={ bee.crop(this.state.author.avatar, 100, 100) || util.defaultAvatar }
+                                    src={ bee.crop(this.state.author.avatar["@id"], 100, 100) || util.defaultAvatar }
                                 />
                             )}
                             <div class="infos">
@@ -150,7 +158,7 @@ export default class Message extends Component {
                             { this.state.displayedChildren < this.state.message.children.length && (
                                 <a class="more-coms" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</a>
                             )}
-                            { this.state.message.children.slice(-1 * this.state.displayedChildren).map(e => <Message currentUser={this.props.currentUser} url={e} key={e}/>) }
+                            { this.state.message.children.slice(-1 * this.state.displayedChildren).map(e => <Message currentUser={this.props.currentUser} message={e} key={e.id}/>) }
                         </div>
                     )}
                     <div class="message child">
@@ -178,7 +186,7 @@ export default class Message extends Component {
                         <div class="message-head d-flex d-md-block">
                             <img
                                 class="rounded-circle material-shadow avatar"
-                                src={ bee.crop(this.state.author.avatar, 100, 100) || util.defaultAvatar }
+                                src={ bee.crop(this.state.author.avatar["@id"], 100, 100) || util.defaultAvatar }
                             />
                             <div class="d-flex d-md-none flex-column">
                                 <span class="capitalize ml-1">{ this.state.author.name }</span>
