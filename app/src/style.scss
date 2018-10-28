@@ -694,7 +694,7 @@ article {
         .message-body {
             background-color: whitesmoke;
             box-shadow: none;
-            padding-bottom: 1rem;
+            padding-bottom: calc(1rem + 4px);
             position: relative;
             top: calc(1rem - 2px);
             border-radius: 4px;
