@@ -49,17 +49,20 @@ class Upload extends Controller
 
             $this->em->persist($file);
 
-            // immediately convert the file if it's an image
-            $newContentUrl = pathinfo($file->getContentUrl(), PATHINFO_FILENAME).".jpg";
+            // immediately process the file if it's an image
             if (substr($file->getType(), 0, 6) == "image/") {
-                $imageService->createThumbnail(
-                    $filesDir."/".$file->getContentUrl(),
-                    $filesDir."/".$newContentUrl,
-                    2048,
-                    2048
-                );
-                $file->setStatus(File::STATUS_CONVERTED);
-                $file->setContentUrl($newContentUrl);
+                list($width, $height) = getimagesize($filesDir."/".$file->getContentUrl());
+                if ($width > 2048 || $height > 2048) {
+                    $newContentUrl = pathinfo($file->getContentUrl(), PATHINFO_FILENAME).".jpg";
+                    $imageService->createThumbnail(
+                        $filesDir."/".$file->getContentUrl(),
+                        $filesDir."/".$newContentUrl,
+                        2048,
+                        2048
+                    );
+                    $file->setContentUrl($newContentUrl);
+                }
+                $file->setStatus(File::STATUS_READY);
             }
 
             if ($request->request->get("fileIndex")) {
