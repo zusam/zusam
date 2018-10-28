@@ -45,7 +45,7 @@ class File
      * @ORM\Id
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
-     * @Groups({"collection_read_message"})
+     * @Groups({"read_message"})
      */
     private $id;
 
@@ -58,14 +58,14 @@ class File
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"collection_read_message"})
+     * @Groups({"read_message"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
-     * @Groups({"collection_read_message"})
+     * @Groups({"read_message"})
      */
     private $status;
 
@@ -78,7 +78,7 @@ class File
     /**
      * @ORM\Column(type="string")
      * @ApiProperty(iri="http://schema.org/contentUrl")
-     * @Groups({"collection_read_message"})
+     * @Groups({"read_message"})
      */
     private $contentUrl;
 
@@ -89,7 +89,7 @@ class File
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"collection_read_message"})
+     * @Groups({"read_message"})
      */
     private $fileIndex;
 

@@ -40,7 +40,7 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Id
      * @ORM\Column(type="string")
-     * @Groups({"read_user", "write_user"})
+     * @Groups({"read_user", "write_user", "read_message"})
      * @Assert\NotBlank()
      */
     private $id;
@@ -97,14 +97,14 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
-     * @Groups({"read_user", "write_user"})
+     * @Groups({"read_user", "write_user", "read_message"})
      * @ApiSubresource
      */
     private $avatar;
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"read_user", "write_user"})
+     * @Groups({"read_user", "write_user", "read_message"})
      * @Assert\NotBlank()
      */
     private $name;
