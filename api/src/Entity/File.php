@@ -35,14 +35,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class File
 {
     /* Statuses are :
-     *      - uploaded: file just uploaded and not validated
-     *      - converted: file converted to something that can be used but not validated
-     *      - validated: file validated but not converted to something acceptable to be used
-     *      - ready: (default) file in its final form before beeing used.
+     *      - raw: file was just uploaded and not modified
+     *      - ready: file is in its final form before beeing used.
      */
-    const STATUS_UPLOADED = "uploaded";
-    const STATUS_CONVERTED = "converted";
-    const STATUS_VALIDATED = "validated";
+    const STATUS_RAW = "raw";
     const STATUS_READY = "ready";
 
     /**
