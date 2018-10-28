@@ -19,15 +19,25 @@ export default class UserSettings extends Component {
         input.type = "file";
         input.accept = "image/*";
         input.addEventListener("change", event => {
-            Array.from(event.target.files).forEach(f => {
-				const formData = new FormData();
-                formData.append("file", f);
-                bee.http.post("/api/files/upload", formData, false).then(file => {
-                    bee.http.put("/api/users/" + this.state.id, {avatar: file["@id"]}).then(res => {
-                        this.setState({avatar: file["@id"]});
+            let file = event.target.files[0];
+            let img = new Image();
+            img.onload = () => {
+                let w = Math.min(img.naturalWidth, 256);
+                let h = Math.min(img.naturalHeight, 256);
+                let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
+                let nw = Math.floor(img.naturalWidth*g);
+                let nh = Math.floor(img.naturalHeight*g);
+                hermite.resize_image(img, nw, nh, blob => {
+                    const formData = new FormData();
+                    formData.append("file", new File([blob], file.value.name));
+                    bee.http.post("/api/files/upload", formData, false).then(file => {
+                        bee.http.put("/api/users/" + this.state.id, {avatar: file["@id"]}).then(res => {
+                            this.setState({avatar: file["@id"]});
+                        });
                     });
                 });
-            })
+            }
+            img.src = URL.createObjectURL(file.value);
         });
         input.click();
     }
