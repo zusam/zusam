@@ -117,10 +117,10 @@ export default class Message extends Component {
                 <div>
                     <div class="message">
                         <div class="message-head d-flex">
-                            { this.state.author && this.state.author.avatar && (
+                            { this.state.author && (
                                 <img
                                     class="rounded-circle material-shadow avatar"
-                                    src={ bee.crop(this.state.author.avatar["@id"], 100, 100) || util.defaultAvatar }
+                                    src={ this.state.author.avatar ? bee.crop(this.state.author.avatar["@id"], 100, 100) : util.defaultAvatar }
                                 />
                             )}
                             <div class="infos">
@@ -182,11 +182,11 @@ export default class Message extends Component {
         return (
             <div>
                 <div class="message child">
-                    { this.state.author && this.state.author.avatar && (
+                    { this.state.author && (
                         <div class="message-head d-flex d-md-block">
                             <img
                                 class="rounded-circle material-shadow avatar"
-                                src={ bee.crop(this.state.author.avatar["@id"], 100, 100) || util.defaultAvatar }
+                                src={ this.state.author.avatar ? bee.crop(this.state.author.avatar["@id"], 100, 100) : util.defaultAvatar }
                             />
                             <div class="d-flex d-md-none flex-column">
                                 <span class="capitalize ml-1">{ this.state.author.name }</span>
