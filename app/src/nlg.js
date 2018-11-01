@@ -234,14 +234,16 @@ let nlg = {
         media.src = url;
     },
     hide: (keepBackground = false) => {
-        window.removeEventListener("keypress", nlg.keyPressRight);
-        window.removeEventListener("keypress", nlg.keyPressLeft);
-        document.body.style.cssText = nlg.bodyStyle;
-        document.getElementById("nlg-modal").outerHTML = "";
-        if (keepBackground != true) {
-            document.querySelector("#nlg-close").outerHTML = "";
-            document.getElementById("nlg-modal-bg").outerHTML = "";
-            window.removeEventListener("keypress", nlg.keyPressClose);
+        if (document.getElementById("nlg-modal")) {
+            window.removeEventListener("keypress", nlg.keyPressRight);
+            window.removeEventListener("keypress", nlg.keyPressLeft);
+            document.body.style.cssText = nlg.bodyStyle;
+            document.getElementById("nlg-modal").outerHTML = "";
+            if (keepBackground != true) {
+                document.querySelector("#nlg-close").outerHTML = "";
+                document.getElementById("nlg-modal-bg").outerHTML = "";
+                window.removeEventListener("keypress", nlg.keyPressClose);
+            }
         }
     },
     moveLeft: () => document.querySelector("#nlg-modal > .nlg-media").classList.add("nlg-left"),

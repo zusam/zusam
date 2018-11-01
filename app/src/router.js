@@ -1,4 +1,5 @@
 import bee from "./bee.js";
+import nlg from "./nlg.js";
 const router = {
     toApp: url => url.replace(/^\/api/,""),
     getParam: param => {
@@ -10,6 +11,7 @@ const router = {
         const from = window.location.pathname;
         const queryParams = window.location.search;
         const [route, id, action] = router.toApp(url).slice(1).split("?")[0].split("/");
+        nlg.hide(); // hide lightbox
         switch (route) {
             case "password-reset":
             case "signup":
