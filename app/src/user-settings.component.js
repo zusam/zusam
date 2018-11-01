@@ -73,7 +73,7 @@ export default class UserSettings extends Component {
                                 <div class="col-12 col-md-2">
                                     <img
                                         class="img-fluid rounded-circle material-shadow avatar"
-                                        src={ bee.crop(this.state.avatar, 100, 100) || util.defaultAvatar }
+                                        src={ bee.crop(this.state.avatar["@id"], 100, 100) || util.defaultAvatar }
                                         onClick={this.inputAvatar}
                                     />
                                 </div>

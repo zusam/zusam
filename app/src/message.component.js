@@ -70,7 +70,8 @@ export default class Message extends Component {
         const newMsg = event.detail;
         let msg = this.state.message;
         if (newMsg.parent && newMsg.parent == msg["@id"]) {
-            msg.children = [...msg.children, newMsg["@id"]];
+            newMsg.author = this.props.currentUser;
+            msg.children = [...msg.children, newMsg];
             this.setState({
                 displayedChildren: this.state.displayedChildren + 1,
                 message: msg
@@ -166,7 +167,7 @@ export default class Message extends Component {
                             <div class="message-head p-1 d-none d-md-block">
                                 <img
                                     class="rounded-circle w-3 material-shadow avatar"
-                                    src={ bee.crop(this.props.currentUser.avatar, 100, 100) || util.defaultAvatar }
+                                    src={ bee.crop(this.props.currentUser.avatar["@id"], 100, 100) || util.defaultAvatar }
                                 />
                             </div>
                         )}

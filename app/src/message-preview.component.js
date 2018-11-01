@@ -47,7 +47,7 @@ export default class MessagePreview extends Component {
                 title={this.state.title}
             >
                 <div tabindex={this.props.tabindex} class="card material-shadow">
-                    { this.state.author && <img class="avatar material-shadow" src={ bee.crop(this.state.author.avatar, 100, 100) || util.defaultAvatar } /> }
+                    { this.state.author && <img class="avatar material-shadow" src={ bee.crop(this.state.author.avatar["@id"], 100, 100) || util.defaultAvatar } /> }
                     { this.state.preview ?
                             <div class="card-miniature" style={"background-image: url('" + bee.crop(this.state.preview, 320, 180) + "')" } />
                             : <div class="text-preview">{ this.state.text }</div>

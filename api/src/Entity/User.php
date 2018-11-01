@@ -23,14 +23,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *        "denormalization_context"={"groups"={"write_user"}}
  *     },
  *     itemOperations={
- *          "get",
+ *          "get"={
+ *              "normalization_context"={"groups"={"read_user"}},
+ *          },
  *          "put",
  *          "delete",
  *          "me"={
  *              "method"="GET",
  *              "path"="/me",
  *              "controller"=Me::class,
- *              "defaults"={"_api_receive"=false}
+ *              "defaults"={"_api_receive"=false},
+ *              "normalization_context"={"groups"={"read_user"}},
  *          }
  *     }
  * )

@@ -54,7 +54,6 @@ const router = {
                         router.navigate("/login");
                         return;
                     }
-                    console.log(user.groups[0]);
                     if (user.groups[0]) {
                         router.navigate("/groups/" + bee.getId(user.groups[0]));
                     } else {
