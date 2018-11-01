@@ -17,7 +17,7 @@ export default class Navbar extends Component {
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >
                         <div class="rounded-circle avatar">
-                            <img class="rounded-circle" src={ bee.crop(this.props.currentUser.avatar["@id"], 80, 80) || util.defaultAvatar }/>
+                            <img class="rounded-circle" src={ this.props.currentUser.avatar ? bee.crop(this.props.currentUser.avatar["@id"], 80, 80) : util.defaultAvatar }/>
                         </div>
                         <div class="dropdown-menu">
                             <a class="seamless-link"
