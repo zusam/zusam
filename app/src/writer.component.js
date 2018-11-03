@@ -1,7 +1,7 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import bee from "./bee.js";
-import hermite from "./hermite.js";
+import imageService from "./image-service.js";
 import FaIcon from "./fa-icon.component.js";
 import router from "./router.js";
 import PreviewBlock from "./preview-block.component.js";
@@ -106,7 +106,7 @@ export default class Writer extends Component {
                     let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
                     let nw = Math.floor(img.naturalWidth*g);
                     let nh = Math.floor(img.naturalHeight*g);
-                    hermite.resize_image(img, nw, nh, blob => {
+                    imageService.resize(img, nw, nh, blob => {
                         const index = list.indexOf(e.value);
                         const formData = new FormData();
                         formData.append("file", new File([blob], e.value.name));

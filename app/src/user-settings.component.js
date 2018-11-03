@@ -3,6 +3,7 @@ import lang from "./lang.js";
 import util from "./util.js";
 import bee from "./bee.js";
 import alert from "./alert.js";
+import imageService from "./image-service.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class UserSettings extends Component {
@@ -27,7 +28,7 @@ export default class UserSettings extends Component {
                 let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
                 let nw = Math.floor(img.naturalWidth*g);
                 let nh = Math.floor(img.naturalHeight*g);
-                hermite.resize_image(img, nw, nh, blob => {
+                imageService.resize(img, nw, nh, blob => {
                     const formData = new FormData();
                     formData.append("file", new File([blob], file.value.name));
                     bee.http.post("/api/files/upload", formData, false).then(file => {
