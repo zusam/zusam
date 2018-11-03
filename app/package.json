@@ -4,8 +4,9 @@
     "scripts": {
         "clean": "shx rm -f {../public,dist}/*.{js,css,map,html,png,jpg,svg}",
         "build": "parcel build --no-source-maps src/index.html",
+        "minify": "f=$(echo dist/app.*.js) && uglifyjs \"$f\" --compress --mangle --output \"$f\"",
         "serve": "shx cp dist/*.{js,css,map,html} ../public && shx cp src/*.{png,jpg,svg} ../public",
-        "full": "yarn clean && yarn build && yarn serve"
+        "full": "yarn clean && yarn build && yarn minify && yarn serve"
     },
     "dependencies": {
         "babel-polyfill": "~6.26",
@@ -15,9 +16,10 @@
         "node-sass": "~4.9",
         "npm-check-updates": "~2.14",
         "parcel-bundler": "~1.10",
-        "pica": "^5.0.0",
+        "pica": "~5.0",
         "preact": "~8.3",
-        "shx": "~0.3"
+        "shx": "~0.3",
+        "uglify-es": "~3.3"
     },
     "devDependencies": {
         "babel-core": "^6.26.3"
