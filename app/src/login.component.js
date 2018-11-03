@@ -70,7 +70,7 @@ export default class Login extends Component {
                             <div class="form-group">
                                 <input type="password" class="form-control" required id="password" placeholder={lang.fr.password_placeholder} />
                             </div>
-                            <span class="forgot-password" onClick={this.showPasswordReset}>{lang.fr["forgot_password"]}</span>
+                            <div class="forgot-password"><span onClick={this.showPasswordReset}>{lang.fr["forgot_password"]}</span></div>
                             <button type="submit" class="btn btn-light" onClick={this.sendLoginForm}>{lang.fr.connect}</button>
                         </form>
                     )}
