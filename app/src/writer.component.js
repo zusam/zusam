@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import bee from "./bee.js";
+import alert from "./alert.js";
 import imageService from "./image-service.js";
 import FaIcon from "./fa-icon.component.js";
 import router from "./router.js";
@@ -89,8 +90,12 @@ export default class Writer extends Component {
         input.addEventListener("change", event => {
             let list = Array.from(event.target.files);
             let files = this.state.files;
-            this.uploadNextFile(list, list[Symbol.iterator](), files.length);
-            this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
+            try {
+                this.uploadNextFile(list, list[Symbol.iterator](), files.length);
+                this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
+            } catch (e) {
+                alert.add(e.toString());
+            }
         });
         input.click();
     }
@@ -107,6 +112,7 @@ export default class Writer extends Component {
                     let nw = Math.floor(img.naturalWidth*g);
                     let nh = Math.floor(img.naturalHeight*g);
                     imageService.resize(img, nw, nh, blob => {
+                        alert.add("image converted");
                         const index = list.indexOf(e.value);
                         const formData = new FormData();
                         formData.append("file", new File([blob], e.value.name));
