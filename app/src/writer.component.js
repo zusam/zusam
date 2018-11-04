@@ -89,6 +89,7 @@ export default class Writer extends Component {
         input.accept = "image/*";
         input.addEventListener("change", event => {
             let list = Array.from(event.target.files);
+            console.log(event.target.files, list);
             let files = this.state.files;
             this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
             this.uploadNextFile(list, list[Symbol.iterator](), files.length);
@@ -98,11 +99,14 @@ export default class Writer extends Component {
 
     uploadNextFile(list, it, n) {
         let e = it.next();
-        console.log(list, it, e);
         if (typeof e == "undefined" || !e || !e.value) {
             return;
         }
-        if (e.value.type && e.value.type.match(/image/) && e.value.size > 1024*1024) {
+        let fileSize = 0;
+        try {
+            fileSize = e.value.size;
+        } catch (e) {}
+        if (e.value.type && e.value.type.match(/image/) && fileSize > 1024*1024) {
             let img = new Image();
             img.onload = () => {
                 let w = Math.min(img.naturalWidth, 2048);
