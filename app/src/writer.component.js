@@ -126,7 +126,7 @@ export default class Writer extends Component {
                     let nw = Math.floor(img.naturalWidth*g);
                     let nh = Math.floor(img.naturalHeight*g);
                 } catch (e) {
-                    alert.add("img.natural"; "alert-danger", 10000);
+                    alert.add("img.natural", "alert-danger", 10000);
                 }
                 imageService.resize(img, nw, nh, blob => {
                     const index = list.indexOf(e.value);
