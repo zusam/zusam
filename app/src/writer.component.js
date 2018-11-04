@@ -92,7 +92,12 @@ export default class Writer extends Component {
             let files = this.state.files || [];
             try {
                 if (list.length) {
-                    this.uploadNextFile(list, list[Symbol.iterator](), files.length);
+                    try {
+                        let plop = list[Symbol.iterator]();
+                        this.uploadNextFile(list, plop, files.length);
+                    } catch (e) {
+                        alert.add(e.toString() + ", " + list.toString() + ", " + plop.toString(), "alert-danger", 10000);
+                    }
                     this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
                 }
             } catch (e) {
@@ -124,11 +129,7 @@ export default class Writer extends Component {
                         let a = this.state.files;
                         a.splice(index + n, 1, file);
                         this.setState({files: a})
-                        try {
-                            this.uploadNextFile(list, it, n);
-                        } catch (e) {
-                            alert.add(list.toString() + " " + it.toString(), "alert-danger", 10000);
-                        }
+                        this.uploadNextFile(list, it, n);
                     });
                 });
             }
@@ -142,11 +143,7 @@ export default class Writer extends Component {
                 let a = this.state.files;
                 a.splice(index + n, 1, file);
                 this.setState({files: a})
-                try {
-                    this.uploadNextFile(list, it, n);
-                } catch (e) {
-                    alert.add(list.toString() + " " + it.toString(), "alert-danger", 10000);
-                }
+                this.uploadNextFile(list, it, n);
             });
         }
     }
