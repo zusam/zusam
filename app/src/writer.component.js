@@ -89,10 +89,12 @@ export default class Writer extends Component {
         input.accept = "image/*";
         input.addEventListener("change", event => {
             let list = Array.from(event.target.files);
-            let files = this.state.files;
+            let files = this.state.files || [];
             try {
-                this.uploadNextFile(list, list[Symbol.iterator](), files.length);
-                this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
+                if (list.length) {
+                    this.uploadNextFile(list, list[Symbol.iterator](), files.length);
+                    this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
+                }
             } catch (e) {
                 alert.add(e.toString(), "alert-danger", 10000);
             }
@@ -113,6 +115,9 @@ export default class Writer extends Component {
                     let nh = Math.floor(img.naturalHeight*g);
                     imageService.resize(img, nw, nh, blob => {
                         alert.add("image converted");
+                        if (!blob) {
+                            return;
+                        }
                         const index = list.indexOf(e.value);
                         const formData = new FormData();
                         formData.append("file", new File([blob], e.value.name));
