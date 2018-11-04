@@ -1,3 +1,4 @@
+import alert from "./alert.js";
 /**
  * BEE is a tiny http query handler, cache handler and data store.
  * it's not general purpose but made specifically for Zusam.
@@ -63,7 +64,7 @@ const bee = {
                 ).catch(
                     err => console.warn("ERROR for " + url, err)
                 )
-            });
+            }).catch(error => alert.add(error));
         },
     },
 
