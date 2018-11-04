@@ -103,9 +103,6 @@ export default class Writer extends Component {
     }
 
     uploadNextFile(list, it, n) {
-        if (!list || !it) {
-            return;
-        }
         let e = it.next();
         if (!e.value) {
             return;
@@ -119,10 +116,6 @@ export default class Writer extends Component {
                 let nw = Math.floor(img.naturalWidth*g);
                 let nh = Math.floor(img.naturalHeight*g);
                 imageService.resize(img, nw, nh, blob => {
-                    alert.add("image converted");
-                    if (!blob) {
-                        return;
-                    }
                     const index = list.indexOf(e.value);
                     const formData = new FormData();
                     formData.append("file", blob);
@@ -131,7 +124,11 @@ export default class Writer extends Component {
                         let a = this.state.files;
                         a.splice(index + n, 1, file);
                         this.setState({files: a})
-                        this.uploadNextFile(list, it, n);
+                        try {
+                            this.uploadNextFile(list, it, n);
+                        } catch (e) {
+                            alert.add(list.toString() + " " + it.toString(), "alert-danger", 10000);
+                        }
                     });
                 });
             }
@@ -145,7 +142,11 @@ export default class Writer extends Component {
                 let a = this.state.files;
                 a.splice(index + n, 1, file);
                 this.setState({files: a})
-                this.uploadNextFile(list, it, n);
+                try {
+                    this.uploadNextFile(list, it, n);
+                } catch (e) {
+                    alert.add(list.toString() + " " + it.toString(), "alert-danger", 10000);
+                }
             });
         }
     }
