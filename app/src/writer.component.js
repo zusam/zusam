@@ -111,7 +111,7 @@ export default class Writer extends Component {
         try {
             let e = it.next();
         } catch (e) {
-            alert.add("it.next()"; "alert-danger", 10000);
+            alert.add("it.next()", "alert-danger", 10000);
         }
         if (!e.value) {
             return;
