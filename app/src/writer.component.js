@@ -108,18 +108,26 @@ export default class Writer extends Component {
     }
 
     uploadNextFile(list, it, n) {
-        let e = it.next();
+        try {
+            let e = it.next();
+        } catch (e) {
+            alert.add("it.next()"; "alert-danger", 10000);
+        }
         if (!e.value) {
             return;
         }
         if (e.value.type.match(/image/) && e.value.size > 1024*1024) {
             let img = new Image();
             img.onload = () => {
-                let w = Math.min(img.naturalWidth, 2048);
-                let h = Math.min(img.naturalHeight, 2048);
-                let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
-                let nw = Math.floor(img.naturalWidth*g);
-                let nh = Math.floor(img.naturalHeight*g);
+                try {
+                    let w = Math.min(img.naturalWidth, 2048);
+                    let h = Math.min(img.naturalHeight, 2048);
+                    let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
+                    let nw = Math.floor(img.naturalWidth*g);
+                    let nh = Math.floor(img.naturalHeight*g);
+                } catch (e) {
+                    alert.add("img.natural"; "alert-danger", 10000);
+                }
                 imageService.resize(img, nw, nh, blob => {
                     const index = list.indexOf(e.value);
                     const formData = new FormData();
@@ -133,7 +141,11 @@ export default class Writer extends Component {
                     });
                 });
             }
-            img.src = URL.createObjectURL(e.value);
+            try {
+                img.src = URL.createObjectURL(e.value);
+            } catch (e) {
+                alert.add("createObjectUrl", "alert-danger", 10000);
+            }
         } else {
             const index = list.indexOf(e.value);
             const formData = new FormData();
