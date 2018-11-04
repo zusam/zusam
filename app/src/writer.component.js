@@ -1,7 +1,6 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import bee from "./bee.js";
-import alert from "./alert.js";
 import imageService from "./image-service.js";
 import FaIcon from "./fa-icon.component.js";
 import router from "./router.js";
@@ -89,7 +88,6 @@ export default class Writer extends Component {
         input.accept = "image/*";
         input.addEventListener("change", event => {
             let list = Array.from(event.target.files);
-            console.log(event.target.files, list);
             let files = this.state.files;
             this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
             this.uploadNextFile(list, list[Symbol.iterator](), files.length);
@@ -99,7 +97,7 @@ export default class Writer extends Component {
 
     uploadNextFile(list, it, n) {
         let e = it.next();
-        if (typeof e == "undefined" || !e || !e.value) {
+        if (!e || !e.value) {
             return;
         }
         let fileSize = 0;
@@ -132,7 +130,7 @@ export default class Writer extends Component {
             const index = list.indexOf(e.value);
             const formData = new FormData();
             formData.append("file", e.value);
-            formData.append("fileIndex", index);
+            formData.append("fileIndex", index + n);
             bee.http.post("/api/files/upload", formData, false).then(file => {
                 let a = this.state.files;
                 a.splice(index + n, 1, file);
