@@ -103,46 +103,50 @@ export default class Writer extends Component {
     }
 
     uploadNextFile(list, it, n) {
+        if (!list || !it) {
+            return;
+        }
         let e = it.next();
-        if (e.value) {
-            if (e.value.type.match(/image/) && e.value.size > 1024*1024) {
-                let img = new Image();
-                img.onload = () => {
-                    let w = Math.min(img.naturalWidth, 2048);
-                    let h = Math.min(img.naturalHeight, 2048);
-                    let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
-                    let nw = Math.floor(img.naturalWidth*g);
-                    let nh = Math.floor(img.naturalHeight*g);
-                    imageService.resize(img, nw, nh, blob => {
-                        alert.add("image converted");
-                        if (!blob) {
-                            return;
-                        }
-                        const index = list.indexOf(e.value);
-                        const formData = new FormData();
-                        formData.append("file", new File([blob], e.value.name));
-                        formData.append("fileIndex", index + n);
-                        bee.http.post("/api/files/upload", formData, false).then(file => {
-                            let a = this.state.files;
-                            a.splice(index + n, 1, file);
-                            this.setState({files: a})
-                            this.uploadNextFile(list, it, n);
-                        });
+        if (!e.value) {
+            return;
+        }
+        if (e.value.type.match(/image/) && e.value.size > 1024*1024) {
+            let img = new Image();
+            img.onload = () => {
+                let w = Math.min(img.naturalWidth, 2048);
+                let h = Math.min(img.naturalHeight, 2048);
+                let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
+                let nw = Math.floor(img.naturalWidth*g);
+                let nh = Math.floor(img.naturalHeight*g);
+                imageService.resize(img, nw, nh, blob => {
+                    alert.add("image converted");
+                    if (!blob) {
+                        return;
+                    }
+                    const index = list.indexOf(e.value);
+                    const formData = new FormData();
+                    formData.append("file", blob);
+                    formData.append("fileIndex", index + n);
+                    bee.http.post("/api/files/upload", formData, false).then(file => {
+                        let a = this.state.files;
+                        a.splice(index + n, 1, file);
+                        this.setState({files: a})
+                        this.uploadNextFile(list, it, n);
                     });
-                }
-                img.src = URL.createObjectURL(e.value);
-            } else {
-                const index = list.indexOf(e.value);
-                const formData = new FormData();
-                formData.append("file", e.value);
-                formData.append("fileIndex", index);
-                bee.http.post("/api/files/upload", formData, false).then(file => {
-                    let a = this.state.files;
-                    a.splice(index + n, 1, file);
-                    this.setState({files: a})
-                    this.uploadNextFile(list, it, n);
                 });
             }
+            img.src = URL.createObjectURL(e.value);
+        } else {
+            const index = list.indexOf(e.value);
+            const formData = new FormData();
+            formData.append("file", e.value);
+            formData.append("fileIndex", index);
+            bee.http.post("/api/files/upload", formData, false).then(file => {
+                let a = this.state.files;
+                a.splice(index + n, 1, file);
+                this.setState({files: a})
+                this.uploadNextFile(list, it, n);
+            });
         }
     }
 
