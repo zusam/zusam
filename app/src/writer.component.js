@@ -103,7 +103,7 @@ export default class Writer extends Component {
         if (typeof e == "undefined" || !e || !e.value) {
             return;
         }
-        if (e.value.type.match(/image/) && e.value.size > 1024*1024) {
+        if (e.value.type && e.value.type.match(/image/) && e.value.size > 1024*1024) {
             let img = new Image();
             img.onload = () => {
                 let w = Math.min(img.naturalWidth, 2048);
