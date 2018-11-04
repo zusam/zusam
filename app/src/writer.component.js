@@ -89,17 +89,16 @@ export default class Writer extends Component {
         input.accept = "image/*";
         input.addEventListener("change", event => {
             let list = Array.from(event.target.files);
-            let files = this.state.files || [];
-            if (list.length) {
-                this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
-                this.uploadNextFile(list, list[Symbol.iterator](), files.length);
-            }
+            let files = this.state.files;
+            this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
+            this.uploadNextFile(list, list[Symbol.iterator](), files.length);
         });
         input.click();
     }
 
     uploadNextFile(list, it, n) {
         let e = it.next();
+        console.log(list, it, e);
         if (typeof e == "undefined" || !e || !e.value) {
             return;
         }
@@ -124,11 +123,7 @@ export default class Writer extends Component {
                     });
                 });
             }
-            try {
-                img.src = URL.createObjectURL(e.value);
-            } catch (er) {
-                alert.add("createObjectUrl", "alert-danger", 10000);
-            }
+            img.src = URL.createObjectURL(e.value);
         } else {
             const index = list.indexOf(e.value);
             const formData = new FormData();
