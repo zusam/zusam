@@ -90,44 +90,27 @@ export default class Writer extends Component {
         input.addEventListener("change", event => {
             let list = Array.from(event.target.files);
             let files = this.state.files || [];
-            try {
-                if (list.length) {
-                    try {
-                        let plop = list[Symbol.iterator]();
-                        this.uploadNextFile(list, plop, files.length);
-                    } catch (e) {
-                        alert.add(e.toString() + ", " + list.toString() + ", " + plop.toString(), "alert-danger", 10000);
-                    }
-                    this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
-                }
-            } catch (e) {
-                alert.add(e.toString(), "alert-danger", 10000);
+            if (list.length) {
+                this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
+                this.uploadNextFile(list, list[Symbol.iterator](), files.length);
             }
         });
         input.click();
     }
 
     uploadNextFile(list, it, n) {
-        try {
-            let e = it.next();
-        } catch (e) {
-            alert.add("it.next()", "alert-danger", 10000);
-        }
-        if (!e.value) {
+        let e = it.next();
+        if (typeof e == "undefined" || !e || !e.value) {
             return;
         }
         if (e.value.type.match(/image/) && e.value.size > 1024*1024) {
             let img = new Image();
             img.onload = () => {
-                try {
-                    let w = Math.min(img.naturalWidth, 2048);
-                    let h = Math.min(img.naturalHeight, 2048);
-                    let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
-                    let nw = Math.floor(img.naturalWidth*g);
-                    let nh = Math.floor(img.naturalHeight*g);
-                } catch (e) {
-                    alert.add("img.natural", "alert-danger", 10000);
-                }
+                let w = Math.min(img.naturalWidth, 2048);
+                let h = Math.min(img.naturalHeight, 2048);
+                let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
+                let nw = Math.floor(img.naturalWidth*g);
+                let nh = Math.floor(img.naturalHeight*g);
                 imageService.resize(img, nw, nh, blob => {
                     const index = list.indexOf(e.value);
                     const formData = new FormData();
@@ -143,7 +126,7 @@ export default class Writer extends Component {
             }
             try {
                 img.src = URL.createObjectURL(e.value);
-            } catch (e) {
+            } catch (er) {
                 alert.add("createObjectUrl", "alert-danger", 10000);
             }
         } else {
