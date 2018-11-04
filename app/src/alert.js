@@ -1,10 +1,10 @@
 const alert = {
     remove: id => document.getElementById(id).outerHTML = "",
-    add: (text, countdown = 5000) => {
+    add: (text, alertStyle = "alert-success", countdown = 5000) => {
         let alertNode = document.createElement("DIV");
         alertNode.id = alert.hash(text);
         alertNode.innerHTML = text;
-        alertNode.classList.add("global-alert", "alert", "alert-success");
+        alertNode.classList.add("global-alert", "alert", alertStyle);
         document.body.appendChild(alertNode);
         setTimeout(() => alert.remove(alertNode.id), countdown);
     },

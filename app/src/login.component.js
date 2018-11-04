@@ -23,15 +23,9 @@ export default class Login extends Component {
         login.toLowerCase();
         bee.http.post("/api/password-reset-mail", {mail: login}).then(res => {
 			if (res && !res.message) {
-                this.setState({
-                    showAlert: true,
-                    error: lang.fr["password_reset_mail_sent"]
-                });
+                alert.add(lang.fr["password_reset_mail_sent"]);
             } else {
-                this.setState({
-                    showAlert: true,
-                    error: lang.fr[res.message]
-                });
+                alert.add(lang.fr[res.message], "alert-danger", 10000);
             }
         });
     }
@@ -48,7 +42,7 @@ export default class Login extends Component {
 				bee.set("apiKey", res.api_key);
                 setTimeout(() => router.navigate("/"), 100);
             } else {
-                alert.add(lang.fr[res.message]);
+                alert.add(lang.fr[res.message], "alert-danger", 10000);
             }
 		});
 	}
