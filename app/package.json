@@ -4,9 +4,9 @@
     "scripts": {
         "clean": "shx rm -f {../public,dist}/*.{js,css,map,html,png,jpg,svg}",
         "build": "parcel build --no-source-maps src/index.html",
-        "minify": "f=$(echo dist/app.*.js) && uglifyjs \"$f\" --compress --mangle --output \"$f\"",
+        "minify": "f=$(echo dist/app.*.js) && uglifyjs \"$f\" -c unsafe=true --mangle --output \"$f\"",
         "serve": "shx cp dist/*.{js,css,map,html} ../public && shx cp src/*.{png,jpg,svg} ../public",
-        "full": "yarn clean && yarn build && yarn serve"
+        "full": "yarn clean && yarn build && yarn minify && yarn serve"
     },
     "dependencies": {
         "babel-polyfill": "~6.26",
