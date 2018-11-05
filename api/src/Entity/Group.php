@@ -44,7 +44,7 @@ class Group
     /**
      * @ORM\Id
      * @ORM\Column(type="string")
-     * @Groups({"read_group", "write_group"})
+     * @Groups({"read_group", "write_group", "read_user"})
      * @Assert\NotBlank()
      */
     private $id;
@@ -58,7 +58,7 @@ class Group
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"read_group", "write_group"})
+     * @Groups({"read_group", "write_group", "read_user"})
      * @Assert\Type("integer")
      * @Assert\NotNull()
      */
@@ -66,7 +66,7 @@ class Group
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"read_group", "write_group"})
+     * @Groups({"read_group", "write_group", "read_user"})
      * @Assert\NotBlank()
      */
     private $name;

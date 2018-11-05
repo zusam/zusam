@@ -53,10 +53,10 @@ class App extends Component {
                         router.navigate("/login");
                         return;
                     }
-                    this.setState({currentUser: user});
-                    bee.get("/api/users/" + user.id + "/groups").then(
-                        groups => this.setState({groups: groups})
-                    );
+                    this.setState({
+                        currentUser: user,
+                        groups: user.groups,
+                    });
                 });
             } else {
                 if (!this.isOutsideRoute(route)) {
@@ -91,7 +91,7 @@ class App extends Component {
                     (!action && /\/write$/.test(event.detail.from))
                     || (event.detail.data && event.detail.data.resetGroupDisplay)
                 ) {
-                    this.groupRef.resetGroupDisplay(this.groupRef.state.url, true, true);
+                    this.groupRef.resetGroupDisplay(true, true);
                 }
             }
         }

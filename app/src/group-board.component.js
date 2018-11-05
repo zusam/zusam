@@ -6,10 +6,14 @@ export default class GroupBoard extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            url: props.url,
+            groupId: bee.getId(props.url)
+        };
         this.loadMoreMessages = this.loadMoreMessages.bind(this);
         this.resetGroupDisplay = this.resetGroupDisplay.bind(this);
         this.loadStartMessages = this.loadStartMessages.bind(this);
-        this.resetGroupDisplay(props.url);
+        this.resetGroupDisplay();
     }
 
     componentDidMount() {
@@ -20,16 +24,14 @@ export default class GroupBoard extends Component {
         window.removeEventListener("scroll", this.loadMoreMessages);
     }
 
-    resetGroupDisplay(url, resetScroll = false, nocache = false) {
+    resetGroupDisplay(resetScroll = false, nocache = false) {
         this.setState({
-            url: url,
-            group: {},
             messages: [],
             loaded: 0,
             scrollTop: 0,
             totalMessages: 0,
         });
-        bee.get(url).then(group => group && bee.get("group_" + group.id).then(groupData => {
+        bee.get("group_" + this.state.groupId).then(groupData => {
             let loaded = 1 + Math.floor((window.screen.width * window.screen.height) / (320 * 215));
             let scrollTop = 0;
             if (groupData) {
@@ -40,17 +42,16 @@ export default class GroupBoard extends Component {
                 pageYOffset = 0;
             }
             this.setState({
-                group: group,
                 loaded: loaded,
                 pageYOffset: pageYOffset,
                 page: 0,
             });
             this.loadStartMessages(0, nocache);
-        }));
+        });
     }
 
     loadStartMessages(page, nocache = false) {
-        bee.get("/api/groups/" + this.state.group.id + "/page/" + page, nocache).then(res => {
+        bee.get("/api/groups/" + this.state.groupId + "/page/" + page, nocache).then(res => {
             if(res && Array.isArray(res["messages"])) {
                 let loaded = Math.max(this.state.loaded, page * 30);
                 this.setState({
@@ -79,7 +80,7 @@ export default class GroupBoard extends Component {
         }
         if (parseInt(window.sessionStorage.getItem(key)) + 100 < Date.now()) {
             window.sessionStorage.setItem(key, Date.now());
-            bee.set("group_" + this.state.group.id, {
+            bee.set("group_" + this.state.groupId, {
                 loaded: this.state.loaded,
                 pageYOffset: window.pageYOffset
             }, Infinity, false);
@@ -93,7 +94,7 @@ export default class GroupBoard extends Component {
                 if (this.state.loaded + 30 > this.state.messages.length) {
                     // update page count right away
                     this.setState({page: this.state.page + 1});
-                    bee.get("/api/groups/" + this.state.group.id + "/page" + (this.state.page + 1)).then(res => {
+                    bee.get("/api/groups/" + this.state.groupId + "/page" + (this.state.page + 1)).then(res => {
                         if(res && Array.isArray(res["messages"])) {
                             this.setState({
                                 messages: [...this.state.messages, ...res["messages"]],
