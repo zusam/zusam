@@ -26,6 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "normalization_context"={"groups"={"read_message"}},
  *          },
  *          "put",
+ *          "delete",
  *     },
  *     collectionOperations={
  *          "get",
