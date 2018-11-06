@@ -55,7 +55,7 @@ const router = {
                         return;
                     }
                     if (user.groups[0]) {
-                        router.navigate("/groups/" + bee.getId(user.groups[0]));
+                        router.navigate("/groups/" + user.groups[0].id);
                     } else {
                         window.location = "/create-group";
                     }
