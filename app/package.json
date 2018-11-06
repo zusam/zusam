@@ -6,14 +6,14 @@
         "build": "parcel build --no-source-maps src/index.html",
         "minify": "f=$(echo dist/app.*.js) && uglifyjs \"$f\" -c unsafe=true --mangle --output \"$f\"",
         "serve": "shx cp dist/*.{js,css,map,html} ../public && shx cp src/*.{png,jpg,svg} ../public",
-        "full": "yarn clean && yarn build && yarn minify && yarn serve"
+        "full": "yarn clean && yarn build && yarn serve"
     },
     "dependencies": {
         "babel-polyfill": "~6.26",
         "babel-preset-env": "~1.7",
         "babel-preset-preact": "~1.1",
         "json5": "^2.1.0",
-        "node-sass": "~4.9",
+        "node-sass": "~4.10",
         "npm-check-updates": "~2.14",
         "parcel-bundler": "~1.10",
         "pica": "~5.0",
