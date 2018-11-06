@@ -101,7 +101,8 @@ export default class Writer extends Component {
             return;
         }
         let fileSize = 0;
-        try {
+        try { // this is a fix for firefox mobile
+            // firefox mobile only gets one file on "input multiple" and throws on getting the size
             fileSize = e.value.size;
         } catch (e) {}
         if (e.value.type && e.value.type.match(/image/) && fileSize > 1024*1024) {
