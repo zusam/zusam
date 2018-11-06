@@ -94,6 +94,9 @@ const bee = {
         }
     },
     get: id => {
+        if (!id) {
+            return;
+        }
         // not persistant data has more priority
         let data = bee.data[id];
         if (!data) {
