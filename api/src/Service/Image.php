@@ -21,6 +21,13 @@ class Image
         $im = new \Imagick();
         if ($respectFormat) {
             $im = $this->loadResizeImage($input, $w, $h);
+            $im->resizeImage(
+                min($im->getImageWidth(), $w),
+                min($im->getImageHeight(), $h),
+                \Imagick::FILTER_LANCZOS,
+                1,
+                true
+            );
         } else {
             $im = $this->load($input);
             $im->cropThumbnailImage(
@@ -56,13 +63,6 @@ class Image
         } catch(\Exception $e) {
             $im->destroy(); // remove previous imagick instance
             $im = $this->load($input);
-            $im->resizeImage(
-                min($im->getImageWidth(), $w),
-                min($im->getImageHeight(), $h),
-                \Imagick::FILTER_LANCZOS,
-                1,
-                true
-            );
             return $im;
         }
     }
