@@ -173,7 +173,12 @@ class App extends Component {
                     { this.state.route == "groups" && this.state.action == "write" && this.state.entity["@type"] == "Group" && (
                         <article>
                             <div class="container">
-                                <Writer currentUser={this.state.currentUser} group={this.state.group} backUrl={this.state.backUrl} />
+                                <Writer
+                                    focus={true}
+                                    currentUser={this.state.currentUser}
+                                    group={this.state.group}
+                                    backUrl={this.state.backUrl}
+                                />
                             </div>
                         </article>
                     )}

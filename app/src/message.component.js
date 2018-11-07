@@ -175,6 +175,7 @@ export default class Message extends Component {
                             parent={this.state.message.id}
                             currentUser={this.props.currentUser}
                             group={this.state.message.group}
+                            focus={false}
                         />
                     </div>
                 </div>

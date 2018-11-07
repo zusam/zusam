@@ -28,6 +28,9 @@ export default class Writer extends Component {
 
     componentDidMount() {
         document.getElementById("text").value = "";
+        if (this.props.focus) {
+            setTimeout(() => document.getElementById("text").focus());
+        }
     }
 
     postMessage() {
@@ -151,7 +154,7 @@ export default class Writer extends Component {
                     placeholder={lang.fr["text_placeholder"]}
                     rows="5"
                     autocomplete="off"
-                    autofocus
+                    autofocus={this.props.focus}
                 ></textarea>
                 { this.state.preview && <p class="card-text"><PreviewBlock {...this.state.preview} /></p> }
                 { !!this.state.files.length && <FileGrid key={this.state.files.reduce((a,c) => a + c.id, "")} files={this.state.files}/> }
