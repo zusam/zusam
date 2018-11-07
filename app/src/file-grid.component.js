@@ -29,7 +29,7 @@ export default class FileGrid extends Component {
         let filePath = "/files/" + file.contentUrl;
         let url = filePath;
         if (/image/.test(file.type)) {
-            url = bee.thumbnail(filePath, 1024, 768);
+            url = bee.thumbnail(filePath, 1366, 768);
         }
         if (miniature == true) {
             return (
