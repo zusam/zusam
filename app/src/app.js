@@ -92,6 +92,8 @@ class App extends Component {
                     || (event.detail.data && event.detail.data.resetGroupDisplay)
                 ) {
                     this.groupRef.resetGroupDisplay(true, true);
+                } else {
+                    this.groupRef.restoreScroll();
                 }
             }
         }

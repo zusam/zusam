@@ -13,6 +13,7 @@ export default class GroupBoard extends Component {
         this.loadMoreMessages = this.loadMoreMessages.bind(this);
         this.resetGroupDisplay = this.resetGroupDisplay.bind(this);
         this.loadStartMessages = this.loadStartMessages.bind(this);
+        this.restoreScroll = this.restoreScroll.bind(this);
         this.resetGroupDisplay();
     }
 
@@ -63,8 +64,6 @@ export default class GroupBoard extends Component {
                 if (page * 30 < loaded) {
                     setTimeout(() => this.loadStartMessages(page + 1, nocache), 0);
                 }
-                // scrollTo the right place but leave a bit of time for the dom to construct
-                setTimeout(() => window.scrollTo(0, pageYOffset), 0);
             }
         });
     }
@@ -103,6 +102,13 @@ export default class GroupBoard extends Component {
                     });
                 }
             }
+        }
+    }
+
+    restoreScroll() {
+        if (window.pageYOffset == 0 && this.state.pageYOffset != 0) {
+            // scrollTo the right place but leave a bit of time for the dom to construct
+            setTimeout(() => window.scrollTo(0, this.state.pageYOffset), 0);
         }
     }
 
