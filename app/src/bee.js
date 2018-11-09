@@ -93,23 +93,27 @@ const bee = {
             bee.data[id] = storageBox;
         }
     },
-    get: id => {
+    get: (id, nocache = false) => {
         if (!id) {
             return;
         }
-        // not persistant data has more priority
-        let data = bee.data[id];
-        if (!data) {
-            data = window.localStorage.getItem(id);
-            data = data ? JSON.parse(data) : null;
-        }
-        if (data) {
-            if (data.status == "pending") {
-                return new Promise(r => bee.register(id, r));
+        // if nocache is false, try to load from the cache
+        if (!nocache) {
+            // not persistant data has more priority
+            let data = bee.data[id];
+            if (!data) {
+                data = window.localStorage.getItem(id);
+                data = data ? JSON.parse(data) : null;
             }
-            let c = data.cacheDuration || Infinity;
-            if (data.timestamp > Date.now() - c) {
-                return new Promise(r => r(data.data));
+            if (data) {
+                if (data.status == "pending") {
+                    // a request for the resource was made. Let's wait for it
+                    return new Promise(r => bee.register(id, r));
+                }
+                let c = data.cacheDuration || Infinity;
+                if (data.timestamp > Date.now() - c) {
+                    return new Promise(r => r(data.data));
+                }
             }
         }
         // if it's an api resource, refresh it
@@ -118,8 +122,8 @@ const bee = {
             if (/^\/api\/messages/.test(id)) {
                 cacheDuration = 10 * 60 * 1000; // 10mn for a message (not likely to be changed often)
             }
-            if (/^\/api\/(users|links)/.test(id)) {
-                cacheDuration = 60 * 60 * 1000; // 60mn for a user
+            if (/^\/api\/(users|links|groups|me)/.test(id)) {
+                cacheDuration = 60 * 60 * 1000; // 60mn for a user/group/link
             }
             return bee.update(id, cacheDuration, false);
         }
