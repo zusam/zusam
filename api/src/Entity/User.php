@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Controller\Me;
+use App\Controller\PutUser;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,7 +27,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get"={
  *              "normalization_context"={"groups"={"read_user"}},
  *          },
- *          "put",
+ *          "put"={
+ *              "method"="PUT",
+ *              "path"="/users/{id}.{_format}",
+ *              "controller"=PutUser::class,
+ *              "normalization_context"={"groups"={"read_user"}},
+ *          },
  *          "delete",
  *          "me"={
  *              "method"="GET",
