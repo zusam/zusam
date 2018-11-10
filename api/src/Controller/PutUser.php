@@ -23,7 +23,10 @@ class PutUser extends Controller
     public function __invoke(User $data): User
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
-        $data->setPassword($this->encoder->encodePassword($data, $data->getPassword()));
+        $pass_infos = password_get_info($data->getPassword());
+        if ($pass_infos["algo"] === 0) {
+            $data->setPassword($this->encoder->encodePassword($data, $data->getPassword()));
+        }
         $this->em->persist($data);
         $this->em->flush();
         return $data;
