@@ -55,14 +55,14 @@ export default class MessagePreview extends Component {
                     <div class="card-body border-top d-flex justify-content-between">
                         <span class="left-buffer"></span>
                         <span class="title">{ this.getTitle() }</span>
-                        { !!this.state.message.children && (
-                            <span className={"children" + (this.state.hasNews ? " text-warning" : "")}>
+                        <span className={"children" + (this.state.hasNews ? " text-warning" : "")}>
+                            { !!this.state.message.children && (
                                 <span>
                                     { this.state.message.children + " " }
                                     <FaIcon family={"regular"} icon={"comment"} />
                                 </span>
-                            </span>
-                        )}
+                            )}
+                        </span>
                     </div>
                 </div>
             </a>
