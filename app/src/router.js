@@ -34,7 +34,7 @@ const router = {
                 }})), 0);
                 break;
             case "logout":
-                bee.resetData();
+                bee.reset();
                 window.location.href = window.location.origin;
                 break;
             case "invitation":

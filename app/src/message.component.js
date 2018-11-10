@@ -57,12 +57,15 @@ export default class Message extends Component {
 		event.preventDefault();
         if(window.confirm(lang.fr["ask_delete_message"])) {
             bee.http.delete(this.state.message["@id"]);
-            bee.remove(this.state.message["@id"]);
-            if (this.state.message.parent) {
-                this.setState({isRemoved: true});
-            } else {
-                router.navigate(router.toApp(this.state.message.group), {data: {resetGroupDisplay: true}});
-            }
+            bee.resetCache();
+            // give some time to the cache to delete itself properly
+            setTimeout(() => {
+                if (this.state.message.parent) {
+                    this.setState({isRemoved: true});
+                } else {
+                    router.navigate(router.toApp(this.state.message.group), {data: {resetGroupDisplay: true}});
+                }
+            }, 100);
         }
     }
 

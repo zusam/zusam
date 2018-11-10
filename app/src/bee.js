@@ -60,7 +60,7 @@ const bee = {
                     fetchOptions.body = (typeof(data) == "object" && data.constructor.name == "Object") ? JSON.stringify(data) : data;
                 }
                 return fetch(url, fetchOptions).then(
-                    res => res.json()
+                    res => method == "DELETE" ? res : res.json()
                 ).catch(
                     err => console.warn("ERROR for " + url, err)
                 )
@@ -143,6 +143,10 @@ const bee = {
             return new Promise(r => r(res));
         });
     },
-    resetData: () => window.localStorage.clear(),
+    resetCache: () => {
+        bee.data = {};
+        bee.events = {};
+    },
+    reset: () => window.localStorage.clear() && bee.resetCache(),
 };
 export default bee;
