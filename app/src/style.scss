@@ -563,15 +563,6 @@ article {
             flex-flow: column;
             flex-shrink: 0;
         }
-        .title {
-            display: flex;
-            align-items: center;
-            margin-left: 1rem;
-            width: 100%;
-            font-size: 1.1rem;
-            font-weight: bold;
-            justify-content: center;
-        }
         .options {
             cursor: pointer;
             margin-left: auto;
@@ -615,6 +606,12 @@ article {
     .message-body {
         width: 100%;
         padding-bottom: 1.2rem;
+        
+        .title {
+            margin: 1rem 1rem 0 1rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
 
         a.image {
             margin: 5px;

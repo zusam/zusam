@@ -128,11 +128,6 @@ export default class Message extends Component {
                                 { this.state.author && <span class="capitalize ml-1">{ this.state.author.name }</span> }
                                 <span class="ml-1">{ util.humanDate(this.state.message.createdAt) }</span>
                             </div>
-                            { this.state.data && this.state.data.title && (
-                                <div class="title">
-                                    <span>{ this.state.data.title }</span>
-                                </div>
-                            )}
                             { this.props.currentUser && this.state.author && this.state.author.id == this.props.currentUser.id && (
                                 <div tabindex="-1"
                                     class="options dropdown"
@@ -147,6 +142,11 @@ export default class Message extends Component {
                             )}
                         </div>
                         <div class="message-body">
+                            { this.state.data && this.state.data.title && (
+                                <div class="title">
+                                    <span>{ this.state.data.title }</span>
+                                </div>
+                            )}
                             { this.state.data && this.state.data.text && (
                                 <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
                             )}
