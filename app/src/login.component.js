@@ -25,7 +25,7 @@ export default class Login extends Component {
 			if (res && !res.message) {
                 alert.add(lang.fr["password_reset_mail_sent"]);
             } else {
-                alert.add(lang.fr[res.message], "alert-danger", 10000);
+                alert.add(lang.fr[res.message], "alert-danger");
             }
         });
     }
@@ -42,7 +42,7 @@ export default class Login extends Component {
 				bee.set("apiKey", res.api_key);
                 setTimeout(() => router.navigate("/"), 100);
             } else {
-                alert.add(lang.fr[res.message], "alert-danger", 10000);
+                alert.add(lang.fr[res.message], "alert-danger");
             }
 		});
 	}

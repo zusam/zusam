@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import bee from "./bee.js";
+import alert from "./alert.js";
 import imageService from "./image-service.js";
 import FaIcon from "./fa-icon.component.js";
 import router from "./router.js";
@@ -107,7 +108,9 @@ export default class Writer extends Component {
         try { // this is a fix for firefox mobile
             // firefox mobile only gets one file on "input multiple" and throws on getting the size
             fileSize = e.value.size;
-        } catch (e) {}
+        } catch (e) {
+            alert.add(lang.fr[multiple_photos_upload], "alert-danger");
+        }
         if (e.value.type && e.value.type.match(/image/) && fileSize > 1024*1024) {
             let img = new Image();
             img.onload = () => {

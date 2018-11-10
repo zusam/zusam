@@ -45,7 +45,8 @@ const lang = {
         "create_a_group": "Créer un groupe",
         "create_the_group": "Créer le groupe",
         "quit_group": "Quitter le groupe",
-        "settings_updated": "Vos préférences ont été mises à jour !"
+        "settings_updated": "Vos préférences ont été mises à jour !",
+        "multiple_photos_upload": "Une erreur est survenue. Veuillez essayer avec une seule photo (certains navigateurs bloquent l'ajout de plusieurs photos en simultané)."
     }
 };
 export default lang;
