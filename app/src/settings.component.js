@@ -31,7 +31,7 @@ export default class Settings extends Component {
                             onClick={router.onClick}
                         >{lang.fr["account"]}</a>
                     </li>
-                    { this.state.groups["hydra:totalItems"] > 0 && (
+                    { this.state.groups.length > 0 && (
                         <li
                             class="nav-item dropdown group-list" tabindex="-1"
                             onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
@@ -39,7 +39,7 @@ export default class Settings extends Component {
                         >
                             <div class={"nav-link" + (this.state.entity["@type"] == "Group" ? " active" : "")}>{ lang.fr.groups }</div>
                             <div class="dropdown-menu">
-                                { Array.isArray(this.state.groups["hydra:member"]) && this.state.groups["hydra:member"].map(
+                                { Array.isArray(this.state.groups) && this.state.groups.map(
                                     e => (
                                         <a
                                             class="seamless-link"
