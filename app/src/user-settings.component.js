@@ -20,7 +20,6 @@ export default class UserSettings extends Component {
         input.type = "file";
         input.accept = "image/*";
         input.addEventListener("change", event => {
-            let file = event.target.files[0];
             let img = new Image();
             img.onload = () => {
                 let w = Math.min(img.naturalWidth, 256);
@@ -38,7 +37,7 @@ export default class UserSettings extends Component {
                     });
                 });
             }
-            img.src = URL.createObjectURL(file.value);
+            img.src = URL.createObjectURL(event.target.files[0]);
         });
         input.click();
     }
