@@ -29,10 +29,11 @@ export default class UserSettings extends Component {
                 let nh = Math.floor(img.naturalHeight*g);
                 imageService.resize(img, nw, nh, blob => {
                     const formData = new FormData();
-                    formData.append("file", new File([blob], file.value.name));
+                    formData.append("file", blob);
                     bee.http.post("/api/files/upload", formData, false).then(file => {
                         bee.http.put("/api/users/" + this.state.id, {avatar: file["@id"]}).then(res => {
-                            this.setState({avatar: file["@id"]});
+                            this.setState({avatar: file});
+                            bee.remove("/api/me");
                         });
                     });
                 });
@@ -59,6 +60,7 @@ export default class UserSettings extends Component {
         }
         bee.http.put("/api/users/" + this.state.id, user).then(res => {
             this.setState(Object.assign(this.state, res));
+            bee.remove("/api/me");
             alert.add(lang.fr["settings_updated"]);
         });
     }
