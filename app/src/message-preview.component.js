@@ -28,33 +28,23 @@ export default class MessagePreview extends Component {
         );
     }
 
-    getTitle() {
-        if (!this.state.title) {
-            return util.humanDate(this.state.message.lastActivityDate);
-        }
-        if (this.state.title.length < 24) {
-            return this.state.title;
-        }
-        return this.state.title.slice(0, 21) + "...";
-    }
-
     render() {
         return (
             <a
                 class="d-inline-block seamless-link message-preview"
-                href={router.toApp(this.state.message["@id"])}
-                onClick={router.onClick}
-                title={this.state.title}
+                href={ router.toApp(this.state.message["@id"]) }
+                onClick={ router.onClick }
+                title={ this.state.title }
             >
                 <div tabindex={this.props.tabindex} class="card material-shadow">
-                    { this.state.author && <img class="avatar material-shadow" src={ this.state.author.avatar ? bee.crop(this.state.author.avatar["@id"], 100, 100) : util.defaultAvatar } /> }
+                    { this.state.author && <img title={ this.state.author.name } class="avatar material-shadow" src={ this.state.author.avatar ? bee.crop(this.state.author.avatar["@id"], 100, 100) : util.defaultAvatar } /> }
                     { this.state.preview ?
                             <div class="card-miniature" style={"background-image: url('" + bee.crop(this.state.preview, 320, 180) + "')" } />
                             : <div class="text-preview">{ this.state.text }</div>
                     }
                     <div class="card-body border-top d-flex justify-content-between">
                         <span class="left-buffer"></span>
-                        <span class="title">{ this.getTitle() }</span>
+                        <span class="title">{ this.state.title || util.humanDate(this.state.message.lastActivityDate) }</span>
                         <span className={"children" + (this.state.hasNews ? " text-warning" : "")}>
                             { !!this.state.message.children && (
                                 <span>

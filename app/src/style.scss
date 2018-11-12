@@ -327,6 +327,8 @@ $navbar_height: 50px;
                 width: 100%;
                 flex-shrink: 10;
                 text-align: center;
+                overflow: hidden;
+                height: calc(1rem + 5px);
             }
             .children {
                 width: 47px;
