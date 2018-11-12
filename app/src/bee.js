@@ -118,7 +118,7 @@ const bee = {
         }
         // if it's an api resource, refresh it
         if (/^\/api/.test(id)) {
-            let cacheDuration = 1; // no cache by default (1ms)
+            let cacheDuration = 10000; // short cache by default to avoid double calls (10s)
             if (/^\/api\/messages/.test(id)) {
                 cacheDuration = 10 * 60 * 1000; // 10mn for a message (not likely to be changed often)
             }
@@ -146,6 +146,7 @@ const bee = {
     resetCache: () => {
         bee.data = {};
         bee.events = {};
+        window.dispatchEvent(new CustomEvent("resetCache"));
     },
     reset: () => window.localStorage.clear() && bee.resetCache(),
 };

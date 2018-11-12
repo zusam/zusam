@@ -53,7 +53,12 @@ export default class Writer extends Component {
         }
         msg.data = JSON.stringify(msg.data);
         bee.http.post("/api/messages", msg).then(res => {
-            if (res && this.props.parent) {
+            if (!res) {
+                alert.add(lang.fr["error_new_message"], "alert-danger");
+                return;
+            }
+            bee.resetCache();
+            if (this.props.parent) {
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
             }
             if (this.props.backUrl) {

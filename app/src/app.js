@@ -87,10 +87,7 @@ class App extends Component {
             this.setState({group: entityUrl});
             // soft update message list of the group
             if (this.groupRef) {
-                if (
-                    (!action && /\/write$/.test(event.detail.from))
-                    || (event.detail.data && event.detail.data.resetGroupDisplay)
-                ) {
+                if (event.detail.data && event.detail.data.resetGroupDisplay) {
                     this.groupRef.resetGroupDisplay(true, true);
                 } else {
                     this.groupRef.restoreScroll();

@@ -14,6 +14,7 @@ export default class GroupBoard extends Component {
         this.resetGroupDisplay = this.resetGroupDisplay.bind(this);
         this.loadStartMessages = this.loadStartMessages.bind(this);
         this.restoreScroll = this.restoreScroll.bind(this);
+        window.addEventListener("resetCache", this.resetGroupDisplay);
         this.resetGroupDisplay();
     }
 

@@ -34,6 +34,7 @@ export default class UserSettings extends Component {
                         bee.http.put("/api/users/" + this.state.id, {avatar: file["@id"]}).then(res => {
                             this.setState({avatar: file});
                             bee.resetCache();
+                            alert.add(lang.fr["settings_updated"]);
                         });
                     });
                 });
