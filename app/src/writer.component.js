@@ -105,15 +105,16 @@ export default class Writer extends Component {
     }
 
     uploadNextFile(list, it, n) {
-        let e = it.next();
-        if (!e || !e.value) {
-            return;
-        }
-        let fileSize = 0;
-        try { // this is a fix for firefox mobile
-            // firefox mobile only gets one file on "input multiple" and throws on getting the size
+        try {
+            let e = it.next();
+            if (!e || !e.value) {
+                return;
+            }
+            let fileSize = 0;
             fileSize = e.value.size;
-        } catch (e) {
+        } catch (evt) {
+            // this is a fix for firefox mobile
+            // firefox mobile only gets one file on "input multiple" and throws on getting the size
             alert.add(lang.fr[multiple_photos_upload], "alert-danger");
         }
         if (e.value.type && e.value.type.match(/image/) && fileSize > 1024*1024) {
