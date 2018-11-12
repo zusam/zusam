@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import bee from "./bee.js";
+import alert from "./alert.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
 
@@ -21,6 +22,8 @@ export default class GroupSettings extends Component {
             group.name = name;
         }
         bee.http.put("/api/groups/" + this.state.id, group).then(res => {
+            alert.add(lang.fr["group_updated"]);
+            bee.resetCache();
             this.setState(Object.assign(this.state, res));
         });
     }
@@ -28,6 +31,7 @@ export default class GroupSettings extends Component {
     leaveGroup(event) {
         event.preventDefault();
         bee.http.post("/api/groups/" + this.state.id + "/leave").then(res => {
+            alert.add(lang.fr["group_left"]);
             router.navigate("/");
         });
     }
