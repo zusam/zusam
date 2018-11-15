@@ -355,13 +355,21 @@ $navbar_height: 50px;
     }
 
     .menu {
-        margin-left: 8px;
+        padding: 0 8px;
         position: relative;
         cursor: pointer;
+        height: 100%;
+
+        &.active {
+            background-color: adjust-hue($zusam_color, 5deg);
+        }
         
         .avatar {
             height: 32px;
             width: 32px;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
 
             img {
                 height: 100%;
@@ -379,8 +387,8 @@ $navbar_height: 50px;
             position: absolute;
             display: none;
             width: inherit;
-            left: -8px;
-            top: calc(100% + 7px);
+            left: 0;
+            top: 100%;
             padding: 0;
             background-color: adjust-hue($zusam_color, 5deg);
             text-align: left;
