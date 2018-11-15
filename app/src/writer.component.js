@@ -105,12 +105,13 @@ export default class Writer extends Component {
     }
 
     uploadNextFile(list, it, n) {
+        let e = null;
+        let fileSize = 0;
         try {
-            let e = it.next();
+            e = it.next();
             if (!e || !e.value) {
                 return;
             }
-            let fileSize = 0;
             fileSize = e.value.size;
         } catch (evt) {
             // this is a fix for firefox mobile
