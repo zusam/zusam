@@ -50,7 +50,8 @@ class GroupPage extends Controller
                 "data" => $messages[30 * $n + $i]->getData(),
                 "author" => "/api/users/" . $messages[30 * $n + $i]->getAuthor()->getId(),
                 "preview" => $this->genPreview($messages[30 * $n + $i]),
-                "children" => count($messages[30 * $n + $i]->getChildren())
+                "children" => count($messages[30 * $n + $i]->getChildren()),
+                "lastActivityDate" => $messages[30 * $n + $i]->getLastActivityDate()
             ];
         }
         return new JsonResponse([
