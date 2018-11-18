@@ -118,7 +118,20 @@ export default class Writer extends Component {
             // firefox mobile only gets one file on "input multiple" and throws on getting the size
             alert.add(lang.fr[multiple_photos_upload], "alert-danger");
         }
-        if (e.value.type && e.value.type.match(/image/) && fileSize > 1024*1024) {
+        try {
+            // don't use image reduction for iOS & firefoxMobile as it's problematic.
+            // TODO: Find a fix and test those platforms.
+            let iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            let firefoxMobile = /Firefox/.test(navigator.userAgent) && /Mobile/.test(navigator.userAgent);
+            if (firefoxMobile || iOS) {
+                throw "Do not use image reduction on iOS/FirefoxMobile !";
+            }
+            if (!e.value.type || !e.value.type.match(/image/)) {
+                throw "Do not use image reduction on invalid file !";
+            }
+            if (fileSize < 1024*1024) {
+                throw "Do not use image reduction on small file !";
+            }
             let img = new Image();
             img.onload = () => {
                 let w = Math.min(img.naturalWidth, 2048);
@@ -140,7 +153,9 @@ export default class Writer extends Component {
                 });
             }
             img.src = URL.createObjectURL(e.value);
-        } else {
+        } catch(error) {
+            console.warn(error); // error logging
+            // If something goes wrong in image reduction, fall back to normal upload
             const index = list.indexOf(e.value);
             const formData = new FormData();
             formData.append("file", e.value);
