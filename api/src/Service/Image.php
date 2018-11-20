@@ -36,6 +36,24 @@ class Image
             );
         }
         
+        // Handle image orientation
+        $orientation = $im->getImageOrientation();
+        switch($orientation) {
+            case \Imagick::ORIENTATION_BOTTOMRIGHT:
+                $im->rotateimage("#000", 180); // rotate 180 degrees
+                break;
+
+            case \Imagick::ORIENTATION_RIGHTTOP:
+                $im->rotateimage("#000", 90); // rotate 90 degrees CW
+                break;
+
+            case \Imagick::ORIENTATION_LEFTBOTTOM:
+                $im->rotateimage("#000", -90); // rotate 90 degrees CCW
+                break;
+        }
+        // Now that it's auto-rotated, make sure the EXIF data is correct in case the EXIF gets saved with the image!
+        $im->setImageOrientation(\Imagick::ORIENTATION_TOPLEFT);
+
         $this->saveImage($im, $output);
         $im->destroy();
     }

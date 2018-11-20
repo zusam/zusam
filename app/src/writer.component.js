@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import bee from "./bee.js";
+import exif from "./exif.js";
 import alert from "./alert.js";
 import imageService from "./image-service.js";
 import FaIcon from "./fa-icon.component.js";
@@ -15,6 +16,7 @@ export default class Writer extends Component {
         this.postMessage = this.postMessage.bind(this);
         this.getPreview = this.getPreview.bind(this);
         this.inputImages = this.inputImages.bind(this);
+        this.uploadFile = this.uploadFile.bind(this);
         this.uploadNextFile = this.uploadNextFile.bind(this);
         this.state = {files: []};
     }
@@ -132,41 +134,42 @@ export default class Writer extends Component {
             if (fileSize < 1024*1024) {
                 throw "Do not use image reduction on small file !";
             }
-            let img = new Image();
-            img.onload = () => {
-                let w = Math.min(img.naturalWidth, 2048);
-                let h = Math.min(img.naturalHeight, 2048);
-                let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
-                let nw = Math.floor(img.naturalWidth*g);
-                let nh = Math.floor(img.naturalHeight*g);
-                imageService.resize(img, nw, nh, blob => {
-                    const index = list.indexOf(e.value);
-                    const formData = new FormData();
-                    formData.append("file", blob);
-                    formData.append("fileIndex", index + n);
-                    bee.http.post("/api/files/upload", formData, false).then(file => {
-                        let a = this.state.files;
-                        a.splice(index + n, 1, file);
-                        this.setState({files: a})
-                        this.uploadNextFile(list, it, n);
+            exif.getOrientation(e.value, orientation => {
+                if (orientation != 1 && orientation != 2) {
+                    console.warn("Incorrect orientation !");
+                    this.uploadFile(e.value, list, n, list.indexOf(e.value), it);
+                    return;
+                }
+                let img = new Image();
+                img.onload = () => {
+                    let w = Math.min(img.naturalWidth, 2048);
+                    let h = Math.min(img.naturalHeight, 2048);
+                    let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
+                    let nw = Math.floor(img.naturalWidth*g);
+                    let nh = Math.floor(img.naturalHeight*g);
+                    imageService.resize(img, nw, nh, blob => {
+                        this.uploadFile(blob, list, n, list.indexOf(e.value), it);
                     });
-                });
-            }
-            img.src = URL.createObjectURL(e.value);
+                }
+                img.src = URL.createObjectURL(e.value);
+            });
         } catch(error) {
             console.warn(error); // error logging
             // If something goes wrong in image reduction, fall back to normal upload
-            const index = list.indexOf(e.value);
-            const formData = new FormData();
-            formData.append("file", e.value);
-            formData.append("fileIndex", index + n);
-            bee.http.post("/api/files/upload", formData, false).then(file => {
-                let a = this.state.files;
-                a.splice(index + n, 1, file);
-                this.setState({files: a})
-                this.uploadNextFile(list, it, n);
-            });
+            this.uploadFile(e.value, list, n, list.indexOf(e.value));
         }
+    }
+
+    uploadFile(file, list, n, index, it) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("fileIndex", index + n);
+        bee.http.post("/api/files/upload", formData, false).then(file => {
+            let a = this.state.files;
+            a.splice(index + n, 1, file);
+            this.setState({files: a})
+            this.uploadNextFile(list, it, n);
+        });
     }
 
     render() {
