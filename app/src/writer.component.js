@@ -120,6 +120,7 @@ export default class Writer extends Component {
             // firefox mobile only gets one file on "input multiple" and throws on getting the size
             // https://bugzilla.mozilla.org/show_bug.cgi?id=1456557
             alert.add(lang.fr["multiple_photos_upload"], "alert-danger");
+            return;
         }
         try {
             // don't use image reduction for iOS & firefoxMobile as it's problematic.
