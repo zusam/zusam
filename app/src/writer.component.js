@@ -42,7 +42,7 @@ export default class Writer extends Component {
             author: this.props.currentUser["@id"],
             group: this.props.group,
             children: [],
-            files: this.state.files.map(e => e["@id"]),
+            files: this.state.files.map(e => e["@id"]).filter(e => !!e),
             data: {
                 text: document.getElementById("text").value
             },
