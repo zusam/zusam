@@ -111,6 +111,7 @@ export default class Writer extends Component {
         let fileSize = 0;
         try {
             e = it.next();
+            console.log(e.value);
             if (!e || !e.value) {
                 return;
             }

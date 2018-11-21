@@ -3,8 +3,7 @@
     "version": "0.1.0",
     "scripts": {
         "clean": "shx rm -f {../public,dist}/*.{js,css,map,html,png,jpg,svg}",
-        "build": "parcel build --no-source-maps src/index.html",
-        "minify": "f=$(echo dist/app.*.js) && uglifyjs \"$f\" -c unsafe=true --mangle --output \"$f\"",
+        "build": "parcel build --no-source-maps --no-minify src/index.html",
         "serve": "shx cp dist/*.{js,css,map,html} ../public && shx cp src/*.{png,jpg,svg} ../public",
         "full": "yarn clean && yarn build && yarn serve"
     },
@@ -18,8 +17,7 @@
         "parcel-bundler": "~1.10",
         "pica": "~5.0",
         "preact": "~8.3",
-        "shx": "~0.3",
-        "uglify-es": "~3.3"
+        "shx": "~0.3"
     },
     "devDependencies": {
         "babel-core": "^6.26.3"
