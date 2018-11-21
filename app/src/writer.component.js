@@ -110,8 +110,10 @@ export default class Writer extends Component {
         let e = null;
         let fileSize = 0;
         try {
+            if (!it) {
+                return;
+            }
             e = it.next();
-            console.log(e.value);
             if (!e || !e.value) {
                 return;
             }
