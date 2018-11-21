@@ -128,13 +128,19 @@ export default class Writer extends Component {
             let iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             let firefoxMobile = /Firefox/.test(navigator.userAgent) && /Mobile/.test(navigator.userAgent);
             if (firefoxMobile || iOS) {
-                throw "Do not use image reduction on iOS/FirefoxMobile !";
+                console.warn("Do not use image reduction on iOS/FirefoxMobile !");
+                this.uploadFile(e.value, list, n, list.indexOf(e.value));
+                return;
             }
             if (!e.value.type || !e.value.type.match(/image/)) {
-                throw "Do not use image reduction on invalid file !";
+                console.warn("Do not use image reduction on invalid file !");
+                this.uploadFile(e.value, list, n, list.indexOf(e.value));
+                return;
             }
             if (fileSize < 1024*1024) {
-                throw "Do not use image reduction on small file !";
+                console.warn("Do not use image reduction on small file !");
+                this.uploadFile(e.value, list, n, list.indexOf(e.value));
+                return;
             }
             exif.getOrientation(e.value, orientation => {
                 if (orientation != 1 && orientation != 2) {
