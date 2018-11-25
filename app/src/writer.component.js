@@ -16,8 +16,9 @@ export default class Writer extends Component {
         this.postMessage = this.postMessage.bind(this);
         this.getPreview = this.getPreview.bind(this);
         this.inputImages = this.inputImages.bind(this);
+        this.inputVideo = this.inputVideo.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
-        this.uploadNextFile = this.uploadNextFile.bind(this);
+        this.uploadNextImage = this.uploadNextImage.bind(this);
         this.state = {files: []};
     }
 
@@ -102,14 +103,29 @@ export default class Writer extends Component {
             let files = this.state.files;
             this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({
                 fileIndex: 1000,
-                type: "image/jpeg",
-            }))]})
-            this.uploadNextFile(list, list[Symbol.iterator](), files.length);
+                type: "image",
+            }))]});
+            this.uploadNextImage(list, list[Symbol.iterator](), files.length);
         });
         input.click();
     }
 
-    uploadNextFile(list, it, n) {
+    inputVideo(event) {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "video/*";
+        input.addEventListener("change", event => {
+            let files = this.state.files;
+            this.setState({files: [...files, {
+                fileIndex: 1000,
+                type: "video",
+            }]});
+            this.uploadFile(event.target.files[0], files.length);
+        });
+        input.click();
+    }
+
+    uploadNextImage(list, it, n) {
         let e = null;
         let fileSize = 0;
         try {
@@ -135,23 +151,23 @@ export default class Writer extends Component {
             let firefoxMobile = /Firefox/.test(navigator.userAgent) && /Mobile/.test(navigator.userAgent);
             if (firefoxMobile || iOS) {
                 console.warn("Do not use image reduction on iOS/FirefoxMobile !");
-                this.uploadFile(e.value, list, n, list.indexOf(e.value));
+                this.uploadFile(e.value, n + list.indexOf(e.value), () => this.uploadNextImage(list, it, n));
                 return;
             }
             if (!e.value.type || !e.value.type.match(/image/)) {
                 console.warn("Do not use image reduction on invalid file !");
-                this.uploadFile(e.value, list, n, list.indexOf(e.value));
+                this.uploadFile(e.value, n + list.indexOf(e.value), () => this.uploadNextImage(list, it, n));
                 return;
             }
             if (fileSize < 1024*1024) {
                 console.warn("Do not use image reduction on small file !");
-                this.uploadFile(e.value, list, n, list.indexOf(e.value));
+                this.uploadFile(e.value, n + list.indexOf(e.value), () => this.uploadNextImage(list, it, n));
                 return;
             }
             exif.getOrientation(e.value, orientation => {
                 if (orientation != 1 && orientation != 2) {
                     console.warn("Incorrect orientation !");
-                    this.uploadFile(e.value, list, n, list.indexOf(e.value), it);
+                    this.uploadFile(e.value, n + list.indexOf(e.value), () => this.uploadNextImage(list, it, n));
                     return;
                 }
                 let img = new Image();
@@ -162,7 +178,7 @@ export default class Writer extends Component {
                     let nw = Math.floor(img.naturalWidth*g);
                     let nh = Math.floor(img.naturalHeight*g);
                     imageService.resize(img, nw, nh, blob => {
-                        this.uploadFile(blob, list, n, list.indexOf(e.value), it);
+                        this.uploadFile(blob, n + list.indexOf(e.value), () => this.uploadNextImage(list, it, n));
                     });
                 }
                 img.src = URL.createObjectURL(e.value);
@@ -170,19 +186,21 @@ export default class Writer extends Component {
         } catch(error) {
             console.warn(error); // error logging
             // If something goes wrong in image reduction, fall back to normal upload
-            this.uploadFile(e.value, list, n, list.indexOf(e.value));
+            this.uploadFile(e.value, n + list.indexOf(e.value), () => this.uploadNextImage(list, it, n));
         }
     }
 
-    uploadFile(file, list, n, index, it) {
+    uploadFile(file, fileIndex, callback = null) {
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("fileIndex", index + n);
+        formData.append("fileIndex", fileIndex);
         bee.http.post("/api/files/upload", formData, false).then(file => {
             let a = this.state.files;
-            a.splice(index + n, 1, file);
+            a.splice(fileIndex, 1, file);
             this.setState({files: a})
-            this.uploadNextFile(list, it, n);
+            if (callback) {
+                callback();
+            }
         });
     }
 
@@ -208,13 +226,14 @@ export default class Writer extends Component {
                     >
                         <FaIcon family={"regular"} icon={"images"}/>
                     </button>
-                    {/*
                         <button
                             class="option"
+                            onClick={this.inputVideo}
                             title={lang.fr["upload_video"]}
                         >
                             <FaIcon family={"solid"} icon={"film"}/>
                         </button>
+                    {/*
                         <button
                             class="option"
                             title={lang.fr["upload_music"]}

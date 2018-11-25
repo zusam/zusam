@@ -26,35 +26,35 @@ export default class FileGrid extends Component {
     }
 
     renderFile(file, miniature = false) {
-        let filePath = "/files/" + file.contentUrl;
-        let url = filePath;
-        if (/image/.test(file.type)) {
-            url = bee.thumbnail(filePath, 1366, 768);
-        }
-        if (miniature == true) {
-                return (
-                    <a data-nlg href={url} class="rounded">
-                        <div class="miniature" style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}></div>
-                    </a>
-                );
-        }
-        if (/video/.test(file.type)) {
-            return <video class="img-fluid contained-height mb-1" controls="true" src={url}></video>;
-        }
-        if (/image/.test(file.type)) {
-            if (file.contentUrl) {
+        if (file.contentUrl) {
+            let filePath = "/files/" + file.contentUrl;
+            let url = filePath;
+            if (/image/.test(file.type)) {
+                url = bee.thumbnail(filePath, 1366, 768);
+            }
+            if (miniature == true) {
+                    return (
+                        <a data-nlg href={url} class="rounded">
+                            <div class="miniature" style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}></div>
+                        </a>
+                    );
+            }
+            if (/video/.test(file.type)) {
+                return <video class="img-fluid contained-height mb-1" controls="true" src={url}></video>;
+            }
+            if (/image/.test(file.type)) {
                 return (
                     <a class="image" data-nlg href={url}>
                         <img class="img-fluid" src={url}></img>
                     </a>
                 );
             }
-            return (
-                <div class="file-placeholder">
-                    <div class="nlg-spinner black-spinner"><div></div><div></div><div></div><div></div><div></div></div>
-                </div>
-            );
         }
+        return (
+            <div class="file-placeholder">
+                <div class="nlg-spinner black-spinner"><div></div><div></div><div></div><div></div><div></div></div>
+            </div>
+        );
     }
 
     render() {
