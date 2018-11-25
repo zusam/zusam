@@ -3,98 +3,11 @@ let nlg = {
     list: [],
     bodyStyle: "",
     nlgStyles: `
-        #nlg-modal-bg {
-            position: fixed;
-            width: 100%; height: 100%;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 9997;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex; justify-content: center; align-items: center;
-        }
-        #nlg-modal .nlg-next, #nlg-modal .nlg-prev, #nlg-close {
-            cursor: pointer;
-            position: absolute;
-            top: 50%;
-            padding: 19px 22px 22px 22px;
-            margin-top: -3rem;
-            color: white;
-            font-size: 2rem;
-            background: rgba(0, 0, 0, 0.2);
-            transition: .5s;
-        }
-        .nlg-next:hover, .nlg-prev:hover, #nlg-close {
-            background: rgba(0, 0, 0, 0.5);
-        }
-        #nlg-close {
-            position: fixed;
-            z-index: 9999;
-            right: 0; top: 0;
-            border-radius: 0 0 0 3px;
-            transform: translateY(50%);
-            font-weight: bold;
-        }
-        .nlg-next {
-            right: 0;
-            border-radius: 3px 0 0 3px;
-        }
-        .nlg-prev {
-            left: 0;
-            border-radius: 0 3px 3px 0;
-        }
-        #nlg-modal {
-            left: 0;
-            position: absolute;
-            overflow: visible;
-            z-index: 9998;
-            width: 100%;
-            box-sizing: border-box;
-            opacity: 0;
-            transition: 300ms;
-        }
-        #nlg-modal > .nlg-media {
-            position: relative;
-            left: 0;
-            transition: 300ms;
-        }
         .nlg-left {
             left: -${window.innerWidth}px !important;
         }
         .nlg-right {
             left: ${window.innerWidth}px !important;
-        }
-        .nlg-spinner {
-            margin: 100px auto;
-            width: 50px;
-            height: 40px;
-            display: flex;
-            justify-content: space-between;
-            opacity: 0;
-            transition: 500ms;
-        }
-        .nlg-spinner > div {
-            background-color: #fff;
-            height: 100%;
-            width: 6px;
-            animation: nlg-stretchdelay 1.2s infinite ease-in-out;
-        }
-        .nlg-spinner :nth-child(2) {
-            animation-delay: -1.1s;
-        }
-        .nlg-spinner :nth-child(3) {
-            animation-delay: -1.0s;
-        }
-        .nlg-spinner :nth-child(4) {
-            animation-delay: -0.9s;
-        }
-        .nlg-spinner :nth-child(5) {
-            animation-delay: -0.8s;
-        }
-        @keyframes nlg-stretchdelay {
-            0%, 40%, 100% {
-                transform: scaleY(0.4);
-            }  20% {
-                transform: scaleY(1.0);
-            }
         }
     `,
     clickFn: e => {
@@ -166,7 +79,7 @@ let nlg = {
             spinner.appendChild(document.createElement("div"));
         }
         setTimeout(() => {
-            let spinner = document.querySelector(".nlg-spinner");
+            let spinner = document.querySelector("#nlg-modal-bg .nlg-spinner");
             if (spinner) {
                 spinner.style.opacity = 1;
             }
