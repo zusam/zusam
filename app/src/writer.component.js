@@ -196,7 +196,13 @@ export default class Writer extends Component {
         formData.append("fileIndex", fileIndex);
         bee.http.post("/api/files/upload", formData, false).then(file => {
             let a = this.state.files;
-            a.splice(fileIndex, 1, file);
+            if (file["@type"] == "hydra:Error") {
+                a.splice(fileIndex, 1);
+                console.warn(file);
+                alert.add(lang.fr["error_upload"], "alert-danger");
+            } else {
+                a.splice(fileIndex, 1, file);
+            }
             this.setState({files: a})
             if (callback) {
                 callback();
