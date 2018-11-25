@@ -100,7 +100,10 @@ export default class Writer extends Component {
         input.addEventListener("change", event => {
             let list = Array.from(event.target.files);
             let files = this.state.files;
-            this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({fileIndex: 1000}))]})
+            this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({
+                fileIndex: 1000,
+                type: "image/jpeg",
+            }))]})
             this.uploadNextFile(list, list[Symbol.iterator](), files.length);
         });
         input.click();

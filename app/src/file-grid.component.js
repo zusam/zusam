@@ -32,20 +32,27 @@ export default class FileGrid extends Component {
             url = bee.thumbnail(filePath, 1366, 768);
         }
         if (miniature == true) {
-            return (
-                <a data-nlg href={url} class="rounded">
-                    <div class="miniature" style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}></div>
-                </a>
-            );
+                return (
+                    <a data-nlg href={url} class="rounded">
+                        <div class="miniature" style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}></div>
+                    </a>
+                );
         }
         if (/video/.test(file.type)) {
-            return <video class="img-fluid contained-height mb-1" controls="true" src={url}></video>
+            return <video class="img-fluid contained-height mb-1" controls="true" src={url}></video>;
         }
         if (/image/.test(file.type)) {
+            if (file.contentUrl) {
+                return (
+                    <a class="image" data-nlg href={url}>
+                        <img class="img-fluid" src={url}></img>
+                    </a>
+                );
+            }
             return (
-                <a class="image" data-nlg href={url}>
-                    <img class="img-fluid" src={url}></img>
-                </a>
+                <div class="file-placeholder">
+                    <div class="nlg-spinner black-spinner"><div></div><div></div><div></div><div></div><div></div></div>
+                </div>
             );
         }
     }
