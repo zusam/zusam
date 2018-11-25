@@ -7,11 +7,11 @@ const bee = {
     // general utilities
 
     // get the id of an object from an url
-    getId: url => url && url.split("/").pop().replace(/\?.*$/, "").replace(/\.\w+$/, ""),
+    getId: url => url ? url.split("/").pop().replace(/\?.*$/, "").replace(/\.\w+$/, "") : null,
     // get the url to a thubmnail (should be used with a file url)
-    thumbnail: (url, width, height) => url && "/api/images/thumbnail/" + width + "/" + height + "/" + bee.getId(url),
+    thumbnail: (url, width, height) => url ? "/api/images/thumbnail/" + width + "/" + height + "/" + bee.getId(url) : null,
     // same as http.thumbnail but for a crop
-    crop: (url, width, height) => url && "/api/images/crop/" + width + "/" + height + "/" + bee.getId(url),
+    crop: (url, width, height) => url ? "/api/images/crop/" + width + "/" + height + "/" + bee.getId(url) : null,
 
     // http methods
     http: {
