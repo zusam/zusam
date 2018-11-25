@@ -13,7 +13,7 @@
         "babel-preset-preact": "~1.1",
         "json5": "^2.1.0",
         "node-sass": "~4.10",
-        "npm-check-updates": "~2.14",
+        "npm-check-updates": "~2.15",
         "parcel-bundler": "~1.10",
         "pica": "~5.0",
         "preact": "~8.3",
