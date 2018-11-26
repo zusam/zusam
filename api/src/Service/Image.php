@@ -2,10 +2,6 @@
 
 namespace App\Service;
 
-use FFMpeg\FFMpeg;
-use FFMpeg\Media\Video;
-use FFMpeg\Coordinate\TimeCode;
-
 class Image
 {
 	private $ffmpegPath;
@@ -57,11 +53,21 @@ class Image
         $this->saveImage($im, $output);
         $im->destroy();
     }
+
+    private function extractImageFromVideo($input): string
+    {
+        $output = tempnam(sys_get_temp_dir(), 'zusam_temp').".jpg";
+        exec($this->ffmpegPath . " -y -i " . $input . " -vframes 1 -ss 0 -f image2 " . $output);
+        return $output;
+    }
     
     private function loadResizeImage(string $input, int $w, int $h): ?\Imagick
     {
         $im = new \Imagick();
         try {
+            if (preg_match("/video/", mime_content_type($input))) {
+                $input = $this->extractImageFromVideo($input);
+            }
             if (is_readable($input)) {
                 // https://secure.php.net/manual/en/imagick.setsize.php#110166
                 $im->pingImage($input);
@@ -91,15 +97,7 @@ class Image
         try {
             if (is_readable($input)) {
                 if (preg_match("/video/", mime_content_type($input))) {
-                    $ffmpeg = FFMpeg::create([
-						"ffmpeg.binaries" => $this->ffmpegPath,
-						"ffprobe.binaries" => $this->ffprobePath
-					]);
-                    $video = $ffmpeg->open($input);
-                    $frame = $video->frame(TimeCode::fromSeconds(0));
-                    $tmpfname = tempnam(sys_get_temp_dir(), 'zusam_temp');
-					$frame->save($tmpfname);
-					$input = $tmpfname;
+                    $input = $this->extractImageFromVideo($input);
                 }
 
                 if ($im->readImage($input)) {
