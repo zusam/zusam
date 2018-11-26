@@ -77,8 +77,8 @@ export default class FileGrid extends Component {
             );
         }
         return (
-            <div class="container d-flex justify-content-center flex-wrap">
-            { this.state.files.sort((a, b) => a.fileIndex > b.fileIndex ? 1 : -1).map(e => this.renderFile(e)) }
+            <div class="d-flex justify-content-center flex-wrap">
+				{ this.state.files.sort((a, b) => a.fileIndex > b.fileIndex ? 1 : -1).map(e => this.renderFile(e)) }
             </div>
         );
     }
