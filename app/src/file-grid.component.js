@@ -40,7 +40,15 @@ export default class FileGrid extends Component {
                     );
             }
             if (/video/.test(file.type)) {
-                return <video class="img-fluid contained-height mb-1" controls="true" src={url}></video>;
+                if (file.status == "ready") {
+                    return <video class="img-fluid contained-height mb-1" controls="true" src={url}></video>;
+                }
+                return (
+                    <a class="image">
+                        <img class="img-fluid video-raw" src={bee.crop(filePath, 320, 180)}></img>
+                        <div class="nlg-spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
+                    </a>
+                );
             }
             if (/image/.test(file.type)) {
                 return (
@@ -52,7 +60,7 @@ export default class FileGrid extends Component {
         }
         return (
             <div class="file-placeholder">
-                <div class="nlg-spinner black-spinner"><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="nlg-spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
             </div>
         );
     }

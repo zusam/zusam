@@ -625,6 +625,7 @@ article {
 
         a.image {
             margin: 5px;
+            position: relative;
         }
 
         p {
@@ -990,11 +991,13 @@ article {
     left: 0;
     transition: 300ms;
 }
-.nlg-spinner.black-spinner {
+.nlg-spinner.orange-spinner {
     opacity: 1;
+    z-index: 1;
 }
-.nlg-spinner.black-spinner > div {
-    background-color: #000;
+.nlg-spinner.orange-spinner > div {
+    background-color: #f7a71b;
+	box-shadow: 0px 0px 5px #333;
 }
 .nlg-spinner {
     width: 50px;
@@ -1040,4 +1043,8 @@ article {
     width: 100%;
     height: 320px;
     position: relative;
+}
+
+.video-raw {
+	filter: blur(2px) grayscale(100%) brightness(80%);
 }
