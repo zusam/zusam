@@ -615,7 +615,6 @@ article {
 
     .message-body {
         width: 100%;
-        padding-bottom: 1rem;
 
         .title {
             margin: 1rem 1rem 0 1rem;
@@ -699,7 +698,6 @@ article {
         .message-body {
             background-color: whitesmoke;
             box-shadow: none;
-            padding-bottom: 0;
             position: relative;
             top: calc(1rem - 2px);
             border-radius: 4px;
@@ -1045,4 +1043,8 @@ article {
 
 .video-raw {
 	filter: blur(2px) grayscale(100%) brightness(80%);
+}
+
+.video {
+	margin: 5px;
 }

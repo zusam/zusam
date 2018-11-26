@@ -36,6 +36,7 @@ RUN set -xe && apk add --no-cache \
     php7-xml \
     php7-xmlwriter \
     php7-zip
+RUN set -xe && apk add --no-cache ffmpeg
 
 COPY run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/run.sh

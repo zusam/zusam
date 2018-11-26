@@ -5,7 +5,6 @@ parameters:
     database_url: '%env(resolve:DATABASE_URL)%'
     binaries:
         ffmpeg: '%env(resolve:FFMPEG_PATH)%'
-        ffprobe: '%env(resolve:FFPROBE_PATH)%'
     dir.public: '%kernel.project_dir%/../public'
     dir.cache: '%kernel.project_dir%/var/cache'
     dir.files: '%env(resolve:dir_files)%'
@@ -45,4 +44,9 @@ services:
 
     App\Service\Image:
         arguments:
+            - '%binaries%'
+
+    App\Command\ConvertVideoCommand:
+        arguments:
+            - '@doctrine.orm.entity_manager'
             - '%binaries%'

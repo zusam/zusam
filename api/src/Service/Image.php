@@ -5,11 +5,9 @@ namespace App\Service;
 class Image
 {
 	private $ffmpegPath;
-	private $ffprobePath;
 
 	public function __construct($binaries) {
 		$this->ffmpegPath = $binaries["ffmpeg"];
-		$this->ffprobePath = $binaries["ffprobe"];
 	}
 
     public function createThumbnail(string $input, string $output, $w, $h, $respectFormat = true): void
