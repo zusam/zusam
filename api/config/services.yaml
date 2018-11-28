@@ -48,5 +48,4 @@ services:
 
     App\Command\ConvertVideoCommand:
         arguments:
-            - '@doctrine.orm.entity_manager'
             - '%binaries%'

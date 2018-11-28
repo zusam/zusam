@@ -792,6 +792,11 @@ article {
     padding: 10px;
     border-radius: 5px;
 
+    a.image {
+        margin: 5px;
+        position: relative;
+    }
+
     #title {
         width: 100%;
         padding: 10px;
