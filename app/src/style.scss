@@ -269,6 +269,9 @@ $navbar_height: 50px;
             background-size: cover;
             background-position: center;
             background-color: grey;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            overflow: hidden;
         }
 
         .svg-miniature {
@@ -282,6 +285,8 @@ $navbar_height: 50px;
             padding: 1rem;
             overflow: hidden;
             font-size: .9rem;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
 
             &:first-letter {
                 float: left;
@@ -297,7 +302,6 @@ $navbar_height: 50px;
             max-width: 320px;
             min-height: 215px;
             border: none;
-            overflow: hidden;
             border-radius: 4px;
 
             .avatar {
