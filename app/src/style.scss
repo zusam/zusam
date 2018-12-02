@@ -311,7 +311,7 @@ $navbar_height: 50px;
                 transition: all 0.2s ease-in-out;
 
                 &:hover {
-                    transform: scale(2);
+                    transform: scale(2.4);
                 }
             }
             .left-buffer {
@@ -563,7 +563,7 @@ article {
 
     .message-head {
         width: 100%;
-        padding: 1rem 1rem 0 1rem;
+        padding: 1rem;
         flex-shrink: 10;
         position: relative;
         z-index: 100;
@@ -681,10 +681,12 @@ article {
         position: relative;
         z-index: 10;
         transition: all 0.2s ease-in-out;
+        background: white;
+        border: 2px solid white;
         height: 3rem;
         width: 3rem;
         &:hover {
-            transform: scale(2);
+            transform: scale(2.4);
         }
     }
 
