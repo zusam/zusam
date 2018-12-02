@@ -29,6 +29,10 @@ class ConvertVideoCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (file_exists("/tmp/zusam_video_convert.lock")) {
+            return;
+        }
+        file_put_contents("/tmp/zusam_video_convert.lock", "lock");
         $dsn = $this->getContainer()->getParameter("database_url");
         $this->pdo = new \PDO($dsn, null, null);
         $filesDir = realpath($this->getContainer()->getParameter("dir.files"));
@@ -44,7 +48,9 @@ class ConvertVideoCommand extends ContainerAwareCommand
             );
             $q = $this->pdo->prepare("UPDATE file SET content_url = '".$outputFile."', status = '".File::STATUS_READY."', type = 'video/mp4' WHERE id = '".$rawFile["id"]."';");
             $q->execute();
+            unlink("/tmp/zusam_video_convert.lock");
             return;
         }
+        unlink("/tmp/zusam_video_convert.lock");
     }
 }
