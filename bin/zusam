@@ -32,6 +32,7 @@ isDockerRunning
 
 cdroot
 pathToProject=$(pwd)
+[ -z "$INSTANCE_TYPE" ] && INSTANCE_TYPE="default"
 cd "docker/zusam" || exit
 
 if [ -n "$(sudo docker ps -a | grep "$CONTAINER_NAME")" ]; then
@@ -42,6 +43,7 @@ if sudo docker build -t "$CONTAINER_NAME" .; then
     sudo docker run -d --rm \
         --tmpfs /tmp \
         -e UID="$(id -u)" -e GID="$(id -g)" \
+        -e INSTANCE_TYPE=${INSTANCE_TYPE} \
         -p 80:8080 \
         -v "${pathToProject}":/zusam --name "$CONTAINER_NAME" "$CONTAINER_NAME"
 fi

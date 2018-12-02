@@ -44,6 +44,7 @@ COPY s6.d /etc/s6.d
 COPY php7 /etc/php7
 COPY nginx /etc/nginx
 COPY run.sh /usr/local/bin/run.sh
+COPY reset.sh /usr/local/bin/reset.sh
 
 RUN chmod -R +x /usr/local/bin /etc/s6.d /var/lib/nginx
 

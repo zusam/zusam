@@ -1,6 +1,6 @@
 #!/bin/sh
 
-rm -rf /zusam/data/*
+rm -rf /zusam/data/data.db /zusam/data/files
 if ! [ -f /zusam/data/config.yml ]; then
     cp /zusam/config.yml /zusam/data/config.yml
 fi
