@@ -26,19 +26,27 @@ export default class FileGrid extends Component {
     }
 
     renderFile(file, miniature = false) {
+        let filePath = "/files/" + file.contentUrl;
+        let url = filePath;
+        if (/image/.test(file.type)) {
+            url = bee.thumbnail(filePath, 1366, 768);
+        }
+        if (miniature == true) {
+            if (file.status == "ready") {
+                return (
+                    <a data-nlg href={url} class="rounded">
+                        <div class="miniature" style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}></div>
+                    </a>
+                );
+            }
+            return (
+                <a class="rounded">
+                    <div class="miniature video-raw" style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}></div>
+                    <div class="nlg-spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
+                </a>
+            );
+        }
         if (file.contentUrl) {
-            let filePath = "/files/" + file.contentUrl;
-            let url = filePath;
-            if (/image/.test(file.type)) {
-                url = bee.thumbnail(filePath, 1366, 768);
-            }
-            if (miniature == true) {
-                    return (
-                        <a data-nlg href={url} class="rounded">
-                            <div class="miniature" style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}></div>
-                        </a>
-                    );
-            }
             if (/video/.test(file.type)) {
                 if (file.status == "ready") {
                     return <video class="img-fluid contained-height video" controls="true" src={url}></video>;
