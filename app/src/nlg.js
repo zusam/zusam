@@ -74,12 +74,12 @@ let nlg = {
             document.body.appendChild(modalBackground);
         }
         let spinner = document.createElement("div");
-        spinner.classList.add("nlg-spinner");
+        spinner.classList.add("spinner");
         for(let i = 0; i < 5; i++) {
             spinner.appendChild(document.createElement("div"));
         }
         setTimeout(() => {
-            let spinner = document.querySelector("#nlg-modal-bg .nlg-spinner");
+            let spinner = document.querySelector("#nlg-modal-bg .spinner");
             if (spinner) {
                 spinner.style.opacity = 1;
             }
@@ -88,7 +88,7 @@ let nlg = {
         let modal = document.createElement("div");
         modal.id = "nlg-modal";
         let mediaIsLoadedFn = () => {
-            document.querySelector(".nlg-spinner").outerHTML = "";
+            document.querySelector("#nlg-modal-bg .spinner").outerHTML = "";
             if (window.innerWidth/window.innerHeight > media.width/media.height) {
                 media.height = window.innerHeight;
             } else {
