@@ -11,7 +11,6 @@ use Cron\CronExpression;
 class CronCommand extends ContainerAwareCommand
 {
     private $output;
-    private $monitoringLogger;
 
     protected function configure()
     {
@@ -22,10 +21,10 @@ class CronCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->monitoringLogger = $this->getContainer()->get('monolog.logger.monitoring');
+        $cronId = substr(md5(date("Y-m-d H:i:s")), 0, 5);
         $this->output = $output;
         $timeStart = microtime(true);
-        $this->output->writeln("zusam:cron started");
+        $this->output->writeln(["zusam:cron ($cronId) started at ".date("Y-m-d H:i:s")]);
 
         // executed every day
         $dailyCron = CronExpression::factory("@daily");
@@ -39,12 +38,12 @@ class CronCommand extends ContainerAwareCommand
         }
 
         // always executed
+        $this->runCommand("zusam:convert-video");
 
         $timeEnd = microtime(true);
         $time = round($timeEnd - $timeStart, 2);
         $output->writeln([
-            "<info>zusam:cron finished in $time seconds.</info>",
-            "======================================="
+            "<info>zusam:cron ($cronId) finished in $time seconds.</info>",
         ]);
     }
 
@@ -57,7 +56,6 @@ class CronCommand extends ContainerAwareCommand
             $this->output->writeln("<info>$id finished successfully</info>");
         } else {
             $this->output->writeln("<error>$id failed, return code: $returnCode</error>");
-            //$this->monitoringLogger->critical("$id failed, return code: $returnCode");
         }
     }
 }
