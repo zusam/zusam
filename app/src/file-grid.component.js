@@ -42,7 +42,7 @@ export default class FileGrid extends Component {
             return (
                 <a class="rounded">
                     <div class="miniature video-raw" style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}></div>
-                    <div class="nlg-spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
+                    <div class="spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
                 </a>
             );
         }
@@ -54,7 +54,7 @@ export default class FileGrid extends Component {
                 return (
                     <a class="image">
                         <img class="img-fluid video-raw" src={bee.crop(filePath, 320, 180)}></img>
-                        <div class="nlg-spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
+                        <div class="spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
                     </a>
                 );
             }
@@ -68,7 +68,7 @@ export default class FileGrid extends Component {
         }
         return (
             <div class="file-placeholder">
-                <div class="nlg-spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
             </div>
         );
     }
