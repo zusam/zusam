@@ -38,15 +38,17 @@ class ConvertVideoCommand extends ContainerAwareCommand
         $filesDir = realpath($this->getContainer()->getParameter("dir.files"));
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE (id IN (SELECT file_id FROM messages_files) OR id IN (SELECT avatar_id FROM user WHERE avatar_id NOT NULL)) AND status = '".File::STATUS_RAW."' AND type LIKE 'video%';");
         while($rawFile = $c->fetch()) {
-            $outputFile = $rawFile["id"].".mp4";
+            $outputFile = $filesDir."/".$rawFile["id"];
             $output->writeln(["Converting ".$rawFile["content_url"]]);	
             exec(
-                $this->ffmpegPath
+                "nice -n 19 " // give the process a low priority
+                .$this->ffmpegPath
                 ." -y -i ".$filesDir."/".$rawFile["content_url"]
                 ." -c:v libx264 -filter:v scale=-2:720 -crf 22 -threads 1 -preset slower -c:a libmp3lame -y -f mp4 "
-                .$filesDir."/".$outputFile
+                .$outputFile.".converted"
             );
-            $q = $this->pdo->prepare("UPDATE file SET content_url = '".$outputFile."', status = '".File::STATUS_READY."', type = 'video/mp4' WHERE id = '".$rawFile["id"]."';");
+            rename($outputFile.".converted", $outputFile.".mp4");
+            $q = $this->pdo->prepare("UPDATE file SET content_url = '".$rawFile["id"].".mp4', status = '".File::STATUS_READY."', type = 'video/mp4' WHERE id = '".$rawFile["id"]."';");
             $q->execute();
             unlink("/tmp/zusam_video_convert.lock");
             return;
