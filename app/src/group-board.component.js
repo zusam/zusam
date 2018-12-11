@@ -53,6 +53,9 @@ export default class GroupBoard extends Component {
     }
 
     loadStartMessages(page, nocache = false) {
+        if (!this.state.groupId) {
+            return;
+        }
         bee.get("/api/groups/" + this.state.groupId + "/page/" + page, nocache).then(res => {
             if(res && Array.isArray(res["messages"])) {
                 let loaded = Math.max(this.state.loaded, page * 30);
