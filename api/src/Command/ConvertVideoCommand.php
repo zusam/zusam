@@ -44,7 +44,7 @@ class ConvertVideoCommand extends ContainerAwareCommand
                 "nice -n 19 " // give the process a low priority
                 .$this->ffmpegPath
                 ." -y -i ".$filesDir."/".$rawFile["content_url"]
-                ." -c:v libx264 -filter:v scale=-2:720 -crf 22 -threads 1 -preset slower -c:a libmp3lame -y -f mp4 "
+                ." -c:v libx264 -filter:v scale=-2:720 -crf 22 -threads 1 -preset slower -c:a libfdk_aac -vbr3 -y -f mp4 "
                 .$outputFile.".converted"
             );
             rename($outputFile.".converted", $outputFile.".mp4");
