@@ -287,6 +287,7 @@ $navbar_height: 50px;
             font-size: .9rem;
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
+            word-wrap: break-word;
 
             &:first-letter {
                 float: left;
@@ -1065,4 +1066,7 @@ article {
 
 .video {
 	margin: 5px;
+}
+.card-body {
+    padding: .45rem .65rem;
 }
