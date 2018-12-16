@@ -36,7 +36,7 @@ class ConvertVideoCommand extends ContainerAwareCommand
         $dsn = $this->getContainer()->getParameter("database_url");
         $this->pdo = new \PDO($dsn, null, null);
         $filesDir = realpath($this->getContainer()->getParameter("dir.files"));
-        $c = $this->pdo->query("SELECT id, content_url FROM file WHERE (id IN (SELECT file_id FROM messages_files) OR id IN (SELECT avatar_id FROM user WHERE avatar_id NOT NULL)) AND status = '".File::STATUS_RAW."' AND type LIKE 'video%';");
+        $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'video%';");
         while($rawFile = $c->fetch()) {
             $outputFile = $filesDir."/".$rawFile["id"];
             $output->writeln(["Converting ".$rawFile["content_url"]]);	
