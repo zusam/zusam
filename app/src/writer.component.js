@@ -95,6 +95,8 @@ export default class Writer extends Component {
 
     inputImages(event) {
         const input = document.createElement("input");
+        document.body.appendChild(input);
+        input.style.display = "none";
         input.type = "file";
         input.multiple = "multiple";
         input.accept = "image/*";
@@ -112,6 +114,8 @@ export default class Writer extends Component {
 
     inputVideo(event) {
         const input = document.createElement("input");
+        document.body.appendChild(input);
+        input.style.display = "none";
         input.type = "file";
         input.accept = "video/*";
         input.addEventListener("change", event => {
