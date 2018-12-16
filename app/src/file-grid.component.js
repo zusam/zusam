@@ -49,7 +49,12 @@ export default class FileGrid extends Component {
         if (file.contentUrl) {
             if (/video/.test(file.type)) {
                 if (file.status == "ready") {
-                    return <video class="img-fluid contained-height video" controls="true" src={url}></video>;
+                    return <video
+                        poster={bee.crop(filePath, 320, 180)}
+                        class="img-fluid contained-height video"
+                        controls="true"
+                        src={url}
+                    ></video>;
                 }
                 return (
                     <a class="image">
