@@ -31,7 +31,8 @@ export default class Writer extends Component {
     }
 
     componentDidMount() {
-        document.getElementById("text").value = "";
+        (document.getElementById("title") || {}).value = "";
+        (document.getElementById("text") || {}).value = "";
         if (this.props.focus) {
             setTimeout(() => document.getElementById("text").focus());
         }

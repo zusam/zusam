@@ -57,7 +57,7 @@ export default class FileGrid extends Component {
                     ></video>;
                 }
                 return (
-                    <a class="image">
+                    <a class="image video-uploaded">
                         <img class="img-fluid video-raw" src={bee.crop(filePath, 320, 180)}></img>
                         <div class="spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
                     </a>

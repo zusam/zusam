@@ -1060,8 +1060,14 @@ article {
     position: relative;
 }
 
-.video-raw {
-	filter: blur(2px) grayscale(100%) brightness(80%);
+.message {
+    .video-raw {
+        filter: blur(2px) grayscale(100%) brightness(80%);
+    }
+}
+
+.writer .video-uploaded .spinner {
+    display: none;
 }
 
 .video {
