@@ -84,7 +84,7 @@ class LinkByUrl extends Controller
                     $preview->setSize(filesize($publicDir.$preview->getPath()));
                     $link->setPreview($preview);
                     $this->em->persist($preview);
-                } catch(Exception $e) {
+                } catch(\Exception $e) {
                     // Something went wrong. What should we do ?
                     // TODO
                 }
