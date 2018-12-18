@@ -76,13 +76,18 @@ class LinkByUrl extends Controller
             $link->setData(json_encode($data));
             $link->setUpdatedAt(time());
             if (!empty($data["image"])) {
-                $preview = new File();
-                $preview->setType("image/jpeg");
-                $preview->setContentUrl($preview->getId().".jpg");
-                $this->imageService->createThumbnail($data["image"], $publicDir."/".$preview->getPath(), 2048, 2048);
-                $preview->setSize(filesize($publicDir.$preview->getPath()));
-                $link->setPreview($preview);
-                $this->em->persist($preview);
+                try {
+                    $preview = new File();
+                    $preview->setType("image/jpeg");
+                    $preview->setContentUrl($preview->getId().".jpg");
+                    $this->imageService->createThumbnail($data["image"], $publicDir."/".$preview->getPath(), 2048, 2048);
+                    $preview->setSize(filesize($publicDir.$preview->getPath()));
+                    $link->setPreview($preview);
+                    $this->em->persist($preview);
+                } catch(Exception $e) {
+                    // Something went wrong. What should we do ?
+                    // TODO
+                }
             }
             $this->em->persist($link);
             $this->em->flush();
