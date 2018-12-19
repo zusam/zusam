@@ -16,8 +16,12 @@ class Files extends Controller
      */
     public function image(string $id, int $width, int $height, string $type, ImageService $imageService)
     {
-        $publicDir = realpath($this->getParameter("dir.public"));
+        $filesDir = realpath($this->getParameter("dir.files"));
         $cacheDir = realpath($this->getParameter("dir.cache"));
+        if (!$cacheDir) {
+            mkdir($this->getParameter("dir.cache"));
+            $cacheDir = realpath($this->getParameter("dir.cache"));
+        }
         if (!file_exists($cacheDir."/images")) {
             mkdir($cacheDir."/images");
         }
@@ -36,7 +40,7 @@ class Files extends Controller
 		if (empty($sourceFile)) {
 			return new JsonResponse(["message" => "Not Found"], JsonResponse::HTTP_NOT_FOUND);
 		}
-        $sourceFilePath = $publicDir.$sourceFile->getPath();
+        $sourceFilePath = $filesDir.$sourceFile->getPath();
         if (is_readable($sourceFilePath)) {
             if ("thumbnail" === $type) {
                 $imageService->createThumbnail($sourceFilePath, $cacheFile, $width, $height);
