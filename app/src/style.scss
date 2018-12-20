@@ -719,12 +719,13 @@ article {
             .infos {
                 font-size: .8rem;
                 color: #000;
-				background: #fff;
                 display: none;
                 position: absolute;
-                bottom: 0px;
+                bottom: 5px;
                 right: 5px;
-				padding: 2px;
+                padding: 2px;
+                background: rgba(255, 255, 255, 0.5);
+                border-top-left-radius: 3px;
                 span {
                     margin: 0 .25rem;
                 }
