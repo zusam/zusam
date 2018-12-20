@@ -12,9 +12,9 @@
         "babel-preset-env": "~1.7",
         "babel-preset-preact": "~1.1",
         "json5": "^2.1.0",
-        "node-sass": "~4.10",
+        "node-sass": "~4.11",
         "npm-check-updates": "~2.15",
-        "parcel-bundler": "~1.10",
+        "parcel-bundler": "~1.11",
         "pica": "~5.0",
         "preact": "~8",
         "shx": "~0.3"
