@@ -37,20 +37,6 @@ export default class PreviewBlock extends Component {
             return null;
         }
         let data = JSON.parse(this.props.data);
-        if (data["type"] == "photo") {
-            return (
-                <div class="container d-flex justify-content-center flex-wrap align-items-center">
-                    <img class="img-fluid" src={ this.props.url } />
-                </div>
-            );
-        }
-        if (data["type"] == "video" && !data["code"]) {
-            return (
-                <div class="container d-flex justify-content-center flex-wrap align-items-center">
-                    <video class="img-fluid" controls src={ this.props.url } />
-                </div>
-            );
-        }
         switch (data["providerName"]) {
             case "YouTube":
                 return <YoutubeEmbed preview={this.props.preview} url={data["url"]}/>;
@@ -58,10 +44,27 @@ export default class PreviewBlock extends Component {
                 return <SoundcloudEmbed preview={this.props.preview} url={data["code"].match(/https:\/\/[^\"\s]+/)[0] + "&auto_play=true"}/>;
             case "Twitch":
                 return <TwitchEmbed preview={this.props.preview} url={data["url"]}/>;
-            default:
+            case "Facebook":
+            case "Instagram":
+                // default embed code
                 if (data["code"]) {
                     return <div class="embed-container" ref={e => this.embedContainer = e} dangerouslySetInnerHTML={{__html: data["code"]}}></div>;
                 }
+            default:
+        }
+        if (data["type"] == "photo") {
+            return (
+                <div class="container d-flex justify-content-center flex-wrap align-items-center">
+                    <img class="img-fluid" src={ this.props.url } />
+                </div>
+            );
+        }
+        if (data["type"] == "video") {
+            return (
+                <div class="container d-flex justify-content-center flex-wrap align-items-center">
+                    <video class="img-fluid" controls src={ this.props.url } />
+                </div>
+            );
         }
         if (data["title"] && (this.props.preview || data["description"])) {
             return (
