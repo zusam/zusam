@@ -10,12 +10,23 @@ class Image
 		$this->ffmpegPath = $binaries["ffmpeg"];
 	}
 
+    private function prepareImage(\Imagick $im): \Imagick
+    {
+        // set the image background to white by default
+        $im->setImageBackgroundColor(new \ImagickPixel("white"));
+        $im->setImageAlphaChannel(\Imagick::ALPHACHANNEL_REMOVE);
+        if ($im->getImageMimeType() === "image/gif") {
+            $im->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
+        }
+        return $im;
+    }
+
     public function createThumbnail(string $input, string $output, $w, $h, $respectFormat = true): void
     {
         $im = new \Imagick();
         if ($respectFormat) {
             $im = $this->loadResizeImage($input, $w, $h);
-            $im->mergeImageLayers(\Imagick::LAYERMETHOD_OPTIMIZEPLUS);
+            $im = $this->prepareImage($im);
             $im->resizeImage(
                 min($im->getImageWidth(), $w),
                 min($im->getImageHeight(), $h),
@@ -25,7 +36,7 @@ class Image
             );
         } else {
             $im = $this->load($input);
-            $im->mergeImageLayers(\Imagick::LAYERMETHOD_OPTIMIZEPLUS);
+            $im = $this->prepareImage($im);
             $im->cropThumbnailImage(
                 min($im->getImageWidth(), $w),
                 min($im->getImageHeight(), $h)
@@ -137,8 +148,6 @@ class Image
             $im->transformimagecolorspace(\Imagick::COLORSPACE_SRGB);
         }
         $im->setInterlaceScheme(\Imagick::INTERLACE_JPEG);
-        // set the image background to white by default
-        $im->setImageBackgroundColor(new \ImagickPixel("white"));
         if (!$im->writeImage($output)) {
             throw new \Exception("Could not save output image");
         }
