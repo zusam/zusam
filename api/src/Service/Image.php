@@ -15,6 +15,7 @@ class Image
         $im = new \Imagick();
         if ($respectFormat) {
             $im = $this->loadResizeImage($input, $w, $h);
+            $im->mergeImageLayers(\Imagick::LAYERMETHOD_OPTIMIZEPLUS);
             $im->resizeImage(
                 min($im->getImageWidth(), $w),
                 min($im->getImageHeight(), $h),
@@ -24,6 +25,7 @@ class Image
             );
         } else {
             $im = $this->load($input);
+            $im->mergeImageLayers(\Imagick::LAYERMETHOD_OPTIMIZEPLUS);
             $im->cropThumbnailImage(
                 min($im->getImageWidth(), $w),
                 min($im->getImageHeight(), $h)
