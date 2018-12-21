@@ -237,6 +237,23 @@ $navbar_height: 50px;
         border-width: 8px 0 8px 12px;
         margin: -8px 0 0 -4px;
     }
+
+    .bandcamp::before {
+        background: #fff;
+        height: 50px;
+        width: 54px;
+        margin-left: -34px;
+        margin-top: -24px;
+        border-radius: 3px;
+        transition: all .25s;
+        box-shadow: 0px 0px 4px #444;
+    }
+
+    .bandcamp::after {
+        border-color: transparent transparent transparent #000;
+        border-width: 10px 0 10px 20px;
+        margin: -9px 0 0 -16px;
+    }
 }
 
 .message-container {

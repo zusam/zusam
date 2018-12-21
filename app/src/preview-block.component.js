@@ -3,6 +3,7 @@ import bee from "./bee.js";
 import YoutubeEmbed from "./youtube-embed.component.js";
 import SoundcloudEmbed from "./soundcloud-embed.component.js";
 import TwitchEmbed from "./twitch-embed.component.js";
+import BandCampEmbed from "./bandcamp-embed.component.js";
 
 export default class PreviewBlock extends Component {
 
@@ -37,15 +38,17 @@ export default class PreviewBlock extends Component {
             return null;
         }
         let data = JSON.parse(this.props.data);
-        switch (data["providerName"]) {
-            case "YouTube":
+        switch (data["providerUrl"].toLowerCase().replace(/\/$/, '').replace(/^https?:\/\/(www\.)?/, '')) {
+            case "youtube.com":
                 return <YoutubeEmbed preview={this.props.preview} url={data["url"]}/>;
-            case "SoundCloud":
+            case "soundcloud.com":
                 return <SoundcloudEmbed preview={this.props.preview} url={data["code"].match(/https:\/\/[^\"\s]+/)[0] + "&auto_play=true"}/>;
-            case "Twitch":
+            case "twitch.tv":
                 return <TwitchEmbed preview={this.props.preview} url={data["url"]}/>;
-            case "Facebook":
-            case "Instagram":
+            case "bandcamp.com":
+                return <BandCampEmbed preview={this.props.preview} url={data["code"].match(/https:\/\/.*album=\d+/)[0]}/>
+            case "facebook.com":
+            case "instagram.com":
                 // default embed code
                 if (data["code"]) {
                     return <div class="embed-container" ref={e => this.embedContainer = e} dangerouslySetInnerHTML={{__html: data["code"]}}></div>;
