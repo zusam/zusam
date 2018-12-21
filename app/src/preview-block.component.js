@@ -46,7 +46,7 @@ export default class PreviewBlock extends Component {
             case "twitch.tv":
                 return <TwitchEmbed preview={this.props.preview} url={data["url"]}/>;
             case "bandcamp.com":
-                return <BandCampEmbed preview={this.props.preview} url={data["code"].match(/https:\/\/.*album=\d+/)[0]}/>
+                return <BandCampEmbed url={data["code"].match(/https:\/\/.*album=\d+/)[0]}/>
             case "facebook.com":
             case "instagram.com":
                 // default embed code

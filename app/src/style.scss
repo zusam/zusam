@@ -138,6 +138,10 @@ $navbar_height: 50px;
     padding-bottom: 56.25%;
 }
 
+.embed-responsive-1by1 {
+    padding-bottom: 100%;
+}
+
 .embed-responsive-item {
     position: absolute;
     top: 0;
@@ -724,7 +728,7 @@ article {
         flex-direction: row;
         box-shadow: none;
         align-items: start;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
 
         .message-body {
             background-color: whitesmoke;
@@ -732,6 +736,7 @@ article {
             position: relative;
             top: calc(1rem - 2px);
             border-radius: 4px;
+            max-width: calc(100% - 5rem);
 
             .infos {
                 font-size: .8rem;
@@ -766,6 +771,7 @@ article {
                 background-color: #fff;
                 top: 0;
                 box-shadow: none;
+                max-width: 100%;
 
                 &:hover .infos {
                     display: none;
@@ -1093,4 +1099,11 @@ article {
 }
 .card-body {
     padding: .45rem .65rem;
+}
+
+.max-width-450px-md {
+    max-width: 450px;
+    @media (max-width: map-get($grid-breakpoints, "md")) {
+        max-width: 100%;
+    }
 }
