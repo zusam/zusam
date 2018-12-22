@@ -39,6 +39,10 @@ class CronCommand extends ContainerAwareCommand
 
         // always executed
         $this->runCommand("zusam:convert-video");
+        // convert 10 images
+        for ($i = 0; $i < 10; $i++) {
+            $this->runCommand("zusam:convert-image");
+        }
 
         $timeEnd = microtime(true);
         $time = round($timeEnd - $timeStart, 2);

@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import bee from "./bee.js";
 import nlg from "./nlg.js";
+import FaIcon from "./fa-icon.component.js";
 
 export default class FileGrid extends Component {
 
@@ -26,7 +27,7 @@ export default class FileGrid extends Component {
     }
 
     renderFile(file, miniature = false) {
-        let filePath = "/files/" + file.contentUrl;
+        let filePath = file.contentUrl ? "/files/" + file.contentUrl : null;
         let url = filePath;
         if (/image/.test(file.type)) {
             url = bee.thumbnail(filePath, 1366, 768);
@@ -36,6 +37,13 @@ export default class FileGrid extends Component {
                 return (
                     <a data-nlg href={url} class="rounded">
                         <div class="miniature" style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}></div>
+                    </a>
+                );
+            }
+            if (file.status == "raw") {
+                return (
+                    <a class="rounded">
+                        <div class="miniature"><FaIcon family={"regular"} icon={"check-circle"} /></div>
                     </a>
                 );
             }

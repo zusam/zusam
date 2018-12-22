@@ -111,6 +111,15 @@ $navbar_height: 50px;
             padding-bottom: 100%;
             background-size: cover;
             background-position: center;
+
+            .check-circle {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: darkgrey;
+                font-size: 3rem;
+            }
         }
     }
 }

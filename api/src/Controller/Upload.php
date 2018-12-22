@@ -50,9 +50,10 @@ class Upload extends Controller
             $this->em->persist($file);
 
             // immediately process the file if it's an image
-            if (substr($file->getType(), 0, 6) == "image/") {
+            // don't try to convert if there's already a video converting
+            if (substr($file->getType(), 0, 6) == "image/" && !file_exists("/tmp/zusam_video_convert.lock")) {
                 list($width, $height) = getimagesize($filesDir."/".$file->getContentUrl());
-                if ($width > 2048 || $height > 2048) {
+                if ($width > 2048 || $height > 2048 || $file->getType() !== "image/jpeg") {
                     $newContentUrl = pathinfo($file->getContentUrl(), PATHINFO_FILENAME).".jpg";
                     $imageService->createThumbnail(
                         $filesDir."/".$file->getContentUrl(),
