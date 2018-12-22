@@ -62,7 +62,6 @@ class ImportOldData extends ContainerAwareCommand
         foreach($accountsData as $account) {
             if (
                 empty($account["_id"]['$oid'])
-                || empty($account["date"]['$date'])
                 || empty($account["mail"])
                 || empty($account["password"])
                 || empty($account["forums"]) // Not a legit account if no forum
@@ -81,7 +80,7 @@ class ImportOldData extends ContainerAwareCommand
 
             $u = [];
             $u["id"] = Uuid::uuidv4($account["_id"]['$oid']);
-            $u["createdAt"] = strtotime($account["date"]['$date']);
+            $u["createdAt"] = empty($account["date"]) ? time() : strtotime($account["date"]['$date']);
             if (!$u["createdAt"]) {
                 $u["createdAt"] = time();
             }
