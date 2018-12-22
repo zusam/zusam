@@ -125,6 +125,7 @@ export default class Message extends Component {
                                 <img
                                     class="rounded-circle material-shadow avatar"
                                     src={ this.state.author.avatar ? bee.crop(this.state.author.avatar["@id"], 100, 100) : util.defaultAvatar }
+                                    title={ this.state.author.name }
                                 />
                             )}
                             <div class="infos">
@@ -192,6 +193,7 @@ export default class Message extends Component {
                             <img
                                 class="rounded-circle material-shadow avatar"
                                 src={ this.state.author.avatar ? bee.crop(this.state.author.avatar["@id"], 100, 100) : util.defaultAvatar }
+                                title={ this.state.author.name }
                             />
                             <div class="d-flex d-md-none flex-column">
                                 <span class="capitalize ml-1">{ this.state.author.name }</span>
@@ -230,7 +232,6 @@ export default class Message extends Component {
                         { this.state.preview && <p class="card-text text-center"><PreviewBlock {...this.state.preview} /></p> }
                         { this.state.message.files && <FileGrid files={this.state.message.files}/> }
                         <div class="infos">
-                            {this.state.author && <span class="capitalize">{ this.state.author.name }</span> }
                             <span>{ util.humanDate(this.state.message.createdAt) }</span>
                         </div>
                     </div>

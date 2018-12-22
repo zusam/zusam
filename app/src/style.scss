@@ -340,7 +340,7 @@ $navbar_height: 50px;
                 transition: all 0.2s ease-in-out;
 
                 &:hover {
-                    transform: scale(2.4);
+                    transform: scale(2.3);
                 }
             }
             .left-buffer {
@@ -671,11 +671,11 @@ article {
         .options {
 			cursor: pointer;
 			position: absolute;
-			top: 4px;
-			right: 4px;
+			top: 0;
+			right: 0;
 			z-index: 500;
 			color: #888;
-			padding: 1rem;
+			padding: 10px;
 
             &.active {
                 .dropdown-menu {
@@ -719,7 +719,7 @@ article {
         height: 3rem;
         width: 3rem;
         &:hover {
-            transform: scale(2.4);
+            transform: scale(2.3);
         }
     }
 
@@ -728,15 +728,17 @@ article {
         flex-direction: row;
         box-shadow: none;
         align-items: start;
-        margin-bottom: 1rem;
+        margin-bottom: 0;
 
         .message-body {
-            background-color: whitesmoke;
             box-shadow: none;
             position: relative;
-            top: calc(1rem - 2px);
-            border-radius: 4px;
+            margin: 1rem 0;
             max-width: calc(100% - 5rem);
+            background-color: whitesmoke;
+            padding-right: 1rem;
+            font-size: .9rem;
+            line-height: 1.1rem;
 
             .infos {
                 font-size: .8rem;
@@ -766,12 +768,14 @@ article {
             box-shadow: $material_shadow;
             align-items: start;
             border-radius: 0px;
+            margin-bottom: 1rem;
 
             .message-body {
                 background-color: #fff;
                 top: 0;
                 box-shadow: none;
                 max-width: 100%;
+                margin: 0;
 
                 &:hover .infos {
                     display: none;
