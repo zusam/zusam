@@ -37,7 +37,7 @@ class Url
                 "providerIcons" => $info->providerIcons, //All provider icons found in the page
                 "providerIcon" => $info->providerIcon, //The icon choosen as main icon
 
-                "pblishedDate" => $info->publishedDate, //The published date of the resource
+                "publishedDate" => $info->publishedDate, //The published date of the resource
                 "license" => $info->license, //The license url of the resource
             ];
         } catch (\Exception $e) {

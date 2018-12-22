@@ -49,6 +49,8 @@ export default class PreviewBlock extends Component {
                 return <BandCampEmbed url={data["code"].match(/https:\/\/.*album=\d+/)[0]}/>
             case "facebook.com":
             case "instagram.com":
+            case "vimeo.com":
+            case "dailymotion.com":
                 // default embed code
                 if (data["code"]) {
                     return <div class="embed-container" ref={e => this.embedContainer = e} dangerouslySetInnerHTML={{__html: data["code"]}}></div>;
