@@ -70,13 +70,13 @@ class GroupPage extends Controller
                     $firstFile = $file;
                 }
             }
-            return $firstFile ? $firstFile->getPath() : null;
+            return $firstFile ? "/files/".$firstFile->getContentUrl() : null;
         }
         // if no files, search for preview in text
         $text = $message->getData(true)["text"];
         preg_match("/https?:\/\/[^\s]+/", $text, $links);
         if (!empty($links) && !empty($links[0])) {
-            $e = $this->linkByUrl->getLinkData($links[0], realpath($this->getParameter("dir.public")), false, false);
+            $e = $this->linkByUrl->getLinkData($links[0], realpath($this->getParameter("dir.files")), false, false);
             return empty($e["preview"]) ? null : $e["preview"];
         }
         return null;

@@ -40,7 +40,7 @@ class Files extends Controller
 		if (empty($sourceFile)) {
 			return new JsonResponse(["message" => "Not Found"], JsonResponse::HTTP_NOT_FOUND);
 		}
-        $sourceFilePath = $filesDir.$sourceFile->getPath();
+        $sourceFilePath = $filesDir."/".$sourceFile->getContentUrl();
         if (is_readable($sourceFilePath)) {
             if ("thumbnail" === $type) {
                 $imageService->createThumbnail($sourceFilePath, $cacheFile, $width, $height);

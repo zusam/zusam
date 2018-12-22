@@ -54,7 +54,7 @@ class LinkByUrl extends Controller
 
     private function execute($url, $rescan = false, $onlyData = false): JsonResponse
     {
-        $data = $this->getLinkData($url, realpath($this->getParameter("dir.public")), $rescan, $onlyData);
+        $data = $this->getLinkData($url, realpath($this->getParameter("dir.files")), $rescan, $onlyData);
         $response = new JsonResponse($data, JsonResponse::HTTP_OK);
         $response->setCache(array(
             "etag"          => md5(json_encode($data)),
@@ -65,7 +65,7 @@ class LinkByUrl extends Controller
         return $response;
     }
 
-    public function getLinkData($url, $publicDir, $rescan = false, $onlyData = false): array
+    public function getLinkData($url, $filesDir, $rescan = false, $onlyData = false): array
     {
         $link = $this->em->getRepository(Link::class)->findOneByUrl($url);
         if (empty($link) || $rescan) {
@@ -80,8 +80,8 @@ class LinkByUrl extends Controller
                     $preview = new File();
                     $preview->setType("image/jpeg");
                     $preview->setContentUrl($preview->getId().".jpg");
-                    $this->imageService->createThumbnail($data["image"], $publicDir."/".$preview->getPath(), 2048, 2048);
-                    $preview->setSize(filesize($publicDir.$preview->getPath()));
+                    $this->imageService->createThumbnail($data["image"], $filesDir.$preview->getContentUrl(), 2048, 2048);
+                    $preview->setSize(filesize($filesDir.$preview->getContentUrl()));
                     $link->setPreview($preview);
                     $this->em->persist($preview);
                 } catch(\Exception $e) {
@@ -98,7 +98,7 @@ class LinkByUrl extends Controller
                 "data" => $link->getData(),
                 "url" => $url,
                 "updatedAt" => $link->getUpdatedAt(),
-                "preview" => $link->getPreview() ? $link->getPreview()->getPath() : "",
+                "preview" => $link->getPreview() ? "/files/".$link->getPreview()->getContentUrl() : "",
             ];
         } else {
             return json_decode($link->getData(), true);

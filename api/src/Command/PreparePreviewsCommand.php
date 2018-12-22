@@ -32,7 +32,7 @@ class PreparePreviewsCommand extends ContainerAwareCommand
     {
         $dsn = $this->getContainer()->getParameter("database_url");
         $this->pdo = new \PDO($dsn, null, null);
-        $publicDir = realpath($this->getContainer()->getParameter("dir.public"));
+        $filesDir = realpath($this->getContainer()->getParameter("dir.files"));
         $max_memory = intval($input->getArgument("memory")) ?? 70;
         ini_set('memory_limit', max(128, $max_memory + 10) . "M");
 
@@ -55,7 +55,7 @@ class PreparePreviewsCommand extends ContainerAwareCommand
             if (!empty($links) && !empty($links[0])) {
                 echo "[$k/".count($messages)."]: ".$links[0]."\n";
                 try {
-                    $this->linkByUrl->getLinkData($links[0], $publicDir, false, false);
+                    $this->linkByUrl->getLinkData($links[0], $filesDir, false, false);
                 } catch (\Exception $e) {
                     echo "\n";
                     echo $e->getMessage()."\n";
