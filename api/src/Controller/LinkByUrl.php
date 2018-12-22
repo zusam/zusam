@@ -80,7 +80,7 @@ class LinkByUrl extends Controller
                     $preview = new File();
                     $preview->setType("image/jpeg");
                     $preview->setContentUrl($preview->getId().".jpg");
-                    $this->imageService->createThumbnail($data["image"], $filesDir.$preview->getContentUrl(), 2048, 2048);
+                    $this->imageService->createThumbnail($data["image"], $filesDir."/".$preview->getContentUrl(), 2048, 2048);
                     $preview->setSize(filesize($filesDir.$preview->getContentUrl()));
                     $link->setPreview($preview);
                     $this->em->persist($preview);
