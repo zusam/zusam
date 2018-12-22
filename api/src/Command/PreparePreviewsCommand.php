@@ -33,22 +33,19 @@ class PreparePreviewsCommand extends ContainerAwareCommand
         $dsn = $this->getContainer()->getParameter("database_url");
         $this->pdo = new \PDO($dsn, null, null);
         $publicDir = realpath($this->getContainer()->getParameter("dir.public"));
-        $max_memory = $input->getArgument("memory") ?? 70;
+        $max_memory = intval($input->getArgument("memory")) ?? 70;
+        ini_set('memory_limit', max(128, $max_memory + 10) . "M");
 
-        $c = $this->pdo->query("SELECT id, data, created_at FROM message WHERE parent_id IS NULL;");
+        $c = $this->pdo->query("SELECT id, data FROM message WHERE parent_id IS NULL ORDER BY created_at DESC;");
         $messages = [];
         while($i = $c->fetch()) {
             $messages[] = $i;
         }
-        // sort messages by creation date to start by the most recent ones
-        usort($messages, function($m1, $m2) {
-            return $m1["created_at"] > $m2["created_at"] ? -1 : 1;
-        });
         $k = 0;
         foreach($messages as $i) {
             if (memory_get_usage(true) > 1024 * 1024 * $max_memory) {
                 echo "\n";
-                echo "Memory usage went over 70MB. Stopping the script.\n";
+                echo "Memory usage went over $max_memory Mo. Stopping the script.\n";
                 echo "\n";
                 exit(0);
             }
