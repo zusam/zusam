@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Controller\LinkByUrl;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -23,6 +24,7 @@ class PreparePreviewsCommand extends ContainerAwareCommand
     {
         $this->setName('zusam:prepare-previews')
             ->setDescription('Prepare-previews of parent messages.')
+            ->addArgument('memory', InputArgument::OPTIONAL, 'Maximum RAM usage (defaults to 70Mo).')
             ->setHelp('This command preprocesses previews of parent messages for a faster first load.');
     }
 
@@ -31,6 +33,7 @@ class PreparePreviewsCommand extends ContainerAwareCommand
         $dsn = $this->getContainer()->getParameter("database_url");
         $this->pdo = new \PDO($dsn, null, null);
         $publicDir = realpath($this->getContainer()->getParameter("dir.public"));
+        $max_memory = $input->getArgument("memory") ?? 70;
 
         $c = $this->pdo->query("SELECT id, data, created_at FROM message WHERE parent_id IS NULL;");
         $messages = [];
@@ -43,7 +46,7 @@ class PreparePreviewsCommand extends ContainerAwareCommand
         });
         $k = 0;
         foreach($messages as $i) {
-            if (memory_get_usage(true) > 1024 * 1024 * 70) {
+            if (memory_get_usage(true) > 1024 * 1024 * $max_memory) {
                 echo "\n";
                 echo "Memory usage went over 70MB. Stopping the script.\n";
                 echo "\n";
