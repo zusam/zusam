@@ -998,14 +998,14 @@ article {
     justify-content: center;
     align-items: center;
 }
-#nlg-modal .nlg-next, #nlg-modal .nlg-prev, #nlg-close {
+#nlg-modal .nlg-next, #nlg-modal .nlg-prev {
     cursor: pointer;
     position: absolute;
     top: 50%;
     padding: 19px 22px 22px 22px;
     margin-top: -3rem;
-    color: white;
     font-size: 2rem;
+    color: white;
     background: rgba(0, 0, 0, 0.2);
     transition: .5s;
 }
@@ -1013,12 +1013,17 @@ article {
     background: rgba(0, 0, 0, 0.5);
 }
 #nlg-close {
-    position: fixed;
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
+    position: absolute;
     z-index: 9999;
-    right: 0; top: 0;
+    right: 0px;
+    top: 60px;
     border-radius: 0 0 0 3px;
-    transform: translateY(50%);
-    font-weight: bold;
+    padding: 10px 30px;
+    font-size: 50px;
+    cursor: pointer;
+    margin: 0;
 }
 .nlg-next {
     right: 0;
@@ -1030,8 +1035,8 @@ article {
 }
 #nlg-modal {
     left: 0;
-    position: absolute;
-    overflow: visible;
+    position: fixed;
+    overflow: hidden;
     z-index: 9998;
     width: 100%;
     box-sizing: border-box;

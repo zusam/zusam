@@ -4,10 +4,10 @@ let nlg = {
     bodyStyle: "",
     nlgStyles: `
         .nlg-left {
-            left: -${window.innerWidth}px !important;
+            left: -${window.screen.availWidth}px !important;
         }
         .nlg-right {
-            left: ${window.innerWidth}px !important;
+            left: ${window.screen.availWidth}px !important;
         }
     `,
     clickFn: e => {
@@ -89,11 +89,12 @@ let nlg = {
         modal.id = "nlg-modal";
         let mediaIsLoadedFn = () => {
             document.querySelector("#nlg-modal-bg .spinner").outerHTML = "";
-            if (window.innerWidth/window.innerHeight > media.width/media.height) {
-                media.height = window.innerHeight;
-            } else {
-                media.width = window.innerWidth;
-            }
+
+            let ratio = media.width / media.height;
+            media.width = Math.min(window.screen.availWidth, media.width);
+            media.height = Math.min(window.screen.availHeight, media.width / ratio);
+            media.width = media.height * ratio;
+
             let currentIndex = nlg.list.findIndex(e => url === (e.dataset.src || e.src || e.href));
             let nextElmt = nlg.list[currentIndex + 1];
             let prevElmt = nlg.list[currentIndex - 1];
@@ -130,8 +131,8 @@ let nlg = {
                 modal.appendChild(prev);
             }
             modal.style.cssText = `
-                top: ${window.scrollY + Math.floor(window.innerHeight/2 - media.scrollHeight/2)}px;
-                padding: 0 ${window.scrollX + Math.floor(window.innerWidth/2 - media.scrollWidth/2)}px;
+                top: ${window.scrollY + Math.floor(window.screen.availHeight/2 - media.scrollHeight/2)}px;
+                padding: 0 ${window.scrollX + Math.floor(window.screen.availWidth/2 - media.scrollWidth/2)}px;
                 opacity: 1;
             `;
             setTimeout(nlg.center, 1);
