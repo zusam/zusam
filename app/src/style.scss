@@ -1015,10 +1015,10 @@ article {
 #nlg-close {
     color: white;
     background: rgba(0, 0, 0, 0.2);
-    position: absolute;
+    position: fixed;
     z-index: 9999;
-    right: 0px;
-    top: 60px;
+    right: 0;
+    top: 0;
     border-radius: 0 0 0 3px;
     padding: 10px 30px;
     font-size: 50px;
@@ -1048,7 +1048,7 @@ article {
 #nlg-modal > .nlg-media {
     position: relative;
     left: 50%;
-    transition: 300ms;
+    transition: left 300ms;
     transform: translateX(-50%);
 }
 .spinner.orange-spinner {
