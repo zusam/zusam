@@ -1034,7 +1034,7 @@ article {
     border-radius: 0 3px 3px 0;
 }
 #nlg-modal {
-    left: 0;
+    left: 50%;
     position: fixed;
     overflow: hidden;
     z-index: 9998;
@@ -1042,11 +1042,14 @@ article {
     box-sizing: border-box;
     opacity: 0;
     transition: 300ms;
+    transform: translate(-50%, -50%);
+    top: 50%;
 }
 #nlg-modal > .nlg-media {
     position: relative;
-    left: 0;
+    left: 50%;
     transition: 300ms;
+    transform: translateX(-50%);
 }
 .spinner.orange-spinner {
     opacity: 1;

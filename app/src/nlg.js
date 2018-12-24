@@ -4,10 +4,10 @@ let nlg = {
     bodyStyle: "",
     nlgStyles: `
         .nlg-left {
-            left: -${window.screen.availWidth}px !important;
+            left: -${document.body.clientWidth}px !important;
         }
         .nlg-right {
-            left: ${window.screen.availWidth}px !important;
+            left: ${document.body.clientWidth}px !important;
         }
     `,
     clickFn: e => {
@@ -91,8 +91,8 @@ let nlg = {
             document.querySelector("#nlg-modal-bg .spinner").outerHTML = "";
 
             let ratio = media.width / media.height;
-            media.width = Math.min(window.screen.availWidth, media.width);
-            media.height = Math.min(window.screen.availHeight, media.width / ratio);
+            media.width = Math.min(document.body.clientWidth, media.width);
+            media.height = Math.min(document.body.clientHeight, media.width / ratio);
             media.width = media.height * ratio;
 
             let currentIndex = nlg.list.findIndex(e => url === (e.dataset.src || e.src || e.href));
@@ -130,11 +130,7 @@ let nlg = {
                 window.addEventListener("keypress", nlg.keyPressLeft);
                 modal.appendChild(prev);
             }
-            modal.style.cssText = `
-                top: ${window.scrollY + Math.floor(window.screen.availHeight/2 - media.scrollHeight/2)}px;
-                padding: 0 ${window.scrollX + Math.floor(window.screen.availWidth/2 - media.scrollWidth/2)}px;
-                opacity: 1;
-            `;
+            modal.style.cssText = `opacity: 1;`;
             setTimeout(nlg.center, 1);
         };
 		media.addEventListener("load", mediaIsLoadedFn);
