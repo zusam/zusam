@@ -33,8 +33,15 @@ class PreparePreviewsCommand extends ContainerAwareCommand
         $dsn = $this->getContainer()->getParameter("database_url");
         $this->pdo = new \PDO($dsn, null, null);
         $filesDir = realpath($this->getContainer()->getParameter("dir.files"));
-        $max_memory = intval($input->getArgument("memory")) ?? 70;
+        $max_memory = $input->getArgument("memory") ? intval($input->getArgument("memory")) : 70;
         ini_set('memory_limit', max(128, $max_memory + 10) . "M");
+
+        // stats
+        $start_time = microtime(true);
+        $number_links = 0;
+        $number_previews = 0;
+        $number_descriptions = 0;
+        $number_titles = 0;
 
         $c = $this->pdo->query("SELECT id, data FROM message WHERE parent_id IS NULL ORDER BY created_at DESC;");
         $messages = [];
@@ -44,9 +51,14 @@ class PreparePreviewsCommand extends ContainerAwareCommand
         $k = 0;
         foreach($messages as $i) {
             if (memory_get_usage(true) > 1024 * 1024 * $max_memory) {
-                echo "\n";
-                echo "Memory usage went over $max_memory Mo. Stopping the script.\n";
-                echo "\n";
+                $output->writeln([
+                    "Memory usage went over $max_memory Mo. Stopping the script.",
+                    "Duration: " . (microtime(true) - $start_time),
+                    "Number of links: " . $number_links,
+                    "Number of previews: " . $number_previews,
+                    "Number of descriptions: " . $number_descriptions,
+                    "Number of titles: " . $number_titles,
+                ]);
                 exit(0);
             }
             $k++;
@@ -55,11 +67,26 @@ class PreparePreviewsCommand extends ContainerAwareCommand
             if (!empty($links) && !empty($links[0])) {
                 echo "[$k/".count($messages)."]: ".$links[0]."\n";
                 try {
-                    $this->linkByUrl->getLinkData($links[0], $filesDir, false, false);
+                    $number_links++;
+                    $data = $this->linkByUrl->getLinkData($links[0], $filesDir, false, false);
+                    $embed_data = json_decode($data["data"], true);
+                    if (!empty($data["preview"])) {
+                        $number_previews++;
+                    } else {
+                        $output->writeln(["NO PREVIEW"]);
+                    }
+                    if (!empty($embed_data["description"])) {
+                        $number_descriptions++;
+                    } else {
+                        $output->writeln(["NO DESCRIPTION"]);
+                    }
+                    if (!empty($embed_data["title"])) {
+                        $number_titles++;
+                    } else {
+                        $output->writeln(["NO TITLE"]);
+                    }
                 } catch (\Exception $e) {
-                    echo "\n";
-                    echo $e->getMessage()."\n";
-                    echo "\n";
+                    $output->writeln([$e->getMessage()]);
                     continue;
                 }
             }
