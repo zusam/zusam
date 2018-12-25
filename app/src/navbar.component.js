@@ -14,7 +14,7 @@ export default class Navbar extends Component {
 
     clickBackButton(evt) {
         evt.preventDefault();
-        if (!this.props.backUrlPrompt || !confirm(this.props.backUrlPrompt)) {
+        if (this.props.backUrlPrompt && !confirm(this.props.backUrlPrompt)) {
             return false;
         }
         router.onClick(evt);
