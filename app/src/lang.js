@@ -51,6 +51,7 @@ const lang = {
         "multiple_photos_upload": "Une erreur est survenue. Veuillez essayer avec une seule photo (certains navigateurs bloquent l'ajout de plusieurs photos en simultané).",
         "error_new_message": "Une erreur inconnue est survenue pendant l'envoi de votre message.",
         "error_upload": "Une erreur s'est produite pendant l'envoi.",
+        "cancel_write": "Voulez-vous annuler l'écriture d'un nouveau message ?",
     }
 };
 export default lang;

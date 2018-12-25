@@ -97,6 +97,7 @@ class App extends Component {
         if (id) {
             bee.get(entityUrl).then(
                 res => {
+                    let backUrlPrompt = "";
                     if (!backUrl) {
                         switch (res["@type"]) {
                             case "Message":
@@ -106,11 +107,15 @@ class App extends Component {
                                 // nothing
                         }
                     }
+                    if (route == "groups" && action == "write") {
+                        backUrlPrompt = lang.fr["cancel_write"];
+                    }
                     this.setState({
                         url: url,
                         entity: res,
-                        backUrl: backUrl,
                         entityUrl: entityUrl,
+                        backUrl: backUrl,
+                        backUrlPrompt: backUrlPrompt,
                     });
                 }
             );
@@ -141,6 +146,7 @@ class App extends Component {
                     currentUser={this.state.currentUser}
                     groups={this.state.groups}
                     backUrl={this.state.backUrl}
+                    backUrlPrompt={this.state.backUrlPrompt}
                 />
                 <div class="content">
                     { this.state.route == "create-group" && <CreateGroup /> }

@@ -7,6 +7,19 @@ import FaIcon from "./fa-icon.component.js";
 
 export default class Navbar extends Component {
 
+    constructor() {
+        super();
+        this.clickBackButton = this.clickBackButton.bind(this);
+    }
+
+    clickBackButton(evt) {
+        evt.preventDefault();
+        if (!this.props.backUrlPrompt || !confirm(this.props.backUrlPrompt)) {
+            return false;
+        }
+        router.onClick(evt);
+    }
+
     render() {
         return (
             <div class="main-nav nav align-items-center shadow-sm z-index-100">
@@ -29,7 +42,7 @@ export default class Navbar extends Component {
                     </div>
                 )}
                 { this.props.backUrl && (
-                    <a class="seamless-link back" href={this.props.backUrl} onClick={router.onClick}>
+                    <a class="seamless-link back" href={this.props.backUrl} onClick={this.clickBackButton}>
                         <FaIcon family={"solid"} icon={"arrow-left"}/>
                     </a>
                 )}
