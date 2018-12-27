@@ -98,14 +98,8 @@ class App extends Component {
             bee.get(entityUrl).then(
                 res => {
                     let backUrlPrompt = "";
-                    if (!backUrl) {
-                        switch (res["@type"]) {
-                            case "Message":
-                                backUrl = router.toApp(res.group);
-                                break;
-                            default:
-                                // nothing
-                        }
+                    if (!backUrl && res["group"]) {
+                        backUrl = router.toApp(res.group);
                     }
                     if (route == "groups" && action == "write") {
                         backUrlPrompt = lang.fr["cancel_write"];
@@ -167,7 +161,7 @@ class App extends Component {
                     <div class={
                             this.state.route == "groups"
                             && !this.state.action
-                            && this.state.entity["@type"] == "Group"
+                            && this.state.entity
                             ? "d-block" : "d-none"
                     }>
                         <GroupBoard ref={g => this.groupRef = g} key={this.state.group} url={this.state.group} />
@@ -175,7 +169,7 @@ class App extends Component {
                             <FaIcon family={"solid"} icon={"pencil-alt"}/>
                         </a>
                     </div>
-                    { this.state.route == "groups" && this.state.action == "write" && this.state.entity["@type"] == "Group" && (
+                    { this.state.route == "groups" && this.state.action == "write" && this.state.entity && (
                         <article>
                             <div class="container">
                                 <Writer
