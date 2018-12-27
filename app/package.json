@@ -2,24 +2,22 @@
     "name": "zusam-app",
     "version": "0.1.0",
     "scripts": {
-        "clean": "shx rm -f {../public,dist}/*.{js,css,map,html,png,jpg,svg}",
+        "clean": "rm -f {../public,dist}/*.{js,css,map,html,png,jpg,svg}",
         "build": "parcel build --no-source-maps --no-minify src/index.html",
-        "serve": "shx cp dist/*.{js,css,map,html} ../public && shx cp src/*.{png,jpg,svg} ../public",
-        "full": "yarn clean && yarn build && yarn serve"
+        "serve": "cp dist/* ../public; cp src/*.svg ../public",
+        "preserve": "yarn build",
+        "prebuild": "yarn clean"
     },
     "dependencies": {
         "babel-polyfill": "~6.26",
-        "babel-preset-env": "~1.7",
         "babel-preset-preact": "~1.1",
-        "json5": "^2.1.0",
         "node-sass": "~4.11",
-        "npm-check-updates": "~2.15",
         "parcel-bundler": "~1.11",
         "pica": "~5.0",
-        "preact": "~8",
-        "shx": "~0.3"
+        "preact": "~8"
     },
     "devDependencies": {
-        "babel-core": "^6.26.3"
+        "babel-core": "^6.26.3",
+        "babel-preset-env": "^1.7.0"
     }
 }
