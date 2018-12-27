@@ -60,13 +60,6 @@ class Message
     private $createdAt;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Assert\Type("integer")
-     * @Groups({"read_message"})
-     */
-    private $date;
-
-    /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Groups({"read_message"})
@@ -138,17 +131,6 @@ class Message
     public function setCreatedAt(int $createdAt): self
     {
         $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    public function getDate(): ?int
-    {
-        return $this->date;
-    }
-
-    public function setDate(?int $date): self
-    {
-        $this->date = $date;
         return $this;
     }
 
