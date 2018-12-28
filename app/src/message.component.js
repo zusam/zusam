@@ -14,6 +14,7 @@ export default class Message extends Component {
         super(props);
         this.displayMoreChildren = this.displayMoreChildren.bind(this);
         this.deleteMessage = this.deleteMessage.bind(this);
+        this.editMessage = this.editMessage.bind(this);
         this.onNewChild = this.onNewChild.bind(this);
         this.getPreview = this.getPreview.bind(this);
         if (!props.parent) {
@@ -73,6 +74,11 @@ export default class Message extends Component {
         }
     }
 
+    editMessage(event) {
+		event.preventDefault();
+        this.setState({edit: true});
+    }
+
     onNewChild(event) {
         const newMsg = event.detail;
         let msg = this.state.message;
@@ -120,6 +126,52 @@ export default class Message extends Component {
         if (!this.state.message || !this.state.message.id || this.state.isRemoved) {
             return;
         }
+        if (this.state.edit) {
+            if (this.state.message.parent) {
+                return (
+                    <div class="message child">
+                        { this.props.currentUser && (
+                            <div class="message-head p-1 d-none d-md-block">
+                                <img
+                                    class="rounded-circle w-3 material-shadow avatar"
+                                    src={ this.props.currentUser.avatar ? bee.crop(this.props.currentUser.avatar["@id"], 100, 100) : util.defaultAvatar }
+                                />
+                            </div>
+                        )}
+                        <Writer
+                            messageId={this.state.message.id}
+                            files={this.state.message.files}
+                            focus={true}
+                            currentUser={this.state.currentUser}
+                            group={this.state.group}
+                            parent={this.state.message.parent}
+                            text={this.state.data.text}
+                        />
+                    </div>
+                );
+            }
+            return (
+                <div>
+                    <Writer
+                        messageId={this.state.message.id}
+                        files={this.state.message.files}
+                        focus={true}
+                        currentUser={this.state.currentUser}
+                        group={this.state.group}
+                        text={this.state.data.text}
+                        title={this.state.data.title}
+                    />
+                    { this.state.message.children && this.state.message.children.length > 0 && (
+                        <div>
+                            { this.state.displayedChildren < this.state.message.children.length && (
+                                <a class="more-coms" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</a>
+                            )}
+                            { this.state.message.children.slice(-1 * this.state.displayedChildren).map(e => <Message currentUser={this.props.currentUser} message={e} key={e.id}/>) }
+                        </div>
+                    )}
+                </div>
+            );
+        }
         if (!this.state.message.parent) {
             return (
                 <div>
@@ -145,6 +197,7 @@ export default class Message extends Component {
                                     <FaIcon family="solid" icon="caret-down"/>
                                     <div class="dropdown-menu">
                                         <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
+                                        <a class="seamless-link" onClick={this.editMessage}>{lang.fr["edit"]}</a>
                                     </div>
                                 </div>
                             )}
@@ -212,6 +265,7 @@ export default class Message extends Component {
                                     <FaIcon family="solid" icon="caret-down"/>
                                     <div class="dropdown-menu">
                                         <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
+                                        <a class="seamless-link" onClick={this.editMessage}>{lang.fr["edit"]}</a>
                                     </div>
                                 </div>
                             )}
@@ -227,6 +281,7 @@ export default class Message extends Component {
                                 <FaIcon family="solid" icon="caret-down"/>
                                 <div class="dropdown-menu">
                                     <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
+                                    <a class="seamless-link" onClick={this.editMessage}>{lang.fr["edit"]}</a>
                                 </div>
                             </div>
                         )}

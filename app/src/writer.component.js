@@ -13,7 +13,9 @@ export default class Writer extends Component {
 
     constructor(props) {
         super(props);
+        this.sendMessage = this.sendMessage.bind(this);
         this.postMessage = this.postMessage.bind(this);
+        this.putMessage = this.putMessage.bind(this);
         this.getPreview = this.getPreview.bind(this);
         this.inputImages = this.inputImages.bind(this);
         this.inputVideo = this.inputVideo.bind(this);
@@ -24,18 +26,50 @@ export default class Writer extends Component {
 
     componentWillMount() {
         this.setState({
-            files: [],
+            files: this.props.files || [],
             link: null,
             preview: null
         });
     }
 
     componentDidMount() {
-        (document.getElementById("title") || {}).value = "";
-        (document.getElementById("text") || {}).value = "";
+        if (!this.props.title) {
+            (document.getElementById("title") || {}).value = "";
+        }
+        if (!this.props.text) {
+            (document.getElementById("text") || {}).value = "";
+        }
         if (this.props.focus) {
             setTimeout(() => document.getElementById("text").focus());
         }
+    }
+
+    sendMessage() {
+        if (this.props.messageId) {
+            this.putMessage();
+        } else {
+            this.postMessage();
+        }
+    }
+
+    putMessage() {
+        let msg = {
+            files: this.state.files.map(e => e["@id"]).filter(e => !!e),
+            data: {
+                text: document.getElementById("text").value
+            },
+        };
+        if (!this.props.parent) {
+            msg.data.title = document.getElementById("title").value;
+        }
+        msg.data = JSON.stringify(msg.data);
+        bee.http.put("/api/messages/" + this.props.messageId, msg).then(res => {
+            if (!res) {
+                alert.add(lang.fr["error_new_message"], "alert-danger");
+                return;
+            }
+            location.reload();
+        });
     }
 
     postMessage() {
@@ -218,7 +252,13 @@ export default class Writer extends Component {
     render() {
         return (
             <div class="writer">
-                { !this.props.parent && <input type="text" id="title" placeholder={lang.fr["title_placeholder"]}></input> }
+                { !this.props.parent && (
+                    <input
+                        type="text" id="title"
+                        placeholder={lang.fr["title_placeholder"]}
+                        value={this.props.title}
+                    ></input>
+                )}
                 <textarea
                     onKeyPress={this.getPreview}
                     id="text"
@@ -226,6 +266,7 @@ export default class Writer extends Component {
                     rows="5"
                     autocomplete="off"
                     autofocus={this.props.focus}
+                    value={this.props.text}
                 ></textarea>
                 { this.state.preview && <p class="card-text"><PreviewBlock {...this.state.preview} /></p> }
                 { !!this.state.files.length && <FileGrid key={this.state.files.reduce((a,c) => a + c.id, "")} files={this.state.files}/> }
@@ -244,21 +285,7 @@ export default class Writer extends Component {
                         >
                             <FaIcon family={"solid"} icon={"film"}/>
                         </button>
-                    {/*
-                        <button
-                            class="option"
-                            title={lang.fr["upload_music"]}
-                        >
-                            <FaIcon family={"solid"} icon={"music"}/>
-                        </button>
-                        <button
-                            class="option"
-                            title={lang.fr["add_date"]}
-                        >
-                            <FaIcon family={"regular"} icon={"calendar-alt"}/>
-                        </button>
-                    */}
-                    <button type="submit" class="submit" onClick={this.postMessage}>{lang.fr.submit}</button>
+                    <button type="submit" class="submit" onClick={this.sendMessage}>{lang.fr.submit}</button>
                 </div>
             </div>
         );
