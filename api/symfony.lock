@@ -1,7 +1,4 @@
 {
-    "alchemy/binary-driver": {
-        "version": "v2.0.0"
-    },
     "api-platform/api-pack": {
         "version": "v1.0.1"
     },
@@ -83,9 +80,6 @@
     "embed/embed": {
         "version": "v3.3.1"
     },
-    "evenement/evenement": {
-        "version": "v2.1.0"
-    },
     "guzzlehttp/guzzle": {
         "version": "6.3.3"
     },
@@ -113,14 +107,8 @@
             "ref": "7b6cbc842f8cd3d550815247d12294f6f304a8c4"
         }
     },
-    "neutron/temporary-filesystem": {
-        "version": "2.3.0"
-    },
     "php-ffmpeg/binary-driver": {
         "version": "dev-master"
-    },
-    "php-ffmpeg/php-ffmpeg": {
-        "version": "v0.11.1-pl-1"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
