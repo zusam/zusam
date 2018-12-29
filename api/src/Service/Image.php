@@ -65,10 +65,10 @@ class Image
         $im->destroy();
     }
 
-    private function extractImageFromVideo($input): string
+    public static function extractImageFromVideo($input, $ffmpegPath): string
     {
         $output = tempnam(sys_get_temp_dir(), 'zusam_temp').".jpg";
-        exec($this->ffmpegPath . " -y -i " . $input . " -vframes 1 -ss 0 -f image2 " . $output);
+        exec($ffmpegPath . " -y -i " . $input . " -vframes 1 -ss 0 -f image2 " . $output);
         return $output;
     }
     
@@ -77,7 +77,7 @@ class Image
         $im = new \Imagick();
         try {
             if (preg_match("/video/", mime_content_type($input))) {
-                $input = $this->extractImageFromVideo($input);
+                $input = $this->extractImageFromVideo($input, $this->ffmpegPath);
             }
             if (is_readable($input)) {
                 // https://secure.php.net/manual/en/imagick.setsize.php#110166
@@ -108,7 +108,7 @@ class Image
         try {
             if (is_readable($input)) {
                 if (preg_match("/video/", mime_content_type($input))) {
-                    $input = $this->extractImageFromVideo($input);
+                    $input = $this->extractImageFromVideo($input, $this->ffmpegPath);
                 }
 
                 if ($im->readImage($input)) {

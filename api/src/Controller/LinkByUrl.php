@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Entity\File;
 use App\Entity\Link;
+use App\Service\Uuid;
 use App\Service\Image as ImageService;
 use App\Service\Url;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,11 +17,13 @@ class LinkByUrl extends Controller
 
     private $em;
     private $imageService;
+	private $ffmpegPath;
 
-    public function __construct(EntityManagerInterface $em, ImageService $imageService)
+    public function __construct(EntityManagerInterface $em, ImageService $imageService, $binaries)
     {
         $this->em = $em;
         $this->imageService = $imageService;
+		$this->ffmpegPath = $binaries["ffmpeg"];
     }
 
     /**
@@ -73,6 +76,12 @@ class LinkByUrl extends Controller
                 $link = new Link($url);
             }
             $data = Url::getData($url);
+            // enhance data by adding a preview if there is none for the video
+            if (empty($data["image"]) && !empty($data["type"]) && $data["type"] === "video") {
+                $image = ImageService::extractImageFromVideo($data["url"], $this->ffmpegPath);
+                $data["image"] = $filesDir."/".Uuid::uuidv4($data["url"]);
+                rename($image, $data["image"]);
+            }
             $link->setData(json_encode($data));
             $link->setUpdatedAt(time());
             if (!empty($data["image"])) {

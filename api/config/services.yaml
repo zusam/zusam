@@ -48,3 +48,9 @@ services:
     App\Command\ConvertVideoCommand:
         arguments:
             - '%binaries%'
+
+    App\Controller\LinkByUrl:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@App\Service\Image'
+            - '%binaries%'
