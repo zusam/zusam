@@ -47,7 +47,15 @@ class Upload extends Controller
         $form->submit($request->files->all());
         if ($form->isValid()) {
 
+            // persist file first to let Vich bundle populate the object attributes
             $this->em->persist($file);
+
+            // don't convert video if it's an mp4 and under 10Mo
+            // TODO: the issue is that these mp4 could have libmp3lame audio instead of aac
+            // this will cause audio playback issues on iOS.
+            if ($file->getType() == "video/mp4" && $file->getSize() < 10 * 1024 * 1024) {
+                $file->setStatus(File::STATUS_READY);
+            }
 
             // immediately process the file if it's an image
             // don't try to convert if there's already a video converting
@@ -69,7 +77,9 @@ class Upload extends Controller
             if ($request->request->get("fileIndex")) {
                 $file->setFileIndex($request->request->get("fileIndex"));
             }
+
             $this->em->flush();
+
             // Prevent the serialization of the file property
             $file->setFile(null);
 
