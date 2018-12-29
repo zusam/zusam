@@ -33,12 +33,8 @@ export default class Writer extends Component {
     }
 
     componentDidMount() {
-        if (!this.props.title) {
-            (document.getElementById("title") || {}).value = "";
-        }
-        if (!this.props.text) {
-            (document.getElementById("text") || {}).value = "";
-        }
+        (document.getElementById("title") || {}).value = this.props.title || "";
+        (document.getElementById("text") || {}).value = this.props.text || "";
         if (this.props.focus) {
             setTimeout(() => document.getElementById("text").focus());
         }
@@ -274,7 +270,6 @@ export default class Writer extends Component {
                     <input
                         type="text" id="title"
                         placeholder={lang.fr["title_placeholder"]}
-                        value={this.props.title}
                     ></input>
                 )}
                 <textarea
@@ -284,7 +279,6 @@ export default class Writer extends Component {
                     rows="5"
                     autocomplete="off"
                     autofocus={this.props.focus}
-                    value={this.props.text}
                 ></textarea>
                 { this.state.preview && <p class="card-text"><PreviewBlock {...this.state.preview} /></p> }
                 { !!this.state.files.length && <FileGrid key={this.state.files.reduce((a,c) => a + c.id, "")} files={this.state.files}/> }
