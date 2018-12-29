@@ -165,7 +165,7 @@ class App extends Component {
                             ? "d-block" : "d-none"
                     }>
                         <GroupBoard ref={g => this.groupRef = g} key={this.state.group} url={this.state.group} />
-                        <a class="write material-shadow seamless-link" href={this.state.url + "/write"} onClick={router.onClick}>
+                        <a class="write-button material-shadow seamless-link" href={this.state.url + "/write"} onClick={router.onClick}>
                             <FaIcon family={"solid"} icon={"pencil-alt"}/>
                         </a>
                     </div>

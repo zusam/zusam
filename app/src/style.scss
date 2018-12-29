@@ -1121,3 +1121,24 @@ article {
         max-width: 100%;
     }
 }
+
+.write-button {
+    background-color: $zusam_color;
+    border-radius: 100%;
+    bottom: 2rem;
+    cursor: pointer;
+    display: flex;
+    font-size: 1.5rem;
+    height: 4rem;
+    justify-content: center;
+    padding: 19px;
+    position: fixed;
+    right: 2rem;
+    width: 4rem;
+    z-index: 500;
+    color: #fff;
+    &:hover {
+        background-color: adjust-hue($zusam_color, -15deg);
+        color: #fff;
+    }
+}
