@@ -15,6 +15,21 @@ const bee = {
 
     // http methods
     http: {
+        sendFile: (formData, loadFn, progressFn = null, errorFn = null) => {
+            return bee.get("apiKey").then(apiKey => {
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "/api/files/upload", true);
+                xhr.setRequestHeader("X-AUTH-TOKEN", apiKey)
+                xhr.addEventListener("load", e => loadFn(JSON.parse(e.target.response)));
+                if (progressFn) {
+                    xhr.upload.onprogress = e => progressFn({loaded: e.loaded, total: e.total});
+                }
+                if (errorFn) {
+                    xhr.addEventListener("error", e => errorFn(e));
+                }
+                xhr.send(formData);
+            });
+        },
         get: (url, nocache = false) => {
             return bee.get("apiKey").then(apiKey => {
                 if (!url) {

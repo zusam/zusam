@@ -155,11 +155,13 @@ export default class Writer extends Component {
         input.accept = "video/*";
         input.addEventListener("change", event => {
             let files = this.state.files;
+            let placeholderIndex = Date.now();
             this.setState({files: [...files, {
-                fileIndex: 1000,
+                fileIndex: placeholderIndex,
                 type: "video",
+                progress: 0,
             }]});
-            this.uploadFile(event.target.files[0], files.length);
+            this.uploadFile(event.target.files[0], files.length, placeholderIndex);
         });
         input.click();
     }
@@ -190,23 +192,23 @@ export default class Writer extends Component {
             let firefoxMobile = /Firefox/.test(navigator.userAgent) && /Mobile/.test(navigator.userAgent);
             if (firefoxMobile || iOS) {
                 console.warn("Do not use image reduction on iOS/FirefoxMobile !");
-                this.uploadFile(e.value, n + list.indexOf(e.value), () => this.uploadNextImage(list, it, n));
+                this.uploadFile(e.value, n + list.indexOf(e.value), null, () => this.uploadNextImage(list, it, n));
                 return;
             }
             if (!e.value.type || !e.value.type.match(/image/)) {
                 console.warn("Do not use image reduction on invalid file !");
-                this.uploadFile(e.value, n + list.indexOf(e.value), () => this.uploadNextImage(list, it, n));
+                this.uploadFile(e.value, n + list.indexOf(e.value), null, () => this.uploadNextImage(list, it, n));
                 return;
             }
             if (fileSize < 1024*1024) {
                 console.warn("Do not use image reduction on small file !");
-                this.uploadFile(e.value, n + list.indexOf(e.value), () => this.uploadNextImage(list, it, n));
+                this.uploadFile(e.value, n + list.indexOf(e.value), null, () => this.uploadNextImage(list, it, n));
                 return;
             }
             exif.getOrientation(e.value, orientation => {
                 if (orientation != 1 && orientation != 2) {
                     console.warn("Incorrect orientation !");
-                    this.uploadFile(e.value, n + list.indexOf(e.value), () => this.uploadNextImage(list, it, n));
+                    this.uploadFile(e.value, n + list.indexOf(e.value), null, () => this.uploadNextImage(list, it, n));
                     return;
                 }
                 let img = new Image();
@@ -217,7 +219,7 @@ export default class Writer extends Component {
                     let nw = Math.floor(img.naturalWidth*g);
                     let nh = Math.floor(img.naturalHeight*g);
                     imageService.resize(img, nw, nh, blob => {
-                        this.uploadFile(blob, n + list.indexOf(e.value), () => this.uploadNextImage(list, it, n));
+                        this.uploadFile(blob, n + list.indexOf(e.value), null, () => this.uploadNextImage(list, it, n));
                     });
                 }
                 img.src = URL.createObjectURL(e.value);
@@ -225,15 +227,26 @@ export default class Writer extends Component {
         } catch(error) {
             console.warn(error); // error logging
             // If something goes wrong in image reduction, fall back to normal upload
-            this.uploadFile(e.value, n + list.indexOf(e.value), () => this.uploadNextImage(list, it, n));
+            this.uploadFile(e.value, n + list.indexOf(e.value), null, () => this.uploadNextImage(list, it, n));
         }
     }
 
-    uploadFile(file, fileIndex, callback = null) {
+    uploadFile(file, fileIndex, placeholderIndex, callback = null) {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("fileIndex", fileIndex);
-        bee.http.post("/api/files/upload", formData, false).then(file => {
+        let progressFn = placeholderIndex ? e => {
+            if (Array.isArray(this.state.files)) {
+                let a = this.state.files;
+                file = a.find(f => f.fileIndex == placeholderIndex)
+                if (file) {
+                    file.progress = Math.floor(e.loaded/e.total*100);
+                    a.splice(fileIndex, 1, file);
+                    this.setState({files: a})
+                }
+            }
+        } : null;
+        bee.http.sendFile(formData, file => {
             let a = this.state.files;
             if (file["@type"] == "hydra:Error") {
                 a.splice(fileIndex, 1);
@@ -246,7 +259,7 @@ export default class Writer extends Component {
             if (callback) {
                 callback();
             }
-        });
+        }, progressFn);
     }
 
     render() {

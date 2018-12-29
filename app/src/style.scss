@@ -806,6 +806,19 @@ article {
     }
 }
 
+.progress-bar {
+    position: absolute;
+    bottom: 0;
+    height: 1rem;
+    width: 100%;
+    background-color: lightgrey;
+    div {
+        height: 100%;
+        background-color: $zusam_color;
+        transition: 3s;
+    }
+}
+
 .message.child .writer {
     width: 100%;
 }
