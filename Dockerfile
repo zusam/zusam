@@ -56,7 +56,7 @@ RUN set -xe \
     && mkdir -p /run/nginx /zusam/data \
     && sed -e "s|<ENV>|prod|g" /zusam/config.yml > /zusam/data/config.yml \
     && cd /zusam/api && php bin/composer install --prefer-dist \
-    && cd /zusam/app/bootstrap-light && yarn && cd .. && yarn && yarn full \
+    && cd /zusam/app/bootstrap-light && yarn && cd .. && yarn && yarn serve \
     && rm -rf /zusam/app /root/* \
     && apk del .build-deps \
     && chmod -R +x /usr/local/bin /etc/s6.d /var/lib/nginx
