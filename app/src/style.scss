@@ -605,10 +605,15 @@ article {
 
     .message-head {
         width: 100%;
-        padding: 1rem;
+        padding: 1rem 1rem 5px 1rem;
         flex-shrink: 10;
         position: relative;
         z-index: 100;
+
+        .author {
+            font-size: 130%;
+            font-weight: 600;
+        }
 
         .infos {
             display: flex;
@@ -618,7 +623,7 @@ article {
         .options {
             cursor: pointer;
             margin-left: auto;
-            width: 2rem;
+            width: 1rem;
             display: flex;
             justify-content: center;
 
@@ -674,7 +679,7 @@ article {
         }
 
         .card-text {
-            padding: 1rem;
+            padding: .5rem 1rem;
         }
 
         .options {
@@ -725,8 +730,9 @@ article {
         transition: all 0.2s ease-in-out;
         background: white;
         border: 2px solid white;
-        height: 3rem;
-        width: 3rem;
+        height: 3.6rem;
+        width: 3.6rem;
+        margin-right: 1rem;
         &:hover {
             transform: scale(2.3);
         }
@@ -739,6 +745,38 @@ article {
         align-items: start;
         margin-bottom: 0;
 
+        &.follow {
+            margin-top: -1rem;
+
+            .message-head {
+                .avatar, .infos {
+                    display: none !important;
+                }
+            }
+
+            @media (max-width: map-get($grid-breakpoints, "md")) {
+                .message-head {
+                    margin-bottom: -1.7rem;
+                }
+            }
+        }
+
+        .avatar {
+            top: -.4rem;
+            margin-bottom: -.4rem;
+            margin-right: .8rem;
+            height: 3rem;
+            width: 3rem;
+            &:hover {
+                transform: scale(1.7);
+            }
+        }
+
+        .message-head {
+            min-width: 5rem;
+            font-size: .7rem;
+        }
+
         .message-body {
             box-shadow: none;
             position: relative;
@@ -747,7 +785,7 @@ article {
             background-color: whitesmoke;
             padding-right: 1rem;
             font-size: .9rem;
-            line-height: 1.1rem;
+            line-height: 1.2rem;
 
             .infos {
                 font-size: .8rem;

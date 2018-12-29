@@ -185,8 +185,8 @@ export default class Message extends Component {
                                 />
                             )}
                             <div class="infos">
-                                { this.state.author && <span class="capitalize ml-1">{ this.state.author.name }</span> }
-                                <span class="ml-1">{ util.humanDate(this.state.message.createdAt) }</span>
+                                { this.state.author && <span class="capitalize author">{ this.state.author.name }</span> }
+                                <span>{ util.humanDate(this.state.message.createdAt) }</span>
                             </div>
                             { this.props.currentUser && this.state.author && this.state.author.id == this.props.currentUser.id && (
                                 <div tabindex="-1"
@@ -220,7 +220,13 @@ export default class Message extends Component {
                             { this.state.displayedChildren < this.state.message.children.length && (
                                 <a class="more-coms" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</a>
                             )}
-                            { this.state.message.children.slice(-1 * this.state.displayedChildren).map(e => <Message currentUser={this.props.currentUser} message={e} key={e.id}/>) }
+                            { this.state.message.children.slice(-1 * this.state.displayedChildren).map((e,i,m) => {
+                                let follow = "";
+                                if (m[i - 1] && m[i - 1].author.id == e.author.id) {
+                                    follow = " follow";
+                                }
+                                return <Message currentUser={this.props.currentUser} message={e} key={e.id} follow={follow}/>
+                            })}
                         </div>
                     )}
                     <div class="message child">
@@ -244,7 +250,7 @@ export default class Message extends Component {
         }
         return (
             <div>
-                <div class="message child">
+                <div className={"message child" + this.props.follow}>
                     { this.state.author && (
                         <div class="message-head d-flex d-md-block">
                             <img
@@ -252,9 +258,9 @@ export default class Message extends Component {
                                 src={ this.state.author.avatar ? bee.crop(this.state.author.avatar["@id"], 100, 100) : util.defaultAvatar }
                                 title={ this.state.author.name }
                             />
-                            <div class="d-flex d-md-none flex-column">
-                                <span class="capitalize ml-1">{ this.state.author.name }</span>
-                                <span class="ml-1">{ util.humanDate(this.state.message.createdAt) }</span>
+                            <div class="d-flex d-md-none flex-column infos">
+                                <span class="capitalize author">{ this.state.author.name }</span>
+                                <span>{ util.humanDate(this.state.message.createdAt) }</span>
                             </div>
                             { this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
                                 <div tabindex="-1"
