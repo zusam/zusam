@@ -51,6 +51,7 @@ export default class PreviewBlock extends Component {
             case "instagram.com":
             case "vimeo.com":
             case "dailymotion.com":
+            case "imgur.com":
                 // default embed code
                 if (data["code"]) {
                     return <div class="embed-container" ref={e => this.embedContainer = e} dangerouslySetInnerHTML={{__html: data["code"]}}></div>;
