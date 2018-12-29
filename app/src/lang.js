@@ -52,6 +52,7 @@ const lang = {
         "error_new_message": "Une erreur inconnue est survenue pendant l'envoi de votre message.",
         "error_upload": "Une erreur s'est produite pendant l'envoi.",
         "cancel_write": "Voulez-vous annuler l'écriture d'un nouveau message ?",
+        "empty_message": "Le message est vide !",
     }
 };
 export default lang;

@@ -89,6 +89,11 @@ export default class Writer extends Component {
         } else {
             msg.parent = "/api/messages/" + bee.getId(this.props.parent);
         }
+        // don't post if there is nothing to post
+        if (!msg.files.length && !msg.data.text && !msg.data.title) {
+            alert.add(lang.fr["empty_message"], "alert-danger");
+            return;
+        }
         msg.data = JSON.stringify(msg.data);
         bee.http.post("/api/messages", msg).then(res => {
             if (!res) {

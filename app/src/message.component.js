@@ -60,7 +60,7 @@ export default class Message extends Component {
 
     deleteMessage(event) {
 		event.preventDefault();
-        if(window.confirm(lang.fr["ask_delete_message"])) {
+        if(confirm(lang.fr["ask_delete_message"])) {
             bee.http.delete(this.state.message["@id"]);
             bee.resetCache();
             // give some time to the cache to delete itself properly
