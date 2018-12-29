@@ -889,8 +889,10 @@ article {
             color: white;
             padding: 4px 10px;
             cursor: pointer;
-            &:hover {
-                background-color: adjust-hue($zusam_color, -15deg);
+            @media (hover: hover) {
+                &:hover {
+                    background-color: adjust-hue($zusam_color, -15deg);
+                }
             }
         }
     }
