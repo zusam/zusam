@@ -71,7 +71,7 @@ export default class GroupSettings extends Component {
                                                 readonly="readonly"
                                             ></input>
                                         </div>
-                                        <button class="btn btn-outline-secondary">{lang.fr["reset_invitation_link"]}</button>
+                                        {/*<button class="btn btn-outline-secondary">{lang.fr["reset_invitation_link"]}</button>*/}
                                     </form>
                                     <form>
                                         <button onClick={this.leaveGroup} class="btn btn-outline-danger">{lang.fr["quit_group"]}</button>
