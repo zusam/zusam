@@ -21,7 +21,9 @@ export default class Login extends Component {
 		e.preventDefault();
 		let login = document.getElementById("login").value || "";
         login.toLowerCase();
+        this.setState({sending: true});
         bee.http.post("/api/password-reset-mail", {mail: login}).then(res => {
+            this.setState({sending: false});
 			if (res && !res.message) {
                 alert.add(lang.fr["password_reset_mail_sent"]);
             } else {
@@ -32,12 +34,13 @@ export default class Login extends Component {
 
 	sendLoginForm(e) {
 		e.preventDefault();
-        this.setState({showAlert: false});
+        this.setState({showAlert: false, sending: true});
 		let login = document.getElementById("login").value || "";
         login.toLowerCase();
 		const password = document.getElementById("password").value;
         bee.set("apiKey", "");
 		bee.http.post("/api/login", {login: login, password: password}).then(res => {
+            this.setState({sending: false});
 			if (res && !res.message) {
 				bee.set("apiKey", res.api_key);
                 setTimeout(() => router.navigate("/"), 100);
@@ -65,7 +68,9 @@ export default class Login extends Component {
                                 <input type="password" class="form-control" required id="password" placeholder={lang.fr.password_placeholder} />
                             </div>
                             <div class="forgot-password"><span onClick={this.showPasswordReset}>{lang.fr["forgot_password"]}</span></div>
-                            <button type="submit" class="btn btn-light" onClick={this.sendLoginForm}>{lang.fr.connect}</button>
+                            <button type="submit" class="btn btn-light" onClick={this.sendLoginForm} disabled={this.state.sending}>
+                                {lang.fr.connect}
+                            </button>
                         </form>
                     )}
                     { !!this.state.showResetPassword && (
@@ -73,7 +78,9 @@ export default class Login extends Component {
                             <div class="form-group">
                                 <input type="email" class="form-control" required id="login" placeholder={lang.fr.login_placeholder} />
                             </div>
-                            <button type="submit" class="btn btn-light" onClick={this.sendPasswordReset}>{lang.fr.submit}</button>
+                            <button type="submit" class="btn btn-light" onClick={this.sendPasswordReset} disabled={this.state.sending}>
+                                {lang.fr.submit}
+                            </button>
                         </form>
                     )}
                 </div>
