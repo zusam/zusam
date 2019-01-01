@@ -182,6 +182,7 @@ class ImportOldData extends ContainerAwareCommand
                 || empty($post["text"])
                 || empty($post["forum"]['$oid'])
                 || empty($post["uid"]['$oid'])
+                || $post["_id"]['$oid'] == "5b733249376c875edc13a2c6" // exception (message with copied file)
             ) {
                 continue;
             }
