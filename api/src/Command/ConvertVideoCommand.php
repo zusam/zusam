@@ -6,6 +6,7 @@ use App\Entity\File;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -24,6 +25,7 @@ class ConvertVideoCommand extends ContainerAwareCommand
     {
         $this->setName('zusam:convert-video')
             ->setDescription('Converts a raw video file.')
+            ->addOption('all-cores', null, InputOption::VALUE_NONE, 'Use all available cores instead of just one.')
             ->setHelp('This command search for a raw video file in the database and converts it.');
     }
 
@@ -40,11 +42,14 @@ class ConvertVideoCommand extends ContainerAwareCommand
         while($rawFile = $c->fetch()) {
             $outputFile = $filesDir."/".$rawFile["id"];
             $output->writeln(["Converting ".$rawFile["content_url"]]);	
+            if (!$input->getOption("all-cores")) {
+                $threads = "-threads 1 ";
+            }
             exec(
                 "nice -n 19 " // give the process a low priority
                 .$this->ffmpegPath
                 ." -y -i ".$filesDir."/".$rawFile["content_url"]
-                ." -c:v libx264 -filter:v scale=-2:720 -crf 22 -threads 1 -preset slower -c:a aac -vbr 3 -y -f mp4 "
+                ." -c:v libx264 -filter:v scale=-2:720 -crf 22 ".$threads."-preset slower -c:a aac -vbr 3 -y -f mp4 "
                 .$outputFile.".converted"
             );
             rename($outputFile.".converted", $outputFile.".mp4");
