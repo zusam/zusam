@@ -95,8 +95,6 @@ export default class GroupBoard extends Component {
             ) {
                 this.setState({loaded: this.state.loaded + 10});
                 if (this.state.loaded + 30 > this.state.messages.length) {
-                    // update page count right away
-                    this.setState({page: this.state.page + 1});
                     bee.get("/api/groups/" + this.state.groupId + "/page/" + (this.state.page + 1)).then(res => {
                         if(res && Array.isArray(res["messages"])) {
                             this.setState({
@@ -104,6 +102,8 @@ export default class GroupBoard extends Component {
                             });
                         }
                     });
+                    // update page count right away
+                    this.setState({page: this.state.page + 1});
                 }
             }
         }
