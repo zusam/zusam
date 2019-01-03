@@ -18,7 +18,6 @@ const router = {
             case "login":
                 // we keep queryParams
                 url = url + queryParams;
-                bee.remove("apiKey");
             case "messages":
             case "groups":
             case "users":

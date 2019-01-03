@@ -15,6 +15,8 @@ export default class Login extends Component {
         this.sendLoginForm = this.sendLoginForm.bind(this);
         this.sendPasswordReset = this.sendPasswordReset.bind(this);
         this.showPasswordReset = this.showPasswordReset.bind(this);
+        // reroute if already logged in
+        bee.get("apiKey").then(apiKey => apiKey && router.navigate("/"));
     }
     
     sendPasswordReset(e) {
