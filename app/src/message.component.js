@@ -196,8 +196,8 @@ export default class Message extends Component {
                                 >
                                     <FaIcon family="solid" icon="caret-down"/>
                                     <div class="dropdown-menu">
-                                        <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
                                         <a class="seamless-link" onClick={this.editMessage}>{lang.fr["edit"]}</a>
+                                        <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
                                     </div>
                                 </div>
                             )}
@@ -270,8 +270,8 @@ export default class Message extends Component {
                                 >
                                     <FaIcon family="solid" icon="caret-down"/>
                                     <div class="dropdown-menu">
-                                        <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
                                         <a class="seamless-link" onClick={this.editMessage}>{lang.fr["edit"]}</a>
+                                        <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
                                     </div>
                                 </div>
                             )}
@@ -286,8 +286,8 @@ export default class Message extends Component {
                             >
                                 <FaIcon family="solid" icon="caret-down"/>
                                 <div class="dropdown-menu">
-                                    <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
                                     <a class="seamless-link" onClick={this.editMessage}>{lang.fr["edit"]}</a>
+                                    <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
                                 </div>
                             </div>
                         )}
