@@ -121,10 +121,11 @@ export default class Writer extends Component {
             const text = document.getElementById("text").value;
             let links = text.match(/(https?:\/\/[^\s]+)/gi);
             if (links && links[0] != this.state.link) {
-                bee.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => r && this.setState({
-                    link: links[0],
-                    preview: r
-                }));
+                bee.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => {
+                    if (r && document.getElementById("text").value.indexOf(links[0]) >= 0) {
+                        this.setState({link: links[0], preview: r});
+                    }
+                });
             }
         }, 0);
     }
