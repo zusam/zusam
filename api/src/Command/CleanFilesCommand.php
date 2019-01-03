@@ -25,7 +25,7 @@ class CleanFilesCommand extends ContainerAwareCommand
         $filesDir = realpath($this->getContainer()->getParameter("dir.files"));
 
         // First we get all files not linked to a user and/or a message
-        $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id NOT IN (SELECT file_id FROM messages_files) AND id NOT IN (SELECT avatar_id FROM user WHERE avatar_id NOT NULL);");
+        $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id NOT IN (SELECT file_id FROM messages_files) AND id NOT IN (SELECT avatar_id FROM user WHERE avatar_id NOT NULL) AND id NOT IN (SELECT preview_id FROM link);");
         while($i = $c->fetch()) {
             $this->pdo->query("DELETE FROM file WHERE id = '" . $i["id"] . "';");
             if ($input->getOption("verbose")) {
