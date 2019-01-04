@@ -35,6 +35,7 @@ class App extends Component {
         });
     }
 
+    // check if route is "outside": accessible to non connected user
     isOutsideRoute(route) {
         return [
             "login",
@@ -46,6 +47,7 @@ class App extends Component {
 
     onRouterStateChange(event) {
         const [route, id, action] = router.getSegments();
+
         bee.get("apiKey").then(apiKey => {
             if (apiKey) {
                 bee.get("/api/me").then(user => {
@@ -65,14 +67,18 @@ class App extends Component {
                 }
             }
         });
+
 		this.setState({route: route, action: action})
+
         // route and id must be defined from here on
 		if (!route || !id) {
             return;
         }
+
         let url = "/" + route + "/" + id;
         let backUrl = "";
         const entityUrl = "/api/" + route + "/" + id;
+
         if (action) {
             switch (route) {
                 case "users":
@@ -83,20 +89,25 @@ class App extends Component {
             }
             url += "/" + action;
         }
+
         if (route == "groups") {
             this.setState({group: entityUrl});
-            // soft update message list of the group
             if (this.groupRef) {
                 if (event.detail.data && event.detail.data.resetGroupDisplay) {
+                    // soft update message list of the group
                     this.groupRef.resetGroupDisplay(true, true);
                 } else {
+                    // restore scrolling if normal entrance to group dashboard
                     this.groupRef.restoreScroll();
                 }
             }
         }
+
         if (id) {
             bee.get(entityUrl).then(
                 res => {
+                    // set backUrl and backUrlPrompt.
+                    // These will dictate navbar behavior for the back button
                     let backUrlPrompt = "";
                     if (!backUrl && res["group"]) {
                         backUrl = router.toApp(res.group);
@@ -117,21 +128,25 @@ class App extends Component {
     }
 
     render() {
-        if (!this.state.route) {
-            return;
+        // external pages for non connected users
+        switch (this.state.route) {
+            case "signup":
+                return <Signup />;
+                break;
+            case "password-reset":
+                return <ResetPassword />;
+                break;
+            case "login":
+                return <Login />;
+                break;
         }
-        if (this.state.route == "login") {
-            return <Login />;
-        }
-        if (this.state.route == "signup") {
-            return <Signup />;
-        }
-        if (this.state.route == "password-reset") {
-            return <ResetPassword />;
-        }
+
+        // here, we enter the "connected" realm of pages.
+        // If the user is not connected, what should we do ?
         if (!this.state.currentUser || !this.state.groups) {
             return;
         }
+
         return (
             <main>
                 <Navbar
