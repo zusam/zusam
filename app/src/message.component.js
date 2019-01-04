@@ -211,7 +211,16 @@ export default class Message extends Component {
                             { this.state.data && this.state.data.text && (
                                 <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
                             )}
-                            { this.state.preview && <p class="text-center card-text"><PreviewBlock {...this.state.preview} /></p> }
+                            { this.state.preview && (
+                                <p class="text-center card-text">
+                                    <PreviewBlock
+                                        key={this.state.preview.url}
+                                        url={this.state.preview.url}
+                                        preview={this.state.preview.preview}
+                                        data={this.state.preview.data}
+                                    />
+                                </p>
+                            )}
                             { this.state.message.files && <FileGrid files={this.state.message.files}/> }
                         </div>
                     </div>
@@ -294,7 +303,16 @@ export default class Message extends Component {
                         { this.state.data && this.state.data.text && (
                             <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
                         )}
-                        { this.state.preview && <p class="card-text text-center"><PreviewBlock {...this.state.preview} /></p> }
+                        { this.state.preview && (
+                            <p class="card-text text-center">
+                                <PreviewBlock
+                                    key={this.state.preview.url}
+                                    url={this.state.preview.url}
+                                    preview={this.state.preview.preview}
+                                    data={this.state.preview.data}
+                                />
+                            </p>
+                        )}
                         { this.state.message.files && <FileGrid files={this.state.message.files}/> }
                         <div class="infos">
                             <span>{ util.humanDate(this.state.message.createdAt) }</span>
