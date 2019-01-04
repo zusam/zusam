@@ -73,9 +73,11 @@ export default class GroupBoard extends Component {
     }
 
     loadMoreMessages() {
+        // prevent loading messages if we are in a post
         if (window.getComputedStyle(document.getElementById("group").parentNode).display == "none") {
             return;
         }
+        // set a cooldown on message loading
         const key = "onScroll";
         if (!window.sessionStorage.getItem(key)) {
             window.sessionStorage.setItem(key, Date.now());
@@ -110,10 +112,8 @@ export default class GroupBoard extends Component {
     }
 
     restoreScroll() {
-        if (window.pageYOffset == 0 && this.state.pageYOffset != 0) {
-            // scrollTo the right place but leave a bit of time for the dom to construct
-            setTimeout(() => window.scrollTo(0, this.state.pageYOffset), 0);
-        }
+        // scrollTo the right place but leave a bit of time for the dom to construct
+        setTimeout(() => window.scrollTo(0, this.state.pageYOffset), 0);
     }
 
     render() {
