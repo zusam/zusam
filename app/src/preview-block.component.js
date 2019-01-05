@@ -58,14 +58,14 @@ export default class PreviewBlock extends Component {
                 }
             default:
         }
-        if (data["type"] == "photo") {
+        if (data["type"] == "photo" && /image/.test(data["content-type"])) {
             return (
                 <div class="container d-flex justify-content-center flex-wrap align-items-center">
                     <img class="img-fluid" src={ this.props.url } />
                 </div>
             );
         }
-        if (data["type"] == "video") {
+        if (data["type"] == "video" && /video/.test(data["content-type"])) {
             return (
                 <div class="container d-flex justify-content-center flex-wrap align-items-center">
                     <video class="img-fluid" controls src={ this.props.url } />

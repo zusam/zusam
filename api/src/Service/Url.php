@@ -18,6 +18,7 @@ class Url
                 "description" => $info->description, //The page description
                 "url" => $info->url, //The canonical url
                 "type" => $info->type, //The page type (link, video, image, rich)
+                "content-type" => $info->getResponse()->getHeader("content-Type"), //The content type of the url
 
                 "images" => $info->images, //List of all images found in the page
                 "image" => $info->image, //The image choosen as main image
