@@ -166,7 +166,13 @@ export default class Message extends Component {
                             { this.state.displayedChildren < this.state.message.children.length && (
                                 <a class="more-coms" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</a>
                             )}
-                            { this.state.message.children.slice(-1 * this.state.displayedChildren).map(e => <Message currentUser={this.props.currentUser} message={e} key={e.id}/>) }
+                            { this.state.message.children.slice(-1 * this.state.displayedChildren).map((e,i,m) => {
+                                let follow = "";
+                                if (m[i - 1] && m[i - 1].author.id == e.author.id) {
+                                    follow = " follow";
+                                }
+                                return <Message currentUser={this.props.currentUser} message={e} key={e.id} follow={follow}/>
+                            })}
                         </div>
                     )}
                 </div>
