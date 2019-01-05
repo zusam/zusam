@@ -620,6 +620,7 @@ article {
             flex-flow: column;
             flex-shrink: 0;
         }
+
         .options {
             cursor: pointer;
             margin-left: auto;
@@ -775,6 +776,12 @@ article {
         .message-head {
             min-width: 5rem;
             font-size: .7rem;
+
+            @media (min-width: map-get($grid-breakpoints, "md")) {
+                .infos {
+                    display: none;
+                }
+            }
         }
 
         .message-body {

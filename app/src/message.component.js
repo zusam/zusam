@@ -4,6 +4,7 @@ import util from "./util.js";
 import bee from "./bee.js";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";
+import MessageHead from "./message-head.component.js";
 import Writer from "./writer.component.js";
 import FaIcon from "./fa-icon.component.js";
 import router from "./router.js";
@@ -94,7 +95,7 @@ export default class Message extends Component {
 
     displayMoreChildren() {
         this.setState({
-            displayedChildren: this.state.displayedChildren + 5
+            displayedChildren: this.state.displayedChildren + 10
         });
     }
 
@@ -182,32 +183,13 @@ export default class Message extends Component {
             return (
                 <div>
                     <div class="message">
-                        <div class="message-head d-flex">
-                            { this.state.author && (
-                                <img
-                                    class="rounded-circle material-shadow avatar"
-                                    src={ this.state.author.avatar ? bee.crop(this.state.author.avatar["@id"], 100, 100) : util.defaultAvatar }
-                                    title={ this.state.author.name }
-                                />
-                            )}
-                            <div class="infos">
-                                { this.state.author && <span class="capitalize author">{ this.state.author.name }</span> }
-                                <span>{ util.humanDate(this.state.message.createdAt) }</span>
-                            </div>
-                            { this.props.currentUser && this.state.author && this.state.author.id == this.props.currentUser.id && (
-                                <div tabindex="-1"
-                                    class="options dropdown"
-                                    onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
-                                    onClick={e => e.currentTarget.classList.toggle("active")}
-                                >
-                                    <FaIcon family="solid" icon="caret-down"/>
-                                    <div class="dropdown-menu">
-                                        <a class="seamless-link" onClick={this.editMessage}>{lang.fr["edit"]}</a>
-                                        <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                        <MessageHead
+                            author={this.state.author}
+                            message={this.state.message}
+                            currentUser={this.props.currentUser}
+                            editMessage={this.editMessage}
+                            deleteMessage={this.deleteMessage}
+                        />
                         <div class="message-body">
                             { this.state.data && this.state.data.title && (
                                 <div class="title">
@@ -266,32 +248,13 @@ export default class Message extends Component {
         return (
             <div>
                 <div className={"message child" + this.props.follow}>
-                    { this.state.author && (
-                        <div class="message-head d-flex d-md-block">
-                            <img
-                                class="rounded-circle material-shadow avatar"
-                                src={ this.state.author.avatar ? bee.crop(this.state.author.avatar["@id"], 100, 100) : util.defaultAvatar }
-                                title={ this.state.author.name }
-                            />
-                            <div class="d-flex d-md-none flex-column infos">
-                                <span class="capitalize author">{ this.state.author.name }</span>
-                                <span>{ util.humanDate(this.state.message.createdAt) }</span>
-                            </div>
-                            { this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
-                                <div tabindex="-1"
-                                    class="options dropdown d-md-none"
-                                    onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
-                                    onClick={e => e.currentTarget.classList.toggle("active")}
-                                >
-                                    <FaIcon family="solid" icon="caret-down"/>
-                                    <div class="dropdown-menu">
-                                        <a class="seamless-link" onClick={this.editMessage}>{lang.fr["edit"]}</a>
-                                        <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                    <MessageHead
+                        author={this.state.author}
+                        message={this.state.message}
+                        currentUser={this.props.currentUser}
+                        editMessage={this.editMessage}
+                        deleteMessage={this.deleteMessage}
+                    />
                     <div class="message-body">
                         { this.state.author && this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
                             <div tabindex="-1"
