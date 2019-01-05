@@ -1,4 +1,5 @@
 api_platform:
+    version: '0.1-beta.1'
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
     http_cache:
