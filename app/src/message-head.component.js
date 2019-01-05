@@ -22,7 +22,7 @@ export default class MessageHead extends Component {
                 </div>
                 { this.props.currentUser && this.props.author && this.props.author.id == this.props.currentUser.id && (
                     <div tabindex="-1"
-                        class="options dropdown d-md-none"
+                        class="options dropdown"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >
