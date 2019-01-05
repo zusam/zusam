@@ -179,53 +179,75 @@ export default class Message extends Component {
                 </div>
             );
         }
-        if (!this.state.message.parent) {
-            return (
-                <div>
-                    <div class="message">
-                        <MessageHead
-                            author={this.state.author}
-                            message={this.state.message}
-                            currentUser={this.props.currentUser}
-                            editMessage={this.editMessage}
-                            deleteMessage={this.deleteMessage}
-                        />
-                        <div class="message-body">
-                            { this.state.data && this.state.data.title && (
-                                <div class="title">
-                                    <span>{ this.state.data.title }</span>
+        return (
+            <div>
+                <div className={"message" + (this.state.message.parent ? " child" : "") + (this.props.follow || "")}>
+                    <MessageHead
+                        author={this.state.author}
+                        message={this.state.message}
+                        currentUser={this.props.currentUser}
+                        editMessage={this.editMessage}
+                        deleteMessage={this.deleteMessage}
+                    />
+                    <div class="message-body">
+                        { this.state.message.parent
+                                && this.state.author
+                                && this.props.currentUser
+                                && this.state.author.id == this.props.currentUser.id
+                                && (
+                            <div tabindex="-1"
+                                class="options dropdown d-none d-md-flex"
+                                onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
+                                onClick={e => e.currentTarget.classList.toggle("active")}
+                            >
+                                <FaIcon family="solid" icon="caret-down"/>
+                                <div class="dropdown-menu">
+                                    <a class="seamless-link" onClick={this.editMessage}>{lang.fr["edit"]}</a>
+                                    <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
                                 </div>
-                            )}
-                            { this.state.data && this.state.data.text && (
-                                <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
-                            )}
-                            { this.state.preview && (
-                                <p class="text-center card-text">
-                                    <PreviewBlock
-                                        key={this.state.preview.url}
-                                        url={this.state.preview.url}
-                                        preview={this.state.preview.preview}
-                                        data={this.state.preview.data}
-                                    />
-                                </p>
-                            )}
-                            { this.state.message.files && <FileGrid files={this.state.message.files}/> }
-                        </div>
+                            </div>
+                        )}
+                        { this.state.data && this.state.data.title && (
+                            <div class="title">
+                                <span>{ this.state.data.title }</span>
+                            </div>
+                        )}
+                        { this.state.data && this.state.data.text && (
+                            <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
+                        )}
+                        { this.state.preview && (
+                            <p class="text-center card-text">
+                                <PreviewBlock
+                                    key={this.state.preview.url}
+                                    url={this.state.preview.url}
+                                    preview={this.state.preview.preview}
+                                    data={this.state.preview.data}
+                                />
+                            </p>
+                        )}
+                        { this.state.message.files && <FileGrid files={this.state.message.files}/> }
+                        { this.state.message.parent && (
+                            <div class="infos">
+                                <span>{ util.humanDate(this.state.message.createdAt) }</span>
+                            </div>
+                        )}
                     </div>
-                    { this.state.message.children && this.state.message.children.length > 0 && (
-                        <div>
-                            { this.state.displayedChildren < this.state.message.children.length && (
-                                <a class="more-coms" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</a>
-                            )}
-                            { this.state.message.children.slice(-1 * this.state.displayedChildren).map((e,i,m) => {
-                                let follow = "";
-                                if (m[i - 1] && m[i - 1].author.id == e.author.id) {
-                                    follow = " follow";
-                                }
-                                return <Message currentUser={this.props.currentUser} message={e} key={e.id} follow={follow}/>
-                            })}
-                        </div>
-                    )}
+                </div>
+                { !this.state.message.parent && this.state.message.children && this.state.message.children.length > 0 && (
+                    <div>
+                        { this.state.displayedChildren < this.state.message.children.length && (
+                            <a class="more-coms" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</a>
+                        )}
+                        { this.state.message.children.slice(-1 * this.state.displayedChildren).map((e,i,m) => {
+                            let follow = "";
+                            if (m[i - 1] && m[i - 1].author.id == e.author.id) {
+                                follow = " follow";
+                            }
+                            return <Message currentUser={this.props.currentUser} message={e} key={e.id} follow={follow}/>
+                        })}
+                    </div>
+                )}
+                { !this.state.message.parent && (
                     <div class="message child">
                         { this.props.currentUser && (
                             <div class="message-head p-1 d-none d-md-block">
@@ -242,52 +264,7 @@ export default class Message extends Component {
                             focus={false}
                         />
                     </div>
-                </div>
-            );
-        }
-        return (
-            <div>
-                <div className={"message child" + this.props.follow}>
-                    <MessageHead
-                        author={this.state.author}
-                        message={this.state.message}
-                        currentUser={this.props.currentUser}
-                        editMessage={this.editMessage}
-                        deleteMessage={this.deleteMessage}
-                    />
-                    <div class="message-body">
-                        { this.state.author && this.props.currentUser && this.state.author.id == this.props.currentUser.id && (
-                            <div tabindex="-1"
-                                class="options dropdown d-none d-md-flex"
-                                onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
-                                onClick={e => e.currentTarget.classList.toggle("active")}
-                            >
-                                <FaIcon family="solid" icon="caret-down"/>
-                                <div class="dropdown-menu">
-                                    <a class="seamless-link" onClick={this.editMessage}>{lang.fr["edit"]}</a>
-                                    <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
-                                </div>
-                            </div>
-                        )}
-                        { this.state.data && this.state.data.text && (
-                            <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
-                        )}
-                        { this.state.preview && (
-                            <p class="card-text text-center">
-                                <PreviewBlock
-                                    key={this.state.preview.url}
-                                    url={this.state.preview.url}
-                                    preview={this.state.preview.preview}
-                                    data={this.state.preview.data}
-                                />
-                            </p>
-                        )}
-                        { this.state.message.files && <FileGrid files={this.state.message.files}/> }
-                        <div class="infos">
-                            <span>{ util.humanDate(this.state.message.createdAt) }</span>
-                        </div>
-                    </div>
-                </div>
+                )}
             </div>
         );
     }
