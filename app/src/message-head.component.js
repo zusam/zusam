@@ -2,6 +2,7 @@ import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import bee from "./bee.js";
 import util from "./util.js";
+import FaIcon from "./fa-icon.component.js";
 
 export default class MessageHead extends Component {
 

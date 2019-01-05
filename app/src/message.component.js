@@ -2,12 +2,12 @@ import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import util from "./util.js";
 import bee from "./bee.js";
+import router from "./router.js";
+import FaIcon from "./fa-icon.component.js";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";
 import MessageHead from "./message-head.component.js";
 import Writer from "./writer.component.js";
-import FaIcon from "./fa-icon.component.js";
-import router from "./router.js";
 
 export default class Message extends Component {
 
