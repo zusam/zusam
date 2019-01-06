@@ -16,6 +16,7 @@ class NewMessage
 
     public function __invoke(Message $data)
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
         $parent = $data->getParent();
         if (!empty($parent)) {
             $parent->setLastActivityDate(time());

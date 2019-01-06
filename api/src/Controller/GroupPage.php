@@ -27,6 +27,7 @@ class GroupPage extends Controller
      */
     public function index(string $id, int $n)
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
         $group = $this->em->getRepository(Group::class)->findOneById($id);
         if (empty($group)) {
             return new JsonResponse(["message" => "Group not found"], JsonResponse::HTTP_NOT_FOUND);
