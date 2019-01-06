@@ -36,7 +36,13 @@ export default class Writer extends Component {
         (document.getElementById("title") || {}).value = this.props.title || "";
         (document.getElementById("text") || {}).value = this.props.text || "";
         if (this.props.focus) {
-            setTimeout(() => document.getElementById("text").focus());
+            setTimeout(() => {
+                let t = document.getElementById("text");
+                if (t) {
+                    t.focus();
+                    t.style.height = t.scrollHeight + "px";
+                }
+            }, 10);
         }
     }
 
@@ -116,13 +122,16 @@ export default class Writer extends Component {
         if (![" ", "Enter", "v"].includes(event.key)) {
             return;
         }
+        let t = event.currentTarget;
+        t.style.height = "1px";
+        t.style.height = t.scrollHeight + "px";
         // waiting for the dom to be updated
         setTimeout(() => {
-            const text = document.getElementById("text").value;
+            const text = t.value;
             let links = text.match(/(https?:\/\/[^\s]+)/gi);
             if (links && links[0] != this.state.link) {
                 bee.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => {
-                    if (r && document.getElementById("text").value.indexOf(links[0]) >= 0) {
+                    if (r && t.value.indexOf(links[0]) >= 0) {
                         this.setState({link: links[0], preview: r});
                     }
                 });

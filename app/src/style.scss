@@ -902,6 +902,8 @@ article {
 
     #text {
         resize: none;
+        min-height: 4rem;
+        max-height: 40rem;
         width: 100%;
         padding: 10px;
         border: none;
