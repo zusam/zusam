@@ -7,12 +7,9 @@ parameters:
 
 doctrine:
     dbal:
-        # configure these for your database server
-        driver: 'pdo_sqlite'
-        server_version: '3.21'
-        charset: 'utf8'
-
-        # With Symfony 3.3, remove the `resolve:` prefix
+        driver: '%env(resolve:DATABASE_DRIVER)%'
+        server_version: '%env(resolve:DATABASE_SERVER_VERSION)%'
+        charset: '%env(resolve:DATABASE_CHARSET)%'
         url: '%env(resolve:DATABASE_URL)%'
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
