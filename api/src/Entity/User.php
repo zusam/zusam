@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "path"="/me",
  *              "controller"=Me::class,
  *              "defaults"={"_api_receive"=false},
- *              "normalization_context"={"groups"={"read_user"}},
+ *              "normalization_context"={"groups"={"read_user", "read_me"}},
  *          }
  *     }
  * )
@@ -93,7 +93,7 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
      * @ORM\JoinTable(name="users_groups")
-     * @Groups({"read_user"})
+     * @Groups({"read_me"})
      * @ApiSubresource
      */
     private $groups;

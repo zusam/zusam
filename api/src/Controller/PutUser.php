@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\ExpressionLanguage\Expression;
 
 class PutUser extends Controller
 {
@@ -23,6 +24,7 @@ class PutUser extends Controller
     public function __invoke(User $data): User
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
+        $this->denyAccessUnlessGranted(new Expression("user == object"), $data);
         $pass_infos = password_get_info($data->getPassword());
         if ($pass_infos["algo"] === 0) {
             $data->setPassword($this->encoder->encodePassword($data, $data->getPassword()));

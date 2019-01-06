@@ -23,8 +23,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *        "denormalization_context"={"groups"={"write_group"}}
  *     },
  *     itemOperations={
- *        "get",
- *        "put",
+ *        "get"={
+ *            "access_control"="is_granted('ROLE_USER') and user in object.getUsersAsArray()",
+ *        },
+ *        "put"={
+ *            "access_control"="is_granted('ROLE_USER') and user in object.getUsersAsArray()",
+ *        },
  *        "invitation"={
  *            "method"="POST",
  *            "path"="/groups/invitation/{inviteKey}",
@@ -36,7 +40,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *            "path"="/groups/{id}/leave",
  *            "controller"=LeaveGroup::class,
  *        }
- *     }
+ *     },
+ *     collectionOperations={
+ *        "post"
+ *     },
  * )
  */
 class Group
@@ -145,6 +152,11 @@ class Group
     public function getUsers(): Collection
     {
         return $this->users;
+    }
+
+    public function getUsersAsArray(): array
+    {
+        return $this->users->toArray();
     }
 
     public function addMessage(Message $message): self

@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\ExpressionLanguage\Expression;
 
 class GroupPage extends Controller
 {
@@ -32,6 +33,7 @@ class GroupPage extends Controller
         if (empty($group)) {
             return new JsonResponse(["message" => "Group not found"], JsonResponse::HTTP_NOT_FOUND);
         }
+        $this->denyAccessUnlessGranted(new Expression("user in object.getUsersAsArray()"), $group);
 
         // filter out children messages
         $messages = array_filter($group->getMessages()->getValues(), function($m) {
