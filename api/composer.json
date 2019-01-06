@@ -63,7 +63,6 @@
     },
     "extra": {
         "symfony": {
-            "id": "",
             "allow-contrib": false
         },
         "public-dir": "../public/api/",
