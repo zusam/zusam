@@ -115,7 +115,7 @@ export default class Message extends Component {
         let matches = txt.match(/(https?:\/\/[^\s]+)/gi);
         if (matches) {
             matches.forEach(url => {
-                txt = txt.replace(url, "<a href=\"" + url + "\">" + this.shortenUrl(url) + "</a>");
+                txt = txt.replace(url, "<a href=\"" + url + "\" target=\"_blank\">" + this.shortenUrl(url) + "</a>");
             });
         }
         // replace line returns
