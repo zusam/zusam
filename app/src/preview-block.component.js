@@ -48,6 +48,7 @@ export default class PreviewBlock extends Component {
             case "bandcamp.com":
                 return <BandCampEmbed url={data["code"].match(/https:\/\/.*album=\d+/)[0]}/>
             case "imgur.com":
+                // skip default embed code if it's an imgur image
                 if (data["type"] == "photo") {
                     break;
                 }
@@ -64,7 +65,10 @@ export default class PreviewBlock extends Component {
         if (data["type"] == "photo" && /image/.test(data["content-type"])) {
             return (
                 <div class="container d-flex justify-content-center flex-wrap align-items-center">
-                    <img class="img-fluid" src={ this.props.url } />
+                    <img
+                        class="img-fluid"
+                        src={ /gif/.test(data["content-type"]) ? this.props.url : bee.thumbnail(this.props.preview, 1280, 720) }
+                    />
                 </div>
             );
         }
