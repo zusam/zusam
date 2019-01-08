@@ -1,6 +1,7 @@
 import lang from "./lang.js";
 
 const util = {
+    standardDate: timestamp => (new Date(timestamp*1000)).toISOString().replace("T", " ").replace(/\..*$/, ""),
     humanDate: timestamp => {
         if (!timestamp) {
             return null;

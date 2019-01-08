@@ -227,7 +227,7 @@ export default class Message extends Component {
                         )}
                         { this.state.message.files && <FileGrid files={this.state.message.files}/> }
                         { this.state.message.parent && (
-                            <div class="infos">
+                            <div class="infos" title={util.standardDate(this.state.message.createdAt)}>
                                 <span>{ util.humanDate(this.state.message.createdAt) }</span>
                             </div>
                         )}
