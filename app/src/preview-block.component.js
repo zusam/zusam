@@ -81,7 +81,7 @@ export default class PreviewBlock extends Component {
         }
         if (data["title"] && (this.props.preview || data["description"])) {
             return (
-                <a class="seamless-link d-inline-block" target="_blank" href={ this.props.url }>
+                <a class="preview-card seamless-link d-inline-block" target="_blank" href={ this.props.url }>
                     <div class="card" style="max-width: 480px">
                         { this.props.preview && <img class="card-img-top" src={ bee.crop(this.props.preview, 320, 180) } /> }
                         <div class="card-body p-1">
