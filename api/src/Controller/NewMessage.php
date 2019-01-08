@@ -5,8 +5,9 @@ namespace App\Controller;
 use App\Entity\Message;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class NewMessage
+class NewMessage extends Controller
 {
     private $em;
 
