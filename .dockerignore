@@ -1,32 +1,36 @@
 # GLOBAL
-/data
 /.git
+/data
 
 # API
+/api/.web-server-pid
+/api/auth.json
 /api/var
 /api/vendor
-/api/auth.json
-/api/.web-server-pid
 
 # EXEC
-/.composer
-/.bash_history
 /.ash_history
+/.bash_history
 /.cache
-/.yarnrc
-/.sqlite_history
-/.php_history
+/.composer
 /.config
 /.npm
+/.php_history
+/.sqlite_history
+/.ssh
+/.yarnrc
 
 # APP
-/app/node_modules
-/app/yarn.lock
-/app/dist
 /app/.cache
-/app/yarn-error.log
 /app/bootstrap-light/node_modules
+/app/dist
+/app/dist/
+/app/node_modules
+/app/node_modules/
+/app/yarn-error.log
+/app/yarn.lock
 
 # PUBLIC
-/public/files
-/public/thumbnails
+/public/api/bundles/
+/public/files/
+/public/thumbnails/
