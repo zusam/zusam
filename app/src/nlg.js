@@ -110,7 +110,7 @@ let nlg = {
                     }, 300);
                 };
                 next.addEventListener("click", nextFn);
-                nlg.keyPressRight = e => e.keyCode == 39 && nextFn(e);
+                nlg.keyPressRight = e => e.code == "ArrowRight" && nextFn(e);
                 window.addEventListener("keypress", nlg.keyPressRight);
                 modal.appendChild(next);
             }
@@ -126,7 +126,7 @@ let nlg = {
                     }, 300);
                 };
                 prev.addEventListener("click", prevFn);
-                nlg.keyPressLeft = e => e.keyCode == 37 && prevFn(e);
+                nlg.keyPressLeft = e => e.code == "ArrowLeft" && prevFn(e);
                 window.addEventListener("keypress", nlg.keyPressLeft);
                 modal.appendChild(prev);
             }
