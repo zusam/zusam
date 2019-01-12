@@ -66,7 +66,10 @@ export default class PreviewBlock extends Component {
             return (
                 <div class="container d-flex justify-content-center flex-wrap align-items-center">
                     <img
-                        class="img-fluid"
+                        data-nlg={!this.props.inWriter}
+                        href={this.props.url}
+                        class="img-fluid cursor-pointer"
+                        data-src={this.props.url}
                         src={ /gif/.test(data["content-type"]) ? this.props.url : bee.thumbnail(this.props.preview, 1280, 720) }
                     />
                 </div>

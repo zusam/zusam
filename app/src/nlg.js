@@ -13,7 +13,7 @@ let nlg = {
     clickFn: e => {
         e.preventDefault();
         if (e.ctrlKey) {
-            window.open(e.currentTarget.href, "_blank");
+            window.open(e.currentTarget.getAttribute("href"), "_blank");
         } else {
             nlg.show(e.currentTarget);
         }
