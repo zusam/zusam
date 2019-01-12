@@ -40,7 +40,10 @@ export default class PreviewBlock extends Component {
         let data = JSON.parse(this.props.data);
         switch (data["providerUrl"].toLowerCase().replace(/\/$/, '').replace(/^https?:\/\/(www\.)?/, '')) {
             case "youtube.com":
-                return <YoutubeEmbed preview={this.props.preview} url={data["url"]}/>;
+                if (data["type"] == "video") {
+                    return <YoutubeEmbed preview={this.props.preview} url={data["code"].match(/https:\/\/[^\"\s]+/)[0]}/>;
+                }
+                break;
             case "soundcloud.com":
                 return <SoundcloudEmbed preview={this.props.preview} url={data["code"].match(/https:\/\/[^\"\s]+/)[0] + "&auto_play=true"}/>;
             case "twitch.tv":
