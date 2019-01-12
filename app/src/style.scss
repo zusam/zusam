@@ -896,7 +896,7 @@ article {
         margin: 5px;
         position: relative;
 
-        &.removed {
+        &.removed img {
             filter: grayscale(1) blur(2px);
         }
     }
