@@ -3,11 +3,13 @@
     "version": "0.1.0",
     "license": "GPL-3.0-or-later",
     "scripts": {
-        "clean": "rm -f {../public,dist}/*.{js,css,map,html,png,jpg,svg}",
+        "clean": "rm -f ../{public,dist}/*.{js,css,map,html,png,jpg,svg}",
         "build-dev": "parcel build --no-source-maps --no-minify src/index.html",
         "build": "parcel build --no-source-maps src/index.html",
-        "serve": "cp dist/* ../public; cp src/*.svg ../public",
-        "preserve": "yarn build",
+        "assets": "cp src/*.svg dist/",
+        "serve": "cp dist/* ../public",
+        "preassets": "yarn build",
+        "preserve": "yarn assets",
         "prebuild": "yarn clean"
     },
     "dependencies": {

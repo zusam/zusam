@@ -41,14 +41,13 @@ RUN set -xe && apk add --no-cache nginx php7 openssl ffmpeg \
 
 # copy files
 COPY docker/zusam/s6.d /etc/s6.d
-COPY api /zusam/api
-COPY app /zusam/app
 COPY docker/zusam/config.yml /zusam/config.yml
 COPY docker/zusam/php7 /etc/php7
 COPY docker/zusam/nginx /etc/nginx
 COPY docker/zusam/reset.sh /usr/local/bin/reset.sh
 COPY docker/zusam/run.sh /usr/local/bin/run.sh
 COPY public/api/index.php /zusam/public/api/index.php
+COPY api /zusam/api
 
 # install zusam
 RUN set -xe \
@@ -56,10 +55,11 @@ RUN set -xe \
     && mkdir -p /run/nginx /zusam/data \
     && sed -e "s|<ENV>|prod|g" /zusam/config.yml > /zusam/data/config.yml \
     && cd /zusam/api && php bin/composer install --prefer-dist \
-    && cd /zusam/app/bootstrap-light && yarn && cd .. && yarn && yarn serve \
-    && rm -rf /zusam/app /root/* \
     && apk del .build-deps \
     && chmod -R +x /usr/local/bin /etc/s6.d /var/lib/nginx
+
+# copy webapp over
+COPY app/dist/* /zusam/public/
 
 VOLUME /zusam/data
 CMD ["run.sh"]
