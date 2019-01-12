@@ -112,6 +112,10 @@ $navbar_height: 50px;
             background-size: cover;
             background-position: center;
 
+            &.removed {
+                filter: grayscale(1) blur(2px) brightness(40%);
+            }
+
             .check-circle {
                 position: absolute;
                 top: 50%;
@@ -884,9 +888,17 @@ article {
     border-radius: 5px;
     margin-bottom: 1rem;
 
+    .remove-button {
+        display: block;
+    }
+
     a.image {
         margin: 5px;
         position: relative;
+
+        &.removed {
+            filter: grayscale(1) blur(2px);
+        }
     }
 
     #title {
@@ -958,6 +970,19 @@ article {
         padding-left: 1rem;
         margin-top: 1rem;
     }
+}
+
+.remove-button {
+    display: none;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+    position: absolute;
+    padding: 7px 20px;
+    font-size: 2rem;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.8);
+    border-bottom-left-radius: 10px;
 }
 
 .global-alert {

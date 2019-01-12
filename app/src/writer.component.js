@@ -17,6 +17,7 @@ export default class Writer extends Component {
         this.postMessage = this.postMessage.bind(this);
         this.putMessage = this.putMessage.bind(this);
         this.getPreview = this.getPreview.bind(this);
+        this.toggleFile = this.toggleFile.bind(this);
         this.inputImages = this.inputImages.bind(this);
         this.inputVideo = this.inputVideo.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
@@ -46,6 +47,13 @@ export default class Writer extends Component {
         }
     }
 
+    toggleFile(fileIndex) {
+        let files = this.state.files;
+        let f = files.find(f => f.fileIndex == fileIndex);
+        f.removed = f.removed ? false : true;
+        this.setState({files: files});
+    }
+
     sendMessage() {
         if (this.props.messageId) {
             this.putMessage();
@@ -56,7 +64,7 @@ export default class Writer extends Component {
 
     putMessage() {
         let msg = {
-            files: this.state.files.map(e => e["@id"]).filter(e => !!e),
+            files: this.state.files.filter(e => !e.removed).map(e => e["@id"]).filter(e => !!e),
             data: {
                 text: document.getElementById("text").value
             },
@@ -80,7 +88,7 @@ export default class Writer extends Component {
             author: this.props.currentUser["@id"],
             group: this.props.group,
             children: [],
-            files: this.state.files.map(e => e["@id"]).filter(e => !!e),
+            files: this.state.files.filter(e => !e.removed).map(e => e["@id"]).filter(e => !!e),
             data: {
                 text: document.getElementById("text").value
             },
@@ -291,7 +299,14 @@ export default class Writer extends Component {
                     autofocus={this.props.focus}
                 ></textarea>
                 { this.state.preview && <p class="card-text"><PreviewBlock {...this.state.preview} /></p> }
-                { !!this.state.files.length && <FileGrid key={this.state.files.reduce((a,c) => a + c.id, "")} files={this.state.files}/> }
+                { !!this.state.files.length && (
+                    <FileGrid
+                        key={this.state.files.reduce((a,c) => a + c.id, "")}
+                        files={this.state.files}
+                        toggleFile={this.toggleFile}
+                        inWriter={true}
+                    />
+                )}
                 <div class="options">
                     <button
                         class="option"

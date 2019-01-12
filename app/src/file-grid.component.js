@@ -8,21 +8,37 @@ export default class FileGrid extends Component {
     constructor(props) {
         super(props);
         this.state = {files: []};
+        this.toggleFile = this.toggleFile.bind(this);
         if (Array.isArray(props.files)) {
             props.files.forEach((e,i) => {
                 if (typeof(e) == "string") {
                     bee.get(e).then(r => {
                         let a = this.state.files;
+                        if (!r.fileIndex) {
+                            r.fileIndex = i;
+                        }
                         a.splice(r.fileIndex, 0, r);
                         this.setState({files: a})
                     });
                 }
                 if (typeof(e) == "object") {
                     let a = this.state.files;
+                    if (!e.fileIndex) {
+                        e.fileIndex = i;
+                    }
                     a.splice(e.fileIndex, 0, e);
                     this.setState({files: a});
                 }
             });
+        }
+    }
+
+    toggleFile(evt, fileIndex) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        if (typeof(this.props.toggleFile) == "function") {
+            console.log(evt.currentTarget);
+            this.props.toggleFile(evt.currentTarget.getAttribute("fileIndex"));
         }
     }
 
@@ -35,8 +51,19 @@ export default class FileGrid extends Component {
         if (miniature == true) {
             if (file.status == "ready") {
                 return (
-                    <a data-nlg href={url} class="rounded">
-                        <div class="miniature" style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}></div>
+                    <a data-nlg={!this.props.inWriter} href={!this.props.inWriter && url} class="rounded">
+                        <div
+                            className={"miniature" + (file.removed ? " removed" : "")}
+                            style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}
+                        ></div>
+                        <div
+                            class="remove-button"
+                            style={file.removed ? "color:red" : ""}
+                            fileIndex={file.fileIndex}
+                            onClick={this.toggleFile}
+                        >
+                            <FaIcon family={"solid"} icon={"times"}/>
+                        </div>
                     </a>
                 );
             }
@@ -73,8 +100,20 @@ export default class FileGrid extends Component {
             }
             if (/image/.test(file.type)) {
                 return (
-                    <a class="image" data-nlg href={url}>
+                    <a
+                        data-nlg={!this.props.inWriter}
+                        href={!this.props.inWriter && url}
+                        className={"image" + (file.removed ? " removed" : "")}
+                    >
                         <img class="img-fluid" src={url}></img>
+                        <div
+                            class="remove-button"
+                            style={file.removed ? "color:red" : ""}
+                            fileIndex={file.fileIndex}
+                            onClick={this.toggleFile}
+                        >
+                            <FaIcon family={"solid"} icon={"times"}/>
+                        </div>
                     </a>
                 );
             }
