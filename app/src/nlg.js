@@ -7,7 +7,7 @@ let nlg = {
             left: -${document.body.clientWidth}px !important;
         }
         .nlg-right {
-            left: ${document.body.clientWidth}px !important;
+            left: ${document.body.clientWidth * 2}px !important;
         }
     `,
     clickFn: e => {
@@ -32,12 +32,18 @@ let nlg = {
             nlgStyles.innerHTML = nlg.nlgStyles;
             document.body.append(nlgStyles);
         }
-        document.querySelectorAll("[data-nlg]").forEach(
-            elm => {
-                nlg.list.push(elm);
-                elm.addEventListener("click", nlg.clickFn);
-            }
-        );
+        setTimeout(() => {
+            document.querySelectorAll("[data-nlg]").forEach(
+                elm => {
+                    if (!nlg.list.find(
+                        e => e.getAttribute("href") == elm.getAttribute("href")
+                    )) {
+                        nlg.list.push(elm);
+                        elm.addEventListener("click", nlg.clickFn);
+                    }
+                }
+            );
+        }, 100);
     },
     show: (e, keepBackground = false, side = null) => {
         let url = e.dataset.src || e.src || e.href;
