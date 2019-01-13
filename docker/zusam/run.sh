@@ -6,7 +6,7 @@
 # "default" will assume you have a working db.
 
 crontab -r
-echo "* * * * * su-exec ${UID}:${GID} /zusam/api/bin/console zusam:cron >> /zusam/api/var/log/cron.log" | crontab -
+echo "* * * * * su-exec ${UID}:${GID} /zusam/api/bin/console zusam:cron >> /dev/stdout" | crontab -
 
 DATABASE_URL="sqlite:///%kernel.project_dir%/../data/${DATABASE_NAME}"
 
@@ -35,7 +35,7 @@ fi
 
 # if this is a demo instance, reset it every day
 if [ "${INSTANCE_TYPE}" = "demo" ]; then
-    echo "0 0 * * * su-exec ${UID}:${GID} /usr/local/bin/reset.sh >> /zusam/api/var/log/cron.log" | crontab -
+    echo "0 0 * * * su-exec ${UID}:${GID} /usr/local/bin/reset.sh >> /dev/stdout" | crontab -
 fi
 
 chown -R "${UID}:${GID}" /etc/s6.d /var/log/ /var/tmp/ /etc/php7 /etc/nginx /run/nginx /zusam
