@@ -21,44 +21,44 @@ class CronCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $cronId = substr(md5(date("Y-m-d H:i:s")), 0, 5);
         $this->output = $output;
         $timeStart = microtime(true);
-        $this->output->writeln(["zusam:cron ($cronId) started at ".date("Y-m-d H:i:s")]);
+        $startDate = date("Y-m-d H:i:s");
 
         // executed every day
-        $dailyCron = CronExpression::factory("@daily");
-        if ($dailyCron->isDue()) {
-            $this->runCommand("zusam:clean-files");
-        }
+        // $dailyCron = CronExpression::factory("@daily");
+        // if ($dailyCron->isDue()) {
+        // }
 
         // executed every hour
-        $hourlyCron = CronExpression::factory("@hourly");
-        if ($hourlyCron->isDue()) {
-        }
+        // $hourlyCron = CronExpression::factory("@hourly");
+        // if ($hourlyCron->isDue()) {
+        // }
 
-        // always executed
+        // executed every minute
         $this->runCommand("zusam:convert-video");
+        $this->runCommand("zusam:clean-old-cache");
+        $this->runCommand("zusam:clean-files");
+
+        // executed 10 times every minute
         for ($i = 0; $i < 10; $i++) {
             $this->runCommand("zusam:convert-image");
         }
-        $this->runCommand("zusam:clean-old-cache");
 
         $timeEnd = microtime(true);
         $time = round($timeEnd - $timeStart, 2);
-        $output->writeln([
-            "<info>zusam:cron ($cronId) finished in $time seconds.</info>",
-        ]);
+        if ($time > 1) {
+            $output->writeln([
+                "<info>zusam:cron [$startDate] finished in $time seconds.</info>",
+            ]);
+        }
     }
 
     private function runCommand($id)
     {
         $command = $this->getApplication()->find($id);
-        $this->output->writeln("$id started");
         $returnCode = $command->run(new ArrayInput([]), $this->output);
-        if ($returnCode === 0) {
-            $this->output->writeln("<info>$id finished successfully</info>");
-        } else {
+        if ($returnCode != 0) {
             $this->output->writeln("<error>$id failed, return code: $returnCode</error>");
         }
     }
