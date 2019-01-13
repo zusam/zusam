@@ -98,8 +98,16 @@ class LinkByUrl extends Controller
                     // TODO
                 }
             }
-            $this->em->persist($link);
-            $this->em->flush();
+            // check again if the link was not processed
+            // it can happen while processing the link (race condition)
+            $doubleLink = $this->em->getRepository(Link::class)->findOneByUrl($url);
+            if (empty($doubleLink)) {
+                $this->em->persist($link);
+                $this->em->flush();
+            } else {
+                // if there was already a link, use it instead
+                $link = $doubleLink;
+            }
         }
         if (!$onlyData) {
             return [
