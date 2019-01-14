@@ -21,7 +21,10 @@ class CleanOldCacheCommand extends ContainerAwareCommand
     {
         $cacheDir = realpath($this->getContainer()->getParameter("dir.cache"));
         foreach(scandir($cacheDir."/images/") as $file) {
-            if (filemtime($cacheDir."/images/".$file) < time() - 60*60*24*7) {
+            if (
+                $file != "." && $file != ".." &&
+                filemtime($cacheDir."/images/".$file) < time() - 60*60*24*7
+            ) {
                 unlink($cacheDir."/images/".$file);
             }
         }
