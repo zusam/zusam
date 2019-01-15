@@ -92,7 +92,7 @@ export default class PreviewBlock extends Component {
                         { this.props.preview && <img class="card-img-top" src={ bee.crop(this.props.preview, 320, 180) } /> }
                         <div class="card-body p-1">
                             <h5>{ data["title"] }</h5>
-                            <p><small>{ data["description"] }</small></p>
+                            <p><small>{ data["description"].slice(0, 500) }</small></p>
                         </div>
                     </div>
                 </a>
