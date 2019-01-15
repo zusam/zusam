@@ -47,7 +47,11 @@ export default class Navbar extends Component {
                     </a>
                 )}
                 { this.props.route == "groups" && this.props.entity && this.props.entity.name && (
-                    <span onClick={() => location.reload()} class="title cursor-pointer"><span>{this.props.entity.name}</span></span>
+                    <span class="title">
+                        <span class="cursor-pointer" onClick={() => location.reload()}>
+                            {this.props.entity.name}
+                        </span>
+                    </span>
                 )}
                 { this.props.groups && (
                     <div

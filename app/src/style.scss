@@ -396,7 +396,16 @@ $navbar_height: 50px;
     .title {
         text-overflow: ellipsis;
         overflow: hidden;
-        max-width: 20rem;
+        width: 100%;
+        text-align: center;
+    }
+    @media (min-width: map-get($grid-breakpoints, "md")) {
+        .title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+        }
     }
 
     .menu {
@@ -404,9 +413,6 @@ $navbar_height: 50px;
         position: relative;
         cursor: pointer;
         height: 100%;
-        max-width: 7rem;
-        width: 100%;
-        flex-shrink: 2;
 
         &.active {
             background-color: adjust-hue($zusam_color, 5deg);
@@ -462,7 +468,6 @@ $navbar_height: 50px;
         background-color: $zusam_color;
         height: 100%;
         line-height: 200%;
-        width: 7rem;
         flex-shrink: 0;
 
         &.active {
