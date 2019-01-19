@@ -77,14 +77,6 @@ class User implements UserInterface, \Serializable
     private $password;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read_user", "write_user"})
-     * @Assert\Type("integer")
-     * @Assert\NotNull()
-     */
-    private $lastConnection;
-
-    /**
      * @ORM\Column(type="string", unique=true)
      * @Assert\NotBlank()
      */
@@ -131,7 +123,6 @@ class User implements UserInterface, \Serializable
         $this->messages = new ArrayCollection();
         $this->files = new ArrayCollection();
         $this->createdAt = time();
-        $this->lastConnection = time();
         $this->apiKey = Uuid::uuidv4();
         $this->data = "{}";
     }
@@ -171,17 +162,6 @@ class User implements UserInterface, \Serializable
     public function setPassword(string $password): self
     {
         $this->password = $password;
-        return $this;
-    }
-
-    public function getLastConnection(): int
-    {
-        return $this->lastConnection;
-    }
-
-    public function setLastConnection(int $lastConnection): self
-    {
-        $this->lastConnection = $lastConnection;
         return $this;
     }
 
