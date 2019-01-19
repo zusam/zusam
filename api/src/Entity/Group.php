@@ -91,6 +91,14 @@ class Group
      */
     private $messages;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"read_group", "read_user"})
+     * @Assert\Type("integer")
+     * @Assert\NotNull()
+     */
+    private $lastActivityDate;
+
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
@@ -174,5 +182,16 @@ class Group
     public function getMessages(): Collection
     {
         return $this->messages;
+    }
+
+    public function getLastActivityDate(): int
+    {
+        return $this->lastActivityDate ?? 0;
+    }
+
+    public function setLastActivityDate(int $lastActivityDate): self
+    {
+        $this->lastActivityDate = $lastActivityDate;
+        return $this;
     }
 }
