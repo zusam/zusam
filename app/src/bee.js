@@ -107,6 +107,7 @@ const bee = {
         } else {
             bee.data[id] = storageBox;
         }
+        return Promise.resolve(id);
     },
     get: (id, nocache = false) => {
         if (!id) {
@@ -134,12 +135,12 @@ const bee = {
         // if it's an api resource, refresh it
         if (/^\/api/.test(id)) {
             let cacheDuration = 10000; // short cache by default to avoid double calls (10s)
-            if (/^\/api\/messages/.test(id)) {
-                cacheDuration = 10 * 60 * 1000; // 10mn for a message (not likely to be changed often)
-            }
-            if (/^\/api\/(users|links|groups|me)/.test(id)) {
-                cacheDuration = 60 * 60 * 1000; // 60mn for a user/group/link
-            }
+            //if (/^\/api\/messages/.test(id)) {
+            //    cacheDuration = 10 * 60 * 1000; // 10mn for a message (not likely to be changed often)
+            //}
+            //if (/^\/api\/(users|links|groups|me)/.test(id)) {
+            //    cacheDuration = 60 * 60 * 1000; // 60mn for a user/group/link
+            //}
             return bee.update(id, cacheDuration, false);
         }
         // if it's too old, remove it and return null
