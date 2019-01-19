@@ -50,6 +50,7 @@ class GroupPage extends Controller
         for ($i = 0; $i + $n * 30 < count($messages) && $i < 30; $i++) {
             $page[] = [
                 "@id" => "/api/messages/" . $messages[30 * $n + $i]->getId(),
+                "id" => $messages[30 * $n + $i]->getId(),
                 "data" => $messages[30 * $n + $i]->getData(),
                 "author" => "/api/users/" . $messages[30 * $n + $i]->getAuthor()->getId(),
                 "preview" => $this->genPreview($messages[30 * $n + $i]),
