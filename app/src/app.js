@@ -22,6 +22,8 @@ class App extends Component {
             url: "",
         }
         this.onRouterStateChange = this.onRouterStateChange.bind(this);
+        this.updateGroupsState = this.updateGroupsState.bind(this);
+        window.addEventListener("viewGroup", this.updateGroupState);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
         bee.get("apiKey").then(apiKey => {
@@ -45,6 +47,21 @@ class App extends Component {
         ].includes(route);
     }
 
+    updateGroupsState() {
+        let groups = this.state.groups;
+        groups.map(group => {
+            bee.get("group_" + group.id).then(
+                lastVisit => {
+                    group.hasNews = true;
+                    if (lastVisit) {
+                        group.hasNews = lastVisit.timestamp < group.lastActivityDate;
+                    }
+                    this.setState({groups: groups});
+                }
+            );
+        });
+    }
+
     onRouterStateChange(event) {
         const [route, id, action] = router.getSegments();
 
@@ -59,6 +76,7 @@ class App extends Component {
                         currentUser: user,
                         groups: user.groups,
                     });
+                    this.updateGroupsState();
                 });
             } else {
                 if (!this.isOutsideRoute(route)) {
@@ -179,7 +197,12 @@ class App extends Component {
                             && this.state.entity
                             ? "d-block" : "d-none"
                     }>
-                        <GroupBoard ref={g => this.groupRef = g} key={this.state.group} url={this.state.group} />
+                        <GroupBoard
+                            ref={g => this.groupRef = g}
+                            key={this.state.group}
+                            url={this.state.group}
+                            currentUser={this.state.currentUser}
+                        />
                         <a class="write-button material-shadow seamless-link" href={this.state.url + "/write"} onClick={router.onClick}>
                             <FaIcon family={"solid"} icon={"pencil-alt"}/>
                         </a>

@@ -36,11 +36,18 @@ export default class Message extends Component {
                     displayedChildren: msg.children && 5 // display 5 first children
                 });
                 setTimeout(this.getPreview);
-                bee.set("message_" + msg.id, {timestamp: Date.now()});
+                bee.set("message_" + msg.id, {timestamp: Math.floor(Date.now()/1000)});
             });
         } else {
             this.getPreview();
-            bee.set("message_" + this.state.message.id, {timestamp: Date.now()});
+            bee.set("message_" + this.state.message.id, {timestamp: Math.floor(Date.now()/1000)}).then(
+                r => {
+                    window.dispatchEvent(new CustomEvent("viewMessage", {detail : {
+                        from: "message-component",
+                        data: this.state.message.id
+                    }}));
+                }
+            );
         }
     }
 

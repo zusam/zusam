@@ -7,9 +7,11 @@ import FaIcon from "./fa-icon.component.js";
 export default class MessagePreview extends Component {
     constructor(props) {
         super(props);
+        this.evaluateHasNews = this.evaluateHasNews.bind(this);
         this.state = {
             message: props.message,
         };
+        window.addEventListener("viewMessage", this.evaluateHasNews);
         if (props.message.author) {
             bee.get(props.message.author).then(author => author && this.setState({author: author}));
         }
@@ -21,17 +23,26 @@ export default class MessagePreview extends Component {
         if (props.message.preview) {
             this.setState({preview: props.message.preview});
         }
-        bee.get("message_" + props.message.id).then(
-            lastVisit => this.setState({
-                hasNews: !!lastVisit && lastVisit.timestamp < props.message.lastActivityDate
-            })
+        this.evaluateHasNews();
+    }
+
+    evaluateHasNews() {
+        bee.get("message_" + this.props.message.id).then(
+            lastVisit => {
+                if (lastVisit) {
+                    hasNews = lastVisit.timestamp < this.props.message.lastActivityDate;
+                } else {
+                    hasNews = true;
+                }
+                this.setState({hasNews: hasNews});
+            }
         );
     }
 
     render() {
         return (
             <a
-                class="d-inline-block seamless-link message-preview"
+                className={"d-inline-block seamless-link message-preview" + (this.state.hasNews ? " has-news" : "")}
                 href={ router.toApp(this.state.message["@id"]) }
                 onClick={ router.onClick }
                 title={ this.state.title }

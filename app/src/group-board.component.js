@@ -20,6 +20,15 @@ export default class GroupBoard extends Component {
 
     componentDidMount() {
         window.addEventListener("scroll", this.loadMoreMessages);
+        // update timestamp of last visit of the group
+        bee.set("group_" + this.state.groupId, {timestamp: Math.floor(Date.now()/1000)}).then(
+            r => {
+                window.dispatchEvent(new CustomEvent("viewGroup", {detail : {
+                    from: "group-board",
+                    data: this.state.groupId
+                }}));
+            }
+        );
     }
 
     componentWillUnmount() {
@@ -121,7 +130,7 @@ export default class GroupBoard extends Component {
             <article id="group" class="justify-content-center d-flex">
                 <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
                     { this.state.messages.slice(0, this.state.loaded).map((msg, i) => {
-                        return <MessagePreview tabindex={i + 1} key={msg.id} message={msg}/>;
+                        return <MessagePreview tabindex={i + 1} key={msg.id} message={msg} currentUser={this.props.currentUser}/>;
                     })}
                 </div>
             </article>

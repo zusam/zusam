@@ -62,7 +62,13 @@ export default class Navbar extends Component {
                         <div>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></div>
                         <div class="dropdown-menu">
                             { Array.isArray(this.props.groups) && this.props.groups.map(
-                                e => <a class="seamless-link" href={router.toApp(e["@id"])} onClick={router.onClick}>{e.name}</a>
+                                e => (
+                                    <a
+                                        className={"seamless-link" + (e.hasNews ? " has-news" : "")}
+                                        href={router.toApp(e["@id"])}
+                                        onClick={router.onClick}
+                                    >{e.name}</a>
+                                )
                             )}
                             <a class="seamless-link" href="/create-group" onClick={router.onClick}>{"+ " + lang.fr["create_a_group"]}</a>
                         </div>

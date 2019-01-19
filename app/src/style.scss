@@ -292,6 +292,9 @@ $navbar_height: 50px;
         width: 100%;
         max-width: 320px;
         margin: 1rem;
+        &.has-news {
+            font-weight: bold;
+        }
 
         @media (max-width: map-get($grid-breakpoints, "sm")) {
             margin: 1rem 0;
@@ -454,7 +457,6 @@ $navbar_height: 50px;
                 padding: 5px 10px;
                 cursor: pointer;
                 white-space: nowrap;
-
                 &:hover {
                     background-color: adjust-hue($zusam_color, 10deg);
                 }
@@ -499,6 +501,9 @@ $navbar_height: 50px;
                 padding: 5px 10px;
                 cursor: pointer;
                 white-space: nowrap;
+                &.has-news {
+                    font-weight: bold;
+                }
 
                 &:hover {
                     background-color: adjust-hue($zusam_color, 10deg);
