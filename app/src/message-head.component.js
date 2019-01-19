@@ -18,7 +18,7 @@ export default class MessageHead extends Component {
                 )}
                 <div class="infos">
                     { this.props.author && <span class="capitalize author">{ this.props.author.name }</span> }
-                    <span title={util.standardDate(this.props.message.createdAt)}>{ util.humanDate(this.props.message.createdAt) }</span>
+                    <span title={util.humanFullDate(this.props.message.createdAt)}>{ util.humanTime(this.props.message.createdAt) }</span>
                 </div>
                 { this.props.currentUser && this.props.author && this.props.author.id == this.props.currentUser.id && (
                     <div tabindex="-1"

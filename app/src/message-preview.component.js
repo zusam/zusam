@@ -44,8 +44,10 @@ export default class MessagePreview extends Component {
                     }
                     <div class="card-body border-top d-flex justify-content-between">
                         <span class="left-buffer"></span>
-                        <span class="title">{ this.state.title || util.humanDate(this.state.message.lastActivityDate) }</span>
-                        <span className={"children" + (this.state.hasNews ? " text-warning" : "")}>
+                        <span class="title">
+                            { this.state.title || util.humanTime(this.state.message.lastActivityDate) }
+                        </span>
+                        <span class="children">
                             { !!this.state.message.children && (
                                 <span>
                                     { this.state.message.children + " " }
