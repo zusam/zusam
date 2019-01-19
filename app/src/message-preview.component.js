@@ -29,10 +29,10 @@ export default class MessagePreview extends Component {
     evaluateHasNews() {
         bee.get("message_" + this.props.message.id).then(
             lastVisit => {
+                let groupActivity = this.props.currentUser.groups.find(g => g.id == this.props.groupId).lastActivityDate;
+                let hasNews = groupActivity < this.props.message.lastActivityDate;
                 if (lastVisit) {
                     hasNews = lastVisit.timestamp < this.props.message.lastActivityDate;
-                } else {
-                    hasNews = true;
                 }
                 this.setState({hasNews: hasNews});
             }
@@ -55,7 +55,7 @@ export default class MessagePreview extends Component {
                     }
                     <div class="card-body border-top d-flex justify-content-between">
                         <span class="left-buffer"></span>
-                        <span class="title">
+                        <span class="title" title={ this.state.title || util.humanFullDate(this.state.message.lastActivityDate)}>
                             { this.state.title || util.humanTime(this.state.message.lastActivityDate) }
                         </span>
                         <span class="children">

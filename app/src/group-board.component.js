@@ -130,7 +130,15 @@ export default class GroupBoard extends Component {
             <article id="group" class="justify-content-center d-flex">
                 <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
                     { this.state.messages.slice(0, this.state.loaded).map((msg, i) => {
-                        return <MessagePreview tabindex={i + 1} key={msg.id} message={msg} currentUser={this.props.currentUser}/>;
+                        return (
+                            <MessagePreview
+                                tabindex={i + 1}
+                                key={msg.id}
+                                message={msg}
+                                currentUser={this.props.currentUser}
+                                groupId={bee.getId(this.props.url)}
+                            />
+                        );
                     })}
                 </div>
             </article>
