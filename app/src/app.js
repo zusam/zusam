@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
-import bee from "./bee.js";
+import cache from "./cache.js";
 import router from "./router.js";
 import Message from "./message.component.js";
 import GroupBoard from "./group-board.component.js";
@@ -26,7 +26,7 @@ class App extends Component {
         window.addEventListener("viewGroup", this.updateGroupState);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
-        bee.get("apiKey").then(apiKey => {
+        cache.get("apiKey").then(apiKey => {
             let route = this.state.route || router.getSegments()[0];
             if (apiKey || this.isOutsideRoute(route)) {
                 router.sync();
@@ -50,7 +50,7 @@ class App extends Component {
     updateGroupsState() {
         let groups = this.state.groups;
         groups.map(group => {
-            bee.get("group_" + group.id).then(
+            cache.get("group_" + group.id).then(
                 lastVisit => {
                     group.hasNews = true;
                     if (lastVisit) {
@@ -65,9 +65,9 @@ class App extends Component {
     onRouterStateChange(event) {
         const [route, id, action] = router.getSegments();
 
-        bee.get("apiKey").then(apiKey => {
+        cache.get("apiKey").then(apiKey => {
             if (apiKey) {
-                bee.get("/api/me").then(user => {
+                cache.get("/api/me").then(user => {
                     if (!user && !this.isOutsideRoute(route)) {
                         router.navigate("/login");
                         return;
@@ -122,7 +122,7 @@ class App extends Component {
         }
 
         if (id) {
-            bee.get(entityUrl).then(
+            cache.get(entityUrl).then(
                 res => {
                     // set backUrl and backUrlPrompt.
                     // These will dictate navbar behavior for the back button

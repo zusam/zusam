@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
-import bee from "./bee.js";
+import cache from "./cache.js";
 import router from "./router.js";
 import UserSettings from "./user-settings.component.js";
 import GroupSettings from "./group-settings.component.js";
@@ -14,7 +14,7 @@ export default class Settings extends Component {
         if (!this.state.key) {
             return;
         }
-        bee.get(this.state.key).then(res => this.setState({entity: res}));
+        cache.get(this.state.key).then(res => this.setState({entity: res}));
     }
 
     render() {

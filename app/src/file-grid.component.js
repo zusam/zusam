@@ -1,5 +1,6 @@
 import { h, render, Component } from "preact";
-import bee from "./bee.js";
+import util from "./util.js";
+import cache from "./cache.js";
 import nlg from "./nlg.js";
 import FaIcon from "./fa-icon.component.js";
 
@@ -12,7 +13,7 @@ export default class FileGrid extends Component {
         if (Array.isArray(props.files)) {
             props.files.forEach((e,i) => {
                 if (typeof(e) == "string") {
-                    bee.get(e).then(r => {
+                    cache.get(e).then(r => {
                         let a = this.state.files;
                         if (!r.fileIndex) {
                             r.fileIndex = i;
@@ -46,7 +47,7 @@ export default class FileGrid extends Component {
         let filePath = file.contentUrl ? "/files/" + file.contentUrl : null;
         let url = filePath;
         if (/image/.test(file.type)) {
-            url = bee.thumbnail(filePath, 1366, 768);
+            url = util.thumbnail(filePath, 1366, 768);
         }
         if (miniature == true) {
             if (file.status == "ready") {
@@ -54,7 +55,7 @@ export default class FileGrid extends Component {
                     <a data-nlg={!this.props.inWriter} href={!this.props.inWriter && url} class="rounded">
                         <div
                             className={"miniature" + (file.removed ? " removed" : "")}
-                            style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}
+                            style={"background-image:url('" + util.crop(filePath, 160, 160) + "')"}
                         ></div>
                         <div
                             class="remove-button"
@@ -76,7 +77,7 @@ export default class FileGrid extends Component {
             }
             return (
                 <a class="rounded">
-                    <div class="miniature video-raw" style={"background-image:url('" + bee.crop(filePath, 160, 160) + "')"}></div>
+                    <div class="miniature video-raw" style={"background-image:url('" + util.crop(filePath, 160, 160) + "')"}></div>
                     <div class="spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
                 </a>
             );
@@ -85,7 +86,7 @@ export default class FileGrid extends Component {
             if (/video/.test(file.type)) {
                 if (file.status == "ready") {
                     return <video
-                        poster={bee.thumbnail(filePath, 1280, 720)}
+                        poster={util.thumbnail(filePath, 1280, 720)}
                         class="img-fluid contained-height video"
                         controls="true"
                         src={url}
@@ -93,7 +94,7 @@ export default class FileGrid extends Component {
                 }
                 return (
                     <a class="image video-uploaded">
-                        <img class="img-fluid video-raw" src={bee.crop(filePath, 320, 180)}></img>
+                        <img class="img-fluid video-raw" src={util.crop(filePath, 320, 180)}></img>
                         <div class="spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
                     </a>
                 );

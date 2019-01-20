@@ -1,7 +1,8 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import util from "./util.js";
-import bee from "./bee.js";
+import cache from "./cache.js";
+import http from "./http.js";
 import alert from "./alert.js";
 import imageService from "./image-service.js";
 import FaIcon from "./fa-icon.component.js";
@@ -30,10 +31,10 @@ export default class UserSettings extends Component {
                 imageService.resize(img, nw, nh, blob => {
                     const formData = new FormData();
                     formData.append("file", blob);
-                    bee.http.post("/api/files/upload", formData, false).then(file => {
-                        bee.http.put("/api/users/" + this.state.id, {avatar: file["@id"]}).then(res => {
+                    http.post("/api/files/upload", formData, false).then(file => {
+                        http.put("/api/users/" + this.state.id, {avatar: file["@id"]}).then(res => {
                             this.setState({avatar: file});
-                            bee.resetCache();
+                            cache.resetCache();
                             alert.add(lang.fr["settings_updated"]);
                         });
                     });
@@ -59,9 +60,9 @@ export default class UserSettings extends Component {
         if (password) {
             user.password = password;
         }
-        bee.http.put("/api/users/" + this.state.id, user).then(res => {
+        http.put("/api/users/" + this.state.id, user).then(res => {
             this.setState(Object.assign(this.state, res));
-            bee.resetCache();
+            cache.resetCache();
             alert.add(lang.fr["settings_updated"]);
         });
     }
@@ -76,7 +77,7 @@ export default class UserSettings extends Component {
                                 <div class="col-12 col-md-2">
                                     <img
                                         class="img-fluid rounded-circle material-shadow avatar"
-                                        src={ this.state.avatar ? bee.crop(this.state.avatar["@id"], 100, 100) : util.defaultAvatar }
+                                        src={ this.state.avatar ? util.crop(this.state.avatar["@id"], 100, 100) : util.defaultAvatar }
                                         onClick={this.inputAvatar}
                                     />
                                 </div>

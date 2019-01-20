@@ -1,6 +1,5 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
-import bee from "./bee.js";
 import util from "./util.js";
 import FaIcon from "./fa-icon.component.js";
 
@@ -12,7 +11,7 @@ export default class MessageHead extends Component {
                 { this.props.author && (
                     <img
                         class="rounded-circle material-shadow avatar"
-                        src={ this.props.author.avatar ? bee.crop(this.props.author.avatar["@id"], 100, 100) : util.defaultAvatar }
+                        src={ this.props.author.avatar ? util.crop(this.props.author.avatar["@id"], 100, 100) : util.defaultAvatar }
                         title={ this.props.author.name }
                     />
                 )}

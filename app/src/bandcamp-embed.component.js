@@ -1,5 +1,4 @@
 import { h, render, Component } from "preact";
-import bee from "./bee.js";
 
 export default class BandCampEmbed extends Component {
     render() {

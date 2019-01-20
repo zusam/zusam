@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import bee from "./bee.js";
+import util from "./util.js";
 import YoutubeEmbed from "./youtube-embed.component.js";
 import SoundcloudEmbed from "./soundcloud-embed.component.js";
 import TwitchEmbed from "./twitch-embed.component.js";
@@ -73,7 +73,7 @@ export default class PreviewBlock extends Component {
                         href={this.props.url}
                         class="img-fluid cursor-pointer"
                         data-src={this.props.url}
-                        src={ /gif/.test(data["content-type"]) ? this.props.url : bee.thumbnail(this.props.preview, 1280, 720) }
+                        src={ /gif/.test(data["content-type"]) ? this.props.url : util.thumbnail(this.props.preview, 1280, 720) }
                     />
                 </div>
             );
@@ -89,7 +89,7 @@ export default class PreviewBlock extends Component {
             return (
                 <a class="preview-card seamless-link d-inline-block" target="_blank" href={ this.props.url }>
                     <div class="card" style="max-width: 480px">
-                        { this.props.preview && <img class="card-img-top" src={ bee.crop(this.props.preview, 320, 180) } /> }
+                        { this.props.preview && <img class="card-img-top" src={ util.crop(this.props.preview, 320, 180) } /> }
                         <div class="card-body p-1">
                             <h5>{ data["title"] }</h5>
                             <p><small>{ data["description"].slice(0, 500) }</small></p>

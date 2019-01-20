@@ -1,7 +1,8 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
+import http from "./http.js";
 import util from "./util.js";
-import bee from "./bee.js";
+import cache from "./cache.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
 import PreviewBlock from "./preview-block.component.js";
@@ -29,18 +30,18 @@ export default class Message extends Component {
             displayedChildren: props.message ? props.message.children && 5 : 0,
         };
         if (!props.message) {
-            bee.get(props.url).then(msg => {
+            cache.get(props.url).then(msg => {
                 this.setState({
                     message: msg,
                     author: msg.author,
                     displayedChildren: msg.children && 5 // display 5 first children
                 });
                 setTimeout(this.getPreview);
-                bee.set("message_" + msg.id, {timestamp: Math.floor(Date.now()/1000)});
+                cache.set("message_" + msg.id, {timestamp: Math.floor(Date.now()/1000)});
             });
         } else {
             this.getPreview();
-            bee.set("message_" + this.state.message.id, {timestamp: Math.floor(Date.now()/1000)}).then(
+            cache.set("message_" + this.state.message.id, {timestamp: Math.floor(Date.now()/1000)}).then(
                 r => {
                     window.dispatchEvent(new CustomEvent("viewMessage", {detail : {
                         from: "message-component",
@@ -61,7 +62,7 @@ export default class Message extends Component {
             this.setState({data: data});
             let previewUrl = data["text"].match(/(https?:\/\/[^\s]+)/gi);
             if (previewUrl) {
-                bee.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => r && this.setState({preview: r}));
+                cache.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => r && this.setState({preview: r}));
             }
         }
     }
@@ -69,8 +70,8 @@ export default class Message extends Component {
     deleteMessage(event) {
 		event.preventDefault();
         if(confirm(lang.fr["ask_delete_message"])) {
-            bee.http.delete(this.state.message["@id"]);
-            bee.resetCache();
+            http.delete(this.state.message["@id"]);
+            cache.resetCache();
             // give some time to the cache to delete itself properly
             setTimeout(() => {
                 if (this.state.message.parent) {
@@ -142,7 +143,7 @@ export default class Message extends Component {
                             <div class="message-head p-1 d-none d-md-block">
                                 <img
                                     class="rounded-circle w-3 material-shadow avatar"
-                                    src={ this.props.currentUser.avatar ? bee.crop(this.props.currentUser.avatar["@id"], 100, 100) : util.defaultAvatar }
+                                    src={ this.props.currentUser.avatar ? util.crop(this.props.currentUser.avatar["@id"], 100, 100) : util.defaultAvatar }
                                 />
                             </div>
                         )}
@@ -260,7 +261,7 @@ export default class Message extends Component {
                             <div class="message-head p-1 d-none d-md-block">
                                 <img
                                     class="rounded-circle w-3 material-shadow avatar"
-                                    src={ this.props.currentUser.avatar ? bee.crop(this.props.currentUser.avatar["@id"], 100, 100) : util.defaultAvatar }
+                                    src={ this.props.currentUser.avatar ? util.crop(this.props.currentUser.avatar["@id"], 100, 100) : util.defaultAvatar }
                                 />
                             </div>
                         )}

@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
-import bee from "./bee.js";
+import http from "./http.js";
+import cache from "./cache.js";
 import alert from "./alert.js";
 import router from "./router.js";
 
@@ -13,7 +14,7 @@ export default class ResetPassword extends Component {
 
 	sendNewPassword(e) {
 		e.preventDefault();
-        bee.set("apiKey", "");
+        cache.set("apiKey", "");
 		const password = document.getElementById("password").value || "";
 		const passwordConfirmation = document.getElementById("password_confirmation").value || "";
         const mail = router.getParam("mail");
@@ -23,9 +24,9 @@ export default class ResetPassword extends Component {
                 alert.add(lang.fr["passwords_dont_match"]);
                 return;
             }
-            bee.http.post("/api/new-password", {mail: mail, key: key, password: password}).then(res => {
+            http.post("/api/new-password", {mail: mail, key: key, password: password}).then(res => {
                 if (res.api_key) {
-                    bee.set("apiKey", res.api_key);
+                    cache.set("apiKey", res.api_key);
                     setTimeout(() => router.navigate("/"), 100);
                 } else {
                     alert.add(lang.fr[res.message]);

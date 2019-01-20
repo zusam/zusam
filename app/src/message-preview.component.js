@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import bee from "./bee.js";
+import cache from "./cache.js";
 import util from "./util.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
@@ -13,7 +13,7 @@ export default class MessagePreview extends Component {
         };
         window.addEventListener("viewMessage", this.evaluateHasNews);
         if (props.message.author) {
-            bee.get(props.message.author).then(author => author && this.setState({author: author}));
+            cache.get(props.message.author).then(author => author && this.setState({author: author}));
         }
         const msgData = JSON.parse(props.message.data);
         this.setState({
@@ -27,7 +27,7 @@ export default class MessagePreview extends Component {
     }
 
     evaluateHasNews() {
-        bee.get("message_" + this.props.message.id).then(
+        cache.get("message_" + this.props.message.id).then(
             lastVisit => {
                 let groupActivity = this.props.currentUser.groups.find(g => g.id == this.props.groupId).lastActivityDate;
                 let hasNews = groupActivity < this.props.message.lastActivityDate;
@@ -48,9 +48,9 @@ export default class MessagePreview extends Component {
                 title={ this.state.title }
             >
                 <div tabindex={this.props.tabindex} class="card material-shadow">
-                    { this.state.author && <img title={ this.state.author.name } class="avatar material-shadow" src={ this.state.author.avatar ? bee.crop(this.state.author.avatar["@id"], 100, 100) : util.defaultAvatar } /> }
+                    { this.state.author && <img title={ this.state.author.name } class="avatar material-shadow" src={ this.state.author.avatar ? util.crop(this.state.author.avatar["@id"], 100, 100) : util.defaultAvatar } /> }
                     { this.state.preview ?
-                            <div class="card-miniature" style={"background-image: url('" + bee.crop(this.state.preview, 320, 180) + "')" } />
+                            <div class="card-miniature" style={"background-image: url('" + util.crop(this.state.preview, 320, 180) + "')" } />
                             : <div class="text-preview">{ this.state.text }</div>
                     }
                     <div class="card-body border-top d-flex justify-content-between">

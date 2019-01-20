@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
-import bee from "./bee.js";
+import http from "./http.js";
+import cache from "./cache.js";
 import alert from "./alert.js";
 import router from "./router.js";
 
@@ -16,7 +17,7 @@ export default class Login extends Component {
         this.sendPasswordReset = this.sendPasswordReset.bind(this);
         this.showPasswordReset = this.showPasswordReset.bind(this);
         // reroute if already logged in
-        bee.get("apiKey").then(apiKey => apiKey && router.navigate("/"));
+        cache.get("apiKey").then(apiKey => apiKey && router.navigate("/"));
     }
     
     sendPasswordReset(e) {
@@ -24,7 +25,7 @@ export default class Login extends Component {
 		let login = document.getElementById("login").value || "";
         login.toLowerCase();
         this.setState({sending: true});
-        bee.http.post("/api/password-reset-mail", {mail: login}).then(res => {
+        http.post("/api/password-reset-mail", {mail: login}).then(res => {
             this.setState({sending: false});
 			if (res && !res.message) {
                 alert.add(lang.fr["password_reset_mail_sent"]);
@@ -40,11 +41,11 @@ export default class Login extends Component {
 		let login = document.getElementById("login").value || "";
         login.toLowerCase();
 		const password = document.getElementById("password").value;
-        bee.set("apiKey", "");
-		bee.http.post("/api/login", {login: login, password: password}).then(res => {
+        cache.set("apiKey", "");
+		http.post("/api/login", {login: login, password: password}).then(res => {
             this.setState({sending: false});
 			if (res && !res.message) {
-				bee.set("apiKey", res.api_key);
+				cache.set("apiKey", res.api_key);
                 setTimeout(() => router.navigate("/"), 100);
             } else {
                 alert.add(lang.fr[res.message], "alert-danger");

@@ -1,7 +1,6 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import util from "./util.js";
-import bee from "./bee.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
 
@@ -30,7 +29,7 @@ export default class Navbar extends Component {
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >
                         <div class="rounded-circle avatar">
-                            <img class="rounded-circle" src={ this.props.currentUser.avatar ? bee.crop(this.props.currentUser.avatar["@id"], 80, 80) : util.defaultAvatar }/>
+                            <img class="rounded-circle" src={ this.props.currentUser.avatar ? util.crop(this.props.currentUser.avatar["@id"], 80, 80) : util.defaultAvatar }/>
                         </div>
                         <div class="dropdown-menu">
                             <a class="seamless-link"

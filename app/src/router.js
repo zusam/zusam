@@ -1,5 +1,7 @@
-import bee from "./bee.js";
+import cache from "./cache.js";
+import http from "./http.js";
 import nlg from "./nlg.js";
+
 const router = {
     toApp: url => url.replace(/^\/api/,""),
     getParam: param => {
@@ -33,13 +35,13 @@ const router = {
                 }})), 0);
                 break;
             case "logout":
-                bee.reset();
+                cache.reset();
                 window.location.href = window.location.origin;
                 break;
             case "invitation":
-                bee.get("apiKey").then(apiKey => {
+                cache.get("apiKey").then(apiKey => {
                     if (apiKey) {
-                        bee.http.post("/api/groups/invitation/" + id, {}).then(res => {
+                        http.post("/api/groups/invitation/" + id, {}).then(res => {
                             window.location.href = window.location.origin;
                         });
                     } else {
@@ -48,7 +50,7 @@ const router = {
                 });
                 break;
             default:
-                bee.get("/api/me").then(user => {
+                cache.get("/api/me").then(user => {
                     if (!user) {
                         router.navigate("/login");
                         return;

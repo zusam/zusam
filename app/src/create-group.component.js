@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
-import bee from "./bee.js";
+import http from "./http.js";
 import router from "./router.js";
 
 export default class CreateGroup extends Component {
@@ -20,8 +20,8 @@ export default class CreateGroup extends Component {
             return false;
         }
         group.createdAt = Math.floor(Date.now()/1000);
-        bee.http.post("/api/groups", group).then(res => {
-            bee.http.post("/api/groups/invitation/" + res.inviteKey, {}).then(res => {
+        http.post("/api/groups", group).then(res => {
+            http.post("/api/groups/invitation/" + res.inviteKey, {}).then(res => {
                 window.location = "/groups/" + res.id;
             });
         });

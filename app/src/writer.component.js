@@ -1,6 +1,8 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
-import bee from "./bee.js";
+import util from "./util.js";
+import http from "./http.js";
+import cache from "./cache.js";
 import exif from "./exif.js";
 import alert from "./alert.js";
 import imageService from "./image-service.js";
@@ -73,7 +75,7 @@ export default class Writer extends Component {
             msg.data.title = document.getElementById("title").value;
         }
         msg.data = JSON.stringify(msg.data);
-        bee.http.put("/api/messages/" + this.props.messageId, msg).then(res => {
+        http.put("/api/messages/" + this.props.messageId, msg).then(res => {
             if (!res) {
                 alert.add(lang.fr["error_new_message"], "alert-danger");
                 return;
@@ -97,7 +99,7 @@ export default class Writer extends Component {
         if (!this.props.parent) {
             msg.data.title = document.getElementById("title").value;
         } else {
-            msg.parent = "/api/messages/" + bee.getId(this.props.parent);
+            msg.parent = "/api/messages/" + util.getId(this.props.parent);
         }
         // don't post if there is nothing to post
         if (!msg.files.length && !msg.data.text && !msg.data.title) {
@@ -105,12 +107,12 @@ export default class Writer extends Component {
             return;
         }
         msg.data = JSON.stringify(msg.data);
-        bee.http.post("/api/messages", msg).then(res => {
+        http.post("/api/messages", msg).then(res => {
             if (!res) {
                 alert.add(lang.fr["error_new_message"], "alert-danger");
                 return;
             }
-            bee.resetCache();
+            cache.resetCache();
             if (this.props.parent) {
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
             }
@@ -138,7 +140,7 @@ export default class Writer extends Component {
             const text = t.value;
             let links = text.match(/(https?:\/\/[^\s]+)/gi);
             if (links && links[0] != this.state.link) {
-                bee.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => {
+                cache.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => {
                     if (r && t.value.indexOf(links[0]) >= 0) {
                         this.setState({link: links[0], preview: r});
                     }
@@ -265,7 +267,7 @@ export default class Writer extends Component {
                 }
             }
         } : null;
-        bee.http.sendFile(formData, file => {
+        http.sendFile(formData, file => {
             let a = this.state.files;
             if (file["@type"] == "hydra:Error") {
                 a.splice(fileIndex, 1);
