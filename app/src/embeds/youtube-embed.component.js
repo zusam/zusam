@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import util from "./util.js";
+import util from "../util.js";
 
 export default class YoutubeEmbed extends Component {
     render() {
