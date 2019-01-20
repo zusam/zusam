@@ -41,19 +41,19 @@ export default class Message extends Component {
             });
         } else {
             this.getPreview();
-            cache.set("message_" + this.state.message.id, {timestamp: Math.floor(Date.now()/1000)}).then(
-                r => {
-                    window.dispatchEvent(new CustomEvent("viewMessage", {detail : {
-                        from: "message-component",
-                        data: this.state.message.id
-                    }}));
-                }
-            );
         }
     }
 
     componentDidMount() {
         setTimeout(() => window.scrollTo(0, 0), 0);
+        cache.set("message_" + this.state.message.id, {timestamp: Math.floor(Date.now()/1000)}).then(
+            r => {
+                window.dispatchEvent(new CustomEvent("viewMessage", {detail : {
+                    from: "message-component",
+                    data: this.state.message.id
+                }}));
+            }
+        );
     }
 
     getPreview() {
