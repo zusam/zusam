@@ -1,9 +1,9 @@
 import { h, render, Component } from "preact";
 import util from "./util.js";
-import YoutubeEmbed from "./youtube-embed.component.js";
-import SoundcloudEmbed from "./soundcloud-embed.component.js";
-import TwitchEmbed from "./twitch-embed.component.js";
-import BandCampEmbed from "./bandcamp-embed.component.js";
+import YoutubeEmbed from "./embeds/youtube-embed.component.js";
+import SoundcloudEmbed from "./embeds/soundcloud-embed.component.js";
+import TwitchEmbed from "./embeds/twitch-embed.component.js";
+import BandCampEmbed from "./embeds/bandcamp-embed.component.js";
 
 export default class PreviewBlock extends Component {
 
