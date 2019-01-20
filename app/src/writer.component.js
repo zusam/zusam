@@ -112,6 +112,14 @@ export default class Writer extends Component {
                 alert.add(lang.fr["error_new_message"], "alert-danger");
                 return;
             }
+            cache.set("message_" + util.getId(res.parent), {timestamp: Math.floor(Date.now()/1000)}).then(
+                r => {
+                    window.dispatchEvent(new CustomEvent("viewMessage", {detail : {
+                        from: "message-component",
+                        data: util.getId(res.parent)
+                    }}));
+                }
+            );
             cache.resetCache();
             if (this.props.parent) {
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
