@@ -15,10 +15,9 @@ export default class MessagePreview extends Component {
         if (props.message.author) {
             cache.get(props.message.author).then(author => author && this.setState({author: author}));
         }
-        const msgData = JSON.parse(props.message.data);
         this.setState({
-            title: msgData.title || "",
-            text: msgData.text || ""
+            title: props.message.data.title || "",
+            text: props.message.data.text || ""
         });
         if (props.message.preview) {
             this.setState({preview: props.message.preview});

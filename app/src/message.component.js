@@ -45,22 +45,23 @@ export default class Message extends Component {
     }
 
     componentDidMount() {
-        setTimeout(() => window.scrollTo(0, 0), 0);
-        cache.set("message_" + this.state.message.id, {timestamp: Math.floor(Date.now()/1000)}).then(
-            r => {
-                window.dispatchEvent(new CustomEvent("viewMessage", {detail : {
-                    from: "message-component",
-                    data: this.state.message.id
-                }}));
-            }
-        );
+        if (this.state.message) {
+            setTimeout(() => window.scrollTo(0, 0), 0);
+            cache.set("message_" + this.state.message.id, {timestamp: Math.floor(Date.now()/1000)}).then(
+                r => {
+                    window.dispatchEvent(new CustomEvent("viewMessage", {detail : {
+                        from: "message-component",
+                        data: this.state.message.id
+                    }}));
+                }
+            );
+        }
     }
 
     getPreview() {
         if (this.state.message.data) {
-            const data = JSON.parse(this.state.message.data);
-            this.setState({data: data});
-            let previewUrl = data["text"].match(/(https?:\/\/[^\s]+)/gi);
+            this.setState({data: this.state.message.data});
+            let previewUrl = this.state.message.data["text"].match(/(https?:\/\/[^\s]+)/gi);
             if (previewUrl) {
                 cache.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => r && this.setState({preview: r}));
             }

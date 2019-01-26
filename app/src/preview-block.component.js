@@ -37,22 +37,21 @@ export default class PreviewBlock extends Component {
         if (!this.props.url || !this.props.data) {
             return null;
         }
-        let data = JSON.parse(this.props.data);
-        switch (data["providerUrl"].toLowerCase().replace(/\/$/, '').replace(/^https?:\/\/(www\.)?/, '')) {
+        switch (this.props.data["providerUrl"].toLowerCase().replace(/\/$/, '').replace(/^https?:\/\/(www\.)?/, '')) {
             case "youtube.com":
-                if (data["type"] == "video") {
-                    return <YoutubeEmbed preview={this.props.preview} url={data["code"].match(/https:\/\/[^\"\s]+/)[0]}/>;
+                if (this.props.data["type"] == "video") {
+                    return <YoutubeEmbed preview={this.props.preview} url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0]}/>;
                 }
                 break;
             case "soundcloud.com":
-                return <SoundcloudEmbed preview={this.props.preview} url={data["code"].match(/https:\/\/[^\"\s]+/)[0] + "&auto_play=true"}/>;
+                return <SoundcloudEmbed preview={this.props.preview} url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] + "&auto_play=true"}/>;
             case "twitch.tv":
-                return <TwitchEmbed preview={this.props.preview} url={data["url"]}/>;
+                return <TwitchEmbed preview={this.props.preview} url={this.props.data["url"]}/>;
             case "bandcamp.com":
-                return <BandCampEmbed url={data["code"].match(/https:\/\/.*album=\d+/)[0]}/>
+                return <BandCampEmbed url={this.props.data["code"].match(/https:\/\/.*album=\d+/)[0]}/>
             case "imgur.com":
                 // skip default embed code if it's an imgur image
-                if (data["type"] == "photo") {
+                if (this.props.data["type"] == "photo") {
                     break;
                 }
             case "facebook.com":
@@ -60,12 +59,12 @@ export default class PreviewBlock extends Component {
             case "vimeo.com":
             case "dailymotion.com":
                 // default embed code
-                if (data["code"]) {
-                    return <div class="embed-container" ref={e => this.embedContainer = e} dangerouslySetInnerHTML={{__html: data["code"]}}></div>;
+                if (this.props.data["code"]) {
+                    return <div class="embed-container" ref={e => this.embedContainer = e} dangerouslySetInnerHTML={{__html: this.props.data["code"]}}></div>;
                 }
             default:
         }
-        if (data["type"] == "photo" && /image/.test(data["content-type"])) {
+        if (this.props.data["type"] == "photo" && /image/.test(this.props.data["content-type"])) {
             return (
                 <div class="container d-flex justify-content-center flex-wrap align-items-center">
                     <img
@@ -73,26 +72,26 @@ export default class PreviewBlock extends Component {
                         href={this.props.url}
                         class="img-fluid cursor-pointer"
                         data-src={this.props.url}
-                        src={ /gif/.test(data["content-type"]) ? this.props.url : util.thumbnail(this.props.preview, 1280, 720) }
+                        src={ /gif/.test(this.props.data["content-type"]) ? this.props.url : util.thumbnail(this.props.preview, 1280, 720) }
                     />
                 </div>
             );
         }
-        if (data["type"] == "video" && /video/.test(data["content-type"])) {
+        if (this.props.data["type"] == "video" && /video/.test(this.props.data["content-type"])) {
             return (
                 <div class="container d-flex justify-content-center flex-wrap align-items-center">
                     <video class="img-fluid" controls src={ this.props.url } />
                 </div>
             );
         }
-        if (data["title"] && (this.props.preview || data["description"])) {
+        if (this.props.data["title"] && (this.props.preview || this.props.data["description"])) {
             return (
                 <a class="preview-card seamless-link d-inline-block" target="_blank" href={ this.props.url }>
                     <div class="card" style="max-width: 480px">
                         { this.props.preview && <img class="card-img-top" src={ util.crop(this.props.preview, 320, 180) } /> }
                         <div class="card-body p-1">
-                            <h5>{ data["title"] }</h5>
-                            <p><small>{ data["description"].slice(0, 500) }</small></p>
+                            <h5>{ this.props.data["title"] }</h5>
+                            <p><small>{ this.props.data["description"].slice(0, 500) }</small></p>
                         </div>
                     </div>
                 </a>

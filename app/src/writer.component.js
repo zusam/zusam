@@ -106,7 +106,6 @@ export default class Writer extends Component {
             alert.add(lang.fr["empty_message"], "alert-danger");
             return;
         }
-        msg.data = JSON.stringify(msg.data);
         http.post("/api/messages", msg).then(res => {
             if (!res) {
                 alert.add(lang.fr["error_new_message"], "alert-danger");
@@ -178,7 +177,6 @@ export default class Writer extends Component {
             let files = this.state.files;
             this.setState({files: [...files, ...Array.apply(null, Array(list.length)).map(_ => new Object({
                 fileIndex: 1000,
-                type: "image",
             }))]});
             this.uploadNextImage(list, list[Symbol.iterator](), files.length);
         });
