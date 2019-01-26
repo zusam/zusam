@@ -92,7 +92,7 @@ class Security extends Controller
         $user->setLogin($login);
         $user->setPassword($this->encoder->encodePassword($user, $password));
         $user->setName(explode("@", $login)[0]);
-        $user->setData(json_encode(["mail" => $login]));
+        $user->setData(["mail" => $login]);
         $user->addGroup($group);
         $group->addUser($user);
         $this->em->persist($user);

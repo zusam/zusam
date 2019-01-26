@@ -35,6 +35,12 @@ class GroupPage extends Controller
         }
         $this->denyAccessUnlessGranted(new Expression("user in object.getUsersAsArray()"), $group);
 
+        // remove group from the news of the requesting user
+        $user = $this->getUser();
+        $user->removeNews($group->getId());
+        $this->em->persist($user);
+        $this->em->flush();
+
         // filter out children messages
         $messages = array_filter($group->getMessages()->getValues(), function($m) {
             return $m->getParent() == null;

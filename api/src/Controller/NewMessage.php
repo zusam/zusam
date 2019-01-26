@@ -21,8 +21,21 @@ class NewMessage extends Controller
         $this->denyAccessUnlessGranted("ROLE_USER");
         $this->denyAccessUnlessGranted(new Expression("user in object.getUsersAsArray()"), $data->getGroup());
         $parent = $data->getParent();
+        $author = $data->getAuthor();
         $group = $data->getGroup();
         $group->setLastActivityDate(time());
+        if (!empty($parent)) {
+            $newsId = $parent->getId();
+        } else {
+            $newsId = $data->getId();
+        }
+        foreach ($group->getUsers() as $user) {
+            if ($user->getId() != $author->getId()) {
+                $user->addNews($newsId);
+                $user->addNews($group->getId());
+                $this->em->persist($user);
+            }
+        }
         $this->em->persist($group);
         if (!empty($parent)) {
             $parent->setLastActivityDate(time());
