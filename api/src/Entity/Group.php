@@ -92,12 +92,18 @@ class Group
     private $messages;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"read_group", "read_user"})
      * @Assert\Type("integer")
      * @Assert\NotNull()
      */
     private $lastActivityDate;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     * @Assert\NotBlank()
+     */
+    private $data;
 
     public function __construct()
     {
@@ -192,6 +198,17 @@ class Group
     public function setLastActivityDate(int $lastActivityDate): self
     {
         $this->lastActivityDate = $lastActivityDate;
+        return $this;
+    }
+
+    public function getData(): ?array
+    {
+        return $this->data;
+    }
+
+    public function setData(array $data): self
+    {
+        $this->data = $data;
         return $this;
     }
 }

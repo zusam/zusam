@@ -111,10 +111,17 @@ class User implements UserInterface, \Serializable
     private $name;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="json", nullable=true)
      * @Assert\NotBlank()
      */
     private $data;
+
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     * @Groups({"read_user"})
+     * @Assert\NotBlank()
+     */
+    private $news;
 
     public function __construct()
     {
@@ -124,7 +131,7 @@ class User implements UserInterface, \Serializable
         $this->files = new ArrayCollection();
         $this->createdAt = time();
         $this->apiKey = Uuid::uuidv4();
-        $this->data = "{}";
+        $this->data = [];
     }
 
     public function getId(): string
@@ -234,14 +241,44 @@ class User implements UserInterface, \Serializable
         return $this->name;
     }
 
-    public function getData(): string
+    public function getData(): ?array
     {
         return $this->data;
     }
 
-    public function setData(string $data): self
+    public function setData(array $data): self
     {
         $this->data = $data;
+        return $this;
+    }
+
+    public function getNews(): ?array
+    {
+        return $this->news;
+    }
+
+    public function setNews(array $news): self
+    {
+        $this->news = $news;
+        return $this;
+    }
+
+    public function addNews(string $newsId): self
+    {
+        if (!in_array($newsId, $this->news)) {
+            array_push($this->news, $newsId);
+        }
+        if (count($this->news) > 1024) {
+            array_shift($this->news);
+        }
+        return $this;
+    }
+
+    public function removeNews(string $newsId): self
+    {
+        if (($key = array_search($newsId, $this->news)) !== false) {
+            unset($this->news[$key]);
+        }
         return $this;
     }
 

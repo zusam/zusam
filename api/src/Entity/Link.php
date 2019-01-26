@@ -41,7 +41,7 @@ class Link
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="json")
      * @Assert\NotBlank()
      */
     private $data;
@@ -94,12 +94,12 @@ class Link
         return $this;
     }
 
-    public function getData(): string
+    public function getData(): array
     {
         return $this->data;
     }
 
-    public function setData(string $data): self
+    public function setData(array $data): self
     {
         $this->data = $data;
         return $this;

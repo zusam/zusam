@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use App\Controller\NewMessage;
+use App\Controller\ReadMessage;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,6 +24,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *          "get"={
+ *              "method"="GET",
+ *              "path"="/messages/{id}.{_format}",
+ *              "controller"=ReadMessage::class,
  *              "normalization_context"={"groups"={"read_message"}},
  *          },
  *          "put",
@@ -60,7 +64,7 @@ class Message
     private $createdAt;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="json", nullable=true)
      * @Assert\NotBlank()
      * @Groups({"read_message"})
      */
@@ -134,16 +138,12 @@ class Message
         return $this;
     }
 
-    public function getData(bool $asArray = false)
+    public function getData(): ?array
     {
-        if ($asArray) {
-            $data = json_decode($this->getData(), true);
-            return $data ? $data : [];
-        }
         return $this->data;
     }
 
-    public function setData(string $data): self
+    public function setData(array $data): self
     {
         $this->data = $data;
         return $this;
