@@ -2,6 +2,7 @@ import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import http from "./http.js";
 import util from "./util.js";
+import me from "./me.js";
 import cache from "./cache.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
@@ -37,7 +38,6 @@ export default class Message extends Component {
                     displayedChildren: msg.children && 5 // display 5 first children
                 });
                 setTimeout(this.getPreview);
-                cache.set("message_" + msg.id, {timestamp: Math.floor(Date.now()/1000)});
             });
         } else {
             this.getPreview();
@@ -47,14 +47,7 @@ export default class Message extends Component {
     componentDidMount() {
         if (this.state.message) {
             setTimeout(() => window.scrollTo(0, 0), 0);
-            cache.set("message_" + this.state.message.id, {timestamp: Math.floor(Date.now()/1000)}).then(
-                r => {
-                    window.dispatchEvent(new CustomEvent("viewMessage", {detail : {
-                        from: "message-component",
-                        data: this.state.message.id
-                    }}));
-                }
-            );
+            me.removeNews(this.state.message.id);
         }
     }
 
@@ -93,7 +86,7 @@ export default class Message extends Component {
         const newMsg = event.detail;
         let msg = this.state.message;
         if (newMsg.parent && newMsg.parent == msg["@id"]) {
-            newMsg.author = this.props.currentUser;
+            newMsg.author = me.me;
             msg.children = [...msg.children, newMsg];
             this.setState({
                 displayedChildren: this.state.displayedChildren + 1,
@@ -140,11 +133,11 @@ export default class Message extends Component {
             if (this.state.message.parent) {
                 return (
                     <div class="message child">
-                        { this.props.currentUser && (
+                        { me.me && (
                             <div class="message-head p-1 d-none d-md-block">
                                 <img
                                     class="rounded-circle w-3 material-shadow avatar"
-                                    src={ this.props.currentUser.avatar ? util.crop(this.props.currentUser.avatar["@id"], 100, 100) : util.defaultAvatar }
+                                    src={ me.me.avatar ? util.crop(me.me.avatar["@id"], 100, 100) : util.defaultAvatar }
                                 />
                             </div>
                         )}
@@ -152,7 +145,6 @@ export default class Message extends Component {
                             messageId={this.state.message.id}
                             files={this.state.message.files}
                             focus={true}
-                            currentUser={this.state.currentUser}
                             group={this.state.group}
                             parent={this.state.message.parent}
                             text={this.state.data.text}
@@ -166,7 +158,6 @@ export default class Message extends Component {
                         messageId={this.state.message.id}
                         files={this.state.message.files}
                         focus={true}
-                        currentUser={this.state.currentUser}
                         group={this.state.group}
                         text={this.state.data.text}
                         title={this.state.data.title}
@@ -181,7 +172,7 @@ export default class Message extends Component {
                                 if (m[i - 1] && m[i - 1].author.id == e.author.id) {
                                     follow = " follow";
                                 }
-                                return <Message currentUser={this.props.currentUser} message={e} key={e.id} follow={follow}/>
+                                return <Message message={e} key={e.id} follow={follow}/>
                             })}
                         </div>
                     )}
@@ -194,15 +185,14 @@ export default class Message extends Component {
                     <MessageHead
                         author={this.state.author}
                         message={this.state.message}
-                        currentUser={this.props.currentUser}
                         editMessage={this.editMessage}
                         deleteMessage={this.deleteMessage}
                     />
                     <div class="message-body">
                         { this.state.message.parent
                                 && this.state.author
-                                && this.props.currentUser
-                                && this.state.author.id == this.props.currentUser.id
+                                && me.me
+                                && this.state.author.id == me.me.id
                                 && (
                             <div tabindex="-1"
                                 class="options dropdown d-none d-md-flex"
@@ -252,23 +242,22 @@ export default class Message extends Component {
                             if (m[i - 1] && m[i - 1].author.id == e.author.id) {
                                 follow = " follow";
                             }
-                            return <Message currentUser={this.props.currentUser} message={e} key={e.id} follow={follow}/>
+                            return <Message message={e} key={e.id} follow={follow}/>
                         })}
                     </div>
                 )}
                 { !this.state.message.parent && (
                     <div class="message child">
-                        { this.props.currentUser && (
+                        { me.me && (
                             <div class="message-head p-1 d-none d-md-block">
                                 <img
                                     class="rounded-circle w-3 material-shadow avatar"
-                                    src={ this.props.currentUser.avatar ? util.crop(this.props.currentUser.avatar["@id"], 100, 100) : util.defaultAvatar }
+                                    src={ me.me.avatar ? util.crop(me.me.avatar["@id"], 100, 100) : util.defaultAvatar }
                                 />
                             </div>
                         )}
                         <Writer
                             parent={this.state.message.id}
-                            currentUser={this.props.currentUser}
                             group={this.state.message.group}
                             focus={false}
                         />

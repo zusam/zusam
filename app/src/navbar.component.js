@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import util from "./util.js";
+import me from "./me.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
 
@@ -22,18 +23,18 @@ export default class Navbar extends Component {
     render() {
         return (
             <div class="main-nav nav align-items-center shadow-sm z-index-100">
-                { this.props.currentUser && !this.props.backUrl && (
+                { me.me && !this.props.backUrl && (
                     <div
                         class="menu dropdown" tabindex="-1"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >
                         <div class="rounded-circle avatar">
-                            <img class="rounded-circle" src={ this.props.currentUser.avatar ? util.crop(this.props.currentUser.avatar["@id"], 80, 80) : util.defaultAvatar }/>
+                            <img class="rounded-circle" src={me.me.avatar ? util.crop(me.me.avatar["@id"], 80, 80) : util.defaultAvatar }/>
                         </div>
                         <div class="dropdown-menu">
                             <a class="seamless-link"
-                                href={router.toApp(this.props.currentUser["@id"])+"/settings"}
+                                href={router.toApp(me.me["@id"])+"/settings"}
                                 onClick={router.onClick}
                             >{lang.fr["settings"]}</a>
                             <a class="seamless-link" href="/logout" onClick={router.onClick}>{lang.fr["logout"]}</a>
@@ -52,7 +53,7 @@ export default class Navbar extends Component {
                         </span>
                     </span>
                 )}
-                { this.props.groups && (
+                { me.me.groups && (
                     <div
                         class="nav-link dropdown groups" tabindex="-1"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
@@ -60,10 +61,10 @@ export default class Navbar extends Component {
                     >
                         <div>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></div>
                         <div class="dropdown-menu">
-                            { Array.isArray(this.props.groups) && this.props.groups.map(
+                            { Array.isArray(me.me.groups) && me.me.groups.map(
                                 e => (
                                     <a
-                                        className={"seamless-link" + (e.hasNews ? " has-news" : "")}
+                                        className={"seamless-link" + (me.isNews(e.id) ? " has-news" : "")}
                                         href={router.toApp(e["@id"])}
                                         onClick={router.onClick}
                                     >{e.name}</a>

@@ -2,6 +2,7 @@ import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import cache from "./cache.js";
 import router from "./router.js";
+import me from "./me.js";
 import Message from "./message.component.js";
 import GroupBoard from "./group-board.component.js";
 import Login from "./login.component.js";
@@ -22,13 +23,13 @@ class App extends Component {
             url: "",
         }
         this.onRouterStateChange = this.onRouterStateChange.bind(this);
-        this.updateGroupsState = this.updateGroupsState.bind(this);
         window.addEventListener("viewGroup", this.updateGroupState);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
         cache.get("apiKey").then(apiKey => {
             let route = this.state.route || router.getSegments()[0];
             if (apiKey || this.isOutsideRoute(route)) {
+                me.update();
                 router.sync();
             } else {
                 // redirect to login if we don't have an apiKey
@@ -47,21 +48,6 @@ class App extends Component {
         ].includes(route);
     }
 
-    updateGroupsState() {
-        let groups = this.state.groups;
-        groups.map(group => {
-            cache.get("group_" + group.id).then(
-                lastVisit => {
-                    group.hasNews = true;
-                    if (lastVisit) {
-                        group.hasNews = lastVisit.timestamp < group.lastActivityDate;
-                    }
-                    this.setState({groups: groups});
-                }
-            );
-        });
-    }
-
     onRouterStateChange(event) {
         const [route, id, action] = router.getSegments();
 
@@ -73,10 +59,8 @@ class App extends Component {
                         return;
                     }
                     this.setState({
-                        currentUser: user,
                         groups: user.groups,
                     });
-                    this.updateGroupsState();
                 });
             } else {
                 if (!this.isOutsideRoute(route)) {
@@ -161,7 +145,7 @@ class App extends Component {
 
         // here, we enter the "connected" realm of pages.
         // If the user is not connected, what should we do ?
-        if (!this.state.currentUser || !this.state.groups) {
+        if (!me.me || !me.me.groups) {
             return;
         }
 
@@ -170,8 +154,6 @@ class App extends Component {
                 <Navbar
                     route={this.state.route}
                     entity={this.state.entity}
-                    currentUser={this.state.currentUser}
-                    groups={this.state.groups}
                     backUrl={this.state.backUrl}
                     backUrlPrompt={this.state.backUrlPrompt}
                 />
@@ -180,14 +162,14 @@ class App extends Component {
                     { this.state.action && this.state.action == "settings" && this.state.entityUrl && (
                         <article class="justify-content-center d-flex">
                             <div class="container">
-                                <Settings key={this.state.entityUrl} currentUser={this.state.currentUser} groups={this.state.groups}/>
+                                <Settings key={this.state.entityUrl}/>
                             </div>
                         </article>
                     )}
                     { this.state.route == "messages" && this.state.entity["@type"] == "Message" && (
                         <article class="justify-content-center d-flex">
                             <div class="container">
-                                <Message currentUser={this.state.currentUser} key={this.state.url} url={this.state.entityUrl} />
+                                <Message key={this.state.url} url={this.state.entityUrl} />
                             </div>
                         </article>
                     )}
@@ -201,7 +183,6 @@ class App extends Component {
                             ref={g => this.groupRef = g}
                             key={this.state.group}
                             url={this.state.group}
-                            currentUser={this.state.currentUser}
                         />
                         <a class="write-button material-shadow seamless-link" href={this.state.url + "/write"} onClick={router.onClick}>
                             <FaIcon family={"solid"} icon={"pencil-alt"}/>
@@ -212,7 +193,6 @@ class App extends Component {
                             <div class="container">
                                 <Writer
                                     focus={true}
-                                    currentUser={this.state.currentUser}
                                     group={this.state.group}
                                     backUrl={this.state.backUrl}
                                 />

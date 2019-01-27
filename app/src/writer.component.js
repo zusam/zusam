@@ -2,6 +2,7 @@ import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import util from "./util.js";
 import http from "./http.js";
+import me from "./me.js";
 import cache from "./cache.js";
 import exif from "./exif.js";
 import alert from "./alert.js";
@@ -87,7 +88,7 @@ export default class Writer extends Component {
     postMessage() {
         let msg = {
             createdAt: Math.floor(Date.now()/1000),
-            author: this.props.currentUser["@id"],
+            author: me.me["@id"],
             group: this.props.group,
             children: [],
             files: this.state.files.filter(e => !e.removed).map(e => e["@id"]).filter(e => !!e),
@@ -114,23 +115,6 @@ export default class Writer extends Component {
             cache.resetCache();
             if (this.props.parent) {
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
-                cache.set("message_" + util.getId(res.parent), {timestamp: Math.floor(Date.now()/1000)}).then(
-                    r => {
-                        window.dispatchEvent(new CustomEvent("viewMessage", {detail : {
-                            from: "message-component",
-                            data: util.getId(res.parent),
-                        }}));
-                    }
-                );
-            } else {
-                cache.set("message_" + res.id, {timestamp: Math.floor(Date.now()/1000)}).then(
-                    r => {
-                        window.dispatchEvent(new CustomEvent("viewMessage", {detail : {
-                            from: "message-component",
-                            data: res.id,
-                        }}));
-                    }
-                );
             }
             if (this.props.backUrl) {
                 router.navigate(this.props.backUrl);

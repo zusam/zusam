@@ -2,6 +2,7 @@ import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import cache from "./cache.js";
 import router from "./router.js";
+import me from "./me.js";
 import UserSettings from "./user-settings.component.js";
 import GroupSettings from "./group-settings.component.js";
 import FaIcon from "./fa-icon.component.js";
@@ -18,7 +19,7 @@ export default class Settings extends Component {
     }
 
     render() {
-        if (!this.state.entity || !this.state.currentUser) {
+        if (!this.state.entity || !me.me) {
             return;
         }
         return (
@@ -27,7 +28,7 @@ export default class Settings extends Component {
                     <li class="nav-item">
                         <a
                             class={ "nav-link" + (this.state.entity["@type"] == "User" ? " active" : "")}
-                            href={router.toApp(this.state.currentUser["@id"]) + "/settings"}
+                            href={router.toApp(me.me["@id"]) + "/settings"}
                             onClick={router.onClick}
                         >{lang.fr["account"]}</a>
                     </li>

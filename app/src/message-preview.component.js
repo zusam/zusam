@@ -1,17 +1,16 @@
 import { h, render, Component } from "preact";
 import cache from "./cache.js";
 import util from "./util.js";
+import me from "./me.js";
 import router from "./router.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class MessagePreview extends Component {
     constructor(props) {
         super(props);
-        this.evaluateHasNews = this.evaluateHasNews.bind(this);
         this.state = {
             message: props.message,
         };
-        window.addEventListener("viewMessage", this.evaluateHasNews);
         if (props.message.author) {
             cache.get(props.message.author).then(author => author && this.setState({author: author}));
         }
@@ -22,26 +21,15 @@ export default class MessagePreview extends Component {
         if (props.message.preview) {
             this.setState({preview: props.message.preview});
         }
-        this.evaluateHasNews();
-    }
-
-    evaluateHasNews() {
-        cache.get("message_" + this.props.message.id).then(
-            lastVisit => {
-                let groupActivity = this.props.currentUser.groups.find(g => g.id == this.props.groupId).lastActivityDate;
-                let hasNews = groupActivity < this.props.message.lastActivityDate;
-                if (lastVisit) {
-                    hasNews = lastVisit.timestamp < this.props.message.lastActivityDate;
-                }
-                this.setState({hasNews: hasNews});
-            }
-        );
     }
 
     render() {
         return (
             <a
-                className={"d-inline-block seamless-link message-preview" + (this.state.hasNews ? " has-news" : "")}
+                className={
+                    "d-inline-block seamless-link message-preview"
+                        + (me.isNews(this.state.message.id) ? " has-news" : "")
+                }
                 href={ router.toApp(this.state.message["@id"]) }
                 onClick={ router.onClick }
                 title={ this.state.title }

@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import lang from "./lang.js";
 import util from "./util.js";
+import me from "./me.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class MessageHead extends Component {
@@ -19,7 +20,7 @@ export default class MessageHead extends Component {
                     { this.props.author && <span class="capitalize author">{ this.props.author.name }</span> }
                     <span title={util.humanFullDate(this.props.message.createdAt)}>{ util.humanTime(this.props.message.createdAt) }</span>
                 </div>
-                { this.props.currentUser && this.props.author && this.props.author.id == this.props.currentUser.id && (
+                { me.me && this.props.author && this.props.author.id == me.me.id && (
                     <div tabindex="-1"
                         class="options dropdown"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}

@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import util from "./util.js";
 import cache from "./cache.js";
+import me from "./me.js";
 import MessagePreview from "./message-preview.component.js";
 
 export default class GroupBoard extends Component {
@@ -21,15 +22,7 @@ export default class GroupBoard extends Component {
 
     componentDidMount() {
         window.addEventListener("scroll", this.loadMoreMessages);
-        // update timestamp of last visit of the group
-        cache.set("group_" + this.state.groupId, {timestamp: Math.floor(Date.now()/1000)}).then(
-            r => {
-                window.dispatchEvent(new CustomEvent("viewGroup", {detail : {
-                    from: "group-board",
-                    data: this.state.groupId
-                }}));
-            }
-        );
+        me.removeNews(this.state.groupId);
     }
 
     componentWillUnmount() {
@@ -136,7 +129,6 @@ export default class GroupBoard extends Component {
                                 tabindex={i + 1}
                                 key={msg.id}
                                 message={msg}
-                                currentUser={this.props.currentUser}
                                 groupId={util.getId(this.props.url)}
                             />
                         );
