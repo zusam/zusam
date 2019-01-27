@@ -3,18 +3,65 @@ import http from "./http.js";
 import nlg from "./nlg.js";
 
 const router = {
+    route: "",
+    id: "",
+    action: "",
+    url: "",
+    backUrl: "",
+    backUrlPrompt: "",
+    entityUrl: "",
+    entityType: "",
+    entity: {},
     toApp: url => url.replace(/^\/api/,""),
     getParam: param => {
         let res = window.location.search.substring(1).split("&").find(e => e.split("=")[0] === param);
         return res ? res.split("=")[1] : "";
     },
     getSegments: () => window.location.pathname.slice(1).split("?")[0].split("/"),
+    // check if route is "outside": accessible to non connected user
+    isOutside: () => [
+        "login",
+        "password-reset",
+        "signup",
+        "invitation"
+    ].includes(router.route),
     navigate: (url, options = {}) => {
         const from = window.location.pathname;
         const queryParams = window.location.search;
-        const [route, id, action] = router.toApp(url).slice(1).split("?")[0].split("/");
+
+        [router.route, router.id, router.action] = router.toApp(url).slice(1).split("?")[0].split("/");
+        router.url = "";
+        router.backUrl = "";
+        router.entityUrl = "";
+        router.backUrlPrompt = "";
+
+        // set url, backUrl and entityUrl
+		if (router.route && router.id) {
+            router.url = "/" + router.route + "/" + router.id;
+            router.entityUrl = "/api/" + router.route + "/" + router.id;
+            router.entityType = router.route;
+            if (router.action) {
+                if(router.route == "users") {
+                    router.backUrl = "/";
+                } else {
+                    router.backUrl = url;
+                }
+                if (router.route == "groups" && router.action == "write") {
+                    router.backUrlPrompt = lang.fr["cancel_write"];
+                }
+                router.url += "/" + router.action;
+            }
+            cache.get(router.entityUrl).then(res => {
+                router.entity = res;
+                if (router.entityType == "messages" && res["group"]) {
+                    router.backUrl = router.toApp(res.group);
+                }
+            });
+        }
+
         nlg.hide(); // hide lightbox
-        switch (route) {
+
+        switch (router.route) {
             case "password-reset":
             case "signup":
             case "login":
@@ -41,11 +88,11 @@ const router = {
             case "invitation":
                 cache.get("apiKey").then(apiKey => {
                     if (apiKey) {
-                        http.post("/api/groups/invitation/" + id, {}).then(res => {
+                        http.post("/api/groups/invitation/" + router.id, {}).then(res => {
                             window.location.href = window.location.origin;
                         });
                     } else {
-                        router.navigate("/signup?inviteKey=" + id);
+                        router.navigate("/signup?inviteKey=" + router.id);
                     }
                 });
                 break;

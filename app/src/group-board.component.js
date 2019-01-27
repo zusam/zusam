@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import util from "./util.js";
 import cache from "./cache.js";
+import router from "./router.js";
 import me from "./me.js";
 import MessagePreview from "./message-preview.component.js";
 
@@ -9,8 +10,8 @@ export default class GroupBoard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            url: props.url,
-            groupId: util.getId(props.url)
+            url: router.url,
+            groupId: util.getId(router.url)
         };
         this.loadMoreMessages = this.loadMoreMessages.bind(this);
         this.resetGroupDisplay = this.resetGroupDisplay.bind(this);
@@ -129,7 +130,7 @@ export default class GroupBoard extends Component {
                                 tabindex={i + 1}
                                 key={msg.id}
                                 message={msg}
-                                groupId={util.getId(this.props.url)}
+                                groupId={util.getId(router.url)}
                             />
                         );
                     })}

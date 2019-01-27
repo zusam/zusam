@@ -14,7 +14,7 @@ export default class Navbar extends Component {
 
     clickBackButton(evt) {
         evt.preventDefault();
-        if (this.props.backUrlPrompt && !confirm(this.props.backUrlPrompt)) {
+        if (router.backUrlPrompt && !confirm(router.backUrlPrompt)) {
             return false;
         }
         router.onClick(evt);
@@ -23,7 +23,7 @@ export default class Navbar extends Component {
     render() {
         return (
             <div class="main-nav nav align-items-center shadow-sm z-index-100">
-                { me.me && !this.props.backUrl && (
+                { me.me && !router.backUrl && (
                     <div
                         class="menu dropdown" tabindex="-1"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
@@ -41,15 +41,15 @@ export default class Navbar extends Component {
                         </div>
                     </div>
                 )}
-                { this.props.backUrl && (
-                    <a class="seamless-link back" href={this.props.backUrl} onClick={this.clickBackButton}>
+                { router.backUrl && (
+                    <a class="seamless-link back" href={router.backUrl} onClick={this.clickBackButton}>
                         <FaIcon family={"solid"} icon={"arrow-left"}/>
                     </a>
                 )}
-                { this.props.route == "groups" && this.props.entity && this.props.entity.name && (
+                { router.route == "groups" && router.entity.name && (
                     <span class="title">
                         <span class="cursor-pointer" onClick={() => location.reload()}>
-                            {this.props.entity.name}
+                            {router.entity.name}
                         </span>
                     </span>
                 )}

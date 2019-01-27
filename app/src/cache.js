@@ -53,7 +53,7 @@ const cache = {
     },
     get: (id, nocache = false) => {
         if (!id) {
-            return;
+            return new Promise(r => null);
         }
         // if nocache is false, try to load from the cache
         if (!nocache) {

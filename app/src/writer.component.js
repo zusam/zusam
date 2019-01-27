@@ -116,8 +116,8 @@ export default class Writer extends Component {
             if (this.props.parent) {
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
             }
-            if (this.props.backUrl) {
-                router.navigate(this.props.backUrl);
+            if (router.backUrl) {
+                router.navigate(router.backUrl);
             }
         });
         this.setState({

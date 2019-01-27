@@ -37,7 +37,11 @@ export default class PreviewBlock extends Component {
         if (!this.props.url || !this.props.data) {
             return null;
         }
-        switch (this.props.data["providerUrl"].toLowerCase().replace(/\/$/, '').replace(/^https?:\/\/(www\.)?/, '')) {
+        let provider = "";
+        if (this.props.data["providerUrl"]) {
+            provider = this.props.data["providerUrl"].toLowerCase().replace(/\/$/, '').replace(/^https?:\/\/(www\.)?/, '')
+        }
+        switch (provider) {
             case "youtube.com":
                 if (this.props.data["type"] == "video") {
                     return <YoutubeEmbed preview={this.props.preview} url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0]}/>;

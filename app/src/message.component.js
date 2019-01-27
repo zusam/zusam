@@ -23,15 +23,19 @@ export default class Message extends Component {
         if (!props.parent) {
             window.addEventListener("newChild", this.onNewChild);
         }
+        let url = router.entityUrl;
+        if (!url && props.message) {
+            url = "/api/message/" + props.message.id;
+        }
         this.state = {
-            url: props.url,
+            url: url,
             message: props.message,
             author: props.message ? props.message.author : null,
             preview: null,
             displayedChildren: props.message ? props.message.children && 5 : 0,
         };
         if (!props.message) {
-            cache.get(props.url).then(msg => {
+            cache.get(url).then(msg => {
                 this.setState({
                     message: msg,
                     author: msg.author,
