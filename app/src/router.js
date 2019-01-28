@@ -1,6 +1,7 @@
 import cache from "./cache.js";
 import http from "./http.js";
 import nlg from "./nlg.js";
+import lang from "./lang.js";
 
 const router = {
     route: "",
@@ -41,22 +42,15 @@ const router = {
             router.entityUrl = "/api/" + router.route + "/" + router.id;
             router.entityType = router.route;
             if (router.action) {
+                router.backUrl = "/";
                 if(router.route == "users") {
                     router.backUrl = "/";
-                } else {
-                    router.backUrl = url;
                 }
                 if (router.route == "groups" && router.action == "write") {
                     router.backUrlPrompt = lang.fr["cancel_write"];
                 }
                 router.url += "/" + router.action;
             }
-            cache.get(router.entityUrl).then(res => {
-                router.entity = res;
-                if (router.entityType == "messages" && res["group"]) {
-                    router.backUrl = router.toApp(res.group);
-                }
-            });
         }
 
         nlg.hide(); // hide lightbox
@@ -76,10 +70,17 @@ const router = {
                 } else {
                     history.pushState(null, "", url);
                 }
-                setTimeout(() => window.dispatchEvent(new CustomEvent("routerStateChange", {detail : {
-                    from: from,
-                    data: options.data,
-                }})), 0);
+                if (router.entityUrl) {
+                    cache.get(router.entityUrl).then(res => {
+                        router.entity = res;
+                        if (router.entityType == "messages" && res["group"]) {
+                            router.backUrl = router.toApp(res.group);
+                        }
+                        window.dispatchEvent(new CustomEvent("routerStateChange"));
+                    });
+                } else {
+                    window.dispatchEvent(new CustomEvent("routerStateChange"));
+                }
                 break;
             case "logout":
                 cache.reset();

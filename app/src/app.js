@@ -29,37 +29,21 @@ class App extends Component {
         });
     }
 
-    onRouterStateChange(event) {
+    onRouterStateChange() {
+        this.setState({});
         cache.get("apiKey").then(apiKey => {
             if (apiKey) {
                 cache.get("/api/me").then(user => {
                     if (!user && !router.isOutside()) {
                         router.navigate("/login");
-                        return;
                     }
-                    this.setState({
-                        groups: user.groups,
-                    });
                 });
             } else {
                 if (!router.isOutside()) {
                     router.navigate("/login");
-					return;
                 }
             }
         });
-
-        // if (router.route == "groups") {
-        //     if (this.groupRef) {
-        //         if (event.detail.data && event.detail.data.resetGroupDisplay) {
-        //             // soft update message list of the group
-        //             this.groupRef.resetGroupDisplay(true, true);
-        //         } else {
-        //             // restore scrolling if normal entrance to group dashboard
-        //             this.groupRef.restoreScroll();
-        //         }
-        //     }
-        // }
     }
 
     render() {

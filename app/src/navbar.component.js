@@ -7,8 +7,8 @@ import FaIcon from "./fa-icon.component.js";
 
 export default class Navbar extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.clickBackButton = this.clickBackButton.bind(this);
     }
 
@@ -23,7 +23,7 @@ export default class Navbar extends Component {
     render() {
         return (
             <div class="main-nav nav align-items-center shadow-sm z-index-100">
-                { me.me && !router.backUrl && (
+                { !router.backUrl && (
                     <div
                         class="menu dropdown" tabindex="-1"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
