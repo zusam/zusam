@@ -9,91 +9,64 @@ export default class GroupBoard extends Component {
 
     constructor(props) {
         super(props);
+        let groupId = util.getId(router.url);
+        let loaded = 1 + Math.floor((window.screen.width * window.screen.height) / (320 * 215));
         this.state = {
             url: router.url,
-            groupId: util.getId(router.url)
+            groupId: groupId,
+            loaded: loaded,
+            messages: [],
+            scrollTop: 0,
+            totalMessages: 0,
+            pageYOffset: 0,
+            page: 0,
         };
-        this.loadMoreMessages = this.loadMoreMessages.bind(this);
-        this.resetGroupDisplay = this.resetGroupDisplay.bind(this);
-        this.loadStartMessages = this.loadStartMessages.bind(this);
-        this.restoreScroll = this.restoreScroll.bind(this);
+        this.scroll_cooldown = Date.now();
+        this.onScroll = this.onScroll.bind(this);
+        this.loadMessages = this.loadMessages.bind(this);
         window.addEventListener("resetCache", this.resetGroupDisplay);
-        this.resetGroupDisplay();
+        this.loadMessages(0);
     }
 
     componentDidMount() {
-        window.addEventListener("scroll", this.loadMoreMessages);
+        window.addEventListener("scroll", this.onScroll);
         me.removeNews(this.state.groupId);
     }
 
     componentWillUnmount() {
-        window.removeEventListener("scroll", this.loadMoreMessages);
+        window.removeEventListener("scroll", this.onScroll);
     }
 
-    resetGroupDisplay(resetScroll = false, nocache = false) {
-        this.setState({
-            messages: [],
-            loaded: 0,
-            scrollTop: 0,
-            totalMessages: 0,
-        });
-        cache.get("group_" + this.state.groupId).then(groupData => {
-            let loaded = 1 + Math.floor((window.screen.width * window.screen.height) / (320 * 215));
-            let scrollTop = 0;
-            if (groupData) {
-                loaded = groupData.loaded || loaded;
-                pageYOffset = groupData.pageYOffset || pageYOffset;
-            }
-            if (resetScroll) {
-                pageYOffset = 0;
-            }
-            this.setState({
-                loaded: loaded,
-                pageYOffset: pageYOffset,
-                page: 0,
-            });
-            this.loadStartMessages(0, nocache);
-        });
-    }
-
-    loadStartMessages(page, nocache = false) {
-        if (!this.state.groupId) {
-            return;
-        }
-        cache.get("/api/groups/" + this.state.groupId + "/page/" + page, nocache).then(res => {
+    loadMessages(page) {
+        cache.get("/api/groups/" + this.state.groupId + "/page/" + page).then(res => {
             if(res && Array.isArray(res["messages"])) {
-                let loaded = Math.max(this.state.loaded, page * 30);
+                let new_loaded = Math.max(this.state.loaded, page * 30);
+                let msgList = this.state.messages;
+                // don't add already added messages
+                res["messages"].map(m => !msgList.find(msg => msg.id == m.id) && msgList.push(m));
                 this.setState({
-                    messages: [...this.state.messages, ...res["messages"]],
+                    messages: msgList,
                     totalMessages: res["totalItems"],
                     page: page,
-                    loaded: loaded,
+                    loaded: new_loaded,
                 });
-                if (page * 30 < loaded) {
-                    setTimeout(() => this.loadStartMessages(page + 1, nocache), 0);
+                if (page * 30 < new_loaded) {
+                    setTimeout(() => this.loadMessages(page + 1));
                 }
             }
         });
     }
 
-    loadMoreMessages() {
+    onScroll() {
         // prevent loading messages if we are in a post
         if (window.getComputedStyle(document.getElementById("group").parentNode).display == "none") {
             return;
         }
-        // set a cooldown on message loading
-        const key = "onScroll";
-        if (!window.sessionStorage.getItem(key)) {
-            window.sessionStorage.setItem(key, Date.now());
-            return;
-        }
-        if (parseInt(window.sessionStorage.getItem(key)) + 100 < Date.now()) {
-            window.sessionStorage.setItem(key, Date.now());
-            cache.set("group_" + this.state.groupId, {
-                loaded: this.state.loaded,
-                pageYOffset: window.pageYOffset
-            }, Infinity, false);
+        // don't load if on cooldown
+        if (this.scroll_cooldown + 100 < Date.now()) {
+            this.scroll_cooldown = Date.now();
             this.setState({pageYOffset: window.pageYOffset});
+            // don't load if unecessary
             if (
                 Array.isArray(this.state.messages)
                 && document.body.scrollHeight - window.screen.height - 500 < window.pageYOffset
@@ -101,23 +74,12 @@ export default class GroupBoard extends Component {
             ) {
                 this.setState({loaded: this.state.loaded + 10});
                 if (this.state.loaded + 30 > this.state.messages.length) {
-                    cache.get("/api/groups/" + this.state.groupId + "/page/" + (this.state.page + 1)).then(res => {
-                        if(res && Array.isArray(res["messages"])) {
-                            this.setState({
-                                messages: [...this.state.messages, ...res["messages"]],
-                            });
-                        }
-                    });
+                    this.loadMessages(this.state.page + 1);
                     // update page count right away
                     this.setState({page: this.state.page + 1});
                 }
             }
         }
-    }
-
-    restoreScroll() {
-        // scrollTo the right place but leave a bit of time for the dom to construct
-        setTimeout(() => window.scrollTo(0, this.state.pageYOffset), 0);
     }
 
     render() {
