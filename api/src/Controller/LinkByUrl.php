@@ -82,7 +82,7 @@ class LinkByUrl extends Controller
                 $data["image"] = $filesDir."/".Uuid::uuidv4($data["url"]);
                 rename($image, $data["image"]);
             }
-            $link->setData(json_encode($data));
+            $link->setData($data);
             $link->setUpdatedAt(time());
             if (!empty($data["image"])) {
                 try {
