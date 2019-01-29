@@ -68,7 +68,7 @@ export default class PreviewBlock extends Component {
                 }
             default:
         }
-        if (this.props.data["type"] == "photo" && /image/.test(this.props.data["content-type"])) {
+        if (/image/.test(this.props.data["content-type"])) {
             return (
                 <div class="container d-flex justify-content-center flex-wrap align-items-center">
                     <img
@@ -76,12 +76,12 @@ export default class PreviewBlock extends Component {
                         href={this.props.url}
                         class="img-fluid cursor-pointer"
                         data-src={this.props.url}
-                        src={ /gif/.test(this.props.data["content-type"]) ? this.props.url : util.thumbnail(this.props.preview, 1280, 720) }
+                        src={ this.props.preview && !/gif/.test(this.props.data["content-type"]) ? util.thumbnail(this.props.preview, 1280, 720) : this.props.url }
                     />
                 </div>
             );
         }
-        if (this.props.data["type"] == "video" && /video/.test(this.props.data["content-type"])) {
+        if (/video/.test(this.props.data["content-type"])) {
             return (
                 <div class="container d-flex justify-content-center flex-wrap align-items-center">
                     <video class="img-fluid" controls src={ this.props.url } />

@@ -53,7 +53,7 @@ let nlg = {
 				media = document.createElement("video");
 				media.setAttribute("controls", true);
 				break;
-			case /\.(jpg|jpeg|png|bmp|webp|gif)$/.test(url):
+			case /\.(jpg|jpeg|png|bmp|webp|gif|svg)$/.test(url):
 			default:
 				media = document.createElement("img");
 		}
