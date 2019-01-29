@@ -105,25 +105,20 @@ export default class Message extends Component {
         });
     }
 
-    shortenUrl(url) {
-        if (!url || url.length < 50) {
-            return url;
-        }
-        return url.slice(0, 25) + "..." + url.slice(-24);
-    }
-
     displayMessageText() {
         if (!this.state.data) {
             return "";
         }
         // escape html a little (just enough to avoid injection)
         let txt = this.state.data["text"].replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
-        let matches = txt.match(/(https?:\/\/[^\s]+)/gi);
-        if (matches) {
-            matches.forEach(url => {
-                txt = txt.replace(url, "<a href=\"" + url + "\" target=\"_blank\">" + this.shortenUrl(url) + "</a>");
-            });
-        }
+        // replace url by real links
+        txt = txt.replace(/(https?:\/\/[^\s]+)/ig, match => {
+            let url = match;
+            if (match && match.length >= 50) {
+                url = match.slice(0, 25) + "..." + match.slice(-24);
+            }
+            return '<a href="' + match + '" target="_blank">' + url + '</a>';
+        });
         // replace line returns
         txt = txt.replace(/\n/g, "<br/>");
         return {__html: txt};
