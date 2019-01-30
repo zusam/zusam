@@ -4,7 +4,6 @@ import util from "./util.js";
 import http from "./http.js";
 import me from "./me.js";
 import cache from "./cache.js";
-import exif from "./exif.js";
 import alert from "./alert.js";
 import imageService from "./image-service.js";
 import FaIcon from "./fa-icon.component.js";
@@ -50,6 +49,28 @@ export default class Writer extends Component {
         }
     }
 
+    getPreview(event) {
+        if (![" ", "Enter", "v"].includes(event.key)) {
+            return;
+        }
+        let t = event.currentTarget;
+        t.style.height = "1px";
+        t.style.height = t.scrollHeight + "px";
+        // waiting for the dom to be updated
+        setTimeout(() => {
+            const text = t.value;
+            let links = text.match(/(https?:\/\/[^\s]+)/gi);
+            if (links && links[0] != this.state.link) {
+                cache.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => {
+                    if (r && t.value.indexOf(links[0]) >= 0) {
+                        this.setState({link: links[0], preview: r});
+                    }
+                });
+            }
+        }, 0);
+    }
+
+    // toggle state (removed or not) of a file
     toggleFile(fileIndex) {
         let files = this.state.files;
         let f = files.find(f => f.fileIndex == fileIndex);
@@ -128,27 +149,6 @@ export default class Writer extends Component {
         document.getElementById("text").value = "";
     }
 
-    getPreview(event) {
-        if (![" ", "Enter", "v"].includes(event.key)) {
-            return;
-        }
-        let t = event.currentTarget;
-        t.style.height = "1px";
-        t.style.height = t.scrollHeight + "px";
-        // waiting for the dom to be updated
-        setTimeout(() => {
-            const text = t.value;
-            let links = text.match(/(https?:\/\/[^\s]+)/gi);
-            if (links && links[0] != this.state.link) {
-                cache.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => {
-                    if (r && t.value.indexOf(links[0]) >= 0) {
-                        this.setState({link: links[0], preview: r});
-                    }
-                });
-            }
-        }, 0);
-    }
-
     inputImages(event) {
         const input = document.createElement("input");
         document.body.appendChild(input);
@@ -188,7 +188,6 @@ export default class Writer extends Component {
 
     uploadNextImage(list, it, n) {
         let e = null;
-        let fileSize = 0;
         try {
             if (!it) {
                 return;
@@ -197,7 +196,7 @@ export default class Writer extends Component {
             if (!e || !e.value) {
                 return;
             }
-            fileSize = e.value.size;
+            let fileSize = e.value.size;
         } catch (evt) {
             // this is a fix for firefox mobile
             // firefox mobile only gets one file on "input multiple" and throws on getting the size
@@ -205,50 +204,15 @@ export default class Writer extends Component {
             alert.add(lang.fr["multiple_photos_upload"], "alert-danger");
             return;
         }
-        try {
-            // don't use image reduction for iOS & firefoxMobile as it's problematic.
-            // TODO: Find a fix and test those platforms.
-            let iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            let firefoxMobile = /Firefox/.test(navigator.userAgent) && /Mobile/.test(navigator.userAgent);
-            if (firefoxMobile || iOS) {
-                console.warn("Do not use image reduction on iOS/FirefoxMobile !");
-                this.uploadFile(e.value, n + list.indexOf(e.value), null, () => this.uploadNextImage(list, it, n));
-                return;
-            }
-            if (!e.value.type || !e.value.type.match(/image/)) {
-                console.warn("Do not use image reduction on invalid file !");
-                this.uploadFile(e.value, n + list.indexOf(e.value), null, () => this.uploadNextImage(list, it, n));
-                return;
-            }
-            if (fileSize < 1024*1024) {
-                console.warn("Do not use image reduction on small file !");
-                this.uploadFile(e.value, n + list.indexOf(e.value), null, () => this.uploadNextImage(list, it, n));
-                return;
-            }
-            exif.getOrientation(e.value, orientation => {
-                if (orientation != 1 && orientation != 2) {
-                    console.warn("Incorrect orientation !");
-                    this.uploadFile(e.value, n + list.indexOf(e.value), null, () => this.uploadNextImage(list, it, n));
-                    return;
-                }
-                let img = new Image();
-                img.onload = () => {
-                    let w = Math.min(img.naturalWidth, 2048);
-                    let h = Math.min(img.naturalHeight, 2048);
-                    let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
-                    let nw = Math.floor(img.naturalWidth*g);
-                    let nh = Math.floor(img.naturalHeight*g);
-                    imageService.resize(img, nw, nh, blob => {
-                        this.uploadFile(blob, n + list.indexOf(e.value), null, () => this.uploadNextImage(list, it, n));
-                    });
-                }
-                img.src = URL.createObjectURL(e.value);
-            });
-        } catch(error) {
-            console.warn(error); // error logging
-            // If something goes wrong in image reduction, fall back to normal upload
-            this.uploadFile(e.value, n + list.indexOf(e.value), null, () => this.uploadNextImage(list, it, n));
-        }
+        imageService.handleImage(
+            e.value,
+            res => this.uploadFile(
+                res,
+                n + list.indexOf(e.value),
+                null,
+                () => this.uploadNextImage(list, it, n)
+            )
+        );
     }
 
     uploadFile(file, fileIndex, placeholderIndex, callback = null) {

@@ -38,7 +38,6 @@ export default class FileGrid extends Component {
         evt.stopPropagation();
         evt.preventDefault();
         if (typeof(this.props.toggleFile) == "function") {
-            console.log(evt.currentTarget);
             this.props.toggleFile(evt.currentTarget.getAttribute("fileIndex"));
         }
     }
