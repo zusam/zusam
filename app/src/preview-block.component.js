@@ -95,7 +95,9 @@ export default class PreviewBlock extends Component {
                         { this.props.preview && <img class="card-img-top" src={ util.crop(this.props.preview, 320, 180) } /> }
                         <div class="card-body p-1">
                             <h5>{ this.props.data["title"] }</h5>
-                            <p><small>{ this.props.data["description"].slice(0, 500) }</small></p>
+                            { this.props.data["description"] && (
+                                <p><small>{ this.props.data["description"].slice(0, 500) }</small></p>
+                            )}
                         </div>
                     </div>
                 </a>
