@@ -96,7 +96,6 @@ export default class Writer extends Component {
         if (!this.props.parent) {
             msg.data.title = document.getElementById("title").value;
         }
-        msg.data = JSON.stringify(msg.data);
         http.put("/api/messages/" + this.props.messageId, msg).then(res => {
             if (!res) {
                 alert.add(lang.fr["error_new_message"], "alert-danger");
