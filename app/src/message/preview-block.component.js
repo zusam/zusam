@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import util from "./util.js";
+import { util } from "/core";
 import YoutubeEmbed from "./embeds/youtube-embed.component.js";
 import SoundcloudEmbed from "./embeds/soundcloud-embed.component.js";
 import TwitchEmbed from "./embeds/twitch-embed.component.js";

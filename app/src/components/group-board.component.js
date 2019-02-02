@@ -1,9 +1,6 @@
 import { h, render, Component } from "preact";
-import util from "./util.js";
-import cache from "./cache.js";
-import router from "./router.js";
-import me from "./me.js";
-import MessagePreview from "./message-preview.component.js";
+import { cache, me, router, util } from "/core";
+import { MessagePreview } from "/message";
 
 export default class GroupBoard extends Component {
 

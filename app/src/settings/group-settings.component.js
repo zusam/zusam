@@ -1,10 +1,6 @@
 import { h, render, Component } from "preact";
-import lang from "./lang.js";
-import cache from "./cache.js";
-import http from "./http.js";
-import alert from "./alert.js";
-import router from "./router.js";
-import FaIcon from "./fa-icon.component.js";
+import { alert, cache, http, lang, router } from "/core";
+import FaIcon from "../components/fa-icon.component.js";
 
 export default class GroupSettings extends Component {
 

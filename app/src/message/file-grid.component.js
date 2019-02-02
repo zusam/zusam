@@ -1,8 +1,6 @@
 import { h, render, Component } from "preact";
-import util from "./util.js";
-import cache from "./cache.js";
-import nlg from "./nlg.js";
-import FaIcon from "./fa-icon.component.js";
+import { cache, nlg, util } from "/core";
+import FaIcon from "../components/fa-icon.component.js";
 
 export default class FileGrid extends Component {
 

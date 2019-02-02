@@ -1,6 +1,6 @@
-@import "../bootstrap-light/scss/functions";
+@import "../../bootstrap-light/scss/functions";
 @import "custom";
-@import "../bootstrap-light/scss/bootstrap.scss";
+@import "../../bootstrap-light/scss/bootstrap.scss";
 
 // pass in a map to define number of columns for each breakpoint
 @mixin cols-per-breakpoint($params:()) {

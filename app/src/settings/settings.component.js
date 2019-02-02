@@ -1,11 +1,8 @@
 import { h, render, Component } from "preact";
-import lang from "./lang.js";
-import cache from "./cache.js";
-import router from "./router.js";
-import me from "./me.js";
+import { cache, lang, me, router } from "/core";
+import FaIcon from "../components/fa-icon.component.js";
 import UserSettings from "./user-settings.component.js";
 import GroupSettings from "./group-settings.component.js";
-import FaIcon from "./fa-icon.component.js";
 
 export default class Settings extends Component {
 

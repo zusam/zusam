@@ -1,10 +1,9 @@
 import { h, render, Component } from "preact";
-import router from "./router.js";
-import Writer from "./writer.component.js";
+import { router } from "/core";
+import { Writer, Message } from "/message";
+import { Settings } from "/settings";
 import CreateGroup from "./create-group.component.js";
-import Message from "./message.component.js";
 import GroupBoard from "./group-board.component.js";
-import Settings from "./settings.component.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class MainContent extends Component {

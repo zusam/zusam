@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import util from "../util.js";
+import { util } from "/core";
 
 export default class SoundcloudEmbed extends Component {
     render() {

@@ -1,7 +1,5 @@
 import { h, render, Component } from "preact";
-import lang from "./lang.js";
-import http from "./http.js";
-import router from "./router.js";
+import { http, lang, router } from "/core";
 
 export default class CreateGroup extends Component {
 

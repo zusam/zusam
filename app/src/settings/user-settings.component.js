@@ -1,11 +1,6 @@
 import { h, render, Component } from "preact";
-import lang from "./lang.js";
-import util from "./util.js";
-import cache from "./cache.js";
-import http from "./http.js";
-import alert from "./alert.js";
-import imageService from "./image-service.js";
-import FaIcon from "./fa-icon.component.js";
+import { alert, cache, http, imageService, lang, util } from "/core";
+import FaIcon from "../components/fa-icon.component.js";
 
 export default class UserSettings extends Component {
 

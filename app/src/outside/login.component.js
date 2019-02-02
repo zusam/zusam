@@ -1,9 +1,5 @@
 import { h, render, Component } from "preact";
-import lang from "./lang.js";
-import http from "./http.js";
-import cache from "./cache.js";
-import alert from "./alert.js";
-import router from "./router.js";
+import { alert, cache, http, lang, router } from "/core";
 
 export default class Login extends Component {
 

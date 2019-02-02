@@ -1,11 +1,6 @@
 import { h, render, Component } from "preact";
-import lang from "./lang.js";
-import http from "./http.js";
-import util from "./util.js";
-import me from "./me.js";
-import cache from "./cache.js";
-import router from "./router.js";
-import FaIcon from "./fa-icon.component.js";
+import { cache, http, lang, me, router, util } from "/core";
+import FaIcon from "../components/fa-icon.component.js";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";
 import MessageHead from "./message-head.component.js";

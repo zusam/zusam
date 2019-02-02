@@ -1,9 +1,6 @@
 import { h, render, Component } from "preact";
-import cache from "./cache.js";
-import util from "./util.js";
-import me from "./me.js";
-import router from "./router.js";
-import FaIcon from "./fa-icon.component.js";
+import { cache, me, router, util } from "/core";
+import FaIcon from "../components/fa-icon.component.js";
 
 export default class MessagePreview extends Component {
     constructor(props) {

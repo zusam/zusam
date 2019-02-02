@@ -1,13 +1,8 @@
 import { h, render, Component } from "preact";
-import lang from "./lang.js";
-import cache from "./cache.js";
-import router from "./router.js";
-import me from "./me.js";
-import Login from "./login.component.js";
-import Signup from "./signup.component.js";
-import Navbar from "./navbar.component.js";
-import ResetPassword from "./reset-password.component.js";
-import MainContent from "./main-content.component.js";
+import { lang, cache, router, me } from "/core";
+import { Login, Signup, ResetPassword } from "/outside";
+import Navbar from "./components/navbar.component.js";
+import MainContent from "./components/main-content.component.js";
 
 class App extends Component {
 
