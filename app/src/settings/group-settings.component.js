@@ -8,7 +8,17 @@ export default class GroupSettings extends Component {
         super(props);
         this.updateSettings = this.updateSettings.bind(this);
         this.leaveGroup = this.leaveGroup.bind(this);
+        this.resetInviteKey = this.resetInviteKey.bind(this);
         this.state = Object.assign({}, props);
+    }
+
+    resetInviteKey(event) {
+        event.preventDefault();
+        http.post("/api/groups/" + this.state.id + "/reset-invite-key", {}).then(res => {
+            alert.add(lang.fr["group_updated"]);
+            cache.resetCache();
+            this.setState({inviteKey: res["inviteKey"]});
+        });
     }
 
     updateSettings(event) {
@@ -63,12 +73,19 @@ export default class GroupSettings extends Component {
                                             <input
                                                 type="text"
                                                 name="inviteKey"
-                                                value={location.protocol + "//" + location.hostname + "/invitation/" + this.state.inviteKey}
+                                                value={
+                                                    location.protocol
+                                                        + "//" + location.hostname
+                                                        + "/invitation/"
+                                                        + this.state.inviteKey
+                                                }
                                                 class="form-control font-size-80"
                                                 readonly="readonly"
                                             ></input>
                                         </div>
-                                        {/*<button class="btn btn-outline-secondary">{lang.fr["reset_invitation_link"]}</button>*/}
+                                        <button class="btn btn-outline-secondary" onClick={this.resetInviteKey}>
+                                            {lang.fr["reset_invitation_link"]}
+                                        </button>
                                     </form>
                                     <form>
                                         <button onClick={this.leaveGroup} class="btn btn-outline-danger">{lang.fr["quit_group"]}</button>

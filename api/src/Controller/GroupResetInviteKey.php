@@ -1,15 +1,16 @@
 <?php
 namespace App\Controller;
 
-use App\Entity\Message;
-use App\Entity\User;
+use App\Entity\Group;
+use App\Service\Uuid;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\ExpressionLanguage\Expression;
 
-class ReadMessage extends Controller
+class GroupResetInviteKey extends Controller
 {
     private $em;
 
@@ -18,16 +19,13 @@ class ReadMessage extends Controller
         $this->em = $em;
     }
 
-    public function __invoke(Message $data): Message
+    public function __invoke(Group $data)
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
-
-        // remove this message from the current users news
-        $user = $this->getUser();
-        $user->removeNews($data->getId());
-        $this->em->persist($user);
+        $this->denyAccessUnlessGranted(new Expression("user in object.getUsersAsArray()"), $data);
+        $data->resetInviteKey();
+        $this->em->persist($data);
         $this->em->flush();
-
-        return $data;
+        return new JsonResponse(["inviteKey" => $data->getInviteKey()], JsonResponse::HTTP_OK);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Controller\GroupInvitation;
+use App\Controller\GroupResetInviteKey;
 use App\Controller\LeaveGroup;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -34,6 +35,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *            "path"="/groups/invitation/{inviteKey}",
  *            "controller"=GroupInvitation::class,
  *            "defaults"={"_api_receive"=false}
+ *        },
+ *        "reset-invite-key"={
+ *            "method"="POST",
+ *            "path"="/groups/{id}/reset-invite-key",
+ *            "controller"=GroupResetInviteKey::class,
  *        },
  *        "leave"={
  *            "method"="POST",
@@ -125,6 +131,7 @@ class Group
     public function resetInviteKey(): self
     {
         $this->inviteKey = Uuid::uuidv4();
+        return $this;
     }
 
     public function getCreatedAt(): int
