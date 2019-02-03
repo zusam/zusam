@@ -7,6 +7,8 @@ export default class Navbar extends Component {
     constructor(props) {
         super(props);
         this.clickBackButton = this.clickBackButton.bind(this);
+        this.onUpdateMe = this.onUpdateMe.bind(this);
+        window.addEventListener("updateMe", this.onUpdateMe);
     }
 
     clickBackButton(evt) {
@@ -15,6 +17,11 @@ export default class Navbar extends Component {
             return false;
         }
         router.onClick(evt);
+    }
+
+    onUpdateMe() {
+        // force update the navbar when me gets updated
+        this.setState({});
     }
 
     render() {

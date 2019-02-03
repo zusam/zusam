@@ -226,7 +226,6 @@ export default class Writer extends Component {
             let a = this.state.files;
             if (file["@type"] == "hydra:Error") {
                 a.splice(fileIndex, 1);
-                console.warn(file);
                 alert.add(lang.fr["error_upload"], "alert-danger");
             } else {
                 a.splice(fileIndex, 1, file);

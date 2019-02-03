@@ -31,6 +31,7 @@ export default class Message extends Component {
         };
         if (!props.message) {
             cache.get(url).then(msg => {
+                me.removeNews(msg.id);
                 this.setState({
                     message: msg,
                     author: msg.author,
@@ -40,13 +41,6 @@ export default class Message extends Component {
             });
         } else {
             this.getPreview();
-        }
-    }
-
-    componentDidMount() {
-        if (this.state.message) {
-            setTimeout(() => window.scrollTo(0, 0), 0);
-            me.removeNews(this.state.message.id);
         }
     }
 

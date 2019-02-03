@@ -47,7 +47,7 @@ const router = {
                     router.backUrl = "/";
                 }
                 if (router.route == "groups" && router.action == "write") {
-                    router.backUrl = router.entityUrl;
+                    router.backUrl = router.url;
                     router.backUrlPrompt = lang.fr["cancel_write"];
                 }
                 router.url += "/" + router.action;
