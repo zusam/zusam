@@ -12,8 +12,7 @@ class App extends Component {
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("popstate", router.sync);
         cache.get("apiKey").then(apiKey => {
-            let route = router.route || router.getSegments()[0];
-            if (apiKey || router.isOutside()) {
+            if (router.isOutside() || apiKey) {
                 me.update().then(r => {
                     router.sync();
                 });
@@ -57,7 +56,7 @@ class App extends Component {
 
         // here, we enter the "connected" realm of pages.
         // If the user is not connected, what should we do ?
-        if (!me.me || !me.me.groups || !router.url) {
+        if (!me.me || !me.me.groups) {
             return;
         }
 
@@ -65,7 +64,7 @@ class App extends Component {
             <main>
                 <Navbar/>
                 <div class="content">
-                    <MainContent/>
+                    <MainContent route="router.route"/>
                 </div>
             </main>
         );

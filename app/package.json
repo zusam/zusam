@@ -6,11 +6,12 @@
         "clean": "rm -f ../public/*.js ../public/*.css dist/*",
         "build-dev": "parcel build --no-source-maps --no-minify src/index.html",
         "build": "parcel build --no-source-maps src/index.html",
-        "assets": "cp src/*.svg dist/",
+        "assets": "cp src/assets/*.svg dist/",
         "serve": "cp dist/* ../public",
         "preassets": "yarn build",
         "preserve": "yarn assets",
-        "prebuild": "yarn clean"
+        "prebuild": "yarn clean",
+        "prebuild-dev": "yarn clean"
     },
     "dependencies": {
         "babel-polyfill": "~6.26",

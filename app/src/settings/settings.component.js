@@ -8,11 +8,10 @@ export default class Settings extends Component {
 
     constructor(props) {
         super(props);
-        this.state = Object.assign({groups: []}, props);
-        if (!this.state.key) {
-            return;
+        this.state = {};
+        if (props.key) {
+            cache.get(props.key).then(res => this.setState({entity: res}));
         }
-        cache.get(this.state.key).then(res => this.setState({entity: res}));
     }
 
     render() {
@@ -29,7 +28,7 @@ export default class Settings extends Component {
                             onClick={router.onClick}
                         >{lang.fr["account"]}</a>
                     </li>
-                    { this.state.groups.length > 0 && (
+                    { me.me.groups.length > 0 && (
                         <li
                             class="nav-item dropdown group-list" tabindex="-1"
                             onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
@@ -37,7 +36,7 @@ export default class Settings extends Component {
                         >
                             <div class={"nav-link" + (this.state.entity["@type"] == "Group" ? " active" : "")}>{ lang.fr.groups }</div>
                             <div class="dropdown-menu">
-                                { Array.isArray(this.state.groups) && this.state.groups.map(
+                                { me.me.groups.map(
                                     e => (
                                         <a
                                             class="seamless-link"

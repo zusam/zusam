@@ -6,7 +6,11 @@ export default class TwitchEmbed extends Component {
         const splits = this.props.url.split("/");
         switch (splits[2]) {
             case "www.twitch.tv":
-                embedUrl = "https://player.twitch.tv/?video=" + splits[4].replace(/\?.*$/,"") + "&autoplay=false";
+                if (splits.length > 5 && splits[4] == "clip") {
+                    embedUrl = "https://clips.twitch.tv/embed?clip=" + splits[5].replace(/\?.*$/,"") + "&autoplay=false";
+                } else {
+                    embedUrl = "https://player.twitch.tv/?video=" + splits[4].replace(/\?.*$/,"") + "&autoplay=false";
+                }
                 break;
             case "clips.twitch.tv":
                 embedUrl = "https://clips.twitch.tv/embed?clip=" + splits[3].replace(/\?.*$/,"") + "&autoplay=false";

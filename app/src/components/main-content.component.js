@@ -7,6 +7,7 @@ import GroupBoard from "./group-board.component.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class MainContent extends Component {
+
     render() {
         if (router.action == "settings") {
             return (

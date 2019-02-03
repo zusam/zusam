@@ -63,7 +63,7 @@ export default class GroupSettings extends Component {
                                             <input
                                                 type="text"
                                                 name="inviteKey"
-                                                value={"https://" + location.hostname + "/invitation/" + this.state.inviteKey}
+                                                value={location.protocol + "//" + location.hostname + "/invitation/" + this.state.inviteKey}
                                                 class="form-control font-size-80"
                                                 readonly="readonly"
                                             ></input>

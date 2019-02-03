@@ -95,13 +95,11 @@ class Group
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"read_group", "read_user"})
      * @Assert\Type("integer")
-     * @Assert\NotNull()
      */
     private $lastActivityDate;
 
     /**
      * @ORM\Column(type="json", nullable=true)
-     * @Assert\NotBlank()
      */
     private $data;
 
@@ -195,9 +193,9 @@ class Group
         return $this->lastActivityDate ?? 0;
     }
 
-    public function setLastActivityDate(int $lastActivityDate): self
+    public function setLastActivityDate(?int $lastActivityDate): self
     {
-        $this->lastActivityDate = $lastActivityDate;
+        $this->lastActivityDate = $lastActivityDate ?? 0;
         return $this;
     }
 
@@ -206,7 +204,7 @@ class Group
         return $this->data;
     }
 
-    public function setData(array $data): self
+    public function setData(?array $data): self
     {
         $this->data = $data;
         return $this;

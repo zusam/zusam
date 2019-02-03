@@ -25,7 +25,7 @@ const router = {
         "password-reset",
         "signup",
         "invitation"
-    ].includes(router.route),
+    ].includes(router.route || router.getSegments()[0]),
     navigate: (url, options = {}) => {
         const from = window.location.pathname;
         const queryParams = window.location.search;
@@ -111,9 +111,7 @@ const router = {
                 });
         }
     },
-    sync: () => {
-        router.navigate(window.location.pathname, {replace: true});
-    },
+    sync: () => router.navigate(window.location.pathname, {replace: true}),
     onClick: e => {
         e.preventDefault();
         const t = e.target.closest("a")
