@@ -14,8 +14,6 @@
         "prebuild-dev": "yarn clean"
     },
     "dependencies": {
-        "babel-polyfill": "~6.26",
-        "babel-preset-preact": "~1.1",
         "node-sass": "~4.11",
         "parcel-bundler": "~1.11",
         "pica": "~5.0",
@@ -23,6 +21,7 @@
     },
     "devDependencies": {
         "babel-core": "^6.26.3",
+        "babel-plugin-transform-react-jsx": "^6.24.1",
         "babel-preset-env": "^1.7.0"
     }
 }
