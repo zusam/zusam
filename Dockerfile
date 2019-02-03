@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.9
 
 # add tini and s6 to manage processes
 RUN apk add --no-cache -U su-exec tini s6
