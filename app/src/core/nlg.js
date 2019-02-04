@@ -74,7 +74,7 @@ let nlg = {
             close.id = "nlg-close";
             close.innerHTML = "&times;";
             close.addEventListener("click", nlg.hide);
-            nlg.keyPressClose = e => e.keyCode == 27 && nlg.hide();
+            nlg.keyPressClose = e => (e.key == "Escape" || e.code == "Escape") && nlg.hide();
             window.addEventListener("keypress", nlg.keyPressClose);
             document.body.appendChild(close);
             document.body.appendChild(modalBackground);
@@ -116,7 +116,7 @@ let nlg = {
                     }, 300);
                 };
                 next.addEventListener("click", nextFn);
-                nlg.keyPressRight = e => e.code == "ArrowRight" && nextFn(e);
+                nlg.keyPressRight = e => (e.key == "ArrowRight" || e.code == "ArrowRight") && nextFn(e);
                 window.addEventListener("keypress", nlg.keyPressRight);
                 modal.appendChild(next);
             }
@@ -132,7 +132,7 @@ let nlg = {
                     }, 300);
                 };
                 prev.addEventListener("click", prevFn);
-                nlg.keyPressLeft = e => e.code == "ArrowLeft" && prevFn(e);
+                nlg.keyPressLeft = e => (e.key == "ArrowLeft" || e.code == "ArrowLeft") && prevFn(e);
                 window.addEventListener("keypress", nlg.keyPressLeft);
                 modal.appendChild(prev);
             }
