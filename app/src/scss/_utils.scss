@@ -1,0 +1,48 @@
+.p-1 {
+    padding: 1rem;
+}
+
+.pb-1 {
+    padding-bottom: 1rem;
+}
+
+.font-size-80 {
+    font-size: 80%;
+}
+
+.w-3 {
+    width: 3rem !important;
+}
+
+.ml-1 {
+    margin-left: 1rem;
+}
+
+.mb-1 {
+    margin-bottom: 1rem;
+}
+
+.mt-1 {
+    margin-top: 1rem;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.seamless-link {
+    cursor: pointer;
+    &, &:hover {
+        color: inherit;
+        text-decoration: none;
+    }
+}
+
+.z-index-100 {
+    position: relative;
+    z-index: 100;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

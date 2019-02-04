@@ -1,0 +1,142 @@
+.main-nav {
+    background-color: $zusam_color;
+    color: white;
+    display: flex;
+    flex-flow: row;
+    height: $navbar_height;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+
+    .title {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 100%;
+        text-align: center;
+    }
+    @media (min-width: map-get($grid-breakpoints, "md")) {
+        .title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+    }
+
+    .menu {
+        padding: 0 8px;
+        position: relative;
+        cursor: pointer;
+        height: 100%;
+
+        &.active {
+            background-color: adjust-hue($zusam_color, 5deg);
+        }
+
+        .avatar {
+            height: 32px;
+            width: 32px;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+
+            img {
+                height: 100%;
+            }
+        }
+
+        &.active {
+            .dropdown-menu {
+                display: block;
+            }
+        }
+
+        /* Sub Menus */
+        .dropdown-menu {
+            position: absolute;
+            display: none;
+            width: inherit;
+            left: 0;
+            top: 100%;
+            padding: 0;
+            background-color: adjust-hue($zusam_color, 5deg);
+            text-align: left;
+            overflow: hidden;
+            border-bottom-right-radius: 4px;
+
+            a {
+                display: block;
+                padding: 5px 10px;
+                cursor: pointer;
+                white-space: nowrap;
+                &:hover {
+                    background-color: adjust-hue($zusam_color, 10deg);
+                }
+            }
+        }
+    }
+
+    .groups {
+        cursor: pointer;
+        position: relative;
+        background-color: $zusam_color;
+        height: 100%;
+        line-height: 200%;
+        flex-shrink: 0;
+
+        &.active {
+            background-color: adjust-hue($zusam_color, 5deg);
+            .dropdown-menu {
+                display: block;
+            }
+        }
+
+        .fa-icon {
+            font-size: 0.7rem;
+        }
+
+        /* Sub Menus */
+        .dropdown-menu {
+            position: absolute;
+            display: none;
+            width: inherit;
+            right: 0;
+            top: 100%;
+            padding: 0;
+            background-color: adjust-hue($zusam_color, 5deg);
+            text-align: left;
+            overflow: hidden;
+            border-bottom-left-radius: 4px;
+
+            a {
+                display: block;
+                padding: 5px 10px;
+                cursor: pointer;
+                white-space: nowrap;
+                &.has-news {
+                    font-weight: bold;
+                }
+
+                &:hover {
+                    background-color: adjust-hue($zusam_color, 10deg);
+                }
+            }
+        }
+    }
+
+    .back {
+        font-size: 1.2rem;
+        padding: 0px 1rem;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        &:hover {
+            background-color: adjust-hue($zusam_color, 5deg);
+        }
+    }
+}
+

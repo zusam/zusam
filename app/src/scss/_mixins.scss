@@ -1,0 +1,9 @@
+// pass in a map to define number of columns for each breakpoint
+@mixin cols-per-breakpoint($params:()) {
+    $gutter: 6px;
+    @each $value in $params {
+        @media (min-width: #{map-get($grid-breakpoints, nth($value, 1))}) {
+            width: calc(#{100 / nth($value, 2)}% - #{$gutter});
+        }
+    }
+}

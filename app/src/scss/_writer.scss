@@ -1,0 +1,127 @@
+.message.child .writer {
+    width: 100%;
+}
+
+@media (min-width: map-get($grid-breakpoints, "md")) {
+    .message.child .writer {
+        position: relative;
+        top: 12px;
+    }
+}
+
+.writer {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+
+    .remove-button {
+        display: block;
+    }
+
+    a.image {
+        margin: 5px;
+        position: relative;
+
+        &.removed img {
+            filter: grayscale(1) blur(2px);
+        }
+    }
+
+    #title {
+        width: 100%;
+        padding: 10px;
+        display: inline;
+        border: none;
+        border-bottom: 1px solid #eee;
+        &::placeholder {
+            color: #999;
+        }
+    }
+
+    #text {
+        resize: none;
+        min-height: 10rem;
+        max-height: 40rem;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #eee;
+        &::placeholder {
+            color: #999;
+        }
+    }
+
+    .options {
+        padding: 5px 0;
+        margin-top: 5px;
+        display: flex;
+        align-content: center;
+
+        .option {
+            background: none;
+            border: none;
+            margin: 0 5px;
+            color: #888;
+            font-size: 1.3rem;
+            cursor: pointer;
+            &:hover {
+                color: #444;
+            }
+        }
+
+        .submit {
+            margin-left: auto;
+            background-color: #f7a71b;
+            border: none;
+            border-radius: 2px;
+            color: white;
+            padding: 4px 10px;
+            cursor: pointer;
+            @media (hover: hover) {
+                &:hover {
+                    background-color: adjust-hue($zusam_color, -15deg);
+                }
+            }
+        }
+    }
+}
+
+.remove-button {
+    display: none;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+    position: absolute;
+    padding: 7px 20px;
+    font-size: 2rem;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.8);
+    border-bottom-left-radius: 10px;
+}
+
+.writer .video-uploaded .spinner {
+    display: none;
+}
+
+.write-button {
+    background-color: $zusam_color;
+    border-radius: 100%;
+    bottom: 2rem;
+    cursor: pointer;
+    display: flex;
+    font-size: 1.5rem;
+    height: 4rem;
+    justify-content: center;
+    padding: 19px;
+    position: fixed;
+    right: 2rem;
+    width: 4rem;
+    z-index: 500;
+    color: #fff;
+    &:hover {
+        background-color: adjust-hue($zusam_color, -15deg);
+        color: #fff;
+    }
+}
+
