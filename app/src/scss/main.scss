@@ -1,9 +1,34 @@
-@import "../../bootstrap-light/scss/functions";
+@import "bootstrap-functions";
 @import "custom";
-@import "../../bootstrap-light/scss/bootstrap.scss";
-
 @import "variables";
 @import "mixins";
+@import "bootstrap-mixins-breakpoints";
+@import "bootstrap-mixins-grid";
+@import "bootstrap-mixins-grid-framework";
+@import "bootstrap-mixins-transition";
+@import "bootstrap-mixins-forms";
+@import "bootstrap-mixins-gradients";
+@import "bootstrap-mixins-buttons";
+@import "bootstrap-mixins-borders";
+
+@import "bootstrap-root";
+@import "bootstrap-reboot";
+@import "bootstrap-types";
+@import "bootstrap-images";
+@import "bootstrap-grid";
+@import "bootstrap-forms";
+@import "bootstrap-buttons";
+@import "bootstrap-transitions";
+
+@import "bootstrap-nav";
+@import "bootstrap-card";
+@import "bootstrap-align";
+@import "bootstrap-borders";
+@import "bootstrap-display";
+@import "bootstrap-embed";
+@import "bootstrap-flex";
+@import "bootstrap-shadows";
+
 @import "utils";
 
 @import "message";
