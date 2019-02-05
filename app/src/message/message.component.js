@@ -13,6 +13,7 @@ export default class Message extends Component {
         this.displayMoreChildren = this.displayMoreChildren.bind(this);
         this.deleteMessage = this.deleteMessage.bind(this);
         this.editMessage = this.editMessage.bind(this);
+        this.cancelEdit = this.cancelEdit.bind(this);
         this.onNewChild = this.onNewChild.bind(this);
         this.getPreview = this.getPreview.bind(this);
         if (!props.parent) {
@@ -52,6 +53,11 @@ export default class Message extends Component {
                 cache.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => r && this.setState({preview: r}));
             }
         }
+    }
+
+    cancelEdit(event) {
+        event.preventDefault();
+        this.setState({edit: false});
     }
 
     deleteMessage(event) {
@@ -136,6 +142,7 @@ export default class Message extends Component {
                             group={this.state.group}
                             parent={this.state.message.parent}
                             text={this.state.data.text}
+                            cancel={this.cancelEdit}
                         />
                     </div>
                 );
@@ -149,6 +156,7 @@ export default class Message extends Component {
                         group={this.state.group}
                         text={this.state.data.text}
                         title={this.state.data.title}
+                        cancel={this.cancelEdit}
                     />
                     { this.state.message.children && this.state.message.children.length > 0 && (
                         <div>

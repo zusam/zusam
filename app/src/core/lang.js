@@ -53,6 +53,7 @@ const lang = {
         "error_upload": "Une erreur s'est produite pendant l'envoi.",
         "cancel_write": "Voulez-vous annuler l'écriture d'un nouveau message ?",
         "empty_message": "Le message est vide !",
+        "cancel": "Annuler",
     }
 };
 export default lang;

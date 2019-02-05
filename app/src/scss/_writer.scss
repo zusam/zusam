@@ -70,18 +70,32 @@
             }
         }
 
-        .submit {
+        .actions {
             margin-left: auto;
-            background-color: #f7a71b;
-            border: none;
-            border-radius: 2px;
-            color: white;
-            padding: 4px 10px;
-            cursor: pointer;
-            @media (hover: hover) {
-                &:hover {
-                    background-color: adjust-hue($zusam_color, -15deg);
+            .cancel, .submit {
+                border-radius: 2px;
+                cursor: pointer;
+                @media (hover: hover) {
+                    &:hover {
+                        background-color: adjust-hue($zusam_color, -15deg);
+                        border-color: adjust-hue($zusam_color, -15deg);
+                        color: white;
+                    }
                 }
+            }
+            .cancel {
+                border-color: #f7a71b;
+                color: #f7a71b;
+                border: 1px solid;
+                background-color: white;
+                padding: 3px 9px;
+            }
+            .submit {
+                padding: 4px 10px;
+                margin-left: 2rem;
+                background-color: #f7a71b;
+                color: white;
+                border: none;
             }
         }
     }
