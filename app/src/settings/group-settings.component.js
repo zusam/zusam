@@ -15,7 +15,7 @@ export default class GroupSettings extends Component {
     resetInviteKey(event) {
         event.preventDefault();
         http.post("/api/groups/" + this.state.id + "/reset-invite-key", {}).then(res => {
-            alert.add(lang.fr["group_updated"]);
+            alert.add(lang["group_updated"]);
             cache.resetCache();
             this.setState({inviteKey: res["inviteKey"]});
         });
@@ -29,7 +29,7 @@ export default class GroupSettings extends Component {
             group.name = name;
         }
         http.put("/api/groups/" + this.state.id, group).then(res => {
-            alert.add(lang.fr["group_updated"]);
+            alert.add(lang["group_updated"]);
             cache.resetCache();
             this.setState(Object.assign(this.state, res));
         });
@@ -38,7 +38,7 @@ export default class GroupSettings extends Component {
     leaveGroup(event) {
         event.preventDefault();
         http.post("/api/groups/" + this.state.id + "/leave").then(res => {
-            alert.add(lang.fr["group_left"]);
+            alert.add(lang["group_left"]);
             router.navigate("/");
         });
     }
@@ -53,23 +53,23 @@ export default class GroupSettings extends Component {
                                 <div class="col-12 col-md-10">
                                     <form id="settings_form" class="mb-1 border-bottom pb-1">
                                         <div class="form-group">
-                                            <label for="name">{lang.fr["name"]}: </label>
+                                            <label for="name">{lang["name"]}: </label>
                                             <input
                                                 type="text"
                                                 name="name"
                                                 minlength="1"
                                                 maxlength="128"
-                                                placeholder={lang.fr["name_input"]}
+                                                placeholder={lang["name_input"]}
                                                 value={this.state.name}
                                                 class="form-control"
                                                 required
                                             ></input>
                                         </div>
-                                        <button onClick={this.updateSettings} class="btn btn-outline-secondary">{lang.fr["save_changes"]}</button>
+                                        <button onClick={this.updateSettings} class="btn btn-outline-secondary">{lang["save_changes"]}</button>
                                     </form>
                                     <form class="mb-1 border-bottom pb-1">
                                         <div class="form-group">
-                                            <label for="inviteKey">{lang.fr["invitation_link"]}: </label>
+                                            <label for="inviteKey">{lang["invitation_link"]}: </label>
                                             <input
                                                 type="text"
                                                 name="inviteKey"
@@ -84,11 +84,11 @@ export default class GroupSettings extends Component {
                                             ></input>
                                         </div>
                                         <button class="btn btn-outline-secondary" onClick={this.resetInviteKey}>
-                                            {lang.fr["reset_invitation_link"]}
+                                            {lang["reset_invitation_link"]}
                                         </button>
                                     </form>
                                     <form>
-                                        <button onClick={this.leaveGroup} class="btn btn-outline-danger">{lang.fr["quit_group"]}</button>
+                                        <button onClick={this.leaveGroup} class="btn btn-outline-danger">{lang["quit_group"]}</button>
                                     </form>
                                 </div>
                             </div>

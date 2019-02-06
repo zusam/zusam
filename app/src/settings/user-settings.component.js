@@ -30,7 +30,7 @@ export default class UserSettings extends Component {
                         http.put("/api/users/" + this.state.id, {avatar: file["@id"]}).then(res => {
                             this.setState({avatar: file});
                             cache.resetCache();
-                            alert.add(lang.fr["settings_updated"]);
+                            alert.add(lang["settings_updated"]);
                         });
                     });
                 });
@@ -58,7 +58,7 @@ export default class UserSettings extends Component {
         http.put("/api/users/" + this.state.id, user).then(res => {
             this.setState(Object.assign(this.state, res));
             cache.resetCache();
-            alert.add(lang.fr["settings_updated"]);
+            alert.add(lang["settings_updated"]);
         });
     }
 
@@ -79,40 +79,40 @@ export default class UserSettings extends Component {
                                 <div class="col-12 col-md-10">
                                     <form id="settings_form">
                                         <div class="form-group">
-                                            <label for="name">{lang.fr["name"]}: </label>
+                                            <label for="name">{lang["name"]}: </label>
                                             <input
                                                 type="text"
                                                 name="name"
                                                 minlength="1"
                                                 maxlength="128"
-                                                placeholder={lang.fr["name_input"]}
+                                                placeholder={lang["name_input"]}
                                                 value={this.state.name}
                                                 class="form-control"
                                             ></input>
                                         </div>
                                         <div class="form-group">
-                                            <label for="email">{lang.fr["email"]}: </label>
+                                            <label for="email">{lang["email"]}: </label>
                                             <input
                                                 type="email"
                                                 name="email"
-                                                placeholder={lang.fr["email_input"]}
+                                                placeholder={lang["email_input"]}
                                                 value={this.state.login}
                                                 class="form-control"
                                             ></input>
                                         </div>
                                         <div class="form-group">
-                                            <label for="password">{lang.fr["password"]}: </label>
+                                            <label for="password">{lang["password"]}: </label>
                                             <input
                                                 type="password"
                                                 name="password"
                                                 autocomplete="new-password"
                                                 minlength="8"
                                                 maxlength="128"
-                                                placeholder={lang.fr["password_input"]}
+                                                placeholder={lang["password_input"]}
                                                 class="form-control"
                                             ></input>
                                         </div>
-                                        <button onClick={this.updateSettings} class="btn btn-primary">{lang.fr["save_changes"]}</button>
+                                        <button onClick={this.updateSettings} class="btn btn-primary">{lang["save_changes"]}</button>
                                     </form>
                                 </div>
                             </div>

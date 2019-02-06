@@ -3,7 +3,7 @@ import _cache from "./cache.js";
 import _exif from "./exif.js";
 import _http from "./http.js";
 import _imageService from "./image-service.js";
-import _lang from "./lang.js";
+import _lang from "./lang";
 import _me from "./me.js";
 import _nlg from "./nlg.js";
 import _router from "./router.js";

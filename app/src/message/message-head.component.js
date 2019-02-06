@@ -26,8 +26,8 @@ export default class MessageHead extends Component {
                     >
                         <FaIcon family="solid" icon="caret-down"/>
                         <div class="dropdown-menu">
-                            <a class="seamless-link" onClick={this.props.editMessage}>{lang.fr["edit"]}</a>
-                            <a class="seamless-link" onClick={this.props.deleteMessage}>{lang.fr["delete"]}</a>
+                            <a class="seamless-link" onClick={this.props.editMessage}>{lang["edit"]}</a>
+                            <a class="seamless-link" onClick={this.props.deleteMessage}>{lang["delete"]}</a>
                         </div>
                     </div>
                 )}

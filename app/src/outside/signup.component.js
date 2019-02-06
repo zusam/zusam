@@ -25,7 +25,7 @@ export default class Signup extends Component {
 				cache.set("apiKey", res.api_key);
                 setTimeout(() => router.navigate("/"), 100);
             } else {
-                alert.add(lang.fr[res.message]);
+                alert.add(lang[res.message]);
             }
 		});
 	}
@@ -35,15 +35,15 @@ export default class Signup extends Component {
             <div class="signup">
                 <div class="signup-form">
                     <img src="zusam_logo.svg"/>
-                    <div class="welcome lead">{lang.fr["invitation_welcome"]}</div>
+                    <div class="welcome lead">{lang["invitation_welcome"]}</div>
                     <form>
                         <div class="form-group">
-                            <input type="email" class="form-control" required id="login" placeholder={lang.fr.login_placeholder} />
+                            <input type="email" class="form-control" required id="login" placeholder={lang.login_placeholder} />
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" required id="password" placeholder={lang.fr.password_placeholder} />
+                            <input type="password" class="form-control" required id="password" placeholder={lang.password_placeholder} />
                         </div>
-                        <button type="submit" class="btn btn-light" onClick={this.sendSignupForm}>{lang.fr.signup}</button>
+                        <button type="submit" class="btn btn-light" onClick={this.sendSignupForm}>{lang.signup}</button>
                     </form>
                 </div>
             </div>

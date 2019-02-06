@@ -62,7 +62,7 @@ export default class Message extends Component {
 
     deleteMessage(event) {
 		event.preventDefault();
-        if(confirm(lang.fr["ask_delete_message"])) {
+        if(confirm(lang["ask_delete_message"])) {
             http.delete(this.state.message["@id"]);
             cache.resetCache();
             // give some time to the cache to delete itself properly
@@ -161,7 +161,7 @@ export default class Message extends Component {
                     { this.state.message.children && this.state.message.children.length > 0 && (
                         <div>
                             { this.state.displayedChildren < this.state.message.children.length && (
-                                <a class="more-coms" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</a>
+                                <a class="more-coms" onClick={this.displayMoreChildren}>{lang["more_coms"]}</a>
                             )}
                             { this.state.message.children.slice(-1 * this.state.displayedChildren).map((e,i,m) => {
                                 let follow = "";
@@ -197,8 +197,8 @@ export default class Message extends Component {
                             >
                                 <FaIcon family="solid" icon="caret-down"/>
                                 <div class="dropdown-menu">
-                                    <a class="seamless-link" onClick={this.editMessage}>{lang.fr["edit"]}</a>
-                                    <a class="seamless-link" onClick={this.deleteMessage}>{lang.fr["delete"]}</a>
+                                    <a class="seamless-link" onClick={this.editMessage}>{lang["edit"]}</a>
+                                    <a class="seamless-link" onClick={this.deleteMessage}>{lang["delete"]}</a>
                                 </div>
                             </div>
                         )}
@@ -231,7 +231,7 @@ export default class Message extends Component {
                 { !this.state.message.parent && this.state.message.children && this.state.message.children.length > 0 && (
                     <div>
                         { this.state.displayedChildren < this.state.message.children.length && (
-                            <a class="more-coms" onClick={this.displayMoreChildren}>{lang.fr["more_coms"]}</a>
+                            <a class="more-coms" onClick={this.displayMoreChildren}>{lang["more_coms"]}</a>
                         )}
                         { this.state.message.children.slice(-1 * this.state.displayedChildren).map((e,i,m) => {
                             let follow = "";

@@ -1,7 +1,7 @@
 import cache from "./cache.js";
 import http from "./http.js";
 import nlg from "./nlg.js";
-import lang from "./lang.js";
+import lang from "./lang";
 
 const router = {
     route: "",
@@ -48,7 +48,7 @@ const router = {
                 }
                 if (router.route == "groups" && router.action == "write") {
                     router.backUrl = router.url;
-                    router.backUrlPrompt = lang.fr["cancel_write"];
+                    router.backUrlPrompt = lang["cancel_write"];
                 }
                 router.url += "/" + router.action;
             }

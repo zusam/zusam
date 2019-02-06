@@ -91,7 +91,7 @@ export default class Writer extends Component {
         }
         http.put("/api/messages/" + this.props.messageId, msg).then(res => {
             if (!res) {
-                alert.add(lang.fr["error_new_message"], "alert-danger");
+                alert.add(lang["error_new_message"], "alert-danger");
                 return;
             }
             location.reload();
@@ -117,12 +117,12 @@ export default class Writer extends Component {
         }
         // don't post if there is nothing to post
         if (!msg.files.length && !msg.data.text && !msg.data.title) {
-            alert.add(lang.fr["empty_message"], "alert-danger");
+            alert.add(lang["empty_message"], "alert-danger");
             return;
         }
         http.post("/api/messages", msg).then(res => {
             if (!res) {
-                alert.add(lang.fr["error_new_message"], "alert-danger");
+                alert.add(lang["error_new_message"], "alert-danger");
                 return;
             }
             cache.resetCache();
@@ -193,7 +193,7 @@ export default class Writer extends Component {
             // this is a fix for firefox mobile
             // firefox mobile only gets one file on "input multiple" and throws on getting the size
             // https://bugzilla.mozilla.org/show_bug.cgi?id=1456557
-            alert.add(lang.fr["multiple_photos_upload"], "alert-danger");
+            alert.add(lang["multiple_photos_upload"], "alert-danger");
             return;
         }
         imageService.handleImage(
@@ -226,7 +226,7 @@ export default class Writer extends Component {
             let a = this.state.files;
             if (file["@type"] == "hydra:Error") {
                 a.splice(fileIndex, 1);
-                alert.add(lang.fr["error_upload"], "alert-danger");
+                alert.add(lang["error_upload"], "alert-danger");
             } else {
                 a.splice(fileIndex, 1, file);
             }
@@ -243,13 +243,13 @@ export default class Writer extends Component {
                 { !this.props.parent && (
                     <input
                         type="text" id="title"
-                        placeholder={lang.fr["title_placeholder"]}
+                        placeholder={lang["title_placeholder"]}
                     ></input>
                 )}
                 <textarea
                     onKeyPress={this.getPreview}
                     id="text"
-                    placeholder={lang.fr["text_placeholder"]}
+                    placeholder={lang["text_placeholder"]}
                     rows="5"
                     autocomplete="off"
                     autofocus={this.props.focus}
@@ -267,20 +267,20 @@ export default class Writer extends Component {
                     <button
                         class="option"
                         onClick={this.inputImages}
-                        title={lang.fr["upload_image"]}
+                        title={lang["upload_image"]}
                     >
                         <FaIcon family={"regular"} icon={"images"}/>
                     </button>
                         <button
                             class="option"
                             onClick={this.inputVideo}
-                            title={lang.fr["upload_video"]}
+                            title={lang["upload_video"]}
                         >
                             <FaIcon family={"solid"} icon={"film"}/>
                         </button>
                     <div class="actions">
-                        { this.props.cancel && <button class="cancel" onClick={this.props.cancel}>{lang.fr.cancel}</button> }
-                        <button type="submit" class="submit" onClick={this.sendMessage}>{lang.fr.submit}</button>
+                        { this.props.cancel && <button class="cancel" onClick={this.props.cancel}>{lang.cancel}</button> }
+                        <button type="submit" class="submit" onClick={this.sendMessage}>{lang.submit}</button>
                     </div>
                 </div>
             </div>

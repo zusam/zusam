@@ -36,18 +36,18 @@ export default class CreateGroup extends Component {
                                     <div class="col-12 col-md-10">
                                         <form id="create_group_form" class="mb-1">
                                             <div class="form-group">
-                                                <label for="name">{lang.fr["name"]}: </label>
+                                                <label for="name">{lang["name"]}: </label>
                                                 <input
                                                     type="text"
                                                     name="name"
                                                     minlength="1"
                                                     maxlength="128"
-                                                    placeholder={lang.fr["name_input"]}
+                                                    placeholder={lang["name_input"]}
                                                     class="form-control"
                                                     required
                                                 ></input>
                                             </div>
-                                            <button onClick={this.postNewGroup} class="btn btn-primary">{lang.fr["create_the_group"]}</button>
+                                            <button onClick={this.postNewGroup} class="btn btn-primary">{lang["create_the_group"]}</button>
                                         </form>
                                     </div>
                                 </div>

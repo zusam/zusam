@@ -24,9 +24,9 @@ export default class Login extends Component {
         http.post("/api/password-reset-mail", {mail: login}).then(res => {
             this.setState({sending: false});
 			if (res && !res.message) {
-                alert.add(lang.fr["password_reset_mail_sent"]);
+                alert.add(lang["password_reset_mail_sent"]);
             } else {
-                alert.add(lang.fr[res.message], "alert-danger");
+                alert.add(lang[res.message], "alert-danger");
             }
         });
     }
@@ -44,7 +44,7 @@ export default class Login extends Component {
 				cache.set("apiKey", res.api_key);
                 setTimeout(() => router.navigate("/"), 100);
             } else {
-                alert.add(lang.fr[res.message], "alert-danger");
+                alert.add(lang[res.message], "alert-danger");
             }
 		});
 	}
@@ -61,24 +61,24 @@ export default class Login extends Component {
                     { !this.state.showResetPassword && (
                         <form>
                             <div class="form-group">
-                                <input type="email" class="form-control" required id="login" placeholder={lang.fr.login_placeholder} />
+                                <input type="email" class="form-control" required id="login" placeholder={lang.login_placeholder} />
                             </div>
                             <div class="form-group">
-                                <input type="password" class="form-control" required id="password" placeholder={lang.fr.password_placeholder} />
+                                <input type="password" class="form-control" required id="password" placeholder={lang.password_placeholder} />
                             </div>
-                            <div class="forgot-password"><span onClick={this.showPasswordReset}>{lang.fr["forgot_password"]}</span></div>
+                            <div class="forgot-password"><span onClick={this.showPasswordReset}>{lang["forgot_password"]}</span></div>
                             <button type="submit" class="btn btn-light" onClick={this.sendLoginForm} disabled={this.state.sending}>
-                                {lang.fr.connect}
+                                {lang.connect}
                             </button>
                         </form>
                     )}
                     { !!this.state.showResetPassword && (
                         <form>
                             <div class="form-group">
-                                <input type="email" class="form-control" required id="login" placeholder={lang.fr.login_placeholder} />
+                                <input type="email" class="form-control" required id="login" placeholder={lang.login_placeholder} />
                             </div>
                             <button type="submit" class="btn btn-light" onClick={this.sendPasswordReset} disabled={this.state.sending}>
-                                {lang.fr.submit}
+                                {lang.submit}
                             </button>
                         </form>
                     )}

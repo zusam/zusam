@@ -26,7 +26,7 @@ export default class Settings extends Component {
                             class={ "nav-link" + (this.state.entity["@type"] == "User" ? " active" : "")}
                             href={router.toApp(me.me["@id"]) + "/settings"}
                             onClick={router.onClick}
-                        >{lang.fr["account"]}</a>
+                        >{lang["account"]}</a>
                     </li>
                     { me.me.groups.length > 0 && (
                         <li
@@ -34,7 +34,7 @@ export default class Settings extends Component {
                             onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                             onClick={e => e.currentTarget.classList.toggle("active")}
                         >
-                            <div class={"nav-link" + (this.state.entity["@type"] == "Group" ? " active" : "")}>{ lang.fr.groups }</div>
+                            <div class={"nav-link" + (this.state.entity["@type"] == "Group" ? " active" : "")}>{ lang.groups }</div>
                             <div class="dropdown-menu">
                                 { me.me.groups.map(
                                     e => (

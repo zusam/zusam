@@ -40,8 +40,8 @@ export default class Navbar extends Component {
                             <a class="seamless-link"
                                 href={router.toApp(me.me["@id"])+"/settings"}
                                 onClick={router.onClick}
-                            >{lang.fr["settings"]}</a>
-                            <a class="seamless-link" href="/logout" onClick={router.onClick}>{lang.fr["logout"]}</a>
+                            >{lang["settings"]}</a>
+                            <a class="seamless-link" href="/logout" onClick={router.onClick}>{lang["logout"]}</a>
                         </div>
                     </div>
                 )}
@@ -63,7 +63,7 @@ export default class Navbar extends Component {
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >
-                        <div>{ lang.fr.groups } <FaIcon family={"solid"} icon={"caret-down"}/></div>
+                        <div>{ lang.groups } <FaIcon family={"solid"} icon={"caret-down"}/></div>
                         <div class="dropdown-menu">
                             { Array.isArray(me.me.groups) && me.me.groups.map(
                                 e => (
@@ -74,7 +74,7 @@ export default class Navbar extends Component {
                                     >{e.name}</a>
                                 )
                             )}
-                            <a class="seamless-link" href="/create-group" onClick={router.onClick}>{"+ " + lang.fr["create_a_group"]}</a>
+                            <a class="seamless-link" href="/create-group" onClick={router.onClick}>{"+ " + lang["create_a_group"]}</a>
                         </div>
                     </div>
                 )}

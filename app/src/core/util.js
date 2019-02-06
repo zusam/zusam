@@ -1,4 +1,4 @@
-import lang from "./lang.js";
+import lang from "./lang";
 
 const util = {
     // full datetime as a string adapted to the users timezone
@@ -14,10 +14,10 @@ const util = {
         }
         const duration = Math.round((Date.now()/1000 - timestamp)/60);
         if (duration < 60) {
-            return lang.fr["there_is"] + " " + duration + "mn";
+            return lang["there_is"] + " " + duration + "mn";
         }
         if (duration < 60 * 24) {
-            return lang.fr["there_is"] + " " + Math.floor(duration/60) + "h";
+            return lang["there_is"] + " " + Math.floor(duration/60) + "h";
         }
         let date = new Date(timestamp*1000);
         return util.humanFullDate(timestamp).split(" ")[0];
