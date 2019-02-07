@@ -50,10 +50,10 @@ export default class Navbar extends Component {
                         <FaIcon family={"solid"} icon={"arrow-left"}/>
                     </a>
                 )}
-                { router.route == "groups" && router.entity.name && (
+                { ["groups", "messages"].includes(router.route) && (
                     <span class="title">
                         <span class="cursor-pointer" onClick={() => location.reload()}>
-                            {router.entity.name}
+                            {router.entity["name"] || me.me.groups.find(g => g["@id"] == router.entity.group)["name"]}
                         </span>
                     </span>
                 )}
