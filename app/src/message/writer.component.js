@@ -11,7 +11,7 @@ export default class Writer extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.postMessage = this.postMessage.bind(this);
         this.putMessage = this.putMessage.bind(this);
-        this.getPreview = this.getPreview.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
         this.toggleFile = this.toggleFile.bind(this);
         this.inputImages = this.inputImages.bind(this);
         this.inputVideo = this.inputVideo.bind(this);
@@ -42,7 +42,11 @@ export default class Writer extends Component {
         }
     }
 
-    getPreview(event) {
+    onKeyPress(event) {
+        if (event.ctrlKey && event.key == "Enter") {
+            this.sendMessage();
+            return;
+        }
         if (![" ", "Enter", "v"].includes(event.key)) {
             return;
         }
@@ -247,7 +251,7 @@ export default class Writer extends Component {
                     ></input>
                 )}
                 <textarea
-                    onKeyPress={this.getPreview}
+                    onKeyPress={this.onKeyPress}
                     id="text"
                     placeholder={lang["text_placeholder"]}
                     rows="5"
