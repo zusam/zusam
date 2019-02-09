@@ -27,6 +27,7 @@
 # PUBLIC
 /public/api/bundles/
 /public/thumbnails/
+/public/site.webmanifest
 /public/*.js
 /public/*.map
 /public/*.css

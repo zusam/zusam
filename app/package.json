@@ -3,13 +3,11 @@
     "version": "0.1-beta.4",
     "license": "GPL-3.0-or-later",
     "scripts": {
-        "clean": "rm -f ../public/*.js ../public/*.css dist/*",
+        "clean": "rm -rf ../public/*.js ../public/*.css dist/*",
         "build-dev": "parcel build --no-source-maps --no-minify src/index.html",
         "build": "parcel build --no-source-maps src/index.html",
-        "assets": "cp src/assets/* dist/",
-        "serve": "cp dist/* ../public",
-        "preassets": "yarn build",
-        "preserve": "yarn assets",
+        "serve": "cp -r dist/* ../public",
+        "preserve": "yarn build",
         "prebuild": "yarn clean",
         "prebuild-dev": "yarn clean"
     },
