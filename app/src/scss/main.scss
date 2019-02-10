@@ -2,6 +2,7 @@
 @import "custom";
 @import "variables";
 @import "mixins";
+
 @import "bootstrap-mixins-breakpoints";
 @import "bootstrap-mixins-grid";
 @import "bootstrap-mixins-grid-framework";
@@ -11,26 +12,20 @@
 @import "bootstrap-mixins-buttons";
 @import "bootstrap-mixins-borders";
 
-@import "bootstrap-root";
-@import "bootstrap-reboot";
-@import "bootstrap-types";
-@import "bootstrap-images";
-@import "bootstrap-grid";
-@import "bootstrap-forms";
-@import "bootstrap-buttons";
-@import "bootstrap-transitions";
-
-@import "bootstrap-nav";
-@import "bootstrap-card";
-@import "bootstrap-align";
-@import "bootstrap-borders";
-@import "bootstrap-display";
-@import "bootstrap-embed";
-@import "bootstrap-flex";
-@import "bootstrap-shadows";
-
+@import "root";
+@import "reboot";
+@import "types";
+@import "images";
+@import "grid";
+@import "forms";
+@import "buttons";
+@import "nav";
+@import "card";
+@import "borders";
+@import "display";
+@import "embed";
+@import "flex";
 @import "utils";
-
 @import "message";
 @import "embed";
 @import "writer";
