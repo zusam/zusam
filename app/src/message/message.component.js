@@ -45,6 +45,10 @@ export default class Message extends Component {
         }
     }
 
+    componentDidMount() {
+        setTimeout(() => window.scrollTo(0, 0));
+    }
+
     getPreview() {
         if (this.state.message.data) {
             this.setState({data: this.state.message.data});
