@@ -116,6 +116,10 @@ const router = {
     onClick: e => {
         e.preventDefault();
         e.stopPropagation();
+        // disable active stances (dropdowns...)
+        for (let e of document.getElementsByClassName("active")) {
+            e.classList.remove("active");
+        }
         const t = e.target.closest("a")
         if (t) {
             if (e.ctrlKey) {
