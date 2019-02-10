@@ -57,3 +57,52 @@
     -ms-user-select: none;
     user-select: none;
 }
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.d-none {
+    display: none;
+}
+
+.d-inline-block {
+    display: inline-block;
+}
+
+.d-flex {
+    display: flex;
+}
+
+@media (min-width: 768px) {
+    .d-md-block {
+        display: block;
+    }
+    .d-md-flex {
+        display: flex;
+    }
+}
+
+.border-top {
+    border-top: $border-width solid $border-color;
+}
+
+.border-bottom  {
+    border-bottom: $border-width solid $border-color;
+}
+
+.rounded {
+    border-radius: $border-radius;
+}
+
+.rounded-circle {
+    border-radius: 50%;
+}

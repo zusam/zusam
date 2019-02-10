@@ -3,27 +3,6 @@
 // Variables should follow the `$component-state-property-size` formula for
 // consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
 
-
-///
-// Module system
-//
-
-$enable-utilities-spacing:  false   !default; // 14K
-$enable-utilities-flex:     true    !default; // 12K
-$enable-buttons-alternate:  true    !default; // 12K
-$enable-form:               true    !default; // 9K
-$enable-grid:               true    !default; // 8K
-$enable-input-group:        false   !default; // 5K
-$enable-tables:             false   !default; // 4K
-$enable-list-group:         false   !default; // 4K
-$enable-custom-forms:       false   !default; // 4K
-$enable-button-group:       false   !default; // 3K
-$enable-card:               true    !default; // 3K
-$enable-navbar:             false   !default; // 3K
-$enable-utilities-text:     true    !default; // 2K
-$enable-print-styles:       false   !default; // 2K
-$enable-pagination:         false   !default; // 1K
-
 // Options
 //
 // Quickly modify global styling by enabling or disabling optional features.
@@ -33,8 +12,6 @@ $enable-rounded:            true !default;
 $enable-shadows:            false !default;
 $enable-gradients:          false !default;
 $enable-transitions:        true !default;
-$enable-hover-media-query:  false !default; // Deprecated, no longer affects any compiled CSS
-$enable-grid-classes:       $enable-grid !default;
 
 //
 // Color system
