@@ -115,6 +115,7 @@ const router = {
     sync: () => router.navigate(window.location.pathname, {replace: true}),
     onClick: e => {
         e.preventDefault();
+        e.stopPropagation();
         const t = e.target.closest("a")
         if (t) {
             if (e.ctrlKey) {
