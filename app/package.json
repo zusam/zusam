@@ -3,7 +3,7 @@
     "version": "0.1-beta.4",
     "license": "GPL-3.0-or-later",
     "scripts": {
-        "clean": "rm -rf ../public/*.js ../public/*.css dist/*",
+        "clean": "rm -rf ../public/*.js ../public/*.css ../public/*.png ../public/*.ico ../public/*.svg dist/*",
         "build-dev": "parcel build --no-source-maps --no-minify src/index.html",
         "build": "parcel build --no-source-maps src/index.html",
         "serve": "cp -r dist/* ../public",
