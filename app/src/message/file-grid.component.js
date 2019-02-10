@@ -49,7 +49,12 @@ export default class FileGrid extends Component {
         if (miniature == true) {
             if (file.status == "ready") {
                 return (
-                    <a data-nlg={!this.props.inWriter} href={!this.props.inWriter && url} class="rounded">
+                    <a
+                        data-nlg={!this.props.inWriter}
+                        data-origin={filePath}
+                        href={!this.props.inWriter && url}
+                        class="rounded"
+                    >
                         <div
                             className={"miniature" + (file.removed ? " removed" : "")}
                             style={"background-image:url('" + util.crop(filePath, 160, 160) + "')"}
@@ -100,6 +105,7 @@ export default class FileGrid extends Component {
                 return (
                     <a
                         data-nlg={!this.props.inWriter}
+                        data-origin={filePath}
                         href={!this.props.inWriter && url}
                         className={"image" + (file.removed ? " removed" : "")}
                     >

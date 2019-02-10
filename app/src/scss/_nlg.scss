@@ -61,3 +61,19 @@
     transition: left 300ms;
     transform: translateX(-50%);
 }
+#nlg-origin {
+    background: rgba(0,0,0,.2);
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    bottom: 0;
+    border-radius: 0 3px 0 0;
+    cursor: pointer;
+    padding: 1rem;
+
+    svg {
+        fill: white;
+        height: 2.5rem;
+        width: 2.5rem;
+    }
+}
