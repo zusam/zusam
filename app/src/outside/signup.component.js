@@ -34,7 +34,7 @@ export default class Signup extends Component {
         return (
             <div class="signup">
                 <div class="signup-form">
-                    <img src="zusam_logo.svg"/>
+                    <img src="assets/zusam_logo.svg"/>
                     <div class="welcome lead">{lang["invitation_welcome"]}</div>
                     <form>
                         <div class="form-group">

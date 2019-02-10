@@ -24,7 +24,7 @@ export default class MessagePreview extends Component {
         return (
             <a
                 className={
-                    "d-inline-block seamless-link message-preview"
+                    "d-inline-block seamless-link message-preview unselectable"
                         + (me.isNews(this.state.message.id) ? " has-news" : "")
                 }
                 href={ router.toApp(this.state.message["@id"]) }

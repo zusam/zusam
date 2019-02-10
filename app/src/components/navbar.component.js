@@ -26,14 +26,14 @@ export default class Navbar extends Component {
 
     render() {
         return (
-            <div class="main-nav nav align-items-center shadow-sm z-index-100">
+            <div class="main-nav nav align-items-center z-index-100">
                 { !router.backUrl && (
                     <div
                         class="menu dropdown" tabindex="-1"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >
-                        <div class="rounded-circle avatar">
+                        <div class="rounded-circle avatar unselectable">
                             <img class="rounded-circle" src={me.me.avatar ? util.crop(me.me.avatar["@id"], 80, 80) : util.defaultAvatar }/>
                         </div>
                         <div class="dropdown-menu">
@@ -52,7 +52,7 @@ export default class Navbar extends Component {
                 )}
                 { ["groups", "messages"].includes(router.route) && (
                     <span class="title">
-                        <span class="cursor-pointer" onClick={() => location.reload()}>
+                        <span class="cursor-pointer unselectable" onClick={() => location.reload()}>
                             {router.entity["name"] || me.me.groups.find(g => g["@id"] == router.entity.group)["name"]}
                         </span>
                     </span>
@@ -63,12 +63,12 @@ export default class Navbar extends Component {
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >
-                        <div>{ lang.groups } <FaIcon family={"solid"} icon={"caret-down"}/></div>
+                        <div class="unselectable">{ lang.groups } <FaIcon family={"solid"} icon={"caret-down"}/></div>
                         <div class="dropdown-menu">
                             { Array.isArray(me.me.groups) && me.me.groups.map(
                                 e => (
                                     <a
-                                        className={"seamless-link" + (me.isNews(e.id) ? " has-news" : "")}
+                                        className={"seamless-link unselectable" + (me.isNews(e.id) ? " has-news" : "")}
                                         href={router.toApp(e["@id"])}
                                         onClick={router.onClick}
                                     >{e.name}</a>

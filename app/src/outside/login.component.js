@@ -57,7 +57,7 @@ export default class Login extends Component {
         return (
             <div class="login">
                 <div class="login-form">
-                    <img src="zusam_logo.svg"/>
+                    <img src="assets/zusam_logo.svg"/>
                     { !this.state.showResetPassword && (
                         <form>
                             <div class="form-group">
