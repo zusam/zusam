@@ -1,6 +1,6 @@
 {
     "name": "Zusam",
-    "version": "0.1-beta.4",
+    "version": "0.1-beta.5",
     "license": "GPL-3.0-or-later",
     "scripts": {
         "clean": "rm -rf ../public/*.js ../public/*.css ../public/*.png ../public/*.ico ../public/*.svg dist/*",
