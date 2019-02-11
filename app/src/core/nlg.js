@@ -89,7 +89,7 @@ let nlg = {
             close.innerHTML = "&times;";
             close.addEventListener("click", nlg.hide);
             nlg.keyPressClose = e => (e.key == "Escape" || e.code == "Escape") && nlg.hide();
-            window.addEventListener("keypress", nlg.keyPressClose);
+            window.addEventListener("keydown", nlg.keyPressClose);
             document.body.appendChild(close);
             document.body.appendChild(modalBackground);
         }
@@ -131,7 +131,7 @@ let nlg = {
                 };
                 next.addEventListener("click", nextFn);
                 nlg.keyPressRight = e => (e.key == "ArrowRight" || e.code == "ArrowRight") && nextFn(e);
-                window.addEventListener("keypress", nlg.keyPressRight);
+                window.addEventListener("keydown", nlg.keyPressRight);
                 modal.appendChild(next);
             }
             if (prevElmt) {
@@ -147,7 +147,7 @@ let nlg = {
                 };
                 prev.addEventListener("click", prevFn);
                 nlg.keyPressLeft = e => (e.key == "ArrowLeft" || e.code == "ArrowLeft") && prevFn(e);
-                window.addEventListener("keypress", nlg.keyPressLeft);
+                window.addEventListener("keydown", nlg.keyPressLeft);
                 modal.appendChild(prev);
             }
             modal.style.cssText = `opacity: 1;`;
@@ -165,15 +165,15 @@ let nlg = {
     },
     hide: (keepBackground = false) => {
         if (document.getElementById("nlg-modal")) {
-            window.removeEventListener("keypress", nlg.keyPressRight);
-            window.removeEventListener("keypress", nlg.keyPressLeft);
+            window.removeEventListener("keydown", nlg.keyPressRight);
+            window.removeEventListener("keydown", nlg.keyPressLeft);
             document.body.style.cssText = nlg.bodyStyle;
             document.getElementById("nlg-modal").outerHTML = "";
             if (keepBackground != true) {
                 document.querySelector("#nlg-close").outerHTML = "";
                 document.getElementById("nlg-modal-bg").outerHTML = "";
                 document.getElementById("nlg-origin").outerHTML = "";
-                window.removeEventListener("keypress", nlg.keyPressClose);
+                window.removeEventListener("keydown", nlg.keyPressClose);
             }
         }
     },
