@@ -52,9 +52,12 @@ export default class Navbar extends Component {
                 )}
                 { ["groups", "messages"].includes(router.route) && (
                     <span class="title">
-                        <span class="cursor-pointer unselectable" onClick={() => location.reload()}>
+                        <a
+                            href={router.toApp(router.entity["group"] || router.entity["@id"])}
+                            class="cursor-pointer unselectable"
+                        >
                             {router.entity["name"] || me.me.groups.find(g => g["@id"] == router.entity.group)["name"]}
-                        </span>
+                        </a>
                     </span>
                 )}
                 { me.me.groups && (
@@ -74,7 +77,7 @@ export default class Navbar extends Component {
                                     >{e.name}</a>
                                 )
                             )}
-                            <a class="seamless-link" href="/create-group" onClick={router.onClick}>{"+ " + lang["create_a_group"]}</a>
+                            <a class="seamless-link unselectable" href="/create-group" onClick={router.onClick}>{"+ " + lang["create_a_group"]}</a>
                         </div>
                     </div>
                 )}

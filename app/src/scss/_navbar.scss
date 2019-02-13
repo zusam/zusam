@@ -16,6 +16,10 @@
         overflow: hidden;
         width: 100%;
         text-align: center;
+        a {
+            color: white;
+            text-decoration: none;
+        }
     }
     @media (min-width: map-get($grid-breakpoints, "md")) {
         .title {
