@@ -1,6 +1,18 @@
 import lang from "./lang";
 
 const util = {
+    getUrl: txt => {
+        let url = txt.match(/(\([^()]*)?https?:\/\/[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]/i);
+        if (url && url[0].startsWith("(")) {
+            let link = url[0].match(/https?:\/\//i);
+            url["index"] += link["index"];
+            url[0] = url[0].slice(link["index"]);
+            if (url[0].endsWith(")")) {
+                url[0] = url[0].slice(0, -1);
+            }
+        }
+        return url;
+    },
     // full datetime as a string adapted to the users timezone
     humanFullDate: timestamp => {
         let d = new Date(timestamp*1000);

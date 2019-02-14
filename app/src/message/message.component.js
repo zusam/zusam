@@ -52,7 +52,7 @@ export default class Message extends Component {
     getPreview() {
         if (this.state.message.data) {
             this.setState({data: this.state.message.data});
-            let previewUrl = this.state.message.data["text"].match(/(https?:\/\/[^\s]+)/gi);
+            let previewUrl = util.getUrl(this.state.message.data["text"]);
             if (previewUrl) {
                 cache.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => r && this.setState({preview: r}));
             }
@@ -108,16 +108,20 @@ export default class Message extends Component {
         if (!this.state.data) {
             return "";
         }
-        // escape html a little (just enough to avoid injection)
+        // escape html a little (just enough to avoid xss I hope)
         let txt = this.state.data["text"].replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
         // replace url by real links
-        txt = txt.replace(/(https?:\/\/[^\s]+)/ig, match => {
-            let url = match;
-            if (match && match.length >= 50) {
-                url = match.slice(0, 25) + "..." + match.slice(-24);
+        let shift = 0;
+        let match = null;
+        while (match = util.getUrl(txt.slice(shift))) {
+            let url = match[0];
+            if (url.length >= 50) {
+                url = url.slice(0, 25) + "..." + url.slice(-24);
             }
-            return '<a href="' + match + '" target="_blank">' + url + '</a>';
-        });
+            let link = '<a href="' + match[0] + '" target="_blank">' + url + '</a>';
+            txt = txt.slice(0, match["index"] + shift) + link + txt.slice(match["index"] + shift + match[0].length);
+            shift += match["index"] + link.length;
+        }
         // replace line returns
         txt = txt.replace(/\n/g, "<br/>");
         return {__html: txt};
