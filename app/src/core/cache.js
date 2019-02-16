@@ -15,10 +15,6 @@ const cache = {
         window.localStorage.removeItem(id);
     },
     set: (id, data, cacheDuration = null, persistant = true) => {
-        // sometimes clean cache
-        if (Math.random() > 0.9) {
-            cache.cleanCache();
-        }
         const storageBox = {
             data: data,
             timestamp: Date.now(),
@@ -31,33 +27,25 @@ const cache = {
         }
         return Promise.resolve(id);
     },
-    handleCache: id => {
-        if (!id) {
-            return null;
-        }
-        // not persistant data has more priority
-        let data = cache.data[id];
-        if (!data) {
-            data = window.localStorage.getItem(id);
-            data = data ? JSON.parse(data) : null;
-        }
-        if (data) {
-            let c = data.cacheDuration || 1000*60*60*24*365; // 1 year when not specified
-            if (data.timestamp > Date.now() - c) {
-                return data;
-            }
-        }
-        // if it's too old, remove it and return null
-        cache.remove(id);
-        return null;
-    },
     get: (id, nocache = false) => {
         if (!id) {
             return new Promise(r => null);
         }
         // if nocache is false, try to load from the cache
         if (!nocache) {
-            let data = cache.handleCache(id);
+            let data = null;
+            data = cache.data[id];
+            if (!data) {
+                data = window.localStorage.getItem(id);
+                data = data ? JSON.parse(data) : null;
+            }
+            if (data) {
+                let c = data.cacheDuration || 1000*60*60*24*365; // 1 year when not specified
+                if (data.timestamp < Date.now() - c) {
+                    cache.remove(id);
+                    data = null;
+                }
+            }
             if (data) {
                 if (data.status == "pending") {
                     // a request for the resource was made. Let's wait for it
@@ -75,6 +63,10 @@ const cache = {
             //if (/^\/api\/(users|links|groups|me)/.test(id)) {
             //    cacheDuration = 60 * 60 * 1000; // 60mn for a user/group/link
             //}
+            if (/^\/api\/(links)/.test(id)) {
+                cacheDuration = 6 * 60 * 60 * 1000; // 6h for a link
+            }
+            cache.data[id] = {status: "pending"};
             return cache.update(id, cacheDuration, false);
         }
         return new Promise(r => r(null));
@@ -90,11 +82,6 @@ const cache = {
             delete(cache.events[url]);
             return new Promise(r => r(res));
         });
-    },
-    cleanCache: () => {
-        for (let key in window.localStorage) {
-            cache.handleCache(key);
-        }
     },
     resetCache: () => {
         cache.data = {};
