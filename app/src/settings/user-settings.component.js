@@ -57,8 +57,8 @@ export default class UserSettings extends Component {
         }
         http.put("/api/users/" + this.state.id, user).then(res => {
             this.setState(Object.assign(this.state, res));
-            cache.resetCache();
             alert.add(lang["settings_updated"]);
+            me.update();
         });
     }
 
