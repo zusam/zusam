@@ -7,7 +7,9 @@
         "build-dev": "parcel build --no-source-maps --no-minify src/index.html",
         "build": "parcel build --no-source-maps src/index.html",
         "serve": "cp -r dist/* ../public",
+        "serve-dev": "cp -r dist/* ../public",
         "preserve": "yarn build",
+        "preserve-dev": "yarn build-dev",
         "prebuild": "yarn clean",
         "prebuild-dev": "yarn clean"
     },
