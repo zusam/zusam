@@ -30,19 +30,6 @@ export default class Message extends Component {
             preview: null,
             displayedChildren: props.message ? props.message.children && 5 : 0,
         };
-        if (!props.message) {
-            cache.get(url).then(msg => {
-                me.removeNews(msg.id);
-                this.setState({
-                    message: msg,
-                    author: msg.author,
-                    displayedChildren: msg.children && 5 // display 5 first children
-                });
-                setTimeout(this.getPreview);
-            });
-        } else {
-            this.getPreview();
-        }
     }
 
     componentDidMount() {
@@ -51,10 +38,20 @@ export default class Message extends Component {
 
     getPreview() {
         if (this.state.message.data) {
-            this.setState({data: this.state.message.data});
             let previewUrl = util.getUrl(this.state.message.data["text"]);
             if (previewUrl) {
-                cache.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => r && this.setState({preview: r}));
+                cache.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
+                    this.setState({
+                        preview: r,
+                        gotPreview: true,
+                        data: this.state.message.data,
+                    });
+                });
+            } else {
+                this.setState({
+                    gotPreview: true,
+                    data: this.state.message.data,
+                });
             }
         }
     }
@@ -128,8 +125,24 @@ export default class Message extends Component {
     }
 
     render() {
+        if (this.props.hidden) {
+            return;
+        }
+        if (!this.state.message) {
+            cache.get(this.state.url).then(msg => {
+                me.removeNews(msg.id);
+                this.setState({
+                    message: msg,
+                    author: msg.author,
+                    displayedChildren: msg.children && 5 // display 5 first children
+                });
+            });
+        }
         if (!this.state.message || !this.state.message.id || this.state.isRemoved) {
             return;
+        }
+        if (!this.state.gotPreview) {
+            this.getPreview();
         }
         if (this.state.edit) {
             if (this.state.message.parent) {
@@ -171,12 +184,23 @@ export default class Message extends Component {
                             { this.state.displayedChildren < this.state.message.children.length && (
                                 <a class="more-coms" onClick={this.displayMoreChildren}>{lang["more_coms"]}</a>
                             )}
-                            { this.state.message.children.slice(-1 * this.state.displayedChildren).map((e,i,m) => {
+                            { this.state.message.children.map((e,i,m) => {
                                 let follow = "";
-                                if (m[i - 1] && m[i - 1].author.id == e.author.id) {
+                                if (
+                                    m[i - 1]
+                                    && m[i - 1].author.id == e.author.id
+                                    && i > this.state.message.children.length - this.state.displayedChildren
+                                ) {
                                     follow = " follow";
                                 }
-                                return <Message message={e} key={e.id} follow={follow}/>
+                                return (
+                                    <Message
+                                        message={e}
+                                        key={e.id}
+                                        follow={follow}
+                                        hidden={i < this.state.message.children.length - this.state.displayedChildren}
+                                    />
+                                );
                             })}
                         </div>
                     )}
@@ -241,12 +265,23 @@ export default class Message extends Component {
                         { this.state.displayedChildren < this.state.message.children.length && (
                             <a class="more-coms" onClick={this.displayMoreChildren}>{lang["more_coms"]}</a>
                         )}
-                        { this.state.message.children.slice(-1 * this.state.displayedChildren).map((e,i,m) => {
+                        { this.state.message.children.map((e,i,m) => {
                             let follow = "";
-                            if (m[i - 1] && m[i - 1].author.id == e.author.id) {
+                            if (
+                                m[i - 1]
+                                && m[i - 1].author.id == e.author.id
+                                && i > this.state.message.children.length - this.state.displayedChildren
+                            ) {
                                 follow = " follow";
                             }
-                            return <Message message={e} key={e.id} follow={follow}/>
+                            return (
+                                <Message
+                                    message={e}
+                                    key={e.id}
+                                    follow={follow}
+                                    hidden={i < this.state.message.children.length - this.state.displayedChildren}
+                                />
+                            );
                         })}
                     </div>
                 )}
