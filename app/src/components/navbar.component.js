@@ -62,7 +62,7 @@ export default class Navbar extends Component {
                 )}
                 { me.me.groups && (
                     <div
-                        class="nav-link dropdown groups" tabindex="-1"
+                        class="nav-link dropdown groups unselectable" tabindex="-1"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >

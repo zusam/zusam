@@ -25,6 +25,7 @@ class App extends Component {
 
     onRouterStateChange() {
         this.setState({});
+        setTimeout(() => window.scrollTo(0, 0));
         cache.get("apiKey").then(apiKey => {
             if (apiKey) {
                 cache.get("/api/me").then(user => {
