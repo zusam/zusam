@@ -20,6 +20,20 @@ export default class MessagePreview extends Component {
         }
     }
 
+    getAvatar(user) {
+        if (!user) {
+            return null;
+        }
+        return (
+            <img
+                title={user.name}
+                class="avatar material-shadow"
+                src={util.crop(this.state.author.avatar["@id"], 100, 100) || util.defaultAvatar}
+                onError={e => e.currentTarget.src = util.defaultAvatar}
+            />
+        );
+    }
+
     render() {
         return (
             <a
@@ -32,7 +46,7 @@ export default class MessagePreview extends Component {
                 title={ this.state.title }
             >
                 <div tabindex={this.props.tabindex} class="card material-shadow">
-                    { this.state.author && <img title={ this.state.author.name } class="avatar material-shadow" src={ this.state.author.avatar ? util.crop(this.state.author.avatar["@id"], 100, 100) : util.defaultAvatar } /> }
+                    { this.getAvatar(this.state.author) }
                     { this.state.preview ?
                             <div class="card-miniature" style={"background-image: url('" + util.crop(this.state.preview, 320, 180) + "')" } />
                             : <div class="text-preview">{ this.state.text }</div>

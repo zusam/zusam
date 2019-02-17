@@ -73,6 +73,7 @@ export default class UserSettings extends Component {
                                     <img
                                         class="img-fluid rounded-circle material-shadow avatar"
                                         src={ this.state.avatar ? util.crop(this.state.avatar["@id"], 100, 100) : util.defaultAvatar }
+                                        onError={e => e.currentTarget.src = util.defaultAvatar}
                                         onClick={this.inputAvatar}
                                     />
                                 </div>

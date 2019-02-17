@@ -34,7 +34,11 @@ export default class Navbar extends Component {
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >
                         <div class="rounded-circle avatar unselectable">
-                            <img class="rounded-circle" src={me.me.avatar ? util.crop(me.me.avatar["@id"], 80, 80) : util.defaultAvatar }/>
+                            <img
+                                class="rounded-circle"
+                                src={me.me.avatar ? util.crop(me.me.avatar["@id"], 80, 80) : util.defaultAvatar}
+                                onError={e => e.currentTarget.src = util.defaultAvatar}
+                            />
                         </div>
                         <div class="dropdown-menu">
                             <a class="seamless-link"
