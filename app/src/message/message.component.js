@@ -1,9 +1,9 @@
 import { h, render, Component } from "preact";
 import { cache, http, lang, me, router, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
-import PreviewBlock from "./preview-block.component.js";
-import FileGrid from "./file-grid.component.js";
 import MessageHead from "./message-head.component.js";
+import MessageBody from "./message-body.component.js";
+import MessageChildren from "./message-children.component.js";
 import Writer from "./writer.component.js";
 
 export default class Message extends Component {
@@ -101,29 +101,6 @@ export default class Message extends Component {
         });
     }
 
-    displayMessageText() {
-        if (!this.state.data) {
-            return "";
-        }
-        // escape html a little (just enough to avoid xss I hope)
-        let txt = this.state.data["text"].replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
-        // replace url by real links
-        let shift = 0;
-        let match = null;
-        while (match = util.getUrl(txt.slice(shift))) {
-            let url = match[0];
-            if (url.length >= 50) {
-                url = url.slice(0, 25) + "..." + url.slice(-24);
-            }
-            let link = '<a href="' + match[0] + '" target="_blank">' + url + '</a>';
-            txt = txt.slice(0, match["index"] + shift) + link + txt.slice(match["index"] + shift + match[0].length);
-            shift += match["index"] + link.length;
-        }
-        // replace line returns
-        txt = txt.replace(/\n/g, "<br/>");
-        return {__html: txt};
-    }
-
     render() {
         if (this.props.hidden) {
             return;
@@ -179,31 +156,11 @@ export default class Message extends Component {
                         title={this.state.data.title}
                         cancel={this.cancelEdit}
                     />
-                    { this.state.message.children && this.state.message.children.length > 0 && (
-                        <div>
-                            { this.state.displayedChildren < this.state.message.children.length && (
-                                <a class="more-coms" onClick={this.displayMoreChildren}>{lang["more_coms"]}</a>
-                            )}
-                            { this.state.message.children.map((e,i,m) => {
-                                let follow = "";
-                                if (
-                                    m[i - 1]
-                                    && m[i - 1].author.id == e.author.id
-                                    && i > this.state.message.children.length - this.state.displayedChildren
-                                ) {
-                                    follow = " follow";
-                                }
-                                return (
-                                    <Message
-                                        message={e}
-                                        key={e.id}
-                                        follow={follow}
-                                        hidden={i < this.state.message.children.length - this.state.displayedChildren}
-                                    />
-                                );
-                            })}
-                        </div>
-                    )}
+                    <MessageChildren
+                        message={this.state.message}
+                        displayedChildren={this.state.displayedChildren}
+                        displayMoreChildren={this.displayMoreChildren}
+                    />
                 </div>
             );
         }
@@ -216,75 +173,20 @@ export default class Message extends Component {
                         editMessage={this.editMessage}
                         deleteMessage={this.deleteMessage}
                     />
-                    <div class="message-body">
-                        { this.state.message.parent
-                                && this.state.author
-                                && me.me
-                                && this.state.author.id == me.me.id
-                                && (
-                            <div tabindex="-1"
-                                class="options dropdown d-none d-md-flex"
-                                onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
-                                onClick={e => e.currentTarget.classList.toggle("active")}
-                            >
-                                <FaIcon family="solid" icon="caret-down"/>
-                                <div class="dropdown-menu">
-                                    <a class="seamless-link" onClick={this.editMessage}>{lang["edit"]}</a>
-                                    <a class="seamless-link" onClick={this.deleteMessage}>{lang["delete"]}</a>
-                                </div>
-                            </div>
-                        )}
-                        { this.state.data && this.state.data.title && (
-                            <div class="title">
-                                <span>{ this.state.data.title }</span>
-                            </div>
-                        )}
-                        { this.state.data && this.state.data.text && (
-                            <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
-                        )}
-                        { this.state.preview && (
-                            <p class="text-center card-text">
-                                <PreviewBlock
-                                    key={this.state.preview.url}
-                                    url={this.state.preview.url}
-                                    preview={this.state.preview.preview}
-                                    data={this.state.preview.data}
-                                />
-                            </p>
-                        )}
-                        { this.state.message.files && <FileGrid files={this.state.message.files}/> }
-                        { this.state.message.parent && (
-                            <div class="infos" title={util.humanFullDate(this.state.message.createdAt)}>
-                                <span>{ util.humanTime(this.state.message.createdAt) }</span>
-                            </div>
-                        )}
-                    </div>
+                    <MessageBody
+                        author={this.state.author}
+                        message={this.state.message}
+                        data={this.state.data}
+                        preview={this.state.preview}
+                        editMessage={this.editMessage}
+                        deleteMessage={this.deleteMessage}
+                    />
                 </div>
-                { !this.state.message.parent && this.state.message.children && this.state.message.children.length > 0 && (
-                    <div>
-                        { this.state.displayedChildren < this.state.message.children.length && (
-                            <a class="more-coms" onClick={this.displayMoreChildren}>{lang["more_coms"]}</a>
-                        )}
-                        { this.state.message.children.map((e,i,m) => {
-                            let follow = "";
-                            if (
-                                m[i - 1]
-                                && m[i - 1].author.id == e.author.id
-                                && i > this.state.message.children.length - this.state.displayedChildren
-                            ) {
-                                follow = " follow";
-                            }
-                            return (
-                                <Message
-                                    message={e}
-                                    key={e.id}
-                                    follow={follow}
-                                    hidden={i < this.state.message.children.length - this.state.displayedChildren}
-                                />
-                            );
-                        })}
-                    </div>
-                )}
+                <MessageChildren
+                    message={this.state.message}
+                    displayedChildren={this.state.displayedChildren}
+                    displayMoreChildren={this.displayMoreChildren}
+                />
                 { !this.state.message.parent && (
                     <div class="message child">
                         { me.me && (
