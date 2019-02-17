@@ -48,13 +48,19 @@ class ConvertVideoCommand extends ContainerAwareCommand
             exec(
                 "nice -n 19 " // give the process a low priority
                 .$this->ffmpegPath
-                ." -y -i ".$filesDir."/".$rawFile["content_url"]
+                ." -loglevel 0 -y -i ".$filesDir."/".$rawFile["content_url"]
                 ." -c:v libx264 -filter:v scale=-2:720 -crf 22 ".$threads."-preset slower -c:a aac -vbr 3 -y -f mp4 "
                 .$outputFile.".converted"
             );
-            rename($outputFile.".converted", $outputFile.".mp4");
-            $q = $this->pdo->prepare("UPDATE file SET content_url = '".$rawFile["id"].".mp4', status = '".File::STATUS_READY."', type = 'video/mp4' WHERE id = '".$rawFile["id"]."';");
-            $q->execute();
+            if (file_exists($outputFile.".converted")) {
+                rename($outputFile.".converted", $outputFile.".mp4");
+                $q = $this->pdo->prepare("UPDATE file SET content_url = '".$rawFile["id"].".mp4', status = '".File::STATUS_READY."', type = 'video/mp4' WHERE id = '".$rawFile["id"]."';");
+                $q->execute();
+            } else {
+                $output->writeln([
+                    "<error>zusam:convert-video ".$rawFile["id"]." failed.</error>",
+                ]);
+            }
             unlink("/tmp/zusam_video_convert.lock");
             return;
         }
