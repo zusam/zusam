@@ -24,6 +24,14 @@ class CleanFilesCommand extends ContainerAwareCommand
         $this->pdo = new \PDO($dsn, null, null);
         $filesDir = realpath($this->getContainer()->getParameter("dir.files"));
 
+        if (!$filesDir) {
+            throw new \Exception("Target directory ($filesDir) could not be found !");
+        }
+        
+        if (!is_writeable($filesDir)) {
+            throw new \Exception("Target directory ($filesDir) is not writable !");
+        }
+
         // First we get all files not linked to a user and/or a message
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id NOT IN (SELECT file_id FROM messages_files) AND id NOT IN (SELECT avatar_id FROM user WHERE avatar_id NOT NULL) AND id NOT IN (SELECT preview_id FROM link);");
         while($i = $c->fetch()) {
@@ -35,9 +43,6 @@ class CleanFilesCommand extends ContainerAwareCommand
         }
 
         // We need to get all files without an entry in the database
-        if (!is_writeable($filesDir)) {
-            throw new \Exception("Target directory ($filesDir) is not writable !");
-        }
         foreach(scandir($filesDir) as $file) {
             if ($file == "." || $file == ".." || is_dir($file)) {
                 continue;

@@ -20,6 +20,15 @@ class CleanOldCacheCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $cacheDir = realpath($this->getContainer()->getParameter("dir.cache"));
+
+        if (!$cacheDir) {
+            throw new \Exception("Target directory ($cacheDir) could not be found !");
+        }
+        
+        if (!is_writeable($cacheDir)) {
+            throw new \Exception("Target directory ($cacheDir) is not writable !");
+        }
+
         foreach(scandir($cacheDir."/images/") as $file) {
             if (
                 $file != "." && $file != ".." &&
