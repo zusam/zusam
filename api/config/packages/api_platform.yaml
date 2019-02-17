@@ -1,5 +1,5 @@
 api_platform:
-    version: '0.1-beta.5'
+    version: '0.1-beta.6'
     enable_swagger: false
     enable_docs: false
     enable_swagger_ui: false
