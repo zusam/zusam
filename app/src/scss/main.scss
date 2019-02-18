@@ -126,10 +126,3 @@ article {
 .card-body {
     padding: .45rem .65rem;
 }
-
-.max-width-450px-md {
-    max-width: 450px;
-    @media (max-width: map-get($grid-breakpoints, "md")) {
-        max-width: 100%;
-    }
-}

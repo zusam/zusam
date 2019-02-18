@@ -142,3 +142,12 @@
         margin: -9px 0 0 -16px;
     }
 }
+
+.bandcamp-embed {
+    @media (min-width: map-get($grid-breakpoints, "md")) {
+        width: 450px;
+        height: 570px;
+        padding: 0 !important;
+        margin: 0 auto;
+    }
+}
