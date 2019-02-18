@@ -9,20 +9,20 @@
 }
 
 @mixin hover {
-  &:hover { @content; }
+    &:hover { @content; }
 }
 
 @mixin hover-focus {
-  &:hover,
-  &:focus {
-    @content;
-  }
+    &:hover,
+    &:focus {
+        @content;
+    }
 }
 
 // Unstyled keeps list items block level, just removes default browser padding and list-style
 @mixin list-unstyled {
-  padding-left: 0;
-  list-style: none;
+    padding-left: 0;
+    list-style: none;
 }
 
 // Responsive image
@@ -30,15 +30,15 @@
 // Keep images from scaling beyond the width of their parents.
 
 @mixin img-fluid {
-  // Part 1: Set a maximum relative to the parent
-  max-width: 100%;
-  // Part 2: Override the height to auto, otherwise images will be stretched
-  // when setting a width and height attribute on the img element.
-  height: auto;
+    // Part 1: Set a maximum relative to the parent
+    max-width: 100%;
+    // Part 2: Override the height to auto, otherwise images will be stretched
+    // when setting a width and height attribute on the img element.
+    height: auto;
 }
 
 @mixin box-shadow($shadow...) {
-  @if $enable-shadows {
-    box-shadow: $shadow;
-  }
+    @if $enable-shadows {
+        box-shadow: $shadow;
+    }
 }
