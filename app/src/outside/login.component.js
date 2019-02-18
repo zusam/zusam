@@ -1,5 +1,6 @@
 import { h, render, Component } from "preact";
 import { alert, cache, http, lang, router } from "/core";
+import zusam_logo from "/assets/zusam_logo.svg";
 
 export default class Login extends Component {
 
@@ -57,7 +58,7 @@ export default class Login extends Component {
         return (
             <div class="login">
                 <div class="login-form">
-                    <img src="assets/zusam_logo.svg"/>
+                    <img src={zusam_logo}/>
                     { !this.state.showResetPassword && (
                         <form>
                             <div class="form-group">

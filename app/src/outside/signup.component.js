@@ -1,5 +1,6 @@
 import { h, render, Component } from "preact";
 import { alert, cache, http, lang, router } from "/core";
+import zusam_logo from "/assets/zusam_logo.svg";
 
 export default class Signup extends Component {
 
@@ -34,7 +35,7 @@ export default class Signup extends Component {
         return (
             <div class="signup">
                 <div class="signup-form">
-                    <img src="assets/zusam_logo.svg"/>
+                    <img src={zusam_logo}/>
                     <div class="welcome lead">{lang["invitation_welcome"]}</div>
                     <form>
                         <div class="form-group">
