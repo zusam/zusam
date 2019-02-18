@@ -70,19 +70,6 @@ let nlg = {
                 if (e.currentTarget != e.target) { return; }
                 nlg.hide();
             });
-            if (e.dataset["origin"]) {
-                let originBtn = document.createElement("a");
-                originBtn.id = "nlg-origin";
-                originBtn.href = e.dataset.origin;
-                originBtn.target = "_blank";
-                originBtn.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                    <path d="M224,295.6L116.8,402.9L153,439c15.1,15.1,4.4,41-17,41H24c-13.3,0-24-10.7-24-24V344c0-21.4,25.9-32.1,41-17l36.2,36.2 L184.5,256"/>
-                    <path d="M224,216.4l107.3-107.3L295.1,73c-15.1-15.1-4.4-41,17-41h112c13.3,0,24,10.7,24,24v112c0,21.4-25.9,32.1-41,17l-36.2-36.2 L263.6,256"/>
-                    </svg>
-                `;
-                document.body.appendChild(originBtn);
-            }
 
             let close = document.createElement("a");
             close.id = "nlg-close";
@@ -92,6 +79,19 @@ let nlg = {
             window.addEventListener("keydown", nlg.keyPressClose);
             document.body.appendChild(close);
             document.body.appendChild(modalBackground);
+        }
+        if (e.dataset["origin"]) {
+            let originBtn = document.createElement("a");
+            originBtn.id = "nlg-origin";
+            originBtn.href = e.dataset.origin;
+            originBtn.target = "_blank";
+            originBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path d="M224,295.6L116.8,402.9L153,439c15.1,15.1,4.4,41-17,41H24c-13.3,0-24-10.7-24-24V344c0-21.4,25.9-32.1,41-17l36.2,36.2 L184.5,256"/>
+                <path d="M224,216.4l107.3-107.3L295.1,73c-15.1-15.1-4.4-41,17-41h112c13.3,0,24,10.7,24,24v112c0,21.4-25.9,32.1-41,17l-36.2-36.2 L263.6,256"/>
+                </svg>
+            `;
+            document.body.appendChild(originBtn);
         }
         let spinner = document.createElement("div");
         spinner.classList.add("spinner");
@@ -169,10 +169,10 @@ let nlg = {
             window.removeEventListener("keydown", nlg.keyPressLeft);
             document.body.style.cssText = nlg.bodyStyle;
             document.getElementById("nlg-modal").outerHTML = "";
+            document.getElementById("nlg-origin").outerHTML = "";
             if (keepBackground != true) {
                 document.querySelector("#nlg-close").outerHTML = "";
                 document.getElementById("nlg-modal-bg").outerHTML = "";
-                document.getElementById("nlg-origin").outerHTML = "";
                 window.removeEventListener("keydown", nlg.keyPressClose);
             }
         }
