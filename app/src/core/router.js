@@ -1,7 +1,7 @@
 import cache from "./cache.js";
 import http from "./http.js";
 import nlg from "./nlg.js";
-import lang from "./lang";
+import lang from "/lang";
 
 const router = {
     route: "",

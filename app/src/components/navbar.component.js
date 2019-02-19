@@ -1,5 +1,6 @@
 import { h, render, Component } from "preact";
-import { lang, me, router, util } from "/core";
+import { me, router, util } from "/core";
+import lang from "/lang";
 import FaIcon from "./fa-icon.component.js";
 
 export default class Navbar extends Component {
