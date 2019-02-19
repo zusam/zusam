@@ -41,7 +41,7 @@ RUN set -xe && apk add --no-cache nginx php7 openssl ffmpeg \
 
 # copy files
 COPY docker/zusam/s6.d /etc/s6.d
-COPY docker/zusam/config.yml /zusam/config.yml
+COPY docker/zusam/config /zusam/config
 COPY docker/zusam/php7 /etc/php7
 COPY docker/zusam/nginx /etc/nginx
 COPY docker/zusam/reset.sh /usr/local/bin/reset.sh
@@ -53,7 +53,7 @@ COPY api /zusam/api
 RUN set -xe \
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar yarn \
     && mkdir -p /run/nginx /zusam/data \
-    && sed -e "s|<ENV>|prod|g" /zusam/config.yml > /zusam/data/config.yml \
+    && sed -e "s|<ENV>|prod|g" /zusam/config > /zusam/data/config \
     && cd /zusam/api && php bin/composer install --prefer-dist \
     && apk del .build-deps \
     && chmod -R +x /usr/local/bin /etc/s6.d /var/lib/nginx

@@ -20,10 +20,10 @@ sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
        -e "s|<DOMAIN>|${DOMAIN}|g" \
        -e "s|<DATABASE_URL>|${DATABASE_URL}|g" \
        -e "s|<ENV>|${ENV}|g" \
-       /zusam/config.yml
+       /zusam/config
 
-if ! [ -f /zusam/data/config.yml ]; then
-    cp /zusam/config.yml /zusam/data/config.yml
+if ! [ -f /zusam/data/config ]; then
+    cp /zusam/config /zusam/data/config
 fi
 if ! [ -L /zusam/public/files ]; then
     ln -s /zusam/data/files /zusam/public/files
