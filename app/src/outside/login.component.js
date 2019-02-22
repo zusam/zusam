@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { alert, cache, http, router } from "/core";
+import { me, alert, cache, http, router } from "/core";
 import lang from "/lang";
 import zusam_logo from "/assets/zusam_logo.svg";
 
@@ -39,14 +39,20 @@ export default class Login extends Component {
 		let login = document.getElementById("login").value || "";
         login.toLowerCase();
 		const password = document.getElementById("password").value;
-        cache.set("apiKey", "");
 		http.post("/api/login", {login: login, password: password}).then(res => {
             this.setState({sending: false});
-			if (res && !res.message) {
-				cache.set("apiKey", res.api_key);
-                setTimeout(() => router.navigate("/"), 100);
+			if (res && res.api_key) {
+                cache.set("apiKey", res.api_key).then(_ => {
+                    me.update().then(_ => {
+                        setTimeout(() => router.navigate("/"), 100);
+                    })
+                });
             } else {
-                alert.add(lang[res.message], "alert-danger");
+                if (res.message) {
+                    alert.add(lang[res.message], "alert-danger");
+                } else {
+                    alert.add(lang["error"], "alert-danger");
+                }
             }
 		});
 	}

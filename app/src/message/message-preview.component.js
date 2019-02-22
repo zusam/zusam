@@ -28,7 +28,7 @@ export default class MessagePreview extends Component {
             <img
                 title={user.name}
                 class="avatar material-shadow"
-                src={util.crop(this.state.author.avatar["@id"], 100, 100) || util.defaultAvatar}
+                src={util.crop(user.avatar["@id"], 100, 100) || util.defaultAvatar}
                 onError={e => e.currentTarget.src = util.defaultAvatar}
             />
         );

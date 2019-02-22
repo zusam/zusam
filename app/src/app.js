@@ -11,27 +11,45 @@ class App extends Component {
         super();
         this.onRouterStateChange = this.onRouterStateChange.bind(this);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
+        window.addEventListener("meStateChange", _ => this.setState({me: me.me}));
         window.addEventListener("popstate", router.sync);
         cache.get("apiKey").then(apiKey => {
             if (router.isOutside() || apiKey) {
-                me.update().then(r => {
-                    router.sync();
-                });
+                router.sync();
             } else {
                 // redirect to login if we don't have an apiKey
                 router.navigate("/login");
             }
         });
+        this.state = {
+            action: router.action,
+            route: router.route,
+            url: router.url,
+            entityUrl: router.entityUrl
+        };
     }
 
     onRouterStateChange() {
-        this.setState({});
+        this.setState({
+            action: router.action,
+            route: router.route,
+            url: router.url,
+            entityUrl: router.entityUrl
+        });
         setTimeout(() => window.scrollTo(0, 0));
         cache.get("apiKey").then(apiKey => {
             if (apiKey) {
                 cache.get("/api/me").then(user => {
-                    if (!user && !router.isOutside()) {
-                        router.navigate("/login");
+                    if (!user || router.isOutside()) {
+                        cache.set("apiKey", "").then(_ => router.navigate("/login"));
+                    } else {
+                        this.setState({
+                            action: router.action,
+                            route: router.route,
+                            url: router.url,
+                            entityUrl: router.entityUrl,
+                            me: user
+                        });
                     }
                 });
             } else {
@@ -44,7 +62,7 @@ class App extends Component {
 
     render() {
         // external pages for non connected users
-        switch (router.route) {
+        switch (this.state.route) {
             case "signup":
                 return <Signup/>;
                 break;
@@ -58,7 +76,7 @@ class App extends Component {
 
         // here, we enter the "connected" realm of pages.
         // If the user is not connected, what should we do ?
-        if (!me.me || !me.me.groups) {
+        if (!this.state.me || !this.state.me.groups) {
             return;
         }
 
@@ -66,7 +84,7 @@ class App extends Component {
             <main>
                 <Navbar/>
                 <div class="content">
-                    <MainContent route="router.route"/>
+                    <MainContent {...this.state}/>
                 </div>
             </main>
         );

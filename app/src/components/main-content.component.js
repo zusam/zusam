@@ -7,36 +7,36 @@ import GroupBoard from "./group-board.component.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class MainContent extends Component {
-
+    
     render() {
-        if (router.action == "settings") {
+        if (this.props.action == "settings") {
             return (
                 <article class="justify-content-center d-flex">
                     <div class="container">
-                        <Settings key={router.entityUrl}/>
+                        <Settings key={this.props.entityUrl}/>
                     </div>
                 </article>
             );
         }
-        switch (router.route) {
+        switch (this.props.route) {
             case "create-group":
                 return <CreateGroup/>;
             case "messages":
                 return (
                     <article class="justify-content-center d-flex">
                         <div class="container">
-                            <Message key={router.url} url={router.entityUrl} />
+                            <Message key={this.props.url} url={this.props.entityUrl} />
                         </div>
                     </article>
                 );
             case "groups":
-                if (router.action == "write") {
+                if (this.props.action == "write") {
                     return (
                         <article>
                             <div class="container">
                                 <Writer
                                     focus={true}
-                                    group={router.entityUrl}
+                                    group={this.props.entityUrl}
                                 />
                             </div>
                         </article>
@@ -44,8 +44,8 @@ export default class MainContent extends Component {
                 }
                 return (
                     <div>
-                        <GroupBoard key={router.entityUrl} url={router.entityUrl}/>
-                        <a class="write-button material-shadow seamless-link" href={router.url + "/write"} onClick={router.onClick}>
+                        <GroupBoard key={this.props.entityUrl} url={this.props.entityUrl}/>
+                        <a class="write-button material-shadow seamless-link" href={this.props.url + "/write"} onClick={router.onClick}>
                             <FaIcon family={"solid"} icon={"pencil-alt"}/>
                         </a>
                     </div>

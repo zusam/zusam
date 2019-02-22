@@ -239,7 +239,10 @@ export default class Writer extends Component {
             if (callback) {
                 callback();
             }
-        }, progressFn);
+        }, progressFn, e => {
+            console.warn(e);
+            alert.add(lang["error_upload"], "alert-danger");
+        });
     }
 
     render() {

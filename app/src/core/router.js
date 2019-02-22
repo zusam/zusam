@@ -13,7 +13,7 @@ const router = {
     entityUrl: "",
     entityType: "",
     entity: {},
-    toApp: url => url.replace(/^\/api/,""),
+    toApp: url => url ? url.replace(/^\/api/,"") : null,
     getParam: param => {
         let res = window.location.search.substring(1).split("&").find(e => e.split("=")[0] === param);
         return res ? res.split("=")[1] : "";
