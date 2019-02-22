@@ -7,9 +7,11 @@ const me = {
             window.dispatchEvent(new CustomEvent("meStateChange"));
     }),
     removeNews: newsId => {
-        me.me.news = me.me.news.filter(e => e != newsId);
-        window.dispatchEvent(new CustomEvent("meStateChange"));
+        if (me.me.news) {
+            me.me.news = me.me.news.filter(e => e != newsId);
+            window.dispatchEvent(new CustomEvent("meStateChange"));
+        }
     },
-    isNews: newsId => me.me.news.includes(newsId),
+    isNews: newsId => me.me.news ? me.me.news.includes(newsId) : false,
 }
 export default me;
