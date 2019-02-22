@@ -56,7 +56,7 @@ RUN set -xe \
     && sed -e "s|<ENV>|prod|g" /zusam/config > /zusam/data/config \
     && cd /zusam/api && php bin/composer install --prefer-dist \
     && apk del .build-deps \
-    && chmod -R +x /usr/local/bin /etc/s6.d /var/lib/nginx
+    && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx
 
 # copy webapp over
 COPY app/dist/* /zusam/public/
