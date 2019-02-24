@@ -23,6 +23,7 @@
 /app/yarn.lock
 /app/.cache
 /app/yarn-error.log
+/app/dist/
 
 # PUBLIC
 /public/api/bundles/

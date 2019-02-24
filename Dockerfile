@@ -4,6 +4,9 @@ FROM alpine:3.9
 RUN apk add --no-cache -U su-exec tini s6
 ENTRYPOINT ["/sbin/tini", "--"]
 
+# Lang of the webapp
+ARG LANG="en"
+
 # global environment variables
 ENV UID=791 GID=791
 ENV INSTANCE_TYPE=default
@@ -49,17 +52,30 @@ COPY docker/zusam/run.sh /usr/local/bin/run.sh
 COPY public/api/index.php /zusam/public/api/index.php
 COPY api /zusam/api
 
-# install zusam
+# handle build config
 RUN set -xe \
-    && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar yarn \
     && mkdir -p /run/nginx /zusam/data \
     && sed -e "s|<ENV>|prod|g" /zusam/config > /zusam/data/config \
+    && sed -i "s|<LANG>|${LANG}|g" /zusam/data/config
+
+# install zusam api
+RUN set -xe \
+    && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar unzip \
     && cd /zusam/api && php bin/composer install --prefer-dist \
     && apk del .build-deps \
     && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx
 
-# copy webapp over
-COPY app/dist/* /zusam/public/
+# copy webapp source
+COPY app /zusam/app
+
+# install webapp
+RUN set -xe \
+    && apk add --no-cache --virtual .build-deps yarn \
+    && cd /zusam/app \
+    && yarn && yarn serve \
+    && chmod 755 -R /zusam/public \
+    && rm -rf /zusam/app \
+    && apk del .build-deps
 
 VOLUME /zusam/data
 CMD ["run.sh"]
