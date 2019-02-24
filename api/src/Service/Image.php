@@ -2,12 +2,14 @@
 
 namespace App\Service;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+
 class Image
 {
-	private $ffmpegPath;
+    private $params;
 
-	public function __construct($binaries) {
-		$this->ffmpegPath = $binaries["ffmpeg"];
+	public function __construct(ParameterBagInterface $params) {
+        $this->params = $params;
 	}
 
     private function prepareImage(\Imagick $im): \Imagick
@@ -77,7 +79,7 @@ class Image
         $im = new \Imagick();
         try {
             if (preg_match("/video/", mime_content_type($input))) {
-                $input = $this->extractImageFromVideo($input, $this->ffmpegPath);
+                $input = $this->extractImageFromVideo($input, $this->params->get("binaries.ffmpeg"));
             }
             if (is_readable($input)) {
                 // https://secure.php.net/manual/en/imagick.setsize.php#110166
@@ -108,7 +110,7 @@ class Image
         try {
             if (is_readable($input)) {
                 if (preg_match("/video/", mime_content_type($input))) {
-                    $input = $this->extractImageFromVideo($input, $this->ffmpegPath);
+                    $input = $this->extractImageFromVideo($input, $this->params->get("binaries.ffmpeg"));
                 }
 
                 if ($im->readImage($input)) {

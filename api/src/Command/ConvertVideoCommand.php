@@ -12,14 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ConvertVideoCommand extends ContainerAwareCommand
 {
-	private $ffmpegPath;
     private $pdo;
-
-    public function __construct($binaries)
-    {
-        parent::__construct();
-		$this->ffmpegPath = $binaries["ffmpeg"];
-    }
 
     protected function configure()
     {
@@ -47,7 +40,7 @@ class ConvertVideoCommand extends ContainerAwareCommand
             }
             exec(
                 "nice -n 19 " // give the process a low priority
-                .$this->ffmpegPath
+                .$this->getContainer()->getParameter("binaries.ffmpeg")
                 ." -loglevel 0 -y -i ".$filesDir."/".$rawFile["content_url"]
                 ." -c:v libx264 -filter:v scale=-2:720 -crf 22 ".$threads."-preset slower -c:a aac -vbr 3 -y -f mp4 "
                 .$outputFile.".converted"
