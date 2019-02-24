@@ -42,10 +42,10 @@ export default class Login extends Component {
 		http.post("/api/login", {login: login, password: password}).then(res => {
             this.setState({sending: false});
 			if (res && res.api_key) {
-                cache.set("apiKey", res.api_key).then(_ => {
-                    me.update().then(_ => {
+                cache.set("apiKey", res.api_key).then(() => {
+                    me.update().then(() => {
                         setTimeout(() => router.navigate("/"), 100);
-                    })
+                    });
                 });
             } else {
                 if (res.message) {

@@ -1,6 +1,7 @@
 import cache from "./cache.js";
 import http from "./http.js";
 import nlg from "./nlg.js";
+import me from "./me.js";
 import lang from "/lang";
 
 const router = {
@@ -99,7 +100,7 @@ const router = {
                 });
                 break;
             default:
-                cache.get("/api/me").then(user => {
+                me.get().then(user => {
                     if (!user) {
                         router.navigate("/login");
                         return;

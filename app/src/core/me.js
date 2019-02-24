@@ -2,6 +2,7 @@ import http from "./http.js";
 
 const me = {
     me: {},
+    get: () => me.me.id ? Promise.resolve(me.me) : me.update(),
     update: () => http.get("/api/me", true).then(r => {
             me.me = r;
             window.dispatchEvent(new CustomEvent("meStateChange"));

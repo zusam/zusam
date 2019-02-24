@@ -25,6 +25,17 @@ export default class Navbar extends Component {
         this.setState({});
     }
 
+
+    getTitle() {
+        if (router.entity && router.entity["name"]) {
+            return router.entity["name"];
+        }
+        if (me.me.groups) {
+            return me.me.groups.find(g => g["@id"] == router.entity.group)["name"];
+        }
+        return "";
+    }
+
     render() {
         return (
             <div class="main-nav nav align-items-center z-index-100">
@@ -61,7 +72,7 @@ export default class Navbar extends Component {
                             href={router.toApp(router.entity["group"] || router.entity["@id"])}
                             class="cursor-pointer unselectable"
                         >
-                            {router.entity["name"] || me.me.groups.find(g => g["@id"] == router.entity.group)["name"]}
+                            {this.getTitle()}
                         </a>
                     </span>
                 )}
