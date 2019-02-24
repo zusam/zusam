@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Controller\LinkByUrl;
 use App\Entity\Group;
 use App\Entity\Message;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,12 +14,12 @@ use Symfony\Component\ExpressionLanguage\Expression;
 class GroupPage extends Controller
 {
     private $em;
-    private $linkByUrl;
+    private $newMessage;
 
-    public function __construct(EntityManagerInterface $em, LinkByUrl $linkByUrl)
+    public function __construct(EntityManagerInterface $em, NewMessage $newMessage)
     {
         $this->em = $em;
-        $this->linkByUrl = $linkByUrl;
+        $this->newMessage = $newMessage;
     }
 
     /**
@@ -59,7 +58,7 @@ class GroupPage extends Controller
                 "id" => $messages[30 * $n + $i]->getId(),
                 "data" => $messages[30 * $n + $i]->getData(),
                 "author" => "/api/users/" . $messages[30 * $n + $i]->getAuthor()->getId(),
-                "preview" => $this->genPreview($messages[30 * $n + $i]),
+                "preview" => $this->newMessage->genPreview($messages[30 * $n + $i]),
                 "children" => count($messages[30 * $n + $i]->getChildren()),
                 "lastActivityDate" => $messages[30 * $n + $i]->getLastActivityDate()
             ];
@@ -68,27 +67,5 @@ class GroupPage extends Controller
             "messages" => $page,
             "totalItems" => count($messages),
         ], JsonResponse::HTTP_OK);
-    }
-
-    public function genPreview(Message $message): ?string
-    {
-        // get preview with files
-        if (count($message->getFiles()) > 0) {
-            $firstFile = null;
-            foreach($message->getFiles() as $file) {
-                if (!$firstFile || $file->getFileIndex() < $firstFile->getFileIndex()) {
-                    $firstFile = $file;
-                }
-            }
-            return $firstFile ? "/files/".$firstFile->getContentUrl() : null;
-        }
-        // if no files, search for preview in text
-        $text = $message->getData(true)["text"];
-        preg_match("/https?:\/\/[^\s]+/", $text, $links);
-        if (!empty($links) && !empty($links[0])) {
-            $e = $this->linkByUrl->getLinkData($links[0], realpath($this->getParameter("dir.files")), false, false);
-            return empty($e["preview"]) ? null : $e["preview"];
-        }
-        return null;
     }
 }

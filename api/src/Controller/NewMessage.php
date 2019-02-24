@@ -3,17 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\Message;
+use App\Service\Url as UrlService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\ExpressionLanguage\Expression;
 
 class NewMessage extends Controller
 {
     private $em;
+    private $urlService;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, UrlService $urlService)
     {
         $this->em = $em;
+        $this->urlService = $urlService;
     }
 
     public function __invoke(Message $data)
@@ -42,5 +45,25 @@ class NewMessage extends Controller
             $this->em->persist($parent);
         }
         return $data;
+    }
+
+    public function genPreview(Message $message): ?string
+    {
+        // get preview with files
+        if (count($message->getFiles()) > 0) {
+            $firstFile = null;
+            foreach($message->getFiles() as $file) {
+                if (!$firstFile || $file->getFileIndex() < $firstFile->getFileIndex()) {
+                    $firstFile = $file;
+                }
+            }
+            return $firstFile ? "/files/".$firstFile->getContentUrl() : null;
+        }
+        // if no files, search for preview in text
+        $urls = $message->getUrls();
+        if (count($urls) > 0) {
+            return $this->urlService->getPreview($urls[0]);
+        }
+        return null;
     }
 }

@@ -8,6 +8,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use App\Controller\NewMessage;
 use App\Controller\ReadMessage;
 use App\Service\Uuid;
+use App\Service\Url as UrlService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -120,6 +121,7 @@ class Message
         $this->children = new ArrayCollection();
         $this->files = new ArrayCollection();
         $this->createdAt = time();
+        $this->lastActivityDate = time();
     }
 
     public function getId(): string
@@ -235,5 +237,22 @@ class Message
     public function getPreview(): ?string
     {
         return $this->preview;
+    }
+
+    public function getUrls(): array
+    {
+        $text = $this->getData()["text"];
+        preg_match("/(\([^()]*)?https?:\/\/[-A-Za-z0-9+&@#\/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#\/%=~_()|]/i", $text, $urls);
+        foreach($urls as $k => $url) {
+        }
+        return array_map(function ($url) {
+            if (!empty($url) && substr($url, 0, 1) === "(") {
+                $url = substr($url, stripos($url, "http"));
+                if (substr($url, -1) === ")") {
+                    $url = substr($url, 0, -1);
+                }
+            }
+            return $url;
+        }, $urls);
     }
 }
