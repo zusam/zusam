@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Message;
+use App\Entity\File;
 use App\Service\Url as UrlService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,6 +24,7 @@ class NewMessage extends Controller
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
         $this->denyAccessUnlessGranted(new Expression("user in object.getUsersAsArray()"), $data->getGroup());
+        $data->setPreview($this->genPreview($data));
         $parent = $data->getParent();
         $author = $data->getAuthor();
         $group = $data->getGroup();
@@ -47,7 +49,7 @@ class NewMessage extends Controller
         return $data;
     }
 
-    public function genPreview(Message $message): ?string
+    public function genPreview(Message $message): ?File
     {
         // get preview with files
         if (count($message->getFiles()) > 0) {
@@ -57,12 +59,12 @@ class NewMessage extends Controller
                     $firstFile = $file;
                 }
             }
-            return $firstFile ? "/files/".$firstFile->getContentUrl() : null;
+            return $firstFile;
         }
         // if no files, search for preview in text
         $urls = $message->getUrls();
         if (count($urls) > 0) {
-            return $this->urlService->getPreview($urls[0]);
+            return $this->urlService->getLink($urls[0])->getPreview();
         }
         return null;
     }

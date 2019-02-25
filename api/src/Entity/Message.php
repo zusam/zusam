@@ -113,6 +113,11 @@ class Message
      */
     private $lastActivityDate;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\File")
+     * @ORM\JoinColumn(name="preview_id", referencedColumnName="id")
+     * @Groups({"read_message"})
+     */
     private $preview;
 
     public function __construct()
@@ -229,12 +234,13 @@ class Message
         return $this;
     }
 
-    public function setPreview($preview): self
+    public function setPreview(?File $preview): self
     {
         $this->preview = $preview;
+        return $this;
     }
 
-    public function getPreview(): ?string
+    public function getPreview(): ?File
     {
         return $this->preview;
     }

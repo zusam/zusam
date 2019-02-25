@@ -53,12 +53,13 @@ class GroupPage extends Controller
         // prepare page "n" (with max 30 items)
         $page = [];
         for ($i = 0; $i + $n * 30 < count($messages) && $i < 30; $i++) {
+            $preview = $messages[30 * $n + $i]->getPreview();
             $page[] = [
                 "@id" => "/api/messages/" . $messages[30 * $n + $i]->getId(),
                 "id" => $messages[30 * $n + $i]->getId(),
                 "data" => $messages[30 * $n + $i]->getData(),
                 "author" => "/api/users/" . $messages[30 * $n + $i]->getAuthor()->getId(),
-                "preview" => $this->newMessage->genPreview($messages[30 * $n + $i]),
+                "preview" => $preview ? "/api/files/" . $preview->getContentUrl() : "",
                 "children" => count($messages[30 * $n + $i]->getChildren()),
                 "lastActivityDate" => $messages[30 * $n + $i]->getLastActivityDate()
             ];
