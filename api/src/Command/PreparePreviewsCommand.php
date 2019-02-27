@@ -48,13 +48,13 @@ class PreparePreviewsCommand extends ContainerAwareCommand
         ini_set('memory_limit', max(128, $max_memory + 10) . "M");
 
         // stats
-        $start_time = microtime(true);
+        $start_time = microtime();
         $number_links = 0;
         $number_previews = 0;
         $number_descriptions = 0;
         $number_titles = 0;
 
-        $c = $this->pdo->query("SELECT id, data FROM message WHERE parent_id IS NULL ORDER BY created_at DESC;");
+        $c = $this->pdo->query("SELECT id, data FROM message WHERE parent_id IS NULL AND preview_id IS NULL ORDER BY created_at DESC;");
         $messages = [];
         while($i = $c->fetch()) {
             $messages[] = $i;
@@ -64,7 +64,7 @@ class PreparePreviewsCommand extends ContainerAwareCommand
             if (memory_get_usage(true) > 1024 * 1024 * $max_memory) {
                 $output->writeln([
                     "Memory usage went over $max_memory Mo. Stopping the script.",
-                    "Duration: " . (microtime(true) - $start_time),
+                    "Duration: " . (floor(microtime()) - $start_time) . " seconds",
                     "Number of links: " . $number_links,
                 ]);
                 exit(0);
