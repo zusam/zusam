@@ -2,8 +2,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     database_url: '%env(resolve:DATABASE_URL)%'
-    binaries:
-        ffmpeg: '%env(resolve:FFMPEG_PATH)%'
+    binaries.ffmpeg: '%env(resolve:FFMPEG_PATH)%'
     dir.public: '%kernel.project_dir%/../public'
     dir.files: '%env(resolve:dir_files)%'
     dir.cache: '%env(resolve:dir_cache)%'

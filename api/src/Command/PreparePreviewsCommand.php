@@ -2,7 +2,11 @@
 
 namespace App\Command;
 
-use App\Controller\LinkByUrl;
+use App\Controller\NewMessage;
+use App\Entity\Link;
+use App\Entity\Message;
+use App\Service\Url as UrlService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -11,13 +15,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PreparePreviewsCommand extends ContainerAwareCommand
 {
+    private $em;
     private $pdo;
-    private $linkByUrl;
+    private $newMessage;
+    private $urlService;
 
-    public function __construct(LinkByUrl $linkByUrl)
-    {
+    public function __construct (
+        EntityManagerInterface $em,
+        NewMessage $newMessage,
+        UrlService $urlService
+    ) {
         parent::__construct();
-        $this->linkByUrl = $linkByUrl;
+        $this->em = $em;
+        $this->newMessage = $newMessage;
+        $this->urlService = $urlService;
     }
 
     protected function configure()
@@ -55,41 +66,27 @@ class PreparePreviewsCommand extends ContainerAwareCommand
                     "Memory usage went over $max_memory Mo. Stopping the script.",
                     "Duration: " . (microtime(true) - $start_time),
                     "Number of links: " . $number_links,
-                    "Number of previews: " . $number_previews,
-                    "Number of descriptions: " . $number_descriptions,
-                    "Number of titles: " . $number_titles,
                 ]);
                 exit(0);
             }
             $k++;
             $text = json_decode($i["data"], true)["text"];
-            preg_match("/https?:\/\/[^\s]+/", $text, $links);
-            if (!empty($links) && !empty($links[0])) {
-                echo "[$k/".count($messages)."]: ".$links[0]."\n";
+            $urls = Message::getUrlsFromText($text);
+            if (count($urls) > 0) {
+                echo "[$k/".count($messages)."]: ".$urls[0]."\n";
                 try {
                     $number_links++;
-                    $data = $this->linkByUrl->getLinkData($links[0], $filesDir, false, false);
-                    $embed_data = json_decode($data["data"], true);
-                    if (!empty($data["preview"])) {
-                        $number_previews++;
-                    } else {
-                        $output->writeln(["NO PREVIEW"]);
-                    }
-                    if (!empty($embed_data["description"])) {
-                        $number_descriptions++;
-                    } else {
-                        $output->writeln(["NO DESCRIPTION"]);
-                    }
-                    if (!empty($embed_data["title"])) {
-                        $number_titles++;
-                    } else {
-                        $output->writeln(["NO TITLE"]);
-                    }
+                    $link = $this->urlService->getLink($urls[0]);
+                    $this->em->persist($link);
+                    $message = $this->em->getRepository(Message::class)->findOneById($i["id"]);
+                    $message->setPreview($this->newMessage->genPreview($message));
+                    $this->em->persist($message);
                 } catch (\Exception $e) {
                     $output->writeln([$e->getMessage()]);
                     continue;
                 }
             }
+            $this->em->flush();
         }
     }
 }

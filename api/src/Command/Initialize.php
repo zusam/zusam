@@ -4,6 +4,8 @@ namespace App\Command;
 
 use App\Entity\Group;
 use App\Entity\User;
+use App\Entity\Message;
+use App\Controller\NewMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -17,12 +19,17 @@ class Initialize extends ContainerAwareCommand
 {
     private $em;
     private $encoder;
+    private $newMessage;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
-    {
+    public function __construct (
+        EntityManagerInterface $em,
+        UserPasswordEncoderInterface $encoder,
+        NewMessage $newMessage
+    ) {
         parent::__construct();
         $this->em = $em;
         $this->encoder = $encoder;
+        $this->newMessage = $newMessage;
     }
 
     protected function configure()
@@ -58,8 +65,22 @@ class Initialize extends ContainerAwareCommand
         $group->addUser($user);
         $user->addGroup($group);
 
+        $message_1 = new Message();
+        $message_1->setAuthor($user);
+        $message_1->setGroup($group);
+        $message_1->setData([
+            "title" => "Welcome on Zusam !",
+            "text" => "
+                This is a simple message.
+                Try to post something yourself by using the new message button on the group page or by leaving a comment here.
+                Please see the source and more at http://zusam.org.
+            ",
+        ]);
+        $message_1->setPreview($this->newMessage->genPreview($message_1));
+
         $this->em->persist($user);
         $this->em->persist($group);
+        $this->em->persist($message_1);
         $this->em->flush();
     }
 }

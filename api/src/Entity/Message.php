@@ -248,9 +248,15 @@ class Message
     public function getUrls(): array
     {
         $text = $this->getData()["text"];
-        preg_match("/(\([^()]*)?https?:\/\/[-A-Za-z0-9+&@#\/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#\/%=~_()|]/i", $text, $urls);
-        foreach($urls as $k => $url) {
+        if (!empty($text)) {
+            return self::getUrlsFromText($text);
         }
+        return [];
+    }
+
+    public static function getUrlsFromText(string $text): array
+    {
+        preg_match("/(\([^()]*)?https?:\/\/[-A-Za-z0-9+&@#\/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#\/%=~_()|]/i", $text, $urls);
         return array_map(function ($url) {
             if (!empty($url) && substr($url, 0, 1) === "(") {
                 $url = substr($url, stripos($url, "http"));
