@@ -29,7 +29,7 @@ if ! [ -L /zusam/public/files ]; then
     ln -s /zusam/data/files /zusam/public/files
 fi
 
-if [ "${INSTANCE_TYPE}" = "demo" ] || [ "${INSTANCE_TYPE}" = "new" ]; then
+if [ "${INSTANCE_TYPE}" = "demo" ]; then
     reset.sh
 fi
 
