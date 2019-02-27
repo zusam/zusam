@@ -4,8 +4,9 @@ const me = {
     me: {},
     get: () => me.me.id ? Promise.resolve(me.me) : me.update(),
     update: () => http.get("/api/me", true).then(r => {
-            me.me = r;
-            window.dispatchEvent(new CustomEvent("meStateChange"));
+        me.me = r;
+        window.dispatchEvent(new CustomEvent("meStateChange"));
+        return r;
     }),
     removeNews: newsId => {
         if (me.me.news) {
