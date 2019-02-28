@@ -16,18 +16,19 @@ else
     ENV="prod"
 fi
 
-sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
-       -e "s|<DOMAIN>|${DOMAIN}|g" \
-       -e "s|<DATABASE_URL>|${DATABASE_URL}|g" \
-       -e "s|<ENV>|${ENV}|g" \
-       /zusam/config
-
 if ! [ -f /zusam/data/config ]; then
     cp /zusam/config /zusam/data/config
 fi
 if ! [ -L /zusam/public/files ]; then
     ln -s /zusam/data/files /zusam/public/files
 fi
+
+sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
+       -e "s|<DOMAIN>|${DOMAIN}|g" \
+       -e "s|<DATABASE_URL>|${DATABASE_URL}|g" \
+       -e "s|<ENV>|${ENV}|g" \
+       -e "s|<LANG>|${LANG}|g" \
+       /zusam/config
 
 if [ "${INSTANCE_TYPE}" = "demo" ]; then
     reset.sh
