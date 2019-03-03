@@ -16,7 +16,7 @@ EXPOSE 8080
 WORKDIR /zusam
 
 # install base packages
-RUN set -xe && apk add --no-cache nginx php7 openssl ffmpeg \
+RUN set -xe && apk add --no-cache nginx php7 openssl ffmpeg yarn \
     php7-apcu \
     php7-common \
     php7-ctype \
@@ -67,15 +67,6 @@ RUN set -xe \
 
 # copy webapp source
 COPY app /zusam/app
-
-# install webapp
-RUN set -xe \
-    && apk add --no-cache --virtual .build-deps yarn \
-    && cd /zusam/app \
-    && yarn && yarn serve \
-    && chmod 755 -R /zusam/public \
-    && rm -rf /zusam/app \
-    && apk del .build-deps
 
 VOLUME /zusam/data
 CMD ["run.sh"]
