@@ -50,7 +50,7 @@ class Message
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="guid")
      * @Assert\NotBlank()
      * @Groups({"read_message"})
      */

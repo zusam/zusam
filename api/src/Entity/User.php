@@ -48,7 +48,7 @@ class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="guid")
      * @Groups({"read_user", "write_user", "read_message"})
      * @Assert\NotBlank()
      */
@@ -77,7 +77,7 @@ class User implements UserInterface, \Serializable
     private $password;
 
     /**
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="guid", unique=true)
      * @Assert\NotBlank()
      */
     private $apiKey;

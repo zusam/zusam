@@ -43,7 +43,7 @@ class File
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="guid")
      * @Assert\NotBlank()
      * @Groups({"read_user", "read_message"})
      */

@@ -56,7 +56,7 @@ class Group
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="guid")
      * @Groups({"read_group", "write_group", "read_user"})
      * @Assert\NotBlank()
      */

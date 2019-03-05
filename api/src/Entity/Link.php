@@ -21,7 +21,7 @@ class Link
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="guid")
      * @Assert\NotBlank()
      */
     private $id;
