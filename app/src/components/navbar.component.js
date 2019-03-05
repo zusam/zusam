@@ -25,7 +25,6 @@ export default class Navbar extends Component {
         this.setState({});
     }
 
-
     getTitle() {
         if (router.entity && router.entity["name"]) {
             return router.entity["name"];
@@ -34,6 +33,10 @@ export default class Navbar extends Component {
             return me.me.groups.find(g => g["@id"] == router.entity.group)["name"];
         }
         return "";
+    }
+
+    groupsHasNews() {
+        return me.me.groups.reduce((acc, curr) => acc || me.isNews(curr.id), false);
     }
 
     render() {
@@ -82,7 +85,9 @@ export default class Navbar extends Component {
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >
-                        <div class="unselectable">{ lang.groups } <FaIcon family={"solid"} icon={"caret-down"}/></div>
+                        <div className={"unselectable" + (this.groupsHasNews() ? " has-news" : "")}>
+                            { lang.groups } <FaIcon family={"solid"} icon={"caret-down"}/>
+                        </div>
                         <div class="dropdown-menu">
                             { Array.isArray(me.me.groups) && me.me.groups.map(
                                 e => (

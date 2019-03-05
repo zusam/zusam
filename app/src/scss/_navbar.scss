@@ -92,6 +92,10 @@
         line-height: 200%;
         flex-shrink: 0;
 
+        & > .has-news {
+            font-weight: bold;
+        }
+
         &.active {
             background-color: adjust-hue($zusam_color, 5deg);
             .dropdown-menu {
