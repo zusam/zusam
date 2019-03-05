@@ -48,7 +48,7 @@ class PreparePreviewsCommand extends ContainerAwareCommand
         ini_set('memory_limit', max(128, $max_memory + 10) . "M");
 
         // stats
-        $start_time = microtime();
+        $start_time = microtime(true);
         $number_links = 0;
         $number_previews = 0;
         $number_descriptions = 0;
@@ -64,28 +64,34 @@ class PreparePreviewsCommand extends ContainerAwareCommand
             if (memory_get_usage(true) > 1024 * 1024 * $max_memory) {
                 $output->writeln([
                     "Memory usage went over $max_memory Mo. Stopping the script.",
-                    "Duration: " . (floor(microtime()) - $start_time) . " seconds",
+                    "Duration: " . (floor(microtime(true) - $start_time)) . " seconds",
                     "Number of links: " . $number_links,
                 ]);
                 exit(0);
             }
             $k++;
+            
+            echo "[$k/".count($messages)."]: ".$i["id"]."\n";
+
+            // get first url data
             $text = json_decode($i["data"], true)["text"];
             $urls = Message::getUrlsFromText($text);
             if (count($urls) > 0) {
-                echo "[$k/".count($messages)."]: ".$urls[0]."\n";
                 try {
                     $number_links++;
                     $link = $this->urlService->getLink($urls[0]);
                     $this->em->persist($link);
-                    $message = $this->em->getRepository(Message::class)->findOneById($i["id"]);
-                    $message->setPreview($this->newMessage->genPreview($message));
-                    $this->em->persist($message);
                 } catch (\Exception $e) {
                     $output->writeln([$e->getMessage()]);
                     continue;
                 }
             }
+
+            // process preview
+            $message = $this->em->getRepository(Message::class)->findOneById($i["id"]);
+            $message->setPreview($this->newMessage->genPreview($message));
+            $this->em->persist($message);
+
             $this->em->flush();
         }
     }
