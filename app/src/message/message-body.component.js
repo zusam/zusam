@@ -46,8 +46,8 @@ export default class MessageBody extends Component {
                     >
                         <FaIcon family="solid" icon="caret-down"/>
                         <div class="dropdown-menu">
-                            <a class="seamless-link" onClick={this.editMessage}>{lang["edit"]}</a>
-                            <a class="seamless-link" onClick={this.deleteMessage}>{lang["delete"]}</a>
+                            <a class="seamless-link" onClick={this.props.editMessage}>{lang["edit"]}</a>
+                            <a class="seamless-link" onClick={this.props.deleteMessage}>{lang["delete"]}</a>
                         </div>
                     </div>
                 )}
