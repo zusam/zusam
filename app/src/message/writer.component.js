@@ -262,7 +262,7 @@ export default class Writer extends Component {
                     autocomplete="off"
                     autofocus={this.props.focus}
                 ></textarea>
-                { this.state.preview && <p class="card-text"><PreviewBlock inWriter={true} {...this.state.preview} /></p> }
+                { this.state.preview && <p class="text-center card-text"><PreviewBlock inWriter={true} {...this.state.preview} /></p> }
                 { !!this.state.files.length && (
                     <FileGrid
                         key={this.state.files.reduce((a,c) => a + c.id, "")}
