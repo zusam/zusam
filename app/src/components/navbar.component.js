@@ -85,7 +85,7 @@ export default class Navbar extends Component {
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >
-                        <div className={"unselectable" + (this.groupsHasNews() ? " has-news" : "")}>
+                        <div className={"dropdown-title unselectable" + (this.groupsHasNews() ? " has-news" : "")}>
                             { lang.groups } <FaIcon family={"solid"} icon={"caret-down"}/>
                         </div>
                         <div class="dropdown-menu">

@@ -22,7 +22,7 @@
             font-size: 1.3rem;
         }
     }
-    @media (min-width: map-get($grid-breakpoints, "md")) {
+    @media (min-width: 400px) {
         .title {
             position: absolute;
             left: 50%;
@@ -91,6 +91,11 @@
         height: 100%;
         line-height: 200%;
         flex-shrink: 0;
+
+        .dropdown-title {
+            position: relative;
+            top: 2px;
+        }
 
         & > .has-news {
             font-weight: bold;
