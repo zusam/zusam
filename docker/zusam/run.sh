@@ -1,7 +1,8 @@
 #!/bin/sh
 
-# There are 3 possible instance types: "default", "demo" and "new"
-# "new" will create a new instance.
+set -xe
+
+# There are 2 possible instance types: "default" and "demo"
 # "demo" will create a new instance that resets every day.
 # "default" will assume you have a working db.
 
@@ -43,6 +44,8 @@ fi
 cd /zusam/app
 yarn && yarn serve
 chmod 755 -R /zusam/public
+
+rm -rf /zusam/app /zusam/api/var/*
 
 chown -R "${UID}:${GID}" /etc/s6.d /var/log/ /var/tmp/ /etc/php7 /etc/nginx /run/nginx /zusam
 exec /bin/s6-svscan /etc/s6.d

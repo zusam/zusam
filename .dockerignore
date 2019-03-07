@@ -22,13 +22,11 @@
 
 # APP
 /app/.cache
-/app/bootstrap-light/node_modules
 /app/node_modules
-/app/node_modules/
 /app/yarn-error.log
 /app/yarn.lock
 
 # PUBLIC
-/public/api/bundles/
-/public/files/
-/public/thumbnails/
+/public/api/bundles
+/public/files
+/public/thumbnails

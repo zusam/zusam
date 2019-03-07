@@ -4,7 +4,7 @@ FROM alpine:3.9
 RUN apk add --no-cache -U su-exec tini s6
 ENTRYPOINT ["/sbin/tini", "--"]
 
-# Lang of the webapp
+# Default lang of the webapp
 ARG LANG="en"
 
 # global environment variables

@@ -70,7 +70,6 @@ class PreparePreviewsCommand extends ContainerAwareCommand
                 exit(0);
             }
             $k++;
-            
             echo "[$k/".count($messages)."]: ".$i["id"]."\n";
 
             // get first url data
