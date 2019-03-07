@@ -40,33 +40,41 @@ class GroupPage extends Controller
         $this->em->persist($user);
         $this->em->flush();
 
-        // filter out children messages
-        $messages = array_filter($group->getMessages()->getValues(), function($m) {
-            return $m->getParent() == null;
-        });
+        $query = $this->em->createQuery(
+            "SELECT m FROM App\Entity\Message m"
+            ." WHERE m.group = '" . $group->getId() . "'"
+            ." AND m.parent IS NULL"
+            ." ORDER BY m.lastActivityDate DESC"
+        );
+        $query->setMaxResults(30);
+        $query->setFirstResult(30 * $n);
+        $messages = $query->getResult();
 
-        // sort by lastActivityDate
-        usort($messages, function($m1, $m2) {
-            return $m1->getLastActivityDate() > $m2->getLastActivityDate() ? -1 : 1;
-        });
-
-        // prepare page "n" (with max 30 items)
         $page = [];
-        for ($i = 0; $i + $n * 30 < count($messages) && $i < 30; $i++) {
-            $preview = $messages[30 * $n + $i]->getPreview();
+        foreach ($messages as $message) {
+            $preview = $message->getPreview();
             $page[] = [
-                "@id" => "/api/messages/" . $messages[30 * $n + $i]->getId(),
-                "id" => $messages[30 * $n + $i]->getId(),
-                "data" => $messages[30 * $n + $i]->getData(),
-                "author" => "/api/users/" . $messages[30 * $n + $i]->getAuthor()->getId(),
+                "@id" => "/api/messages/" . $message->getId(),
+                "id" => $message->getId(),
+                "data" => $message->getData(),
+                "author" => "/api/users/" . $message->getAuthor()->getId(),
                 "preview" => $preview ? "/api/files/" . $preview->getContentUrl() : "",
-                "children" => count($messages[30 * $n + $i]->getChildren()),
-                "lastActivityDate" => $messages[30 * $n + $i]->getLastActivityDate()
+                "children" => count($message->getChildren()),
+                "lastActivityDate" => $message->getLastActivityDate()
             ];
         }
-        return new JsonResponse([
+
+        $data = [
             "messages" => $page,
             "totalItems" => count($messages),
-        ], JsonResponse::HTTP_OK);
+        ];
+        $response = new JsonResponse($data, JsonResponse::HTTP_OK);
+        $response->setCache(array(
+            "etag"          => md5(json_encode($data)),
+            "max_age"       => 0,
+            "s_maxage"      => 3600,
+            "public"        => true,
+        ));
+        return $response;
     }
 }
