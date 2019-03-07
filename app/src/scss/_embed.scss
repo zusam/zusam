@@ -63,6 +63,13 @@
         z-index: 2;
     }
 
+    img {
+        transform: translate(-50%, -50%);
+        position: relative;
+        left: 50%;
+        top: 50%;
+    }
+
     .youtube::before {
         background: #212121;
         height: 48px;
