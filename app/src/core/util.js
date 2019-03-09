@@ -22,12 +22,15 @@ const util = {
         if (!timestamp) {
             return null;
         }
-        const duration = Math.round((Date.now()/1000 - timestamp)/60);
+        const duration = Math.abs(Math.round((Date.now()/1000 - timestamp)/60));
+        if (duration < 1) {
+            return lang["just_now"];
+        }
         if (duration < 60) {
-            return lang["there_is"] + " " + duration + "mn";
+            return lang["ago"].replace(/{}/, duration + "mn");
         }
         if (duration < 60 * 24) {
-            return lang["there_is"] + " " + Math.floor(duration/60) + "h";
+            return lang["ago"].replace(Math.floor(duration/60) + "h");
         }
         let date = new Date(timestamp*1000);
         return util.humanFullDate(timestamp).split(" ")[0];

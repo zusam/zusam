@@ -1,6 +1,6 @@
 {
     "more_coms": "Voir les commentaires précédents",
-    "there_is": "Il y a",
+    "ago": "Il y a {}",
     "groups": "Groupes",
     "login_placeholder": "email",
     "password_placeholder": "mot de passe",
@@ -52,6 +52,7 @@
     "error_upload": "Une erreur s'est produite pendant l'envoi.",
     "cancel_write": "Voulez-vous annuler l'écriture d'un nouveau message ?",
     "empty_message": "Le message est vide !",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "just_now": "A l'instant"
 }
 
