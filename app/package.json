@@ -6,12 +6,10 @@
         "clean": "rm -rf ../public/*.js ../public/*.css ../public/*.png ../public/*.ico ../public/*.svg dist/*",
         "build-dev": "parcel build --no-source-maps --no-minify src/index.html",
         "build": "parcel build --no-source-maps src/index.html",
-        "serve": "cp -r dist/* ../public",
-        "serve-dev": "cp -r dist/* ../public",
-        "preserve": "yarn build",
-        "preserve-dev": "yarn build-dev",
-        "prebuild": "yarn clean",
-        "prebuild-dev": "yarn clean"
+        "lang": "cp src/assets/lang/*.json dist/",
+        "prebuild": "yarn lang",
+        "prebuild-dev": "yarn lang",
+        "prelang": "yarn clean"
     },
     "dependencies": {
         "node-sass": "~4.11",
