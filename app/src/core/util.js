@@ -30,7 +30,7 @@ const util = {
             return lang["ago"].replace(/{}/, duration + "mn");
         }
         if (duration < 60 * 24) {
-            return lang["ago"].replace(Math.floor(duration/60) + "h");
+            return lang["ago"].replace(/{}/, Math.floor(duration/60) + "h");
         }
         let date = new Date(timestamp*1000);
         return util.humanFullDate(timestamp).split(" ")[0];

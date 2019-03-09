@@ -58,8 +58,6 @@ export default class PreviewBlock extends Component {
                 if (this.props.data["type"] == "photo") {
                     break;
                 }
-            case "facebook.com":
-            case "instagram.com":
             case "vimeo.com":
             case "dailymotion.com":
                 // default embed code
