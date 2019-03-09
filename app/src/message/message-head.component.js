@@ -1,6 +1,5 @@
 import { h, render, Component } from "preact";
 import { me, util } from "/core";
-import lang from "/lang";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class MessageHead extends Component {

@@ -1,6 +1,5 @@
 import { h, render, Component } from "preact";
 import { alert, cache, http, router } from "/core";
-import lang from "/lang";
 
 export default class ResetPassword extends Component {
 

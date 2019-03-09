@@ -1,4 +1,4 @@
-const lang = {
+{
     "more_coms": "See more comments",
     "there_is": "There is",
     "groups": "Groups",
@@ -52,7 +52,5 @@ const lang = {
     "error_upload": "An error occurred during the upload",
     "cancel_write": "Do you really want to cancel writing a new message ?",
     "empty_message": "The message is empty and cannot be sent !",
-    "cancel": "Cancel",
-};
-
-export default lang;
+    "cancel": "Cancel"
+}

@@ -1,6 +1,5 @@
 import { h, render, Component } from "preact";
 import { cache, router, me } from "/core";
-import lang from "/lang";
 import { Login, Signup, ResetPassword } from "/outside";
 import Navbar from "./components/navbar.component.js";
 import MainContent from "./components/main-content.component.js";

@@ -1,6 +1,5 @@
 import { h, render, Component } from "preact";
 import { alert, cache, http, imageService, me, router, util } from "/core";
-import lang from "/lang";
 import FaIcon from "../components/fa-icon.component.js";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";

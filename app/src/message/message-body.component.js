@@ -1,10 +1,8 @@
 import { h, render, Component } from "preact";
 import { me, util } from "/core";
-import lang from "/lang";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";
 import FaIcon from "../components/fa-icon.component.js";
-
 
 export default class MessageBody extends Component {
 

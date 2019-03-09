@@ -1,5 +1,3 @@
-import lang from "/lang";
-
 const util = {
     getUrl: txt => {
         let url = txt.match(/(\([^()]*)?https?:\/\/[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]/i);

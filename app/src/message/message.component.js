@@ -1,6 +1,5 @@
 import { h, render, Component } from "preact";
 import { cache, http, me, router, util } from "/core";
-import lang from "/lang";
 import FaIcon from "../components/fa-icon.component.js";
 import MessageHead from "./message-head.component.js";
 import MessageBody from "./message-body.component.js";
