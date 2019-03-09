@@ -51,22 +51,17 @@ COPY docker/zusam/reset.sh /usr/local/bin/reset.sh
 COPY docker/zusam/run.sh /usr/local/bin/run.sh
 COPY public/api/index.php /zusam/public/api/index.php
 COPY api /zusam/api
+COPY app/dist/* /zusam/public/
 
 # handle build config
 RUN set -xe \
     && mkdir -p /run/nginx /zusam/data \
     && sed -e "s|<ENV>|prod|g" /zusam/config > /zusam/data/config \
-    && sed -i "s|<LANG>|${LANG}|g" /zusam/data/config
-
-# install zusam api
-RUN set -xe \
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar unzip \
     && cd /zusam/api && php bin/composer install --prefer-dist \
+    && mv /zusam/public/${LANG}.json /zusam/public/lang.json \
     && apk del .build-deps \
-    && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx
-
-# copy webapp source
-COPY app /zusam/app
+    && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public
 
 VOLUME /zusam/data
 CMD ["run.sh"]

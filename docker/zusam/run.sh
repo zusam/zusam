@@ -40,10 +40,5 @@ if [ "${INSTANCE_TYPE}" = "demo" ]; then
     echo "0 * * * * su-exec ${UID}:${GID} /usr/local/bin/reset.sh >> /dev/stdout" | crontab -
 fi
 
-# install webapp
-cd /zusam/app
-yarn && yarn serve
-chmod 755 -R /zusam/public
-
 chown -R "${UID}:${GID}" /etc/s6.d /var/log/ /var/tmp/ /etc/php7 /etc/nginx /run/nginx /zusam
 exec /bin/s6-svscan /etc/s6.d
