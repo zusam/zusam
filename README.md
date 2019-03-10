@@ -32,6 +32,10 @@ Requirements:
 
 You can follow the installation guide for [Debian stretch](wiki/debian.md) or use [Docker](wiki/docker.md).
 
+## Webapp compatibility
+The webapp targets Firefox 60+, Chrome 67+, Safari 11+.  
+It's intentionally high but should work with all versions of Edge and older versions of Chrome and Firefox.
+
 ## Contributing
 Zusam is free and open-source software licensed under AGPLv3.  
 You can open issues for bugs you've found or features you think are missing. You can also submit pull requests to this repository.

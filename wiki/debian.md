@@ -55,7 +55,7 @@ server {
         try_files $uri /api/index.php$is_args$args;
     }
     location ~ ^/api/index\.php(/|$) {
-        fastcgi_pass unix:/var/run/php/php7.3-sock;
+        fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi.conf;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
