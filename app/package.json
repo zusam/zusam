@@ -3,12 +3,11 @@
     "version": "0.1-beta.6",
     "license": "GPL-3.0-or-later",
     "scripts": {
-        "clean": "rm -rf ../public/*.js ../public/*.css ../public/*.png ../public/*.ico ../public/*.svg dist/*",
-        "build-dev": "parcel build --no-source-maps --no-minify src/index.html",
         "build": "parcel build --no-source-maps src/index.html",
-        "lang": "cp src/assets/lang/*.json dist/",
+        "clean": "rm -rf dist/*",
+        "lang": "cp src/assets/lang/*.js dist/",
+        "postbuild": "sed -E -i 's/lang.[a-z0-9]+.js/lang.js/' dist/index.html && rm dist/lang*",
         "prebuild": "yarn lang",
-        "prebuild-dev": "yarn lang",
         "prelang": "yarn clean"
     },
     "dependencies": {

@@ -59,7 +59,7 @@ RUN set -xe \
     && sed -e "s|<ENV>|prod|g" /zusam/config > /zusam/data/config \
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar unzip \
     && cd /zusam/api && php bin/composer install --prefer-dist \
-    && mv /zusam/public/${LANG}.json /zusam/public/lang.json \
+    && mv /zusam/public/${LANG}.js /zusam/public/lang.js \
     && apk del .build-deps \
     && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public
 

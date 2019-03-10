@@ -1,4 +1,4 @@
-{
+window.lang = {
     "more_coms": "See more comments",
     "ago": "{} ago",
     "groups": "Groups",
@@ -53,5 +53,5 @@
     "cancel_write": "Do you really want to cancel writing a new message ?",
     "empty_message": "The message is empty and cannot be sent !",
     "cancel": "Cancel",
-    "just_now": "Just now"
-}
+    "just_now": "Just now",
+};
