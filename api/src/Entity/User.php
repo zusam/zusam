@@ -119,7 +119,6 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      * @Groups({"read_user"})
-     * @Assert\NotBlank()
      */
     private $news;
 
