@@ -22,11 +22,11 @@
         <meta name="theme-color" content="#f7a71b">
         <link rel="stylesheet" href="scss/main.scss"/>
         <base href="/">
-    </head>
-    <body>
         <script>
             fetch("lang.json").then(r => r.json().then(r => window.lang = r)).catch(r => console.warn(r));
         </script>
+    </head>
+    <body>
 		<script src="app.js"></script>
     </body>
 </html>
