@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="app/src/assets/zusam_logo.png">
+    <img style="max-width:500px" src="app/src/assets/zusam_logo.png">
 </h1>
 
 <h4 align="center">A truly private space for you and your friends</h4>
@@ -11,6 +11,7 @@ The goals are to make a stable, extensible, lightweight and user-friendly way to
 <span align="center">
     <img src="readme/screenshot.jpg">
 </span>
+* More screenshots [here](readme/) *
 
 ## Features
 - Links preview and embedded youtube, vimeo, imgur, soundcloud, twitch, bandcamp...
@@ -20,15 +21,8 @@ The goals are to make a stable, extensible, lightweight and user-friendly way to
 - Low server footprint
 
 ## Deployment
-Zusam is composed of a PHP server and a preact single-page-application.
-
-Backend:
-- Symfony 4
-- Sqlite
-
-Frontend:
-- Preact 8
-- ParcelJS
+Zusam is composed of a PHP server and a single-page-application.
+The backend uses Symfony and Sqlite, the frontend is made with Preact and ParcelJS.
 
 Requirements:
 - PHP 7.1+
