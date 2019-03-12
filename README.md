@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img style="max-width:500px" src="app/src/assets/zusam_logo.png">
+    <img src="app/src/assets/zusam_logo.png">
 </h1>
 
 <h4 align="center">A truly private space for you and your friends</h4>
