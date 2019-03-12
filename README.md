@@ -8,6 +8,10 @@
 Zusam (/tsuˈzam/) is a free and open-source way to self-host private forums for groups of friends. Composed of a server written in PHP exposing a REST API and a lightweight webapp, Zusam is extensible and easy to install.  
 The goals are to make a stable, extensible, lightweight and user-friendly way to self-host private social groups.
 
+<span align="center">
+    <img src="readme/screenshot.jpg">
+</span>
+
 ## Features
 - Links preview and embedded youtube, vimeo, imgur, soundcloud, twitch, bandcamp...
 - Video and image upload
