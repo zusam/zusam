@@ -49,6 +49,7 @@ COPY docker/zusam/php7 /etc/php7
 COPY docker/zusam/nginx /etc/nginx
 COPY docker/zusam/reset.sh /usr/local/bin/reset.sh
 COPY docker/zusam/run.sh /usr/local/bin/run.sh
+COPY docker/zusam/example.db /zusam/example.db
 COPY public/api/index.php /zusam/public/api/index.php
 COPY api /zusam/api
 COPY app/dist/* /zusam/public/

@@ -35,8 +35,7 @@ class Initialize extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName("zusam:init")
-            ->setDescription("Initialize database for Zusam.")
-            ->setHelp("This command creates the database and a first user with a group.")
+            ->setDescription("Initialize the database with a first user and group.")
             ->addArgument("user", InputArgument::REQUIRED, "What's the name of the first user ?")
             ->addArgument("group", InputArgument::REQUIRED, "What's the name of the first group ?")
             ->addArgument("password", InputArgument::REQUIRED, "What's the password of the first user ?");
@@ -48,6 +47,7 @@ class Initialize extends ContainerAwareCommand
         $doctrineDatabaseCreate->run(new ArrayInput([
             "command" => "doctrine:database:create",
         ]), $output);
+
         $doctrineSchemaUpdate = $this->getApplication()->find("doctrine:schema:update");
         $doctrineSchemaUpdate->run(new ArrayInput([
             "command" => "doctrine:schema:update",
@@ -73,7 +73,6 @@ class Initialize extends ContainerAwareCommand
             "text" => "
                 This is a simple message.
                 Try to post something yourself by using the new message button on the group page or by leaving a comment here.
-                Please see the source and more at http://zusam.org.
             ",
         ]);
         $message_1->setPreview($this->newMessage->genPreview($message_1));

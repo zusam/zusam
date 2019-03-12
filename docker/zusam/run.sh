@@ -11,25 +11,30 @@ echo "* * * * * su-exec ${UID}:${GID} /zusam/api/bin/console zusam:cron >> /dev/
 
 DATABASE_URL="sqlite:///%kernel.project_dir%/../data/${DATABASE_NAME}"
 
+# copy example database if none is present
+if ! [ -f "/zusam/data/${DATABASE_NAME}" ]; then
+    cp /zusam/example.db "/zusam/data/${DATABASE_NAME}"
+fi
+
 if [ "${INSTANCE_TYPE}" = "demo" ]; then
     ENV="dev"
 else
     ENV="prod"
 fi
 
-if ! [ -f /zusam/data/config ]; then
-    cp /zusam/config /zusam/data/config
-fi
-if ! [ -L /zusam/public/files ]; then
-    ln -s /zusam/data/files /zusam/public/files
-fi
-
 sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
        -e "s|<DOMAIN>|${DOMAIN}|g" \
        -e "s|<DATABASE_URL>|${DATABASE_URL}|g" \
        -e "s|<ENV>|${ENV}|g" \
-       -e "s|<LANG>|${LANG}|g" \
        /zusam/config
+
+if ! [ -f /zusam/data/config ]; then
+    cp /zusam/config /zusam/data/config
+fi
+
+if ! [ -L /zusam/public/files ]; then
+    ln -s /zusam/data/files /zusam/public/files
+fi
 
 if [ "${INSTANCE_TYPE}" = "demo" ]; then
     reset.sh

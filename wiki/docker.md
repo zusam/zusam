@@ -16,3 +16,5 @@ Start the container giving the path to the data directory as volume:
 ```
 sudo docker run -p 80:8080 -v "$(pwd)/data:/zusam/data" --name zusam zusam
 ```
+
+The default first username is `zusam` with the password `zusam`.

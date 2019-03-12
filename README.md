@@ -9,11 +9,11 @@ Zusam (/tsuˈzam/) is a free and open-source way to self-host private forums for
 The goals are to make a stable, extensible, lightweight and user-friendly way to self-host private social groups.
 
 ## Features
-- Low server footprint
 - Links preview and embedded youtube, vimeo, imgur, soundcloud, twitch, bandcamp...
 - Video and image upload
 - Photo albums
 - Completely responsive and mobile friendly
+- Low server footprint
 
 ## Deployment
 Zusam is composed of a PHP server and a preact single-page-application.
@@ -37,5 +37,5 @@ The webapp targets Firefox 60+, Chrome 67+, Safari 11+.
 It's intentionally high but should work with all versions of Edge and older versions of Chrome and Firefox.
 
 ## Contributing
-Zusam is free and open-source software licensed under AGPLv3.  
+Zusam is free and open-source software licensed under [AGPLv3](https://www.gnu.org/licenses/agpl.html).  
 You can open issues for bugs you've found or features you think are missing. You can also submit pull requests to this repository.

@@ -71,3 +71,8 @@ Reload nginx configuration with `sudo nginx -s reload`.
 
 Set `upload_max_filesize` to `2048M` in `/etc/php/7.3/php.ini`.
 And then restart the service with `sudo systemctl restart php7.3-fpm`.
+
+All what's left is to initialiaze the database (replace values with yours):
+```
+php /srv/zusam/api/bin/console zusam:init usermail@example.com my_group_name my_password
+```
