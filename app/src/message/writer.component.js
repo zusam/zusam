@@ -94,12 +94,14 @@ export default class Writer extends Component {
             msg.data.title = document.getElementById("title").value;
         }
         http.put("/api/messages/" + this.props.messageId, msg).then(res => {
+            this.setState({sending: false});
             if (!res) {
                 alert.add(lang["error_new_message"], "alert-danger");
                 return;
             }
             location.reload();
         });
+        this.setState({sending: true});
     }
 
     postMessage() {
@@ -125,6 +127,7 @@ export default class Writer extends Component {
             return;
         }
         http.post("/api/messages", msg).then(res => {
+            this.setState({sending: false});
             if (!res) {
                 alert.add(lang["error_new_message"], "alert-danger");
                 return;
@@ -140,7 +143,8 @@ export default class Writer extends Component {
         this.setState({
             files: [],
             link: null,
-            preview: null
+            preview: null,
+            sending: true,
         });
         document.getElementById("text").value = "";
     }
@@ -245,6 +249,13 @@ export default class Writer extends Component {
     }
 
     render() {
+        if (this.state.sending) {
+            return (
+                <div class="message-placeholder">
+                    <div class="spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
+                </div>
+            );
+        }
         return (
             <div class="writer">
                 { !this.props.parent && (

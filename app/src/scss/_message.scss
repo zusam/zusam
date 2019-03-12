@@ -372,11 +372,18 @@
     }
 }
 
-.file-placeholder {
-    background-color: grey;
+.file-placeholder, .message-placeholder {
     width: 100%;
     height: 320px;
     position: relative;
+}
+
+.message-placeholder {
+    background-color: lightgrey;
+}
+
+.file-placeholder {
+    background-color: grey;
 }
 
 .message {
