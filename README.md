@@ -11,7 +11,7 @@ The goals are to make a stable, extensible, lightweight and user-friendly way to
 <span align="center">
     <img src="readme/screenshot.jpg">
 </span>
-* More screenshots [here](readme/) *
+<em>More screenshots <a href="readme">here</a></em>
 
 ## Features
 - Links preview and embedded youtube, vimeo, imgur, soundcloud, twitch, bandcamp...
@@ -22,7 +22,7 @@ The goals are to make a stable, extensible, lightweight and user-friendly way to
 
 ## Deployment
 Zusam is composed of a PHP server and a single-page-application.
-The backend uses Symfony and Sqlite, the frontend is made with Preact and ParcelJS.
+The backend uses [Symfony](https://symfony.com) and [Sqlite](https://sqlite.org/index.html), the frontend is made with [Preact](https://preactjs.com/) and [ParcelJS](https://parceljs.org/).
 
 Requirements:
 - PHP 7.1+
