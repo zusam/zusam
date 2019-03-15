@@ -16,7 +16,7 @@ EXPOSE 8080
 WORKDIR /zusam
 
 # install base packages
-RUN set -xe && apk add --no-cache nginx php7 openssl ffmpeg yarn \
+RUN set -xe && apk add --no-cache nginx php7 openssl ffmpeg unzip \
     php7-apcu \
     php7-common \
     php7-ctype \
@@ -24,7 +24,6 @@ RUN set -xe && apk add --no-cache nginx php7 openssl ffmpeg yarn \
     php7-dom \
     php7-fileinfo \
     php7-fpm \
-    php7-gd \
     php7-iconv \
     php7-imagick \
     php7-intl \
@@ -33,14 +32,12 @@ RUN set -xe && apk add --no-cache nginx php7 openssl ffmpeg yarn \
     php7-opcache \
     php7-openssl \
     php7-pdo_sqlite \
-    php7-phar \
     php7-posix \
     php7-session \
     php7-simplexml \
     php7-tokenizer \
     php7-xml \
-    php7-xmlwriter \
-    php7-zip
+    php7-xmlwriter
 
 # copy files
 COPY docker/zusam/s6.d /etc/s6.d
