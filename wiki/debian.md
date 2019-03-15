@@ -13,7 +13,7 @@ We're going to use php7.3 here but Zusam is compatible with 7.1+
 ```
 sudo apt install -y nginx git unzip ffmpeg \
     php7.3 php7.3-fpm php7.3-xml php7.3-curl php7.3-mbstring \
-    php7.3-sqlite3 php7.3-imagick php7.3-gd php7.3-intl php7.3-zip
+    php7.3-sqlite3 php7.3-imagick php7.3-intl
 ```
 
 Clone the repository (here in /srv/zusam):
