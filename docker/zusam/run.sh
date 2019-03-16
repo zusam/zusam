@@ -7,7 +7,7 @@ set -xe
 # "default" will assume you have a working db.
 
 crontab -r
-echo "* * * * * su-exec ${UID}:${GID} /zusam/api/bin/console zusam:cron >> /dev/stdout" | crontab -
+echo "* * * * * su-exec ${UID}:${GID} /zusam/api/bin/console zusam:cron > /dev/stdout" | crontab -
 
 DATABASE_URL="sqlite:///%kernel.project_dir%/../data/${DATABASE_NAME}"
 
