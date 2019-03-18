@@ -58,14 +58,12 @@ export default class MessageBody extends Component {
                     <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
                 )}
                 { this.props.preview && (
-                    <p class="text-center card-text">
-                        <PreviewBlock
-                            key={this.props.preview.url}
-                            url={this.props.preview.url}
-                            preview={this.props.preview.preview}
-                            data={this.props.preview.data}
-                        />
-                    </p>
+                    <PreviewBlock
+                        key={this.props.preview.url}
+                        url={this.props.preview.url}
+                        preview={this.props.preview.preview}
+                        data={this.props.preview.data}
+                    />
                 )}
                 { this.props.message.files && <FileGrid files={this.props.message.files}/> }
                 { this.props.message.parent && (

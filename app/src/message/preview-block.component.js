@@ -33,10 +33,7 @@ export default class PreviewBlock extends Component {
 		}
 	}
 
-    render() {
-        if (!this.props.url || !this.props.data) {
-            return null;
-        }
+    getPreview() {
         let provider = "";
         if (this.props.data["providerUrl"]) {
             provider = this.props.data["providerUrl"].toLowerCase().replace(/\/$/, '').replace(/^https?:\/\/(www\.)?/, '')
@@ -99,6 +96,21 @@ export default class PreviewBlock extends Component {
                         </div>
                     </div>
                 </a>
+            );
+        }
+        return null;
+    }
+
+    render() {
+        if (!this.props.url || !this.props.data) {
+            return null;
+        }
+        let preview = this.getPreview();
+        if (preview) {
+            return (
+                <p class="text-center card-text">
+                    { preview }
+                </p>
             );
         }
         return null;
