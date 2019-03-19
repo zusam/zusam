@@ -11,9 +11,7 @@ sudo apt update
 
 We're going to use php7.3 here but Zusam is compatible with 7.1+
 ```
-sudo apt install -y nginx git unzip ffmpeg \
-    php7.3 php7.3-fpm php7.3-xml php7.3-curl php7.3-mbstring \
-    php7.3-sqlite3 php7.3-imagick php7.3-intl
+sudo apt install -y nginx git unzip ffmpeg php7.3 php7.3-fpm php7.3-xml php7.3-curl php7.3-mbstring php7.3-sqlite3 php7.3-imagick php7.3-intl
 ```
 
 Clone the repository (here in /srv/zusam):
@@ -29,7 +27,13 @@ cp app/dist/* public/
 
 Rename the language file of your choice (here it's the english one):
 ```
-mv app/src/assets/lang/en.js public/lang.js
+cp public/en.js public/lang.js
+```
+
+Install the server dependencies:
+```
+cd api
+php bin/composer install
 ```
 
 Replace `/etc/nginx/sites-available/default` with the following:
@@ -69,7 +73,7 @@ server {
 ```
 Reload nginx configuration with `sudo nginx -s reload`.
 
-Set `upload_max_filesize` to `2048M` in `/etc/php/7.3/php.ini`.
+Set `upload_max_filesize` and `post_max_size` to `2048M` in `/etc/php/7.3/fpm/php.ini`.  
 And then restart the service with `sudo systemctl restart php7.3-fpm`.
 
 Initialiaze the database (replace values with yours):
@@ -80,4 +84,10 @@ php /srv/zusam/api/bin/console zusam:init usermail@example.com my_group_name my_
 Make sure that Zusam's files are readable by php-fpm:
 ```
 chown -R www-data: /srv/zusam
+```
+
+Zusam needs to do stuff regularly (cleaning up files, converting videos...).  
+Let's add its worker to cron:
+```
+echo "* * * * * /srv/zusam/api/bin/console zusam:cron >> /srv/zusam/api/var/log/cron.log" | sudo crontab -
 ```
