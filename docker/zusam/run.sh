@@ -38,8 +38,8 @@ fi
 
 # if this is a demo instance, reset it every day
 if [ "${INSTANCE_TYPE}" = "demo" ]; then
-    reset-demo.sh
-    echo "0 * * * * /usr/local/bin/reset-demo.sh > /dev/stdout" | crontab -
+    reset-demo.sh /zusam ${UID} ${GID}
+    echo "0 * * * * /usr/local/bin/reset-demo.sh /zusam ${UID} ${GID} > /dev/stdout" | crontab -
 fi
 
 chown -R "${UID}:${GID}" /etc/s6.d /var/log/ /var/tmp/ /etc/php7 /etc/nginx /run/nginx /zusam

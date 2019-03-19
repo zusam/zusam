@@ -1,11 +1,11 @@
 #!/bin/sh
 
 echo "Reset demo"
-rm -rf /zusam/data/*
+rm -rf "$1/data/*"
 sleep 3
-mkdir -p /zusam/data
-chmod 755 /zusam/data
+mkdir -p "$1/data"
+chmod 755 "$1/data"
 sleep 3
-tar -xf /zusam/demo.tar.gz -C /zusam
+tar -xf "$1/demo.tar.gz" -C "$1"
 sleep 3
-chown -R "${UID}:${GID}" /zusam
+chown -R "$2:$3" "$1"
