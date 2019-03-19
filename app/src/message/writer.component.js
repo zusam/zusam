@@ -127,17 +127,11 @@ export default class Writer extends Component {
             return;
         }
         http.post("/api/messages", msg).then(res => {
-            this.setState({sending: false});
             if (!res) {
                 alert.add(lang["error_new_message"], "alert-danger");
+                this.setState({sending: false});
                 return;
             }
-            this.setState({
-                files: [],
-                link: null,
-                preview: null,
-            });
-            document.getElementById("text").value = "";
             cache.resetCache();
             if (this.props.parent) {
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
@@ -145,6 +139,13 @@ export default class Writer extends Component {
             if (router.action == "write" && router.backUrl) {
                 router.navigate(router.backUrl);
             }
+            this.setState({
+                sending: false,
+                files: [],
+                link: null,
+                preview: null,
+            });
+            document.getElementById("text").value = "";
         });
         this.setState({sending: true});
     }
