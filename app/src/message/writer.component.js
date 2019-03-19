@@ -132,6 +132,12 @@ export default class Writer extends Component {
                 alert.add(lang["error_new_message"], "alert-danger");
                 return;
             }
+            this.setState({
+                files: [],
+                link: null,
+                preview: null,
+            });
+            document.getElementById("text").value = "";
             cache.resetCache();
             if (this.props.parent) {
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
@@ -140,13 +146,7 @@ export default class Writer extends Component {
                 router.navigate(router.backUrl);
             }
         });
-        this.setState({
-            files: [],
-            link: null,
-            preview: null,
-            sending: true,
-        });
-        document.getElementById("text").value = "";
+        this.setState({sending: true});
     }
 
     inputImages(event) {
