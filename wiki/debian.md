@@ -91,3 +91,21 @@ Let's add its worker to cron:
 ```
 echo "* * * * * /srv/zusam/api/bin/console zusam:cron >> /srv/zusam/api/var/log/cron.log" | sudo crontab -
 ```
+
+Now we're going to add SSL/TLS certificates using certbot.  
+Let's add the repository:
+```
+echo "deb http://deb.debian.org/debian stretch-backports main" | sudo tee /etc/apt/sources.list.d/php.list
+sudo apt update
+```
+
+Install the certbot package:
+```
+sudo apt-get install -y certbot python-certbot-nginx -t stretch-backports
+```
+
+You'll need to change the server_name in `/etc/nginx/sites-available/default` to match your domain name.  
+After that, let certbot do its magic:
+```
+sudo certbot --nginx
+```
