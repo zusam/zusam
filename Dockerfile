@@ -51,7 +51,7 @@ COPY docker/zusam/example.db /zusam/example.db
 COPY public/api/index.php /zusam/public/api/index.php
 COPY api /zusam/api
 COPY app/dist/* /zusam/public/
-COPY docker/demo.tar.gz /zusam/demo.tar.gz
+COPY docker/demo.tar.gz /zusam/docker/demo.tar.gz
 
 # handle build config
 RUN set -xe \
