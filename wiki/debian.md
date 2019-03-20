@@ -104,7 +104,7 @@ Install the certbot package:
 sudo apt-get install -y certbot python-certbot-nginx -t stretch-backports
 ```
 
-You'll need to change the server_name in `/etc/nginx/sites-available/default` to match your domain name.  
+You'll need to change the `server_name` in `/etc/nginx/sites-available/default` to match your domain name.  
 After that, let certbot do its magic:
 ```
 sudo certbot --nginx
