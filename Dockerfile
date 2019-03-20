@@ -4,12 +4,11 @@ FROM alpine:3.9
 RUN apk add --no-cache -U su-exec tini s6
 ENTRYPOINT ["/sbin/tini", "--"]
 
-# Default lang of the webapp
-ARG LANG="en"
 # Type of the instance
 ARG INSTANCE_TYPE=default
 
 # global environment variables
+ENV LANG=en
 ENV UID=791 GID=791
 ENV DOMAIN=localhost
 ENV DATABASE_NAME=data.db
@@ -59,7 +58,6 @@ RUN set -xe \
     && sed -e "s|<ENV>|prod|g" /zusam/config > /zusam/data/config \
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar unzip \
     && cd /zusam/api && php bin/composer install --prefer-dist \
-    && mv /zusam/public/${LANG}.js /zusam/public/lang.js \
     && apk del .build-deps \
     && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public
 

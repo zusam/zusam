@@ -42,5 +42,7 @@ if [ "${INSTANCE_TYPE}" = "demo" ]; then
     echo "0 * * * * /usr/local/bin/reset-demo.sh /zusam ${UID} ${GID} > /dev/stdout" | crontab -
 fi
 
+cp /zusam/public/${LANG}.js /zusam/public/lang.js
+
 chown -R "${UID}:${GID}" /etc/s6.d /var/log/ /var/tmp/ /etc/php7 /etc/nginx /run/nginx /zusam
 exec /bin/s6-svscan /etc/s6.d
