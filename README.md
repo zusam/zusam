@@ -13,6 +13,9 @@ The goal is to make a stable, extensible, lightweight and user-friendly way to s
 </span>
 <em>More screenshots <a href="readme">here</a></em>
 
+You can test Zusam right now on https://demo.zusam.org  
+The login is "zusam" and the password is "zusam". The instance is reset every hour.
+
 ## Features
 - Links preview and embedded youtube, vimeo, imgur, soundcloud, twitch, bandcamp...
 - Video and image upload
