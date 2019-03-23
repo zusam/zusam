@@ -169,7 +169,9 @@ let nlg = {
             window.removeEventListener("keydown", nlg.keyPressLeft);
             document.body.style.cssText = nlg.bodyStyle;
             document.getElementById("nlg-modal").outerHTML = "";
-            document.getElementById("nlg-origin").outerHTML = "";
+            if (document.getElementById('nlg-origin')) {
+                document.getElementById("nlg-origin").outerHTML = "";
+            }
             if (keepBackground != true) {
                 document.querySelector("#nlg-close").outerHTML = "";
                 document.getElementById("nlg-modal-bg").outerHTML = "";
