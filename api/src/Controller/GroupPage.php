@@ -50,6 +50,13 @@ class GroupPage extends Controller
         $query->setFirstResult(30 * $n);
         $messages = $query->getResult();
 
+        $query = $this->em->createQuery(
+            "SELECT COUNT(m.id) AS totalItems FROM App\Entity\Message m"
+            ." WHERE m.group = '" . $group->getId() . "'"
+            ." AND m.parent IS NULL"
+        );
+        $totalItems = $query->getResult();
+
         $page = [];
         foreach ($messages as $message) {
             $preview = $message->getPreview();
@@ -66,7 +73,7 @@ class GroupPage extends Controller
 
         $data = [
             "messages" => $page,
-            "totalItems" => count($messages),
+            "totalItems" => $totalItems[0]["totalItems"],
         ];
         $response = new JsonResponse($data, JsonResponse::HTTP_OK);
         $response->setCache(array(
