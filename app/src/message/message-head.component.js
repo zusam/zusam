@@ -8,11 +8,13 @@ export default class MessageHead extends Component {
         return (
             <div class="message-head d-flex">
                 { this.props.author && (
-                    <img
-                        class="rounded-circle material-shadow avatar"
-                        src={ this.props.author.avatar ? util.crop(this.props.author.avatar["@id"], 100, 100) : util.defaultAvatar }
-                        title={ this.props.author.name }
-                    />
+                    <div>
+                        <img
+                            class="rounded-circle material-shadow avatar"
+                            src={ this.props.author.avatar ? util.crop(this.props.author.avatar["@id"], 100, 100) : util.defaultAvatar }
+                            title={ this.props.author.name }
+                        />
+                    </div>
                 )}
                 <div class="infos">
                     { this.props.author && <span class="capitalize author">{ this.props.author.name }</span> }
