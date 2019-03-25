@@ -17,7 +17,7 @@ export default class Writer extends Component {
         this.inputVideo = this.inputVideo.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
         this.uploadNextImage = this.uploadNextImage.bind(this);
-        this.state = {files: []};
+        this.state = {files: [], writerId: +Date.now()};
     }
 
     componentWillMount() {
@@ -29,14 +29,17 @@ export default class Writer extends Component {
     }
 
     componentDidMount() {
-        (document.getElementById("title") || {}).value = this.props.title || "";
-        (document.getElementById("text") || {}).value = this.props.text || "";
+        if (document.getElementById("title")) {
+            document.getElementById("title").value = this.props.title || "";
+        }
+        if (document.getElementById("text")) {
+            document.getElementById("text").value = this.props.text || "";
+        }
         if (this.props.focus) {
             setTimeout(() => {
-                let t = document.getElementById("text");
-                if (t) {
-                    t.focus();
-                    t.style.height = t.scrollHeight + "px";
+                if (document.getElementById("text")) {
+                    document.getElementById("text").focus();
+                    document.getElementById("text").style.height = t.scrollHeight + "px";
                 }
             }, 10);
         }
@@ -144,8 +147,11 @@ export default class Writer extends Component {
                 files: [],
                 link: null,
                 preview: null,
+                writerId: +Date.now(),
             });
-            document.getElementById("text").value = "";
+            if (document.getElementById("text")) {
+                document.getElementById("text").value = "";
+            }
         });
         this.setState({sending: true});
     }
@@ -231,7 +237,12 @@ export default class Writer extends Component {
                 }
             }
         } : null;
+        // update state only if it's the good writeId
+        let writerId = this.state.writerId;
         http.sendFile(formData, file => {
+            if (writerId != this.state.writerId) {
+                return;
+            }
             let a = this.state.files;
             if (file["@type"] == "hydra:Error") {
                 a.splice(fileIndex, 1);
