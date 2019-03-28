@@ -1,2 +1,5 @@
 #!/bin/sh
-exit 0
+
+# Remove event directories that can cause fails like:
+# s6-supervise <service name>: fatal: unable to mkfifodir event: Permission denied
+rm -rf $(find /etc/s6.d -name 'event')

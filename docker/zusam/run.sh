@@ -2,6 +2,10 @@
 
 set -xe
 
+# Remove event directories that can cause fails like:
+# s6-supervise <service name>: fatal: unable to mkfifodir event: Permission denied
+rm -rf $(find /etc/s6.d -name 'event')
+
 # There are 2 possible instance types: "default" and "demo"
 # "demo" will create a new instance that resets every day.
 # "default" will assume you have a working db.
