@@ -3,7 +3,6 @@ import { me, util } from "/core";
 import Message from "./message.component.js";
 
 export default class MessageChildren extends Component {
-
     render() {
         if (
             this.props.message.parent
