@@ -132,3 +132,25 @@ textarea.form-control {
         }
     }
 }
+
+.form-check {
+    position: relative;
+    display: block;
+    padding-left: $form-check-input-gutter;
+}
+
+.form-check-input {
+    position: absolute;
+    margin-top: $form-check-input-margin-y;
+    margin-left: -$form-check-input-gutter;
+
+    // Use disabled attribute instead of :disabled pseudo-class
+    // Workaround for: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11295231
+    &[disabled] ~ .form-check-label {
+        color: $text-muted;
+    }
+}
+
+.form-check-label {
+    margin-bottom: 0; // Override default `<label>` bottom margin
+}

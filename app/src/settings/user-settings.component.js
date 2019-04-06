@@ -45,6 +45,7 @@ export default class UserSettings extends Component {
         const name = document.querySelector("#settings_form input[name='name']").value;
         const login = document.querySelector("#settings_form input[name='email']").value;
         const password = document.querySelector("#settings_form input[name='password']").value;
+        const weekly_email = document.querySelector("#settings_form input[name='weekly_email']").checked;
         let user = {};
         if (name) {
             user.name = name;
@@ -55,6 +56,7 @@ export default class UserSettings extends Component {
         if (password) {
             user.password = password;
         }
+        user.data = {"weekly_email": weekly_email};
         http.put("/api/users/" + this.state.id, user).then(res => {
             this.setState(Object.assign(this.state, res));
             alert.add(lang["settings_updated"]);
@@ -106,12 +108,24 @@ export default class UserSettings extends Component {
                                             <input
                                                 type="password"
                                                 name="password"
-                                                autocomplete="new-password"
+                                                autocomplete="off"
                                                 minlength="8"
                                                 maxlength="128"
                                                 placeholder={lang["password_input"]}
                                                 class="form-control"
                                             ></input>
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input
+                                                class="form-check-input"
+                                                type="checkbox"
+                                                name="weekly_email"
+                                                id="weekly_email"
+                                                checked={this.state.data["weekly_email"]}
+                                            ></input>
+                                            <label class="form-check-label" for="exampleRadios1">
+                                                { lang["weekly_email"] }
+                                            </label>
                                         </div>
                                         <button onClick={this.updateSettings} class="btn btn-primary">{lang["save_changes"]}</button>
                                     </form>
