@@ -30,6 +30,7 @@ sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
        -e "s|<DOMAIN>|${DOMAIN}|g" \
        -e "s|<DATABASE_URL>|${DATABASE_URL}|g" \
        -e "s|<ENV>|${ENV}|g" \
+       -e "s|<LANG>|${LANG}|g" \
        /zusam/config
 
 if ! [ -f /zusam/data/config ]; then
