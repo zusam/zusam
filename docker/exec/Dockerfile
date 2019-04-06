@@ -10,7 +10,7 @@ ENV GROUP=exec
 VOLUME /data
 WORKDIR /data
 
-RUN set -xe && apk add --no-cache php7 git zip unzip curl wget ca-certificates openssl nodejs-npm gnupg sudo acl sqlite yarn
+RUN set -xe && apk add --no-cache php7 git zip unzip curl wget ca-certificates openssl nodejs-npm gnupg sudo acl sqlite yarn bash
 RUN set -xe && apk add --no-cache \
     php7-apcu \
     php7-common \
