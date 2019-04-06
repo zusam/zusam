@@ -31,7 +31,7 @@ class Mailer
 			$lang = $user->getData()["lang"];
 		}
 
-        $email = (new \Swift_Message("Zusam Weekly Email")
+        $email = (new \Swift_Message("Zusam Weekly Email"))
             ->setFrom("noreply@".$this->domain)
             ->setTo($user->getLogin())
             ->setBody(

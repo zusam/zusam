@@ -32,6 +32,12 @@ class CronCommand extends ContainerAwareCommand
             $this->runCommand("zusam:clean-old-cache");
         }
 
+        // executed every week
+        $weeklyCron = CronExpression::factory("@weekly");
+        if ($weeklyCron->isDue()) {
+            $this->runCommand("zusam:weekly-emails");
+        }
+
         // executed every hour
         // $hourlyCron = CronExpression::factory("@hourly");
         // if ($hourlyCron->isDue()) {
