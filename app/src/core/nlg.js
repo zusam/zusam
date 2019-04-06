@@ -110,8 +110,10 @@ let nlg = {
         let mediaIsLoadedFn = () => {
             document.querySelector("#nlg-modal-bg .spinner").outerHTML = "";
 
-            let ratio = media.width / media.height;
-            media.width = Math.min(document.body.clientWidth, media.width);
+            let w = media.tagName == "VIDEO" ? media.videoWidth : media.width;
+            let h = media.tagName == "VIDEO" ? media.videoHeight : media.height;
+            let ratio = w / h;
+            media.width = Math.min(document.body.clientWidth, w);
             media.height = Math.min(document.body.clientHeight, media.width / ratio);
             media.width = media.height * ratio;
 
@@ -154,7 +156,7 @@ let nlg = {
             setTimeout(nlg.center, 1);
         };
 		media.addEventListener("load", mediaIsLoadedFn);
-		media.addEventListener("canplay", mediaIsLoadedFn);
+		media.addEventListener("loadeddata", mediaIsLoadedFn);
         modal.addEventListener("click", e => {
             if (e.currentTarget != e.target) { return; }
             nlg.hide();
