@@ -33,7 +33,7 @@ Requirements:
 - Ffmpeg 3+
 - Yarn or NPM (only to compile the webapp)
 
-You can follow the installation guide for [Debian stretch](wiki/debian.md) or use [Docker](wiki/docker.md).
+You can follow the installation guide for [Debian stretch](documentation/debian.md) or use [Docker](documentation/docker.md).
 
 ## Webapp compatibility
 The webapp targets Firefox 60+, Chrome 67+, Safari 11+.  
