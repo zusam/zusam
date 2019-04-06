@@ -36,6 +36,7 @@ services:
             - '@mailer'
             - '@twig'
             - '%env(resolve:DOMAIN)%'
+            - '%env(resolve:LANG)%'
 
     App\Service\Namer:
         public: true
