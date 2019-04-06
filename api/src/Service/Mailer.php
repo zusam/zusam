@@ -9,25 +9,34 @@ class Mailer
     private $swift;
     private $twig;
     private $domain;
+    private $lang;
 
     public function __construct(
         \Swift_Mailer $swift,
         \Twig_Environment $twig,
-        $domain
+        $domain,
+		$lang
     ) {
         $this->swift = $swift;
         $this->twig = $twig;
         $this->domain = $domain;
+        $this->lang = $lang;
     }
 
     public function sendPasswordReset(User $user)
     {
-        $message = (new \Swift_Message("Zusam Password Reset"))
+		if (empty($user->getData()["lang"])) {
+			$lang = $this->lang;
+		} else {
+			$lang = $user->getData()["lang"];
+		}	
+
+        $email = (new \Swift_Message("Zusam Password Reset"))
             ->setFrom("noreply@".$this->domain)
             ->setTo($user->getLogin())
             ->setBody(
                 $this->twig->render(
-                    "password-reset-mail.txt.twig",
+                    "password-reset-mail.$lang.txt.twig",
                     [
                         "name" => ucfirst($user->getName()),
                         "url" => "https://"
@@ -43,7 +52,7 @@ class Mailer
             )
         ;
 
-        if (!$this->swift->send($message, $failures)) {
+        if (!$this->swift->send($email, $failures)) {
             return $failures;
         }
         return true;
