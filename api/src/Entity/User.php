@@ -112,6 +112,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     * @Groups({"read_user", "write_user"})
      * @Assert\NotBlank()
      */
     private $data;

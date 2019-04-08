@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { alert, cache, http, imageService, util } from "/core";
+import { me, alert, cache, http, imageService, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class UserSettings extends Component {
@@ -45,7 +45,7 @@ export default class UserSettings extends Component {
         const name = document.querySelector("#settings_form input[name='name']").value;
         const login = document.querySelector("#settings_form input[name='email']").value;
         const password = document.querySelector("#settings_form input[name='password']").value;
-        const weekly_email = document.querySelector("#settings_form input[name='weekly_email']").checked;
+        const notification_email = document.querySelector("#settings_form select[name='notification_email']").value;
         let user = {};
         if (name) {
             user.name = name;
@@ -56,7 +56,7 @@ export default class UserSettings extends Component {
         if (password) {
             user.password = password;
         }
-        user.data = {"weekly_email": weekly_email};
+        user.data = {"notification_email": notification_email};
         http.put("/api/users/" + this.state.id, user).then(res => {
             this.setState(Object.assign(this.state, res));
             alert.add(lang["settings_updated"]);
@@ -115,17 +115,25 @@ export default class UserSettings extends Component {
                                                 class="form-control"
                                             ></input>
                                         </div>
-                                        <div class="form-group form-check">
-                                            <input
-                                                class="form-check-input"
-                                                type="checkbox"
-                                                name="weekly_email"
-                                                id="weekly_email"
-                                                checked={this.state.data["weekly_email"]}
-                                            ></input>
-                                            <label class="form-check-label" for="exampleRadios1">
-                                                { lang["weekly_email"] }
-                                            </label>
+                                        <div class="form-group">
+                                            <label for="notification_email">{ lang["notification_email"] }:</label>
+                                            <select
+                                                name="notification_email"
+                                                class="form-control"
+                                                selectedIndex={
+                                                    [
+                                                        "none",
+                                                        "daily",
+                                                        "weekly",
+                                                        "monthly"
+                                                    ].indexOf(this.state.data["notification_email"])
+                                                }
+                                            >
+                                                <option value="none">None</option>
+                                                <option value="daily">Daily</option>
+                                                <option value="weekly">Weekly</option>
+                                                <option value="monthly">Monthly</option>
+                                            </select>
                                         </div>
                                         <button onClick={this.updateSettings} class="btn btn-primary">{lang["save_changes"]}</button>
                                     </form>

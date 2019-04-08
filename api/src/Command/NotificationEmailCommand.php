@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class WeeklyEmailCommand extends ContainerAwareCommand
+class NotificationEmailCommand extends ContainerAwareCommand
 {
     private $em;
     private $mailer;
@@ -25,22 +25,27 @@ class WeeklyEmailCommand extends ContainerAwareCommand
 
     protected function configure()
     {
-        $this->setName("zusam:weekly-emails")
-             ->setDescription("Send weekly emails.")
-             ->setHelp("Send a weekly email to the users that asked for it.");
+        $this->setName("zusam:email-notifications")
+             ->setDescription("Send notification emails.")
+             ->setHelp("Send a notification email to the users that asked for it.");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $users = $this->em->getRepository(User::class)->findAll();
         foreach ($users as $user) {
-            if (!$user->getData()["weekly_email"]) {
+            $notif = $user->getData()["notification_email"];
+            if (
+                empty($notif) || $notif == "none"
+                || $notif == "monthly" && date("j") != 1
+                || $notif == "daily" && date("N") != 1
+            ) {
                 continue;
             }
             foreach ($user->getNews() as $new) {
                 $message = $this->em->getRepository(Message::class)->findOneById($new);
                 if (!empty($message)) {
-                    $this->mailer->sendWeeklyEmail($user);
+                    $this->mailer->sendNotificationEmail($user);
                     break;
                 }
             }

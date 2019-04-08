@@ -23,7 +23,7 @@ class Mailer
         $this->lang = $lang;
     }
 
-    public function sendWeeklyEmail(User $user)
+    public function sendNotificationEmail(User $user)
     {
 		if (empty($user->getData()["lang"])) {
 			$lang = $this->lang;
@@ -31,7 +31,7 @@ class Mailer
 			$lang = $user->getData()["lang"];
 		}
 
-        $email = (new \Swift_Message("Zusam Weekly Email"))
+        $email = (new \Swift_Message("Zusam Notification Email"))
             ->setFrom("noreply@".$this->domain)
             ->setTo($user->getLogin())
             ->setBody(
