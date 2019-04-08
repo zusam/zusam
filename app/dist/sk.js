@@ -39,7 +39,7 @@ window.lang = {
     "passwords_dont_match": "Heslá sa nezhodujú",
     "invitation_link": "Pozývací odkaz",
     "reset_invitation_link": "Reset invitation link",
-    "invitation_welcome": "Vitajte v Zusam ! Zaregistrujte sa pred pipojením sa ku skupine.",
+    "invitation_welcome": "Vitajte v Zusam ! Zaregistrujte sa pred pripojením sa ku skupine.",
     "signup": "Prihlásiť",
     "create_a_group": "Vytvoriť skupinu",
     "create_the_group": "Vytvoriť skupinu",
