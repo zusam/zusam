@@ -14,7 +14,7 @@ window.lang = {
     "upload_video": "Pridať videá",
     "upload_music": "Pridať hudbu",
     "add_date": "Pridať dátum",
-    "logout": "Odlhásiť",
+    "logout": "Odhlásiť",
     "settings": "Nastavenia",
     "name": "Meno",
     "name_input": "Zvoľ si nejaké meno",
