@@ -54,4 +54,5 @@ window.lang = {
     "empty_message": "Le message est vide !",
     "cancel": "Annuler",
     "just_now": "A l'instant",
+    "notification_email": "Mail de notification"
 }
