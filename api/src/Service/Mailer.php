@@ -36,7 +36,7 @@ class Mailer
             ->setTo($user->getLogin())
             ->setBody(
                 $this->twig->render(
-                    "weekly-email.$lang.txt.twig",
+                    "notification-email.$lang.txt.twig",
                     [
                         "name" => ucfirst($user->getName()),
                         "url" => "https://".$this->domain,
