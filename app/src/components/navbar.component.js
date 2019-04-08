@@ -29,7 +29,8 @@ export default class Navbar extends Component {
             return router.entity["name"];
         }
         if (me.me.groups) {
-            return me.me.groups.find(g => g["@id"] == router.entity.group)["name"];
+            let group = me.me.groups.find(g => g["@id"] == router.entity.group);
+            return group ? group["name"]: "";
         }
         return "";
     }
