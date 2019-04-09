@@ -30,7 +30,7 @@ class CronCommand extends ContainerAwareCommand
         if ($dailyCron->isDue()) {
             $this->runCommand("zusam:clean-files");
             $this->runCommand("zusam:clean-old-cache");
-            $this->runCommand("zusam:notification-email");
+            $this->runCommand("zusam:notification-emails");
         }
 
         // executed every week

@@ -25,7 +25,7 @@ class NotificationEmailCommand extends ContainerAwareCommand
 
     protected function configure()
     {
-        $this->setName("zusam:email-notifications")
+        $this->setName("zusam:notification-emails")
              ->setDescription("Send notification emails.")
              ->setHelp("Send a notification email to the users that asked for it.");
     }
