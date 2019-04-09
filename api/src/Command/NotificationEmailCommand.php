@@ -34,9 +34,10 @@ class NotificationEmailCommand extends ContainerAwareCommand
     {
         $users = $this->em->getRepository(User::class)->findAll();
         foreach ($users as $user) {
-            $notif = $user->getData()["notification_email"];
+            $data = $user->getData();
+            $notif = isset($data["notification_email"]) ? $data["notification_email"] : "";
             if (
-                empty($notif) || $notif == "none"
+                $notif == "none"
                 || $notif == "monthly" && date("j") != 1
                 || $notif == "daily" && date("N") != 1
             ) {
@@ -46,6 +47,9 @@ class NotificationEmailCommand extends ContainerAwareCommand
                 $message = $this->em->getRepository(Message::class)->findOneById($new);
                 if (!empty($message)) {
                     $this->mailer->sendNotificationEmail($user);
+                    $output->writeln([
+                        "<info>Notification email sent to ".$user->getId().".</info>",
+                    ]);
                     break;
                 }
             }
