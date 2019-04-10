@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import { cache, router, me } from "/core";
-import { Login, Signup, ResetPassword } from "/outside";
+import { Login, Signup, ResetPassword, StopEmailNotifications } from "/outside";
 import Navbar from "./components/navbar.component.js";
 import MainContent from "./components/main-content.component.js";
 
@@ -64,6 +64,9 @@ class App extends Component {
         switch (this.state.route) {
             case "signup":
                 return <Signup/>;
+                break;
+            case "stop-email-notifications":
+                return <StopEmailNotifications/>;
                 break;
             case "password-reset":
                 return <ResetPassword/>;

@@ -32,6 +32,11 @@ class Mailer
 			$lang = $user->getData()["lang"];
 		}
 
+        $unsubscribe_token = Token::create([
+            "iat" => time() + 86400*60,
+            "sub" => Token::SUB_STOP_EMAIL_NOTIFICATIONS,
+        ], $user->getApiKey());
+
         $email = (new \Swift_Message("Zusam Notification Email"))
             ->setFrom("noreply@".$this->domain)
             ->setTo($user->getLogin())
@@ -39,9 +44,10 @@ class Mailer
                 $this->twig->render(
                     "notification-email.$lang.txt.twig",
                     [
-                        "name" => ucfirst($user->getName()),
                         "domain" => $this->domain,
                         "messages" => $news,
+                        "user" => $user,
+                        "unsubscribe_token" => $unsubscribe_token,
                     ]
                 ),
                 "text/plain"

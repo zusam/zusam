@@ -58,6 +58,7 @@ const router = {
 
         switch (router.route) {
             case "password-reset":
+            case "stop-notification-emails":
             case "signup":
             case "login":
                 // we keep queryParams

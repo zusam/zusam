@@ -45,7 +45,7 @@ export default class UserSettings extends Component {
         const name = document.querySelector("#settings_form input[name='name']").value;
         const login = document.querySelector("#settings_form input[name='email']").value;
         const password = document.querySelector("#settings_form input[name='password']").value;
-        const notification_email = document.querySelector("#settings_form select[name='notification_email']").value;
+        const notification_emails = document.querySelector("#settings_form select[name='notification_emails']").value;
         let user = {};
         if (name) {
             user.name = name;
@@ -56,7 +56,7 @@ export default class UserSettings extends Component {
         if (password) {
             user.password = password;
         }
-        user.data = {"notification_email": notification_email};
+        user.data = {"notification_emails": notification_emails};
         http.put("/api/users/" + this.state.id, user).then(res => {
             this.setState(Object.assign(this.state, res));
             alert.add(lang["settings_updated"]);
@@ -116,9 +116,9 @@ export default class UserSettings extends Component {
                                             ></input>
                                         </div>
                                         <div class="form-group">
-                                            <label for="notification_email">{ lang["notification_email"] }:</label>
+                                            <label for="notification_emails">{ lang["notification_emails"] }:</label>
                                             <select
-                                                name="notification_email"
+                                                name="notification_emails"
                                                 class="form-control"
                                                 selectedIndex={
                                                     [
@@ -127,7 +127,7 @@ export default class UserSettings extends Component {
                                                         "daily",
                                                         "weekly",
                                                         "monthly"
-                                                    ].indexOf(this.state.data["notification_email"])
+                                                    ].indexOf(this.state.data["notification_emails"])
                                                 }
                                             >
                                                 <option value="none">{ lang["none"] }</option>
