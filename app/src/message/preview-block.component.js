@@ -40,16 +40,30 @@ export default class PreviewBlock extends Component {
         }
         switch (provider) {
             case "youtube.com":
-                if (this.props.data["type"] == "video") {
-                    return <YoutubeEmbed preview={this.props.preview} url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0]}/>;
+                if (this.props.data["type"] == "video" && this.props.data["code"]) {
+                    return (
+                        <YoutubeEmbed
+                            preview={this.props.preview}
+                            url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0]}
+                        />
+                    );
                 }
                 break;
             case "soundcloud.com":
-                return <SoundcloudEmbed preview={this.props.preview} url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] + "&auto_play=true"}/>;
+                if (this.props.data["code"]) {
+                    return (
+                        <SoundcloudEmbed
+                            preview={this.props.preview}
+                            url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] + "&auto_play=true"}
+                        />
+                    );
+                }
             case "twitch.tv":
                 return <TwitchEmbed preview={this.props.preview} url={this.props.data["url"]}/>;
             case "bandcamp.com":
-                return <BandCampEmbed url={this.props.data["code"].match(/https:\/\/.*album=\d+/)[0]}/>
+                if (this.props.data["code"]) {
+                    return <BandCampEmbed url={this.props.data["code"].match(/https:\/\/.*album=\d+/)[0]}/>;
+                }
             case "imgur.com":
                 // skip default embed code if it's an imgur image
                 if (this.props.data["type"] == "photo") {
@@ -59,7 +73,12 @@ export default class PreviewBlock extends Component {
             case "dailymotion.com":
                 // default embed code
                 if (this.props.data["code"]) {
-                    return <div class="embed-container" ref={e => this.embedContainer = e} dangerouslySetInnerHTML={{__html: this.props.data["code"]}}></div>;
+                    return (
+                        <div class="embed-container"
+                            ref={e => this.embedContainer = e}
+                            dangerouslySetInnerHTML={{__html: this.props.data["code"]}}
+                        ></div>
+                    );
                 }
             default:
         }

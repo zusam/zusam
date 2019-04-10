@@ -1,7 +1,6 @@
 {
     "name": "Zusam",
-    "version": "0.1-beta.6",
-    "license": "GPL-3.0-or-later",
+    "license": "AGPL-3.0-or-later",
     "scripts": {
         "build": "parcel build --no-source-maps src/index.html",
         "clean": "rm -rf dist/*",

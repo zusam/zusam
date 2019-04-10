@@ -28,8 +28,9 @@ class StopNotificationEmails extends Controller
         if (empty($user)) {
             return new JsonResponse(["message" => "Invalid user"], JsonResponse::HTTP_BAD_REQUEST);
         }
-        
-        if (empty(Token::decode($token, $user->getApiKey())) {
+
+        $token_data = Token::decode($token, $user->getApiKey());
+        if (empty($token_data) || $token_data["sub"] != Token::SUB_STOP_EMAIL_NOTIFICATIONS) {
             return new JsonResponse(["message" => "Token is invalid"], JsonResponse::HTTP_BAD_REQUEST);
         }
 
