@@ -123,16 +123,18 @@ export default class UserSettings extends Component {
                                                 selectedIndex={
                                                     [
                                                         "none",
+                                                        "hourly",
                                                         "daily",
                                                         "weekly",
                                                         "monthly"
                                                     ].indexOf(this.state.data["notification_email"])
                                                 }
                                             >
-                                                <option value="none">None</option>
-                                                <option value="daily">Daily</option>
-                                                <option value="weekly">Weekly</option>
-                                                <option value="monthly">Monthly</option>
+                                                <option value="none">{ lang["none"] }</option>
+                                                <option value="hourly">{ lang["hourly"] }</option>
+                                                <option value="daily">{ lang["daily"] }</option>
+                                                <option value="weekly">{ lang["weekly"] }</option>
+                                                <option value="monthly">{ lang["monthly"] }</option>
                                             </select>
                                         </div>
                                         <button onClick={this.updateSettings} class="btn btn-primary">{lang["save_changes"]}</button>

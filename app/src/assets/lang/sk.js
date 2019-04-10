@@ -54,5 +54,10 @@ window.lang = {
     "empty_message": "Prázdna správa nemôže byť odoslaná",
     "cancel": "Zrušiť",
     "just_now": "Práve teraz",
-    "notification_email": "Notifikačný email"
+    "notification_email": "Notifikačný email",
+    "none": "None",
+    "hourly": "hodinový",
+    "daily": "Denne",
+    "weekly": "Týždenne",
+    "monthly": "Mesačne"
 };

@@ -54,5 +54,10 @@ window.lang = {
     "empty_message": "No hay mensaje!",
     "cancel": "Cancelar",
     "just_now": "Ahora",
-    "notification_email": "Correo de notificación"
+    "notification_email": "Correo de notificación",
+    "none": "Ninguno",
+    "hourly": "Cada hora",
+    "daily": "Diario",
+    "weekly": "Semanal",
+    "monthly": "Mensual"
 }

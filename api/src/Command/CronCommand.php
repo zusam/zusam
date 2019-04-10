@@ -30,7 +30,6 @@ class CronCommand extends ContainerAwareCommand
         if ($dailyCron->isDue()) {
             $this->runCommand("zusam:clean-files");
             $this->runCommand("zusam:clean-old-cache");
-            $this->runCommand("zusam:notification-emails");
         }
 
         // executed every week
@@ -39,9 +38,10 @@ class CronCommand extends ContainerAwareCommand
         // }
 
         // executed every hour
-        // $hourlyCron = CronExpression::factory("@hourly");
-        // if ($hourlyCron->isDue()) {
-        // }
+        $hourlyCron = CronExpression::factory("@hourly");
+        if ($hourlyCron->isDue()) {
+            $this->runCommand("zusam:notification-emails");
+        }
 
         // executed every minute
         $this->runCommand("zusam:convert-video");

@@ -37,15 +37,39 @@ class NotificationEmailCommand extends ContainerAwareCommand
             $data = $user->getData();
             $notif = isset($data["notification_email"]) ? $data["notification_email"] : "";
             if (
-                $notif == "none"
-                || $notif == "monthly" && date("j") != 1
-                || $notif == "daily" && date("N") != 1
+                empty($notif) || $notif == "none"
+                || ($notif == "monthly" && date("j-G") != "1-1")
+                || ($notif == "weekly" && date("N-G") != "1-1")
+                || ($notif == "daily" && date("G") != "1")
             ) {
                 continue;
             }
+
+            // fix a max_age for messages to be notified
+            // avoids sending multiple mails for the same message
+            switch ($notif) {
+                case "hourly": 
+                    $max_age = 60*60;
+                    break;
+                case "daily":
+                    $max_age = 60*60*24;
+                    break;
+                case "weekly":
+                    $max_age = 60*60*24*7;
+                    break;
+                case "monthly":
+                    $max_age = 60*60*24*7*30;
+                    break;
+                default:
+                    $max_age = 0;
+            }
+
             foreach ($user->getNews() as $new) {
                 $message = $this->em->getRepository(Message::class)->findOneById($new);
-                if (!empty($message)) {
+                if (
+                    !empty($message)
+                    && (time() - $message->getLastActivityDate()) < $max_age
+                ) {
                     $this->mailer->sendNotificationEmail($user);
                     $output->writeln([
                         "<info>Notification email sent to ".$user->getId().".</info>",
