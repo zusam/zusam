@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\User;
+use App\Service\Token;
 
 class Mailer
 {
@@ -60,6 +61,12 @@ class Mailer
 			$lang = $user->getData()["lang"];
 		}	
 
+        // using the user's password hash as seed allows this token to be one-time usage
+        $token = Token::create([
+            "iat" => time() + 86400,
+            "sub" => Token::SUB_RESET_PASSWORD,
+        ], $user->getPassword());
+
         $email = (new \Swift_Message("Zusam Password Reset"))
             ->setFrom("noreply@".$this->domain)
             ->setTo($user->getLogin())
@@ -71,10 +78,8 @@ class Mailer
                         "url" => "https://"
                             .$this->domain
                             ."/password-reset"
-                            ."?mail="
-                            .urlencode($user->getLogin())
-                            ."&key="
-                            .$user->createResetPasswordKey(),
+                            ."?mail=".urlencode($user->getLogin())
+                            ."&key=".$token
                     ]
                 ),
                 "text/plain"

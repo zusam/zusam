@@ -324,28 +324,4 @@ class User implements UserInterface, \Serializable
             $this->password,
         ) = unserialize($serialized, ['allowed_classes' => false]);
     }
-
-    // used to create reset password links
-    public function createResetPasswordKey(): string
-    {
-        /*
-         * The idea to create the key is to hash the apiKey salted with a daily timestamp
-         * This way we don't have to store it and there's no way to retrieve the apiKey from it
-         */
-        return hash("sha512", $this->getApiKey().(strval(floor(time()/86400))));
-    }
-
-    public function checkResetPasswordKey($str): bool
-    {
-        /*
-         * A reset password key is usable for 1 day. So we need to check 2 values : today and yesterday
-         */
-        if (
-            $str === hash("sha512", $this->getApiKey().(strval(floor(time()/86400))))
-            || $str === hash("sha512", $this->getApiKey().(strval(floor(time()/86400) - 1)))
-        ) {
-            return true;
-        }
-        return false;
-    }
 }

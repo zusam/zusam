@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Group;
 use App\Entity\User;
 use App\Service\Mailer;
+use App\Service\Token;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -137,7 +138,7 @@ class Security extends Controller
         if (empty($password)) {
             return new JsonResponse(["message" => "Password cannot be blank"], JsonResponse::HTTP_BAD_REQUEST);
         }
-        if (!$user->checkResetPasswordKey($key)) {
+        if (empty(Token::decode($key, $user->getPassword()))) {
             return new JsonResponse(["message" => "Key is invalid"], JsonResponse::HTTP_BAD_REQUEST);
         }
         $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
