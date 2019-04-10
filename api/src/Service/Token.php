@@ -17,7 +17,7 @@ class Token
     public static function decode(string $jwt, string $key): array
     {
         try {
-            (array) return JWT::decode($jwt, $key, ["HS256"]);
+            return (array) JWT::decode($jwt, $key, ["HS256"]);
         } catch (\Exception $e) {
             return [];
         }
