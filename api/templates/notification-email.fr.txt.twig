@@ -1,6 +1,9 @@
 Bonjour {{ name }},
+
 Il y a du nouveau sur Zusam !
-Vous pouvez voir ces nouveaux messages en vous rendant sur le lien suivant :
-{{ url }}
+Vous pouvez voir ces nouveaux messages en vous rendant sur les liens suivants :
+{% for message in messages %}
+- https://{{ domain }}/messages/{{ message.id }}
+{% endfor %}
 
 Si vous ne voulez plus recevoir ces emails vous pouvez les désactiver dans vos paramètres.

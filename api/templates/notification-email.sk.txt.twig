@@ -1,8 +1,9 @@
 Ahoj {{ name }},
 
-na Zusam-e máš nové príspevky!
-
-Môžeš si ich pozriet na nasledovnom odkaze:
-{{ url }}
+Na Zusam-e máš nové príspevky!
+Môžeš si ich pozriet na nasledovnom odkazoch:
+{% for message in messages %}
+- https://{{ domain }}/messages/{{ message.id }}
+{% endfor %}
 
 Ak nechceš dostávať tento email, môžeš to vypnúť v tvojich nastaveniach.

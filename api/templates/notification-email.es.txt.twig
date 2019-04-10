@@ -1,6 +1,9 @@
 Hola {{ name }},
+
 ¡Hay algo nuevo en Zusam!
-Puedes ver estos nuevos mensajes en el siguiente enlace:
-{{ url }}
+Puedes ver estos nuevos mensajes en los siguientes enlaces:
+{% for message in messages %}
+- https://{{ domain }}/messages/{{ message.id }}
+{% endfor %}
 
 Si ya no desea recibir este correo, puede desactivarlo en sus ajustes.

@@ -24,7 +24,7 @@ class Mailer
         $this->lang = $lang;
     }
 
-    public function sendNotificationEmail(User $user)
+    public function sendNotificationEmail(User $user, array $news)
     {
 		if (empty($user->getData()["lang"])) {
 			$lang = $this->lang;
@@ -40,7 +40,8 @@ class Mailer
                     "notification-email.$lang.txt.twig",
                     [
                         "name" => ucfirst($user->getName()),
-                        "url" => "https://".$this->domain,
+                        "domain" => $this->domain,
+                        "messages" => $news,
                     ]
                 ),
                 "text/plain"

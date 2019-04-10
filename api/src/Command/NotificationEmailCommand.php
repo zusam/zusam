@@ -48,7 +48,7 @@ class NotificationEmailCommand extends ContainerAwareCommand
             // fix a max_age for messages to be notified
             // avoids sending multiple mails for the same message
             switch ($notif) {
-                case "hourly": 
+                case "hourly":
                     $max_age = 60*60;
                     break;
                 case "daily":
@@ -66,16 +66,21 @@ class NotificationEmailCommand extends ContainerAwareCommand
 
             foreach ($user->getNews() as $new) {
                 $message = $this->em->getRepository(Message::class)->findOneById($new);
+                $news = [];
                 if (
                     !empty($message)
                     && (time() - $message->getLastActivityDate()) < $max_age
                 ) {
-                    $this->mailer->sendNotificationEmail($user);
-                    $output->writeln([
-                        "<info>Notification email sent to ".$user->getId().".</info>",
-                    ]);
-                    break;
+                    $news[] = $message;
                 }
+            }
+
+            if (count($news) > 0) {
+                $this->mailer->sendNotificationEmail($user, $news);
+                $output->writeln([
+                    "<info>Notification email sent to ".$user->getId().".</info>",
+                ]);
+                break;
             }
         }
     }
