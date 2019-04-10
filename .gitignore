@@ -1,4 +1,5 @@
 # GLOBAL
+*.orig
 
 # API
 /api/var/
