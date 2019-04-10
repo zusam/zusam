@@ -54,10 +54,11 @@ window.lang = {
     "empty_message": "Le message est vide !",
     "cancel": "Annuler",
     "just_now": "A l'instant",
-    "notification_email": "Mail de notification",
+    "notification_emails": "Mail de notification",
     "none": "Aucun",
     "hourly": "Une fois par heure",
     "daily": "Journalier",
     "weekly": "Hebdomadaire",
-    "monthly": "Mensuel"
+    "monthly": "Mensuel",
+    "email_notifications_stopped": "Notifications par email désactivées !"
 }
