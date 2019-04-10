@@ -138,7 +138,8 @@ class Security extends Controller
         if (empty($password)) {
             return new JsonResponse(["message" => "Password cannot be blank"], JsonResponse::HTTP_BAD_REQUEST);
         }
-        if (empty(Token::decode($key, $user->getPassword()))) {
+        $token_data = Token::decode($key, $user->getPassword());
+        if (empty($token_data) || $token_data["sub"] != Token::SUB_RESET_PASSWORD) {
             return new JsonResponse(["message" => "Key is invalid"], JsonResponse::HTTP_BAD_REQUEST);
         }
         $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
