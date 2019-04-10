@@ -55,8 +55,8 @@ window.lang = {
     "cancel": "Zrušiť",
     "just_now": "Práve teraz",
     "notification_email": "Notifikačný email",
-    "none": "None",
-    "hourly": "hodinový",
+    "none": "Žiadne",
+    "hourly": "Každú hodinu",
     "daily": "Denne",
     "weekly": "Týždenne",
     "monthly": "Mesačne"
