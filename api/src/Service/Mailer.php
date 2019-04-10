@@ -33,7 +33,7 @@ class Mailer
 		}
 
         $unsubscribe_token = Token::encode([
-            "iat" => time() + 86400*60,
+            "exp" => time() + 86400*60,
             "sub" => Token::SUB_STOP_EMAIL_NOTIFICATIONS,
         ], $user->getApiKey());
 
@@ -70,7 +70,7 @@ class Mailer
 
         // using the user's password hash as seed allows this token to be one-time usage
         $token = Token::encode([
-            "iat" => time() + 86400,
+            "exp" => time() + 86400,
             "sub" => Token::SUB_RESET_PASSWORD,
         ], $user->getPassword());
 
