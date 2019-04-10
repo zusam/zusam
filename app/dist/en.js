@@ -54,5 +54,10 @@ window.lang = {
     "empty_message": "The message is empty and cannot be sent !",
     "cancel": "Cancel",
     "just_now": "Just now",
-    "notification_email": "Email notifications"
+    "notification_email": "Email notifications",
+    "none": "None",
+    "hourly": "Hourly",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly"
 };
