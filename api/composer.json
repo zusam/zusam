@@ -8,6 +8,7 @@
         "api-platform/api-pack": "^1.0",
         "dragonmantank/cron-expression": "^2.2",
         "embed/embed": "^3.3",
+        "firebase/php-jwt": "^5.0",
         "guzzlehttp/guzzle": "^6.3",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/console": "^4.0",

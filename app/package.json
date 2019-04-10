@@ -17,9 +17,9 @@
         "preact": "~8"
     },
     "devDependencies": {
-        "babel-core": "^6.26.3",
-        "babel-plugin-transform-react-jsx": "^6.24.1",
-        "babel-preset-env": "^1.7.0",
-        "sass": "^1.16.1"
+        "babel-core": "~6.26",
+        "babel-plugin-transform-react-jsx": "~6.24",
+        "babel-preset-env": "~1.7",
+        "sass": "~1.16"
     }
 }
