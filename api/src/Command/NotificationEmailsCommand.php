@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class NotificationEmailCommand extends ContainerAwareCommand
+class NotificationEmailsCommand extends ContainerAwareCommand
 {
     private $em;
     private $mailer;
@@ -35,7 +35,7 @@ class NotificationEmailCommand extends ContainerAwareCommand
         $users = $this->em->getRepository(User::class)->findAll();
         foreach ($users as $user) {
             $data = $user->getData();
-            $notif = isset($data["notification_email"]) ? $data["notification_email"] : "";
+            $notif = isset($data["notification_emails"]) ? $data["notification_emails"] : "";
             if (
                 empty($notif) || $notif == "none"
                 || ($notif == "monthly" && date("j-G") != "1-1")
