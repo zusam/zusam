@@ -108,8 +108,10 @@ let nlg = {
         let modal = document.createElement("div");
         modal.id = "nlg-modal";
         let mediaIsLoadedFn = () => {
-            document.querySelector("#nlg-modal-bg .spinner").outerHTML = "";
-
+            let spinner = document.querySelector("#nlg-modal-bg .spinner")
+            if (spinner) {
+                spinner.outerHTML = "";
+            }
             let w = media.tagName == "VIDEO" ? media.videoWidth : media.width;
             let h = media.tagName == "VIDEO" ? media.videoHeight : media.height;
             let ratio = w / h;
@@ -156,7 +158,7 @@ let nlg = {
             setTimeout(nlg.center, 1);
         };
 		media.addEventListener("load", mediaIsLoadedFn);
-		media.addEventListener("loadeddata", mediaIsLoadedFn);
+        media.addEventListener("loadeddata", mediaIsLoadedFn);
         modal.addEventListener("click", e => {
             if (e.currentTarget != e.target) { return; }
             nlg.hide();
@@ -164,6 +166,9 @@ let nlg = {
         modal.appendChild(media);
         document.body.appendChild(modal);
         media.src = url;
+        if (media.tagName == "VIDEO") {
+            media.play();
+        }
     },
     hide: (keepBackground = false) => {
         if (document.getElementById("nlg-modal")) {
