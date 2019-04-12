@@ -19,7 +19,7 @@ class StopNotificationEmails extends Controller
     }
 
     /**
-     * @Route("/stop-email-notifications/{user_id}/{token}", name="stop-email-notifications")
+     * @Route("/stop-notification-emails/{user_id}/{token}", name="stop-notification-emails")
      */
     public function login(string $user_id, string $token)
     {

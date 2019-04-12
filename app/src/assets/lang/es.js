@@ -60,5 +60,5 @@ window.lang = {
     "daily": "Diario",
     "weekly": "Semanal",
     "monthly": "Mensual",
-    "email_notifications_stopped": "Notificaciones de correo electrónico detenidas!"
+    "notification_emails_stopped": "Notificaciones de correo electrónico detenidas!"
 }

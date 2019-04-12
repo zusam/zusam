@@ -60,5 +60,5 @@ window.lang = {
     "daily": "Denne",
     "weekly": "Týždenne",
     "monthly": "Mesačne",
-    "email_notifications_stopped": "E-mailové upozornenia sa zastavili!"
+    "notification_emails_stopped": "E-mailové upozornenia sa zastavili!"
 };

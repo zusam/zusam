@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import { cache, router, me } from "/core";
-import { Login, Signup, ResetPassword, StopEmailNotifications } from "/outside";
+import { Login, Signup, ResetPassword, StopNotificationEmails } from "/outside";
 import Navbar from "./components/navbar.component.js";
 import MainContent from "./components/main-content.component.js";
 
@@ -65,8 +65,8 @@ class App extends Component {
             case "signup":
                 return <Signup/>;
                 break;
-            case "stop-email-notifications":
-                return <StopEmailNotifications/>;
+            case "stop-notification-emails":
+                return <StopNotificationEmails/>;
                 break;
             case "password-reset":
                 return <ResetPassword/>;
