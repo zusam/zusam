@@ -60,5 +60,6 @@ window.lang = {
     "daily": "Daily",
     "weekly": "Weekly",
     "monthly": "Monthly",
-    "email_notifications_stopped": "Email notifications stopped !"
+    "notification_emails_stopped": "Email notifications stopped !",
+	"group_share_choice": "To which group do you want to send this message ?"
 };

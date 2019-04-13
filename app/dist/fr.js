@@ -60,5 +60,6 @@ window.lang = {
     "daily": "Journalier",
     "weekly": "Hebdomadaire",
     "monthly": "Mensuel",
-    "email_notifications_stopped": "Notifications par email désactivées !"
+    "notification_emails_stopped": "Notifications par email désactivées !",
+	"group_share_choice": "A quel groupe voulez-vous envoyer ce message ?"
 }
