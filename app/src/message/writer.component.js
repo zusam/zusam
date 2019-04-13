@@ -39,7 +39,7 @@ export default class Writer extends Component {
             setTimeout(() => {
                 if (document.getElementById("text")) {
                     document.getElementById("text").focus();
-                    document.getElementById("text").style.height = t.scrollHeight + "px";
+                    document.getElementById("text").style.height = document.getElementById("text").scrollHeight + "px";
                 }
             }, 10);
         }
@@ -136,6 +136,7 @@ export default class Writer extends Component {
                 return;
             }
             cache.resetCache();
+			window.dispatchEvent(new CustomEvent("newMessage", {detail : res}));
             if (this.props.parent) {
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
             }

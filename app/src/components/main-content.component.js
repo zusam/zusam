@@ -4,6 +4,7 @@ import { Writer, Message } from "/message";
 import { Settings } from "/settings";
 import CreateGroup from "./create-group.component.js";
 import GroupBoard from "./group-board.component.js";
+import Share from "./share.component.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class MainContent extends Component {
@@ -21,6 +22,8 @@ export default class MainContent extends Component {
         switch (this.props.route) {
             case "create-group":
                 return <CreateGroup/>;
+            case "share":
+                return <Share/>;
             case "messages":
                 return (
                     <article class="justify-content-center d-flex">

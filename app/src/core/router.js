@@ -61,6 +61,7 @@ const router = {
             case "stop-notification-emails":
             case "signup":
             case "login":
+            case "share":
                 // we keep queryParams
                 url = url + queryParams;
             case "messages":
