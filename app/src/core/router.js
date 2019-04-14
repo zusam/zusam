@@ -24,7 +24,8 @@ const router = {
         "login",
         "password-reset",
         "signup",
-        "invitation"
+        "invitation",
+        "stop-notification-emails"
     ].includes(router.route || router.getSegments()[0]),
     navigate: (url, options = {}) => {
         const from = window.location.pathname;
@@ -37,7 +38,7 @@ const router = {
         router.backUrlPrompt = "";
 
         // set url, backUrl and entityUrl
-		if (router.route && router.id) {
+        if (router.route && router.id) {
             router.url = "/" + router.route + "/" + router.id;
             router.entityUrl = "/api/" + router.route + "/" + router.id;
             router.entityType = router.route;
