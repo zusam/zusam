@@ -10,9 +10,9 @@ export default class Share extends Component {
         let currentUrl = new URL(window.location);
         this.state = {
             group: null,
-            title: currentUrl.searchParams.get('title'),
-            text: currentUrl.searchParams.get('text'),
-            url: currentUrl.searchParams.get('url'),
+            title: currentUrl.searchParams.get('title') || "",
+            text: currentUrl.searchParams.get('text') || "",
+            url: currentUrl.searchParams.get('url') || "",
         };
         me.get().then(user => {
 			if (user.groups.length == 1) {
