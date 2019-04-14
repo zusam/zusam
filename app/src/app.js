@@ -39,7 +39,7 @@ class App extends Component {
         cache.get("apiKey").then(apiKey => {
             if (apiKey) {
                 me.get().then(user => {
-                    if (!user || router.isOutside()) {
+                    if (!user && !router.isOutside()) {
                         cache.set("apiKey", "").then(_ => router.navigate("/login"));
                     } else {
                         this.setState({

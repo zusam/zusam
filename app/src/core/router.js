@@ -27,6 +27,13 @@ const router = {
         "invitation",
         "stop-notification-emails"
     ].includes(router.route || router.getSegments()[0]),
+    isEntity: name => [
+        "messages",
+        "groups",
+        "users",
+        "links",
+        "files"
+    ].includes(name),
     navigate: (url, options = {}) => {
         const from = window.location.pathname;
         const queryParams = window.location.search;
@@ -35,13 +42,16 @@ const router = {
         router.url = "";
         router.backUrl = "";
         router.entityUrl = "";
+        router.entityType = "";
         router.backUrlPrompt = "";
 
         // set url, backUrl and entityUrl
         if (router.route && router.id) {
             router.url = "/" + router.route + "/" + router.id;
-            router.entityUrl = "/api/" + router.route + "/" + router.id;
-            router.entityType = router.route;
+            if (router.isEntity(router.route)) {
+                router.entityUrl = "/api/" + router.route + "/" + router.id;
+                router.entityType = router.route;
+            }
             if (router.action) {
                 router.backUrl = "/";
                 if(router.route == "users") {

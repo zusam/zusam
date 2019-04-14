@@ -5,7 +5,7 @@ export default class StopNotificationEmails extends Component {
 
     constructor() {
         super();
-        http.get("/api/" + window.location.pathname).then(res => {
+        http.get("/api" + window.location.pathname).then(res => {
             this.setState({message: lang["notification_emails_stopped"]});
         }).catch(err => {
             console.warn(err);
