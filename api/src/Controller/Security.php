@@ -52,7 +52,7 @@ class Security extends Controller
             return new JsonResponse(["message" => "Invalid login/password"], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
-        return new JsonResponse(["api_key" => $user->getApiKey()], JsonResponse::HTTP_OK);
+        return new JsonResponse(["api_key" => $user->getSecretKey()], JsonResponse::HTTP_OK);
     }
 
     /**
@@ -100,7 +100,7 @@ class Security extends Controller
         $this->em->persist($group);
         $this->em->flush();
 
-        return new JsonResponse(["api_key" => $user->getApiKey()], JsonResponse::HTTP_OK);
+        return new JsonResponse(["api_key" => $user->getSecretKey()], JsonResponse::HTTP_OK);
     }
 
     /**
@@ -145,6 +145,6 @@ class Security extends Controller
         $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
         $this->em->persist($user);
         $this->em->flush();
-        return new JsonResponse(["api_key" => $user->getApiKey()], JsonResponse::HTTP_OK);
+        return new JsonResponse(["api_key" => $user->getSecretKey()], JsonResponse::HTTP_OK);
     }
 }

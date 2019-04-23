@@ -23,9 +23,9 @@ class GroupResetInviteKey extends Controller
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
         $this->denyAccessUnlessGranted(new Expression("user in object.getUsersAsArray()"), $data);
-        $data->resetInviteKey();
+        $data->resetSecretKey();
         $this->em->persist($data);
         $this->em->flush();
-        return new JsonResponse(["inviteKey" => $data->getInviteKey()], JsonResponse::HTTP_OK);
+        return new JsonResponse(["inviteKey" => $data->getSecretKey()], JsonResponse::HTTP_OK);
     }
 }

@@ -35,7 +35,7 @@ class Mailer
         $unsubscribe_token = Token::encode([
             "exp" => time() + 86400*60,
             "sub" => Token::SUB_STOP_EMAIL_NOTIFICATIONS,
-        ], $user->getApiKey());
+        ], $user->getSecretKey());
 
         $email = (new \Swift_Message("Zusam Notification Email"))
             ->setFrom("noreply@".$this->domain)

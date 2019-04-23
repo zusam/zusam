@@ -7,7 +7,7 @@ security:
         user_provider:
             entity:
                 class: App\Entity\User
-                property: apiKey
+                property: secretKey
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
