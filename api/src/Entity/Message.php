@@ -120,6 +120,12 @@ class Message
      */
     private $preview;
 
+    /**
+     * @ORM\Column(type="guid", unique=true)
+     * @Assert\NotBlank()
+     */
+    private $secretKey;
+
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
@@ -127,6 +133,7 @@ class Message
         $this->files = new ArrayCollection();
         $this->createdAt = time();
         $this->lastActivityDate = time();
+        $this->secretKey = Uuid::uuidv4();
     }
 
     public function getId(): string
@@ -266,5 +273,15 @@ class Message
             }
             return $url;
         }, $urls);
+    }
+
+    public function getSecretKey(): string
+    {
+        return $this->secretKey;
+    }
+
+    public function resetSecretKey(): self
+    {
+        $this->secretKey = Uuid::uuidv4();
     }
 }

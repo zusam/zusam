@@ -80,7 +80,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="guid", unique=true)
      * @Assert\NotBlank()
      */
-    private $apiKey;
+    private $secretKey;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
@@ -130,7 +130,7 @@ class User implements UserInterface, \Serializable
         $this->messages = new ArrayCollection();
         $this->files = new ArrayCollection();
         $this->createdAt = time();
-        $this->apiKey = Uuid::uuidv4();
+        $this->secretKey = Uuid::uuidv4();
         $this->data = [];
     }
 
@@ -172,14 +172,14 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getApiKey(): string
+    public function getSecretKey(): string
     {
-        return $this->apiKey;
+        return $this->secretKey;
     }
 
-    public function resetApiKey(): self
+    public function resetSecretKey(): self
     {
-        $this->apiKey = Uuid::uuidv4();
+        $this->secretKey = Uuid::uuidv4();
     }
 
     public function addGroup(Group $group): self

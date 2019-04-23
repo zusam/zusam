@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *        },
  *        "invitation"={
  *            "method"="POST",
- *            "path"="/groups/invitation/{inviteKey}",
+ *            "path"="/groups/invitation/{secretKey}",
  *            "controller"=GroupInvitation::class,
  *            "defaults"={"_api_receive"=false}
  *        },
@@ -67,7 +67,7 @@ class Group
      * @Groups({"read_group"})
      * @Assert\NotBlank()
      */
-    private $inviteKey;
+    private $secretKey;
 
     /**
      * @ORM\Column(type="integer")
@@ -115,7 +115,7 @@ class Group
         $this->users = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->createdAt = time();
-        $this->inviteKey = Uuid::uuidv4();
+        $this->secretKey = Uuid::uuidv4();
     }
 
     public function getId(): string
@@ -123,14 +123,14 @@ class Group
         return $this->id;
     }
 
-    public function getInviteKey(): string
+    public function getSecretKey(): string
     {
-        return $this->inviteKey;
+        return $this->secretKey;
     }
 
-    public function resetInviteKey(): self
+    public function resetSecretKey(): self
     {
-        $this->inviteKey = Uuid::uuidv4();
+        $this->secretKey = Uuid::uuidv4();
         return $this;
     }
 

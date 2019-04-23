@@ -93,11 +93,18 @@ class File
      */
     private $fileIndex;
 
+    /**
+     * @ORM\Column(type="guid", unique=true)
+     * @Assert\NotBlank()
+     */
+    private $secretKey;
+
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
         $this->createdAt = time();
         $this->status = self::STATUS_READY;
+        $this->secretKey = Uuid::uuidv4();
     }
 
     public function getId(): string
@@ -195,5 +202,15 @@ class File
     {
         $this->fileIndex = $fileIndex;
         return $this;
+    }
+
+    public function getSecretKey(): string
+    {
+        return $this->secretKey;
+    }
+
+    public function resetSecretKey(): self
+    {
+        $this->secretKey = Uuid::uuidv4();
     }
 }
