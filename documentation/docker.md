@@ -1,10 +1,10 @@
 Use the Docker container
 ========================
 
-Clone the repository:
+Download the latest release (here in /srv/zusam):
 ```
-git clone https://github.com/nrobinaubertin/zusam.git
-cd zusam
+mkdir -p /srv/zusam && cd /srv/zusam
+wget -qO- https://github.com/nrobinaubertin/zusam/archive/0.1.1.tar.gz | tar xz --strip 1
 ```
 
 Build the container:

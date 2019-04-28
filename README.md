@@ -29,7 +29,7 @@ Zusam is composed of a PHP server and a single-page-application.
 The backend uses [Symfony](https://symfony.com) and [Sqlite](https://sqlite.org/index.html), the frontend is made with [Preact](https://preactjs.com/) and [ParcelJS](https://parceljs.org/).
 
 Requirements:
-- PHP 7.1+ (with mbstring, curl, xml, sqlite3, imagick and intl extensions)
+- PHP 7.2+ (with mbstring, curl, xml, sqlite3, imagick and intl extensions)
 - Ffmpeg 3+
 - Yarn or NPM (only to compile the webapp)
 
