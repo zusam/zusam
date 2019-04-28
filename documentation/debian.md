@@ -9,15 +9,15 @@ echo "deb https://packages.sury.org/php/ stretch main" | sudo tee /etc/apt/sourc
 sudo apt update
 ```
 
-We're going to use php7.3 here but Zusam is compatible with 7.1+
+We're going to use php7.3 here but Zusam is compatible with 7.2+
 ```
-sudo apt install -y nginx git unzip ffmpeg php7.3 php7.3-fpm php7.3-xml php7.3-curl php7.3-mbstring php7.3-sqlite3 php7.3-imagick php7.3-intl
+sudo apt install -y nginx unzip ffmpeg php7.3 php7.3-fpm php7.3-xml php7.3-curl php7.3-mbstring php7.3-sqlite3 php7.3-imagick php7.3-intl
 ```
 
-Clone the repository (here in /srv/zusam):
+Download the latest release (here in /srv/zusam):
 ```
-git clone https://github.com/nrobinaubertin/zusam.git /srv/zusam
-cd /srv/zusam
+mkdir -p /srv/zusam && cd /srv/zusam
+wget -qO- https://github.com/nrobinaubertin/zusam/archive/0.1.1.tar.gz | tar xz --strip 1
 ```
 
 Let's copy the webapp in the public directory (you don't need to do this if you only want the api server running):
