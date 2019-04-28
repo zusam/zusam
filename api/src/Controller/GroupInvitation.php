@@ -22,7 +22,7 @@ class GroupInvitation extends Controller
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
 
-        $group = $this->em->getRepository(Group::class)->findOneByInviteKey($inviteKey);
+        $group = $this->em->getRepository(Group::class)->findOneBySecretKey($inviteKey);
         if (empty($group)) {
             return new JsonResponse(["message" => "Invalid invite key !"], JsonResponse::HTTP_BAD_REQUEST);
         }

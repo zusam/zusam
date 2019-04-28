@@ -8,16 +8,16 @@ export default class GroupSettings extends Component {
         super(props);
         this.updateSettings = this.updateSettings.bind(this);
         this.leaveGroup = this.leaveGroup.bind(this);
-        this.resetInviteKey = this.resetInviteKey.bind(this);
+        this.resetSecretKey = this.resetSecretKey.bind(this);
         this.state = Object.assign({}, props);
     }
 
-    resetInviteKey(event) {
+    resetSecretKey(event) {
         event.preventDefault();
         http.post("/api/groups/" + this.state.id + "/reset-invite-key", {}).then(res => {
             alert.add(lang["group_updated"]);
             cache.resetCache();
-            this.setState({inviteKey: res["inviteKey"]});
+            this.setState({secretKey: res["inviteKey"]});
         });
     }
 
@@ -77,13 +77,13 @@ export default class GroupSettings extends Component {
                                                     location.protocol
                                                         + "//" + location.hostname
                                                         + "/invitation/"
-                                                        + this.state.inviteKey
+                                                        + this.state.secretKey
                                                 }
                                                 class="form-control font-size-80"
                                                 readonly="readonly"
                                             ></input>
                                         </div>
-                                        <button class="btn btn-outline-secondary" onClick={this.resetInviteKey}>
+                                        <button class="btn btn-outline-secondary" onClick={this.resetSecretKey}>
                                             {lang["reset_invitation_link"]}
                                         </button>
                                     </form>

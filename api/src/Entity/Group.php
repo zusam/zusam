@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *        },
  *        "invitation"={
  *            "method"="POST",
- *            "path"="/groups/invitation/{secretKey}",
+ *            "path"="/groups/invitation/{inviteKey}",
  *            "controller"=GroupInvitation::class,
  *            "defaults"={"_api_receive"=false}
  *        },
