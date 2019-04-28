@@ -11,7 +11,6 @@ export default class CreateGroup extends Component {
     postNewGroup(event) {
         event.preventDefault();
         const name = document.querySelector("#create_group_form input[name='name']").value;
-        console.log(name);
         let group = {};
         if (name) {
             group.name = name;
@@ -20,9 +19,7 @@ export default class CreateGroup extends Component {
         }
         group.createdAt = Math.floor(Date.now()/1000);
         http.post("/api/groups", group).then(res => {
-            console.log(res);
             http.post("/api/groups/invitation/" + res.secretKey, {}).then(res => {
-                console.log(res);
                 window.location = "/groups/" + res.id;
             });
         });
