@@ -15,6 +15,7 @@
         "symfony/flex": "^1.1",
         "symfony/framework-bundle": "^4.0",
         "symfony/monolog-bundle": "^3.3",
+        "symfony/serializer": "^4.0",
         "symfony/swiftmailer-bundle": "^3.2",
         "symfony/yaml": "^4.0",
         "vich/uploader-bundle": "~1.8.0"

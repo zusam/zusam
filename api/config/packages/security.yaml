@@ -10,7 +10,10 @@ security:
                 property: secretKey
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt))/
+            security: false
+        public:
+            pattern: ^/(public|images)/
             security: false
         main:
             stateless: true

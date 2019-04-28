@@ -58,6 +58,12 @@ class Link
      */
     private $preview;
 
+    /**
+     * @ORM\Column(type="guid", unique=true)
+     * @Assert\NotBlank()
+     */
+    private $secretKey;
+
     public function __construct(string $url)
     {
         $this->id = Uuid::uuidv4($url);
@@ -65,6 +71,12 @@ class Link
         $this->files = new ArrayCollection();
         $this->createdAt = time();
         $this->updatedAt = time();
+        $this->secretKey = Uuid::uuidv4();
+    }
+
+    public function getEntityType(): string
+    {
+        return get_class($this);
     }
 
     public function getId(): string
@@ -125,5 +137,15 @@ class Link
     public function getPreview(): ?File
     {
         return $this->preview;
+    }
+
+    public function getSecretKey(): string
+    {
+        return $this->secretKey;
+    }
+
+    public function resetSecretKey(): self
+    {
+        $this->secretKey = Uuid::uuidv4();
     }
 }

@@ -11,7 +11,7 @@ export default class MessageHead extends Component {
                     <div>
                         <img
                             class="rounded-circle material-shadow avatar"
-                            src={ this.props.author.avatar ? util.crop(this.props.author.avatar["@id"], 100, 100) : util.defaultAvatar }
+                            src={ this.props.author.avatar ? util.crop("/api/file/" + this.props.author.avatar.id, 100, 100) : util.defaultAvatar }
                             title={ this.props.author.name }
                         />
                     </div>
@@ -20,7 +20,7 @@ export default class MessageHead extends Component {
                     { this.props.author && <span class="capitalize author">{ this.props.author.name }</span> }
                     <span title={util.humanFullDate(this.props.message.createdAt)}>{ util.humanTime(this.props.message.createdAt) }</span>
                 </div>
-                { me.me && this.props.author && this.props.author.id == me.me.id && (
+                { !this.props.isPublic && me.me && this.props.author && this.props.author.id == me.me.id && (
                     <div tabindex="-1"
                         class="options dropdown"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
@@ -30,6 +30,9 @@ export default class MessageHead extends Component {
                         <div class="dropdown-menu">
                             <a class="seamless-link" onClick={this.props.editMessage}>{lang["edit"]}</a>
                             <a class="seamless-link" onClick={this.props.deleteMessage}>{lang["delete"]}</a>
+                            { !this.props.message.parent && (
+                                <a class="seamless-link" onClick={this.props.openPublicLink}>{lang["public_link"]}</a>
+                            )}
                         </div>
                     </div>
                 )}

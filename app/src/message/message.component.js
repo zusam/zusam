@@ -13,6 +13,7 @@ export default class Message extends Component {
         this.displayMoreChildren = this.displayMoreChildren.bind(this);
         this.deleteMessage = this.deleteMessage.bind(this);
         this.editMessage = this.editMessage.bind(this);
+        this.openPublicLink = this.openPublicLink.bind(this);
         this.cancelEdit = this.cancelEdit.bind(this);
         this.onNewChild = this.onNewChild.bind(this);
         this.getPreview = this.getPreview.bind(this);
@@ -60,6 +61,13 @@ export default class Message extends Component {
         event.preventDefault();
         this.setState({edit: false});
     }
+
+    async openPublicLink(event) {
+        event.preventDefault();
+        let newTab = window.open("about:blank", "_blank");
+        const res = await http.get(this.state.message["@id"] + "/get-public-link");
+        newTab.location = window.origin + "/public/" + res.token;
+    };
 
     deleteMessage(event) {
 		event.preventDefault();
@@ -172,6 +180,8 @@ export default class Message extends Component {
                         message={this.state.message}
                         editMessage={this.editMessage}
                         deleteMessage={this.deleteMessage}
+                        openPublicLink={this.openPublicLink}
+                        isPublic={this.props.isPublic}
                     />
                     <MessageBody
                         author={this.state.author}
@@ -180,14 +190,17 @@ export default class Message extends Component {
                         preview={this.state.preview}
                         editMessage={this.editMessage}
                         deleteMessage={this.deleteMessage}
+                        openPublicLink={this.openPublicLink}
+                        isPublic={this.props.isPublic}
                     />
                 </div>
                 <MessageChildren
                     message={this.state.message}
                     displayedChildren={this.state.displayedChildren}
                     displayMoreChildren={this.displayMoreChildren}
+                    isPublic={this.props.isPublic}
                 />
-                { !this.state.message.parent && (
+                { !this.props.isPublic && !this.state.message.parent && (
                     <div class="message child">
                         { me.me && (
                             <div class="message-head p-1 d-none d-md-block">

@@ -61,5 +61,6 @@ window.lang = {
     "weekly": "Týždenne",
     "monthly": "Mesačne",
     "notification_emails_stopped": "E-mailové upozornenia sa zastavili!",
-	"group_share_choice": "Do ktorej skupiny chcete odoslať túto správu ?"
+    "group_share_choice": "Do ktorej skupiny chcete odoslať túto správu ?",
+    "public_link": "verejné spojenie"
 };

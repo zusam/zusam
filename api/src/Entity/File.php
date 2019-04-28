@@ -107,6 +107,11 @@ class File
         $this->secretKey = Uuid::uuidv4();
     }
 
+    public function getEntityType(): string
+    {
+        return get_class($this);
+    }
+
     public function getId(): string
     {
         return $this->id;

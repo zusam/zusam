@@ -134,6 +134,11 @@ class User implements UserInterface, \Serializable
         $this->data = [];
     }
 
+    public function getEntityType(): string
+    {
+        return get_class($this);
+    }
+
     public function getId(): string
     {
         return $this->id;

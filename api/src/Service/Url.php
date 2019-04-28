@@ -9,21 +9,26 @@ use App\Service\Uuid;
 use Doctrine\ORM\EntityManagerInterface;
 use Embed\Embed;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class Url
 {
     private $params;
     private $em;
     private $imageService;
+    private $security;
 
     public function __construct (
         EntityManagerInterface $em,
         ImageService $imageService,
-        ParameterBagInterface $params
+        ParameterBagInterface $params,
+        Security $security
     ) {
         $this->params = $params;
         $this->em = $em;
         $this->imageService = $imageService;
+        $this->security = $security;
     }
 
     public function getPreview($url, $rescan = false): ?string
@@ -40,6 +45,10 @@ class Url
         $filesDir = realpath($this->params->get("dir.files"));
         $link = $this->em->getRepository(Link::class)->findOneByUrl($url);
         if (empty($link) || $rescan) {
+            // need to be connected to process links (trying to avoid DOS)
+            if (!$this->security->isGranted("ROLE_USER")) {
+                throw new AccessDeniedException();
+            }
             if (empty($link)) {
                 $link = new Link($url);
             }

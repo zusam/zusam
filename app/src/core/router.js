@@ -25,7 +25,8 @@ const router = {
         "password-reset",
         "signup",
         "invitation",
-        "stop-notification-emails"
+        "stop-notification-emails",
+        "public",
     ].includes(router.route || router.getSegments()[0]),
     isEntity: name => [
         "messages",
@@ -73,6 +74,7 @@ const router = {
             case "signup":
             case "login":
             case "share":
+            case "public":
                 // we keep queryParams
                 url = url + queryParams;
             case "messages":

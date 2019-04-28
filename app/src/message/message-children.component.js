@@ -1,5 +1,4 @@
 import { h, render, Component } from "preact";
-import { me, util } from "/core";
 import Message from "./message.component.js";
 
 export default class MessageChildren extends Component {
@@ -32,6 +31,7 @@ export default class MessageChildren extends Component {
                             key={e.id}
                             follow={follow}
                             hidden={i < this.props.message.children.length - this.props.displayedChildren}
+                            isPublic={this.props.isPublic}
                         />
                     );
                 })}

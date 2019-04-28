@@ -22,7 +22,6 @@ class LinkByUrl extends Controller
      */
     public function getLinkByPost(Request $request): JsonResponse
     {
-        $this->denyAccessUnlessGranted("ROLE_USER");
         $data = json_decode($request->getContent(), true);
         $url = $data["url"] ?? "";
         if (!$url) {
@@ -38,7 +37,6 @@ class LinkByUrl extends Controller
      */
     public function getLinkByGet(Request $request): JsonResponse
     {
-        $this->denyAccessUnlessGranted("ROLE_USER");
         $url = $request->query->get("url") ?? "";
         if (!$url) {
             return new JsonResponse(["message" => "Invalid url"], JsonResponse::HTTP_BAD_REQUEST);

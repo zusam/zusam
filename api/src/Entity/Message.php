@@ -5,10 +5,11 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use App\Controller\MessagePublicLink;
 use App\Controller\NewMessage;
 use App\Controller\ReadMessage;
-use App\Service\Uuid;
 use App\Service\Url as UrlService;
+use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,6 +33,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *          "put",
  *          "delete",
+ *          "get_public_link"={
+ *              "method"="GET",
+ *              "path"="/messages/{id}/get-public-link",
+ *              "controller"=MessagePublicLink::class,
+ *              "defaults"={"_api_receive"=false}
+ *          },
  *     },
  *     collectionOperations={
  *          "get",
@@ -134,6 +141,11 @@ class Message
         $this->createdAt = time();
         $this->lastActivityDate = time();
         $this->secretKey = Uuid::uuidv4();
+    }
+
+    public function getEntityType(): string
+    {
+        return get_class($this);
     }
 
     public function getId(): string
@@ -283,5 +295,6 @@ class Message
     public function resetSecretKey(): self
     {
         $this->secretKey = Uuid::uuidv4();
+        return $this;
     }
 }

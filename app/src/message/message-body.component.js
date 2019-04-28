@@ -33,6 +33,7 @@ export default class MessageBody extends Component {
         return (
             <div class="message-body">
                 { this.props.message.parent
+                        && !this.props.isPublic
                         && this.props.author
                         && me.me
                         && this.props.author.id == me.me.id
@@ -46,6 +47,9 @@ export default class MessageBody extends Component {
                         <div class="dropdown-menu">
                             <a class="seamless-link" onClick={this.props.editMessage}>{lang["edit"]}</a>
                             <a class="seamless-link" onClick={this.props.deleteMessage}>{lang["delete"]}</a>
+                            { !this.props.message.parent && (
+                                <a class="seamless-link" onClick={this.props.openPublicLink}>{lang["public_link"]}</a>
+                            )}
                         </div>
                     </div>
                 )}

@@ -4,6 +4,9 @@ ALTER TABLE `file` ADD COLUMN `secret_key` CHAR(36) NOT NULL COLLATE BINARY DEFA
 /* Add secret_key to message */
 ALTER TABLE `message` ADD COLUMN `secret_key` CHAR(36) NOT NULL COLLATE BINARY DEFAULT '';
 
+/* Add secret_key to link */
+ALTER TABLE `link` ADD COLUMN `secret_key` CHAR(36) NOT NULL COLLATE BINARY DEFAULT '';
+
 /* 
     Rename invite_key to secret_key in group
     Sqlite 3.25 supports renaming but is fairly new
