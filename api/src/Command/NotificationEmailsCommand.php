@@ -34,6 +34,11 @@ class NotificationEmailsCommand extends ContainerAwareCommand
     {
         $users = $this->em->getRepository(User::class)->findAll();
         foreach ($users as $user) {
+
+            if (empty($user->getNews())) {
+                continue;
+            }
+
             $data = $user->getData();
             $notif = isset($data["notification_emails"]) ? $data["notification_emails"] : "";
             if (
