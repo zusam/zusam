@@ -53,13 +53,30 @@ class Upload extends Controller
             // don't convert video if it's an mp4 and under 10Mo
             // TODO: the issue is that these mp4 could have libmp3lame audio instead of aac
             // this will cause audio playback issues on iOS.
-            if ($file->getType() == "video/mp4" && $file->getSize() < 10 * 1024 * 1024) {
+            if (
+                $file->getType() == "video/mp4"
+                && $file->getStatus() != File::STATUS_READY
+                && $file->getSize() < 10 * 1024 * 1024
+            ) {
+                $file->setStatus(File::STATUS_READY);
+            }
+
+            // don't convert a gif
+            // TODO: handle gif correctly, AKA convert them to mp4
+            if (
+                $file->getType() == "image/gif"
+                && $file->getStatus() != File::STATUS_READY
+            ) {
                 $file->setStatus(File::STATUS_READY);
             }
 
             // immediately process the file if it's an image
             // don't try to convert if there's already a video converting
-            if (substr($file->getType(), 0, 6) == "image/" && !file_exists("/tmp/zusam_video_convert.lock")) {
+            if (
+                substr($file->getType(), 0, 6) == "image/"
+                && $file->getStatus() != File::STATUS_READY
+                && !file_exists("/tmp/zusam_video_convert.lock")
+            ) {
                 list($width, $height) = getimagesize($filesDir."/".$file->getContentUrl());
                 if ($width > 2048 || $height > 2048 || $file->getType() !== "image/jpeg") {
                     $newContentUrl = pathinfo($file->getContentUrl(), PATHINFO_FILENAME).".jpg";

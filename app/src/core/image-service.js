@@ -24,6 +24,11 @@ const imageService = {
                 callback(source);
                 return;
             }
+            if (source.type == "image/gif") {
+                console.warn("Do not use image reduction on a gif !");
+                callback(source);
+                return;
+            }
             if (fileSize < 1024*1024) {
                 console.warn("Do not use image reduction on small file !");
                 callback(source);

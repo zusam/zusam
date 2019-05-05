@@ -43,7 +43,7 @@ export default class FileGrid extends Component {
     renderFile(file, miniature = false) {
         let filePath = file.contentUrl ? "/files/" + file.contentUrl : null;
         let url = filePath;
-        if (/image/.test(file.type)) {
+        if (/image/.test(file.type) && file.type != "image/gif") {
             url = util.thumbnail(filePath, 1366, 768);
         }
         if (miniature == true) {
