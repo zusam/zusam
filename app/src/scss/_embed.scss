@@ -69,6 +69,7 @@
         position: relative;
         left: 50%;
         top: 135px; // not 50% because it doesn't work in chromium
+        min-width: 320px;
     }
 
     .youtube::before {

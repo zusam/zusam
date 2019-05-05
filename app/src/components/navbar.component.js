@@ -81,11 +81,11 @@ export default class Navbar extends Component {
                 )}
                 { me.me.groups && (
                     <div
-                        class="nav-link dropdown groups unselectable" tabindex="-1"
+                        className={"nav-link dropdown groups unselectable" + (this.groupsHasNews() ? " has-news" : "")} tabindex="-1"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                         onClick={e => e.currentTarget.classList.toggle("active")}
                     >
-                        <div className={"dropdown-title unselectable" + (this.groupsHasNews() ? " has-news" : "")}>
+                        <div class="dropdown-title unselectable">
                             { lang.groups } <FaIcon family={"solid"} icon={"caret-down"}/>
                         </div>
                         <div class="dropdown-menu">

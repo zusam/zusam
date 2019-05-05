@@ -37,10 +37,7 @@ export default class MessagePreview extends Component {
     render() {
         return (
             <a
-                className={
-                    "d-inline-block seamless-link message-preview unselectable"
-                        + (me.isNews(this.state.message.id) ? " has-news" : "")
-                }
+                class="d-inline-block seamless-link message-preview unselectable"
                 href={ router.toApp(this.state.message["@id"]) }
                 onClick={ router.onClick }
                 title={ this.state.title }
@@ -60,7 +57,7 @@ export default class MessagePreview extends Component {
                             { !!this.state.message.children && (
                                 <span>
                                     { this.state.message.children + " " }
-                                    <FaIcon family={"regular"} icon={"comment"} />
+                                    <FaIcon family={me.isNews(this.state.message.id) ? "solid" : "regular"} icon={"comment"} />
                                 </span>
                             )}
                         </span>

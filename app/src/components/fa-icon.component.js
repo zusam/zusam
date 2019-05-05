@@ -1,5 +1,7 @@
 import { h, render, Component } from "preact";
 
+// Fontawesome icons taken from https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/js/all.js
+
 export default class FaIcon extends Component {
     constructor(props) {
         super(props);

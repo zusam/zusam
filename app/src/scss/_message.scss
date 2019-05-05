@@ -17,9 +17,7 @@
         width: 100%;
         max-width: 320px;
         margin: 1rem;
-        &.has-news {
-            font-weight: bold;
-        }
+        position: relative;
 
         @media (max-width: map-get($grid-breakpoints, "sm")) {
             margin: 1rem 0;

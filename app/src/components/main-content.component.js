@@ -27,7 +27,7 @@ export default class MainContent extends Component {
             case "messages":
                 return (
                     <article class="justify-content-center d-flex">
-                        <div class="container">
+                        <div class="container pb-1">
                             <Message key={this.props.url} url={this.props.entityUrl} />
                         </div>
                     </article>
