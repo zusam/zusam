@@ -17,7 +17,9 @@ You can see the latest release [here](https://github.com/nrobinaubertin/zusam/re
 3. Go to your zusam directory
 4. `wget -qO- https://github.com/nrobinaubertin/zusam/archive/$version.tar.gz | tar xz --strip 1`
 5. If `api/migration/$version.sql` exists, apply it: `sqlite3 data/data.db < api/migration/$version.sql`
-6. Copy the webapp to the public directory: `cp app/dist/* public/`
+6. Apply latest composer changes: `php bin/compose install`
+7. Copy the webapp to the public directory: `cp app/dist/* public/`
+8. Rename the lang file (here english, adapt it to the one you want): `cp public/en.js public/lang.js`
 
 ## If you are using docker
 
