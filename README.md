@@ -21,6 +21,7 @@ The login is "zusam" and the password is "zusam". The instance is reset every ho
 - Links preview and embedded youtube, vimeo, imgur, soundcloud, twitch, bandcamp...
 - Video and image upload
 - Photo albums
+- Public link generation for messages
 - Completely responsive and mobile friendly
 - Low server footprint
 
