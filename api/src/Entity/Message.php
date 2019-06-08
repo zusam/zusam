@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use App\Controller\EditMessage;
 use App\Controller\MessagePublicLink;
 use App\Controller\NewMessage;
 use App\Controller\ReadMessage;
@@ -31,7 +32,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "controller"=ReadMessage::class,
  *              "normalization_context"={"groups"={"read_message"}},
  *          },
- *          "put",
+ *          "put"={
+ *              "method"="PUT",
+ *              "path"="/messages/{id}.{_format}",
+ *              "controller"=EditMessage::class,
+ *              "normalization_context"={"groups"={"read_message"}},
+ *          },
  *          "delete",
  *          "get_public_link"={
  *              "method"="GET",
