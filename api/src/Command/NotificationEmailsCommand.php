@@ -6,12 +6,12 @@ use App\Entity\Message;
 use App\Entity\User;
 use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class NotificationEmailsCommand extends ContainerAwareCommand
+class NotificationEmailsCommand extends Command
 {
     private $em;
     private $mailer;

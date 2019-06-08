@@ -2,12 +2,12 @@
 
 namespace App\Command;
 
-use App\Entity\Group;
-use App\Entity\User;
-use App\Entity\Message;
 use App\Controller\NewMessage;
+use App\Entity\Group;
+use App\Entity\Message;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class Initialize extends ContainerAwareCommand
+class Initialize extends Command
 {
     private $em;
     private $encoder;
