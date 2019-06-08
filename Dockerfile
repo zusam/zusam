@@ -54,12 +54,12 @@ COPY docker/demo.tar.gz /zusam/docker/demo.tar.gz
 
 # handle build config
 RUN set -xe \
-    && mkdir -p /run/nginx /zusam/data \
+    && mkdir -p /run/nginx /zusam/data /var/tmp/nginx /var/lib/nginx \
     && sed -e "s|<ENV>|prod|g" /zusam/config > /zusam/data/config \
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar unzip \
     && cd /zusam/api && php bin/composer install --prefer-dist \
     && apk del .build-deps \
-    && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public
+    && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public /var/tmp/nginx
 
 VOLUME /zusam/data
 CMD ["run.sh"]

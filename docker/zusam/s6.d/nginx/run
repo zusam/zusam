@@ -1,2 +1,2 @@
 #!/bin/sh
-exec su-exec ${UID}:${GID} nginx
+exec nginx
