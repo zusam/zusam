@@ -62,5 +62,6 @@ window.lang = {
     "monthly": "Mensuel",
     "notification_emails_stopped": "Notifications par email désactivées !",
     "group_share_choice": "A quel groupe voulez-vous envoyer ce message ?",
-    "public_link": "Lien public"
+    "public_link": "Lien public",
+    "default_group": "Groupe par défaut",
 }

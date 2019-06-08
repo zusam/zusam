@@ -8,7 +8,17 @@ const http = {
             let xhr = new XMLHttpRequest();
             xhr.open("POST", "/api/files/upload", true);
             xhr.setRequestHeader("X-AUTH-TOKEN", apiKey)
-            xhr.addEventListener("load", e => loadFn(JSON.parse(e.target.response)));
+            xhr.addEventListener("load", e => {
+                if (e.target.status > 199 && e.target.status < 300) {
+                    loadFn(JSON.parse(e.target.response));
+                } else {
+                    if (errorFn) {
+                        errorFn(e.target.statusText);
+                    } else {
+                        console.error(e.target.statusText);
+                    }
+                }
+            });
             if (progressFn) {
                 xhr.upload.onprogress = e => progressFn({loaded: e.loaded, total: e.total});
             }
@@ -16,7 +26,9 @@ const http = {
                 xhr.addEventListener("error", e => errorFn(e));
             }
             xhr.send(formData);
-        });
+        }).catch(err => {
+            err => console.warn("ERROR for " + url, err)
+        }).catch(error => alert.add(error));
     },
     get: (url, nocache = false) => {
         return cache.get("apiKey").then(apiKey => {
@@ -38,7 +50,7 @@ const http = {
             ).catch(
                 err => console.warn("ERROR for " + url, err)
             )
-        });
+        }).catch(error => alert.add(error));
     },
     post: (url, data, contentType = "application/json") => http.request(url, data, "POST", contentType),
     put: (url, data, contentType = "application/json") => http.request(url, data, "PUT", contentType),
@@ -63,7 +75,17 @@ const http = {
                 fetchOptions.body = (typeof(data) == "object" && data.constructor.name == "Object") ? JSON.stringify(data) : data;
             }
             return fetch(url, fetchOptions).then(
-                res => method == "DELETE" ? res : res.json()
+                res => {
+                    if (method == "DELETE") {
+                        return res;
+                    }
+                    try {
+                        return res.json();
+                    } catch (exception) {
+                        console.warn(exception.message);
+                        return Promise.reject(exception.message);
+                    }
+                }
             ).catch(
                 err => console.warn("ERROR for " + url, err)
             )

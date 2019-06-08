@@ -119,10 +119,14 @@ const router = {
                         router.navigate("/login");
                         return;
                     }
-                    if (user.groups[0]) {
-                        router.navigate("/groups/" + user.groups[0].id);
+                    if (user.data["default_group"]) {
+                        router.navigate("/groups/" + user.data["default_group"]);
                     } else {
-                        window.location = "/create-group";
+                        if (user.groups[0]) {
+                            router.navigate("/groups/" + user.groups[0].id);
+                        } else {
+                            window.location = "/create-group";
+                        }
                     }
                 });
         }

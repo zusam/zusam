@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { alert, cache, http, router } from "/core";
+import { me, alert, cache, http, router } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class GroupSettings extends Component {
@@ -8,6 +8,7 @@ export default class GroupSettings extends Component {
         super(props);
         this.updateSettings = this.updateSettings.bind(this);
         this.leaveGroup = this.leaveGroup.bind(this);
+        this.leave = this.leave.bind(this);
         this.resetSecretKey = this.resetSecretKey.bind(this);
         this.state = Object.assign({}, props);
     }
@@ -37,10 +38,28 @@ export default class GroupSettings extends Component {
 
     leaveGroup(event) {
         event.preventDefault();
-        http.post("/api/groups/" + this.state.id + "/leave").then(res => {
-            alert.add(lang["group_left"]);
-            router.navigate("/");
-        });
+        if (me.me.data["default_group"] == this.state.id) {
+            let user = {};
+            user.data = {"default_group": me.me.groups[0].id};
+            http.put("/api/users/" + me.me.id, user).then(res => {
+                me.update();
+                this.leave();
+            });
+        } else {
+            this.leave();
+        }
+    }
+
+    leave() {
+        http.post("/api/groups/" + this.state.id + "/leave", {}).then(res => {
+            if (!res || !res["@type"] || res["@type"] == "hydra:Error") {
+                alert.add(lang["error"]);
+            } else {
+                me.update();
+                alert.add(lang["group_left"]);
+                router.navigate("/");
+            }
+        })
     }
 
     render() {

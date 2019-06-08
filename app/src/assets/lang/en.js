@@ -63,4 +63,5 @@ window.lang = {
     "notification_emails_stopped": "Email notifications stopped !",
     "group_share_choice": "To which group do you want to send this message ?",
     "public_link": "Public link",
+    "default_group": "Default group",
 };

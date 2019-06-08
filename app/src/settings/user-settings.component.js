@@ -46,6 +46,7 @@ export default class UserSettings extends Component {
         const login = document.querySelector("#settings_form input[name='email']").value;
         const password = document.querySelector("#settings_form input[name='password']").value;
         const notification_emails = document.querySelector("#settings_form select[name='notification_emails']").value;
+        const default_group = document.querySelector("#settings_form select[name='default_group']").value;
         let user = {};
         if (name) {
             user.name = name;
@@ -56,7 +57,7 @@ export default class UserSettings extends Component {
         if (password) {
             user.password = password;
         }
-        user.data = {"notification_emails": notification_emails};
+        user.data = {"notification_emails": notification_emails, "default_group": default_group};
         http.put("/api/users/" + this.state.id, user).then(res => {
             this.setState(Object.assign(this.state, res));
             alert.add(lang["settings_updated"]);
@@ -135,6 +136,18 @@ export default class UserSettings extends Component {
                                                 <option value="daily">{ lang["daily"] }</option>
                                                 <option value="weekly">{ lang["weekly"] }</option>
                                                 <option value="monthly">{ lang["monthly"] }</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="default_group">{ lang["default_group"] }:</label>
+                                            <select
+                                                name="default_group"
+                                                class="form-control"
+                                                selectedIndex={
+                                                    me.me.groups.map(e => e.id).indexOf(this.state.data["default_group"])
+                                                }
+                                            >
+                                                { me.me.groups.map(e => <option value={e.id}>{e.name}</option>)}
                                             </select>
                                         </div>
                                         <button onClick={this.updateSettings} class="btn btn-primary">{lang["save_changes"]}</button>

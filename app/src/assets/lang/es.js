@@ -62,5 +62,6 @@ window.lang = {
     "monthly": "Mensual",
     "notification_emails_stopped": "Notificaciones de correo electrónico detenidas!",
     "group_share_choice": "¿A qué grupo desea enviar este mensaje?",
-    "public_link": "enlace público"
+    "public_link": "Enlace público",
+    "default_group": "Grupo predeterminado"
 }

@@ -245,7 +245,7 @@ export default class Writer extends Component {
                 return;
             }
             let a = this.state.files;
-            if (file["@type"] == "hydra:Error") {
+            if (!file || file["@type"] == "hydra:Error") {
                 a.splice(fileIndex, 1);
                 alert.add(lang["error_upload"], "alert-danger");
             } else {
