@@ -3,16 +3,34 @@
 namespace App\Command;
 
 use App\Entity\File;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ConvertVideoCommand extends Command
+class ConvertVideo extends Command
 {
     private $pdo;
+    private $targetDir;
+    private $binaryFfmpeg;
+
+    public function __construct(string $dsn, string $targetDir, string $binaryFfmpeg)
+    {
+        parent::__construct();
+        $this->binaryFfmpeg = $binaryFfmpeg;
+        $this->pdo = new \PDO($dsn, null, null);
+        
+        $this->targetDir = realpath($targetDir);
+
+        if (!$this->targetDir) {
+            throw new \Exception("Target directory (".$this->targetDir.") could not be found !");
+        }
+        
+        if (!is_writeable($this->targetDir)) {
+            throw new \Exception("Target directory (".$this->targetDir.") is not writable !");
+        }
+    }
 
     protected function configure()
     {
@@ -24,24 +42,17 @@ class ConvertVideoCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (file_exists("/tmp/zusam_video_convert.lock")) {
-            return;
-        }
-        file_put_contents("/tmp/zusam_video_convert.lock", "lock");
-        $dsn = $this->getContainer()->getParameter("database_url");
-        $this->pdo = new \PDO($dsn, null, null);
-        $filesDir = realpath($this->getContainer()->getParameter("dir.files"));
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'video%';");
         while($rawFile = $c->fetch()) {
-            $outputFile = $filesDir."/".$rawFile["id"];
-            $output->writeln(["Converting ".$rawFile["content_url"]]);	
+            $outputFile = $this->targetDir."/".$rawFile["id"];
+            $output->writeln(["Converting ".$rawFile["content_url"]]);  
             if (!$input->getOption("all-cores")) {
                 $threads = "-threads 1 ";
             }
             exec(
                 "nice -n 19 " // give the process a low priority
-                .$this->getContainer()->getParameter("binaries.ffmpeg")
-                ." -loglevel 0 -y -i ".$filesDir."/".$rawFile["content_url"]
+                .$this->binaryFfmpeg
+                ." -loglevel 0 -y -i ".$this->targetDir."/".$rawFile["content_url"]
                 ." -c:v libx264 -filter:v scale=-2:720 -crf 22 ".$threads."-preset slower -c:a aac -vbr 3 -y -f mp4 "
                 .$outputFile.".converted"
             );
@@ -54,9 +65,7 @@ class ConvertVideoCommand extends Command
                     "<error>zusam:convert-video ".$rawFile["id"]." failed.</error>",
                 ]);
             }
-            unlink("/tmp/zusam_video_convert.lock");
             return;
         }
-        unlink("/tmp/zusam_video_convert.lock");
     }
 }

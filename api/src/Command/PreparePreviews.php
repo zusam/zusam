@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PreparePreviewsCommand extends Command
+class PreparePreviews extends Command
 {
     private $em;
     private $pdo;
@@ -21,11 +21,13 @@ class PreparePreviewsCommand extends Command
     private $urlService;
 
     public function __construct (
+        string $dsn,
         EntityManagerInterface $em,
         NewMessage $newMessage,
         UrlService $urlService
     ) {
         parent::__construct();
+        $this->pdo = new \PDO($dsn, null, null);
         $this->em = $em;
         $this->newMessage = $newMessage;
         $this->urlService = $urlService;
@@ -41,9 +43,6 @@ class PreparePreviewsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dsn = $this->getContainer()->getParameter("database_url");
-        $this->pdo = new \PDO($dsn, null, null);
-        $filesDir = realpath($this->getContainer()->getParameter("dir.files"));
         $max_memory = $input->getArgument("memory") ? intval($input->getArgument("memory")) : 70;
         ini_set('memory_limit', max(128, $max_memory + 10) . "M");
 
