@@ -1,42 +1,71 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    database_url: '%env(resolve:DATABASE_URL)%'
-    binaries.ffmpeg: '%env(resolve:FFMPEG_PATH)%'
-    dir.public: '%kernel.project_dir%/../public'
-    dir.files: '%env(resolve:dir_files)%'
-    dir.cache: '%env(resolve:dir_cache)%'
+  database_url: '%env(resolve:DATABASE_URL)%'
+  binaries.ffmpeg: '%env(resolve:FFMPEG_PATH)%'
+  dir.public: '%kernel.project_dir%/../public'
+  dir.files: '%env(resolve:dir_files)%'
+  dir.cache: '%env(resolve:dir_cache)%'
 
 services:
     # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        public: false       # Allows optimizing the container by removing unused services; this also means
-                            # fetching services directly from the container via $container->get() won't work.
-                            # The best practice is to be explicit about your dependencies anyway.
+      autowire: true      # Automatically injects dependencies in your services.
+      autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+      public: false       # Allows optimizing the container by removing unused services; this also means
+                          # fetching services directly from the container via $container->get() won't work.
+                          # The best practice is to be explicit about your dependencies anyway.
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/*'
-        exclude: '../src/{Entity,Migrations,Tests,Kernel.php}'
+      resource: '../src/*'
+      exclude: '../src/{Entity,Migrations,Tests,Kernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
-        resource: '../src/Controller'
-        tags: ['controller.service_arguments']
+      resource: '../src/Controller'
+      tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    App\Command\Cron:
+      arguments:
+        $logger: '@monolog.logger.db'
+
+    App\Command\PreparePreviews:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+
+    App\Command\ConvertVideo:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+        $targetDir: '%env(resolve:dir_files)%'
+        $binaryFfmpeg: '%env(resolve:FFMPEG_PATH)%'
+
+    App\Command\ConvertImage:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+        $targetDir: '%env(resolve:dir_files)%'
+
+    App\Command\CleanOldCache:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+        $targetDir: '%env(resolve:dir_cache)%'
+
+    App\Command\CleanDanglingFiles:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+        $targetDir: '%env(resolve:dir_files)%'
+
     App\Service\Mailer:
-        arguments:
-            - '@mailer'
-            - '@twig'
-            - '%env(resolve:DOMAIN)%'
-            - '%env(resolve:LANG)%'
+      arguments:
+        - '@mailer'
+        - '@twig'
+        - '%env(resolve:DOMAIN)%'
+        - '%env(resolve:LANG)%'
 
     App\Service\Namer:
-        public: true
+      public: true
