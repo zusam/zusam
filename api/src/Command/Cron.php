@@ -34,11 +34,13 @@ class Cron extends Command
         $this->params = $params;
         $this->system = $system;
         $this->tasks = [
-            "zusam:clean-dangling-files" => 1440 * 60,
-            "zusam:clean-old-cache" => 1440 * 60,
-            "zusam:notification-emails" => 60 * 60,
-            "zusam:convert-video" => 5 * 60,
-            "zusam:convert-image" => 1 * 60,
+            "zusam:convert-image" => 1 * 60, // 1 minute
+            "zusam:convert-video" => 5 * 60, // 5 minutes
+            "zusam:notification-emails" => 60 * 60, // 1 hour
+            "zusam:clean-old-cache" => 1440 * 60, // 1 day
+            "zusam:clean-dangling-files" => 1440 * 60, // 1 day
+            "zusam:clean-dangling-messages" => 1440 * 7 * 60, // 7 days
+            "zusam:clean-dangling-groups" => 1440 * 30 * 60, // 30 days
         ];
     }
 

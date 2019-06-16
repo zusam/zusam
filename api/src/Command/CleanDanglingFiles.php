@@ -34,7 +34,7 @@ class CleanDanglingFiles extends Command
         $this->setName('zusam:clean-dangling-files')
        ->setDescription('Clean dangling files.')
        ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list files that would be deleted.')
-       ->setHelp('This command cleans files not linked to any message or user.');
+       ->setHelp('This command deletes files not linked to any message or user.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

@@ -60,6 +60,14 @@ services:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_files)%'
 
+    App\Command\CleanDanglingGroups:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+
+    App\Command\CleanDanglingMessages:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+
     App\Service\Mailer:
       arguments:
         - '@mailer'
