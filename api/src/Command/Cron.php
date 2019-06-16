@@ -34,11 +34,11 @@ class Cron extends Command
         $this->params = $params;
         $this->system = $system;
         $this->tasks = [
-            "zusam:clean-dangling-files",
-            "zusam:clean-old-cache",
-            "zusam:notification-emails",
-            "zusam:convert-video",
-            "zusam:convert-image",
+            "zusam:clean-dangling-files" => 1440 * 60,
+            "zusam:clean-old-cache" => 1440 * 60,
+            "zusam:notification-emails" => 60 * 60,
+            "zusam:convert-video" => 5 * 60,
+            "zusam:convert-image" => 1 * 60,
         ];
     }
 
@@ -72,7 +72,7 @@ class Cron extends Command
             $this->output->writeln(["<info>Task already running</info>"]);
             die();
         }
-        
+
         define('TASK_RUNNING', true);
         $this->running = true;
 
@@ -93,11 +93,11 @@ class Cron extends Command
             $context["lockup_detected"] = true;
         }
 
-        foreach ($this->tasks as $task) {
+        foreach ($this->tasks as $task => $period) {
             $lastLog = $this->em
                         ->createQuery("SELECT log FROM App\Entity\Log log WHERE log.message = '$task' ORDER BY log.createdAt DESC")
                         ->setMaxResults(1)->getOneOrNullResult();
-            if (empty($lastLog) || $lastLog->getCreatedAt() < time() - 60) {
+            if (empty($lastLog) || $lastLog->getCreatedAt() < time() - $period) {
                 $this->output->writeln(["<info>Running $task</info>"]);
                 $this->system->set("task_running", true);
                 $this->system->set("last_task_timestamp", time());
