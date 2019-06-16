@@ -36,9 +36,14 @@ Requirements:
 
 You can follow the installation guide for [Debian stretch](documentation/debian.md) or use [Docker](documentation/docker.md).
 
+## Status
+The project has the goal of being really stable for the backend once 1.0 is hit. That means no database structure changes, an update system and a stable API.  
+The webapp can still change a lot after that point.  
+For now, Zusam is completely usable in a day-to-day basis but is subject to significative evolutions with upcoming updates and doesn't garantee backwards compatibility.  
+I try my best to make updates as easy as possible.
+
 ## Webapp compatibility
-The webapp targets Firefox 60+, Chrome 67+, Safari 11+.  
-It's intentionally high but should work with all versions of Edge and older versions of Chrome and Firefox.
+The webapp targets latest versions of Firefox, Chrome and Safari. It should also work with Firefox ESR, Edge and older versions of Chrome.
 
 ## Contributing
 Zusam is free and open-source software licensed under [AGPLv3](https://www.gnu.org/licenses/agpl.html).  
