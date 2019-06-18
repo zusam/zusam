@@ -74,9 +74,9 @@ class Log
     {
         $this->id = Uuid::uuidv4();
         $this->createdAt = time();
-		$this->message = "";
-		$this->levelName = "";
-		$this->channel = "";
+        $this->message = "";
+        $this->levelName = "";
+        $this->channel = "";
     }
 
     public function getEntityType(): string
@@ -94,16 +94,9 @@ class Log
         return $this->createdAt;
     }
 
-    public function setCreatedAt(int $createdAt): self
+    public function setCreatedAt(int $createdAt): void
     {
         $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    public function setMessage(string $message): self
-    {
-        $this->message = $message;
-        return $this;
     }
 
     public function getMessage(): string
@@ -111,10 +104,9 @@ class Log
         return $this->message;
     }
 
-    public function setLevel(int $level): self
+    public function setMessage(string $message): void
     {
-        $this->level = $level;
-        return $this;
+        $this->message = $message;
     }
 
     public function getLevel(): int
@@ -122,10 +114,9 @@ class Log
         return $this->level;
     }
 
-    public function setLevelName(string $levelName): self
+    public function setLevel(int $level): void
     {
-        $this->levelName = $levelName;
-        return $this;
+        $this->level = $level;
     }
 
     public function getLevelName(): string
@@ -133,21 +124,19 @@ class Log
         return $this->levelName;
     }
 
+    public function setLevelName(string $levelName): void
+    {
+        $this->levelName = $levelName;
+    }
+
     public function getContext(): ?array
     {
         return $this->context;
     }
 
-    public function setContext(array $context): self
+    public function setContext(array $context): void
     {
         $this->context = $context;
-        return $this;
-    }
-
-    public function setChannel(string $channel): self
-    {
-        $this->channel = $channel;
-        return $this;
     }
 
     public function getChannel(): string
@@ -155,14 +144,18 @@ class Log
         return $this->channel;
     }
 
+    public function setChannel(string $channel): void
+    {
+        $this->channel = $channel;
+    }
+
     public function getExtra(): ?array
     {
         return $this->extra;
     }
 
-    public function setExtra(array $extra): self
+    public function setExtra(array $extra): void
     {
         $this->extra = $extra;
-        return $this;
     }
 }

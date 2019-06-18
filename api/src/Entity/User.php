@@ -149,10 +149,9 @@ class User implements UserInterface, \Serializable
         return $this->createdAt;
     }
 
-    public function setCreatedAt(int $createdAt): self
+    public function setCreatedAt(int $createdAt): void
     {
         $this->createdAt = $createdAt;
-        return $this;
     }
 
     public function getLogin(): string
@@ -160,10 +159,9 @@ class User implements UserInterface, \Serializable
         return $this->login;
     }
 
-    public function setLogin(string $login): self
+    public function setLogin(string $login): void
     {
         $this->login = $login;
-        return $this;
     }
 
     public function getPassword(): string
@@ -171,10 +169,9 @@ class User implements UserInterface, \Serializable
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): void
     {
         $this->password = $password;
-        return $this;
     }
 
     public function getSecretKey(): string
@@ -182,21 +179,9 @@ class User implements UserInterface, \Serializable
         return $this->secretKey;
     }
 
-    public function resetSecretKey(): self
+    public function resetSecretKey(): void
     {
         $this->secretKey = Uuid::uuidv4();
-    }
-
-    public function addGroup(Group $group): self
-    {
-        $this->groups[] = $group;
-        return $this;
-    }
-
-    public function removeGroup(Group $group): self
-    {
-        $this->groups->removeElement($group);
-        return $this;
     }
 
     public function getGroups(): Collection
@@ -204,16 +189,14 @@ class User implements UserInterface, \Serializable
         return $this->groups;
     }
 
-    public function addMessage(Message $message): self
+    public function addGroup(Group $group): void
     {
-        $this->messages[] = $message;
-        return $this;
+        $this->groups[] = $group;
     }
 
-    public function removeMessage(Message $message): self
+    public function removeGroup(Group $group): void
     {
-        $this->messages->removeElement($message);
-        return $this;
+        $this->groups->removeElement($group);
     }
 
     public function getMessages(): Collection
@@ -221,10 +204,14 @@ class User implements UserInterface, \Serializable
         return $this->messages;
     }
 
-    public function setAvatar(File $avatar): self
+    public function addMessage(Message $message): void
     {
-        $this->avatar = $avatar;
-        return $this;
+        $this->messages[] = $message;
+    }
+
+    public function removeMessage(Message $message): void
+    {
+        $this->messages->removeElement($message);
     }
 
     public function getAvatar(): ?File
@@ -235,10 +222,9 @@ class User implements UserInterface, \Serializable
         return null;
     }
 
-    public function setName(string $name): self
+    public function setAvatar(File $avatar): void
     {
-        $this->name = $name;
-        return $this;
+        $this->avatar = $avatar;
     }
 
     public function getName(): string
@@ -246,15 +232,19 @@ class User implements UserInterface, \Serializable
         return $this->name;
     }
 
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
     public function getData(): ?array
     {
         return $this->data;
     }
 
-    public function setData(array $data): self
+    public function setData(array $data): void
     {
         $this->data = $data;
-        return $this;
     }
 
     public function getNews(): ?array
@@ -262,13 +252,12 @@ class User implements UserInterface, \Serializable
         return $this->news;
     }
 
-    public function setNews(array $news): self
+    public function setNews(array $news): void
     {
         $this->news = $news;
-        return $this;
     }
 
-    public function addNews(string $newsId): self
+    public function addNews(string $newsId): void
     {
         if (!in_array($newsId, $this->news)) {
             array_push($this->news, $newsId);
@@ -276,15 +265,13 @@ class User implements UserInterface, \Serializable
         if (count($this->news) > 1024) {
             array_shift($this->news);
         }
-        return $this;
     }
 
-    public function removeNews(string $newsId): self
+    public function removeNews(string $newsId): void
     {
         if (($key = array_search($newsId, $this->news)) !== false) {
             unset($this->news[$key]);
         }
-        return $this;
     }
 
     // necessary for UserInterface

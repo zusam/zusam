@@ -21,7 +21,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *     attributes={"access_control"="is_granted('ROLE_USER')"},
  *     itemOperations={
  *          "get",
- * 			"delete",
+ *          "delete",
  *          "put",
  *          "post"={
  *              "method"="POST",
@@ -122,10 +122,9 @@ class File
         return $this->createdAt;
     }
 
-    public function setCreatedAt(int $createdAt): self
+    public function setCreatedAt(int $createdAt): void
     {
         $this->createdAt = $createdAt;
-        return $this;
     }
 
     public function getType(): string
@@ -133,10 +132,9 @@ class File
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(string $type): void
     {
         $this->type = $type;
-        return $this;
     }
 
     public function getStatus(): string
@@ -144,10 +142,14 @@ class File
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(string $status): void
     {
         $this->status = $status;
-        return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
     }
 
     /**
@@ -159,7 +161,7 @@ class File
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $file
      */
-    public function setFile($file = null): self
+    public function setFile($file = null): void
     {
         $this->file = $file;
 
@@ -168,12 +170,6 @@ class File
             // otherwise the event listeners won't be called and the file is lost
             $this->status = self::STATUS_RAW;
         }
-        return $this;
-    }
-
-    public function getFile()
-    {
-        return $this->file;
     }
 
     public function getContentUrl(): string
@@ -181,10 +177,9 @@ class File
         return $this->contentUrl;
     }
 
-    public function setContentUrl(string $contentUrl): self
+    public function setContentUrl(string $contentUrl): void
     {
         $this->contentUrl = $contentUrl;
-        return $this;
     }
 
     public function getSize(): int
@@ -192,10 +187,9 @@ class File
         return $this->size;
     }
 
-    public function setSize(int $size): self
+    public function setSize(int $size): void
     {
         $this->size = $size;
-        return $this;
     }
 
     public function getFileIndex(): int
@@ -203,10 +197,9 @@ class File
         return $this->fileIndex ?? 0;
     }
 
-    public function setFileIndex(int $fileIndex): self
+    public function setFileIndex(int $fileIndex): void
     {
         $this->fileIndex = $fileIndex;
-        return $this;
     }
 
     public function getSecretKey(): string
@@ -214,7 +207,7 @@ class File
         return $this->secretKey;
     }
 
-    public function resetSecretKey(): self
+    public function resetSecretKey(): void
     {
         $this->secretKey = Uuid::uuidv4();
     }

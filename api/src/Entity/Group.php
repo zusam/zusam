@@ -133,10 +133,9 @@ class Group
         return $this->secretKey;
     }
 
-    public function resetSecretKey(): self
+    public function resetSecretKey(): void
     {
         $this->secretKey = Uuid::uuidv4();
-        return $this;
     }
 
     public function getCreatedAt(): int
@@ -144,10 +143,9 @@ class Group
         return $this->createdAt;
     }
 
-    public function setCreatedAt(int $createdAt): self
+    public function setCreatedAt(int $createdAt): void
     {
         $this->createdAt = $createdAt;
-        return $this;
     }
 
     public function getName(): string
@@ -155,10 +153,14 @@ class Group
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): void
     {
         $this->name = $name;
-        return $this;
+    }
+
+    public function getUsers(): Collection
+    {
+        return $this->users;
     }
 
     public function addUser(User $user): self
@@ -173,26 +175,9 @@ class Group
         return $this;
     }
 
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
     public function getUsersAsArray(): array
     {
         return $this->users->toArray();
-    }
-
-    public function addMessage(Message $message): self
-    {
-        $this->messages[] = $message;
-        return $this;
-    }
-
-    public function removeMessage(Message $message): self
-    {
-        $this->messages->removeElement($message);
-        return $this;
     }
 
     public function getMessages(): Collection
@@ -200,15 +185,24 @@ class Group
         return $this->messages;
     }
 
+    public function addMessage(Message $message): void
+    {
+        $this->messages[] = $message;
+    }
+
+    public function removeMessage(Message $message): void
+    {
+        $this->messages->removeElement($message);
+    }
+
     public function getLastActivityDate(): int
     {
         return $this->lastActivityDate ?? 0;
     }
 
-    public function setLastActivityDate(?int $lastActivityDate): self
+    public function setLastActivityDate(?int $lastActivityDate): void
     {
         $this->lastActivityDate = $lastActivityDate ?? 0;
-        return $this;
     }
 
     public function getData(): ?array
@@ -216,9 +210,8 @@ class Group
         return $this->data;
     }
 
-    public function setData(?array $data): self
+    public function setData(?array $data): void
     {
         $this->data = $data;
-        return $this;
     }
 }

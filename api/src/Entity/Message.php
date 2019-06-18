@@ -164,10 +164,9 @@ class Message
         return $this->createdAt;
     }
 
-    public function setCreatedAt(int $createdAt): self
+    public function setCreatedAt(int $createdAt): void
     {
         $this->createdAt = $createdAt;
-        return $this;
     }
 
     public function getData(): ?array
@@ -175,16 +174,9 @@ class Message
         return $this->data;
     }
 
-    public function setData(array $data): self
+    public function setData(array $data): void
     {
         $this->data = $data;
-        return $this;
-    }
-
-    public function setAuthor(User $author): self
-    {
-        $this->author = $author;
-        return $this;
     }
 
     public function getAuthor(): User
@@ -192,10 +184,9 @@ class Message
         return $this->author;
     }
 
-    public function setGroup(Group $group): self
+    public function setAuthor(User $author): void
     {
-        $this->group = $group;
-        return $this;
+        $this->author = $author;
     }
 
     public function getGroup(): Group
@@ -203,10 +194,9 @@ class Message
         return $this->group;
     }
 
-    public function setParent(Message $parent): self
+    public function setGroup(Group $group): void
     {
-        $this->parent = $parent;
-        return $this;
+        $this->group = $group;
     }
 
     public function getParent(): ?Message
@@ -214,16 +204,9 @@ class Message
         return $this->parent;
     }
 
-    public function addChild(Message $child): self
+    public function setParent(Message $parent): void
     {
-        $this->children[] = $child;
-        return $this;
-    }
-
-    public function removeChild(Message $child): self
-    {
-        $this->children->removeElement($child);
-        return $this;
+        $this->parent = $parent;
     }
 
     public function getChildren(): Collection
@@ -231,16 +214,14 @@ class Message
         return $this->children;
     }
 
-    public function addFile(File $file): self
+    public function addChild(Message $child): void
     {
-        $this->files[] = $file;
-        return $this;
+        $this->children[] = $child;
     }
 
-    public function removeFile(File $file): self
+    public function removeChild(Message $child): void
     {
-        $this->files->removeElement($file);
-        return $this;
+        $this->children->removeElement($child);
     }
 
     public function getFiles(): Collection
@@ -248,26 +229,34 @@ class Message
         return $this->files;
     }
 
+    public function addFile(File $file): void
+    {
+        $this->files[] = $file;
+    }
+
+    public function removeFile(File $file): void
+    {
+        $this->files->removeElement($file);
+    }
+
     public function getLastActivityDate(): int
     {
         return $this->lastActivityDate;
     }
 
-    public function setLastActivityDate(int $lastActivityDate): self
+    public function setLastActivityDate(int $lastActivityDate): void
     {
         $this->lastActivityDate = $lastActivityDate;
-        return $this;
-    }
-
-    public function setPreview(?File $preview): self
-    {
-        $this->preview = $preview;
-        return $this;
     }
 
     public function getPreview(): ?File
     {
         return $this->preview;
+    }
+
+    public function setPreview(?File $preview): void
+    {
+        $this->preview = $preview;
     }
 
     public function getUrls(): array
@@ -298,9 +287,8 @@ class Message
         return $this->secretKey;
     }
 
-    public function resetSecretKey(): self
+    public function resetSecretKey(): void
     {
         $this->secretKey = Uuid::uuidv4();
-        return $this;
     }
 }

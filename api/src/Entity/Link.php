@@ -89,10 +89,9 @@ class Link
         return $this->createdAt;
     }
 
-    public function setCreatedAt(int $createdAt): self
+    public function setCreatedAt(int $createdAt): void
     {
         $this->createdAt = $createdAt;
-        return $this;
     }
 
     public function getUpdatedAt(): int
@@ -100,10 +99,9 @@ class Link
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(int $updatedAt): self
+    public function setUpdatedAt(int $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-        return $this;
     }
 
     public function getData(): array
@@ -111,10 +109,9 @@ class Link
         return $this->data;
     }
 
-    public function setData(array $data): self
+    public function setData(array $data): void
     {
         $this->data = $data;
-        return $this;
     }
 
     public function getUrl(): string
@@ -122,16 +119,9 @@ class Link
         return $this->url;
     }
 
-    public function setUrl(string $url): self
+    public function setUrl(string $url): void
     {
         $this->url = $url;
-        return $this;
-    }
-
-    public function setPreview(File $preview): self
-    {
-        $this->preview = $preview;
-        return $this;
     }
 
     public function getPreview(): ?File
@@ -139,12 +129,17 @@ class Link
         return $this->preview;
     }
 
+    public function setPreview(File $preview): void
+    {
+        $this->preview = $preview;
+    }
+
     public function getSecretKey(): string
     {
         return $this->secretKey;
     }
 
-    public function resetSecretKey(): self
+    public function resetSecretKey(): void
     {
         $this->secretKey = Uuid::uuidv4();
     }
