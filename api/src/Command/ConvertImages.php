@@ -7,9 +7,10 @@ use App\Service\Image as ImageService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ConvertImage extends Command
+class ConvertImages extends Command
 {
     private $pdo;
     private $imageService;
@@ -34,15 +35,18 @@ class ConvertImage extends Command
 
     protected function configure()
     {
-        $this->setName('zusam:convert-image')
-            ->setDescription('Converts a raw image file.')
-            ->setHelp('This command search for a raw image file in the database and converts it.');
+        $this->setName('zusam:convert-images')
+            ->setDescription('Converts raw image files.')
+            ->addOption('--max-convert', null, InputOption::VALUE_NONE, 'Maximum conversions to perform.')
+            ->setHelp('This command search for raw image files in the database and converts them.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'image%';");
+        $i = 0;
         while($rawFile = $c->fetch()) {
+            $i++;
             $outputFile = $this->targetDir."/".$rawFile["id"];
             $output->writeln(["Converting ".$rawFile["content_url"]]);  
             $this->imageService->createThumbnail(
@@ -54,7 +58,9 @@ class ConvertImage extends Command
             rename($outputFile.".converted", $outputFile.".jpg");
             $q = $this->pdo->prepare("UPDATE file SET content_url = '".$rawFile["id"].".jpg', status = '".File::STATUS_READY."', type = 'image/jpeg' WHERE id = '".$rawFile["id"]."';");
             $q->execute();
-            return;
+            if (!empty($input->getOption("max-convert")) && intval($input->getOption("max-convert")) < $i) {
+                return;
+            }
         }
     }
 }

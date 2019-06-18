@@ -45,7 +45,7 @@ services:
         $targetDir: '%env(resolve:dir_files)%'
         $binaryFfmpeg: '%env(resolve:FFMPEG_PATH)%'
 
-    App\Command\ConvertImage:
+    App\Command\ConvertImages:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_files)%'
@@ -65,6 +65,10 @@ services:
         $dsn: '%env(resolve:DATABASE_URL)%'
 
     App\Command\CleanDanglingMessages:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+
+    App\Command\CleanOldLogs:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
 
