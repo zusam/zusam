@@ -7,6 +7,7 @@ use App\Entity\Link;
 use App\Entity\Message;
 use App\Service\Url as UrlService;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,9 +20,11 @@ class PreparePreviews extends Command
     private $pdo;
     private $newMessage;
     private $urlService;
+    private $logger;
 
     public function __construct (
         string $dsn,
+        LoggerInterface $logger,
         EntityManagerInterface $em,
         NewMessage $newMessage,
         UrlService $urlService
@@ -31,6 +34,7 @@ class PreparePreviews extends Command
         $this->em = $em;
         $this->newMessage = $newMessage;
         $this->urlService = $urlService;
+        $this->logger = $logger;
     }
 
     protected function configure()
@@ -43,6 +47,7 @@ class PreparePreviews extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->logger->info("zusam:prepare-previews");
         $max_memory = $input->getArgument("memory") ? intval($input->getArgument("memory")) : 70;
         ini_set('memory_limit', max(128, $max_memory + 10) . "M");
 

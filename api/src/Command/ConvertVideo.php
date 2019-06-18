@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\File;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,11 +15,17 @@ class ConvertVideo extends Command
     private $pdo;
     private $targetDir;
     private $binaryFfmpeg;
+    private $logger;
 
-    public function __construct(string $dsn, string $targetDir, string $binaryFfmpeg)
-    {
+    public function __construct(
+        string $dsn,
+        string $targetDir,
+        string $binaryFfmpeg,
+        LoggerInterface $logger
+    ) {
         parent::__construct();
         $this->binaryFfmpeg = $binaryFfmpeg;
+        $this->logger = $logger;
         $this->pdo = new \PDO($dsn, null, null);
         
         $this->targetDir = realpath($targetDir);
@@ -42,6 +49,7 @@ class ConvertVideo extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->logger->info("zusam:convert-video");
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'video%';");
         while($rawFile = $c->fetch()) {
             $outputFile = $this->targetDir."/".$rawFile["id"];

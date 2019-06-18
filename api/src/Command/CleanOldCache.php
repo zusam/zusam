@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,11 +13,16 @@ class CleanOldCache extends Command
 {
     private $pdo;
     private $targetDir;
+    private $logger;
 
-    public function __construct(string $dsn, string $targetDir)
-    {
+    public function __construct(
+        string $dsn,
+        string $targetDir,
+        LoggerInterface $logger
+    ) {
         parent::__construct();
         $this->pdo = new \PDO($dsn, null, null);
+        $this->logger = $logger;
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
@@ -38,6 +44,7 @@ class CleanOldCache extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->logger->info("zusam:clean-old-cache");
         foreach(scandir($this->targetDir."/images/") as $file) {
             if (
                 $file != "." && $file != ".." &&

@@ -31,6 +31,10 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    App\Controller\Security:
+      arguments:
+        $logger: '@monolog.logger.db'
+
     App\Command\Cron:
       arguments:
         $logger: '@monolog.logger.db'
@@ -38,39 +42,47 @@ services:
     App\Command\PreparePreviews:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
+        $logger: '@monolog.logger.db'
 
     App\Command\ConvertVideo:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_files)%'
         $binaryFfmpeg: '%env(resolve:FFMPEG_PATH)%'
+        $logger: '@monolog.logger.db'
 
     App\Command\ConvertImages:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_files)%'
+        $logger: '@monolog.logger.db'
 
     App\Command\CleanOldCache:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_cache)%'
+        $logger: '@monolog.logger.db'
 
     App\Command\CleanDanglingFiles:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_files)%'
+        $logger: '@monolog.logger.db'
 
     App\Command\CleanDanglingGroups:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
+        $logger: '@monolog.logger.db'
 
     App\Command\CleanDanglingMessages:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
+        $logger: '@monolog.logger.db'
 
     App\Command\CleanOldLogs:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
+        $logger: '@monolog.logger.db'
 
     App\Service\Mailer:
       arguments:

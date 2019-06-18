@@ -34,7 +34,7 @@ class Cron extends Command
         $this->params = $params;
         $this->system = $system;
         $this->tasks = [
-            "zusam:convert-video" => 30 * 60, // 30 minutes
+            "zusam:convert-video" => 15 * 60, // 15 minutes
             "zusam:convert-images" => 30 * 60, // 30 minutes
             "zusam:notification-emails" => 60 * 60, // 1 hour
             "zusam:clean-old-cache" => 1440 * 60, // 1 day
@@ -86,14 +86,13 @@ class Cron extends Command
 
         // if a task is running and it's not older than 4h, do nothing
         if ($task_running && isset($last_task_timestamp) && $last_task_timestamp > time() - 60*60*4) {
-            $this->output->writeln(["<info>Task already running since $last_task_timestamp</info>"]);
             die();
         }
 
         // if a task is running but it's old, it's probably a lockup.
         // continue but log it
         if (isset($last_task_timestamp) && $last_task_timestamp < time() - 60*60*4) {
-            $context["lockup_detected"] = true;
+            $this->logger->notice("Old task lock detected");
         }
 
         foreach ($this->tasks as $task => $period) {
@@ -101,17 +100,14 @@ class Cron extends Command
                         ->createQuery("SELECT log FROM App\Entity\Log log WHERE log.message = '$task' ORDER BY log.createdAt DESC")
                         ->setMaxResults(1)->getOneOrNullResult();
             if (empty($lastLog) || $lastLog->getCreatedAt() < time() - $period) {
-                $this->output->writeln(["<info>Running $task</info>"]);
                 $this->system->set("task_running", true);
                 $this->system->set("last_task_timestamp", time());
                 $this->system->set("last_task_name", $task);
-                $this->logger->info($task, $context);
                 $this->runCommand($task);
                 $this->system->set("task_running", false);
                 return true;
             }
         }
-        $this->output->writeln(["<info>No task performed</info>"]);
         return false;
     }
 

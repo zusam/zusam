@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\File;
 use App\Service\Image as ImageService;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,12 +16,18 @@ class ConvertImages extends Command
     private $pdo;
     private $imageService;
     private $targetDir;
+    private $logger;
 
-    public function __construct(string $dsn, string $targetDir, ImageService $imageService)
-    {
+    public function __construct(
+        string $dsn,
+        string $targetDir,
+        LoggerInterface $logger,
+        ImageService $imageService
+    ) {
         parent::__construct();
         $this->imageService = $imageService;
         $this->pdo = new \PDO($dsn, null, null);
+        $this->logger = $logger;
 
         $this->targetDir = realpath($targetDir);
 
@@ -43,6 +50,7 @@ class ConvertImages extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->logger->info("zusam:convert-images");
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'image%';");
         $i = 0;
         while($rawFile = $c->fetch()) {

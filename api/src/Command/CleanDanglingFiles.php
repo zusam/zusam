@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,11 +13,16 @@ class CleanDanglingFiles extends Command
 {
     private $pdo;
     private $targetDir;
+    private $logger;
 
-    public function __construct(string $dsn, string $targetDir)
-    {
+    public function __construct(
+        string $dsn,
+        string $targetDir,
+        LoggerInterface $logger
+    ) {
         parent::__construct();
         $this->pdo = new \PDO($dsn, null, null);
+        $this->logger = $logger;
 
         $this->targetDir = realpath($targetDir);
 
@@ -39,6 +45,7 @@ class CleanDanglingFiles extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->logger->info("zusam:clean-dangling-files");
         // First we get all files not linked to a user and/or a message
         $c = $this->pdo->query("SELECT f.id, f.content_url FROM file f WHERE NOT EXISTS (SELECT * FROM messages_files mf WHERE mf.file_id = f.id) AND NOT EXISTS (SELECT * FROM user u WHERE u.avatar_id = f.id) AND NOT EXISTS (SELECT * FROM link l WHERE l.preview_id = f.id);");
         while($i = $c->fetch()) {

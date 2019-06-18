@@ -6,6 +6,7 @@ use App\Entity\Message;
 use App\Entity\User;
 use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,12 +17,17 @@ class NotificationEmails extends Command
 {
     private $em;
     private $mailer;
+    private $logger;
 
-    public function __construct (EntityManagerInterface $em, Mailer $mailer)
-    {
+    public function __construct (
+        LoggerInterface $logger,
+        EntityManagerInterface $em,
+        Mailer $mailer
+    ) {
         parent::__construct();
         $this->em = $em;
         $this->mailer = $mailer;
+        $this->logger = $logger;
     }
 
     protected function configure()
@@ -34,6 +40,7 @@ class NotificationEmails extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->logger->info("zusam:notification-emails");
         $users = $this->em->getRepository(User::class)->findAll();
         foreach ($users as $user) {
 

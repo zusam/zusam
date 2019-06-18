@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,11 +12,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CleanDanglingGroups extends Command
 {
     private $pdo;
+    private $logger;
 
-    public function __construct(string $dsn)
-    {
+    public function __construct(
+        string $dsn,
+        LoggerInterface $logger
+    ) {
         parent::__construct();
         $this->pdo = new \PDO($dsn, null, null);
+        $this->logger = $logger;
     }
 
     protected function configure()
@@ -28,6 +33,7 @@ class CleanDanglingGroups extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->logger->info("zusam:clean-dangling-groups");
         $c = $this->pdo->query("SELECT g.id from `group` g LEFT JOIN users_groups ug ON ug.group_id = g.id WHERE ug.group_id IS NULL;");
         while($i = $c->fetch()) {
             if ($input->getOption("verbose") || $input->getOption("only-list")) {
