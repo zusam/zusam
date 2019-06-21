@@ -34,53 +34,66 @@ export default class PreviewBlock extends Component {
 	}
 
     getPreview() {
-        let provider = "";
         if (this.props.data["providerUrl"]) {
-            provider = this.props.data["providerUrl"].toLowerCase().replace(/\/$/, '').replace(/^https?:\/\/(www\.)?/, '')
-        }
-        switch (provider) {
-            case "youtube.com":
-                if (this.props.data["type"] == "video" && this.props.data["code"]) {
-                    return (
-                        <YoutubeEmbed
-                            preview={this.props.preview}
-                            url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0]}
-                        />
-                    );
-                }
-                break;
-            case "soundcloud.com":
-                if (this.props.data["code"]) {
-                    return (
-                        <SoundcloudEmbed
-                            preview={this.props.preview}
-                            url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] + "&auto_play=true"}
-                        />
-                    );
-                }
-            case "twitch.tv":
-                return <TwitchEmbed preview={this.props.preview} url={this.props.data["url"]}/>;
-            case "bandcamp.com":
-                if (this.props.data["code"]) {
-                    return <BandCampEmbed url={this.props.data["code"].match(/https:\/\/.*album=\d+/)[0]}/>;
-                }
-            case "imgur.com":
-                // skip default embed code if it's an imgur image
-                if (this.props.data["type"] == "photo") {
+            switch (this.props.data["providerUrl"].toLowerCase().replace(/\/$/, '').replace(/^https?:\/\/(www\.)?/, '')) {
+                case "youtube.com":
+                    if (this.props.data["type"] == "video" && this.props.data["code"]) {
+                        return (
+                            <YoutubeEmbed
+                                preview={this.props.preview}
+                                url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0]}
+                            />
+                        );
+                    }
                     break;
-                }
-            case "vimeo.com":
-            case "dailymotion.com":
-                // default embed code
-                if (this.props.data["code"]) {
-                    return (
-                        <div class="embed-container"
-                            ref={e => this.embedContainer = e}
-                            dangerouslySetInnerHTML={{__html: this.props.data["code"]}}
-                        ></div>
-                    );
-                }
-            default:
+                case "soundcloud.com":
+                    if (this.props.data["code"]) {
+                        return (
+                            <SoundcloudEmbed
+                                preview={this.props.preview}
+                                url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] + "&auto_play=true"}
+                            />
+                        );
+                    }
+                case "twitch.tv":
+                    return <TwitchEmbed preview={this.props.preview} url={this.props.data["url"]}/>;
+                case "bandcamp.com":
+                    if (this.props.data["code"]) {
+                        return <BandCampEmbed url={this.props.data["code"].match(/https:\/\/.*album=\d+/)[0]}/>;
+                    }
+                case "imgur.com":
+                    // skip default embed code if it's an imgur image
+                    if (this.props.data["type"] == "photo") {
+                        break;
+                    }
+                case "vimeo.com":
+                case "dailymotion.com":
+                    // default embed code
+                    if (this.props.data["code"]) {
+                        return (
+                            <div class="embed-container"
+                                ref={e => this.embedContainer = e}
+                                dangerouslySetInnerHTML={{__html: this.props.data["code"]}}
+                            ></div>
+                        );
+                    }
+                default:
+            }
+        }
+        if (this.props.data["providerName"]) {
+            switch (this.props.data["providerName"].toLowerCase()) {
+                case "peertube":
+                    // default embed code
+                    if (this.props.data["code"]) {
+                        return (
+                            <div class="embed-container"
+                                ref={e => this.embedContainer = e}
+                                dangerouslySetInnerHTML={{__html: this.props.data["code"]}}
+                            ></div>
+                        );
+                    }
+                default:
+            }
         }
         if (/image/.test(this.props.data["content-type"])) {
             return (
