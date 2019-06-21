@@ -1,4 +1,5 @@
 monolog:
+    channels: ["db"]
     handlers:
         main:
             type: fingers_crossed
@@ -11,6 +12,7 @@ monolog:
             type: service
             id: App\Service\Logger
             level: debug
+            channels: ["db"]
         console:
             type: console
             process_psr_3_messages: false

@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Service\Mailer;
 use App\Service\Token;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +18,15 @@ class Security extends Controller
     private $em;
     private $mailer;
     private $encoder;
+    private $logger;
 
-    public function __construct(EntityManagerInterface $em, Mailer $mailer, UserPasswordEncoderInterface $encoder)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        EntityManagerInterface $em,
+        Mailer $mailer,
+        UserPasswordEncoderInterface $encoder
+    ) {
+        $this->logger = $logger;
         $this->em = $em;
         $this->mailer = $mailer;
         $this->encoder = $encoder;
@@ -49,6 +56,7 @@ class Security extends Controller
         }
 
         if (!$this->encoder->isPasswordValid($user, $password)) {
+            $this->logger->notice("Invalid password for ".$user->getId(), ["ip" => $_SERVER["REMOTE_ADDR"]]);
             return new JsonResponse(["message" => "Invalid login/password"], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
