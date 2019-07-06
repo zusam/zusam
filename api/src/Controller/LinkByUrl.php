@@ -62,11 +62,14 @@ class LinkByUrl extends Controller
         $link = $this->urlService->getLink($url, $rescan);
         if (!$onlyData) {
             return [
-                "id" => "/api/links/".$link->getId(),
+                "id" => $link->getId(),
                 "data" => $link->getData(),
                 "url" => $url,
                 "updatedAt" => $link->getUpdatedAt(),
-                "preview" => $link->getPreview() ? "/files/".$link->getPreview()->getContentUrl() : "",
+                "preview" => $link->getPreview() ? [
+                    "id" => $link->getPreview()->getId(),
+                    "entityType" => $link->getPreview()->getEntityType(),
+                ]: "",
             ];
         } else {
             return json_decode($link->getData(), true);

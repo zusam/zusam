@@ -123,6 +123,16 @@ class User implements UserInterface, \Serializable
      */
     private $news;
 
+    /**
+     * @Groups({"read_user"})
+     */
+    private $entityType;
+
+    public function getEntityType(): string
+    {
+        return strtolower((new \ReflectionClass($this))->getShortName());
+    }
+
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
@@ -132,11 +142,6 @@ class User implements UserInterface, \Serializable
         $this->createdAt = time();
         $this->secretKey = Uuid::uuidv4();
         $this->data = [];
-    }
-
-    public function getEntityType(): string
-    {
-        return get_class($this);
     }
 
     public function getId(): string

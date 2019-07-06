@@ -35,17 +35,18 @@ class System
      */
     private $createdAt;
 
+    private $entityType;
+
+    public function getEntityType(): string
+    {
+        return strtolower((new \ReflectionClass($this))->getShortName());
+    }
 
     public function __construct(string $key, $value)
     {
         $this->createdAt = time();
         $this->key = $key;
         $this->value = serialize($value);
-    }
-
-    public function getEntityType(): string
-    {
-        return get_class($this);
     }
 
     public function getCreatedAt(): int

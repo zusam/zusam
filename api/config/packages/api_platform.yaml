@@ -1,14 +1,17 @@
 api_platform:
-    enable_swagger: false
-    enable_docs: false
-    enable_swagger_ui: false
-    enable_entrypoint: false
-    mapping:
-        paths: ['%kernel.project_dir%/src/Entity']
-    http_cache:
-        etag: true
-        max_age: 0
-        shared_max_age: 3600
-        public: true
-        invalidation:
-            enabled: false
+  enable_swagger: false
+  enable_docs: false
+  enable_swagger_ui: false
+  enable_entrypoint: false
+  mapping:
+    paths: ['%kernel.project_dir%/src/Entity']
+  http_cache:
+    etag: true
+    max_age: 0
+    shared_max_age: 3600
+    public: true
+    invalidation:
+      enabled: false
+  formats:
+    json:
+      mime_types: ['application/json']

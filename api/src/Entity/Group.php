@@ -109,6 +109,16 @@ class Group
      */
     private $data;
 
+    /**
+     * @Groups({"read_group", "read_user"})
+     */
+    private $entityType;
+
+    public function getEntityType(): string
+    {
+        return strtolower((new \ReflectionClass($this))->getShortName());
+    }
+
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
@@ -116,11 +126,6 @@ class Group
         $this->messages = new ArrayCollection();
         $this->createdAt = time();
         $this->secretKey = Uuid::uuidv4();
-    }
-
-    public function getEntityType(): string
-    {
-        return get_class($this);
     }
 
     public function getId(): string

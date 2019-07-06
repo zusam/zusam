@@ -64,6 +64,13 @@ class Link
      */
     private $secretKey;
 
+    private $entityType;
+
+    public function getEntityType(): string
+    {
+        return strtolower((new \ReflectionClass($this))->getShortName());
+    }
+
     public function __construct(string $url)
     {
         $this->id = Uuid::uuidv4($url);
@@ -72,11 +79,6 @@ class Link
         $this->createdAt = time();
         $this->updatedAt = time();
         $this->secretKey = Uuid::uuidv4();
-    }
-
-    public function getEntityType(): string
-    {
-        return get_class($this);
     }
 
     public function getId(): string

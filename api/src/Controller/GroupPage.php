@@ -59,13 +59,14 @@ class GroupPage extends Controller
 
         $page = [];
         foreach ($messages as $message) {
-            $preview = $message->getPreview();
+            $previewUrl = $message->getPreview() ? $message->getPreview()->getId() : "";
+            $authorUrl = $message->getAuthor() ? $message->getAuthor()->getId() : "";
             $page[] = [
-                "@id" => "/api/messages/" . $message->getId(),
                 "id" => $message->getId(),
+                "entityType" => $message->getEntityType(),
                 "data" => $message->getData(),
-                "author" => "/api/users/" . $message->getAuthor()->getId(),
-                "preview" => $preview ? "/api/files/" . $preview->getContentUrl() : "",
+                "author" => $authorUrl,
+                "preview" => $previewUrl,
                 "children" => count($message->getChildren()),
                 "lastActivityDate" => $message->getLastActivityDate()
             ];

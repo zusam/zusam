@@ -31,6 +31,11 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    ApiPlatform\Core\Serializer\ItemNormalizer: ~
+
+    App\Serializer\ItemNormalizer:
+      decorates: ApiPlatform\Core\Serializer\ItemNormalizer
+
     App\Controller\Security:
       arguments:
         $logger: '@monolog.logger.db'

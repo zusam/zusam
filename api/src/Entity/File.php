@@ -99,17 +99,22 @@ class File
      */
     private $secretKey;
 
+    /**
+     * @Groups({"read_user", "read_message"})
+     */
+    private $entityType;
+
+    public function getEntityType(): string
+    {
+        return strtolower((new \ReflectionClass($this))->getShortName());
+    }
+
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
         $this->createdAt = time();
         $this->status = self::STATUS_READY;
         $this->secretKey = Uuid::uuidv4();
-    }
-
-    public function getEntityType(): string
-    {
-        return get_class($this);
     }
 
     public function getId(): string

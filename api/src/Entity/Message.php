@@ -139,6 +139,16 @@ class Message
      */
     private $secretKey;
 
+    /**
+     * @Groups({"read_message"})
+     */
+    private $entityType;
+
+    public function getEntityType(): string
+    {
+        return strtolower((new \ReflectionClass($this))->getShortName());
+    }
+
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
@@ -147,11 +157,6 @@ class Message
         $this->createdAt = time();
         $this->lastActivityDate = time();
         $this->secretKey = Uuid::uuidv4();
-    }
-
-    public function getEntityType(): string
-    {
-        return get_class($this);
     }
 
     public function getId(): string
@@ -179,7 +184,7 @@ class Message
         $this->data = $data;
     }
 
-    public function getAuthor(): User
+    public function getAuthor(): ?User
     {
         return $this->author;
     }
