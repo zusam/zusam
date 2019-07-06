@@ -23,8 +23,8 @@ export default class Settings extends Component {
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a
-                            class={ "nav-link" + (this.state.entity["@type"] == "User" ? " active" : "")}
-                            href={router.toApp(me.me["@id"]) + "/settings"}
+                            class={ "nav-link" + (this.state.entity["entityType"] == "user" ? " active" : "")}
+                            href={"/users" + me.me.id + "/settings"}
                             onClick={router.onClick}
                         >{lang["account"]}</a>
                     </li>
@@ -34,13 +34,13 @@ export default class Settings extends Component {
                             onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                             onClick={e => e.currentTarget.classList.toggle("active")}
                         >
-                            <div class={"nav-link" + (this.state.entity["@type"] == "Group" ? " active" : "")}>{ lang.groups }</div>
+                            <div class={"nav-link" + (this.state.entity["entityType"] == "group" ? " active" : "")}>{ lang.groups }</div>
                             <div class="dropdown-menu">
                                 { me.me.groups.map(
                                     e => (
                                         <a
                                             class="seamless-link"
-                                            href={router.toApp(e["@id"]) + "/settings"}
+                                            href={"/groups/" + e.id + "/settings"}
                                             onClick={router.onClick}
                                         >{e.name}</a>
                                     )
@@ -49,12 +49,12 @@ export default class Settings extends Component {
                         </li>
                     )}
                 </ul>
-                { this.state.entity["@type"] === "User" && (
+                { this.state.entity["entityType"] === "user" && (
                     <UserSettings
                         {...this.state.entity}
                     />
                 )}
-                { this.state.entity["@type"] === "Group" && (
+                { this.state.entity["entityType"] === "group" && (
                     <GroupSettings
                         {...this.state.entity}
                     />

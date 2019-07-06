@@ -58,7 +58,7 @@ export default class MessageBody extends Component {
                         <span>{ this.props.data.title }</span>
                     </div>
                 )}
-                { this.props.data && this.props.data.text && (
+                { this.props.data && this.props.data.text && this.props.data.text.trim() && (
                     <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
                 )}
                 { this.props.preview && (

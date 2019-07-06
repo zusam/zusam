@@ -20,6 +20,7 @@ export default class MessageChildren extends Component {
                     let follow = "";
                     if (
                         m[i - 1]
+                        && m[i - 1].author && e.author
                         && m[i - 1].author.id == e.author.id
                         && i > this.props.message.children.length - this.props.displayedChildren
                     ) {

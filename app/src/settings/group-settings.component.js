@@ -52,7 +52,7 @@ export default class GroupSettings extends Component {
 
     leave() {
         http.post("/api/groups/" + this.state.id + "/leave", {}).then(res => {
-            if (!res || !res["@type"] || res["@type"] == "hydra:Error") {
+            if (!res || !res["entityType"]) {
                 alert.add(lang["error"]);
             } else {
                 me.update();

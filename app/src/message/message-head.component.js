@@ -6,18 +6,20 @@ export default class MessageHead extends Component {
 
     render() {
         return (
-            <div class="message-head d-flex">
-                { this.props.author && (
-                    <div>
-                        <img
-                            class="rounded-circle material-shadow avatar"
-                            src={ this.props.author.avatar ? util.crop("/api/file/" + this.props.author.avatar.id, 100, 100) : util.defaultAvatar }
-                            title={ this.props.author.name }
-                        />
-                    </div>
-                )}
+            <div class="message-head d-flex" id={this.props.message.id}>
+                <div>
+                    <img
+                        className={"rounded-circle material-shadow avatar" + (this.props.author ? "" : " removed-user")}
+                        src={
+                            this.props.author && this.props.author.avatar ?
+                                util.crop(this.props.author.avatar.id, 100, 100)
+                                : util.defaultAvatar
+                        }
+                        title={ this.props.author ? this.props.author.name : ""}
+                    />
+                </div>
                 <div class="infos">
-                    { this.props.author && <span class="capitalize author">{ this.props.author.name }</span> }
+                    <span class="capitalize author">{this.props.author ? this.props.author.name : "--"}</span>
                     <span title={util.humanFullDate(this.props.message.createdAt)}>{ util.humanTime(this.props.message.createdAt) }</span>
                 </div>
                 { !this.props.isPublic && me.me && this.props.author && this.props.author.id == me.me.id && (

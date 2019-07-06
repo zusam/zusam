@@ -103,7 +103,7 @@ export default class PreviewBlock extends Component {
                         href={this.props.url}
                         class="img-fluid cursor-pointer"
                         data-src={this.props.url}
-                        src={ this.props.preview && !/gif/.test(this.props.data["content-type"]) ? util.thumbnail(this.props.preview, 1280, 720) : this.props.url }
+                        src={ this.props.preview && !/gif/.test(this.props.data["content-type"]) ? util.thumbnail(this.props.preview.id, 1280, 720) : this.props.url }
                     />
                 </div>
             );
@@ -119,7 +119,7 @@ export default class PreviewBlock extends Component {
             return (
                 <a class="preview-card seamless-link d-inline-block" target="_blank" href={ this.props.url }>
                     <div class="card" style="max-width: 480px">
-                        { this.props.preview && <img class="card-img-top" src={ util.crop(this.props.preview, 320, 180) } /> }
+                        { this.props.preview && <img class="card-img-top" src={ util.crop(this.props.preview.id, 320, 180) } /> }
                         <div class="card-body p-1">
                             <h5>{ this.props.data["title"] }</h5>
                             { this.props.data["description"] && (

@@ -29,10 +29,18 @@ export default class Navbar extends Component {
             return router.entity["name"];
         }
         if (me.me.groups) {
-            let group = me.me.groups.find(g => g["@id"] == router.entity.group);
+            let group = me.me.groups.find(g => g["id"] == util.getId(router.entity.group));
             return group ? group["name"]: "";
         }
         return "";
+    }
+
+    getTitleRoute() {
+        if(router.route == "messages") {
+            return router.entity.group.slice(4);
+        } else {
+            return router.toApp(router.entity).slice(4);
+        }
     }
 
     groupsHasNews() {
@@ -51,13 +59,13 @@ export default class Navbar extends Component {
                         <div class="rounded-circle avatar unselectable">
                             <img
                                 class="rounded-circle"
-                                src={me.me.avatar ? util.crop(me.me.avatar["@id"], 80, 80) : util.defaultAvatar}
+                                src={me.me.avatar ? util.crop(me.me.avatar["id"], 80, 80) : util.defaultAvatar}
                                 onError={e => e.currentTarget.src = util.defaultAvatar}
                             />
                         </div>
                         <div class="dropdown-menu">
                             <a class="seamless-link"
-                                href={router.toApp(me.me["@id"])+"/settings"}
+                                href={"/users/" + me.me.id +"/settings"}
                                 onClick={router.onClick}
                             >{lang["settings"]}</a>
                             <a class="seamless-link" href="/logout" onClick={router.onClick}>{lang["logout"]}</a>
@@ -72,7 +80,7 @@ export default class Navbar extends Component {
                 { ["groups", "messages"].includes(router.route) && (
                     <span class="title">
                         <a
-                            href={router.toApp(router.entity["group"] || router.entity["@id"])}
+                            href={this.getTitleRoute()}
                             class="cursor-pointer unselectable"
                         >
                             {this.getTitle()}
@@ -93,7 +101,7 @@ export default class Navbar extends Component {
                                 e => (
                                     <a
                                         className={"seamless-link unselectable" + (me.isNews(e.id) ? " has-news" : "")}
-                                        href={router.toApp(e["@id"])}
+                                        href={"/groups/" + e.id}
                                         onClick={router.onClick}
                                     >{e.name}</a>
                                 )

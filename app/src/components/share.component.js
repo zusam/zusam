@@ -16,27 +16,17 @@ export default class Share extends Component {
         };
         me.get().then(user => {
 			if (user.groups.length == 1) {
-				this.setState({group: user.groups[0]["@id"]});
-				router.backUrl = router.toApp(user.groups[0]["@id"]);
+				this.setState({group: user.groups[0]["id"]});
+				router.backUrl = router.toApp(user.groups[0]).slice(4);
 			}
         });
         this.groupSelect = this.groupSelect.bind(this);
-        this.onNewMessage = this.onNewMessage.bind(this);
-        window.addEventListener("newMessage", this.onNewMessage);
     }
 
 	groupSelect(e) {
 		this.setState({group: e.target.value});
-		router.backUrl = router.toApp(e.target.value);
+		router.backUrl = e.target.value.slice(4);
 	}
-
-    onNewMessage() {
-        if (router.backUrl) {
-           router.navigate(router.backUrl);
-        } else {
-            router.navigate("/");
-        }
-    }
 
     render() {
         return (
@@ -52,7 +42,7 @@ export default class Share extends Component {
 								onChange={this.groupSelect}
 								required
 							>
-								{ me.me.groups.map(e => <option value={e["@id"]}>{e.name}</option>) }
+                                { me.me.groups.map(e => <option value={"/api/groups/" + e["id"]}>{e.name}</option>) }
 							</select>
 						</div>
 					)}
@@ -60,7 +50,7 @@ export default class Share extends Component {
                         focus={true}
                         group={this.state.group}
                         title={this.state.title}
-                        text={this.state.text + "\n" + this.state.url}
+                        text={this.state.text || this.state.url ? this.state.text + "\n" + this.state.url : ""}
                     />
                 </div>
             </article>

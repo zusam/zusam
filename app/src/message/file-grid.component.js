@@ -41,10 +41,10 @@ export default class FileGrid extends Component {
     }
 
     renderFile(file, miniature = false) {
-        let filePath = file.contentUrl ? "/files/" + file.contentUrl : null;
-        let url = filePath;
+        let filePath = file.contentUrl ? "/files/" + file.id : null;
+        let url = file.contentUrl ? "/files/" + file.contentUrl : null;
         if (/image/.test(file.type) && file.type != "image/gif") {
-            url = util.thumbnail(filePath, 1366, 768);
+            url = util.thumbnail(file.id, 1366, 768);
         }
         if (miniature == true) {
             if (file.status == "ready") {
@@ -57,7 +57,7 @@ export default class FileGrid extends Component {
                     >
                         <div
                             className={"miniature" + (file.removed ? " removed" : "")}
-                            style={"background-image:url('" + util.crop(filePath, 160, 160) + "')"}
+                            style={"background-image:url('" + util.crop(file.id, 160, 160) + "')"}
                         ></div>
                         <div
                             class="remove-button"
@@ -79,7 +79,7 @@ export default class FileGrid extends Component {
             }
             return (
                 <a class="rounded">
-                    <div class="miniature video-raw" style={"background-image:url('" + util.crop(filePath, 160, 160) + "')"}></div>
+                    <div class="miniature video-raw" style={"background-image:url('" + util.crop(file.id, 160, 160) + "')"}></div>
                     <div class="spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
                 </a>
             );
@@ -88,7 +88,7 @@ export default class FileGrid extends Component {
             if (/video/.test(file.type)) {
                 if (file.status == "ready") {
                     return <video
-                        poster={util.thumbnail(filePath, 1280, 720)}
+                        poster={util.thumbnail(file.id, 1280, 720)}
                         class="img-fluid contained-height video"
                         controls="true"
                         src={url}
@@ -96,7 +96,7 @@ export default class FileGrid extends Component {
                 }
                 return (
                     <a class="image video-uploaded">
-                        <img class="img-fluid video-raw" src={util.crop(filePath, 320, 180)}></img>
+                        <img class="img-fluid video-raw" src={util.crop(file.id, 320, 180)}></img>
                         <div class="spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
                     </a>
                 );

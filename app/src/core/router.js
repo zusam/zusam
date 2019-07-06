@@ -1,4 +1,5 @@
 import cache from "./cache.js";
+import util from "./util.js";
 import http from "./http.js";
 import nlg from "./nlg.js";
 import me from "./me.js";
@@ -13,7 +14,7 @@ const router = {
     entityUrl: "",
     entityType: "",
     entity: {},
-    toApp: url => url ? url.replace(/^\/api/,"") : null,
+    toApp: entity => entity ? "/api/" + entity.entityType + "s/" + entity.id : console.warn(entity) && null,
     getParam: param => {
         let res = window.location.search.substring(1).split("&").find(e => e.split("=")[0] === param);
         return res ? res.split("=")[1] : "";
@@ -39,7 +40,7 @@ const router = {
         const from = window.location.pathname;
         const queryParams = window.location.search;
 
-        [router.route, router.id, router.action] = router.toApp(url).slice(1).split("?")[0].split("/");
+        [router.route, router.id, router.action] = url.slice(1).split("?")[0].split("/");
         router.url = "";
         router.backUrl = "";
         router.entityUrl = "";
@@ -90,7 +91,7 @@ const router = {
                     cache.get(router.entityUrl).then(res => {
                         router.entity = res;
                         if (router.entityType == "messages" && res["group"]) {
-                            router.backUrl = router.toApp(res.group);
+                            router.backUrl = "/groups/" + util.getId(res.group);
                         }
                         window.dispatchEvent(new CustomEvent("routerStateChange"));
                     });
@@ -142,9 +143,9 @@ const router = {
         const t = e.target.closest("a")
         if (t) {
             if (e.ctrlKey) {
-                window.open(router.toApp(t.getAttribute("href")),"_blank")
+                window.open(t.getAttribute("href"),"_blank")
             } else {
-                router.navigate(router.toApp(t.getAttribute("href")));
+                router.navigate(t.getAttribute("href"));
             }
         }
     },

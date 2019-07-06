@@ -65,21 +65,21 @@ export default class Message extends Component {
     async openPublicLink(event) {
         event.preventDefault();
         let newTab = window.open("about:blank", "_blank");
-        const res = await http.get(this.state.message["@id"] + "/get-public-link");
+        const res = await http.get(this.state.message["id"] + "/get-public-link");
         newTab.location = window.origin + "/public/" + res.token;
     };
 
     deleteMessage(event) {
 		event.preventDefault();
         if(confirm(lang["ask_delete_message"])) {
-            http.delete(this.state.message["@id"]);
+            http.delete(this.state.message["id"]);
             cache.resetCache();
             // give some time to the cache to delete itself properly
             setTimeout(() => {
                 if (this.state.message.parent) {
                     this.setState({isRemoved: true});
                 } else {
-                    router.navigate(router.toApp(this.state.message.group), {data: {resetGroupDisplay: true}});
+                    router.navigate(this.state.message.group, {data: {resetGroupDisplay: true}});
                 }
             }, 100);
         }
@@ -93,7 +93,7 @@ export default class Message extends Component {
     onNewChild(event) {
         const newMsg = event.detail;
         let msg = this.state.message;
-        if (newMsg.parent && newMsg.parent == msg["@id"]) {
+        if (newMsg.parent && newMsg.parent == msg["id"]) {
             newMsg.author = me.me;
             msg.children = [...msg.children, newMsg];
             this.setState({
@@ -137,7 +137,7 @@ export default class Message extends Component {
                             <div class="message-head p-1 d-none d-md-block">
                                 <img
                                     class="rounded-circle w-3 material-shadow avatar"
-                                    src={ me.me.avatar ? util.crop(me.me.avatar["@id"], 100, 100) : util.defaultAvatar }
+                                    src={ me.me.avatar ? util.crop(me.me.avatar["id"], 100, 100) : util.defaultAvatar }
                                 />
                             </div>
                         )}
@@ -206,7 +206,7 @@ export default class Message extends Component {
                             <div class="message-head p-1 d-none d-md-block">
                                 <img
                                     class="rounded-circle w-3 material-shadow avatar"
-                                    src={ me.me.avatar ? util.crop(me.me.avatar["@id"], 100, 100) : util.defaultAvatar }
+                                    src={ me.me.avatar ? util.crop(me.me.avatar["id"], 100, 100) : util.defaultAvatar }
                                 />
                             </div>
                         )}

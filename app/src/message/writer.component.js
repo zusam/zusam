@@ -88,7 +88,7 @@ export default class Writer extends Component {
 
     putMessage() {
         let msg = {
-            files: this.state.files.filter(e => !e.removed).map(e => e["@id"]).filter(e => !!e),
+            files: this.state.files.filter(e => !e.removed).map(e => e["id"]).filter(e => !!e),
             data: {
                 text: document.getElementById("text").value
             },
@@ -110,10 +110,10 @@ export default class Writer extends Component {
     postMessage() {
         let msg = {
             createdAt: Math.floor(Date.now()/1000),
-            author: me.me["@id"],
+            author: "/api/users/" + me.me["id"],
             group: this.props.group,
             children: [],
-            files: this.state.files.filter(e => !e.removed).map(e => e["@id"]).filter(e => !!e),
+            files: this.state.files.filter(e => !e.removed).map(e => "/api/files/" + e["id"]).filter(e => !!e),
             data: {
                 text: document.getElementById("text").value
             },
@@ -140,9 +140,7 @@ export default class Writer extends Component {
             if (this.props.parent) {
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
             }
-            if (router.action == "write" && router.backUrl) {
-                router.navigate(router.backUrl);
-            }
+            router.navigate(!router.backUrl || router.backUrl != "/" ? router.backUrl : msg.group.slice(4));
             this.setState({
                 sending: false,
                 files: [],
@@ -245,7 +243,7 @@ export default class Writer extends Component {
                 return;
             }
             let a = this.state.files;
-            if (!file || file["@type"] == "hydra:Error") {
+            if (!file) {
                 a.splice(fileIndex, 1);
                 alert.add(lang["error_upload"], "alert-danger");
             } else {

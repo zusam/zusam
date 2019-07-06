@@ -9,7 +9,7 @@ export default class MessagePreview extends Component {
             message: props.message,
         };
         if (props.message.author) {
-            cache.get(props.message.author).then(author => author && this.setState({author: author}));
+            cache.get("/api/users/" + props.message.author).then(author => author && this.setState({author: author}));
         }
         this.setState({
             title: props.message.data.title || "",
@@ -21,14 +21,11 @@ export default class MessagePreview extends Component {
     }
 
     getAvatar(user) {
-        if (!user) {
-            return null;
-        }
         return (
             <img
-                title={user.name}
-                class="avatar material-shadow"
-                src={user.avatar ? util.crop(user.avatar["@id"], 100, 100) : util.defaultAvatar}
+                title={user ? user.name : ""}
+                className={"avatar material-shadow" + (user ? "" : " removed-user")}
+                src={user && user.avatar ? util.crop(user.avatar["id"], 100, 100) : util.defaultAvatar}
                 onError={e => e.currentTarget.src = util.defaultAvatar}
             />
         );
@@ -38,7 +35,7 @@ export default class MessagePreview extends Component {
         return (
             <a
                 class="d-inline-block seamless-link message-preview unselectable"
-                href={ router.toApp(this.state.message["@id"]) }
+                href={"/messages/" + this.state.message.id}
                 onClick={ router.onClick }
                 title={ this.state.title }
             >
