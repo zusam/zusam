@@ -22,7 +22,7 @@ window.lang = {
     "login_input": "Choisissez un identifiant",
     "email": "Email",
     "email_input": "Renseignez votre adresse mail ici",
-    "save_changes": "Sauvegardez les changements",
+    "save_changes": "Sauvegarder les changements",
     "password": "Mot de passe",
     "password_input": "Entrez un nouveau mot de passe",
     "Invalid login/password": "Identifiant et/ou mot de passe invalide",
@@ -64,4 +64,7 @@ window.lang = {
     "group_share_choice": "A quel groupe voulez-vous envoyer ce message ?",
     "public_link": "Lien public",
     "default_group": "Groupe par défaut",
+    "destroy_account": "Supprimer votre compte",
+    "destroy_account_explain": "Une fois votre compte supprimé, il sera impossible d'annuler l'opération.",
+    "are_you_sure": "Etes-vous sûr ?"
 }

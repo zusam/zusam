@@ -64,4 +64,7 @@ window.lang = {
     "group_share_choice": "To which group do you want to send this message ?",
     "public_link": "Public link",
     "default_group": "Default group",
+    "destroy_account": "Delete your account",
+    "destroy_account_explain": "Once you delete your account, there is no going back. Please be certain.",
+    "are_you_sure": "Are you sure ?"
 };

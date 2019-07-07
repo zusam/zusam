@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { me, alert, cache, http, imageService, util } from "/core";
+import { router, me, alert, cache, http, imageService, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class UserSettings extends Component {
@@ -7,6 +7,7 @@ export default class UserSettings extends Component {
     constructor(props) {
         super(props);
         this.updateSettings = this.updateSettings.bind(this);
+        this.destroyAccount = this.destroyAccount.bind(this);
         this.state = Object.assign({}, props);
         this.inputAvatar = this.inputAvatar.bind(this);
     }
@@ -27,7 +28,7 @@ export default class UserSettings extends Component {
                     const formData = new FormData();
                     formData.append("file", blob);
                     http.post("/api/files/upload", formData, false).then(file => {
-                        http.put("/api/users/" + this.state.id, {avatar: file["@id"]}).then(res => {
+                        http.put("/api/users/" + this.state.id, {avatar: file["id"]}).then(res => {
                             this.setState({avatar: file});
                             cache.resetCache();
                             alert.add(lang["settings_updated"]);
@@ -38,6 +39,16 @@ export default class UserSettings extends Component {
             img.src = URL.createObjectURL(event.target.files[0]);
         });
         input.click();
+    }
+    
+    destroyAccount(event) {
+        event.preventDefault();
+        let confirmDeletion = confirm(lang["are_you_sure"]);
+        if (confirmDeletion) {
+            http.delete("/api/users/" + this.state.id).then(res => {
+                router.navigate("/logout");
+            });
+        }
     }
 
     updateSettings(event) {
@@ -75,13 +86,13 @@ export default class UserSettings extends Component {
                                 <div class="col-12 col-md-2">
                                     <img
                                         class="img-fluid rounded-circle material-shadow avatar"
-                                        src={ this.state.avatar ? util.crop(this.state.avatar["@id"], 100, 100) : util.defaultAvatar }
+                                        src={ this.state.avatar ? util.crop(this.state.avatar["id"], 100, 100) : util.defaultAvatar }
                                         onError={e => e.currentTarget.src = util.defaultAvatar}
                                         onClick={this.inputAvatar}
                                     />
                                 </div>
                                 <div class="col-12 col-md-10">
-                                    <form id="settings_form">
+                                    <form id="settings_form" class="mb-3">
                                         <div class="form-group">
                                             <label for="name">{lang["name"]}: </label>
                                             <input
@@ -151,6 +162,12 @@ export default class UserSettings extends Component {
                                             </select>
                                         </div>
                                         <button onClick={this.updateSettings} class="btn btn-primary">{lang["save_changes"]}</button>
+                                    </form>
+                                    <form id="destroy_form">
+                                        <label for="destroy_account">{ lang["destroy_account_explain"] }</label>
+                                        <button onClick={this.destroyAccount} name="destroy_account" class="btn btn-danger">
+                                            {lang["destroy_account"]}
+                                        </button>
                                     </form>
                                 </div>
                             </div>
