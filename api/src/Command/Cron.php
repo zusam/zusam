@@ -34,14 +34,49 @@ class Cron extends Command
         $this->params = $params;
         $this->system = $system;
         $this->tasks = [
-            "zusam:convert-video" => 15 * 60, // 15 minutes
-            "zusam:convert-images" => 30 * 60, // 30 minutes
-            "zusam:notification-emails" => 60 * 60, // 1 hour
-            "zusam:clean-old-cache" => 1440 * 60, // 1 day
-            "zusam:clean-dangling-files" => 1440 * 60, // 1 day
-            "zusam:clean-dangling-messages" => 1440 * 7 * 60, // 7 days
-            "zusam:clean-old-logs" => 1440 * 7 * 60, // 7 days
-            "zusam:clean-dangling-groups" => 1440 * 30 * 60, // 30 days
+            [
+                "name" => "zusam:convert-video",
+                "period" => 15 * 60, // 15 minutes
+                "options" => [],
+            ],
+            [
+                "name" => "zusam:convert-images",
+                "period" => 30 * 60, // 30 minutes
+                "options" => [],
+            ],
+            [
+                "name" => "zusam:notification-emails",
+                "period" => 60 * 60, // 1 hour
+                "options" => [],
+            ],
+            [
+                "name" => "zusam:clean-old-cache",
+                "period" => 1440 * 60, // 1 day
+                "options" => [
+                    "command" => "zusam:clean-old-cache",
+                    "max-cache-size" => 512,
+                ],
+            ],
+            [
+                "name" => "zusam:clean-dangling-files",
+                "period" => 1440 * 60, // 1 day
+                "options" => [],
+            ],
+            [
+                "name" => "zusam:clean-dangling-messages",
+                "period" => 1440 * 7 * 60, // 7 days
+                "options" => [],
+            ],
+            [
+                "name" => "zusam:clean-old-logs",
+                "period" => 1440 * 7 * 60, // 7 days
+                "options" => [],
+            ],
+            [
+                "name" => "zusam:clean-dangling-groups",
+                "period" => 1440 * 30 * 60, // 30 days
+                "options" => [],
+            ],
         ];
     }
 
@@ -95,15 +130,15 @@ class Cron extends Command
             $this->logger->notice("Old task lock detected");
         }
 
-        foreach ($this->tasks as $task => $period) {
+        foreach ($this->tasks as $task) {
             $lastLog = $this->em
-                        ->createQuery("SELECT log FROM App\Entity\Log log WHERE log.message = '$task' ORDER BY log.createdAt DESC")
+                        ->createQuery("SELECT log FROM App\Entity\Log log WHERE log.message = '".$task["name"]."' ORDER BY log.createdAt DESC")
                         ->setMaxResults(1)->getOneOrNullResult();
-            if (empty($lastLog) || $lastLog->getCreatedAt() < time() - $period) {
+            if (empty($lastLog) || $lastLog->getCreatedAt() < time() - $task["period"]) {
                 $this->system->set("task_running", true);
                 $this->system->set("last_task_timestamp", time());
-                $this->system->set("last_task_name", $task);
-                $this->runCommand($task);
+                $this->system->set("last_task_name", $task["name"]);
+                $this->runCommand($task["name"], $task["options"]);
                 $this->system->set("task_running", false);
                 return true;
             }
@@ -111,11 +146,11 @@ class Cron extends Command
         return false;
     }
 
-    private function runCommand($id)
+    private function runCommand($id, $options = [])
     {
         $command = $this->getApplication()->find($id);
         try {
-            $returnCode = $command->run(new ArrayInput([]), $this->output);
+            $returnCode = $command->run(new ArrayInput($options), $this->output);
         } catch (\Exception $e) {
             $this->output->writeln(["<error>".$e->getMessage."</error>"]);
             $this->logger->error($id);
