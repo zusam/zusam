@@ -5,27 +5,32 @@ namespace App\Command;
 use App\Service\System;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class Cron extends Command
 {
-    private $output;
-    private $running;
     private $em;
     private $logger;
-    private $tasks;
+    private $output;
     private $params;
+    private $running;
     private $system;
+    private $tasks;
+    private $kernel;
 
     public function __construct(
         LoggerInterface $logger,
         EntityManagerInterface $em,
         ParameterBagInterface $params,
-        System $system
+        System $system,
+        KernelInterface $kernel
     ) {
         parent::__construct();
         $this->em = $em;
@@ -33,6 +38,7 @@ class Cron extends Command
         $this->running = false;
         $this->params = $params;
         $this->system = $system;
+        $this->kernel = $kernel;
         $this->tasks = [
             [
                 "name" => "zusam:convert-video",
@@ -94,20 +100,17 @@ class Cron extends Command
     }
 
     // This can be called in controllers to avoid relying on system cron
-    // Heavily inspired by wp-cron.php from wordpress
+    // Inspired by wp-cron.php from wordpress
     public function runTask(): bool
     {
         // create context for logs
         $context = [];
 
-        ignore_user_abort(true);
-        if (function_exists('fastcgi_finish_request')) {
-            fastcgi_finish_request();
-        }
-
         // don't run if on a POST or an upload files request. Don't run twice in the same process
         if (!empty($_POST) || !empty($_FILES) || defined('TASK_RUNNING') || $this->running) {
-            $this->output->writeln(["<info>Task already running</info>"]);
+            if ($this->output) {
+                $this->output->writeln(["<info>Task already running</info>"]);
+            }
             die();
         }
 
@@ -148,9 +151,9 @@ class Cron extends Command
 
     private function runCommand($id, $options = [])
     {
-        $command = $this->getApplication()->find($id);
+        $command = (new Application($this->kernel))->find($id);
         try {
-            $returnCode = $command->run(new ArrayInput($options), $this->output);
+            $returnCode = $command->run(new ArrayInput($options), $this->output ?? new NullOutput());
         } catch (\Exception $e) {
             $this->output->writeln(["<error>".$e->getMessage."</error>"]);
             $this->logger->error($id);
