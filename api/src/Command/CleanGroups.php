@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CleanOldLogs extends Command
+class CleanGroups extends Command
 {
     private $pdo;
     private $logger;
@@ -25,22 +25,22 @@ class CleanOldLogs extends Command
 
     protected function configure()
     {
-        $this->setName('zusam:clean-old-logs')
-       ->setDescription('Clean old logs.')
-       ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list logs that would be deleted.')
-       ->setHelp('This command deletes all logs except for the most 10000 recents.');
+        $this->setName('zusam:clean:groups')
+       ->setDescription('Clean dangling groups.')
+       ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list groups that would be deleted.')
+       ->setHelp('This command deletes groups not linked to any user.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->info("zusam:clean-old-logs");
-        $c = $this->pdo->query("SELECT id FROM log WHERE created_at < (SELECT MIN(created_at) FROM (SELECT created_at FROM log ORDER BY created_at DESC LIMIT 10000));");
+        $this->logger->info("zusam:clean-dangling-groups");
+        $c = $this->pdo->query("SELECT g.id FROM `group` g LEFT JOIN users_groups ug ON ug.group_id = g.id WHERE ug.group_id IS NULL;");
         while($i = $c->fetch()) {
             if ($input->getOption("verbose") || $input->getOption("only-list")) {
                 echo $i["id"]."\n";
             }
             if (!$input->getOption("only-list")) {
-                $this->pdo->query("DELETE FROM `log` WHERE id = '" . $i["id"] . "';");
+                $this->pdo->query("DELETE FROM `group` WHERE id = '" . $i["id"] . "';");
             }
         }
     }

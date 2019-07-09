@@ -42,7 +42,7 @@ class ConvertImages extends Command
 
     protected function configure()
     {
-        $this->setName('zusam:convert-images')
+        $this->setName('zusam:convert:images')
             ->setDescription('Converts raw image files.')
             ->addOption('--max-convert', null, InputOption::VALUE_NONE, 'Maximum conversions to perform.')
             ->setHelp('This command search for raw image files in the database and converts them.');

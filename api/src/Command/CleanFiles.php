@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CleanDanglingFiles extends Command
+class CleanFiles extends Command
 {
     private $pdo;
     private $targetDir;
@@ -37,7 +37,7 @@ class CleanDanglingFiles extends Command
 
     protected function configure()
     {
-        $this->setName('zusam:clean-dangling-files')
+        $this->setName('zusam:clean:files')
        ->setDescription('Clean dangling files.')
        ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list files that would be deleted.')
        ->setHelp('This command deletes files not linked to any message or user.');

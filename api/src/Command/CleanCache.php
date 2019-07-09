@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CleanOldCache extends Command
+class CleanCache extends Command
 {
     private $pdo;
     private $targetDir;
@@ -37,7 +37,7 @@ class CleanOldCache extends Command
 
     protected function configure()
     {
-        $this->setName('zusam:clean-old-cache')
+        $this->setName('zusam:clean:cache')
             ->setDescription('Clean old cache files')
             ->addArgument('max-cache-size', InputArgument::OPTIONAL, 'Maximum cache usage in Mo (defaults to 512).')
             ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list files that would be deleted.')

@@ -41,7 +41,7 @@ class ConvertVideo extends Command
 
     protected function configure()
     {
-        $this->setName('zusam:convert-video')
+        $this->setName('zusam:convert:video')
             ->setDescription('Converts a raw video file.')
             ->addOption('all-cores', null, InputOption::VALUE_NONE, 'Use all available cores instead of just one.')
             ->setHelp('This command search for a raw video file in the database and converts it.');

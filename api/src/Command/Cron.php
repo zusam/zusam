@@ -41,12 +41,12 @@ class Cron extends Command
         $this->kernel = $kernel;
         $this->tasks = [
             [
-                "name" => "zusam:convert-video",
+                "name" => "zusam:convert:video",
                 "period" => 15 * 60, // 15 minutes
                 "options" => [],
             ],
             [
-                "name" => "zusam:convert-images",
+                "name" => "zusam:convert:images",
                 "period" => 30 * 60, // 30 minutes
                 "options" => [],
             ],
@@ -56,31 +56,36 @@ class Cron extends Command
                 "options" => [],
             ],
             [
-                "name" => "zusam:clean-old-cache",
+                "name" => "zusam:clean:cache",
                 "period" => 1440 * 60, // 1 day
                 "options" => [
-                    "command" => "zusam:clean-old-cache",
+                    "command" => "zusam:clean:cache",
                     "max-cache-size" => 512,
                 ],
             ],
             [
-                "name" => "zusam:clean-dangling-files",
-                "period" => 1440 * 60, // 1 day
-                "options" => [],
-            ],
-            [
-                "name" => "zusam:clean-dangling-messages",
+                "name" => "zusam:clean:files",
                 "period" => 1440 * 7 * 60, // 7 days
                 "options" => [],
             ],
             [
-                "name" => "zusam:clean-old-logs",
+                "name" => "zusam:clean:messages",
                 "period" => 1440 * 7 * 60, // 7 days
                 "options" => [],
             ],
             [
-                "name" => "zusam:clean-dangling-groups",
+                "name" => "zusam:clean:logs",
+                "period" => 1440 * 7 * 60, // 7 days
+                "options" => [],
+            ],
+            [
+                "name" => "zusam:clean:groups",
                 "period" => 1440 * 30 * 60, // 30 days
+                "options" => [],
+            ],
+            [
+                "name" => "zusam:repair-database",
+                "period" => 1440 * 60 * 60, // 60 days
                 "options" => [],
             ],
         ];

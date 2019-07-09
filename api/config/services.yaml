@@ -48,6 +48,11 @@ services:
       arguments:
         $logger: '@monolog.logger.db'
 
+    App\Command\RepairDatabase:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+        $logger: '@monolog.logger.db'
+
     App\Command\PreparePreviews:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
@@ -66,29 +71,29 @@ services:
         $targetDir: '%env(resolve:dir_files)%'
         $logger: '@monolog.logger.db'
 
-    App\Command\CleanOldCache:
+    App\Command\CleanCache:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_cache)%'
         $logger: '@monolog.logger.db'
 
-    App\Command\CleanDanglingFiles:
+    App\Command\CleanFiles:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_files)%'
         $logger: '@monolog.logger.db'
 
-    App\Command\CleanDanglingGroups:
+    App\Command\CleanGroups:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $logger: '@monolog.logger.db'
 
-    App\Command\CleanDanglingMessages:
+    App\Command\CleanMessages:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $logger: '@monolog.logger.db'
 
-    App\Command\CleanOldLogs:
+    App\Command\CleanLogs:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $logger: '@monolog.logger.db'
