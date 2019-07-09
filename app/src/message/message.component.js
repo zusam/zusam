@@ -65,7 +65,7 @@ export default class Message extends Component {
     async openPublicLink(event) {
         event.preventDefault();
         let newTab = window.open("about:blank", "_blank");
-        const res = await http.get(this.state.message["id"] + "/get-public-link");
+        const res = await http.get("/api/messages/" + this.state.message["id"] + "/get-public-link");
         newTab.location = window.origin + "/public/" + res.token;
     };
 
