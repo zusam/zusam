@@ -22,7 +22,7 @@ export default class MessageHead extends Component {
                     <span class="capitalize author">{this.props.author ? this.props.author.name : "--"}</span>
                     <span title={util.humanFullDate(this.props.message.createdAt)}>{ util.humanTime(this.props.message.createdAt) }</span>
                 </div>
-                { !this.props.isPublic && me.me && this.props.author && this.props.author.id == me.me.id && (
+                { !this.props.isPublic && (
                     <div tabindex="-1"
                         class="options dropdown"
                         onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
@@ -30,8 +30,12 @@ export default class MessageHead extends Component {
                     >
                         <FaIcon family="solid" icon="caret-down"/>
                         <div class="dropdown-menu">
-                            <a class="seamless-link" onClick={this.props.editMessage}>{lang["edit"]}</a>
-                            <a class="seamless-link" onClick={this.props.deleteMessage}>{lang["delete"]}</a>
+                            { this.props.author && this.props.author.id == me.me.id && (
+                                <a class="seamless-link" onClick={this.props.editMessage}>{lang["edit"]}</a>
+                            )}
+                            { this.props.author && this.props.author.id == me.me.id && (
+                                <a class="seamless-link" onClick={this.props.deleteMessage}>{lang["delete"]}</a>
+                            )}
                             { !this.props.message.parent && (
                                 <a class="seamless-link" onClick={this.props.openPublicLink}>{lang["public_link"]}</a>
                             )}
