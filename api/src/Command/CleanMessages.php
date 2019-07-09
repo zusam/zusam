@@ -33,7 +33,7 @@ class CleanMessages extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->info("zusam:clean-dangling-messages");
+        $this->logger->info($this->getName());
         $c = $this->pdo->query("SELECT m.id from `message` m LEFT JOIN `group` g ON g.id = m.group_id WHERE g.id IS NULL;");
         while($i = $c->fetch()) {
             if ($input->getOption("verbose") || $input->getOption("only-list")) {

@@ -50,7 +50,7 @@ class ConvertImages extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->info("zusam:convert-images");
+        $this->logger->info($this->getName());
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'image%';");
         $i = 0;
         while($rawFile = $c->fetch()) {

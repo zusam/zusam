@@ -34,7 +34,7 @@ class RepairDatabase extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->info("zusam:repair-database");
+        $this->logger->info($this->getName());
 
         if ($input->getOption("verbose")) {
             $output->writeln(["Cleaning users_groups relations"]);

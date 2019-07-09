@@ -40,7 +40,7 @@ class NotificationEmails extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->info("zusam:notification-emails");
+        $this->logger->info($this->getName());
         $users = $this->em->getRepository(User::class)->findAll();
         foreach ($users as $user) {
 

@@ -49,7 +49,7 @@ class ConvertVideo extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->info("zusam:convert-video");
+        $this->logger->info($this->getName());
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'video%';");
         while($rawFile = $c->fetch()) {
             $outputFile = $this->targetDir."/".$rawFile["id"];

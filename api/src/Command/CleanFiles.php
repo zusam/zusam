@@ -45,7 +45,7 @@ class CleanFiles extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->info("zusam:clean-dangling-files");
+        $this->logger->info($this->getName());
         // First we get all files not linked to a user and/or a message
         $c = $this->pdo->query("SELECT f.id, f.content_url FROM file f WHERE NOT EXISTS (SELECT * FROM messages_files mf WHERE mf.file_id = f.id) AND NOT EXISTS (SELECT * FROM user u WHERE u.avatar_id = f.id) AND NOT EXISTS (SELECT * FROM link l WHERE l.preview_id = f.id);");
         while($i = $c->fetch()) {

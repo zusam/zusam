@@ -33,7 +33,7 @@ class CleanLogs extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->info("zusam:clean-old-logs");
+        $this->logger->info($this->getName());
         $c = $this->pdo->query("SELECT id FROM log WHERE created_at < (SELECT MIN(created_at) FROM (SELECT created_at FROM log ORDER BY created_at DESC LIMIT 10000));");
         while($i = $c->fetch()) {
             if ($input->getOption("verbose") || $input->getOption("only-list")) {

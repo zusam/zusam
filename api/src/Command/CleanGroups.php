@@ -33,7 +33,7 @@ class CleanGroups extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->info("zusam:clean-dangling-groups");
+        $this->logger->info($this->getName());
         $c = $this->pdo->query("SELECT g.id FROM `group` g LEFT JOIN users_groups ug ON ug.group_id = g.id WHERE ug.group_id IS NULL;");
         while($i = $c->fetch()) {
             if ($input->getOption("verbose") || $input->getOption("only-list")) {

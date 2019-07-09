@@ -138,6 +138,9 @@ class Cron extends Command
             $this->logger->notice("Old task lock detected");
         }
 
+        // shuffle tasks to randomize priorisation
+        shuffle($this->tasks);
+
         foreach ($this->tasks as $task) {
             $lastLog = $this->em
                         ->createQuery("SELECT log FROM App\Entity\Log log WHERE log.message = '".$task["name"]."' ORDER BY log.createdAt DESC")

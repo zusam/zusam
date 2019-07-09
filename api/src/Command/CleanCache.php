@@ -46,7 +46,7 @@ class CleanCache extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->info("zusam:clean-old-cache");
+        $this->logger->info($this->getName());
         $max_cache_size = 1024 * 1024 * ($input->getArgument('max-cache-size') ?? 512);
 
         $cache_size = 0;

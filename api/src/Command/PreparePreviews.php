@@ -47,7 +47,7 @@ class PreparePreviews extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->info("zusam:prepare-previews");
+        $this->logger->info($this->getName());
         $max_memory = $input->getArgument("memory") ? intval($input->getArgument("memory")) : 70;
         ini_set('memory_limit', max(128, $max_memory + 10) . "M");
 
