@@ -66,5 +66,6 @@ window.lang = {
     "default_group": "Grupo predeterminado",
     "destroy_account": "Borra tu cuenta",
     "destroy_account_explain": "Una vez que elimines tu cuenta, no hay vuelta atrás.",
-    "are_you_sure": "Estás seguro ?"
+    "are_you_sure": "Estás seguro ?",
+    "share_message": "Comparte el mensaje"
 }

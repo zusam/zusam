@@ -9,6 +9,7 @@ export default class Writer extends Component {
     constructor(props) {
         super(props);
         this.sendMessage = this.sendMessage.bind(this);
+        this.genPreview = this.genPreview.bind(this);
         this.postMessage = this.postMessage.bind(this);
         this.putMessage = this.putMessage.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
@@ -40,6 +41,7 @@ export default class Writer extends Component {
                 if (document.getElementById("text")) {
                     document.getElementById("text").focus();
                     document.getElementById("text").style.height = document.getElementById("text").scrollHeight + "px";
+                    this.genPreview(document.getElementById("text"));
                 }
             }, 10);
         }
@@ -53,7 +55,10 @@ export default class Writer extends Component {
         if (![" ", "Enter", "v"].includes(event.key)) {
             return;
         }
-        let t = event.currentTarget;
+        this.genPreview(event.currentTarget);
+    }
+
+    genPreview(t) {
         t.style.height = "1px";
         t.style.height = t.scrollHeight + "px";
         // waiting for the dom to be updated

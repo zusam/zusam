@@ -113,7 +113,7 @@ class Message
      * @ORM\ManyToMany(targetEntity="App\Entity\File")
      * @ORM\JoinTable(name="messages_files",
      *      joinColumns={@ORM\JoinColumn(name="message_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id")}
      *      )
      * @Groups({"read_message"})
      */

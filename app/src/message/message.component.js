@@ -13,6 +13,7 @@ export default class Message extends Component {
         this.displayMoreChildren = this.displayMoreChildren.bind(this);
         this.deleteMessage = this.deleteMessage.bind(this);
         this.editMessage = this.editMessage.bind(this);
+        this.shareMessage = this.shareMessage.bind(this);
         this.openPublicLink = this.openPublicLink.bind(this);
         this.cancelEdit = this.cancelEdit.bind(this);
         this.onNewChild = this.onNewChild.bind(this);
@@ -83,6 +84,11 @@ export default class Message extends Component {
                 }
             }, 100);
         }
+    }
+
+    shareMessage(event) {
+		event.preventDefault();
+        router.navigate("/share?message=" + this.state.message.id);
     }
 
     editMessage(event) {
@@ -181,6 +187,7 @@ export default class Message extends Component {
                         editMessage={this.editMessage}
                         deleteMessage={this.deleteMessage}
                         openPublicLink={this.openPublicLink}
+                        shareMessage={this.shareMessage}
                         isPublic={this.props.isPublic}
                     />
                     <MessageBody
@@ -191,6 +198,7 @@ export default class Message extends Component {
                         editMessage={this.editMessage}
                         deleteMessage={this.deleteMessage}
                         openPublicLink={this.openPublicLink}
+                        shareMessage={this.shareMessage}
                         isPublic={this.props.isPublic}
                     />
                 </div>

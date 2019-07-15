@@ -29,6 +29,7 @@ class MessagePublicLink extends Controller
         }
         $this->denyAccessUnlessGranted(new Expression("user in object.getUsersAsArray()"), $message->getGroup());
 
+        // TODO: remove for v1.0
         // old messages (before 0.2) don't have a secretKey
         if (empty($message->getSecretKey())) {
             $message->resetSecretKey();

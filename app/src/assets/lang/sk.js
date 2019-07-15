@@ -66,5 +66,6 @@ window.lang = {
     "default_group": "Predvolenú skupinu",
     "destroy_account": "Odstráňte svoj účet"
     "destroy_account_explain": "Po odstránení účtu sa už nevráti",
-    "are_you_sure": "Si si istý ?"
+    "are_you_sure": "Si si istý ?",
+    "share_message": "Zdieľajte správu"
 };

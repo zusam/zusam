@@ -66,5 +66,6 @@ window.lang = {
     "default_group": "Groupe par défaut",
     "destroy_account": "Supprimer votre compte",
     "destroy_account_explain": "Une fois votre compte supprimé, il sera impossible d'annuler l'opération.",
-    "are_you_sure": "Etes-vous sûr ?"
+    "are_you_sure": "Etes-vous sûr ?",
+    "share_message": "Partager le message"
 }
