@@ -11,6 +11,7 @@
         "guzzlehttp/guzzle": "^6.3",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/console": "^4.0",
+        "symfony/event-dispatcher": "^4.0",
         "symfony/flex": "^1.1",
         "symfony/framework-bundle": "^4.0",
         "symfony/monolog-bundle": "^3.3",
