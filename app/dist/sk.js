@@ -62,5 +62,10 @@ window.lang = {
     "monthly": "Mesačne",
     "notification_emails_stopped": "E-mailové upozornenia sa zastavili!",
     "group_share_choice": "Do ktorej skupiny chcete odoslať túto správu ?",
-    "public_link": "verejné spojenie"
+    "public_link": "Verejné spojenie"
+    "default_group": "Predvolenú skupinu",
+    "destroy_account": "Odstráňte svoj účet"
+    "destroy_account_explain": "Po odstránení účtu sa už nevráti",
+    "are_you_sure": "Si si istý ?",
+    "share_message": "Zdieľajte správu"
 };
