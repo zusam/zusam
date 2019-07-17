@@ -73,7 +73,7 @@ export default class Message extends Component {
     deleteMessage(event) {
 		event.preventDefault();
         if(confirm(lang["ask_delete_message"])) {
-            http.delete(this.state.message["id"]);
+            http.delete("/api/messages/" + this.state.message["id"]);
             cache.resetCache();
             // give some time to the cache to delete itself properly
             setTimeout(() => {
