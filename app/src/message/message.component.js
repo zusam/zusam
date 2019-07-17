@@ -11,6 +11,7 @@ export default class Message extends Component {
     constructor(props) {
         super(props);
         this.displayMoreChildren = this.displayMoreChildren.bind(this);
+        this.loadMessage = this.loadMessage.bind(this);
         this.deleteMessage = this.deleteMessage.bind(this);
         this.editMessage = this.editMessage.bind(this);
         this.shareMessage = this.shareMessage.bind(this);
@@ -25,13 +26,15 @@ export default class Message extends Component {
         if (!url && props.message) {
             url = "/api/message/" + props.message.id;
         }
+
         this.state = {
             url: url,
-            message: props.message,
-            author: props.message ? props.message.author : null,
             preview: null,
-            displayedChildren: props.message ? props.message.children && 5 : 0,
         };
+
+        if (props.message) {
+            this.loadMessage(props.message);
+        }
     }
 
     componentDidMount() {
@@ -56,6 +59,15 @@ export default class Message extends Component {
                 });
             }
         }
+    }
+
+    loadMessage(msg) {
+        me.removeNews(msg.id);
+        this.setState({
+            message: msg,
+            author: msg.author,
+            displayedChildren: msg.children && 5 // display 5 first children
+        });
     }
 
     cancelEdit(event) {
@@ -120,14 +132,7 @@ export default class Message extends Component {
             return;
         }
         if (!this.state.message) {
-            cache.get(this.state.url).then(msg => {
-                me.removeNews(msg.id);
-                this.setState({
-                    message: msg,
-                    author: msg.author,
-                    displayedChildren: msg.children && 5 // display 5 first children
-                });
-            });
+            cache.get(this.state.url).then(msg => this.loadMessage(msg));
         }
         if (!this.state.message || !this.state.message.id || this.state.isRemoved) {
             return;
