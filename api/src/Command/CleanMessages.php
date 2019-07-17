@@ -34,7 +34,27 @@ class CleanMessages extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->logger->info($this->getName());
+
+        // remove messages without groups
         $c = $this->pdo->query("SELECT m.id from `message` m LEFT JOIN `group` g ON g.id = m.group_id WHERE g.id IS NULL;");
+        while($i = $c->fetch()) {
+            if ($input->getOption("verbose") || $input->getOption("only-list")) {
+                echo $i["id"]."\n";
+            }
+            if (!$input->getOption("only-list")) {
+                $this->pdo->query("DELETE FROM `message` WHERE id = '" . $i["id"] . "';");
+            }
+        }
+
+        // remove messages without text nor files nor children
+        $c = $this->pdo->query("
+            SELECT m.id from `message` m
+            LEFT JOIN `messages_files` mf ON m.id = mf.message_id
+            LEFT JOIN `message` c ON m.id = c.parent_id
+            WHERE mf.message_id IS NULL
+            AND c.parent_id IS NULL
+            AND m.data LIKE '%\"text\":\"\"%';
+        ");
         while($i = $c->fetch()) {
             if ($input->getOption("verbose") || $input->getOption("only-list")) {
                 echo $i["id"]."\n";
