@@ -49,5 +49,5 @@ fi
 
 cp /zusam/public/${LANG}.js /zusam/public/lang.js
 
-chown -R "${UID}:${GID}" /etc/s6.d /var/log /var/lib /var/tmp/ /etc/php7 /etc/nginx /run/nginx /zusam
+chown -R "${UID}:${GID}" /var/log/php7 /var/lib/php7 /etc/php7 /zusam
 exec /bin/s6-svscan /etc/s6.d
