@@ -13,7 +13,7 @@ export default class FileGrid extends Component {
                 if (typeof(e) == "string") {
                     cache.get(e).then(r => {
                         let a = this.state.files;
-                        if (!r.fileIndex) {
+                        if (r.fileIndex == null) {
                             r.fileIndex = i;
                         }
                         a.splice(r.fileIndex, 0, r);
@@ -22,7 +22,7 @@ export default class FileGrid extends Component {
                 }
                 if (typeof(e) == "object") {
                     let a = this.state.files;
-                    if (!e.fileIndex) {
+                    if (e.fileIndex == null) {
                         e.fileIndex = i;
                     }
                     a.splice(e.fileIndex, 0, e);
