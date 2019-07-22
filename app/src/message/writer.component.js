@@ -93,7 +93,7 @@ export default class Writer extends Component {
 
     putMessage() {
         let msg = {
-            files: this.state.files.filter(e => !e.removed).map(e => e["id"]).filter(e => !!e),
+            files: this.state.files.filter(e => !e.removed).map(e => "/api/files/" + e["id"]).filter(e => !!e),
             data: {
                 text: document.getElementById("text").value
             },
@@ -141,11 +141,12 @@ export default class Writer extends Component {
                 return;
             }
             cache.resetCache();
-			window.dispatchEvent(new CustomEvent("newMessage", {detail : res}));
             if (this.props.parent) {
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
+            } else {
+                router.navigate(router.backUrl || msg.group.slice(4));
+                window.dispatchEvent(new CustomEvent("newMessage", {detail : res}));
             }
-            router.navigate(!router.backUrl || router.backUrl != "/" ? router.backUrl : msg.group.slice(4));
             this.setState({
                 sending: false,
                 files: [],
@@ -277,6 +278,7 @@ export default class Writer extends Component {
                 { !this.props.parent && (
                     <input
                         type="text" id="title"
+						onKeyPress={this.onKeyPress}
                         placeholder={lang["title_placeholder"]}
                     ></input>
                 )}
