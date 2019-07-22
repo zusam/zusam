@@ -10,7 +10,6 @@ export default class Message extends Component {
 
     constructor(props) {
         super(props);
-        this.displayMoreChildren = this.displayMoreChildren.bind(this);
         this.loadMessage = this.loadMessage.bind(this);
         this.deleteMessage = this.deleteMessage.bind(this);
         this.editMessage = this.editMessage.bind(this);
@@ -18,7 +17,6 @@ export default class Message extends Component {
         this.openPublicLink = this.openPublicLink.bind(this);
         this.cancelEdit = this.cancelEdit.bind(this);
         this.onNewChild = this.onNewChild.bind(this);
-        this.getPreview = this.getPreview.bind(this);
         if (!props.parent) {
             window.addEventListener("newChild", this.onNewChild);
         }
@@ -41,32 +39,12 @@ export default class Message extends Component {
         setTimeout(() => window.scrollTo(0, 0));
     }
 
-    getPreview() {
-        if (this.state.message.data) {
-            let previewUrl = util.getUrl(this.state.message.data["text"]);
-            if (previewUrl) {
-                cache.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
-                    this.setState({
-                        preview: r,
-                        gotPreview: true,
-                        data: this.state.message.data,
-                    });
-                });
-            } else {
-                this.setState({
-                    gotPreview: true,
-                    data: this.state.message.data,
-                });
-            }
-        }
-    }
-
     loadMessage(msg) {
         me.removeNews(msg.id);
         this.setState({
             message: msg,
             author: msg.author,
-            displayedChildren: msg.children && 5 // display 5 first children
+            displayedChildren: msg.children && 5, // display 5 first children
         });
     }
 
@@ -83,7 +61,7 @@ export default class Message extends Component {
     };
 
     deleteMessage(event) {
-		event.preventDefault();
+        event.preventDefault();
         if(confirm(lang["ask_delete_message"])) {
             http.delete("/api/messages/" + this.state.message["id"]);
             cache.resetCache();
@@ -99,32 +77,41 @@ export default class Message extends Component {
     }
 
     shareMessage(event) {
-		event.preventDefault();
+        event.preventDefault();
         router.navigate("/share?message=" + this.state.message.id);
     }
 
     editMessage(event) {
-		event.preventDefault();
+        event.preventDefault();
         this.setState({edit: true});
     }
 
     onNewChild(event) {
         const newMsg = event.detail;
         let msg = this.state.message;
-        if (newMsg.parent && newMsg.parent == msg["id"]) {
+        if (newMsg.parent && util.getId(newMsg.parent) == msg["id"]) {
             newMsg.author = me.me;
             msg.children = [...msg.children, newMsg];
             this.setState({
                 displayedChildren: this.state.displayedChildren + 1,
-                message: msg
+                message: msg,
             });
         }
     }
 
-    displayMoreChildren() {
-        this.setState({
-            displayedChildren: this.state.displayedChildren + 10
-        });
+    displayWriter() {
+        return (
+            <Writer
+                cancel={this.state.edit ? this.cancelEdit : null}
+                files={this.state.edit ? this.state.message.files : []}
+                focus={!!this.state.edit}
+                group={this.state.message.group}
+                messageId={this.state.edit ? this.state.message.id : null}
+                parent={this.state.edit ? this.state.message["parent"] : this.state.message.id}
+                text={this.state.edit ? this.state.data.text : ""}
+                title={this.state.edit ? this.state.data["title"] : ""}
+            />
+        );
     }
 
     render() {
@@ -138,82 +125,71 @@ export default class Message extends Component {
             return;
         }
         if (!this.state.gotPreview) {
-            this.getPreview();
-        }
-        if (this.state.edit) {
-            if (this.state.message.parent) {
-                return (
-                    <div class="message child">
-                        { me.me && (
-                            <div class="message-head p-1 d-none d-md-block">
-                                <img
-                                    class="rounded-circle w-3 material-shadow avatar"
-                                    src={ me.me.avatar ? util.crop(me.me.avatar["id"], 100, 100) : util.defaultAvatar }
-                                />
-                            </div>
-                        )}
-                        <Writer
-                            messageId={this.state.message.id}
-                            files={this.state.message.files}
-                            focus={true}
-                            group={this.state.group}
-                            parent={this.state.message.parent}
-                            text={this.state.data.text}
-                            cancel={this.cancelEdit}
-                        />
-                    </div>
-                );
+            if (this.state.message.data) {
+                let previewUrl = util.getUrl(this.state.message.data["text"]);
+                if (previewUrl) {
+                    cache.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
+                        this.setState({
+                            preview: r,
+                            gotPreview: true,
+                            data: this.state.message.data,
+                        });
+                    });
+                } else {
+                    this.setState({
+                        gotPreview: true,
+                        data: this.state.message.data,
+                    });
+                }
             }
-            return (
-                <div>
-                    <Writer
-                        messageId={this.state.message.id}
-                        files={this.state.message.files}
-                        focus={true}
-                        group={this.state.group}
-                        text={this.state.data.text}
-                        title={this.state.data.title}
-                        cancel={this.cancelEdit}
-                    />
-                    <MessageChildren
-                        message={this.state.message}
-                        displayedChildren={this.state.displayedChildren}
-                        displayMoreChildren={this.displayMoreChildren}
-                    />
-                </div>
-            );
         }
         return (
             <div>
                 <div className={"message" + (this.state.message.parent ? " child" : "") + (this.props.follow || "")}>
-                    <MessageHead
-                        author={this.state.author}
-                        message={this.state.message}
-                        editMessage={this.editMessage}
-                        deleteMessage={this.deleteMessage}
-                        openPublicLink={this.openPublicLink}
-                        shareMessage={this.shareMessage}
-                        isPublic={this.props.isPublic}
-                    />
-                    <MessageBody
-                        author={this.state.author}
-                        message={this.state.message}
-                        data={this.state.data}
-                        preview={this.state.preview}
-                        editMessage={this.editMessage}
-                        deleteMessage={this.deleteMessage}
-                        openPublicLink={this.openPublicLink}
-                        shareMessage={this.shareMessage}
-                        isPublic={this.props.isPublic}
-                    />
+                    { this.state.edit && this.state.message.parent && me.me && (
+                        <div class="message-head p-1 d-none d-md-block">
+                            <img
+                                class="rounded-circle w-3 material-shadow avatar"
+                                src={ me.me.avatar ? util.crop(me.me.avatar["id"], 100, 100) : util.defaultAvatar }
+                            />
+                        </div>
+                    )}
+                    { this.state.edit && this.displayWriter() }
+                    { !this.state.edit && (
+                        <MessageHead
+                            author={this.state.author}
+                            message={this.state.message}
+                            editMessage={this.editMessage}
+                            deleteMessage={this.deleteMessage}
+                            openPublicLink={this.openPublicLink}
+                            shareMessage={this.shareMessage}
+                            isPublic={this.props.isPublic}
+                        />
+                    )}
+                    { !this.state.edit && (
+                        <MessageBody
+                            author={this.state.author}
+                            message={this.state.message}
+                            data={this.state.data}
+                            preview={this.state.preview}
+                            editMessage={this.editMessage}
+                            deleteMessage={this.deleteMessage}
+                            openPublicLink={this.openPublicLink}
+                            shareMessage={this.shareMessage}
+                            isPublic={this.props.isPublic}
+                        />
+                    )}
                 </div>
-                <MessageChildren
-                    message={this.state.message}
-                    displayedChildren={this.state.displayedChildren}
-                    displayMoreChildren={this.displayMoreChildren}
-                    isPublic={this.props.isPublic}
-                />
-                { !this.props.isPublic && !this.state.message.parent && (
+                { !this.state.message.parent && (
+                    <MessageChildren
+                        children={this.state.message.children}
+                        displayedChildren={this.state.displayedChildren}
+                        displayMoreChildren={_ => this.setState({displayedChildren: this.state.displayedChildren + 10})}
+                        isPublic={this.props.isPublic}
+                        key={this.state.message.id}
+                    />
+                )}
+                { !this.state.edit && !this.props.isPublic && !this.state.message.parent && (
                     <div class="message child">
                         { me.me && (
                             <div class="message-head p-1 d-none d-md-block">
@@ -223,11 +199,7 @@ export default class Message extends Component {
                                 />
                             </div>
                         )}
-                        <Writer
-                            parent={this.state.message.id}
-                            group={this.state.message.group}
-                            focus={false}
-                        />
+                        { this.displayWriter() }
                     </div>
                 )}
             </div>
