@@ -17,9 +17,11 @@ export default class Message extends Component {
         this.openPublicLink = this.openPublicLink.bind(this);
         this.cancelEdit = this.cancelEdit.bind(this);
         this.onNewChild = this.onNewChild.bind(this);
+        this.onEditMessage = this.onEditMessage.bind(this);
         if (!props.parent) {
             window.addEventListener("newChild", this.onNewChild);
         }
+        window.addEventListener("editMessage", this.onEditMessage);
         let url = router.entityUrl;
         if (!url && props.message) {
             url = "/api/message/" + props.message.id;
@@ -84,6 +86,20 @@ export default class Message extends Component {
     editMessage(event) {
         event.preventDefault();
         this.setState({edit: true});
+    }
+
+    onEditMessage(event) {
+        if (event.detail.id == this.state.message.id) {
+            this.props.key = +Date.now();
+            let msg = this.state.message;
+            msg.data = event.detail.data;
+            this.setState({
+                message: msg,
+                data: msg.data,
+                files: event.detail.files,
+            });
+            setTimeout(_ => this.setState({edit: false}));
+        }
     }
 
     onNewChild(event) {

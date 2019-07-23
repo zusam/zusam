@@ -107,7 +107,7 @@ export default class Writer extends Component {
                 alert.add(lang["error_new_message"], "alert-danger");
                 return;
             }
-            location.reload();
+            window.dispatchEvent(new CustomEvent("editMessage", {detail : res}));
         });
         this.setState({sending: true});
     }
@@ -140,10 +140,11 @@ export default class Writer extends Component {
                 this.setState({sending: false});
                 return;
             }
-            cache.resetCache();
             if (this.props.parent) {
+                cache.remove("/api/messages/" + this.props.parent)
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
             } else {
+                cache.remove("/api/groups/" + this.props.group)
                 router.navigate(router.backUrl || msg.group.slice(4));
                 window.dispatchEvent(new CustomEvent("newMessage", {detail : res}));
             }
@@ -278,7 +279,7 @@ export default class Writer extends Component {
                 { !this.props.parent && (
                     <input
                         type="text" id="title"
-						onKeyPress={this.onKeyPress}
+                        onKeyPress={this.onKeyPress}
                         placeholder={lang["title_placeholder"]}
                     ></input>
                 )}
