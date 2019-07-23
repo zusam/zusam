@@ -24,7 +24,7 @@ export default class Settings extends Component {
                     <li class="nav-item">
                         <a
                             class={ "nav-link" + (this.state.entity["entityType"] == "user" ? " active" : "")}
-                            href={"/users" + me.me.id + "/settings"}
+                            href={"/users/" + me.me.id + "/settings"}
                             onClick={router.onClick}
                         >{lang["account"]}</a>
                     </li>
