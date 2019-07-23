@@ -93,10 +93,10 @@ export default class Message extends Component {
             this.props.key = +Date.now();
             let msg = this.state.message;
             msg.data = event.detail.data;
+            msg.files = event.detail.files;
             this.setState({
                 message: msg,
                 data: msg.data,
-                files: event.detail.files,
             });
             setTimeout(_ => this.setState({edit: false}));
         }
