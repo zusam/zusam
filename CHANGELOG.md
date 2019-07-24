@@ -23,7 +23,7 @@ This update has a database structure change. Please see the corresponding migrat
 To upgrade, follow the [upgrade guide](https://github.com/nrobinaubertin/zusam/blob/master/documentation/update.md).
 
 Cron tasks will now execute after each API call. This means that if your Zusam instance is visited sufficiently often, you don't need to call it from the system cron anymore.  
-The first time RepairDatabase will be executed, it could take some time. You can execute it yourself during the upgrade (after having applied the SQL migration) with `php api/bin/console zusam:repair-database`.
+The first time RepairDatabase will be executed, it could take some time (and cause some API calls to timeout). To avoid this, you can execute it yourself during the upgrade (after having applied the SQL migration) with `php api/bin/console zusam:repair-database`.
 
 :warning: The configuration change (.env => .env.local) could impact you if you customized your configuration file paths. Make sure to update the symlink if necessary.  
 These changes were made to be compliant with the symfony specifications:

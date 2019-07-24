@@ -13,13 +13,13 @@ You can see the latest release [here](https://github.com/nrobinaubertin/zusam/re
 ## The actual procedure
 
 1. Backup the data directory
-2. Select the next version you want to update to. It will be called $version for the rest of the procedure.
+2. Select the next version you want to update to. It will be called `$version` for the rest of the procedure.
 3. Go to your zusam directory
 4. `wget -qO- https://github.com/nrobinaubertin/zusam/archive/$version.tar.gz | tar xz --strip 1`
 5. If `api/migrations/$version.sql` exists, apply it: `sqlite3 data/data.db < api/migrations/$version.sql`
 6. Apply latest composer changes: `php bin/composer install`
 7. Copy the webapp to the public directory: `cp app/dist/* public/`
-8. Rename the lang file (here english, adapt it to the one you want): `cp public/en.js public/lang.js`
+8. Rename the lang file (english here, adapt it to the one you want): `cp public/en.js public/lang.js`
 
 ## If you are using docker
 
