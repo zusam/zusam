@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Message;
 use App\Entity\File;
+use App\Service\Cache;
 use App\Service\Url as UrlService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,11 +14,13 @@ class NewMessage extends Controller
 {
     private $em;
     private $urlService;
+    private $cache;
 
-    public function __construct(EntityManagerInterface $em, UrlService $urlService)
+    public function __construct(Cache $cache, EntityManagerInterface $em, UrlService $urlService)
     {
         $this->em = $em;
         $this->urlService = $urlService;
+        $this->cache = $cache;
     }
 
     public function __invoke(Message $data)
@@ -45,7 +48,9 @@ class NewMessage extends Controller
         if (!empty($parent)) {
             $parent->setLastActivityDate(time());
             $this->em->persist($parent);
+            $this->cache->invalidateTags([$parent->getId()]);
         }
+        $this->cache->invalidateTags([$group->getId()]);
         return $data;
     }
 

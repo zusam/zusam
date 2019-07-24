@@ -4,22 +4,25 @@ namespace App\Controller;
 
 use App\Entity\Group;
 use App\Entity\Message;
+use App\Service\Cache;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\ExpressionLanguage\Expression;
 
 class GroupPage extends Controller
 {
     private $em;
     private $newMessage;
+    private $cache;
 
-    public function __construct(EntityManagerInterface $em, NewMessage $newMessage)
+    public function __construct(Cache $cache, EntityManagerInterface $em, NewMessage $newMessage)
     {
         $this->em = $em;
         $this->newMessage = $newMessage;
+        $this->cache = $cache;
     }
 
     /**
@@ -40,42 +43,60 @@ class GroupPage extends Controller
         $this->em->persist($user);
         $this->em->flush();
 
-        $query = $this->em->createQuery(
-            "SELECT m FROM App\Entity\Message m"
-            ." WHERE m.group = '" . $group->getId() . "'"
-            ." AND m.parent IS NULL"
-            ." ORDER BY m.lastActivityDate DESC"
-        );
-        $query->setMaxResults(30);
-        $query->setFirstResult(30 * $n);
-        $messages = $query->getResult();
+        $cached_item = $this->cache->getItem("$id-$n");
+        if (!$cached_item->isHit()) {
+            $query = $this->em->createQuery(
+                "SELECT m FROM App\Entity\Message m"
+                ." WHERE m.group = '" . $group->getId() . "'"
+                ." AND m.parent IS NULL"
+                ." ORDER BY m.lastActivityDate DESC"
+            );
+            $query->setMaxResults(30);
+            $query->setFirstResult(30 * $n);
+            $messages = $query->getResult();
 
-        $query = $this->em->createQuery(
-            "SELECT COUNT(m.id) AS totalItems FROM App\Entity\Message m"
-            ." WHERE m.group = '" . $group->getId() . "'"
-            ." AND m.parent IS NULL"
-        );
-        $totalItems = $query->getResult();
+            $query = $this->em->createQuery(
+                "SELECT COUNT(m.id) AS totalItems FROM App\Entity\Message m"
+                ." WHERE m.group = '" . $group->getId() . "'"
+                ." AND m.parent IS NULL"
+            );
+            $totalItems = $query->getResult();
 
-        $page = [];
-        foreach ($messages as $message) {
-            $previewUrl = $message->getPreview() ? $message->getPreview()->getId() : "";
-            $authorUrl = $message->getAuthor() ? $message->getAuthor()->getId() : "";
-            $page[] = [
-                "id" => $message->getId(),
-                "entityType" => $message->getEntityType(),
-                "data" => $message->getData(),
-                "author" => $authorUrl,
-                "preview" => $previewUrl,
-                "children" => count($message->getChildren()),
-                "lastActivityDate" => $message->getLastActivityDate()
+            $page = [];
+            foreach ($messages as $message) {
+                $previewUrl = $message->getPreview() ? $message->getPreview()->getId() : "";
+				$authorUrl = "";
+				if ($message->getAuthor()) {
+					$authorUrl = $message->getAuthor()->getId();
+					$cached_item->tag($message->getAuthor()->getId());
+				}
+                $page[] = [
+                    "id" => $message->getId(),
+                    "entityType" => $message->getEntityType(),
+                    "data" => $message->getData(),
+                    "author" => $authorUrl,
+                    "preview" => $previewUrl,
+                    "children" => count($message->getChildren()),
+                    "lastActivityDate" => $message->getLastActivityDate()
+                ];
+            }
+
+            $data = [
+                "messages" => $page,
+                "totalItems" => $totalItems[0]["totalItems"],
             ];
+			$cached_item->tag([
+				$message->getId(),
+				$group->getId(),
+			]);
+            $cached_item->set($data);
+            $this->cache->save($cached_item);
+            $data["cache"] = "MISS";
+        } else {
+            $data = $cached_item->get();
+            $data["cache"] = "HIT";
         }
 
-        $data = [
-            "messages" => $page,
-            "totalItems" => $totalItems[0]["totalItems"],
-        ];
         $response = new JsonResponse($data, JsonResponse::HTTP_OK);
         $response->setCache(array(
             "etag"          => md5(json_encode($data)),

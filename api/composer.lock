@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d98d710c13337d1a372c0b7450facd69",
+    "content-hash": "1f7455cdb78c08a94f31b23393732aef",
     "packages": [
         {
             "name": "api-platform/api-pack",
@@ -1340,16 +1340,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.9",
+            "version": "2.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "128cc721d771ec2c46ce59698f4ca42b73f71b25"
+                "reference": "a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/128cc721d771ec2c46ce59698f4ca42b73f71b25",
-                "reference": "128cc721d771ec2c46ce59698f4ca42b73f71b25",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec",
+                "reference": "a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec",
                 "shasum": ""
             },
             "require": {
@@ -1359,7 +1359,8 @@
             "require-dev": {
                 "dominicsayers/isemail": "dev-master",
                 "phpunit/phpunit": "^4.8.35||^5.7||^6.0",
-                "satooshi/php-coveralls": "^1.0.1"
+                "satooshi/php-coveralls": "^1.0.1",
+                "symfony/phpunit-bridge": "^4.4@dev"
             },
             "suggest": {
                 "ext-intl": "PHP Internationalization Libraries are required to use the SpoofChecking validation"
@@ -1393,20 +1394,20 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-06-23T10:14:27+00:00"
+            "time": "2019-07-19T20:52:08+00:00"
         },
         {
             "name": "embed/embed",
-            "version": "v3.4.0",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oscarotero/Embed.git",
-                "reference": "5594b253dee90888c14cdca43696183c98f078e9"
+                "reference": "960bbd5a62c5697302bd5394d58efba2e998b787"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/5594b253dee90888c14cdca43696183c98f078e9",
-                "reference": "5594b253dee90888c14cdca43696183c98f078e9",
+                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/960bbd5a62c5697302bd5394d58efba2e998b787",
+                "reference": "960bbd5a62c5697302bd5394d58efba2e998b787",
                 "shasum": ""
             },
             "require": {
@@ -1432,9 +1433,9 @@
             "authors": [
                 {
                     "name": "Oscar Otero",
+                    "role": "Developer",
                     "email": "oom@oscarotero.com",
-                    "homepage": "http://oscarotero.com",
-                    "role": "Developer"
+                    "homepage": "http://oscarotero.com"
                 }
             ],
             "description": "PHP library to retrieve page info using oembed, opengraph, etc",
@@ -1446,7 +1447,7 @@
                 "opengraph",
                 "twitter cards"
             ],
-            "time": "2019-06-23T11:12:03+00:00"
+            "time": "2019-07-20T17:05:41+00:00"
         },
         {
             "name": "fig/link-util",
@@ -3376,16 +3377,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.4.4",
+            "version": "v1.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "4b5d25a5538e2dc37ff84645fe7498a9a04947b3"
+                "reference": "4467ab35c82edebac58fe58c22cea166a805eb1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/4b5d25a5538e2dc37ff84645fe7498a9a04947b3",
-                "reference": "4b5d25a5538e2dc37ff84645fe7498a9a04947b3",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/4467ab35c82edebac58fe58c22cea166a805eb1f",
+                "reference": "4467ab35c82edebac58fe58c22cea166a805eb1f",
                 "shasum": ""
             },
             "require": {
@@ -3421,7 +3422,7 @@
                 }
             ],
             "description": "Composer plugin for Symfony",
-            "time": "2019-07-12T06:29:25+00:00"
+            "time": "2019-07-19T08:59:18+00:00"
         },
         {
             "name": "symfony/form",

@@ -25,3 +25,9 @@ doctrine:
         dir: '%kernel.project_dir%/src/Entity'
         prefix: 'App\Entity'
         alias: App
+    metadata_cache_driver:
+      class: Doctrine\Common\Cache\ApcuCache
+    query_cache_driver:
+      class: Doctrine\Common\Cache\ApcuCache
+    result_cache_driver:
+      class: Doctrine\Common\Cache\ApcuCache

@@ -33,7 +33,7 @@ services:
 
     App\EventListener\TerminateListener:
       tags:
-        - { name: kernel.event_listener, event: kernel.terminate }
+        - { name: kernel.event_listener, event: kernel.terminate, priority: -2048 }
 
     ApiPlatform\Core\Serializer\ItemNormalizer: ~
 
@@ -104,6 +104,17 @@ services:
         - '@twig'
         - '%env(resolve:DOMAIN)%'
         - '%env(resolve:LANG)%'
+
+    App\Service\Cache:
+      arguments:
+        - '@apcu_adapter'
+
+    apcu_adapter:
+      class: Symfony\Component\Cache\Adapter\ApcuAdapter
+      arguments:
+        - '%env(resolve:DOMAIN)%'
+        - 0
+        - '%env(resolve:VERSION)%'
 
     App\Service\Namer:
       public: true
