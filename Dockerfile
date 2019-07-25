@@ -4,9 +4,6 @@ FROM alpine:3.9
 RUN apk add --no-cache -U su-exec tini s6
 ENTRYPOINT ["/sbin/tini", "--"]
 
-# Type of the instance
-ARG INSTANCE_TYPE=default
-
 # global environment variables
 ENV LANG=en
 ENV UID=791 GID=791
@@ -44,13 +41,11 @@ COPY docker/zusam/s6.d /etc/s6.d
 COPY docker/zusam/config /zusam/config
 COPY docker/zusam/php7 /etc/php7
 COPY docker/zusam/nginx /etc/nginx
-COPY docker/zusam/reset-demo.sh /usr/local/bin/reset-demo.sh
 COPY docker/zusam/run.sh /usr/local/bin/run.sh
 COPY docker/zusam/example.db /zusam/example.db
 COPY public/api/index.php /zusam/public/api/index.php
 COPY api /zusam/api
 COPY app/dist/* /zusam/public/
-COPY docker/demo.tar.gz /zusam/docker/demo.tar.gz
 
 # handle build config
 RUN set -xe \
