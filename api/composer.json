@@ -22,6 +22,7 @@
     },
     "require-dev": {
         "symfony/dotenv": "^4.0",
+        "symfony/phpunit-bridge": "^4.3",
         "symfony/profiler-pack": "^1.0",
         "symfony/web-server-bundle": "^4.0"
     },
