@@ -39,7 +39,7 @@ export default class MessageHead extends Component {
                             { !this.props.message.parent && (
                                 <a class="seamless-link" onClick={this.props.openPublicLink}>{lang["public_link"]}</a>
                             )}
-                            { !this.props.message.parent && (
+                            { !this.props.message.parent && me.me.groups.length > 1 && (
                                 <a class="seamless-link" onClick={this.props.shareMessage}>{lang["share_message"]}</a>
                             )}
                         </div>
