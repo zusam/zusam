@@ -34,7 +34,7 @@ Requirements:
 - Ffmpeg 3+
 - Yarn or NPM (only to compile the webapp)
 
-You can follow the installation guide for [Debian stretch](documentation/debian.md) or use [Docker](documentation/docker.md).
+You can follow the installation guide for [Debian stretch](documentation/debian-stretch.md) or use [Docker](documentation/docker.md).
 
 ## Status
 The project has the goal of being really stable for the backend once 1.0 is hit. That means no database structure changes, an update system and a stable API.  

@@ -87,7 +87,7 @@ chown -R www-data: /srv/zusam
 ```
 
 Zusam needs to do stuff regularly (cleaning up files, converting videos...).  
-Let's add its worker to cron:
+It will execute those recurrent tasks on each API request but if your instance is not visited often enough, you can add its worker to your cron:
 ```
 echo "* * * * * /srv/zusam/api/bin/console zusam:cron >> /srv/zusam/api/var/log/cron.log" | sudo crontab -
 ```
