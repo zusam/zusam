@@ -144,7 +144,7 @@ export default class Writer extends Component {
                 cache.remove("/api/messages/" + this.props.parent)
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
             } else {
-                cache.remove("/api/groups/" + this.props.group)
+                cache.remove(this.props.group)
                 router.navigate(router.backUrl || msg.group.slice(4));
                 window.dispatchEvent(new CustomEvent("newMessage", {detail : res}));
             }

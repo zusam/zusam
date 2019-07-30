@@ -11,8 +11,12 @@ const cache = {
         cache.events[event].push(resolve);
     },
     remove: id => {
-        delete(cache.data[id]);
-        window.localStorage.removeItem(id);
+        Object.keys(cache.data).forEach(key => {
+            if (key.startsWith(id)) {
+                delete(cache.data[key]);
+                window.localStorage.removeItem(key);
+            }
+        });
     },
     set: (id, data, cacheDuration = null, persistant = true) => {
         const storageBox = {
