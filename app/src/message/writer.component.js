@@ -253,7 +253,6 @@ export default class Writer extends Component {
             }
             let a = this.state.files;
             if (!file) {
-                a.splice(fileIndex, 1);
                 alert.add(lang["error_upload"], "alert-danger");
             } else {
                 a.splice(fileIndex, 1, file);
@@ -265,6 +264,9 @@ export default class Writer extends Component {
         }, progressFn, e => {
             console.warn(e);
             alert.add(lang["error_upload"], "alert-danger");
+            let a = this.state.files;
+            a.splice(fileIndex, 1, {fileIndex: fileIndex, error: e});
+            this.setState({files: a})
         });
     }
 
@@ -296,7 +298,7 @@ export default class Writer extends Component {
                 { this.state.preview && <PreviewBlock inWriter={true} {...this.state.preview} /> }
                 { !!this.state.files.length && (
                     <FileGrid
-                        key={this.state.files.reduce((a,c) => a + c.id, "")}
+                        key={this.state.files.reduce((a,c) => a + c.id + c.fileIndex + c.error, "")}
                         files={this.state.files}
                         toggleFile={this.toggleFile}
                         inWriter={true}

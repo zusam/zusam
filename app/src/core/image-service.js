@@ -43,7 +43,9 @@ const imageService = {
                 let img = new Image();
                 img.onload = () => {
                     let w = Math.min(img.naturalWidth, 2048);
-                    let h = Math.min(img.naturalHeight, 2048);
+                    // height is not limited to accomodate with long format images
+                    // example: https://imgs.xkcd.com/comics/earth_temperature_timeline.png
+                    let h = img.naturalHeight; //Math.min(img.naturalHeight, 2048);
                     let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
                     let nw = Math.floor(img.naturalWidth*g);
                     let nh = Math.floor(img.naturalHeight*g);

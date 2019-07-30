@@ -44,7 +44,8 @@ export default class FileGrid extends Component {
         let filePath = file.contentUrl ? "/files/" + file.contentUrl : null;
         let url = filePath;
         if (/image/.test(file.type) && file.type != "image/gif") {
-            url = util.thumbnail(file.id, 1366, 768);
+            // no limit in height for lon format images
+            url = util.thumbnail(file.id, 1366, 999999);
         }
         if (miniature == true) {
             if (file.status == "ready") {
@@ -124,7 +125,9 @@ export default class FileGrid extends Component {
         }
         return (
             <div class="file-placeholder">
-                <div class="spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
+                { file["error"] ? <div class="orange-error">&times;</div> : (
+                    <div class="spinner orange-spinner"><div></div><div></div><div></div><div></div><div></div></div>
+                )}
                 <div class="progress-bar"><div style={{width: file.progress + "%"}}></div></div>
             </div>
         );
