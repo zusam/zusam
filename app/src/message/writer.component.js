@@ -47,7 +47,7 @@ export default class Writer extends Component {
         }
     }
 
-    onKeyPress(event) {
+    onKeyPress(event, doGenPreview = false) {
         if (event.ctrlKey && event.key == "Enter") {
             this.sendMessage();
             return;
@@ -55,7 +55,9 @@ export default class Writer extends Component {
         if (![" ", "Enter", "v"].includes(event.key)) {
             return;
         }
-        this.genPreview(event.currentTarget);
+        if (doGenPreview) {
+            this.genPreview(event.currentTarget);
+        }
     }
 
     genPreview(t) {
@@ -284,7 +286,7 @@ export default class Writer extends Component {
                     ></input>
                 )}
                 <textarea
-                    onKeyPress={this.onKeyPress}
+                    onKeyPress={e => this.onKeyPress(e, true)}
                     id="text"
                     placeholder={lang["text_placeholder"]}
                     rows="5"
