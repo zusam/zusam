@@ -78,15 +78,28 @@ class Upload extends Controller
                 && !file_exists("/tmp/zusam_video_convert.lock")
             ) {
                 list($width, $height) = getimagesize($filesDir."/".$file->getContentUrl());
-                if ($width > 2048 || $height > 2048 || $file->getType() !== "image/jpeg") {
+                // This is a special check for long format images that should not be limited in height
+                // example: https://imgs.xkcd.com/comics/earth_temperature_timeline.png
+                if ($height/$width > 10) {
                     $newContentUrl = pathinfo($file->getContentUrl(), PATHINFO_FILENAME).".jpg";
                     $imageService->createThumbnail(
                         $filesDir."/".$file->getContentUrl(),
                         $filesDir."/".$newContentUrl,
                         2048,
-                        2048
+                        999999
                     );
                     $file->setContentUrl($newContentUrl);
+                } else {
+                    if ($width > 2048 || $height > 2048 || $file->getType() !== "image/jpeg") {
+                        $newContentUrl = pathinfo($file->getContentUrl(), PATHINFO_FILENAME).".jpg";
+                        $imageService->createThumbnail(
+                            $filesDir."/".$file->getContentUrl(),
+                            $filesDir."/".$newContentUrl,
+                            2048,
+                            2048
+                        );
+                        $file->setContentUrl($newContentUrl);
+                    }
                 }
                 $file->setStatus(File::STATUS_READY);
             }
