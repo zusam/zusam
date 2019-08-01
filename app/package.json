@@ -10,15 +10,15 @@
         "prelang": "yarn clean"
     },
     "dependencies": {
-        "node-sass": "~4.11",
-        "parcel-bundler": "~1.11",
-        "pica": "~5.0",
+        "node-sass": "~4",
+        "parcel-bundler": "~1",
+        "pica": "~5",
         "preact": "~8"
     },
     "devDependencies": {
-        "babel-core": "~6.26",
-        "babel-plugin-transform-react-jsx": "~6.24",
-        "babel-preset-env": "~1.7",
-        "sass": "~1.16"
+        "babel-core": "~6",
+        "babel-plugin-transform-react-jsx": "~6",
+        "babel-preset-env": "~1",
+        "sass": "~1"
     }
 }
