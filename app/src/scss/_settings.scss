@@ -60,3 +60,30 @@
         }
     }
 }
+
+.user-list {
+    padding: 2rem;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+
+    h3:first-letter {
+        text-transform: capitalize;
+    }
+
+    .user-card {
+        display: inline-flex;
+        align-items: center;
+        padding: 2rem 2rem 0 0;
+        flex-direction: column;
+
+        .avatar {
+            width: 6rem;
+            height: 6rem;
+            border-radius: 4px;
+
+            &:hover {
+                transform: scale(2);
+            }
+        }
+    }
+}

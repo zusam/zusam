@@ -30,18 +30,18 @@ export default class Share extends Component {
             });
         }
         me.get().then(user => {
-			if (user.groups.length == 1) {
-				this.setState({group: user.groups[0]["id"]});
-				router.backUrl = router.toApp(user.groups[0]).slice(4);
-			}
+            if (user.groups.length == 1) {
+                this.setState({group: user.groups[0]["id"]});
+                router.backUrl = router.toApp(user.groups[0]).slice(4);
+            }
         });
         this.groupSelect = this.groupSelect.bind(this);
     }
 
-	groupSelect(e) {
-		this.setState({group: e.target.value});
-		router.backUrl = e.target.value.slice(4);
-	}
+    groupSelect(e) {
+        this.setState({group: e.target.value});
+        router.backUrl = e.target.value.slice(4);
+    }
 
     render() {
         if (!this.state["loaded"]) {
@@ -50,20 +50,20 @@ export default class Share extends Component {
         return (
             <article>
                 <div class="container">
-					{ me.me && me.me.groups.length > 1 && (
-						<div class="mb-1">
-							<label for="group_share_choice">{lang["group_share_choice"]}</label>
-							<select
-								selectedIndex="-1"
-								class="form-control"
-								name="group_share_choice"
-								onChange={this.groupSelect}
-								required
-							>
+                    { me.me && me.me.groups.length > 1 && (
+                        <div class="mb-1">
+                            <label for="group_share_choice">{lang["group_share_choice"]}</label>
+                            <select
+                                selectedIndex="-1"
+                                class="form-control"
+                                name="group_share_choice"
+                                onChange={this.groupSelect}
+                                required
+                            >
                                 { me.me.groups.map(e => <option value={"/api/groups/" + e["id"]}>{e.name}</option>) }
-							</select>
-						</div>
-					)}
+                            </select>
+                        </div>
+                    )}
                     <Writer
                         focus={true}
                         group={this.state.group}

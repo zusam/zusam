@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { me, alert, cache, http, router } from "/core";
+import { me, alert, cache, http, router, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class GroupSettings extends Component {
@@ -10,7 +10,10 @@ export default class GroupSettings extends Component {
         this.leaveGroup = this.leaveGroup.bind(this);
         this.leave = this.leave.bind(this);
         this.resetSecretKey = this.resetSecretKey.bind(this);
-        this.state = Object.assign({}, props);
+        this.state = Object.assign({hydratedUsers: []}, props);
+        props.users.map(u => cache.get(u).then(res => this.setState({
+            hydratedUsers: [...this.state.hydratedUsers, res]
+        })));
     }
 
     resetSecretKey(event) {
@@ -64,55 +67,70 @@ export default class GroupSettings extends Component {
 
     render() {
         return (
-            <div class="group-settings">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="container-fluid p-1">
-                            <div class="row">
-                                <div class="col-12 col-md-10">
-                                    <form id="settings_form" class="mb-1 border-bottom pb-1">
-                                        <div class="form-group">
-                                            <label for="name">{lang["name"]}: </label>
-                                            <input
-                                                type="text"
-                                                name="name"
-                                                minlength="1"
-                                                maxlength="128"
-                                                placeholder={lang["name_input"]}
-                                                value={this.state.name}
-                                                class="form-control"
-                                                required
-                                            ></input>
-                                        </div>
-                                        <button onClick={this.updateSettings} class="btn btn-outline-secondary">{lang["save_changes"]}</button>
-                                    </form>
-                                    <form class="mb-1 border-bottom pb-1">
-                                        <div class="form-group">
-                                            <label for="inviteKey">{lang["invitation_link"]}: </label>
-                                            <input
-                                                type="text"
-                                                name="inviteKey"
-                                                value={
-                                                    location.protocol
-                                                        + "//" + location.hostname
-                                                        + "/invitation/"
-                                                        + this.state.secretKey
-                                                }
-                                                class="form-control font-size-80"
-                                                readonly="readonly"
-                                            ></input>
-                                        </div>
-                                        <button class="btn btn-outline-secondary" onClick={this.resetSecretKey}>
-                                            {lang["reset_invitation_link"]}
-                                        </button>
-                                    </form>
-                                    <form>
-                                        <button onClick={this.leaveGroup} class="btn btn-outline-danger">{lang["quit_group"]}</button>
-                                    </form>
+            <div>
+                <div class="group-settings mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="container-fluid p-1">
+                                <div class="row">
+                                    <div class="col-12 col-md-10">
+                                        <form id="settings_form" class="mb-1 border-bottom pb-1">
+                                            <div class="form-group">
+                                                <label for="name">{lang["name"]}: </label>
+                                                <input
+                                                    type="text"
+                                                    name="name"
+                                                    minlength="1"
+                                                    maxlength="128"
+                                                    placeholder={lang["name_input"]}
+                                                    value={this.state.name}
+                                                    class="form-control"
+                                                    required
+                                                ></input>
+                                            </div>
+                                            <button onClick={this.updateSettings} class="btn btn-outline-secondary">{lang["save_changes"]}</button>
+                                        </form>
+                                        <form class="mb-1 border-bottom pb-1">
+                                            <div class="form-group">
+                                                <label for="inviteKey">{lang["invitation_link"]}: </label>
+                                                <input
+                                                    type="text"
+                                                    name="inviteKey"
+                                                    value={
+                                                        location.protocol
+                                                            + "//" + location.hostname
+                                                            + "/invitation/"
+                                                            + this.state.secretKey
+                                                    }
+                                                    class="form-control font-size-80"
+                                                    readonly="readonly"
+                                                ></input>
+                                            </div>
+                                            <button class="btn btn-outline-secondary" onClick={this.resetSecretKey}>
+                                                {lang["reset_invitation_link"]}
+                                            </button>
+                                        </form>
+                                        <form>
+                                            <button onClick={this.leaveGroup} class="btn btn-outline-danger">{lang["quit_group"]}</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="user-list mb-3">
+                    <h3>{lang["users"]}</h3>
+                    { this.state.hydratedUsers.map(user => (
+                        <div class="user-card">
+                            <img
+                                class="avatar material-shadow"
+                                src={user && user.avatar ? util.crop(user.avatar["id"], 200, 200) : util.defaultAvatar}
+                                onError={e => e.currentTarget.src = util.defaultAvatar}
+                            />
+                            <span>{user["name"]}</span>
+                        </div>
+                    ))}
                 </div>
             </div>
         );

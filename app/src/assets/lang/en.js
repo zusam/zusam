@@ -67,5 +67,6 @@ window.lang = {
     "destroy_account": "Delete your account",
     "destroy_account_explain": "Once you delete your account, there is no going back. Please be certain.",
     "are_you_sure": "Are you sure?",
-    "share_message": "Share the message"
+    "share_message": "Share the message",
+    "users": "users"
 };
