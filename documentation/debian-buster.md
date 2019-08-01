@@ -1,17 +1,9 @@
 Install on Debian stretch
 =========================
 
-First, we'll need to add the sury repository to get up-to-date versions of php:
+First we're going to install the necessary packages:
 ```
-sudo apt install ca-certificates apt-transport-https
-wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -
-echo "deb https://packages.sury.org/php/ stretch main" | sudo tee /etc/apt/sources.list.d/php.list
-sudo apt update
-```
-
-We're going to use php7.3 here but Zusam is compatible with 7.2+
-```
-sudo apt install -y nginx unzip ffmpeg php7.3 php7.3-fpm php7.3-xml php7.3-curl php7.3-mbstring php7.3-sqlite3 php7.3-imagick php7.3-intl
+sudo apt install -y nginx unzip ffmpeg php7.3 php7.3-fpm php7.3-xml php7.3-curl php7.3-mbstring php7.3-sqlite3 php-imagick php7.3-intl
 ```
 
 Download the latest release (here in /srv/zusam):
@@ -93,16 +85,9 @@ It will execute those recurrent tasks on each API request but if your instance i
 echo "* * * * * /srv/zusam/api/bin/console zusam:cron >> /srv/zusam/api/var/log/cron.log" | sudo crontab -
 ```
 
-Now we're going to add SSL/TLS certificates using certbot.  
-Let's add the repository:
-```
-echo "deb http://deb.debian.org/debian stretch-backports main" | sudo tee /etc/apt/sources.list.d/php.list
-sudo apt update
-```
-
 Install the certbot package:
 ```
-sudo apt-get install -y certbot python-certbot-nginx -t stretch-backports
+sudo apt-get install certbot python-certbot-nginx
 ```
 
 You'll need to change the `server_name` in `/etc/nginx/sites-available/default` to match your domain name.  
