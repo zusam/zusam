@@ -19,8 +19,8 @@ export default class UserSettings extends Component {
         input.addEventListener("change", event => {
             let img = new Image();
             img.onload = () => {
-                let w = Math.min(img.naturalWidth, 256);
-                let h = Math.min(img.naturalHeight, 256);
+                let w = Math.min(img.naturalWidth, 1024);
+                let h = Math.min(img.naturalHeight, 1024);
                 let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
                 let nw = Math.floor(img.naturalWidth*g);
                 let nh = Math.floor(img.naturalHeight*g);
@@ -28,7 +28,7 @@ export default class UserSettings extends Component {
                     const formData = new FormData();
                     formData.append("file", blob);
                     http.post("/api/files/upload", formData, false).then(file => {
-                        http.put("/api/users/" + this.state.id, {avatar: file["id"]}).then(res => {
+                        http.put("/api/users/" + this.state.id, {avatar: "/api/files/" + file["id"]}).then(res => {
                             this.setState({avatar: file});
                             cache.resetCache();
                             alert.add(lang["settings_updated"]);
