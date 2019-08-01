@@ -45,5 +45,7 @@ if sudo docker build -t "$CONTAINER_NAME" .; then
         -e INSTANCE_TYPE=${INSTANCE_TYPE} \
         -p 80:8080 \
         -v "${pathToProject}"/data:/zusam/data \
+        -v "${pathToProject}"/public:/zusam/public \
+        -v "${pathToProject}"/api:/zusam/api \
         --name "$CONTAINER_NAME" "$CONTAINER_NAME"
 fi
