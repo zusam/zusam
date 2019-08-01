@@ -1,5 +1,5 @@
-Install on Debian stretch
-=========================
+Install on Debian buster
+========================
 
 First we're going to install the necessary packages:
 ```
