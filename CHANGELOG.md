@@ -1,5 +1,25 @@
 # Changelog
 
+To upgrade, follow the [upgrade guide](https://github.com/nrobinaubertin/zusam/blob/master/documentation/update.md).
+
+## [0.3.1] - 2019-08-01
+
+### Log
+- Add documentation for debian buster
+- Add user list in group-settings
+- Allow long format images
+- Display share button only if the user has more than 1 group
+- Fix avatar change and upscale its resolution
+- Fix english translation
+- Fix new messages not appearing immediately
+- Fix signup during invitation
+- Fix title input changing form when inputting a space
+- Remove demo instance files
+- Update dependencies and dockerfile packages
+
+### Remarks
+Mostly bugfix release.
+
 ## [0.3] - 2019-07-24
 
 ### Log
@@ -20,7 +40,6 @@
 ### Remarks
 Feature release.  
 This update has a database structure change. Please see the corresponding migration file.  
-To upgrade, follow the [upgrade guide](https://github.com/nrobinaubertin/zusam/blob/master/documentation/update.md).
 
 Cron tasks will now execute after each API call. This means that if your Zusam instance is visited sufficiently often, you don't need to call it from the system cron anymore.  
 The first time RepairDatabase will be executed, it could take some time (and cause some API calls to timeout). To avoid this, you can execute it yourself during the upgrade (after having applied the SQL migration) with `php api/bin/console zusam:repair-database`.
@@ -45,8 +64,6 @@ These changes were made to be compliant with the symfony specifications:
 Feature release.  
 :warning: Support for PHP 7.1 was dropped.  
 This update has a database structure change. Please see the corresponding migration file.  
-To upgrade, follow the [upgrade guide](https://github.com/nrobinaubertin/zusam/blob/master/documentation/update.md).
-
 
 ## [0.1.1] - 2019-03-29
 
