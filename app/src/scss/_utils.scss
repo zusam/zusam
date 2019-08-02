@@ -51,11 +51,15 @@
     text-align: center;
 }
 
-.unselectable {
+@mixin unselectable {
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.unselectable {
+    @include unselectable;
 }
 
 .flex-wrap {

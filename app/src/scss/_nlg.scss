@@ -7,6 +7,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    @include unselectable;
 }
 #nlg-modal .nlg-next, #nlg-modal .nlg-prev {
     cursor: pointer;
@@ -18,9 +19,11 @@
     color: white;
     background: rgba(0, 0, 0, 0.2);
     transition: .5s;
+    @include unselectable;
 }
 .nlg-next:hover, .nlg-prev:hover, #nlg-close {
     background: rgba(0, 0, 0, 0.5);
+    @include unselectable;
 }
 #nlg-close {
     color: white;
@@ -60,6 +63,7 @@
     left: 50%;
     transition: left 300ms;
     transform: translateX(-50%);
+    @include unselectable;
 }
 #nlg-origin {
     background: rgba(0,0,0,.2);
@@ -70,6 +74,7 @@
     border-radius: 0 3px 0 0;
     cursor: pointer;
     padding: 1rem;
+    @include unselectable;
 
     svg {
         fill: white;
