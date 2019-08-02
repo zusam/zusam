@@ -44,7 +44,7 @@ export default class FileGrid extends Component {
         let filePath = file.contentUrl ? "/files/" + file.contentUrl : null;
         let url = filePath;
         if (/image/.test(file.type) && file.type != "image/gif") {
-            // no limit in height for lon format images
+            // no limit in height for long format images
             url = util.thumbnail(file.id, 1366, 999999);
         }
         if (miniature == true) {
@@ -53,6 +53,7 @@ export default class FileGrid extends Component {
                     <a
                         data-nlg={!this.props.inWriter}
                         data-origin={filePath}
+                        data-src={util.thumbnail(file.id, 1366, 768)}
                         href={!this.props.inWriter && url}
                         class="rounded"
                     >
