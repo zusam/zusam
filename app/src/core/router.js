@@ -15,8 +15,8 @@ const router = {
     entityType: "",
     entity: {},
     toApp: entity => entity ? "/api/" + entity.entityType + "s/" + entity.id : console.warn(entity) && null,
-    getParam: param => {
-        let res = window.location.search.substring(1).split("&").find(e => e.split("=")[0] === param);
+    getParam: (param, searchParams = window.location.search.substring(1)) => {
+        let res = searchParams.split("&").find(e => e.split("=")[0] === param);
         return res ? res.split("=")[1] : "";
     },
     getSegments: () => window.location.pathname.slice(1).split("?")[0].split("/"),
