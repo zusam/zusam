@@ -32,6 +32,8 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\EventListener\TerminateListener:
+      arguments:
+        $env: '%kernel.environment%'
       tags:
         - { name: kernel.event_listener, event: kernel.terminate }
 

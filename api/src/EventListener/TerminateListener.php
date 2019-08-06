@@ -9,14 +9,20 @@ use App\Command\Cron;
 class TerminateListener
 {
     private $cron;
+    private $env;
 
-    public function __construct(Cron $cron)
+    public function __construct(string $env, Cron $cron)
     {
         $this->cron = $cron;
+        $this->env = $env;
     }
 
     public function onKernelTerminate(PostResponseEvent $event)
     {
-        $this->cron->runTask();
+        // Do not run cron tasks in test env
+        // This break tests with the httpClient
+        if ($this->env != "test") {
+            $this->cron->runTask();
+        }
     }
 }
