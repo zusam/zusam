@@ -6,10 +6,10 @@ use App\Entity\Message;
 use App\Entity\File;
 use App\Service\Url as UrlService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 
-class NewMessage extends Controller
+class NewMessage extends AbstractController
 {
     private $em;
     private $urlService;

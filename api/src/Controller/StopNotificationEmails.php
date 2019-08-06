@@ -4,12 +4,12 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Service\Token;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class StopNotificationEmails extends Controller
+class StopNotificationEmails extends AbstractController
 {
     private $em;
 

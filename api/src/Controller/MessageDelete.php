@@ -3,12 +3,12 @@ namespace App\Controller;
 
 use App\Entity\Message;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class MessageDelete extends Controller
+class MessageDelete extends AbstractController
 {
     private $em;
 

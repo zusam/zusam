@@ -4,12 +4,12 @@ namespace App\Controller;
 use App\Entity\Link;
 use App\Service\Url as UrlService;
 use App\Service\Uuid;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LinkByUrl extends Controller
+class LinkByUrl extends AbstractController
 {
     private $urlService;
 

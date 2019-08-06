@@ -4,12 +4,12 @@ namespace App\Controller;
 use App\Entity\File;
 use App\Service\Image as ImageService;
 use App\Service\Uuid;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class Files extends Controller
+class Files extends AbstractController
 {
     /**
      * @Route("/images/{type}/{width}/{height}/{id}", name="images")

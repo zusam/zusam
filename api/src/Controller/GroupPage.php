@@ -5,13 +5,13 @@ namespace App\Controller;
 use App\Entity\Group;
 use App\Entity\Message;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\ExpressionLanguage\Expression;
 
-class GroupPage extends Controller
+class GroupPage extends AbstractController
 {
     private $em;
     private $newMessage;
