@@ -163,11 +163,15 @@ class Cron extends Command
         try {
             $returnCode = $command->run(new ArrayInput($options), $this->output ?? new NullOutput());
         } catch (\Exception $e) {
-            $this->output->writeln(["<error>".$e->getMessage."</error>"]);
+            if ($this->output != null) {
+                $this->output->writeln(["<error>".$e->getMessage."</error>"]);
+            }
             $this->logger->error($id);
         }
-        if ($returnCode != 0) {
-            $this->output->writeln("<error>$id failed, return code: $returnCode</error>");
+        if (isset($returnCode) && $returnCode != 0) {
+            if ($this->output != null) {
+                $this->output->writeln("<error>$id failed, return code: $returnCode</error>");
+            }
         }
     }
 }
