@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Controller\NewMessage;
 use App\Entity\Group;
 use App\Entity\Message;
 use App\Entity\User;
@@ -23,13 +22,11 @@ class Initialize extends Command
 
     public function __construct (
         EntityManagerInterface $em,
-        UserPasswordEncoderInterface $encoder,
-        NewMessage $newMessage
+        UserPasswordEncoderInterface $encoder
     ) {
         parent::__construct();
         $this->em = $em;
         $this->encoder = $encoder;
-        $this->newMessage = $newMessage;
     }
 
     protected function configure()
@@ -75,7 +72,6 @@ class Initialize extends Command
                 Try to post something yourself by using the new message button on the group page or by leaving a comment here.
             ",
         ]);
-        $message_1->setPreview($this->newMessage->genPreview($message_1));
 
         $this->em->persist($user);
         $this->em->persist($group);
