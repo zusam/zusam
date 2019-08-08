@@ -10,6 +10,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -35,11 +36,20 @@ class Initialize extends Command
             ->setDescription("Initialize the database with a first user and group.")
             ->addArgument("user", InputArgument::REQUIRED, "What's the name of the first user ?")
             ->addArgument("group", InputArgument::REQUIRED, "What's the name of the first group ?")
-            ->addArgument("password", InputArgument::REQUIRED, "What's the password of the first user ?");
+            ->addArgument("password", InputArgument::REQUIRED, "What's the password of the first user ?")
+            ->addOption('remove-existing', null, InputOption::VALUE_NONE, 'Remove existing database beforehand.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if ($input->getOption("remove-existing")) {
+            $doctrineDatabaseDrop = $this->getApplication()->find("doctrine:database:drop");
+            $doctrineDatabaseDrop->run(new ArrayInput([
+                "command" => "doctrine:database:drop",
+                "--force" => true,
+            ]), $output);
+        }
+
         $doctrineDatabaseCreate = $this->getApplication()->find("doctrine:database:create");
         $doctrineDatabaseCreate->run(new ArrayInput([
             "command" => "doctrine:database:create",
