@@ -70,6 +70,7 @@ It will execute those recurrent tasks on each API request but if your instance i
 echo "* * * * * /srv/zusam/api/bin/console zusam:cron >> /srv/zusam/api/var/log/cron.log" | sudo crontab -
 ```
 
+Now we're going to add SSL/TLS certificates using certbot.  
 Install the certbot package:
 ```
 sudo apt-get install certbot python-certbot-apache
