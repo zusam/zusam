@@ -1,18 +1,18 @@
 #!/bin/sh
 
 cdroot() {
-    if ! [ -d ".git" ] && [ "$(pwd)" != "/" ]; then
+    if ! [ -e ".git" ] && [ "$(pwd)" != "/" ]; then
         cd ..
         cdroot
     fi
 }
 
 start_docker_service() {
-    if [ -n "$(which systemctl 2>/dev/null)" ]; then
+    if [ -n "$(command -v systemctl 2>/dev/null)" ]; then
         sudo systemctl start docker
         return
     fi
-    if [ -n "$(which service 2>/dev/null)" ]; then
+    if [ -n "$(command -v service 2>/dev/null)" ]; then
         sudo service docker start
         return
     fi
@@ -27,8 +27,6 @@ isDockerRunning() {
 }
 
 set -e
-
-t0=$(date +%s)
 
 start_docker_service
 isDockerRunning
