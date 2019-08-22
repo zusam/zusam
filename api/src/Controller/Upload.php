@@ -71,11 +71,9 @@ class Upload extends Controller
             }
 
             // immediately process the file if it's an image
-            // don't try to convert if there's already a video converting
             if (
                 substr($file->getType(), 0, 6) == "image/"
                 && $file->getStatus() != File::STATUS_READY
-                && !file_exists("/tmp/zusam_video_convert.lock")
             ) {
                 list($width, $height) = getimagesize($filesDir."/".$file->getContentUrl());
                 // This is a special check for long format images that should not be limited in height
