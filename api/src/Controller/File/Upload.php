@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\File;
 
-use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
+use App\Controller\ApiController;
 use App\Entity\File;
 use App\Form\FileType;
 use App\Service\Image as ImageService;
@@ -11,27 +11,33 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
-class Upload extends AbstractController
+class Upload extends ApiController
 {
-	private $em;
-	private $factory;
-	private $validator;
+    private $factory;
+    private $validator;
 
-	public function __construct(
-		EntityManagerInterface $em,
-		FormFactoryInterface $factory,
-		ValidatorInterface $validator
-	) {
-		$this->em = $em;
-		$this->factory = $factory;
-		$this->validator = $validator;
-	}
+    public function __construct(
+        EntityManagerInterface $em,
+        FormFactoryInterface $factory,
+        ValidatorInterface $validator,
+        SerializerInterface $serializer
+    ) {
+        parent::__construct($em, $serializer);
+        $this->factory = $factory;
+        $this->validator = $validator;
+    }
 
-    public function __invoke(Request $request, ImageService $imageService): File
+    /**
+     * @Route("/files", methods={"POST"})
+     */
+    public function index(Request $request, ImageService $imageService): Response
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
         if (!file_exists($this->getParameter("dir.files"))) {
@@ -111,10 +117,12 @@ class Upload extends AbstractController
             // Prevent the serialization of the file property
             $file->setFile(null);
 
-            return $file;
+            return new Response(
+                $this->serialize($file, ["read_group"]),
+                Response::HTTP_CREATED
+            );
         }
 
-        // This will be handled by API Platform and returns a validation error.
-        throw new ValidationException($this->validator->validate($file));
+        throw new \Exception($this->validator->validate($file));
     }
 }

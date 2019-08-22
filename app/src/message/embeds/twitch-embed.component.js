@@ -18,7 +18,6 @@ export default class TwitchEmbed extends Component {
                 embedUrl = "https://clips.twitch.tv/embed?clip=" + splits[3].replace(/\?.*$/,"") + "&autoplay=false";
                 break;
         }
-        console.log(embedUrl, t, splits);
         return <div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen class="embed-responsive-item" src={embedUrl}></iframe></div>;
     }
 }

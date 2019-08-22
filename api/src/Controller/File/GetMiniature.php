@@ -1,20 +1,28 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\File;
 
+use App\Controller\ApiController;
 use App\Entity\File;
 use App\Service\Image as ImageService;
 use App\Service\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class Files extends AbstractController
+class GetMiniature extends ApiController
 {
     /**
-     * @Route("/images/{type}/{width}/{height}/{id}", name="images")
+     * @Route("/images/{type}/{width}/{height}/{id}", methods={"GET", "HEAD"})
      */
-    public function image(string $id, int $width, int $height, string $type, ImageService $imageService)
+    public function index(
+        string $id,
+        int $width,
+        int $height,
+        string $type,
+        ImageService $imageService
+    ): Response
     {
         $filesDir = realpath($this->getParameter("dir.files"));
         $cacheDir = realpath($this->getParameter("dir.cache"));
@@ -37,9 +45,9 @@ class Files extends AbstractController
             return $response;
         }
         $sourceFile = $this->getDoctrine()->getRepository(File::class)->findOneById($id);
-		if (empty($sourceFile)) {
-			return new JsonResponse(["message" => "Not Found"], JsonResponse::HTTP_NOT_FOUND);
-		}
+        if (empty($sourceFile)) {
+            return new JsonResponse(["message" => "Not Found"], JsonResponse::HTTP_NOT_FOUND);
+        }
         $sourceFilePath = $filesDir."/".$sourceFile->getContentUrl();
         if (is_readable($sourceFilePath)) {
             if ("thumbnail" === $type) {

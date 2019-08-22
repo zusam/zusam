@@ -19,7 +19,7 @@ class StopNotificationEmails extends AbstractController
     }
 
     /**
-     * @Route("/stop-notification-emails/{user_id}/{token}", name="stop-notification-emails")
+     * @Route("/stop-notification-emails/{user_id}/{token}", methods={"GET"})
      */
     public function login(string $user_id, string $token)
     {

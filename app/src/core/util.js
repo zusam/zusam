@@ -36,7 +36,16 @@ const util = {
         return util.humanFullDate(timestamp).split(" ")[0];
     },
     // get the id of an object from an url
-    getId: url => url ? url.split("/").pop().replace(/\?.*$/, "").replace(/\.\w+$/, "") : null,
+    getId: e => {
+        switch (typeof(e)) {
+            case "object":
+                return e ? e.id : null;
+            case "string":
+                return e.split("/").pop().replace(/\?.*$/, "").replace(/\.\w+$/, "");
+        }
+        console.warn(e);
+        throw "Could not extract id !";
+    },
     // get the url to a thubmnail
     thumbnail: (id, width, height) => id ? "/api/images/thumbnail/" + width + "/" + height + "/" + id : null,
     // same as http.thumbnail but for a crop

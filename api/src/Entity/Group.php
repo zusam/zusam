@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Controller\GroupInvitation;
 use App\Controller\GroupResetInviteKey;
 use App\Controller\LeaveGroup;
@@ -17,47 +15,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="`group`")
  * @ORM\Entity
- * @ApiResource(
- *     attributes={
- *        "access_control"="is_granted('ROLE_USER')",
- *        "normalization_context"={"groups"={"read_group"}},
- *        "denormalization_context"={"groups"={"write_group"}}
- *     },
- *     itemOperations={
- *        "get"={
- *            "access_control"="is_granted('ROLE_USER') and user in object.getUsersAsArray()",
- *        },
- *        "put"={
- *            "access_control"="is_granted('ROLE_USER') and user in object.getUsersAsArray()",
- *        },
- *        "invitation"={
- *            "method"="POST",
- *            "path"="/groups/invitation/{inviteKey}",
- *            "controller"=GroupInvitation::class,
- *            "defaults"={"_api_receive"=false}
- *        },
- *        "reset-invite-key"={
- *            "method"="POST",
- *            "path"="/groups/{id}/reset-invite-key",
- *            "controller"=GroupResetInviteKey::class,
- *        },
- *        "leave"={
- *            "method"="POST",
- *            "path"="/groups/{id}/leave",
- *            "controller"=LeaveGroup::class,
- *        }
- *     },
- *     collectionOperations={
- *        "post"
- *     },
- * )
  */
 class Group
 {
     /**
      * @ORM\Id
      * @ORM\Column(type="guid")
-     * @Groups({"read_group", "write_group", "read_user"})
+     * @Groups({"read_group", "write_group", "read_user", "read_message"})
      * @Assert\NotBlank()
      */
     private $id;
@@ -93,7 +57,6 @@ class Group
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="group")
      * @Groups({""})
-     * @ApiSubresource
      */
     private $messages;
 

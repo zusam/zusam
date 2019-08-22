@@ -8,9 +8,13 @@ class UuidTest extends TestCase
 {
     public function testUuidv4()
     {
-        $this->assertEquals(Uuid::uuidv4('thisisafixedseed'), Uuid::uuidv4('thisisafixedseed'));
+        $uuids = [];
         for ($i = 0; $i < 10; $i++) {
-            $this->assertEquals(preg_match("/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/", Uuid::uuidv4()), 1);
+            $uuid = Uuid::uuidv4();
+            $this->assertFalse(in_array($uuid, $uuids));
+            $this->assertEquals(Uuid::uuidv4($uuid), Uuid::uuidv4($uuid));
+            $this->assertRegExp("/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/", $uuid);
+            $uuids[] = $uuid;
         }
     }
 }

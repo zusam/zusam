@@ -21,5 +21,4 @@ const alert = {
         return hash;
     }
 };
-    
 export default alert;

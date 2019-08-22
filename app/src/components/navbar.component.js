@@ -37,9 +37,9 @@ export default class Navbar extends Component {
 
     getTitleRoute() {
         if(router.route == "messages") {
-            return router.entity.group.slice(4);
+            return "/groups/" + router.entity.group.id;
         } else {
-            return router.toApp(router.entity).slice(4);
+            return "/" + router.entity.entityType + "s/" + router.entity.id;
         }
     }
 
@@ -65,7 +65,7 @@ export default class Navbar extends Component {
                         </div>
                         <div class="dropdown-menu">
                             <a class="seamless-link"
-                                href={"/users/" + me.me.id +"/settings"}
+                                href={"/users/" + me.me.id + "/settings"}
                                 onClick={router.onClick}
                             >{lang["settings"]}</a>
                             <a class="seamless-link" href="/logout" onClick={router.onClick}>{lang["logout"]}</a>

@@ -25,7 +25,7 @@ let nlg = {
     },
     start: () => {
         nlg.stop();
-		nlg.list = [];
+        nlg.list = [];
         if (!document.getElementById("nlg-styles")) {
             let nlgStyles = document.createElement("style");
             nlgStyles.id = "nlg-styles";
@@ -47,17 +47,17 @@ let nlg = {
     },
     show: (e, keepBackground = false, side = null) => {
         let url = e.dataset.src || e.src || e.href;
-		let media;
-		switch (true) {
-			case /\.(webm|mp4)$/.test(url):
-				media = document.createElement("video");
-				media.setAttribute("controls", true);
-				break;
-			case /\.(jpg|jpeg|png|bmp|webp|gif|svg)$/.test(url):
-			default:
-				media = document.createElement("img");
-		}
-		media.classList.add("nlg-media");
+        let media;
+        switch (true) {
+            case /\.(webm|mp4)$/.test(url):
+                media = document.createElement("video");
+                media.setAttribute("controls", true);
+                break;
+            case /\.(jpg|jpeg|png|bmp|webp|gif|svg)$/.test(url):
+            default:
+                media = document.createElement("img");
+        }
+        media.classList.add("nlg-media");
         if (side) {
             media.classList.add("nlg-"+side);
         }
@@ -157,7 +157,7 @@ let nlg = {
             modal.style.cssText = `opacity: 1;`;
             setTimeout(nlg.center, 1);
         };
-		media.addEventListener("load", mediaIsLoadedFn);
+        media.addEventListener("load", mediaIsLoadedFn);
         media.addEventListener("loadeddata", mediaIsLoadedFn);
         modal.addEventListener("click", e => {
             if (e.currentTarget != e.target) { return; }
@@ -190,8 +190,8 @@ let nlg = {
     moveRight: () => document.querySelector("#nlg-modal > .nlg-media").classList.add("nlg-right"),
     center: () => {
         let media = document.querySelector("#nlg-modal > .nlg-media");
-		media.classList.remove("nlg-right");
-		media.classList.remove("nlg-left");
+        media.classList.remove("nlg-right");
+        media.classList.remove("nlg-left");
     },
 };
 export default nlg;

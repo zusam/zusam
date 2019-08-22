@@ -1,31 +1,32 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Group;
 
+use App\Controller\ApiController;
 use App\Entity\Group;
 use App\Entity\Message;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\ExpressionLanguage\Expression;
 
-class GroupStats extends AbstractController
+class GetStats extends ApiController
 {
-    private $em;
-    private $newMessage;
-
-    public function __construct(EntityManagerInterface $em, NewMessage $newMessage)
-    {
-        $this->em = $em;
-        $this->newMessage = $newMessage;
+    public function __construct(
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ) {
+        parent::__construct($em, $serializer);
     }
 
     /**
-     * @Route("/groups/{id}/stats", name="api_groups_get_stats", methods="get")
+     * @Route("/groups/{id}/stats", methods={"GET", "HEAD"})
      */
-    public function index(string $id)
+    public function index(string $id): Response
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
         $group = $this->em->getRepository(Group::class)->findOneById($id);

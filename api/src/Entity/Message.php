@@ -2,13 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
-use App\Controller\EditMessage;
-use App\Controller\MessagePublicLink;
-use App\Controller\NewMessage;
-use App\Controller\ReadMessage;
 use App\Service\Url as UrlService;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,42 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="`message`")
  * @ORM\Entity
- * @ApiResource(
- *     attributes={
- *          "access_control"="is_granted('ROLE_USER')",
- *          "order"={"lastActivityDate": "DESC"},
- *     },
- *     itemOperations={
- *          "get"={
- *              "method"="GET",
- *              "path"="/messages/{id}.{_format}",
- *              "controller"=ReadMessage::class,
- *              "normalization_context"={"groups"={"read_message"}},
- *          },
- *          "put"={
- *              "method"="PUT",
- *              "path"="/messages/{id}.{_format}",
- *              "controller"=EditMessage::class,
- *              "normalization_context"={"groups"={"read_message"}},
- *          },
- *          "delete",
- *          "get_public_link"={
- *              "method"="GET",
- *              "path"="/messages/{id}/get-public-link",
- *              "controller"=MessagePublicLink::class,
- *              "defaults"={"_api_receive"=false}
- *          },
- *     },
- *     collectionOperations={
- *          "get",
- *          "post"={
- *              "method"="POST",
- *              "path"="/messages.{_format}",
- *              "controller"=NewMessage::class,
- *          },
- *     },
- * )
- * @ApiFilter(ExistsFilter::class, properties={"parent"})
  */
 class Message
 {
@@ -209,7 +166,7 @@ class Message
         return $this->parent;
     }
 
-    public function setParent(Message $parent): void
+    public function setParent(?Message $parent): void
     {
         $this->parent = $parent;
     }
@@ -232,6 +189,11 @@ class Message
     public function getFiles(): Collection
     {
         return $this->files;
+    }
+
+    public function setFiles(Collection $files): void
+    {
+        $this->files = $files;
     }
 
     public function addFile(File $file): void

@@ -60,7 +60,7 @@ export default class Share extends Component {
                                 onChange={this.groupSelect}
                                 required
                             >
-                                { me.me.groups.map(e => <option value={"/api/groups/" + e["id"]}>{e.name}</option>) }
+                                { me.me.groups.map(e => <option value={e["id"]}>{e.name}</option>) }
                             </select>
                         </div>
                     )}

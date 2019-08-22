@@ -33,7 +33,7 @@ class Security extends AbstractController
     }
 
     /**
-     * @Route("/login", name="login")
+     * @Route("/login", methods={"POST"})
      */
     public function login(Request $request)
     {
@@ -64,7 +64,7 @@ class Security extends AbstractController
     }
 
     /**
-     * @Route("/signup", name="signup")
+     * @Route("/signup", methods={"POST"})
      */
     public function signup(Request $request)
     {
@@ -112,7 +112,7 @@ class Security extends AbstractController
     }
 
     /**
-     * @Route("/password-reset-mail", name="api_password_reset_mail", methods="post")
+     * @Route("/password-reset-mail", methods={"POST"})
      */
     public function sendPasswordResetMail(Request $request)
     {
@@ -131,7 +131,7 @@ class Security extends AbstractController
     }
 
     /**
-     * @Route("/new-password", name="api_new-password", methods="post")
+     * @Route("/new-password", methods={"POST"})
      */
     public function newPassword(Request $request)
     {

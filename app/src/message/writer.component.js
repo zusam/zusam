@@ -95,7 +95,7 @@ export default class Writer extends Component {
 
     putMessage() {
         let msg = {
-            files: this.state.files.filter(e => !e.removed).map(e => "/api/files/" + e["id"]).filter(e => !!e),
+            files: this.state.files.filter(e => !e.removed).map(e => e["id"]).filter(e => !!e),
             data: {
                 text: document.getElementById("text").value
             },
@@ -117,10 +117,10 @@ export default class Writer extends Component {
     postMessage() {
         let msg = {
             createdAt: Math.floor(Date.now()/1000),
-            author: "/api/users/" + me.me["id"],
-            group: this.props.group,
+            author: me.me["id"],
+            group: util.getId(this.props.group),
             children: [],
-            files: this.state.files.filter(e => !e.removed).map(e => "/api/files/" + e["id"]).filter(e => !!e),
+            files: this.state.files.filter(e => !e.removed).map(e => e["id"]).filter(e => !!e),
             data: {
                 text: document.getElementById("text").value
             },
@@ -129,7 +129,7 @@ export default class Writer extends Component {
         if (!this.props.parent) {
             msg.data.title = document.getElementById("title").value;
         } else {
-            msg.parent = "/api/messages/" + util.getId(this.props.parent);
+            msg.parent = util.getId(this.props.parent);
         }
         // don't post if there is nothing to post
         if (!msg.files.length && !msg.data.text && !msg.data.title) {

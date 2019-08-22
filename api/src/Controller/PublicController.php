@@ -23,7 +23,7 @@ class PublicController extends AbstractController
     }
 
     /**
-     * @Route("/public/{token}", name="public")
+     * @Route("/public/{token}", methods={"GET"})
      */
     public function public(string $token)
     {

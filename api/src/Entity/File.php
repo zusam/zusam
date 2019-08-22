@@ -2,9 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Controller\Upload;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,20 +14,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Table(name="`file`")
  * @ORM\Entity
  * @Vich\Uploadable
- * @ApiResource(
- *     attributes={"access_control"="is_granted('ROLE_USER')"},
- *     itemOperations={
- *          "get",
- *          "delete",
- *          "put",
- *          "post"={
- *              "method"="POST",
- *              "path"="/files/upload",
- *              "controller"=Upload::class,
- *              "defaults"={"_api_receive"=false},
- *          },
- *     },
- * )
  */
 class File
 {
@@ -45,7 +28,7 @@ class File
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @Assert\NotBlank()
-     * @Groups({"read_user", "read_message"})
+     * @Groups({"read_user", "read_message", "read_group"})
      */
     private $id;
 
@@ -58,14 +41,14 @@ class File
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"read_user", "read_message"})
+     * @Groups({"read_user", "read_message", "read_group"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
-     * @Groups({"read_user", "read_message"})
+     * @Groups({"read_user", "read_message", "read_group"})
      */
     private $status;
 
@@ -77,8 +60,7 @@ class File
 
     /**
      * @ORM\Column(type="string")
-     * @ApiProperty(iri="http://schema.org/contentUrl")
-     * @Groups({"read_user", "read_message"})
+     * @Groups({"read_user", "read_message", "read_group"})
      */
     private $contentUrl;
 
@@ -89,7 +71,7 @@ class File
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read_user", "read_message"})
+     * @Groups({"read_user", "read_message", "read_group"})
      */
     private $fileIndex;
 
@@ -100,7 +82,7 @@ class File
     private $secretKey;
 
     /**
-     * @Groups({"read_user", "read_message"})
+     * @Groups({"read_user", "read_message", "read_group"})
      */
     private $entityType;
 

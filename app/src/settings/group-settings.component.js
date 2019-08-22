@@ -11,9 +11,6 @@ export default class GroupSettings extends Component {
         this.leave = this.leave.bind(this);
         this.resetSecretKey = this.resetSecretKey.bind(this);
         this.state = Object.assign({hydratedUsers: []}, props);
-        props.users.map(u => cache.get(u).then(res => this.setState({
-            hydratedUsers: [...this.state.hydratedUsers, res]
-        })));
     }
 
     resetSecretKey(event) {
@@ -121,11 +118,11 @@ export default class GroupSettings extends Component {
                 </div>
                 <div class="user-list mb-3">
                     <h3>{lang["users"]}</h3>
-                    { this.state.hydratedUsers.map(user => (
+                    { this.props.users.map(user => user && (
                         <div class="user-card">
                             <img
                                 class="avatar material-shadow"
-                                src={user && user.avatar ? util.crop(user.avatar["id"], 200, 200) : util.defaultAvatar}
+                                src={user.avatar ? util.crop(user.avatar["id"], 200, 200) : util.defaultAvatar}
                                 onError={e => e.currentTarget.src = util.defaultAvatar}
                             />
                             <span>{user["name"]}</span>

@@ -1,41 +1,38 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Message;
 
 use App\Entity\Message;
 use App\Service\Token;
+use App\Controller\ApiController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MessagePublicLink extends AbstractController
+class GetPublicLink extends ApiController
 {
-    private $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
+    public function __construct(
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ) {
+        parent::__construct($em, $serializer);
     }
 
-    public function __invoke(string $id)
+    /**
+     * @Route("/messages/{id}/get-public-link", methods={"GET"})
+     */
+    public function index(string $id): Response
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
 
         $message = $this->em->getRepository(Message::class)->findOneById($id);
         if (empty($message)) {
-            return new JsonResponse(["message" => "Message not found"], JsonResponse::HTTP_NOT_FOUND);
+            return new JsonResponse(["error" => "Not Found"], JsonResponse::HTTP_NOT_FOUND);
         }
         $this->denyAccessUnlessGranted(new Expression("user in object.getUsersAsArray()"), $message->getGroup());
-
-        // TODO: remove for v1.0
-        // old messages (before 0.2) don't have a secretKey
-        if (empty($message->getSecretKey())) {
-            $message->resetSecretKey();
-            $this->em->persist($message);
-            $this->em->flush();
-        }
 
         $token = Token::encode([
             "iat" => time(),

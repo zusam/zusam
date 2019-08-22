@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Controller\NewMessage;
+use App\Controller\Message\Create;
 use App\Entity\Link;
 use App\Entity\Message;
 use App\Service\Url as UrlService;
@@ -18,7 +18,7 @@ class PreparePreviews extends Command
 {
     private $em;
     private $pdo;
-    private $newMessage;
+    private $createMessageController;
     private $urlService;
     private $logger;
 
@@ -26,13 +26,13 @@ class PreparePreviews extends Command
         string $dsn,
         LoggerInterface $logger,
         EntityManagerInterface $em,
-        NewMessage $newMessage,
+        Create $createMessageController,
         UrlService $urlService
     ) {
         parent::__construct();
         $this->pdo = new \PDO($dsn, null, null);
         $this->em = $em;
-        $this->newMessage = $newMessage;
+        $this->createMessageController = $createMessageController;
         $this->urlService = $urlService;
         $this->logger = $logger;
     }
@@ -92,7 +92,7 @@ class PreparePreviews extends Command
 
             // process preview
             $message = $this->em->getRepository(Message::class)->findOneById($i["id"]);
-            $message->setPreview($this->newMessage->genPreview($message));
+            $message->setPreview($this->createMessageController->genPreview($message));
             $this->em->persist($message);
 
             $this->em->flush();

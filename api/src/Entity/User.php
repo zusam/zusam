@@ -2,10 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
-use App\Controller\Me;
-use App\Controller\PutUser;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,39 +13,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="`user`")
  * @ORM\Entity()
- * @ApiResource(
- *     attributes={
- *        "access_control"="is_granted('ROLE_USER')",
- *        "normalization_context"={"groups"={"read_user"}},
- *        "denormalization_context"={"groups"={"write_user"}}
- *     },
- *     itemOperations={
- *          "get"={
- *              "normalization_context"={"groups"={"read_user"}},
- *          },
- *          "put"={
- *              "method"="PUT",
- *              "path"="/users/{id}.{_format}",
- *              "controller"=PutUser::class,
- *              "normalization_context"={"groups"={"read_user"}},
- *          },
- *          "delete",
- *          "me"={
- *              "method"="GET",
- *              "path"="/me",
- *              "controller"=Me::class,
- *              "defaults"={"_api_receive"=false},
- *              "normalization_context"={"groups"={"read_user", "read_me"}},
- *          }
- *     }
- * )
  */
 class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id
      * @ORM\Column(type="guid")
-     * @Groups({"read_user", "write_user", "read_message"})
+     * @Groups({"read_user", "write_user", "read_message", "read_group"})
      * @Assert\NotBlank()
      */
     private $id;
@@ -86,7 +56,6 @@ class User implements UserInterface, \Serializable
      * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
      * @ORM\JoinTable(name="users_groups")
      * @Groups({"read_me"})
-     * @ApiSubresource
      */
     private $groups;
 
@@ -98,14 +67,13 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
-     * @Groups({"read_user", "write_user", "read_message"})
-     * @ApiSubresource
+     * @Groups({"read_user", "write_user", "read_message", "read_group"})
      */
     private $avatar;
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"read_user", "write_user", "read_message"})
+     * @Groups({"read_user", "write_user", "read_message", "read_group"})
      * @Assert\NotBlank()
      */
     private $name;

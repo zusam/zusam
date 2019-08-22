@@ -37,11 +37,6 @@ services:
       tags:
         - { name: kernel.event_listener, event: kernel.terminate }
 
-    ApiPlatform\Core\Serializer\ItemNormalizer: ~
-
-    App\Serializer\ItemNormalizer:
-      decorates: ApiPlatform\Core\Serializer\ItemNormalizer
-
     App\Controller\Security:
       arguments:
         $logger: '@monolog.logger.db'
