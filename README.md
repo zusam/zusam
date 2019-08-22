@@ -48,7 +48,7 @@ I try my best to make updates as easy as possible.
 
 ## Webapp compatibility
 The webapp targets Firefox ESR and at most one-year old Chrome.  
-It should work on the latest versions of Edge and Safari but is not tested.
+It should work on the latest versions of Edge and Safari but is not tested on them.
 
 ## Contributing
 Zusam is free and open-source software licensed under [AGPLv3](https://www.gnu.org/licenses/agpl.html).  
