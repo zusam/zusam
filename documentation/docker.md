@@ -1,10 +1,11 @@
 Use the Docker container
 ========================
 
-Download the latest release (here in /srv/zusam):
+Download the latest release (here in ~/zusam):
 ```
-mkdir -p /srv/zusam && cd /srv/zusam
-wget -qO- https://github.com/nrobinaubertin/zusam/archive/0.1.1.tar.gz | tar xz --strip 1
+mkdir -p ~/zusam && cd ~/zusam
+version="$(curl -Ls -o /dev/null -w '%{url_effective}' https://github.com/nrobinaubertin/zusam/releases/latest | rev | cut -d'/' -f1 | rev)"
+wget -qO- https://github.com/nrobinaubertin/zusam/archive/$version.tar.gz | tar xz --strip 1
 ```
 
 Build the container:
