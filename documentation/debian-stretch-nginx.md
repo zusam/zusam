@@ -14,7 +14,7 @@ We're going to use php7.3 here but Zusam is compatible with 7.2+
 sudo apt install -y nginx unzip ffmpeg php7.3 php7.3-fpm php7.3-xml php7.3-curl php7.3-mbstring php7.3-sqlite3 php7.3-imagick php7.3-intl
 ```
 
-Download the latest release (here in /srv/zusam):
+Download the latest release (here in `/srv/zusam`):
 ```
 mkdir -p /srv/zusam && cd /srv/zusam
 version="$(curl -Ls -o /dev/null -w '%{url_effective}' https://github.com/nrobinaubertin/zusam/releases/latest | rev | cut -d'/' -f1 | rev)"
