@@ -2,6 +2,18 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/nrobinaubertin/zusam/blob/master/documentation/update.md).
 
+## [0.3.2] - 2019-08-24
+
+### Log
+- Add installation guide for debian buster with apache
+- Add some necessary directories to git: data/cache and data/files
+- Fix dev scripts when used in a git worktree directory
+- Take timing from twitch url into account in embeds
+- Use fixed height images in the lightbox (nlg.js)
+
+### Remarks
+Bugfix release.
+
 ## [0.3.1] - 2019-08-01
 
 ### Log
