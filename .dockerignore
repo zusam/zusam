@@ -1,6 +1,7 @@
 # GLOBAL
 /.git
 /data
+/documentation
 
 # API
 /api/.web-server-pid
@@ -18,6 +19,7 @@
 /.php_history
 /.sqlite_history
 /.ssh
+/.viminfo
 /.yarnrc
 
 # APP
