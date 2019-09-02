@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class Put extends ApiController
+class Edit extends ApiController
 {
     private $encoder;
 
@@ -26,6 +26,9 @@ class Put extends ApiController
         $this->encoder = $encoder;
     }
 
+    /**
+     * @Route("/users/{id}", methods={"PUT"})
+     */
     public function index(string $id, Request $request): Response
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
