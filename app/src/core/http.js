@@ -28,7 +28,7 @@ const http = {
             xhr.send(formData);
         }).catch(err => {
             err => console.warn("ERROR for " + url, err)
-        }).catch(error => alert.add(error));
+        }).catch(error => alert.add(error, "alert-danger"));
     },
     get: (url, nocache = false) => {
         return cache.get("apiKey").then(apiKey => {
@@ -50,7 +50,7 @@ const http = {
             ).catch(
                 err => console.warn("ERROR for " + url, err)
             )
-        }).catch(error => alert.add(error));
+        }).catch(error => alert.add(error, "alert-danger"));
     },
     post: (url, data, contentType = "application/json") => http.request(url, data, "POST", contentType),
     put: (url, data, contentType = "application/json") => http.request(url, data, "PUT", contentType),
@@ -89,7 +89,7 @@ const http = {
             ).catch(
                 err => console.warn("ERROR for " + url, err)
             )
-        }).catch(error => alert.add(error));
+        }).catch(error => alert.add(error, "alert-danger"));
     },
 };
 export default http;

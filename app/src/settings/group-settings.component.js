@@ -53,7 +53,7 @@ export default class GroupSettings extends Component {
     leave() {
         http.post("/api/groups/" + this.state.id + "/leave", {}).then(res => {
             if (!res || !res["entityType"]) {
-                alert.add(lang["error"]);
+                alert.add(lang["error"], "alert-danger");
             } else {
                 me.update();
                 alert.add(lang["group_left"]);
