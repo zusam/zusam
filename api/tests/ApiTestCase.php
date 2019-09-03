@@ -2,6 +2,8 @@
 
 namespace App\Tests;
 
+use App\Entity\Group;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -11,6 +13,8 @@ abstract class ApiTestCase extends WebTestCase
 {
     protected $em;
     protected $client;
+    protected $firstUser;
+    protected $firstGroup;
 
     public function setUp()
     {
@@ -43,6 +47,9 @@ abstract class ApiTestCase extends WebTestCase
 
         $this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
         $this->client = static::createClient();
+
+        $this->firstUser = $this->em->getRepository(User::class)->findOneByLogin("zusam");
+        $this->firstGroup = $this->em->getRepository(Group::class)->findOneByName("zusam");
     }
 
     public function standardTearDown()
