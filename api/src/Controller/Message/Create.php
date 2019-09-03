@@ -91,7 +91,7 @@ class Create extends ApiController
 
         return new Response(
             $this->serialize($message, ["read_message"]),
-            Response::HTTP_OK
+            Response::HTTP_CREATED
         );
     }
 
