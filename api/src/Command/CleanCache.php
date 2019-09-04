@@ -4,7 +4,6 @@ namespace App\Command;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -27,11 +26,11 @@ class CleanCache extends Command
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
-            throw new \Exception("Target directory (".$this->targetDir.") could not be found !");
+            throw new \Exception('Target directory ('.$this->targetDir.') could not be found !');
         }
 
         if (!is_writeable($this->targetDir)) {
-            throw new \Exception("Target directory (".$this->targetDir.") is not writable !");
+            throw new \Exception('Target directory ('.$this->targetDir.') is not writable !');
         }
     }
 
@@ -51,32 +50,32 @@ class CleanCache extends Command
 
         $cache_size = 0;
         $files = [];
-        foreach(scandir($this->targetDir."/images/") as $file) {
-            if ($file != "." && $file != "..") {
+        foreach (scandir($this->targetDir.'/images/') as $file) {
+            if ('.' != $file && '..' != $file) {
                 $files[] = [
-                    "path" => $this->targetDir."/images/".$file,
-                    "mtime" => filemtime($this->targetDir."/images/".$file),
-                    "size" => filesize($this->targetDir."/images/".$file),
+                    'path' => $this->targetDir.'/images/'.$file,
+                    'mtime' => filemtime($this->targetDir.'/images/'.$file),
+                    'size' => filesize($this->targetDir.'/images/'.$file),
                 ];
-                $cache_size += filesize($this->targetDir."/images/".$file);
+                $cache_size += filesize($this->targetDir.'/images/'.$file);
             }
         }
 
         usort($files, function ($f1, $f2) {
-            return $f1["mtime"] - $f2["mtime"];
+            return $f1['mtime'] - $f2['mtime'];
         });
 
         foreach ($files as $file) {
             if ($cache_size < $max_cache_size) {
                 break;
             }
-            if ($input->getOption("verbose") || $input->getOption("only-list")) {
-                $output->writeln([$file["path"]]);
+            if ($input->getOption('verbose') || $input->getOption('only-list')) {
+                $output->writeln([$file['path']]);
             }
-            if (!$input->getOption("only-list")) {
-                unlink($file["path"]);
+            if (!$input->getOption('only-list')) {
+                unlink($file['path']);
             }
-            $cache_size -= $file["size"];
+            $cache_size -= $file['size'];
         }
     }
 }

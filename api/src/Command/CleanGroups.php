@@ -4,7 +4,6 @@ namespace App\Command;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,13 +33,13 @@ class CleanGroups extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->logger->info($this->getName());
-        $c = $this->pdo->query("SELECT g.id FROM `group` g LEFT JOIN users_groups ug ON ug.group_id = g.id WHERE ug.group_id IS NULL;");
-        while($i = $c->fetch()) {
-            if ($input->getOption("verbose") || $input->getOption("only-list")) {
-                echo $i["id"]."\n";
+        $c = $this->pdo->query('SELECT g.id FROM `group` g LEFT JOIN users_groups ug ON ug.group_id = g.id WHERE ug.group_id IS NULL;');
+        while ($i = $c->fetch()) {
+            if ($input->getOption('verbose') || $input->getOption('only-list')) {
+                echo $i['id']."\n";
             }
-            if (!$input->getOption("only-list")) {
-                $this->pdo->query("DELETE FROM `group` WHERE id = '" . $i["id"] . "';");
+            if (!$input->getOption('only-list')) {
+                $this->pdo->query("DELETE FROM `group` WHERE id = '".$i['id']."';");
             }
         }
     }

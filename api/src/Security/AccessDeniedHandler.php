@@ -14,7 +14,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
         return new Response(
             '{"message":"Access denied"}',
             Response::HTTP_FORBIDDEN,
-            ["Content-type" => "application/json"]
+            ['Content-type' => 'application/json']
         );
     }
 }

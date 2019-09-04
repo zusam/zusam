@@ -2,9 +2,6 @@
 
 namespace App\Entity;
 
-use App\Controller\GroupInvitation;
-use App\Controller\GroupResetInviteKey;
-use App\Controller\LeaveGroup;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -134,12 +131,14 @@ class Group
     public function addUser(User $user): self
     {
         $this->users[] = $user;
+
         return $this;
     }
 
     public function removeUser(User $user): self
     {
         $this->users->removeElement($user);
+
         return $this;
     }
 

@@ -9,14 +9,14 @@ class System
 {
     private $em;
 
-    public function __construct (EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
 
     public function set(string $key, $value)
     {
-		if (!empty($system = $this->em->getRepository(SystemEntity::class)->findOneByKey($key))) {
+        if (!empty($system = $this->em->getRepository(SystemEntity::class)->findOneByKey($key))) {
             $system->setValue($value);
         } else {
             $system = new SystemEntity($key, $value);
@@ -27,9 +27,9 @@ class System
 
     public function get(string $key)
     {
-		if (!empty($system = $this->em->getRepository(SystemEntity::class)->findOneByKey($key))) {
-			return $system->getValue();
-		} else {
+        if (!empty($system = $this->em->getRepository(SystemEntity::class)->findOneByKey($key))) {
+            return $system->getValue();
+        } else {
             return null;
         }
     }

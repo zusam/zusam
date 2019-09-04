@@ -3,13 +3,11 @@
 namespace App\Command;
 
 use App\Controller\Message\Create;
-use App\Entity\Link;
 use App\Entity\Message;
 use App\Service\Url as UrlService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,7 +20,7 @@ class PreparePreviews extends Command
     private $urlService;
     private $logger;
 
-    public function __construct (
+    public function __construct(
         string $dsn,
         LoggerInterface $logger,
         EntityManagerInterface $em,
@@ -48,8 +46,8 @@ class PreparePreviews extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->logger->info($this->getName());
-        $max_memory = $input->getArgument("memory") ? intval($input->getArgument("memory")) : 70;
-        ini_set('memory_limit', max(128, $max_memory + 10) . "M");
+        $max_memory = $input->getArgument('memory') ? intval($input->getArgument('memory')) : 70;
+        ini_set('memory_limit', max(128, $max_memory + 10).'M');
 
         // stats
         $start_time = microtime(true);
@@ -58,30 +56,30 @@ class PreparePreviews extends Command
         $number_descriptions = 0;
         $number_titles = 0;
 
-        $c = $this->pdo->query("SELECT id, data FROM message WHERE parent_id IS NULL AND preview_id IS NULL ORDER BY created_at DESC;");
+        $c = $this->pdo->query('SELECT id, data FROM message WHERE parent_id IS NULL AND preview_id IS NULL ORDER BY created_at DESC;');
         $messages = [];
-        while($i = $c->fetch()) {
+        while ($i = $c->fetch()) {
             $messages[] = $i;
         }
         $k = 0;
-        foreach($messages as $i) {
+        foreach ($messages as $i) {
             if (memory_get_usage(true) > 1024 * 1024 * $max_memory) {
                 $output->writeln([
                     "Memory usage went over $max_memory Mo. Stopping the script.",
-                    "Duration: " . (floor(microtime(true) - $start_time)) . " seconds",
-                    "Number of links: " . $number_links,
+                    'Duration: '.(floor(microtime(true) - $start_time)).' seconds',
+                    'Number of links: '.$number_links,
                 ]);
                 exit(0);
             }
-            $k++;
-            echo "[$k/".count($messages)."]: ".$i["id"]."\n";
+            ++$k;
+            echo "[$k/".count($messages).']: '.$i['id']."\n";
 
             // get first url data
-            $text = json_decode($i["data"], true)["text"];
+            $text = json_decode($i['data'], true)['text'];
             $urls = Message::getUrlsFromText($text);
             if (count($urls) > 0) {
                 try {
-                    $number_links++;
+                    ++$number_links;
                     $link = $this->urlService->getLink($urls[0]);
                     $this->em->persist($link);
                 } catch (\Exception $e) {
@@ -91,7 +89,7 @@ class PreparePreviews extends Command
             }
 
             // process preview
-            $message = $this->em->getRepository(Message::class)->findOneById($i["id"]);
+            $message = $this->em->getRepository(Message::class)->findOneById($i['id']);
             $message->setPreview($this->createMessageController->genPreview($message));
             $this->em->persist($message);
 

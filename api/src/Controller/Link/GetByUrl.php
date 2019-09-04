@@ -1,12 +1,10 @@
 <?php
+
 namespace App\Controller\Link;
 
 use App\Controller\ApiController;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\Link;
 use App\Service\Url as UrlService;
-use App\Service\Uuid;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +15,7 @@ class GetByUrl extends ApiController
 {
     private $urlService;
 
-    public function __construct (
+    public function __construct(
         EntityManagerInterface $em,
         SerializerInterface $serializer,
         UrlService $urlService
@@ -32,12 +30,13 @@ class GetByUrl extends ApiController
     public function getLinkByPost(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
-        $url = $data["url"] ?? "";
+        $url = $data['url'] ?? '';
         if (!$url) {
-            return new JsonResponse(["error" => "Invalid url"], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => 'Invalid url'], Response::HTTP_BAD_REQUEST);
         }
-        $rescan = $data["rescan"] ?? false;
-        $onlyData = $data["onlyData"] ?? false;
+        $rescan = $data['rescan'] ?? false;
+        $onlyData = $data['onlyData'] ?? false;
+
         return $this->execute($url, $rescan, $onlyData);
     }
 
@@ -46,10 +45,11 @@ class GetByUrl extends ApiController
      */
     public function getLinkByGet(Request $request): Response
     {
-        $url = $request->query->get("url") ?? "";
+        $url = $request->query->get('url') ?? '';
         if (!$url) {
-            return new JsonResponse(["error" => "Invalid url"], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => 'Invalid url'], Response::HTTP_BAD_REQUEST);
         }
+
         return $this->execute(rawurldecode($url));
     }
 
@@ -57,12 +57,13 @@ class GetByUrl extends ApiController
     {
         $data = $this->getLinkData($url, $rescan, $onlyData);
         $response = new JsonResponse($data, Response::HTTP_OK);
-        $response->setCache(array(
-            "etag"          => md5(json_encode($data)),
-            "max_age"       => 0,
-            "s_maxage"      => 3600,
-            "public"        => true,
-        ));
+        $response->setCache([
+            'etag' => md5(json_encode($data)),
+            'max_age' => 0,
+            's_maxage' => 3600,
+            'public' => true,
+        ]);
+
         return $response;
     }
 
@@ -71,14 +72,14 @@ class GetByUrl extends ApiController
         $link = $this->urlService->getLink($url, $rescan);
         if (!$onlyData) {
             return [
-                "id" => $link->getId(),
-                "data" => $link->getData(),
-                "url" => $url,
-                "updatedAt" => $link->getUpdatedAt(),
-                "preview" => $link->getPreview() ? [
-                    "id" => $link->getPreview()->getId(),
-                    "entityType" => $link->getPreview()->getEntityType(),
-                ]: "",
+                'id' => $link->getId(),
+                'data' => $link->getData(),
+                'url' => $url,
+                'updatedAt' => $link->getUpdatedAt(),
+                'preview' => $link->getPreview() ? [
+                    'id' => $link->getPreview()->getId(),
+                    'entityType' => $link->getPreview()->getEntityType(),
+                ] : '',
             ];
         } else {
             return json_decode($link->getData(), true);

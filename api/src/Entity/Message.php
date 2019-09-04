@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Service\Url as UrlService;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -228,23 +227,26 @@ class Message
 
     public function getUrls(): array
     {
-        $text = $this->getData()["text"];
+        $text = $this->getData()['text'];
         if (!empty($text)) {
             return self::getUrlsFromText($text);
         }
+
         return [];
     }
 
     public static function getUrlsFromText(string $text): array
     {
         preg_match("/(\([^()]*)?https?:\/\/[-A-Za-z0-9+&@#\/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#\/%=~_()|]/i", $text, $urls);
+
         return array_map(function ($url) {
-            if (!empty($url) && substr($url, 0, 1) === "(") {
-                $url = substr($url, stripos($url, "http"));
-                if (substr($url, -1) === ")") {
+            if (!empty($url) && '(' === substr($url, 0, 1)) {
+                $url = substr($url, stripos($url, 'http'));
+                if (')' === substr($url, -1)) {
                     $url = substr($url, 0, -1);
                 }
             }
+
             return $url;
         }, $urls);
     }

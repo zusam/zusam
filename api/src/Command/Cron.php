@@ -41,52 +41,52 @@ class Cron extends Command
         $this->kernel = $kernel;
         $this->tasks = [
             [
-                "name" => "zusam:convert:video",
-                "period" => 15 * 60, // 15 minutes
-                "options" => [],
+                'name' => 'zusam:convert:video',
+                'period' => 15 * 60, // 15 minutes
+                'options' => [],
             ],
             [
-                "name" => "zusam:convert:images",
-                "period" => 30 * 60, // 30 minutes
-                "options" => [],
+                'name' => 'zusam:convert:images',
+                'period' => 30 * 60, // 30 minutes
+                'options' => [],
             ],
             [
-                "name" => "zusam:notification-emails",
-                "period" => 60 * 60, // 1 hour
-                "options" => [],
+                'name' => 'zusam:notification-emails',
+                'period' => 60 * 60, // 1 hour
+                'options' => [],
             ],
             [
-                "name" => "zusam:clean:cache",
-                "period" => 1440 * 60, // 1 day
-                "options" => [
-                    "command" => "zusam:clean:cache",
-                    "max-cache-size" => 512,
+                'name' => 'zusam:clean:cache',
+                'period' => 1440 * 60, // 1 day
+                'options' => [
+                    'command' => 'zusam:clean:cache',
+                    'max-cache-size' => 512,
                 ],
             ],
             [
-                "name" => "zusam:clean:files",
-                "period" => 1440 * 7 * 60, // 7 days
-                "options" => [],
+                'name' => 'zusam:clean:files',
+                'period' => 1440 * 7 * 60, // 7 days
+                'options' => [],
             ],
             [
-                "name" => "zusam:clean:messages",
-                "period" => 1440 * 7 * 60, // 7 days
-                "options" => [],
+                'name' => 'zusam:clean:messages',
+                'period' => 1440 * 7 * 60, // 7 days
+                'options' => [],
             ],
             [
-                "name" => "zusam:clean:logs",
-                "period" => 1440 * 7 * 60, // 7 days
-                "options" => [],
+                'name' => 'zusam:clean:logs',
+                'period' => 1440 * 7 * 60, // 7 days
+                'options' => [],
             ],
             [
-                "name" => "zusam:clean:groups",
-                "period" => 1440 * 30 * 60, // 30 days
-                "options" => [],
+                'name' => 'zusam:clean:groups',
+                'period' => 1440 * 30 * 60, // 30 days
+                'options' => [],
             ],
             [
-                "name" => "zusam:repair-database",
-                "period" => 1440 * 60 * 60, // 60 days
-                "options" => [],
+                'name' => 'zusam:repair-database',
+                'period' => 1440 * 60 * 60, // 60 days
+                'options' => [],
             ],
         ];
     }
@@ -114,7 +114,7 @@ class Cron extends Command
         // don't run if on a POST or an upload files request. Don't run twice in the same process
         if (!empty($_POST) || !empty($_FILES) || defined('TASK_RUNNING') || $this->running) {
             if ($this->output) {
-                $this->output->writeln(["<info>Task already running</info>"]);
+                $this->output->writeln(['<info>Task already running</info>']);
             }
             die();
         }
@@ -123,19 +123,19 @@ class Cron extends Command
         $this->running = true;
 
         // check in database for the last running task
-        $task_running = $this->system->get("task_running");
-        $last_task_timestamp = $this->system->get("last_task_timestamp");
-        $last_task_name = $this->system->get("last_task_name");
+        $task_running = $this->system->get('task_running');
+        $last_task_timestamp = $this->system->get('last_task_timestamp');
+        $last_task_name = $this->system->get('last_task_name');
 
         // if a task is running and it's not older than 4h, do nothing
-        if ($task_running && isset($last_task_timestamp) && $last_task_timestamp > time() - 60*60*4) {
+        if ($task_running && isset($last_task_timestamp) && $last_task_timestamp > time() - 60 * 60 * 4) {
             die();
         }
 
         // if a task is running but it's old, it's probably a lockup.
         // continue but log it
-        if (isset($last_task_timestamp) && $last_task_timestamp < time() - 60*60*4) {
-            $this->logger->notice("Old task lock detected");
+        if (isset($last_task_timestamp) && $last_task_timestamp < time() - 60 * 60 * 4) {
+            $this->logger->notice('Old task lock detected');
         }
 
         // shuffle tasks to randomize priorisation
@@ -143,17 +143,19 @@ class Cron extends Command
 
         foreach ($this->tasks as $task) {
             $lastLog = $this->em
-                        ->createQuery("SELECT log FROM App\Entity\Log log WHERE log.message = '".$task["name"]."' ORDER BY log.createdAt DESC")
+                        ->createQuery("SELECT log FROM App\Entity\Log log WHERE log.message = '".$task['name']."' ORDER BY log.createdAt DESC")
                         ->setMaxResults(1)->getOneOrNullResult();
-            if (empty($lastLog) || $lastLog->getCreatedAt() < time() - $task["period"]) {
-                $this->system->set("task_running", true);
-                $this->system->set("last_task_timestamp", time());
-                $this->system->set("last_task_name", $task["name"]);
-                $this->runCommand($task["name"], $task["options"]);
-                $this->system->set("task_running", false);
+            if (empty($lastLog) || $lastLog->getCreatedAt() < time() - $task['period']) {
+                $this->system->set('task_running', true);
+                $this->system->set('last_task_timestamp', time());
+                $this->system->set('last_task_name', $task['name']);
+                $this->runCommand($task['name'], $task['options']);
+                $this->system->set('task_running', false);
+
                 return true;
             }
         }
+
         return false;
     }
 
@@ -163,13 +165,13 @@ class Cron extends Command
         try {
             $returnCode = $command->run(new ArrayInput($options), $this->output ?? new NullOutput());
         } catch (\Exception $e) {
-            if ($this->output != null) {
-                $this->output->writeln(["<error>".$e->getMessage."</error>"]);
+            if (null != $this->output) {
+                $this->output->writeln(['<error>'.$e->getMessage.'</error>']);
             }
             $this->logger->error($id);
         }
-        if (isset($returnCode) && $returnCode != 0) {
-            if ($this->output != null) {
+        if (isset($returnCode) && 0 != $returnCode) {
+            if (null != $this->output) {
                 $this->output->writeln("<error>$id failed, return code: $returnCode</error>");
             }
         }

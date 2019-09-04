@@ -1,11 +1,11 @@
 <?php
+
 namespace App\Controller\Message;
 
 use App\Controller\ApiController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Message;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,14 +25,14 @@ class Delete extends ApiController
      */
     public function index(string $id): Response
     {
-        $this->denyAccessUnlessGranted("ROLE_USER");
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $message = $this->em->getRepository(Message::class)->findOneById($id);
         if (empty($message)) {
-            return new JsonResponse(["error" => "Not Found"], JsonResponse::HTTP_NOT_FOUND);
+            return new JsonResponse(['error' => 'Not Found'], JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $this->denyAccessUnlessGranted(new Expression("user == object.getAuthor()"), $message);
+        $this->denyAccessUnlessGranted(new Expression('user == object.getAuthor()'), $message);
 
         $this->em->remove($message);
         $this->em->flush();

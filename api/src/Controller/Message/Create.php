@@ -6,11 +6,9 @@ use App\Controller\ApiController;
 use App\Entity\File;
 use App\Entity\Group;
 use App\Entity\Message;
-use App\Entity\User;
 use App\Service\Url as UrlService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,34 +34,34 @@ class Create extends ApiController
      */
     public function index(Request $request): Response
     {
-        $this->denyAccessUnlessGranted("ROLE_USER");
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $requestData = json_decode($request->getcontent(), true);
-        $group = $this->em->getRepository(Group::class)->findOneById($requestData["group"]);
+        $group = $this->em->getRepository(Group::class)->findOneById($requestData['group']);
         if (empty($group)) {
-            return new JsonResponse(["error" => "Bad Request"], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => 'Bad Request'], Response::HTTP_BAD_REQUEST);
         }
-        $this->denyAccessUnlessGranted(new Expression("user in object.getUsersAsArray()"), $group);
+        $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
         // Create the message
         $message = new Message();
         $message->setAuthor($this->getUser());
         $message->setGroup($group);
 
-        if (!empty($requestData["parent"])) {
-            $parent = $this->em->getRepository(Message::class)->findOneById($requestData["parent"]);
+        if (!empty($requestData['parent'])) {
+            $parent = $this->em->getRepository(Message::class)->findOneById($requestData['parent']);
         } else {
             $parent = null;
         }
         $message->setParent($parent);
 
-        if (!empty($requestData["data"])) {
-            $message->setData($requestData["data"]);
+        if (!empty($requestData['data'])) {
+            $message->setData($requestData['data']);
         }
 
-        if (!empty($requestData["files"])) {
+        if (!empty($requestData['files'])) {
             $message->setFiles(new ArrayCollection(array_map(function ($fid) {
                 return $this->em->getRepository(File::class)->findOneById($fid);
-            }, $requestData["files"])));
+            }, $requestData['files'])));
         }
 
         $message->setPreview($this->genPreview($message));
@@ -95,7 +93,7 @@ class Create extends ApiController
         $this->em->flush();
 
         return new Response(
-            $this->serialize($message, ["read_message"]),
+            $this->serialize($message, ['read_message']),
             Response::HTTP_CREATED
         );
     }
@@ -105,11 +103,12 @@ class Create extends ApiController
         // get preview with files
         if (count($message->getFiles()) > 0) {
             $firstFile = null;
-            foreach($message->getFiles() as $file) {
+            foreach ($message->getFiles() as $file) {
                 if (!$firstFile || $file->getFileIndex() < $firstFile->getFileIndex()) {
                     $firstFile = $file;
                 }
             }
+
             return $firstFile;
         }
         // if no files, search for urls in text
@@ -117,6 +116,7 @@ class Create extends ApiController
         if (count($urls) > 0) {
             return $this->urlService->getLink($urls[0])->getPreview();
         }
+
         return null;
     }
 }

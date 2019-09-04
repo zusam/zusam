@@ -1,16 +1,14 @@
 <?php
+
 namespace App\Controller\Message;
 
 use App\Entity\Message;
-use App\Entity\User;
 use App\Controller\ApiController;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class Get extends ApiController
@@ -27,14 +25,14 @@ class Get extends ApiController
      */
     public function index(string $id): Response
     {
-        $this->denyAccessUnlessGranted("ROLE_USER");
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $message = $this->em->getRepository(Message::class)->findOneById($id);
         if (empty($message)) {
-            return new JsonResponse(["error" => "Not Found"], Response::HTTP_NOT_FOUND);
+            return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
         }
 
-        $this->denyAccessUnlessGranted(new Expression("user in object.getUsersAsArray()"), $message->getGroup());
+        $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $message->getGroup());
 
         // remove this message from the current users news
         $user = $this->getUser();
@@ -43,7 +41,7 @@ class Get extends ApiController
         $this->em->flush();
 
         return new Response(
-            $this->serialize($message, ["read_message"]),
+            $this->serialize($message, ['read_message']),
             Response::HTTP_OK
         );
     }

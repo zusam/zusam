@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Entity\File;
 use App\Entity\Link;
 use App\Service\Image as ImageService;
-use App\Service\Uuid;
 use Doctrine\ORM\EntityManagerInterface;
 use Embed\Embed;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -19,7 +18,7 @@ class Url
     private $imageService;
     private $security;
 
-    public function __construct (
+    public function __construct(
         EntityManagerInterface $em,
         ImageService $imageService,
         ParameterBagInterface $params,
@@ -35,20 +34,21 @@ class Url
     {
         $link = $this->getLink($url);
         if ($link) {
-            return $link->getPreview() ? "/files/".$link->getPreview()->getContentUrl() : null;
+            return $link->getPreview() ? '/files/'.$link->getPreview()->getContentUrl() : null;
         }
+
         return null;
     }
 
     public function getLink($url, $rescan = false): Link
     {
-        $filesDir = realpath($this->params->get("dir.files"));
+        $filesDir = realpath($this->params->get('dir.files'));
         $link = $this->em->getRepository(Link::class)->findOneByUrl($url);
         if (!empty($link) && !$rescan) {
             return $link;
         }
         // need to be connected to process links (trying to avoid DOS)
-        if (!$this->security->isGranted("ROLE_USER")) {
+        if (!$this->security->isGranted('ROLE_USER')) {
             if (empty($link)) {
                 return null;
             }
@@ -59,23 +59,23 @@ class Url
         }
         $data = Url::getData($url);
         // enhance data by adding a preview if there is none for the video
-        if (empty($data["image"]) && !empty($data["type"]) && $data["type"] === "video") {
-            $image = ImageService::extractImageFromVideo($data["url"], $this->params->get("binaries.ffmpeg"));
-            $data["image"] = $filesDir."/".Uuid::uuidv4($data["url"]);
-            rename($image, $data["image"]);
+        if (empty($data['image']) && !empty($data['type']) && 'video' === $data['type']) {
+            $image = ImageService::extractImageFromVideo($data['url'], $this->params->get('binaries.ffmpeg'));
+            $data['image'] = $filesDir.'/'.Uuid::uuidv4($data['url']);
+            rename($image, $data['image']);
         }
         $link->setData($data);
         $link->setUpdatedAt(time());
-        if (!empty($data["image"])) {
+        if (!empty($data['image'])) {
             try {
                 $preview = new File();
-                $preview->setType("image/jpeg");
-                $preview->setContentUrl($preview->getId().".jpg");
-                $this->imageService->createThumbnail($data["image"], $filesDir."/".$preview->getContentUrl(), 2048, 2048);
-                $preview->setSize(filesize($filesDir."/".$preview->getContentUrl()));
+                $preview->setType('image/jpeg');
+                $preview->setContentUrl($preview->getId().'.jpg');
+                $this->imageService->createThumbnail($data['image'], $filesDir.'/'.$preview->getContentUrl(), 2048, 2048);
+                $preview->setSize(filesize($filesDir.'/'.$preview->getContentUrl()));
                 $link->setPreview($preview);
                 $this->em->persist($preview);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 // Something went wrong. What should we do ?
                 // TODO
             }
@@ -90,6 +90,7 @@ class Url
             // if there was already a link, use it instead
             $link = $doubleLink;
         }
+
         return $link;
     }
 
@@ -97,36 +98,37 @@ class Url
     {
         try {
             $info = Embed::create($url);
+
             return [
-                "tags" => $info->tags, //The page keywords (tags)
-                "linkedData" => $info->linkedData, //The linked-data info (http://json-ld.org/)
-                "feeds" => $info->feeds, //The RSS/Atom feeds
-                "title" => $info->title, //The page title
-                "description" => $info->description, //The page description
-                "url" => $info->url, //The canonical url
-                "type" => $info->type, //The page type (link, video, image, rich)
-                "content-type" => $info->getResponse()->getHeader("content-Type"), //The content type of the url
+                'tags' => $info->tags, //The page keywords (tags)
+                'linkedData' => $info->linkedData, //The linked-data info (http://json-ld.org/)
+                'feeds' => $info->feeds, //The RSS/Atom feeds
+                'title' => $info->title, //The page title
+                'description' => $info->description, //The page description
+                'url' => $info->url, //The canonical url
+                'type' => $info->type, //The page type (link, video, image, rich)
+                'content-type' => $info->getResponse()->getHeader('content-Type'), //The content type of the url
 
-                "images" => $info->images, //List of all images found in the page
-                "image" => $info->image, //The image choosen as main image
-                "imageWidth" => $info->imageWidth, //The width of the main image
-                "imageHeight" => $info->imageHeight, //The height of the main image
+                'images' => $info->images, //List of all images found in the page
+                'image' => $info->image, //The image choosen as main image
+                'imageWidth' => $info->imageWidth, //The width of the main image
+                'imageHeight' => $info->imageHeight, //The height of the main image
 
-                "code" => $info->code, //The code to embed the image, video, etc
-                "width" => $info->width, //The width of the embed code
-                "height" => $info->height, //The height of the embed code
-                "aspectRatio" => $info->aspectRatio, //The aspect ratio (width/height)
+                'code' => $info->code, //The code to embed the image, video, etc
+                'width' => $info->width, //The width of the embed code
+                'height' => $info->height, //The height of the embed code
+                'aspectRatio' => $info->aspectRatio, //The aspect ratio (width/height)
 
-                "authorName" => $info->authorName, //The resource author
-                "authorUrl" => $info->authorUrl, //The author url
+                'authorName' => $info->authorName, //The resource author
+                'authorUrl' => $info->authorUrl, //The author url
 
-                "providerName" => $info->providerName, //The provider name of the page (Youtube, Twitter, Instagram, etc)
-                "providerUrl" => $info->providerUrl, //The provider url
-                "providerIcons" => $info->providerIcons, //All provider icons found in the page
-                "providerIcon" => $info->providerIcon, //The icon choosen as main icon
+                'providerName' => $info->providerName, //The provider name of the page (Youtube, Twitter, Instagram, etc)
+                'providerUrl' => $info->providerUrl, //The provider url
+                'providerIcons' => $info->providerIcons, //All provider icons found in the page
+                'providerIcon' => $info->providerIcon, //The icon choosen as main icon
 
-                "publishedDate" => $info->publishedDate, //The published date of the resource
-                "license" => $info->license, //The license url of the resource
+                'publishedDate' => $info->publishedDate, //The published date of the resource
+                'license' => $info->license, //The license url of the resource
             ];
         } catch (\Exception $e) {
             return [];

@@ -2,7 +2,6 @@
 
 namespace App\EventListener;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use App\Command\Cron;
 
@@ -21,7 +20,7 @@ class TerminateListener
     {
         // Do not run cron tasks in test env
         // This break tests with the httpClient
-        if ($this->env != "test") {
+        if ('test' != $this->env) {
             $this->cron->runTask();
         }
     }

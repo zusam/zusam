@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Service\Uuid;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -81,9 +79,9 @@ class Log
     {
         $this->id = Uuid::uuidv4();
         $this->createdAt = time();
-        $this->message = "";
-        $this->levelName = "";
-        $this->channel = "";
+        $this->message = '';
+        $this->levelName = '';
+        $this->channel = '';
     }
 
     public function getId(): string

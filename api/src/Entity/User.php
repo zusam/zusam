@@ -191,6 +191,7 @@ class User implements UserInterface, \Serializable
         if ($this->avatar && $this->avatar->getId()) {
             return $this->avatar;
         }
+
         return null;
     }
 
@@ -241,7 +242,7 @@ class User implements UserInterface, \Serializable
 
     public function removeNews(string $newsId): void
     {
-        if (($key = array_search($newsId, $this->news)) !== false) {
+        if (false !== ($key = array_search($newsId, $this->news))) {
             unset($this->news[$key]);
         }
     }
@@ -261,7 +262,7 @@ class User implements UserInterface, \Serializable
     // necessary for UserInterface
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return ['ROLE_USER'];
     }
 
     // necessary for UserInterface
@@ -272,20 +273,19 @@ class User implements UserInterface, \Serializable
     /** @see \Serializable::serialize() */
     public function serialize()
     {
-        return serialize(array(
+        return serialize([
             $this->id,
             $this->login,
             $this->password,
-        ));
+        ]);
     }
 
     /** @see \Serializable::unserialize() */
     public function unserialize($serialized)
     {
-        list (
+        list(
             $this->id,
             $this->login,
-            $this->password,
-        ) = unserialize($serialized, ['allowed_classes' => false]);
+            $this->password) = unserialize($serialized, ['allowed_classes' => false]);
     }
 }

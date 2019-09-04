@@ -4,7 +4,6 @@ namespace App\Command;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,13 +33,13 @@ class CleanLogs extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->logger->info($this->getName());
-        $c = $this->pdo->query("SELECT id FROM log WHERE created_at < (SELECT MIN(created_at) FROM (SELECT created_at FROM log ORDER BY created_at DESC LIMIT 10000));");
-        while($i = $c->fetch()) {
-            if ($input->getOption("verbose") || $input->getOption("only-list")) {
-                echo $i["id"]."\n";
+        $c = $this->pdo->query('SELECT id FROM log WHERE created_at < (SELECT MIN(created_at) FROM (SELECT created_at FROM log ORDER BY created_at DESC LIMIT 10000));');
+        while ($i = $c->fetch()) {
+            if ($input->getOption('verbose') || $input->getOption('only-list')) {
+                echo $i['id']."\n";
             }
-            if (!$input->getOption("only-list")) {
-                $this->pdo->query("DELETE FROM `log` WHERE id = '" . $i["id"] . "';");
+            if (!$input->getOption('only-list')) {
+                $this->pdo->query("DELETE FROM `log` WHERE id = '".$i['id']."';");
             }
         }
     }
