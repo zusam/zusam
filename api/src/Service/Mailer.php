@@ -16,7 +16,7 @@ class Mailer
         \Swift_Mailer $swift,
         \Twig_Environment $twig,
         $domain,
-		$lang
+        $lang
     ) {
         $this->swift = $swift;
         $this->twig = $twig;
@@ -26,11 +26,11 @@ class Mailer
 
     public function sendNotificationEmail(User $user, array $news)
     {
-		if (empty($user->getData()["lang"])) {
-			$lang = $this->lang;
-		} else {
-			$lang = $user->getData()["lang"];
-		}
+        if (empty($user->getData()["lang"])) {
+            $lang = $this->lang;
+        } else {
+            $lang = $user->getData()["lang"];
+        }
 
         $unsubscribe_token = Token::encode([
             "exp" => time() + 86400*60,
@@ -54,6 +54,7 @@ class Mailer
             )
         ;
 
+        $failures = [];
         if (!$this->swift->send($email, $failures)) {
             return $failures;
         }
@@ -62,11 +63,11 @@ class Mailer
 
     public function sendPasswordReset(User $user)
     {
-		if (empty($user->getData()["lang"])) {
-			$lang = $this->lang;
-		} else {
-			$lang = $user->getData()["lang"];
-		}	
+        if (empty($user->getData()["lang"])) {
+            $lang = $this->lang;
+        } else {
+            $lang = $user->getData()["lang"];
+        }   
 
         // using the user's password hash as seed allows this token to be one-time usage
         $token = Token::encode([
@@ -93,6 +94,7 @@ class Mailer
             )
         ;
 
+        $failures = [];
         if (!$this->swift->send($email, $failures)) {
             return $failures;
         }

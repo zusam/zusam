@@ -70,7 +70,6 @@ class Link
     {
         $this->id = Uuid::uuidv4($url);
         $this->url = $url;
-        $this->files = new ArrayCollection();
         $this->createdAt = time();
         $this->updatedAt = time();
         $this->secretKey = Uuid::uuidv4();

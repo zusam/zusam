@@ -106,7 +106,6 @@ class User implements UserInterface, \Serializable
         $this->id = Uuid::uuidv4();
         $this->groups = new ArrayCollection();
         $this->messages = new ArrayCollection();
-        $this->files = new ArrayCollection();
         $this->createdAt = time();
         $this->secretKey = Uuid::uuidv4();
         $this->data = [];

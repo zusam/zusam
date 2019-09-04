@@ -34,8 +34,8 @@ class Delete extends ApiController
 
         $this->denyAccessUnlessGranted(new Expression("user == object"), $user);
 
-        $em->remove($user);
-        $em->flush();
+        $this->em->remove($user);
+        $this->em->flush();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
