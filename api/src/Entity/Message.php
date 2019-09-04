@@ -84,7 +84,7 @@ class Message
     private $lastActivityDate;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\File")
+     * @ORM\ManyToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="preview_id", referencedColumnName="id")
      * @Groups({"read_message"})
      */
