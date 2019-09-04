@@ -48,18 +48,23 @@ class Create extends ApiController
         $message = new Message();
         $message->setAuthor($this->getUser());
         $message->setGroup($group);
+
         if (!empty($requestData["parent"])) {
             $parent = $this->em->getRepository(Message::class)->findOneById($requestData["parent"]);
         } else {
             $parent = null;
         }
         $message->setParent($parent);
+
         if (!empty($requestData["data"])) {
             $message->setData($requestData["data"]);
         }
-        $message->setFiles(new ArrayCollection(array_map(function ($fid) {
-            return $this->em->getRepository(File::class)->findOneById($fid);
-        }, $requestData["files"])));
+
+        if (!empty($requestData["files"])) {
+            $message->setFiles(new ArrayCollection(array_map(function ($fid) {
+                return $this->em->getRepository(File::class)->findOneById($fid);
+            }, $requestData["files"])));
+        }
 
         $message->setPreview($this->genPreview($message));
         $this->em->persist($message);
@@ -107,7 +112,7 @@ class Create extends ApiController
             }
             return $firstFile;
         }
-        // if no files, search for preview in text
+        // if no files, search for urls in text
         $urls = $message->getUrls();
         if (count($urls) > 0) {
             return $this->urlService->getLink($urls[0])->getPreview();
