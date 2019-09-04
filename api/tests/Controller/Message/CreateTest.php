@@ -25,18 +25,6 @@ class CreateTest extends ApiTestCase
             "HTTP_X_AUTH_TOKEN" => $this->firstUser->getSecretKey(),
         ], "simple string");
         $this->assertEquals(400, $this->client->getResponse()->getStatusCode(), "Not JSON body should be considered as bad content");
-
-        //$client->request("POST", "/messages", [], [], [
-        //    "CONTENT_TYPE" => "application/json",
-        //    "HTTP_X_AUTH_TOKEN" => "52ceecc0-4cdb-4500-897c-676c2ca632db",
-        //], "{}");
-        //$this->assertEquals(400, $client->getResponse()->getStatusCode(), "Should not accept empty message");
-
-        //$client->request("POST", "/messages", [], [], [
-        //    "CONTENT_TYPE" => "application/json",
-        //    "HTTP_X_AUTH_TOKEN" => "52ceecc0-4cdb-4500-897c-676c2ca632db",
-        //], '{"group": "f7140199-67e2-45c0-B596-a7a29c1fc901"}');
-        //$this->assertEquals(400, $client->getResponse()->getStatusCode(), "Should not accept empty message");
     }
 
     public function testUnauthorized()
@@ -51,15 +39,10 @@ class CreateTest extends ApiTestCase
             "CONTENT_TYPE" => "application/json",
             "HTTP_X_AUTH_TOKEN" => $this->firstUser->getSecretKey(),
         ], '{
-            "createdAt": '.time().',
-            "lastActivityDate": '.time().',
             "group": "'.$this->firstGroup->getId().'",
-            "author": "'.$this->firstUser->getId().'",
-            "data": {"text": ""},
-            "files": {},
-            "children": {}
+            "author": "'.$this->firstUser->getId().'"
         }');
-        $this->assertEquals(201, $this->client->getResponse()->getStatusCode(), "Failed to post simple test message, response: " . $this->client->getResponse()->getContent());
+        $this->assertEquals(201, $this->client->getResponse()->getStatusCode(), "Failed to post simple message, response: " . $this->client->getResponse()->getContent());
 
         $content = json_decode($this->client->getResponse()->getContent(), true);
 
@@ -70,5 +53,47 @@ class CreateTest extends ApiTestCase
 
         $this->assertInstanceOf(Message::class, $message, "Entity should be a Message");
         $this->assertEquals($content["createdAt"], $message->getCreatedAt(), "CreatedAt between content returned and persisted entity should be equal");
+        // post comment to previous message
+        $this->client->request("POST", "/messages", [], [], [
+            "CONTENT_TYPE" => "application/json",
+            "HTTP_X_AUTH_TOKEN" => $this->firstUser->getSecretKey(),
+        ], '{
+            "group": "'.$this->firstGroup->getId().'",
+            "author": "'.$this->firstUser->getId().'",
+            "parent": "'.$content["id"].'"
+        }');
+        $this->assertEquals(201, $this->client->getResponse()->getStatusCode(), "Failed to post simple comment, response: " . $this->client->getResponse()->getContent());
+    }
+
+    public function testPostMessageWithLink()
+    {
+        $this->client->request("POST", "/messages", [], [], [
+            "CONTENT_TYPE" => "application/json",
+            "HTTP_X_AUTH_TOKEN" => $this->firstUser->getSecretKey(),
+        ], '{
+            "group": "'.$this->firstGroup->getId().'",
+            "author": "'.$this->firstUser->getId().'",
+            "data": {"text": "https://fsf.org"}
+        }');
+        $this->assertEquals(201, $this->client->getResponse()->getStatusCode(), "Failed to post simple test message, response: " . $this->client->getResponse()->getContent());
+
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+    }
+
+    public function testPostMessageWithFile()
+    {
+        $fileId = $this->addFile(self::$container->get("kernel")->getProjectDir()."/tests/assets/zusam_logo.png");
+        $this->client->request("POST", "/messages", [], [], [
+            "CONTENT_TYPE" => "application/json",
+            "HTTP_X_AUTH_TOKEN" => $this->firstUser->getSecretKey(),
+        ], '{
+            "group": "'.$this->firstGroup->getId().'",
+            "author": "'.$this->firstUser->getId().'",
+            "files": ["'.$fileId.'"],
+            "data": {"text": "https://fsf.org"}
+        }');
+        $this->assertEquals(201, $this->client->getResponse()->getStatusCode(), "Failed to post simple test message, response: " . $this->client->getResponse()->getContent());
+
+        $content = json_decode($this->client->getResponse()->getContent(), true);
     }
 }

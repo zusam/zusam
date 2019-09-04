@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Entity\File;
 use App\Entity\Group;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -35,6 +36,8 @@ abstract class ApiTestCase extends WebTestCase
 
         $application = new Application(static::$kernel);
         $application->setAutoExit(false);
+
+        // Remove existing test db
         $application->run(new ArrayInput([
             "command" => "zusam:initialize",
             "user" => "zusam",
@@ -59,5 +62,26 @@ abstract class ApiTestCase extends WebTestCase
         $this->em = null;
         $this->client = null;
         gc_collect_cycles();
+    }
+
+    public function addFile(string $pathToFile)
+    {
+        if (!file_exists($pathToFile)) {
+            throw \Exception("File does not exists: ".$pathToFile);
+        }
+        $safeName = uniqid("testfile", true);
+        $ext = pathinfo($pathToFile, PATHINFO_EXTENSION);
+        $target = self::$container->getParameter("dir.files")."/".$safeName.".".$ext;
+        if (!copy($pathToFile, $target)) {
+            throw \Exception("Failed to copy to: ".$target);
+        }
+
+        $file = new File();
+        $file->setType(mime_content_type($pathToFile));
+        $file->setContentUrl($safeName.".".$ext);
+        $file->setSize(filesize($pathToFile));
+        $this->em->persist($file);
+        $this->em->flush();
+        return $file->getId();
     }
 }

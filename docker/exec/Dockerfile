@@ -29,6 +29,7 @@ RUN set -xe && apk add --no-cache \
     php7-pdo_sqlite \
     php7-pecl-apcu \
     php7-pecl-imagick \
+    php7-pecl-xdebug \
     php7-phar \
     php7-posix \
     php7-session \
@@ -39,6 +40,7 @@ RUN set -xe && apk add --no-cache \
     php7-zip
 RUN set -xe && apk add --no-cache ffmpeg
 RUN set -xe && apk add --no-cache rsync openssh
+RUN set -xe && sed -i 's/;zend/zend' /etc/php7/conf.d/xdebug.ini
 
 COPY run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/run.sh
