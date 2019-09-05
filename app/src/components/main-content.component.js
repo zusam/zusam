@@ -12,7 +12,7 @@ export default class MainContent extends Component {
     render() {
         if (this.props.action == "settings") {
             return (
-                <article class="justify-content-center d-flex">
+                <article class="mt-2 justify-content-center d-flex">
                     <div class="container">
                         <Settings key={this.props.entityUrl}/>
                     </div>
@@ -26,7 +26,7 @@ export default class MainContent extends Component {
                 return <Share/>;
             case "messages":
                 return (
-                    <article class="justify-content-center d-flex">
+                    <article class="mt-2 justify-content-center d-flex">
                         <div class="container pb-1">
                             <Message key={this.props.url} url={this.props.entityUrl} />
                         </div>
@@ -35,7 +35,7 @@ export default class MainContent extends Component {
             case "groups":
                 if (this.props.action == "write") {
                     return (
-                        <article>
+                        <article class="mt-2">
                             <div class="container">
                                 <Writer
                                     focus={true}

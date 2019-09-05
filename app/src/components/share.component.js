@@ -48,7 +48,7 @@ export default class Share extends Component {
             return;
         }
         return (
-            <article>
+            <article class="mt-2">
                 <div class="container">
                     { me.me && me.me.groups.length > 1 && (
                         <div class="mb-1">

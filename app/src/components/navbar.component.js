@@ -24,25 +24,6 @@ export default class Navbar extends Component {
         this.setState({});
     }
 
-    getTitle() {
-        if (router.entity && router.entity["name"]) {
-            return router.entity["name"];
-        }
-        if (me.me.groups) {
-            let group = me.me.groups.find(g => g["id"] == util.getId(router.entity.group));
-            return group ? group["name"]: "";
-        }
-        return "";
-    }
-
-    getTitleRoute() {
-        if(router.route == "messages") {
-            return "/groups/" + router.entity.group.id;
-        } else {
-            return "/" + router.entity.entityType + "s/" + router.entity.id;
-        }
-    }
-
     groupsHasNews() {
         return me.me.groups.reduce((acc, curr) => acc || me.isNews(curr.id), false);
     }
@@ -76,16 +57,6 @@ export default class Navbar extends Component {
                     <a class="seamless-link back" href={router.backUrl} onClick={this.clickBackButton}>
                         <FaIcon family={"solid"} icon={"arrow-left"}/>
                     </a>
-                )}
-                { ["groups", "messages"].includes(router.route) && (
-                    <span class="title">
-                        <a
-                            href={this.getTitleRoute()}
-                            class="cursor-pointer unselectable"
-                        >
-                            {this.getTitle()}
-                        </a>
-                    </span>
                 )}
                 { me.me.groups && (
                     <div

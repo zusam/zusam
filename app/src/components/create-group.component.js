@@ -27,7 +27,7 @@ export default class CreateGroup extends Component {
 
     render() {
         return (
-            <div class="container mt-1">
+            <div class="container mt-2">
                 <div class="group-settings">
                     <div class="card">
                         <div class="card-body">

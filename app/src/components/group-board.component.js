@@ -34,6 +34,14 @@ export default class GroupBoard extends Component {
         window.removeEventListener("scroll", this.onScroll);
     }
 
+    getGroupName() {
+        if (me.me.groups && router.entity.entityType == "group") {
+            let group = me.me.groups.find(g => g["id"] == util.getId(router.entity));
+            return group ? group["name"] : "";
+        }
+        return "";
+    }
+
     loadMessages(page) {
         cache.get("/api/groups/" + this.state.groupId + "/page/" + page).then(res => {
             if(res && Array.isArray(res["messages"])) {
@@ -81,20 +89,23 @@ export default class GroupBoard extends Component {
 
     render() {
         return Array.isArray(this.state.messages) && (
-            <article id="group" class="justify-content-center d-flex">
-                <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
-                    { this.state.messages.slice(0, this.state.loaded).map((msg, i) => {
-                        return (
-                            <MessagePreview
-                                tabindex={i + 1}
-                                key={msg.id}
-                                message={msg}
-                                groupId={util.getId(router.url)}
-                            />
-                        );
-                    })}
-                </div>
-            </article>
+            <div>
+                <div class="group-name">{ this.getGroupName() }</div>
+                <article id="group" class="justify-content-center d-flex">
+                    <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
+                        { this.state.messages.slice(0, this.state.loaded).map((msg, i) => {
+                            return (
+                                <MessagePreview
+                                    tabindex={i + 1}
+                                    key={msg.id}
+                                    message={msg}
+                                    groupId={util.getId(router.url)}
+                                />
+                            );
+                        })}
+                    </div>
+                </article>
+            </div>
         );
     }
 }
