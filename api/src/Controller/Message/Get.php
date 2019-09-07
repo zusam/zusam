@@ -34,12 +34,6 @@ class Get extends ApiController
 
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $message->getGroup());
 
-        // remove this message from the current users news
-        $user = $this->getUser();
-        $user->removeNews($message->getId());
-        $this->em->persist($user);
-        $this->em->flush();
-
         return new Response(
             $this->serialize($message, ['read_message']),
             Response::HTTP_OK

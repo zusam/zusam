@@ -6,6 +6,7 @@ use App\Controller\ApiController;
 use App\Entity\File;
 use App\Entity\Group;
 use App\Entity\Message;
+use App\Entity\Notification;
 use App\Service\Url as UrlService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -70,21 +71,31 @@ class Create extends ApiController
         // Update tasks
         $parent = $message->getParent();
         $author = $this->getUser();
-        $group->setLastActivityDate(time());
         if (!empty($parent)) {
-            $newsId = $parent->getId();
+            $target = $parent->getId();
         } else {
-            $newsId = $message->getId();
+            $target = $message->getId();
         }
         foreach ($group->getUsers() as $user) {
             if ($user->getId() != $author->getId()) {
-                $user->addNews($newsId);
-                $user->addNews($group->getId());
-                $this->em->persist($user);
+                $notif = new Notification();
+                $notif->setTarget($target);
+                $notif->setOwner($user);
+                $notif->setFromUser($author);
+                $notif->setFromGroup($group);
+                if (!empty($parent)) {
+                    $notif->setFromMessage($parent);
+                }
+                $notif->setType(Notification::NEW_MESSAGE);
+                $this->em->persist($notif);
             }
         }
 
+        $author->setLastActivityDate(time());
+        $group->setLastActivityDate(time());
         $this->em->persist($group);
+        $this->em->persist($author);
+
         if (!empty($parent)) {
             $parent->setLastActivityDate(time());
             $this->em->persist($parent);

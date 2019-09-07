@@ -32,12 +32,6 @@ class GetPage extends ApiController
         }
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
-        // remove group from the news of the requesting user
-        $user = $this->getUser();
-        $user->removeNews($group->getId());
-        $this->em->persist($user);
-        $this->em->flush();
-
         $query = $this->em->createQuery(
             "SELECT m FROM App\Entity\Message m"
             ." WHERE m.group = '".$group->getId()."'"
