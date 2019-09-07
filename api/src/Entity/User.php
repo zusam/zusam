@@ -86,10 +86,17 @@ class User implements UserInterface, \Serializable
     private $data;
 
     /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     * @Groups({"read_user"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="owner")
+     * @Groups({"read_me"})
      */
-    private $news;
+    private $notifications;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read_me"})
+     * @Assert\Type("integer")
+     */
+    private $lastActivityDate;
 
     /**
      * @Groups({"read_user"})
@@ -188,11 +195,7 @@ class User implements UserInterface, \Serializable
 
     public function getAvatar(): ?File
     {
-        if ($this->avatar && $this->avatar->getId()) {
-            return $this->avatar;
-        }
-
-        return null;
+        return $this->avatar;
     }
 
     public function setAvatar(File $avatar): void
@@ -220,31 +223,29 @@ class User implements UserInterface, \Serializable
         $this->data = $data;
     }
 
-    public function getNews(): ?array
+    public function getNotifications(): Collection
     {
-        return $this->news;
+        return $this->notifications;
     }
 
-    public function setNews(array $news): void
+    public function addNotification(Notification $notification): void
     {
-        $this->news = $news;
+        $this->notifications[] = $notification;
     }
 
-    public function addNews(string $newsId): void
+    public function removeNotification(Notification $notification): void
     {
-        if (!in_array($newsId, $this->news)) {
-            array_push($this->news, $newsId);
-        }
-        if (count($this->news) > 1024) {
-            array_shift($this->news);
-        }
+        $this->notifications->removeElement($notification);
     }
 
-    public function removeNews(string $newsId): void
+    public function getLastActivityDate(): int
     {
-        if (false !== ($key = array_search($newsId, $this->news))) {
-            unset($this->news[$key]);
-        }
+        return $this->lastActivityDate ?? 0;
+    }
+
+    public function setLastActivityDate(?int $lastActivityDate): void
+    {
+        $this->lastActivityDate = $lastActivityDate ?? 0;
     }
 
     // necessary for UserInterface
