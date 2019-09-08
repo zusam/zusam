@@ -40,7 +40,7 @@ RUN set -xe && apk add --no-cache \
     php7-zip
 RUN set -xe && apk add --no-cache ffmpeg
 RUN set -xe && apk add --no-cache rsync openssh
-RUN set -xe && sed -i 's/;zend/zend' /etc/php7/conf.d/xdebug.ini
+RUN set -xe && sed -i 's/;zend/zend/g' /etc/php7/conf.d/xdebug.ini
 
 COPY run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/run.sh
