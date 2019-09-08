@@ -38,28 +38,11 @@ abstract class ApiController extends AbstractController
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format = null, array $context = []) {
                     return \method_exists($object, 'getId') ? ['id' => $object->getId()] : null;
                 },
-                SymfonyObjectNormalizer::MAX_DEPTH_HANDLER => function (
-                    $attributeValue,
-                    object $object,
-                    string $attributeName,
-                    string $format = 'json',
-                    array $context = []
-                ) {
-                    switch (gettype($attributeValue)) {
-                        case 'object':
-                            return \method_exists($attributeValue, 'getId') ? ['id' => $attributeValue->getId()] : null;
-                        case 'array':
-                            return null;
-                        default:
-                            return $attributeValue;
-                    }
-                },
                 SymfonyObjectNormalizer::SKIP_NULL_VALUES => true,
-                SymfonyObjectNormalizer::ENABLE_MAX_DEPTH => true,
                 SymfonyObjectNormalizer::CIRCULAR_REFERENCE_LIMIT => 1, // symfony default
                 SymfonyObjectNormalizer::ALLOW_EXTRA_ATTRIBUTES => true, // symfony default
                 ObjectNormalizer::ENABLE_MAX_TREE_DEPTH => true,
-                ObjectNormalizer::TREE_DEPTH_LIMIT => 2,
+                ObjectNormalizer::TREE_DEPTH_LIMIT => 3,
                 'groups' => $groups,
             ]
         );
