@@ -121,6 +121,54 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
             return $this->handleMaxTreeDepth($object, $format, $context);
         }
 
+        // Remove the "read_me" group if we normalize a user that is not us.
+        if (array_values(array_slice(explode('\\', get_class($object)), -1))[0] === 'User') {
+            if (!isset($context['currentUser']) || $object->getId() !== $context['currentUser']) {
+                $context['groups'] = array_filter($context['groups'], function($g) {
+                    return $g !== 'read_me';
+                });
+            }
+        }
+
         return parent::normalize($object, $format, $context);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAllowedAttributes($classOrObject, array $context, $attributesAsString = false)
+    {
+        $allowExtraAttributes = $context[self::ALLOW_EXTRA_ATTRIBUTES] ?? $this->defaultContext[self::ALLOW_EXTRA_ATTRIBUTES];
+        if (!$this->classMetadataFactory) {
+            if (!$allowExtraAttributes) {
+                throw new LogicException(sprintf('A class metadata factory must be provided in the constructor when setting "%s" to false.', self::ALLOW_EXTRA_ATTRIBUTES));
+            }
+
+            return false;
+        }
+
+        $tmpGroups = $context[self::GROUPS] ?? $this->defaultContext[self::GROUPS] ?? null;
+        $groups = (\is_array($tmpGroups) || is_scalar($tmpGroups)) ? (array) $tmpGroups : false;
+        if (false === $groups && $allowExtraAttributes) {
+            return false;
+        }
+
+        $allowedAttributes = [];
+        foreach ($this->classMetadataFactory->getMetadataFor($classOrObject)->getAttributesMetadata() as $attributeMetadata) {
+            $name = $attributeMetadata->getName();
+
+            if (
+                (
+                    false === $groups
+                    || in_array('*', $attributeMetadata->getGroups())
+                    || array_intersect($attributeMetadata->getGroups(), $groups)
+                )
+                && $this->isAllowedAttribute($classOrObject, $name, null, $context)
+            ) {
+                $allowedAttributes[] = $attributesAsString ? $name : $attributeMetadata;
+            }
+        }
+
+        return $allowedAttributes;
     }
 }
