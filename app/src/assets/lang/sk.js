@@ -68,5 +68,10 @@ window.lang = {
     "destroy_account_explain": "Po odstránení účtu sa už nevráti",
     "are_you_sure": "Si si istý ?",
     "share_message": "Zdieľajte správu",
-    "users": "užívatelia"
+    "users": "užívatelia",
+    "has_posted_in": "zverejnila v",
+    "has_commented_on": "komentoval",
+    "has_joined": "sa pripojil k",
+    "the_message_from": "správa od",
+    "in": "v"
 };

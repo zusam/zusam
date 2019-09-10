@@ -54,7 +54,7 @@ export default class MessagePreview extends Component {
                             { !!this.state.message.children && (
                                 <span>
                                     { this.state.message.children + " " }
-                                    <FaIcon family={me.isNews(this.state.message.id) ? "solid" : "regular"} icon={"comment"} />
+                                    <FaIcon family={me.isNew(this.state.message.id) ? "solid" : "regular"} icon={"comment"} />
                                 </span>
                             )}
                         </span>

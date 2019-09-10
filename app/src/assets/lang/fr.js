@@ -68,5 +68,10 @@ window.lang = {
     "destroy_account_explain": "Une fois votre compte supprimé, il sera impossible d'annuler l'opération.",
     "are_you_sure": "Etes-vous sûr ?",
     "share_message": "Partager le message",
-    "users": "utilisateurs"
+    "users": "utilisateurs",
+    "has_posted_in": "a posté dans",
+    "has_commented_on": "a commenté",
+    "has_joined": "a rejoint",
+    "the_message_from": "le message de",
+    "in": "dans"
 }

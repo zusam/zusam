@@ -68,5 +68,10 @@ window.lang = {
     "destroy_account_explain": "Una vez que elimines tu cuenta, no hay vuelta atrás.",
     "are_you_sure": "Estás seguro ?",
     "share_message": "Comparte el mensaje",
-    "users": "usuarios"
+    "users": "usuarios",
+    "has_posted_in": "ha publicado en",
+    "has_commented_on": "ha comentado",
+    "has_joined": "se has unido"
+    "the_message_from": "el mensaje de",
+    "in": "en"
 }

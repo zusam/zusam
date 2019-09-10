@@ -1,0 +1,29 @@
+.notifications-menu {
+    left: -60px !important;
+}
+.notification {
+    display: flex;
+    font-size: 90%;
+    border-bottom: 1px solid #ddd;
+
+    .miniature {
+        margin: 0 12px 0 4px;
+
+        img {
+            height: 60px;
+            width: 60px;
+        }
+    }
+
+    .infos {
+        width: 15rem;
+
+        .description, .date {
+            white-space: normal;
+        }
+
+        .date {
+            font-size: 90%;
+        }
+    }
+}

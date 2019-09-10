@@ -42,7 +42,7 @@ export default class Message extends Component {
     }
 
     loadMessage(msg) {
-        me.removeNews(msg.id);
+        me.removeMatchingNotifications(msg.id);
         this.setState({
             message: msg,
             author: msg.author,

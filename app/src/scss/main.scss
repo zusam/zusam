@@ -32,6 +32,8 @@
 @import "login";
 @import "navbar";
 @import "alert";
+@import "dropdown";
+@import "notification";
 
 /* latin-ext */
 @font-face {
@@ -78,15 +80,6 @@
     transition: all 0.2s ease-in-out;
     &:hover, &:focus {
         box-shadow: $material_shadow_hover;
-    }
-}
-
-.dropdown {
-    background: initial;
-    border: initial;
-    color: inherit;
-    &:focus {
-        outline: none;
     }
 }
 
@@ -171,14 +164,33 @@ body {
 }
 
 .group-name {
-    font-weight: bold;
     text-align: center;
-    color: #555;
-    font-size: 3rem;
-    text-shadow: 0 1px 1px #ddd;
-    font-weight: bold;
-    background-color: #ccc;
-    box-shadow: 0px 0px 5px inset #bbb;
-    padding: 1rem 0;
+    color: #888;
+    font-size: 1.2rem;
+    padding: 10px 0;
     overflow-y: auto;
+    border-bottom: 1px solid #ccc;
+    margin: 0 auto 10px auto;
+    width: 90%;
+}
+
+.navbar-block {
+    display: flex;
+    height: 100%;
+}
+
+.notification-button {
+    font-size: 1.2rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+}
+
+.d-block {
+    display: block;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

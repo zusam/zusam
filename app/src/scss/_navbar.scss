@@ -34,7 +34,6 @@
     .menu {
         padding: 0 8px;
         position: relative;
-        cursor: pointer;
         height: 100%;
 
         &.active {
@@ -52,36 +51,6 @@
                 height: 100%;
             }
         }
-
-        &.active {
-            .dropdown-menu {
-                display: block;
-            }
-        }
-
-        /* Sub Menus */
-        .dropdown-menu {
-            position: absolute;
-            display: none;
-            width: inherit;
-            left: 0;
-            top: 100%;
-            padding: 0;
-            background-color: adjust-hue($zusam_color, 5deg);
-            text-align: left;
-            overflow: hidden;
-            border-bottom-right-radius: 4px;
-
-            a {
-                display: block;
-                padding: 5px 10px;
-                cursor: pointer;
-                white-space: nowrap;
-                &:hover {
-                    background-color: adjust-hue($zusam_color, 10deg);
-                }
-            }
-        }
     }
 
     .groups {
@@ -92,58 +61,8 @@
         line-height: 200%;
         flex-shrink: 0;
 
-        &.has-news {
-            background: linear-gradient(90deg, #f7a71b, #f7701b);
-        }
-
-        &.active, &.has-news.active{
-            background: adjust-hue($zusam_color, 5deg);
-            .dropdown-menu {
-                display: block;
-            }
-        }
-
         .fa-icon {
             font-size: 0.7rem;
-        }
-
-        /* Sub Menus */
-        .dropdown-menu {
-            position: absolute;
-            display: none;
-            width: inherit;
-            right: 0;
-            top: 100%;
-            padding: 0;
-            background-color: adjust-hue($zusam_color, 5deg);
-            text-align: left;
-            overflow: hidden;
-            border-bottom-left-radius: 4px;
-
-            a {
-                display: block;
-                padding: 5px 10px;
-                padding-right: 15px; // space for the has-news icon
-                cursor: pointer;
-                white-space: nowrap;
-                position: relative;
-
-                &.has-news::after {
-                    content: "";
-                    position: absolute;
-                    right: -4px;
-                    top: calc(50% + 1px);
-                    transform: translateY(-50%);
-                    width: 10px;
-                    height: 10px;
-                    border-radius: 100%;
-                    background: #fff;
-                }
-
-                &:hover {
-                    background-color: adjust-hue($zusam_color, 10deg);
-                }
-            }
         }
     }
 
@@ -160,4 +79,3 @@
         }
     }
 }
-

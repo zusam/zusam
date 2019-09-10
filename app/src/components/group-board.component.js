@@ -27,7 +27,6 @@ export default class GroupBoard extends Component {
 
     componentDidMount() {
         window.addEventListener("scroll", this.onScroll);
-        me.removeNews(this.state.groupId);
     }
 
     componentWillUnmount() {
