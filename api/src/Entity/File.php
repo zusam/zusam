@@ -27,7 +27,7 @@ class File
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @Assert\NotBlank()
-     * @Groups({"read_user", "read_message", "read_group"})
+     * @Groups("*")
      */
     private $id;
 
@@ -40,14 +40,14 @@ class File
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"read_user", "read_message", "read_group"})
+     * @Groups("*")
      */
     private $type;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
-     * @Groups({"read_user", "read_message", "read_group"})
+     * @Groups("*")
      */
     private $status;
 
@@ -59,7 +59,7 @@ class File
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"read_user", "read_message", "read_group"})
+     * @Groups("*")
      */
     private $contentUrl;
 
@@ -70,7 +70,7 @@ class File
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read_user", "read_message", "read_group"})
+     * @Groups("*")
      */
     private $fileIndex;
 
@@ -81,7 +81,7 @@ class File
     private $secretKey;
 
     /**
-     * @Groups({"read_user", "read_message", "read_group"})
+     * @Groups("*")
      */
     private $entityType;
 

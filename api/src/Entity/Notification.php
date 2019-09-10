@@ -15,34 +15,28 @@ class Notification
 {
     // notification types
     const NEW_MESSAGE = 'new_message';
+    const NEW_COMMENT = 'new_comment';
     const USER_JOINED_GROUP = 'user_joined_group';
 
     /**
      * @ORM\Id
      * @ORM\Column(type="guid")
-     * @Groups({"read_me"})
+     * @Groups({"read_notification"})
      * @Assert\NotBlank()
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"read_me"})
+     * @Groups({"read_notification"})
      * @Assert\Type("integer")
      * @Assert\NotNull()
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read_me"})
-     * @Assert\Type("integer")
-     */
-    private $readAt;
-
-    /**
      * @ORM\Column(type="string")
-     * @Groups({"read_me"})
+     * @Groups({"read_notification"})
      * @Assert\NotBlank()
      */
     private $type;
@@ -62,19 +56,19 @@ class Notification
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="miniature_id", referencedColumnName="id")
-     * @Groups({"read_me"})
+     * @Groups({"read_notification"})
      */
     private $miniature;
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"read_me"})
+     * @Groups({"read_notification"})
      */
     private $target;
 
     /**
      * @ORM\Column(type="json", nullable=true)
-     * @Groups({"read_me"})
+     * @Groups({"read_notification"})
      * @Assert\NotBlank()
      */
     private $data;
@@ -82,25 +76,26 @@ class Notification
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(name="from_user_id", referencedColumnName="id")
-     * @Groups({"read_me"})
+     * @Groups({"read_notification"})
      */
     private $fromUser;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Group")
      * @ORM\JoinColumn(name="from_group_id", referencedColumnName="id")
-     * @Groups({"read_me"})
+     * @Groups({"read_notification"})
      */
     private $fromGroup;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Message")
      * @ORM\JoinColumn(name="from_message_id", referencedColumnName="id")
+     * @Groups({"read_notification"})
      */
     private $fromMessage;
 
     /**
-     * @Groups({"read_me"})
+     * @Groups({"read_notification"})
      */
     private $entityType;
 
@@ -130,16 +125,6 @@ class Notification
     public function setCreatedAt(int $createdAt): void
     {
         $this->createdAt = $createdAt;
-    }
-
-    public function getReadAt(): ?int
-    {
-        return $this->readAt;
-    }
-
-    public function setReadAt(int $readAt): void
-    {
-        $this->readAt = $readAt;
     }
 
     public function getType(): string

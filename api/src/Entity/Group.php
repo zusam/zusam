@@ -18,7 +18,7 @@ class Group
     /**
      * @ORM\Id
      * @ORM\Column(type="guid")
-     * @Groups({"read_group", "write_group", "read_user", "read_message"})
+     * @Groups("*")
      * @Assert\NotBlank()
      */
     private $id;
@@ -32,7 +32,7 @@ class Group
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"read_group", "write_group", "read_user"})
+     * @Groups("*")
      * @Assert\Type("integer")
      * @Assert\NotNull()
      */
@@ -40,7 +40,7 @@ class Group
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"read_group", "write_group", "read_user"})
+     * @Groups("*")
      * @Assert\NotBlank()
      */
     private $name;
@@ -53,13 +53,12 @@ class Group
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="group")
-     * @Groups({""})
      */
     private $messages;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read_group", "read_user"})
+     * @Groups({"read_group", "read_me"})
      * @Assert\Type("integer")
      */
     private $lastActivityDate;
@@ -70,7 +69,7 @@ class Group
     private $data;
 
     /**
-     * @Groups({"read_group", "read_user"})
+     * @Groups("*")
      */
     private $entityType;
 

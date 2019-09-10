@@ -19,14 +19,14 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Id
      * @ORM\Column(type="guid")
-     * @Groups({"read_user", "write_user", "read_message", "read_group"})
+     * @Groups("*")
      * @Assert\NotBlank()
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"read_user", "write_user"})
+     * @Groups("*")
      * @Assert\Type("integer")
      * @Assert\NotNull()
      */
@@ -34,7 +34,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", unique=true)
-     * @Groups({"read_user", "write_user"})
+     * @Groups({"read_me", "write_user"})
      * @Assert\NotBlank()
      */
     private $login;
@@ -67,27 +67,26 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
-     * @Groups({"read_user", "write_user", "read_message", "read_group"})
+     * @Groups("*")
      */
     private $avatar;
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"read_user", "write_user", "read_message", "read_group"})
+     * @Groups("*")
      * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @ORM\Column(type="json", nullable=true)
-     * @Groups({"read_user", "write_user"})
+     * @Groups({"read_me", "read_user", "write_user"})
      * @Assert\NotBlank()
      */
     private $data;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="owner")
-     * @Groups({"read_me"})
      */
     private $notifications;
 
@@ -99,7 +98,7 @@ class User implements UserInterface, \Serializable
     private $lastActivityDate;
 
     /**
-     * @Groups({"read_user"})
+     * @Groups("*")
      */
     private $entityType;
 

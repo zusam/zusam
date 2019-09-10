@@ -21,7 +21,7 @@ class Message
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @Assert\NotBlank()
-     * @Groups({"read_message"})
+     * @Groups("*")
      */
     private $id;
 
@@ -29,39 +29,39 @@ class Message
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotNull()
-     * @Groups({"read_message"})
+     * @Groups("*")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="json", nullable=true)
      * @Assert\NotBlank()
-     * @Groups({"read_message"})
+     * @Groups("*")
      */
     private $data;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
-     * @Groups({"read_message"})
+     * @Groups("*")
      */
     private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="messages")
-     * @Groups({"read_message"})
+     * @Groups("*")
      */
     private $group;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Message", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * @Groups({"read_message"})
+     * @Groups("*")
      */
     private $parent;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="parent")
-     * @Groups({"read_message"})
+     * @Groups("*")
      */
     private $children;
 
@@ -71,7 +71,7 @@ class Message
      *      joinColumns={@ORM\JoinColumn(name="message_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id")}
      *      )
-     * @Groups({"read_message"})
+     * @Groups("*")
      */
     private $files;
 
@@ -79,13 +79,14 @@ class Message
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotNull()
+     * @Groups("*")
      */
     private $lastActivityDate;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="preview_id", referencedColumnName="id")
-     * @Groups({"read_message"})
+     * @Groups("*")
      */
     private $preview;
 
@@ -96,7 +97,7 @@ class Message
     private $secretKey;
 
     /**
-     * @Groups({"read_message"})
+     * @Groups("*")
      */
     private $entityType;
 
