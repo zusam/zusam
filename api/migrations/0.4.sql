@@ -57,7 +57,6 @@ CREATE TEMPORARY TABLE `tmp_notification` (
     , `from_group_id` CHAR(36) DEFAULT NULL --(DC2Type:guid)
     , `from_message_id` CHAR(36) DEFAULT NULL --(DC2Type:guid)
     , `created_at` INTEGER NOT NULL
-    , `read_at` INTEGER DEFAULT NULL
     , `type` VARCHAR(255) NOT NULL
     , `secret_key` CHAR(36) NOT NULL --(DC2Type:guid)
     , `target` VARCHAR(255) NOT NULL
@@ -77,7 +76,7 @@ INSERT INTO `tmp_notification` (
     -- uuidv4 generation
     lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6)))
     , user_id
-    , strftime('%s','now')
+    , 0 -- update after some filtering
     , 'new_message'
     -- uuidv4 generation
     , lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6)))
@@ -86,7 +85,7 @@ FROM (
     WITH RECURSIVE split(user_id, news_id, rest) AS (
         SELECT id, '', news || ',' FROM user
             UNION ALL
-        SELECT user_id, 
+        SELECT user_id,
             substr(rest, 0, instr(rest, ',')),
             substr(rest, instr(rest, ',')+1)
         FROM split
@@ -95,14 +94,16 @@ FROM (
     SELECT user_id, news_id FROM split WHERE news_id <> ''
 );
 
--- delete all notifications related to groups (these were here to signal that something new happened in the group)
-DELETE FROM tmp_notification AS tn WHERE EXISTS (SELECT * FROM `group` WHERE id = tn.target);
+-- delete all notifications not related to messages
+DELETE FROM tmp_notification AS tn WHERE NOT EXISTS (SELECT * FROM `message` WHERE id = tn.target);
 
 -- update from_* data
 UPDATE tmp_notification AS tn SET from_user_id = (SELECT author_id FROM message AS m WHERE tn.target = m.id);
 UPDATE tmp_notification AS tn SET miniature_id = (SELECT avatar_id FROM user AS u WHERE tn.from_user_id = u.id);
 UPDATE tmp_notification AS tn SET from_group_id = (SELECT group_id FROM message AS m WHERE tn.target = m.id);
 UPDATE tmp_notification AS tn SET from_message_id = (SELECT parent_id FROM message AS m WHERE tn.target = m.id);
+UPDATE tmp_notification SET from_message_id = target WHERE from_message_id IS NULL;
+UPDATE tmp_notification SET created_at = (SELECT created_at FROM message WHERE id = target);
 
 -- Remove news from user
 -- Add last_activity_date to user
@@ -152,7 +153,6 @@ CREATE TABLE `notification` (
     , `from_group_id` CHAR(36) DEFAULT NULL --(DC2Type:guid)
     , `from_message_id` CHAR(36) DEFAULT NULL --(DC2Type:guid)
     , `created_at` INTEGER NOT NULL
-    , `read_at` INTEGER DEFAULT NULL
     , `type` VARCHAR(255) NOT NULL
     , `secret_key` CHAR(36) NOT NULL --(DC2Type:guid)
     , `target` VARCHAR(255) NOT NULL
@@ -180,7 +180,6 @@ INSERT INTO `notification` (
     , `from_group_id`
     , `from_message_id`
     , `created_at`
-    , `read_at`
     , `type`
     , `secret_key`
     , `target`
@@ -192,7 +191,6 @@ INSERT INTO `notification` (
     , `from_group_id`
     , `from_message_id`
     , `created_at`
-    , `read_at`
     , `type`
     , `secret_key`
     , `target`
