@@ -71,22 +71,19 @@ class Create extends ApiController
         // Update tasks
         $parent = $message->getParent();
         $author = $this->getUser();
-        if (!empty($parent)) {
-            $target = $parent->getId();
-        } else {
-            $target = $message->getId();
-        }
         foreach ($group->getUsers() as $user) {
             if ($user->getId() != $author->getId()) {
                 $notif = new Notification();
-                $notif->setTarget($target);
+                $notif->setTarget($message->getId());
                 $notif->setOwner($user);
                 $notif->setFromUser($author);
                 $notif->setFromGroup($group);
                 if (!empty($parent)) {
                     $notif->setFromMessage($parent);
+                    $notif->setType(Notification::NEW_COMMENT);
+                } else {
+                    $notif->setType(Notification::NEW_MESSAGE);
                 }
-                $notif->setType(Notification::NEW_MESSAGE);
                 $this->em->persist($notif);
             }
         }

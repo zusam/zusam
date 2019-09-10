@@ -43,6 +43,7 @@ abstract class ApiController extends AbstractController
                 SymfonyObjectNormalizer::ALLOW_EXTRA_ATTRIBUTES => true, // symfony default
                 ObjectNormalizer::ENABLE_MAX_TREE_DEPTH => true,
                 ObjectNormalizer::TREE_DEPTH_LIMIT => 3,
+                'currentUser' => $this->getUser()->getId(),
                 'groups' => $groups,
             ]
         );
