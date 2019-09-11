@@ -108,10 +108,10 @@ export default class Message extends Component {
         if (newMsg.parent && util.getId(newMsg.parent) == msg["id"]) {
             newMsg.author = me.me;
             msg.children = [...msg.children, newMsg];
-            this.setState({
-                displayedChildren: this.state.displayedChildren + 1,
+            this.setState(prevState => ({
+                displayedChildren: prevState.displayedChildren + 1,
                 message: msg,
-            });
+            }));
         }
     }
 
@@ -145,17 +145,17 @@ export default class Message extends Component {
                 let previewUrl = util.getUrl(this.state.message.data["text"]);
                 if (previewUrl) {
                     cache.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
-                        this.setState({
+                        this.setState(prevState => ({
                             preview: r,
                             gotPreview: true,
-                            data: this.state.message.data,
-                        });
+                            data: prevState.message.data,
+                        }));
                     });
                 } else {
-                    this.setState({
+                    this.setState(prevState => ({
                         gotPreview: true,
-                        data: this.state.message.data,
-                    });
+                        data: prevState.message.data,
+                    }));
                 }
             }
         }
@@ -200,7 +200,7 @@ export default class Message extends Component {
                     <MessageChildren
                         children={this.state.message.children}
                         displayedChildren={this.state.displayedChildren}
-                        displayMoreChildren={_ => this.setState({displayedChildren: this.state.displayedChildren + 10})}
+                        displayMoreChildren={_ => this.setState(prevState => ({displayedChildren: prevState.displayedChildren + 10}))}
                         isPublic={this.props.isPublic}
                         key={this.state.message.id}
                     />

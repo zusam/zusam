@@ -40,7 +40,7 @@ export default class UserSettings extends Component {
         });
         input.click();
     }
-    
+
     destroyAccount(event) {
         event.preventDefault();
         let confirmDeletion = confirm(lang["are_you_sure"]);
@@ -70,7 +70,7 @@ export default class UserSettings extends Component {
         }
         user.data = {"notification_emails": notification_emails, "default_group": default_group};
         http.put("/api/users/" + this.state.id, user).then(res => {
-            this.setState(Object.assign(this.state, res));
+            this.setState(prevState => Object.assign(prevState, res));
             alert.add(lang["settings_updated"]);
             me.update();
         });
@@ -86,7 +86,7 @@ export default class UserSettings extends Component {
                                 <div class="col-12 col-md-2">
                                     <img
                                         class="img-fluid rounded-circle material-shadow avatar"
-                                        src={ this.state.avatar ? util.crop(this.state.avatar["id"], 100, 100) : util.defaultAvatar }
+                                        src={this.state.avatar ? util.crop(this.state.avatar["id"], 100, 100) : util.defaultAvatar}
                                         onError={e => e.currentTarget.src = util.defaultAvatar}
                                         onClick={this.inputAvatar}
                                     />
@@ -151,13 +151,7 @@ export default class UserSettings extends Component {
                                         </div>
                                         <div class="form-group">
                                             <label for="default_group">{ lang["default_group"] }:</label>
-                                            <select
-                                                name="default_group"
-                                                class="form-control"
-                                                selectedIndex={
-                                                    me.me.groups.map(e => e.id).indexOf(this.state.data["default_group"])
-                                                }
-                                            >
+                                            <select name="default_group" class="form-control" value={this.state.data["default_group"]}>
                                                 { me.me.groups.map(e => <option value={e.id}>{e.name}</option>)}
                                             </select>
                                         </div>

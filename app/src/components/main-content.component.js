@@ -8,13 +8,13 @@ import Share from "./share.component.js";
 import FaIcon from "./fa-icon.component.js";
 
 export default class MainContent extends Component {
-    
+
     render() {
         if (this.props.action == "settings") {
             return (
                 <article class="mt-2 justify-content-center d-flex">
                     <div class="container">
-                        <Settings key={this.props.entityUrl}/>
+                        <Settings key={this.props.entityUrl} entityUrl={this.props.entityUrl}/>
                     </div>
                 </article>
             );

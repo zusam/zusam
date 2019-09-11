@@ -32,7 +32,7 @@ export default class GroupSettings extends Component {
         http.put("/api/groups/" + this.state.id, group).then(res => {
             alert.add(lang["group_updated"]);
             cache.resetCache();
-            this.setState(Object.assign(this.state, res));
+            this.setState(prevState => Object.assign(prevState, res));
         });
     }
 

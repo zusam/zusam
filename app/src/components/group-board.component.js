@@ -76,11 +76,11 @@ export default class GroupBoard extends Component {
                 && document.body.scrollHeight - window.screen.height - 500 < window.pageYOffset
                 && this.state.loaded < this.state.totalMessages
             ) {
-                this.setState({loaded: this.state.loaded + 10});
+                this.setState(prevState => ({loaded: prevState.loaded + 10}));
                 if (this.state.loaded + 30 > this.state.messages.length) {
                     this.loadMessages(this.state.page + 1);
                     // update page count right away
-                    this.setState({page: this.state.page + 1});
+                    this.setState(prevState => ({page: prevState.page + 1}));
                 }
             }
         }

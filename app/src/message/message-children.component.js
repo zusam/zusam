@@ -1,4 +1,4 @@
-import { h, render, Component } from "preact";
+import { h, render, Component, toChildArray } from "preact";
 import Message from "./message.component.js";
 
 export default class MessageChildren extends Component {
@@ -8,10 +8,10 @@ export default class MessageChildren extends Component {
         }
         return  (
             <div>
-                { this.props.displayedChildren < this.props.children.length && (
+                { this.props.displayedChildren < toChildArray(this.props.children).length && (
                     <a class="more-coms" onClick={this.props.displayMoreChildren}>{lang["more_coms"]}</a>
                 )}
-                { this.props.children.map((e,i,m) => {
+                { toChildArray(this.props.children).map((e,i,m) => {
                     // bypass empty messages
                     if (!e.files.length && e.data["text"] == "" && !e.children.length) {
                         return null;
@@ -21,7 +21,7 @@ export default class MessageChildren extends Component {
                         m[i - 1]
                         && m[i - 1].author && e.author
                         && m[i - 1].author.id == e.author.id
-                        && i > this.props.children.length - this.props.displayedChildren
+                        && i > toChildArray(this.props.children).length - this.props.displayedChildren
                         && (
                             // check if previous message is not empty
                             m[i-1].files.length
@@ -36,7 +36,7 @@ export default class MessageChildren extends Component {
                             message={e}
                             key={e.id}
                             follow={follow}
-                            hidden={i < this.props.children.length - this.props.displayedChildren}
+                            hidden={i < toChildArray(this.props.children).length - this.props.displayedChildren}
                             isPublic={this.props.isPublic}
                         />
                     );

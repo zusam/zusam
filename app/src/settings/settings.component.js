@@ -9,8 +9,8 @@ export default class Settings extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        if (props.key) {
-            cache.get(props.key).then(res => this.setState({entity: res}));
+        if (props.entityUrl) {
+            cache.get(props.entityUrl).then(res => this.setState({entity: res}));
         }
     }
 
