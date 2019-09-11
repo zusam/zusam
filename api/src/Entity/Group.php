@@ -32,7 +32,6 @@ class Group
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups("*")
      * @Assert\Type("integer")
      * @Assert\NotNull()
      */

@@ -29,14 +29,14 @@ class Message
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotNull()
-     * @Groups("*")
+     * @Groups({"read_message"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="json", nullable=true)
      * @Assert\NotBlank()
-     * @Groups("*")
+     * @Groups({"read_message"})
      */
     private $data;
 
@@ -48,7 +48,7 @@ class Message
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="messages")
-     * @Groups("*")
+     * @Groups({"read_message"})
      */
     private $group;
 
@@ -71,7 +71,7 @@ class Message
      *      joinColumns={@ORM\JoinColumn(name="message_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id")}
      *      )
-     * @Groups("*")
+     * @Groups({"read_message"})
      */
     private $files;
 
@@ -79,14 +79,14 @@ class Message
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotNull()
-     * @Groups("*")
+     * @Groups({"read_message"})
      */
     private $lastActivityDate;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="preview_id", referencedColumnName="id")
-     * @Groups("*")
+     * @Groups({"read_message"})
      */
     private $preview;
 

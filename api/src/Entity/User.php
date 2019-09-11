@@ -26,7 +26,6 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups("*")
      * @Assert\Type("integer")
      * @Assert\NotNull()
      */

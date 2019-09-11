@@ -40,14 +40,14 @@ class File
 
     /**
      * @ORM\Column(type="string")
-     * @Groups("*")
+     * @Groups({"read_message"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
-     * @Groups("*")
+     * @Groups({"read_message"})
      */
     private $status;
 
@@ -70,7 +70,7 @@ class File
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups("*")
+     * @Groups({"read_message"})
      */
     private $fileIndex;
 
