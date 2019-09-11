@@ -54,7 +54,7 @@ export default class GroupBoard extends Component {
                     page: page,
                     loaded: new_loaded,
                 });
-                if (page * 30 < new_loaded) {
+                if ((page + 1) * 30 < new_loaded) {
                     setTimeout(() => this.loadMessages(page + 1));
                 }
             }
