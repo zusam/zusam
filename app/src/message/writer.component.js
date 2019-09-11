@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { alert, cache, http, imageService, me, router, util } from "/core";
+import { alert, cache, http, me, router, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";
@@ -219,15 +219,17 @@ export default class Writer extends Component {
             alert.add(lang["multiple_photos_upload"], "alert-danger");
             return;
         }
-        imageService.handleImage(
-            e.value,
-            res => this.uploadFile(
-                res,
-                n + list.indexOf(e.value),
-                null,
-                () => this.uploadNextImage(list, it, n)
-            )
-        );
+        import("/lazy/image-service.js").then(imageService => {
+            imageService.default.handleImage(
+                e.value,
+                res => this.uploadFile(
+                    res,
+                    n + list.indexOf(e.value),
+                    null,
+                    () => this.uploadNextImage(list, it, n)
+                )
+            );
+        });
     }
 
     uploadFile(file, fileIndex, placeholderIndex, callback = null) {

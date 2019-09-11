@@ -1,8 +1,8 @@
 import cache from "./cache.js";
-import util from "./util.js";
 import http from "./http.js";
-import nlg from "./nlg.js";
 import me from "./me.js";
+import nlg from "./nlg.js";
+import util from "./util.js";
 
 const router = {
     route: "",

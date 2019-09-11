@@ -1,8 +1,14 @@
 import { h, render, Component } from "preact";
+import { lazy } from "preact/compat";
 import { cache, router, me } from "/core";
-import { Login, Signup, ResetPassword, StopNotificationEmails, Public } from "/outside";
 import Navbar from "./components/navbar.component.js";
 import MainContent from "./components/main-content.component.js";
+
+const Login = lazy(() => import("/outside/login.component.js"));
+const Public = lazy(() => import("/outside/public.component.js"));
+const ResetPassword = lazy(() => import("/outside/reset-password.component.js"));
+const Signup = lazy(() => import("/outside/signup.component.js"));
+const StopNotificationEmails = lazy(() => import("/outside/stop-notification-emails.component.js"));
 
 class App extends Component {
 

@@ -1,11 +1,13 @@
 import { h, render, Component } from "preact";
+import { lazy } from "preact/compat";
 import { router } from "/core";
 import { Writer, Message } from "/message";
-import { Settings } from "/settings";
 import CreateGroup from "./create-group.component.js";
 import GroupBoard from "./group-board.component.js";
-import Share from "./share.component.js";
 import FaIcon from "./fa-icon.component.js";
+
+const Settings = lazy(() => import("/settings/settings.component.js"));
+const Share = lazy(() => import("./share.component.js"));
 
 export default class MainContent extends Component {
 

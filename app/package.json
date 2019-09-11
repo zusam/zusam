@@ -13,7 +13,7 @@
         "node-sass": "~4",
         "parcel-bundler": "~1",
         "pica": "~5",
-        "preact": "~8"
+        "preact": "^10.0.0-rc.3"
     },
     "devDependencies": {
         "babel-core": "~6",
