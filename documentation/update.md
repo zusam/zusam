@@ -8,14 +8,14 @@ First, understand that the master branch is considered unstable and you should n
 To stay away from trouble, stay on release tags and update only to the next tag (and not to a specific commit).  
 Generally, updating several major versions at once is not supported. Do multiple update operations if you are several majors behind.
 
-You can see the latest release [here](https://github.com/nrobinaubertin/zusam/releases).  
+You can see the latest release [here](https://github.com/zusam/zusam/releases).  
 
 ## The actual procedure
 
 1. Backup the data directory
 2. Select the next version you want to update to. It will be called `$version` for the rest of the procedure.
 3. Go to your zusam directory
-4. `wget -qO- https://github.com/nrobinaubertin/zusam/archive/$version.tar.gz | tar xz --strip 1`
+4. `wget -qO- https://github.com/zusam/zusam/archive/$version.tar.gz | tar xz --strip 1`
 5. If `api/migrations/$version.sql` exists, apply it: `sqlite3 data/data.db < api/migrations/$version.sql`
 6. Apply latest composer changes: `php bin/composer install`
 7. Copy the webapp to the public directory: `cp app/dist/* public/`
