@@ -27,7 +27,7 @@ The login is "zusam" and the password is "zusam". The instance is reset every ho
 
 ## Deployment
 Zusam is composed of a PHP server and a single-page-application.
-The backend uses [Symfony](https://symfony.com) and [Sqlite](https://sqlite.org/index.html), the frontend is made with [Preact](https://preactjs.com/) and [ParcelJS](https://parceljs.org/).
+The backend uses [Symfony](https://symfony.com) and [Sqlite](https://sqlite.org), the frontend is made with [Preact](https://preactjs.com) and [ParcelJS](https://parceljs.org).
 
 Requirements:
 - PHP 7.2+ (with mbstring, curl, xml, sqlite3, imagick and intl extensions)
