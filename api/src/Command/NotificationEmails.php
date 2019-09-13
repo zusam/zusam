@@ -42,7 +42,7 @@ class NotificationEmails extends Command
         $this->logger->info($this->getName());
         $users = $this->em->getRepository(User::class)->findAll();
         foreach ($users as $user) {
-            if (empty($user->getNews())) {
+            if (empty($user->getNotifications())) {
                 continue;
             }
 
@@ -76,25 +76,14 @@ class NotificationEmails extends Command
                     $max_age = 0;
             }
 
-            foreach ($user->getNews() as $new) {
-                $message = $this->em->getRepository(Message::class)->findOneById($new);
-                $news = [];
-                if (
-                    !empty($message)
-                    && (time() - $message->getLastActivityDate()) < $max_age
-                ) {
-                    $news[] = $message;
-                }
-            }
-
-            if (count($news) > 0) {
+            if (count($user->getNotifications()) > 0) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
                     $output->writeln([
                         '<info>Notification email sent to '.$user->getId().'.</info>',
                     ]);
                 }
                 if (!$input->getOption('only-list')) {
-                    $this->mailer->sendNotificationEmail($user, $news);
+                    $this->mailer->sendNotificationEmail($user);
                 }
                 break;
             }

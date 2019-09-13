@@ -2,8 +2,13 @@ Bonjour {{ user.name }},
 
 Il y a du nouveau sur Zusam !
 Vous pouvez voir ces nouveaux messages en vous rendant sur les liens suivants :
-{% for message in messages %}
-- https://{{ domain }}/messages/{{ message.id }}
+{% for notification in notifications %}
+    {% if notification.type == 'new_message' %}
+        - https://{{ domain }}/messages/{{ notification.target }}
+    {% endif %}
+    {% if notification.type == 'new_comment' %}
+        - https://{{ domain }}/messages/{{ notification.fromMessage.id }}
+    {% endif %}
 {% endfor %}
 
 Si vous ne voulez plus recevoir ces emails vous pouvez les désactiver dans vos paramètres ou cliquer sur le lien suivant :
