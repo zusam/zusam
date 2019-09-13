@@ -4,8 +4,6 @@ namespace App\Controller\Notification;
 
 use App\Controller\ApiController;
 use App\Entity\Notification;
-use App\Entity\File;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;

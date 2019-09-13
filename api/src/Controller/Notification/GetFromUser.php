@@ -3,7 +3,6 @@
 namespace App\Controller\Notification;
 
 use App\Controller\ApiController;
-use App\Entity\Notification;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;

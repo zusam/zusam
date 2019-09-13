@@ -122,10 +122,10 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
         }
 
         // Remove the "read_me" group if we normalize a user that is not us.
-        if (array_values(array_slice(explode('\\', get_class($object)), -1))[0] === 'User') {
+        if ('User' === array_values(array_slice(explode('\\', get_class($object)), -1))[0]) {
             if (!isset($context['currentUser']) || $object->getId() !== $context['currentUser']) {
-                $context['groups'] = array_filter($context['groups'], function($g) {
-                    return $g !== 'read_me';
+                $context['groups'] = array_filter($context['groups'], function ($g) {
+                    return 'read_me' !== $g;
                 });
             }
         }
