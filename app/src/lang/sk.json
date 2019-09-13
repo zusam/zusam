@@ -1,4 +1,4 @@
-window.lang = {
+{
     "more_coms": "Zobraziť viac komentárov",
     "ago": "{} späť",
     "groups": "Skupiny",
@@ -62,9 +62,9 @@ window.lang = {
     "monthly": "Mesačne",
     "notification_emails_stopped": "E-mailové upozornenia sa zastavili!",
     "group_share_choice": "Do ktorej skupiny chcete odoslať túto správu ?",
-    "public_link": "Verejné spojenie"
+    "public_link": "Verejné spojenie",
     "default_group": "Predvolenú skupinu",
-    "destroy_account": "Odstráňte svoj účet"
+    "destroy_account": "Odstráňte svoj účet",
     "destroy_account_explain": "Po odstránení účtu sa už nevráti",
     "are_you_sure": "Si si istý ?",
     "share_message": "Zdieľajte správu",
@@ -73,5 +73,6 @@ window.lang = {
     "has_commented_on": "komentoval",
     "has_joined": "sa pripojil k",
     "the_message_from": "správa od",
-    "in": "v"
-};
+    "in": "v",
+    "lang": "jazyk"
+}

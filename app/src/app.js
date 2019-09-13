@@ -1,14 +1,9 @@
 import { h, render, Component } from "preact";
 import { lazy } from "preact/compat";
-import { cache, router, me } from "/core";
+import { alert, lang, cache, router, me } from "/core";
 import Navbar from "./components/navbar.component.js";
 import MainContent from "./components/main-content.component.js";
-
-const Login = lazy(() => import("/outside/login.component.js"));
-const Public = lazy(() => import("/outside/public.component.js"));
-const ResetPassword = lazy(() => import("/outside/reset-password.component.js"));
-const Signup = lazy(() => import("/outside/signup.component.js"));
-const StopNotificationEmails = lazy(() => import("/outside/stop-notification-emails.component.js"));
+import { Login, Public, ResetPassword, Signup, StopNotificationEmails } from "/outside";
 
 class App extends Component {
 
@@ -18,6 +13,7 @@ class App extends Component {
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("meStateChange", _ => this.setState({me: me.me}));
         window.addEventListener("popstate", router.sync);
+        lang.fetchDict();
         cache.get("apiKey").then(apiKey => {
             if (router.isOutside() || apiKey) {
                 router.sync();
@@ -63,6 +59,7 @@ class App extends Component {
                 }
             }
         });
+        alert.add(lang.t(router.getParam("alert", router.search)));
     }
 
     render() {

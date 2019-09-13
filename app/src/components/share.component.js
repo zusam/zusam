@@ -1,6 +1,5 @@
 import { h, render, Component } from "preact";
-import { Writer } from "/message";
-import { me, router, http } from "/core";
+import { lang, me, router, http } from "/core";
 import FaIcon from "./fa-icon.component.js";
 
 export default class Share extends Component {
@@ -52,7 +51,7 @@ export default class Share extends Component {
                 <div class="container">
                     { me.me && me.me.groups.length > 1 && (
                         <div class="mb-1">
-                            <label for="group_share_choice">{lang["group_share_choice"]}</label>
+                            <label for="group_share_choice">{lang.t("group_share_choice")}</label>
                             <select
                                 selectedIndex="-1"
                                 class="form-control"

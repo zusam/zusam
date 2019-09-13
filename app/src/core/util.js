@@ -1,3 +1,5 @@
+import lang from './lang.js';
+
 const util = {
     getUrl: txt => {
         let url = txt.match(/(\([^()]*)?https?:\/\/[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]/i);
@@ -24,13 +26,13 @@ const util = {
         }
         const duration = Math.abs(Math.round((Date.now()/1000 - timestamp)/60));
         if (duration < 1) {
-            return lang["just_now"];
+            return lang.t("just_now");
         }
         if (duration < 60) {
-            return lang["ago"].replace(/{}/, duration + "mn");
+            return lang.t("ago").replace(/{}/, duration + "mn");
         }
         if (duration < 60 * 24) {
-            return lang["ago"].replace(/{}/, Math.floor(duration/60) + "h");
+            return lang.t("ago").replace(/{}/, Math.floor(duration/60) + "h");
         }
         let date = new Date(timestamp*1000);
         return util.humanFullDate(timestamp).split(" ")[0];

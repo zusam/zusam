@@ -1,10 +1,12 @@
 import { h, render, Component } from "preact";
-import { cache, http, me, router, util } from "/core";
+import { Suspense, lazy } from "preact/compat";
+import { lang, cache, http, me, router, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 import MessageHead from "./message-head.component.js";
 import MessageBody from "./message-body.component.js";
 import MessageChildren from "./message-children.component.js";
-import Writer from "./writer.component.js";
+
+const Writer = lazy(() => import("/message/writer.component.js"));
 
 export default class Message extends Component {
 
@@ -64,7 +66,7 @@ export default class Message extends Component {
 
     deleteMessage(event) {
         event.preventDefault();
-        if(confirm(lang["ask_delete_message"])) {
+        if(confirm(lang.t("ask_delete_message"))) {
             http.delete("/api/messages/" + this.state.message["id"]);
             cache.resetCache();
             // give some time to the cache to delete itself properly
@@ -117,16 +119,18 @@ export default class Message extends Component {
 
     displayWriter() {
         return (
-            <Writer
-                cancel={this.state.edit ? this.cancelEdit : null}
-                files={this.state.edit ? this.state.message.files : []}
-                focus={!!this.state.edit}
-                group={this.state.message.group}
-                messageId={this.state.edit ? this.state.message.id : null}
-                parent={this.state.edit ? this.state.message["parent"] : this.state.message.id}
-                text={this.state.edit ? this.state.data.text : ""}
-                title={this.state.edit ? this.state.data["title"] : ""}
-            />
+            <Suspense fallback={<br/>}>
+                <Writer
+                    cancel={this.state.edit ? this.cancelEdit : null}
+                    files={this.state.edit ? this.state.message.files : []}
+                    focus={!!this.state.edit}
+                    group={this.state.message.group}
+                    messageId={this.state.edit ? this.state.message.id : null}
+                    parent={this.state.edit ? this.state.message["parent"] : this.state.message.id}
+                    text={this.state.edit ? this.state.data.text : ""}
+                    title={this.state.edit ? this.state.data["title"] : ""}
+                />
+            </Suspense>
         );
     }
 

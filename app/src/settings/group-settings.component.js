@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { me, alert, cache, http, router, util } from "/core";
+import { lang, me, alert, cache, http, router, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class GroupSettings extends Component {
@@ -16,7 +16,7 @@ export default class GroupSettings extends Component {
     resetSecretKey(event) {
         event.preventDefault();
         http.post("/api/groups/" + this.state.id + "/reset-invite-key", {}).then(res => {
-            alert.add(lang["group_updated"]);
+            alert.add(lang.t("group_updated"));
             cache.resetCache();
             this.setState({secretKey: res["inviteKey"]});
         });
@@ -30,7 +30,7 @@ export default class GroupSettings extends Component {
             group.name = name;
         }
         http.put("/api/groups/" + this.state.id, group).then(res => {
-            alert.add(lang["group_updated"]);
+            alert.add(lang.t("group_updated"));
             cache.resetCache();
             this.setState(prevState => Object.assign(prevState, res));
         });
@@ -53,10 +53,10 @@ export default class GroupSettings extends Component {
     leave() {
         http.post("/api/groups/" + this.state.id + "/leave", {}).then(res => {
             if (!res || !res["entityType"]) {
-                alert.add(lang["error"], "alert-danger");
+                alert.add(lang.t("error"), "alert-danger");
             } else {
                 me.update();
-                alert.add(lang["group_left"]);
+                alert.add(lang.t("group_left"));
                 router.navigate("/");
             }
         })
@@ -73,23 +73,23 @@ export default class GroupSettings extends Component {
                                     <div class="col-12 col-md-10">
                                         <form id="settings_form" class="mb-1 border-bottom pb-1">
                                             <div class="form-group">
-                                                <label for="name">{lang["name"]}: </label>
+                                                <label for="name">{lang.t("name")}: </label>
                                                 <input
                                                     type="text"
                                                     name="name"
                                                     minlength="1"
                                                     maxlength="128"
-                                                    placeholder={lang["name_input"]}
+                                                    placeholder={lang.t("name_input")}
                                                     value={this.state.name}
                                                     class="form-control"
                                                     required
                                                 ></input>
                                             </div>
-                                            <button onClick={this.updateSettings} class="btn btn-outline-secondary">{lang["save_changes"]}</button>
+                                            <button onClick={this.updateSettings} class="btn btn-outline-secondary">{lang.t("save_changes")}</button>
                                         </form>
                                         <form class="mb-1 border-bottom pb-1">
                                             <div class="form-group">
-                                                <label for="inviteKey">{lang["invitation_link"]}: </label>
+                                                <label for="inviteKey">{lang.t("invitation_link")}: </label>
                                                 <input
                                                     type="text"
                                                     name="inviteKey"
@@ -104,11 +104,11 @@ export default class GroupSettings extends Component {
                                                 ></input>
                                             </div>
                                             <button class="btn btn-outline-secondary" onClick={this.resetSecretKey}>
-                                                {lang["reset_invitation_link"]}
+                                                {lang.t("reset_invitation_link")}
                                             </button>
                                         </form>
                                         <form>
-                                            <button onClick={this.leaveGroup} class="btn btn-outline-danger">{lang["quit_group"]}</button>
+                                            <button onClick={this.leaveGroup} class="btn btn-outline-danger">{lang.t("quit_group")}</button>
                                         </form>
                                     </div>
                                 </div>
@@ -117,7 +117,7 @@ export default class GroupSettings extends Component {
                     </div>
                 </div>
                 <div class="user-list mb-3">
-                    <h3>{lang["users"]}</h3>
+                    <h3>{lang.t("users")}</h3>
                     { this.props.users.map(user => user && (
                         <div class="user-card">
                             <img

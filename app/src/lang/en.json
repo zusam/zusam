@@ -1,4 +1,4 @@
-window.lang = {
+{
     "more_coms": "See more comments",
     "ago": "{} ago",
     "groups": "Groups",
@@ -73,5 +73,6 @@ window.lang = {
     "has_commented_on": "has commented on",
     "has_joined": "has joined",
     "the_message_from": "the message from",
-    "in": "in"
-};
+    "in": "in",
+    "lang": "language"
+}

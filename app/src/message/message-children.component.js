@@ -1,4 +1,5 @@
 import { h, render, Component, toChildArray } from "preact";
+import { lang } from "/core";
 import Message from "./message.component.js";
 
 export default class MessageChildren extends Component {
@@ -9,7 +10,7 @@ export default class MessageChildren extends Component {
         return  (
             <div>
                 { this.props.displayedChildren < toChildArray(this.props.children).length && (
-                    <a class="more-coms" onClick={this.props.displayMoreChildren}>{lang["more_coms"]}</a>
+                    <a class="more-coms" onClick={this.props.displayMoreChildren}>{lang.t("more_coms")}</a>
                 )}
                 { toChildArray(this.props.children).map((e,i,m) => {
                     // bypass empty messages

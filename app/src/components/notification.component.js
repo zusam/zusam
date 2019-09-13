@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { me, router, util } from "/core";
+import { lang, me, router, util } from "/core";
 
 export default class Notification extends Component {
 
@@ -21,11 +21,11 @@ export default class Notification extends Component {
     getAction() {
         switch (this.props.type) {
             case "new_message":
-                return lang["has_posted_in"];
+                return lang.t("has_posted_in");
             case "new_comment":
-                return lang["has_commented_on"];
+                return lang.t("has_commented_on");
             case "user_joined_group":
-                return lang["has_joined"];
+                return lang.t("has_joined");
             default:
                 return "";
         }
@@ -38,14 +38,14 @@ export default class Notification extends Component {
             case "new_comment":
                 return (
                     <span>
-                        {lang["the_message_from"] + " "}
+                        {lang.t("the_message_from") + " "}
                         <strong>{this.props.fromMessage.author["name"]}</strong>
-                        {" " + lang["in"] + " "}
+                        {" " + lang.t("in") + " "}
                         <a href={"/groups/" + this.props.fromGroup.id} onClick={router.onClick}>{this.props.fromGroup.name}</a>
                     </span>
                 );
             case "user_joined_group":
-                return lang["has_joined"];
+                return lang.t("has_joined");
             default:
                 return "";
         }

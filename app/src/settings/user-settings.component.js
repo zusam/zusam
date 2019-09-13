@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { router, me, alert, cache, http, imageService, util } from "/core";
+import { lang, router, me, alert, cache, http, imageService, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class UserSettings extends Component {
@@ -31,7 +31,7 @@ export default class UserSettings extends Component {
                         http.put("/api/users/" + this.state.id, {avatar: "/api/files/" + file["id"]}).then(res => {
                             this.setState({avatar: file});
                             cache.resetCache();
-                            alert.add(lang["settings_updated"]);
+                            alert.add(lang.t("settings_updated"));
                         });
                     });
                 });
@@ -43,7 +43,7 @@ export default class UserSettings extends Component {
 
     destroyAccount(event) {
         event.preventDefault();
-        let confirmDeletion = confirm(lang["are_you_sure"]);
+        let confirmDeletion = confirm(lang.t("are_you_sure"));
         if (confirmDeletion) {
             http.delete("/api/users/" + this.state.id).then(res => {
                 router.navigate("/logout");
@@ -58,6 +58,7 @@ export default class UserSettings extends Component {
         const password = document.querySelector("#settings_form input[name='password']").value;
         const notification_emails = document.querySelector("#settings_form select[name='notification_emails']").value;
         const default_group = document.querySelector("#settings_form select[name='default_group']").value;
+        const lang = document.querySelector("#settings_form select[name='lang']").value;
         let user = {};
         if (name) {
             user.name = name;
@@ -68,11 +69,11 @@ export default class UserSettings extends Component {
         if (password) {
             user.password = password;
         }
-        user.data = {"notification_emails": notification_emails, "default_group": default_group};
+        user.data = {"notification_emails": notification_emails, "default_group": default_group, "lang": lang};
         http.put("/api/users/" + this.state.id, user).then(res => {
             this.setState(prevState => Object.assign(prevState, res));
-            alert.add(lang["settings_updated"]);
-            me.update();
+            console.log(location.pathname + "?alert=settings_updated")
+            location.href = location.pathname + "?alert=settings_updated";
         });
     }
 
@@ -94,41 +95,41 @@ export default class UserSettings extends Component {
                                 <div class="col-12 col-md-10">
                                     <form id="settings_form" class="mb-3">
                                         <div class="form-group">
-                                            <label for="name">{lang["name"]}: </label>
+                                            <label for="name">{lang.t("name")}: </label>
                                             <input
                                                 type="text"
                                                 name="name"
                                                 minlength="1"
                                                 maxlength="128"
-                                                placeholder={lang["name_input"]}
+                                                placeholder={lang.t("name_input")}
                                                 value={this.state.name}
                                                 class="form-control"
                                             ></input>
                                         </div>
                                         <div class="form-group">
-                                            <label for="email">{lang["email"]}: </label>
+                                            <label for="email">{lang.t("email")}: </label>
                                             <input
                                                 type="email"
                                                 name="email"
-                                                placeholder={lang["email_input"]}
+                                                placeholder={lang.t("email_input")}
                                                 value={this.state.login}
                                                 class="form-control"
                                             ></input>
                                         </div>
                                         <div class="form-group">
-                                            <label for="password">{lang["password"]}: </label>
+                                            <label for="password">{lang.t("password")}: </label>
                                             <input
                                                 type="password"
                                                 name="password"
                                                 autocomplete="off"
                                                 minlength="8"
                                                 maxlength="128"
-                                                placeholder={lang["password_input"]}
+                                                placeholder={lang.t("password_input")}
                                                 class="form-control"
                                             ></input>
                                         </div>
                                         <div class="form-group">
-                                            <label for="notification_emails">{ lang["notification_emails"] }:</label>
+                                            <label for="notification_emails">{ lang.t("notification_emails") }:</label>
                                             <select
                                                 name="notification_emails"
                                                 class="form-control"
@@ -142,25 +143,31 @@ export default class UserSettings extends Component {
                                                     ].indexOf(this.state.data["notification_emails"])
                                                 }
                                             >
-                                                <option value="none">{ lang["none"] }</option>
-                                                <option value="hourly">{ lang["hourly"] }</option>
-                                                <option value="daily">{ lang["daily"] }</option>
-                                                <option value="weekly">{ lang["weekly"] }</option>
-                                                <option value="monthly">{ lang["monthly"] }</option>
+                                                <option value="none">{ lang.t("none") }</option>
+                                                <option value="hourly">{ lang.t("hourly") }</option>
+                                                <option value="daily">{ lang.t("daily") }</option>
+                                                <option value="weekly">{ lang.t("weekly") }</option>
+                                                <option value="monthly">{ lang.t("monthly") }</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="default_group">{ lang["default_group"] }:</label>
+                                            <label for="default_group">{ lang.t("default_group") }:</label>
                                             <select name="default_group" class="form-control" value={this.state.data["default_group"]}>
                                                 { me.me.groups.map(e => <option value={e.id}>{e.name}</option>)}
                                             </select>
                                         </div>
-                                        <button onClick={this.updateSettings} class="btn btn-primary">{lang["save_changes"]}</button>
+                                        <div class="form-group">
+                                            <label class="capitalize" for="lang">{lang.t("lang")}:</label>
+                                            <select name="lang" class="form-control" value={this.state.data["lang"]}>
+                                                { Object.keys(lang.possibleLang).map(k => <option value={k}>{lang.possibleLang[k]}</option>)}
+                                            </select>
+                                        </div>
+                                        <button onClick={this.updateSettings} class="btn btn-primary">{lang.t("save_changes")}</button>
                                     </form>
                                     <form id="destroy_form">
-                                        <label for="destroy_account">{ lang["destroy_account_explain"] }</label>
+                                        <label class="d-block" for="destroy_account">{ lang.t("destroy_account_explain") }</label>
                                         <button onClick={this.destroyAccount} name="destroy_account" class="btn btn-danger">
-                                            {lang["destroy_account"]}
+                                            {lang.t("destroy_account")}
                                         </button>
                                     </form>
                                 </div>

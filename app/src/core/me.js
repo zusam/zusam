@@ -1,4 +1,5 @@
 import http from "./http.js";
+import lang from "./lang.js";
 
 const me = {
     me: {},
@@ -6,6 +7,7 @@ const me = {
     update: () => http.get("/api/me", true).then(r => {
         me.me = Object.assign({notifications: []}, r);
         me.loadNotifications();
+        lang.fetchDict();
         window.dispatchEvent(new CustomEvent("meStateChange"));
         return r;
     }),

@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { me, util } from "/core";
+import { lang, me, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class MessageHead extends Component {
@@ -31,16 +31,16 @@ export default class MessageHead extends Component {
                         <FaIcon family="solid" icon="caret-down"/>
                         <div class="dropdown-menu">
                             { this.props.author && this.props.author.id == me.me.id && (
-                                <a class="seamless-link" onClick={this.props.editMessage}>{lang["edit"]}</a>
+                                <a class="seamless-link" onClick={this.props.editMessage}>{lang.t("edit")}</a>
                             )}
                             { this.props.author && this.props.author.id == me.me.id && (
-                                <a class="seamless-link" onClick={this.props.deleteMessage}>{lang["delete"]}</a>
+                                <a class="seamless-link" onClick={this.props.deleteMessage}>{lang.t("delete")}</a>
                             )}
                             { !this.props.message.parent && (
-                                <a class="seamless-link" onClick={this.props.openPublicLink}>{lang["public_link"]}</a>
+                                <a class="seamless-link" onClick={this.props.openPublicLink}>{lang.t("public_link")}</a>
                             )}
                             { !this.props.message.parent && me.me.groups.length > 1 && (
-                                <a class="seamless-link" onClick={this.props.shareMessage}>{lang["share_message"]}</a>
+                                <a class="seamless-link" onClick={this.props.shareMessage}>{lang.t("share_message")}</a>
                             )}
                         </div>
                     </div>

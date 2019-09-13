@@ -4,8 +4,7 @@
     "scripts": {
         "build": "parcel build --no-source-maps src/index.html",
         "clean": "rm -rf dist/*",
-        "lang": "cp src/assets/lang/*.js dist/",
-        "postbuild": "sed -E -i 's/lang.[a-z0-9]+.js/lang.js/' dist/index.html && rm dist/lang*",
+        "lang": "cp -r src/lang dist/",
         "prebuild": "yarn lang",
         "prelang": "yarn clean"
     },

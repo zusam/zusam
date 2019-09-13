@@ -11,7 +11,7 @@ export default class Public extends Component {
             http.get("/api/public/" + router.id).then(res => this.setState({message: res}));
         }
     }
-    
+
     render() {
         if (!this.state.message) {
             return;

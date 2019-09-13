@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { alert, cache, http, me, router, util } from "/core";
+import { lang, alert, cache, http, me, router, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";
@@ -106,7 +106,7 @@ export default class Writer extends Component {
         http.put("/api/messages/" + this.props.messageId, msg).then(res => {
             this.setState({sending: false});
             if (!res) {
-                alert.add(lang["error_new_message"], "alert-danger");
+                alert.add(lang.t("error_new_message"), "alert-danger");
                 return;
             }
             window.dispatchEvent(new CustomEvent("editMessage", {detail : res}));
@@ -133,12 +133,12 @@ export default class Writer extends Component {
         }
         // don't post if there is nothing to post
         if (!msg.files.length && !msg.data.text && !msg.data.title) {
-            alert.add(lang["empty_message"], "alert-danger");
+            alert.add(lang.t("empty_message"), "alert-danger");
             return;
         }
         http.post("/api/messages", msg).then(res => {
             if (!res) {
-                alert.add(lang["error_new_message"], "alert-danger");
+                alert.add(lang.t("error_new_message"), "alert-danger");
                 this.setState({sending: false});
                 return;
             }
@@ -216,7 +216,7 @@ export default class Writer extends Component {
             // this is a fix for firefox mobile
             // firefox mobile only gets one file on "input multiple" and throws on getting the size
             // https://bugzilla.mozilla.org/show_bug.cgi?id=1456557
-            alert.add(lang["multiple_photos_upload"], "alert-danger");
+            alert.add(lang.t("multiple_photos_upload"), "alert-danger");
             return;
         }
         import("/lazy/image-service.js").then(imageService => {
@@ -255,7 +255,7 @@ export default class Writer extends Component {
             }
             let a = this.state.files;
             if (!file) {
-                alert.add(lang["error_upload"], "alert-danger");
+                alert.add(lang.t("error_upload"), "alert-danger");
             } else {
                 a.splice(fileIndex, 1, file);
             }
@@ -265,7 +265,7 @@ export default class Writer extends Component {
             }
         }, progressFn, e => {
             console.warn(e);
-            alert.add(lang["error_upload"], "alert-danger");
+            alert.add(lang.t("error_upload"), "alert-danger");
             let a = this.state.files;
             a.splice(fileIndex, 1, {fileIndex: fileIndex, error: e});
             this.setState({files: a})
@@ -286,13 +286,13 @@ export default class Writer extends Component {
                     <input
                         type="text" id="title"
                         onKeyPress={this.onKeyPress}
-                        placeholder={lang["title_placeholder"]}
+                        placeholder={lang.t("title_placeholder")}
                     ></input>
                 )}
                 <textarea
                     onKeyPress={e => this.onKeyPress(e, true)}
                     id="text"
-                    placeholder={lang["text_placeholder"]}
+                    placeholder={lang.t("text_placeholder")}
                     rows="5"
                     autocomplete="off"
                     autofocus={this.props.focus}
@@ -310,20 +310,20 @@ export default class Writer extends Component {
                     <button
                         class="option"
                         onClick={this.inputImages}
-                        title={lang["upload_image"]}
+                        title={lang.t("upload_image")}
                     >
                         <FaIcon family={"regular"} icon={"images"}/>
                     </button>
                         <button
                             class="option"
                             onClick={this.inputVideo}
-                            title={lang["upload_video"]}
+                            title={lang.t("upload_video")}
                         >
                             <FaIcon family={"solid"} icon={"film"}/>
                         </button>
                     <div class="actions">
-                        { this.props.cancel && <button class="cancel" onClick={this.props.cancel}>{lang.cancel}</button> }
-                        <button type="submit" class="submit" onClick={this.sendMessage}>{lang.submit}</button>
+                        { this.props.cancel && <button class="cancel" onClick={this.props.cancel}>{lang.t("cancel")}</button> }
+                        <button type="submit" class="submit" onClick={this.sendMessage}>{lang.t("submit")}</button>
                     </div>
                 </div>
             </div>

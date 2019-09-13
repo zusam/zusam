@@ -1,11 +1,12 @@
 import { h, render, Component } from "preact";
-import { lazy } from "preact/compat";
+import { Suspense, lazy } from "preact/compat";
 import { router } from "/core";
-import { Writer, Message } from "/message";
+import { Message } from "/message";
 import CreateGroup from "./create-group.component.js";
 import GroupBoard from "./group-board.component.js";
 import FaIcon from "./fa-icon.component.js";
 
+const Writer = lazy(() => import("/message/writer.component.js"));
 const Settings = lazy(() => import("/settings/settings.component.js"));
 const Share = lazy(() => import("./share.component.js"));
 
@@ -16,7 +17,9 @@ export default class MainContent extends Component {
             return (
                 <article class="mt-2 justify-content-center d-flex">
                     <div class="container">
-                        <Settings key={this.props.entityUrl} entityUrl={this.props.entityUrl}/>
+                        <Suspense fallback={<br/>}>
+                            <Settings key={this.props.entityUrl} entityUrl={this.props.entityUrl}/>
+                        </Suspense>
                     </div>
                 </article>
             );
@@ -25,7 +28,11 @@ export default class MainContent extends Component {
             case "create-group":
                 return <CreateGroup/>;
             case "share":
-                return <Share/>;
+                return (
+                    <Suspense fallback={<br/>}>
+                        <Share/>
+                    </Suspense>
+                );
             case "messages":
                 return (
                     <article class="mt-2 justify-content-center d-flex">
@@ -39,10 +46,12 @@ export default class MainContent extends Component {
                     return (
                         <article class="mt-2">
                             <div class="container">
-                                <Writer
-                                    focus={true}
-                                    group={this.props.entityUrl}
-                                />
+                                <Suspense fallback={<br/>}>
+                                    <Writer
+                                        focus={true}
+                                        group={this.props.entityUrl}
+                                    />
+                                </Suspense>
                             </div>
                         </article>
                     );

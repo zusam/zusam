@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { me, util } from "/core";
+import { lang, me, util } from "/core";
 import PreviewBlock from "./preview-block.component.js";
 import FileGrid from "./file-grid.component.js";
 import FaIcon from "../components/fa-icon.component.js";
@@ -45,10 +45,10 @@ export default class MessageBody extends Component {
                     >
                         <FaIcon family="solid" icon="caret-down"/>
                         <div class="dropdown-menu">
-                            <a class="seamless-link" onClick={this.props.editMessage}>{lang["edit"]}</a>
-                            <a class="seamless-link" onClick={this.props.deleteMessage}>{lang["delete"]}</a>
+                            <a class="seamless-link" onClick={this.props.editMessage}>{lang.t("edit")}</a>
+                            <a class="seamless-link" onClick={this.props.deleteMessage}>{lang.t("delete")}</a>
                             { !this.props.message.parent && (
-                                <a class="seamless-link" onClick={this.props.openPublicLink}>{lang["public_link"]}</a>
+                                <a class="seamless-link" onClick={this.props.openPublicLink}>{lang.t("public_link")}</a>
                             )}
                         </div>
                     </div>

@@ -3,6 +3,7 @@ import http from "./http.js";
 import me from "./me.js";
 import nlg from "./nlg.js";
 import util from "./util.js";
+import lang from "./lang.js";
 
 const router = {
     route: "",
@@ -13,6 +14,7 @@ const router = {
     backUrlPrompt: "",
     entityUrl: "",
     entityType: "",
+    search: "",
     entity: {},
     toApp: entity => entity ? "/api/" + entity.entityType + "s/" + entity.id : console.warn(entity) && null,
     getParam: (param, searchParams = window.location.search.substring(1)) => {
@@ -46,6 +48,7 @@ const router = {
         router.entityUrl = "";
         router.entityType = "";
         router.backUrlPrompt = "";
+        router.search = window.location.search.substring(1);
 
         // set url, backUrl and entityUrl
         if (router.route && router.id) {
@@ -61,7 +64,7 @@ const router = {
                 }
                 if (router.route == "groups" && router.action == "write") {
                     router.backUrl = router.url;
-                    router.backUrlPrompt = lang["cancel_write"];
+                    router.backUrlPrompt = lang.t("cancel_write");
                 }
                 router.url += "/" + router.action;
             }
@@ -143,7 +146,7 @@ const router = {
         const t = e.target.closest("a")
         if (t) {
             if (e.ctrlKey) {
-                window.open(t.getAttribute("href"),"_blank")
+                open(t.getAttribute("href"),"_blank")
             } else {
                 router.navigate(t.getAttribute("href"));
             }

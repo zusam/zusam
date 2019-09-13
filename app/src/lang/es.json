@@ -1,4 +1,4 @@
-window.lang = {
+{
     "more_coms": "Ver los comentarios anteriores",
     "ago": "Hace {}",
     "groups": "Grupos",
@@ -71,7 +71,8 @@ window.lang = {
     "users": "usuarios",
     "has_posted_in": "ha publicado en",
     "has_commented_on": "ha comentado",
-    "has_joined": "se has unido"
+    "has_joined": "se has unido",
     "the_message_from": "el mensaje de",
-    "in": "en"
+    "in": "en",
+    "lang": "idioma"
 }

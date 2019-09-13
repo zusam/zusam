@@ -1,6 +1,9 @@
 const alert = {
     remove: id => document.getElementById(id).outerHTML = "",
     add: (text, alertStyle = "alert-success", countdown = 5000) => {
+        if (!text) {
+            return;
+        }
         let alertNode = document.createElement("DIV");
         alertNode.id = alert.hash(text);
         alertNode.innerHTML = text;

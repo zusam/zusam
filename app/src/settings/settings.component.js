@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { cache, me, router } from "/core";
+import { lang, cache, me, router } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 import UserSettings from "./user-settings.component.js";
 import GroupSettings from "./group-settings.component.js";
@@ -26,7 +26,7 @@ export default class Settings extends Component {
                             class={ "nav-link" + (this.state.entity["entityType"] == "user" ? " active" : "")}
                             href={"/users/" + me.me.id + "/settings"}
                             onClick={router.onClick}
-                        >{lang["account"]}</a>
+                        >{lang.t("account")}</a>
                     </li>
                     { me.me.groups.length > 0 && (
                         <li
@@ -34,7 +34,7 @@ export default class Settings extends Component {
                             onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                             onClick={e => e.currentTarget.classList.toggle("active")}
                         >
-                            <div class={"nav-link" + (this.state.entity["entityType"] == "group" ? " active" : "")}>{ lang.groups }</div>
+                            <div class={"nav-link" + (this.state.entity["entityType"] == "group" ? " active" : "")}>{ lang.t("groups") }</div>
                             <div class="dropdown-menu">
                                 { me.me.groups.map(
                                     e => (

@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { me, router, util } from "/core";
+import { lang, me, router, util } from "/core";
 import FaIcon from "./fa-icon.component.js";
 import Notification from "./notification.component.js";
 
@@ -8,8 +8,8 @@ export default class Navbar extends Component {
     constructor(props) {
         super(props);
         this.clickBackButton = this.clickBackButton.bind(this);
-        this.onMeStateChange = this.onMeStateChange.bind(this);
-        window.addEventListener("meStateChange", this.onMeStateChange);
+        // force update the navbar when me gets updated
+        addEventListener("meStateChange", _ => this.setState({}));
     }
 
     clickBackButton(evt) {
@@ -18,11 +18,6 @@ export default class Navbar extends Component {
             return false;
         }
         router.onClick(evt);
-    }
-
-    onMeStateChange() {
-        // force update the navbar when me gets updated
-        this.setState({});
     }
 
     render() {
@@ -43,11 +38,10 @@ export default class Navbar extends Component {
                                 />
                             </div>
                             <div class="dropdown-menu dropdown-right">
-                                <a class="d-block seamless-link"
-                                    href={"/users/" + me.me.id + "/settings"}
-                                    onClick={router.onClick}
-                                >{lang["settings"]}</a>
-                                <a class="d-block seamless-link" href="/logout" onClick={router.onClick}>{lang["logout"]}</a>
+                                <a class="d-block seamless-link" href={"/users/" + me.me.id + "/settings"} onClick={router.onClick}>
+                                    {lang.t("settings")}
+                                </a>
+                                <a class="d-block seamless-link" href="/logout" onClick={router.onClick}>{lang.t("logout")}</a>
                             </div>
                         </div>
                     )}
@@ -80,7 +74,7 @@ export default class Navbar extends Component {
                             onClick={e => e.currentTarget.classList.toggle("active")}
                         >
                             <div class="unselectable">
-                                { lang.groups } <FaIcon family={"solid"} icon={"caret-down"}/>
+                                { lang.t("groups") } <FaIcon family={"solid"} icon={"caret-down"}/>
                             </div>
                             <div class="dropdown-menu dropdown-left">
                                 { me.me.groups.map(
@@ -92,7 +86,7 @@ export default class Navbar extends Component {
                                         >{e.name}</a>
                                     )
                                 )}
-                                <a class="seamless-link unselectable" href="/create-group" onClick={router.onClick}>{"+ " + lang["create_a_group"]}</a>
+                                <a class="seamless-link unselectable" href="/create-group" onClick={router.onClick}>{"+ " + lang.t("create_a_group")}</a>
                             </div>
                         </div>
                     )}

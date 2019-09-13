@@ -7,31 +7,31 @@ import BandCampEmbed from "./embeds/bandcamp-embed.component.js";
 
 export default class PreviewBlock extends Component {
 
-	execute(e) {
-		if (e.innerHTML) {
-			eval(e.innerHTML);
-		} else {
-			const url = e.getAttribute("src");
-			if (url) {
-				const script = document.createElement("script");
-				script.async = true;
-				script.src = url;
-				document.head.appendChild(script);
-			}
-		}
-	}
-
-    componentDidMount() {
-		if (this.embedContainer) {
-			Array.from(this.embedContainer.getElementsByTagName("script")).forEach(e => this.execute(e));
-		}
+    execute(e) {
+        if (e.innerHTML) {
+            eval(e.innerHTML);
+        } else {
+            const url = e.getAttribute("src");
+            if (url) {
+                const script = document.createElement("script");
+                script.async = true;
+                script.src = url;
+                document.head.appendChild(script);
+            }
+        }
     }
 
-	componentDidUpdate() {
-		if (this.embedContainer) {
-			Array.from(this.embedContainer.getElementsByTagName("script")).forEach(e => this.execute(e));
-		}
-	}
+    componentDidMount() {
+        if (this.embedContainer) {
+            Array.from(this.embedContainer.getElementsByTagName("script")).forEach(e => this.execute(e));
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.embedContainer) {
+            Array.from(this.embedContainer.getElementsByTagName("script")).forEach(e => this.execute(e));
+        }
+    }
 
     getPreview() {
         if (this.props.data["providerUrl"]) {
