@@ -1,9 +1,8 @@
 import { h, render, Component } from "preact";
 import { util } from "/core";
-import YoutubeEmbed from "./embeds/youtube-embed.component.js";
-import SoundcloudEmbed from "./embeds/soundcloud-embed.component.js";
 import TwitchEmbed from "./embeds/twitch-embed.component.js";
 import BandCampEmbed from "./embeds/bandcamp-embed.component.js";
+import GenericEmbed from "./embeds/generic-embed.component.js";
 
 export default class PreviewBlock extends Component {
 
@@ -36,12 +35,24 @@ export default class PreviewBlock extends Component {
     getPreview() {
         if (this.props.data["providerUrl"]) {
             switch (this.props.data["providerUrl"].toLowerCase().replace(/\/$/, '').replace(/^https?:\/\/(www\.)?/, '')) {
+                case "gamerdvr.com":
+                    if (this.props.data["url"].match(/\/gamer\/\w+\/video\//)) {
+                        return (
+                            <GenericEmbed
+                                preview={util.crop(this.props.preview.id, 1024, 270)}
+                                url={this.props.data["url"] + "/embed"}
+                                playBtnClass={"gamerdvr"}
+                            />
+                        );
+                    }
+                    break;
                 case "youtube.com":
                     if (this.props.data["type"] == "video" && this.props.data["code"]) {
                         return (
-                            <YoutubeEmbed
-                                preview={this.props.preview}
-                                url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0]}
+                            <GenericEmbed
+                                preview={util.crop(this.props.preview.id, 1024, 270)}
+                                url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] + "&autoplay=1&controls=2&wmode=opaque"}
+                                playBtnClass={"youtube"}
                             />
                         );
                     }
@@ -49,9 +60,10 @@ export default class PreviewBlock extends Component {
                 case "soundcloud.com":
                     if (this.props.data["code"]) {
                         return (
-                            <SoundcloudEmbed
-                                preview={this.props.preview}
+                            <GenericEmbed
+                                preview={util.crop(this.props.preview.id, 1024, 270)}
                                 url={this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] + "&auto_play=true"}
+                                playBtnClass={"soundcloud"}
                             />
                         );
                     }

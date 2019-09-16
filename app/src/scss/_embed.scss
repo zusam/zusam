@@ -93,6 +93,24 @@
         margin: -10px 0 0 -8px;
     }
 
+    .gamerdvr::before {
+        background: #008cba;
+        height: 68px;
+        width: 68px;
+        margin-left: -35px;
+        margin-top: -34px;
+        border-radius: 100%;
+    }
+
+    &:hover > .gamerdvr::before {
+        background: #2e9922;
+    }
+
+    .gamerdvr::after {
+        border-width: 10px 0 10px 20px;
+        margin: -10px 0 0 -8px;
+    }
+
     .twitch::before {
         background: #212121;
         height: 100%;
