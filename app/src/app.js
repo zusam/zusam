@@ -12,6 +12,7 @@ class App extends Component {
         this.onRouterStateChange = this.onRouterStateChange.bind(this);
         window.addEventListener("routerStateChange", this.onRouterStateChange);
         window.addEventListener("meStateChange", _ => this.setState({me: me.me}));
+        window.addEventListener("fetchedNewDict", _ => this.setState({}));
         window.addEventListener("popstate", router.sync);
         lang.fetchDict();
         cache.get("apiKey").then(apiKey => {

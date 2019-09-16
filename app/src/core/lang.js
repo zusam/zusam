@@ -11,7 +11,10 @@ const lang = {
     },
     getDefaultLang: () => Object.assign({}, document.querySelector("meta[name='zusam:default-lang']")).content || "en",
     getCurrentLang: () => me.me && me.me["data"] ? me.me.data["lang"] || lang.getDefaultLang() : lang.getDefaultLang(),
-    fetchDict: (dict = lang.getCurrentLang()) => !lang.dict[dict] && http.get("/lang/" + dict + ".json").then(r => lang.dict[dict] = r),
+    fetchDict: (dict = lang.getCurrentLang()) => !lang.dict[dict] && http.get("/lang/" + dict + ".json").then(r => {
+        lang.dict[dict] = r;
+        window.dispatchEvent(new CustomEvent("fetchedNewDict"));
+    }),
     t: (id, param = null, dict = null) => {
         if (!dict) {
             dict = lang.getCurrentLang();
