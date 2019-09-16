@@ -12,6 +12,7 @@ CREATE TABLE `message` (
     , `data` CLOB DEFAULT NULL
     , `last_activity_date` INTEGER NOT NULL
     , `secret_key` CHAR(36) NOT NULL
+    , `is_in_front` TINYINT(1) DEFAULT NULL
     , PRIMARY KEY(id)
 );
 INSERT INTO `message` (
@@ -42,6 +43,7 @@ CREATE INDEX IDX_MESSAGEGROUPID ON message (group_id);
 CREATE INDEX IDX_MESSAGEAUTHORID ON message (author_id);
 CREATE UNIQUE INDEX UNIQ_MESSAGESECRETKEY ON message (secret_key);
 CREATE INDEX IDX_MESSAGEPREVIEWID ON message (preview_id);
+UPDATE message SET is_in_front = 1 WHERE parent_id IS NULL;
 
 /*
 The tmp_notification table is a intermediary table

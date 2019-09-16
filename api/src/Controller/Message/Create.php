@@ -50,8 +50,10 @@ class Create extends ApiController
 
         if (!empty($requestData['parent'])) {
             $parent = $this->em->getRepository(Message::class)->findOneById($requestData['parent']);
+            $message->setIsInFront(false);
         } else {
             $parent = null;
+            $message->setIsInFront(true);
         }
         $message->setParent($parent);
 

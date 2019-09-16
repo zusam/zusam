@@ -35,7 +35,7 @@ class GetPage extends ApiController
         $query = $this->em->createQuery(
             "SELECT m FROM App\Entity\Message m"
             ." WHERE m.group = '".$group->getId()."'"
-            .' AND m.parent IS NULL'
+            .' AND m.isInFront = 1'
             .' ORDER BY m.lastActivityDate DESC'
         );
         $query->setMaxResults(30);
@@ -45,7 +45,7 @@ class GetPage extends ApiController
         $query = $this->em->createQuery(
             "SELECT COUNT(m.id) AS totalItems FROM App\Entity\Message m"
             ." WHERE m.group = '".$group->getId()."'"
-            .' AND m.parent IS NULL'
+            .' AND m.isInFront = 1'
         );
         $totalItems = $query->getResult();
 

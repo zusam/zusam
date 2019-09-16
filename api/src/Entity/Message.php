@@ -97,6 +97,12 @@ class Message
     private $secretKey;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @Assert\NotNull()
+     */
+    private $isInFront;
+
+    /**
      * @Groups("*")
      */
     private $entityType;
@@ -260,5 +266,15 @@ class Message
     public function resetSecretKey(): void
     {
         $this->secretKey = Uuid::uuidv4();
+    }
+
+    public function getIsInFront(): bool
+    {
+        return $this->isInFront ?? false;
+    }
+
+    public function setIsInFront(bool $isInFront): void
+    {
+        $this->isInFront = $isInFront;
     }
 }
