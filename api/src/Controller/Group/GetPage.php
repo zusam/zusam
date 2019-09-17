@@ -51,14 +51,14 @@ class GetPage extends ApiController
 
         $page = [];
         foreach ($messages as $message) {
-            $previewUrl = $message->getPreview() ? $message->getPreview()->getId() : '';
-            $authorUrl = $message->getAuthor() ? $message->getAuthor()->getId() : '';
+            $previewId = $message->getPreview() ? $message->getPreview()->getId() : '';
+            $authorId = $message->getAuthor() ? $message->getAuthor()->getId() : '';
             $page[] = [
                 'id' => $message->getId(),
                 'entityType' => $message->getEntityType(),
                 'data' => $message->getData(),
-                'author' => $authorUrl,
-                'preview' => $previewUrl,
+                'author' => $authorId,
+                'preview' => $previewId,
                 'children' => count($message->getChildren()),
                 'lastActivityDate' => $message->getLastActivityDate(),
             ];

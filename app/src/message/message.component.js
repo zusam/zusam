@@ -74,7 +74,7 @@ export default class Message extends Component {
                 if (this.state.message.parent) {
                     this.setState({isRemoved: true});
                 } else {
-                    router.navigate(this.state.message.group, {data: {resetGroupDisplay: true}});
+                    router.navigate("/groups/" + this.state.message.group.id, {data: {resetGroupDisplay: true}});
                 }
             }, 100);
         }
