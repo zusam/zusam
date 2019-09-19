@@ -8,21 +8,21 @@ export default class MessageFooter extends Component {
         return (
             <div class="message-footer">
                 <div class="infos">
+                    { this.props.author && this.props.author.id == me.me.id && (
+                        <Fragment>
+                            <a class="action seamless-link font-size-90" onClick={this.props.editMessage}>{lang.t("edit")}</a>
+                            <div class="dot">&bull;</div>
+                        </Fragment>
+                    )}
+                    { this.props.author && this.props.author.id == me.me.id && (
+                        <Fragment>
+                            <a class="action seamless-link font-size-90" onClick={this.props.deleteMessage}>{lang.t("delete")}</a>
+                            <div class="dot">&bull;</div>
+                        </Fragment>
+                    )}
                     <div class="date font-size-90" title={util.humanFullDate(this.props.message.createdAt)}>
                         { util.humanTime(this.props.message.createdAt) }
                     </div>
-                    { this.props.author && this.props.author.id == me.me.id && (
-                        <Fragment>
-                            <div class="dot">&bull;</div>
-                            <a class="action seamless-link font-size-90" onClick={this.props.editMessage}>{lang.t("edit")}</a>
-                        </Fragment>
-                    )}
-                    { this.props.author && this.props.author.id == me.me.id && (
-                        <Fragment>
-                            <div class="dot">&bull;</div>
-                            <a class="action seamless-link font-size-90" onClick={this.props.deleteMessage}>{lang.t("delete")}</a>
-                        </Fragment>
-                    )}
                 </div>
                 <div>
                     { !this.props.isPublic && !this.props.isChild && (
