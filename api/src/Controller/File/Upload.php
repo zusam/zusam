@@ -113,7 +113,7 @@ class Upload extends ApiController
             $file->setFile(null);
 
             return new Response(
-                $this->serialize($file, ['read_group']),
+                $this->serialize($file, ['read_file']),
                 Response::HTTP_CREATED
             );
         }

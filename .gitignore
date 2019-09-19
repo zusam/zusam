@@ -1,6 +1,7 @@
 # GLOBAL
 *.orig
 .viminfo
+TODO/
 
 # API
 /api/var/

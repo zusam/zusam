@@ -50,6 +50,9 @@ class Edit extends ApiController
         // regen message miniature
         $message->setPreview($this->create->genPreview($message));
 
+        $this->em->persist($message);
+        $this->em->flush();
+
         return new Response(
             $this->serialize($message, ['read_message']),
             Response::HTTP_OK

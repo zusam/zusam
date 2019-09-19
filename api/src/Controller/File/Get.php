@@ -35,7 +35,7 @@ class Get extends ApiController
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $file);
 
         return new Response(
-            $this->serialize($file, ['read_group']),
+            $this->serialize($file, ['read_file']),
             Response::HTTP_OK
         );
     }

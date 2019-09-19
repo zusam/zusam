@@ -35,19 +35,20 @@ class File
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotNull()
+     * @Groups({"read_file"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"read_message"})
+     * @Groups({"read_message", "read_file"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
-     * @Groups({"read_message"})
+     * @Groups({"read_message", "read_file"})
      */
     private $status;
 
@@ -65,12 +66,13 @@ class File
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read_file"})
      */
     private $size;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read_message"})
+     * @Groups({"read_message", "read_file"})
      */
     private $fileIndex;
 
