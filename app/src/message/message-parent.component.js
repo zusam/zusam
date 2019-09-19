@@ -3,12 +3,13 @@ import { Suspense, lazy } from "preact/compat";
 import { lang, cache, http, me, router, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 import MessageHead from "./message-head.component.js";
+import MessageFooter from "./message-footer.component.js";
 import MessageBody from "./message-body.component.js";
 import MessageChildren from "./message-children.component.js";
 
 const Writer = lazy(() => import("/message/writer.component.js"));
 
-export default class Message extends Component {
+export default class MessageParent extends Component {
 
     constructor(props) {
         super(props);
@@ -20,27 +21,23 @@ export default class Message extends Component {
         this.cancelEdit = this.cancelEdit.bind(this);
         this.onNewChild = this.onNewChild.bind(this);
         this.onEditMessage = this.onEditMessage.bind(this);
-        if (!props.parent) {
-            window.addEventListener("newChild", this.onNewChild);
-        }
+        this.processEmbed = this.processEmbed.bind(this);
+
+        window.addEventListener("newChild", this.onNewChild);
+
         window.addEventListener("editMessage", this.onEditMessage);
         let url = router.entityUrl;
         if (!url && props.message) {
             url = "/api/message/" + props.message.id;
         }
 
-        this.state = {
-            url: url,
-            preview: null,
-        };
+        this.state = {url: url};
 
         if (props.message) {
             this.loadMessage(props.message);
+        } else {
+            cache.get(url).then(msg => this.loadMessage(msg));
         }
-    }
-
-    componentDidMount() {
-        setTimeout(() => window.scrollTo(0, 0));
     }
 
     loadMessage(msg) {
@@ -50,6 +47,26 @@ export default class Message extends Component {
             author: msg.author,
             displayedChildren: msg.children && 5, // display 5 first children
         });
+        setTimeout(this.processEmbed);
+    }
+
+    processEmbed() {
+        if (this.state.message && this.state.message.data) {
+            let previewUrl = util.getUrl(this.state.message.data["text"]);
+            if (previewUrl) {
+                cache.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
+                    this.setState({preview: r, gotPreview: true});
+                });
+            } else {
+                this.setState({gotPreview: true});
+            }
+        }
+    }
+
+    componentWillUpdate() {
+        if (!this.state.gotPreview) {
+            this.processEmbed();
+        }
     }
 
     cancelEdit(event) {
@@ -71,11 +88,7 @@ export default class Message extends Component {
             cache.resetCache();
             // give some time to the cache to delete itself properly
             setTimeout(() => {
-                if (this.state.message.parent) {
-                    this.setState({isRemoved: true});
-                } else {
-                    router.navigate("/groups/" + this.state.message.group.id, {data: {resetGroupDisplay: true}});
-                }
+                router.navigate("/groups/" + this.state.message.group.id, {data: {resetGroupDisplay: true}});
             }, 100);
         }
     }
@@ -117,7 +130,7 @@ export default class Message extends Component {
         }
     }
 
-    displayWriter() {
+    displayWriter(isChild) {
         return (
             <Suspense fallback={<br/>}>
                 <Writer
@@ -129,69 +142,51 @@ export default class Message extends Component {
                     parent={this.state.edit ? this.state.message["parent"] : this.state.message.id}
                     text={this.state.edit ? this.state.data.text : ""}
                     title={this.state.edit ? this.state.data["title"] : ""}
+                    isChild={isChild}
                 />
             </Suspense>
         );
     }
 
+    componentDidMount() {
+        setTimeout(() => window.scrollTo(0, 0));
+    }
+
     render() {
-        if (this.props.hidden) {
+        if (this.props.hidden || !this.state.message || this.state.isRemoved) {
             return;
-        }
-        if (!this.state.message) {
-            cache.get(this.state.url).then(msg => this.loadMessage(msg));
-        }
-        if (!this.state.message || !this.state.message.id || this.state.isRemoved) {
-            return;
-        }
-        if (!this.state.gotPreview) {
-            if (this.state.message.data) {
-                let previewUrl = util.getUrl(this.state.message.data["text"]);
-                if (previewUrl) {
-                    cache.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
-                        this.setState(prevState => ({
-                            preview: r,
-                            gotPreview: true,
-                            data: prevState.message.data,
-                        }));
-                    });
-                } else {
-                    this.setState(prevState => ({
-                        gotPreview: true,
-                        data: prevState.message.data,
-                    }));
-                }
-            }
         }
         return (
             <div>
-                <div className={"message" + (this.state.message.parent ? " child" : "") + (this.props.follow || "")}>
-                    { this.state.edit && this.state.message.parent && me.me && (
-                        <div class="message-head p-1 d-none d-md-block">
-                            <img
-                                class="rounded-circle w-3 material-shadow avatar"
-                                src={ me.me.avatar ? util.crop(me.me.avatar["id"], 100, 100) : util.defaultAvatar }
+                <div class="message" >
+                    { this.state.edit && this.displayWriter(false) }
+                    { !this.state.edit && (
+                        <div>
+                            <MessageHead
+                                author={this.state.author}
+                                message={this.state.message}
+                                editMessage={this.editMessage}
+                                deleteMessage={this.deleteMessage}
+                                openPublicLink={this.openPublicLink}
+                                shareMessage={this.shareMessage}
+                                isPublic={this.props.isPublic}
+                                isChild={false}
+                            />
+                            <MessageBody
+                                message={this.state.message}
+                                editMessage={this.editMessage}
+                                deleteMessage={this.deleteMessage}
+                                openPublicLink={this.openPublicLink}
+                                shareMessage={this.shareMessage}
+                                isPublic={this.props.isPublic}
+                                isChild={false}
                             />
                         </div>
                     )}
-                    { this.state.edit && this.displayWriter() }
                     { !this.state.edit && (
-                        <MessageHead
+                        <MessageFooter
                             author={this.state.author}
                             message={this.state.message}
-                            editMessage={this.editMessage}
-                            deleteMessage={this.deleteMessage}
-                            openPublicLink={this.openPublicLink}
-                            shareMessage={this.shareMessage}
-                            isPublic={this.props.isPublic}
-                        />
-                    )}
-                    { !this.state.edit && (
-                        <MessageBody
-                            author={this.state.author}
-                            message={this.state.message}
-                            data={this.state.data}
-                            preview={this.state.preview}
                             editMessage={this.editMessage}
                             deleteMessage={this.deleteMessage}
                             openPublicLink={this.openPublicLink}
@@ -200,16 +195,14 @@ export default class Message extends Component {
                         />
                     )}
                 </div>
-                { !this.state.message.parent && (
-                    <MessageChildren
-                        children={this.state.message.children}
-                        displayedChildren={this.state.displayedChildren}
-                        displayMoreChildren={_ => this.setState(prevState => ({displayedChildren: prevState.displayedChildren + 10}))}
-                        isPublic={this.props.isPublic}
-                        key={this.state.message.id}
-                    />
-                )}
-                { !this.state.edit && !this.props.isPublic && !this.state.message.parent && (
+                <MessageChildren
+                    children={this.state.message.children}
+                    displayedChildren={this.state.displayedChildren}
+                    displayMoreChildren={_ => this.setState(prevState => ({displayedChildren: prevState.displayedChildren + 10}))}
+                    isPublic={this.props.isPublic}
+                    key={this.state.message.id}
+                />
+                { !this.state.edit && !this.props.isPublic && (
                     <div class="message child">
                         { me.me && (
                             <div class="message-head p-1 d-none d-md-block">
@@ -219,7 +212,7 @@ export default class Message extends Component {
                                 />
                             </div>
                         )}
-                        { this.displayWriter() }
+                        { this.displayWriter(true) }
                     </div>
                 )}
             </div>

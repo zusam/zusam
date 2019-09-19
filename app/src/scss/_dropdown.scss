@@ -16,7 +16,6 @@
     .dropdown-menu {
         position: absolute;
         display: none;
-        top: 100%;
         padding: 0;
         overflow: hidden;
         color: #444;
@@ -26,7 +25,8 @@
         max-height: calc(90vh - 50px);
         overflow-y: auto;
 
-        & > a {
+        & > * {
+            display: block;
             padding: 5px 10px;
             cursor: pointer;
             white-space: nowrap;
@@ -37,14 +37,24 @@
     }
 
     .dropdown-right {
+        top: 100%;
         left: 0;
         border-bottom-right-radius: 4px;
         box-shadow: -4px 4px 4px #0003;
     }
 
     .dropdown-left {
+        top: 100%;
         right: 0;
         border-bottom-left-radius: 4px;
         box-shadow: 4px 4px 4px #0003;
+    }
+
+    .dropdown-options {
+        right: 30px;
+        text-align: center;
+        bottom: 10px;
+        box-shadow: 0 0 4px #0003;
+        border-radius: 4px;
     }
 }

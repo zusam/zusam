@@ -18,31 +18,9 @@ export default class MessageHead extends Component {
                         title={ this.props.author ? this.props.author.name : ""}
                     />
                 </div>
-                <div class="infos">
-                    <span class="capitalize author">{this.props.author ? this.props.author.name : "--"}</span>
-                    <span title={util.humanFullDate(this.props.message.createdAt)}>{ util.humanTime(this.props.message.createdAt) }</span>
-                </div>
-                { !this.props.isPublic && (
-                    <div tabindex="-1"
-                        class="options dropdown"
-                        onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
-                        onClick={e => e.currentTarget.classList.toggle("active")}
-                    >
-                        <FaIcon family="solid" icon="caret-down"/>
-                        <div class="dropdown-menu">
-                            { this.props.author && this.props.author.id == me.me.id && (
-                                <a class="seamless-link" onClick={this.props.editMessage}>{lang.t("edit")}</a>
-                            )}
-                            { this.props.author && this.props.author.id == me.me.id && (
-                                <a class="seamless-link" onClick={this.props.deleteMessage}>{lang.t("delete")}</a>
-                            )}
-                            { !this.props.message.parent && (
-                                <a class="seamless-link" onClick={this.props.openPublicLink}>{lang.t("public_link")}</a>
-                            )}
-                            { !this.props.message.parent && me.me.groups.length > 1 && (
-                                <a class="seamless-link" onClick={this.props.shareMessage}>{lang.t("share_message")}</a>
-                            )}
-                        </div>
+                { !this.props.isChild && (
+                    <div class="infos">
+                        <span class="capitalize author">{this.props.author ? this.props.author.name : "--"}</span>
                     </div>
                 )}
             </div>

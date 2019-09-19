@@ -1,12 +1,13 @@
 .notifications-menu {
     left: -60px !important;
 }
+
 .notification {
-    display: flex;
     font-size: 90%;
     border-bottom: 1px solid #ddd;
 
     .miniature {
+        display: inline-block;
         margin: 0 12px 0 4px;
 
         img {
@@ -16,6 +17,7 @@
     }
 
     .infos {
+        display: inline-block;
         width: 15rem;
 
         .description, .date {

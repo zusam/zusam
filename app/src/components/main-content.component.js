@@ -1,7 +1,7 @@
 import { h, render, Component } from "preact";
 import { Suspense, lazy } from "preact/compat";
 import { router } from "/core";
-import { Message } from "/message";
+import { MessageParent } from "/message";
 import CreateGroup from "./create-group.component.js";
 import GroupBoard from "./group-board.component.js";
 import FaIcon from "./fa-icon.component.js";
@@ -37,7 +37,7 @@ export default class MainContent extends Component {
                 return (
                     <article class="mt-2 justify-content-center d-flex">
                         <div class="container pb-1">
-                            <Message key={this.props.url} url={this.props.entityUrl} />
+                            <MessageParent key={this.props.url} url={this.props.entityUrl} />
                         </div>
                     </article>
                 );

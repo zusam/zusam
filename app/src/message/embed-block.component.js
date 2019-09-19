@@ -4,7 +4,7 @@ import TwitchEmbed from "./embeds/twitch-embed.component.js";
 import BandCampEmbed from "./embeds/bandcamp-embed.component.js";
 import GenericEmbed from "./embeds/generic-embed.component.js";
 
-export default class PreviewBlock extends Component {
+export default class EmbedBlock extends Component {
 
     execute(e) {
         if (e.innerHTML) {

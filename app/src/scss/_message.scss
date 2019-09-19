@@ -120,128 +120,6 @@
     background-color: #fff;
     box-shadow: $material_shadow;
 
-    .message-head {
-        width: 100%;
-        padding: 1rem 1rem 5px 1rem;
-        flex-shrink: 10;
-        position: relative;
-        z-index: 100;
-
-        .author {
-            font-size: 130%;
-            font-weight: 600;
-        }
-
-        .infos {
-            display: flex;
-            flex-flow: column;
-            flex-shrink: 0;
-        }
-
-        .options {
-            cursor: pointer;
-            margin-left: auto;
-            width: 1rem;
-            display: flex;
-            justify-content: center;
-
-            &.active {
-                .dropdown-menu {
-                    display: block;
-                }
-            }
-
-            /* Sub Menus */
-            .dropdown-menu {
-                background-color: #fff;
-                display: none;
-                padding: 0;
-                position: absolute;
-                right: 20px;
-                text-align: center;
-                top: 35px;
-                box-shadow: $material_shadow;
-                color: #444;
-
-                a {
-                    display: block;
-                    padding: 7px 14px;
-                    cursor: pointer;
-                    white-space: nowrap;
-                    font-size: 1.1rem;
-
-                    &:hover {
-                        background-color: whitesmoke;
-                    }
-                }
-            }
-        }
-    }
-
-    .message-body {
-        width: 100%;
-
-        .title {
-            padding: 1rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        a.image {
-            margin: 5px;
-            position: relative;
-        }
-
-        p {
-            margin: 0;
-        }
-
-        .card-text {
-            padding: 1rem;
-        }
-
-        .options {
-			cursor: pointer;
-			position: absolute;
-			top: 0;
-			right: 0;
-			z-index: 500;
-			color: #888;
-			padding: 10px;
-
-            &.active {
-                .dropdown-menu {
-                    display: block;
-                }
-            }
-
-            /* Sub Menus */
-            .dropdown-menu {
-                background-color: #fff;
-                display: none;
-                padding: 0;
-                position: absolute;
-                right: 12px;
-                text-align: center;
-                top: 32px;
-                box-shadow: $material_shadow;
-                color: #444;
-
-                a {
-                    display: block;
-                    padding: 7px 14px;
-                    cursor: pointer;
-                    white-space: nowrap;
-                    font-size: 1.1rem;
-
-                    &:hover {
-                        background-color: whitesmoke;
-                    }
-                }
-            }
-        }
-    }
-
     .avatar {
         position: relative;
         z-index: 10;
@@ -258,31 +136,18 @@
 
     &.child {
         background-color: transparent;
-        flex-direction: row;
+        display: flex;
         box-shadow: none;
-        align-items: start;
         margin-bottom: 0;
+        flex-direction: row;
 
-        &.follow {
-            margin-top: -1rem;
-
-            .message-head {
-                .avatar, .infos {
-                    display: none !important;
-                }
-            }
-
-            @media (max-width: map-get($grid-breakpoints, "md")) {
-                .message-head {
-                    margin-bottom: -1.7rem;
-                }
-            }
+        .main {
+            display: flex;
+            flex-flow: column;
+            width: 100%;
         }
 
         .avatar {
-            top: -.4rem;
-            margin-bottom: -.4rem;
-            margin-right: .8rem;
             height: 3rem;
             width: 3rem;
             &:hover {
@@ -291,8 +156,8 @@
         }
 
         .message-head {
-            min-width: 5rem;
             font-size: .7rem;
+            width: 5rem;
 
             @media (min-width: map-get($grid-breakpoints, "md")) {
                 .infos {
@@ -307,8 +172,7 @@
         .message-body {
             box-shadow: none;
             position: relative;
-            margin: 1rem 0;
-            max-width: calc(100% - 5rem);
+            margin-top: 1rem;
             background-color: whitesmoke;
             font-size: .9rem;
             line-height: 1.2rem;
@@ -442,6 +306,86 @@
                 transform: translate(-50%, -50%);
                 color: darkgrey;
                 font-size: 3rem;
+            }
+        }
+    }
+}
+
+.message-head {
+    width: 100%;
+    padding: 1rem 1rem 5px 1rem;
+    flex-shrink: 10;
+    position: relative;
+    z-index: 100;
+
+    .author {
+        font-size: 130%;
+        font-weight: 600;
+    }
+
+    .infos {
+        display: flex;
+        flex-flow: column;
+        flex-shrink: 0;
+        justify-content: center;
+    }
+}
+
+.message-body {
+    width: 100%;
+
+    .title {
+        padding: 1rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+    }
+
+    a.image {
+        margin: 5px;
+        position: relative;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .card-text {
+        padding: 1rem;
+    }
+
+    .options {
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 500;
+        color: #888;
+        padding: 10px;
+    }
+}
+
+.message-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    align-items: center;
+    height: 2rem;
+    width: 100%;
+    color: #777;
+    font-size: 90%;
+
+    .infos {
+        display: flex;
+
+        .dot {
+            margin: 0 5px;
+        }
+
+        .action {
+            color: #555;
+
+            &:hover {
+                color: #000;
             }
         }
     }

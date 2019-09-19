@@ -1,7 +1,7 @@
 import { h, render, Component } from "preact";
 import { lang, alert, cache, http, me, router, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
-import PreviewBlock from "./preview-block.component.js";
+import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
 
 export default class Writer extends Component {
@@ -100,8 +100,8 @@ export default class Writer extends Component {
                 text: document.getElementById("text").value
             },
         };
-        if (!this.props.parent) {
-            msg.data.title = document.getElementById("title").value;
+        if (document.getElementById("title")) {
+            msg.data.title = document.getElementById("title").value || "";
         }
         http.put("/api/messages/" + this.props.messageId, msg).then(res => {
             this.setState({sending: false});
@@ -126,10 +126,11 @@ export default class Writer extends Component {
             },
             lastActivityDate: Math.floor(Date.now()/1000)
         };
-        if (!this.props.parent) {
-            msg.data.title = document.getElementById("title").value;
-        } else {
+        if (this.props.parent) {
             msg.parent = util.getId(this.props.parent);
+        }
+        if (document.getElementById("title")) {
+            msg.data.title = document.getElementById("title").value || "";
         }
         // don't post if there is nothing to post
         if (!msg.files.length && !msg.data.text && !msg.data.title) {
@@ -142,7 +143,7 @@ export default class Writer extends Component {
                 this.setState({sending: false});
                 return;
             }
-            if (this.props.parent) {
+            if (this.props.isChild) {
                 cache.remove("/api/messages/" + this.props.parent)
                 window.dispatchEvent(new CustomEvent("newChild", {detail : res}));
             } else {
@@ -282,7 +283,7 @@ export default class Writer extends Component {
         }
         return (
             <div class="writer">
-                { !this.props.parent && (
+                { !this.props.isChild && (
                     <input
                         type="text" id="title"
                         onKeyPress={this.onKeyPress}
@@ -297,7 +298,7 @@ export default class Writer extends Component {
                     autocomplete="off"
                     autofocus={this.props.focus}
                 ></textarea>
-                { this.state.preview && <PreviewBlock inWriter={true} {...this.state.preview} /> }
+                { this.state.preview && <EmbedBlock inWriter={true} {...this.state.preview} /> }
                 { !!this.state.files.length && (
                     <FileGrid
                         key={this.state.files.reduce((a,c) => a + c.id + c.fileIndex + c.error, "")}

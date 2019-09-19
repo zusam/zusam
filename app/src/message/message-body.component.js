@@ -1,17 +1,23 @@
 import { h, render, Component } from "preact";
-import { lang, me, util } from "/core";
-import PreviewBlock from "./preview-block.component.js";
+import { cache, lang, me, util } from "/core";
+import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class MessageBody extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {preview: null};
+    }
+
+
     displayMessageText() {
-        if (!this.props.data) {
+        if (!this.props.message.data) {
             return "";
         }
         // escape html a little (just enough to avoid xss I hope)
-        let txt = this.props.data["text"].replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
+        let txt = this.props.message.data["text"].replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
         // replace url by real links
         let shift = 0;
         let match = null;
@@ -29,52 +35,46 @@ export default class MessageBody extends Component {
         return {__html: txt};
     }
 
+    componentWillUpdate() {
+        if (!this.state.gotPreview && this.props.message) {
+            if (this.props.message.data) {
+                let previewUrl = util.getUrl(this.props.message.data["text"]);
+                if (previewUrl) {
+                    cache.get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0])).then(r => {
+                        this.setState(prevState => ({
+                            preview: r,
+                            gotPreview: true,
+                        }));
+                    });
+                } else {
+                    this.setState(prevState => ({
+                        gotPreview: true,
+                    }));
+                }
+            }
+        }
+    }
+
     render() {
         return (
             <div class="message-body">
-                { this.props.message.parent
-                        && !this.props.isPublic
-                        && this.props.author
-                        && me.me
-                        && this.props.author.id == me.me.id
-                        && (
-                    <div tabindex="-1"
-                        class="options dropdown d-none d-md-flex"
-                        onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
-                        onClick={e => e.currentTarget.classList.toggle("active")}
-                    >
-                        <FaIcon family="solid" icon="caret-down"/>
-                        <div class="dropdown-menu">
-                            <a class="seamless-link" onClick={this.props.editMessage}>{lang.t("edit")}</a>
-                            <a class="seamless-link" onClick={this.props.deleteMessage}>{lang.t("delete")}</a>
-                            { !this.props.message.parent && (
-                                <a class="seamless-link" onClick={this.props.openPublicLink}>{lang.t("public_link")}</a>
-                            )}
-                        </div>
-                    </div>
-                )}
-                { this.props.data && this.props.data.title && (
+                { this.props.message.data && this.props.message.data.title && (
                     <div class="title">
-                        <span>{ this.props.data.title }</span>
+                        <span>{ this.props.message.data.title }</span>
                     </div>
                 )}
-                { this.props.data && this.props.data.text && this.props.data.text.trim() && (
+                { this.props.message.data && this.props.message.data.text && this.props.message.data.text.trim() && (
                     <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
                 )}
-                { this.props.preview && (
-                    <PreviewBlock
-                        key={this.props.preview.url}
-                        url={this.props.preview.url}
-                        preview={this.props.preview.preview}
-                        data={this.props.preview.data}
+                { this.state.preview && (
+                    <EmbedBlock
+                        key={this.state.preview.url}
+                        url={this.state.preview.url}
+                        preview={this.state.preview.preview}
+                        data={this.state.preview.data}
                     />
                 )}
                 { this.props.message.files && <FileGrid files={this.props.message.files}/> }
-                { this.props.message.parent && (
-                    <div class="infos" title={util.humanFullDate(this.props.message.createdAt)}>
-                        <span>{ util.humanTime(this.props.message.createdAt) }</span>
-                    </div>
-                )}
             </div>
         );
     }

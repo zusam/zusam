@@ -1,6 +1,6 @@
 import { h, render, Component, toChildArray } from "preact";
 import { lang } from "/core";
-import Message from "./message.component.js";
+import MessageChild from "./message-child.component.js";
 
 export default class MessageChildren extends Component {
     render() {
@@ -17,26 +17,11 @@ export default class MessageChildren extends Component {
                     if (!e.files.length && e.data["text"] == "" && !e.children.length) {
                         return null;
                     }
-                    let follow = "";
-                    if (
-                        m[i - 1]
-                        && m[i - 1].author && e.author
-                        && m[i - 1].author.id == e.author.id
-                        && i > toChildArray(this.props.children).length - this.props.displayedChildren
-                        && (
-                            // check if previous message is not empty
-                            m[i-1].files.length
-                            || m[i-1].data["text"] != ""
-                            || m[i-1].children.length
-                        )
-                    ) {
-                        follow = " follow";
-                    }
+
                     return (
-                        <Message
+                        <MessageChild
                             message={e}
                             key={e.id}
-                            follow={follow}
                             hidden={i < toChildArray(this.props.children).length - this.props.displayedChildren}
                             isPublic={this.props.isPublic}
                         />
