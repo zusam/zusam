@@ -74,5 +74,7 @@
     "has_joined": "sa pripojil k",
     "the_message_from": "správa od",
     "in": "v",
-    "lang": "jazyk"
+    "lang": "jazyk",
+    "reply": "odpoveď",
+    "replies": "{} odpovedí"
 }

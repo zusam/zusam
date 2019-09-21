@@ -6,10 +6,9 @@ export default class GroupBoard extends Component {
 
     constructor(props) {
         super(props);
-        let groupId = util.getId(router.url);
+        let groupId = util.getId(router.id);
         let loaded = 1 + Math.floor((window.screen.width * window.screen.height) / (320 * 215));
         this.state = {
-            url: router.url,
             groupId: groupId,
             loaded: loaded,
             messages: [],
@@ -98,7 +97,7 @@ export default class GroupBoard extends Component {
                                     tabindex={i + 1}
                                     key={msg.id}
                                     message={msg}
-                                    groupId={util.getId(router.url)}
+                                    groupId={util.getId(router.id)}
                                 />
                             );
                         })}

@@ -6,7 +6,7 @@ export default class MessageHead extends Component {
 
     render() {
         return (
-            <div class="message-head d-flex" id={this.props.message.id}>
+            <div class="message-head d-flex">
                 <div>
                     <img
                         className={"rounded-circle material-shadow avatar" + (this.props.author ? "" : " removed-user")}

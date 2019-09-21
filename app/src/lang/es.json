@@ -74,5 +74,7 @@
     "has_joined": "se has unido",
     "the_message_from": "el mensaje de",
     "in": "en",
-    "lang": "idioma"
+    "lang": "idioma",
+    "reply": "responder",
+    "replies": "{} respuestas"
 }

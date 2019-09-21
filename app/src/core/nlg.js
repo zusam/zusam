@@ -22,6 +22,7 @@ let nlg = {
         document.querySelectorAll("[data-nlg]").forEach(
             elm => elm.removeEventListener("click", nlg.clickFn)
         );
+        window.removeEventListener("routerStateChange", nlg.stop);
     },
     start: () => {
         nlg.stop();
@@ -44,6 +45,7 @@ let nlg = {
                 }
             );
         }, 100);
+        window.addEventListener("routerStateChange", nlg.stop);
     },
     show: (e, keepBackground = false, side = null) => {
         let url = e.dataset.src || e.src || e.href;

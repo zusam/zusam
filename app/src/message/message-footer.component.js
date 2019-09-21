@@ -1,5 +1,5 @@
 import { Fragment, h, render, Component } from "preact";
-import { lang, me, util } from "/core";
+import { router, lang, me, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class MessageFooter extends Component {
@@ -17,6 +17,18 @@ export default class MessageFooter extends Component {
                     { this.props.author && this.props.author.id == me.me.id && (
                         <Fragment>
                             <a class="action seamless-link font-size-90" onClick={this.props.deleteMessage}>{lang.t("delete")}</a>
+                            <div class="dot">&bull;</div>
+                        </Fragment>
+                    )}
+                    { !this.props.isPublic && this.props.isChild && (
+                        <Fragment>
+                            <a
+                                class="action seamless-link font-size-90"
+                                href={"/messages/" + this.props.message.id + (this.props.message.children.length ? "" : "?focus=reply")}
+                                onClick={router.onClick}
+                            >
+                                {this.props.message.children.length ? lang.t("replies", this.props.message.children.length) : lang.t("reply")}
+                            </a>
                             <div class="dot">&bull;</div>
                         </Fragment>
                     )}

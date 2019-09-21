@@ -37,7 +37,11 @@ export default class MainContent extends Component {
                 return (
                     <article class="mt-2 justify-content-center d-flex">
                         <div class="container pb-1">
-                            <MessageParent key={this.props.url} url={this.props.entityUrl} />
+                            <MessageParent
+                                focus={!!router.getParam("focus", router.search)}
+                                key={this.props.id}
+                                url={this.props.entityUrl}
+                            />
                         </div>
                     </article>
                 );
@@ -49,7 +53,7 @@ export default class MainContent extends Component {
                                 <Suspense fallback={<br/>}>
                                     <Writer
                                         focus={true}
-                                        group={this.props.entityUrl}
+                                        group={this.props.id}
                                     />
                                 </Suspense>
                             </div>
@@ -58,7 +62,7 @@ export default class MainContent extends Component {
                 }
                 return (
                     <div>
-                        <GroupBoard key={this.props.entityUrl} url={this.props.entityUrl}/>
+                        <GroupBoard key={this.props.id}/>
                         <a class="write-button material-shadow seamless-link" href={this.props.url + "/write"} onClick={router.onClick}>
                             <FaIcon family={"solid"} icon={"pencil-alt"}/>
                         </a>

@@ -6,10 +6,10 @@ export default class UserSettings extends Component {
 
     constructor(props) {
         super(props);
-        this.updateSettings = this.updateSettings.bind(this);
         this.destroyAccount = this.destroyAccount.bind(this);
-        this.state = Object.assign({}, props);
         this.inputAvatar = this.inputAvatar.bind(this);
+        this.updateSettings = this.updateSettings.bind(this);
+        this.state = Object.assign({}, props);
     }
 
     inputAvatar(event) {

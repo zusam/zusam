@@ -99,6 +99,7 @@ class Message
     /**
      * @ORM\Column(type="boolean")
      * @Assert\NotNull()
+     * @Groups({"read_message"})
      */
     private $isInFront;
 

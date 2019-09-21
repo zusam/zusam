@@ -26,8 +26,8 @@ class App extends Component {
         this.state = {
             action: router.action,
             route: router.route,
-            url: router.url,
-            entityUrl: router.entityUrl
+            id: router.id,
+            entityUrl: router.entityUrl,
         };
     }
 
@@ -35,8 +35,8 @@ class App extends Component {
         this.setState({
             action: router.action,
             route: router.route,
-            url: router.url,
-            entityUrl: router.entityUrl
+            id: router.id,
+            entityUrl: router.entityUrl,
         });
         setTimeout(() => window.scrollTo(0, 0));
         cache.get("apiKey").then(apiKey => {
@@ -48,9 +48,9 @@ class App extends Component {
                         this.setState({
                             action: router.action,
                             route: router.route,
-                            url: router.url,
+                            id: router.id,
+                            me: user,
                             entityUrl: router.entityUrl,
-                            me: user
                         });
                     }
                 });

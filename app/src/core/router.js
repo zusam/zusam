@@ -9,7 +9,6 @@ const router = {
     route: "",
     id: "",
     action: "",
-    url: "",
     backUrl: "",
     backUrlPrompt: "",
     entityUrl: "",
@@ -38,39 +37,47 @@ const router = {
         "links",
         "files"
     ].includes(name),
-    navigate: (url, options = {}) => {
-        const from = window.location.pathname;
-        const queryParams = window.location.search;
-
-        [router.route, router.id, router.action] = url.slice(1).split("?")[0].split("/");
-        router.url = "";
-        router.backUrl = "";
+    navigate: async (url, options = {}) => {
+        [router.path, router.search] = url.slice(1).split("?");
+        [router.route, router.id, router.action] = router.path.split("/");
         router.entityUrl = "";
         router.entityType = "";
+        router.backUrl = "";
         router.backUrlPrompt = "";
-        router.search = window.location.search.substring(1);
 
         // set url, backUrl and entityUrl
         if (router.route && router.id) {
-            router.url = "/" + router.route + "/" + router.id;
             if (router.isEntity(router.route)) {
                 router.entityUrl = "/api/" + router.route + "/" + router.id;
                 router.entityType = router.route;
             }
-            if (router.action) {
-                router.backUrl = "/";
-                if(router.route == "users") {
-                    router.backUrl = "/";
-                }
-                if (router.route == "groups" && router.action == "write") {
-                    router.backUrl = router.url;
-                    router.backUrlPrompt = lang.t("cancel_write");
-                }
-                router.url += "/" + router.action;
-            }
-        }
 
-        nlg.hide(); // hide lightbox
+            await cache.get(router.entityUrl).then(res => {
+                router.entity = res;
+                switch(router.route) {
+                    case "groups":
+                        if (router.action == "write") {
+                            router.backUrl = "/" + router.route + "/" + router.id;
+                            router.backUrlPrompt = lang.t("cancel_write");
+                        }
+                        break;
+                    case "messages":
+                        if (res["parent"] && !res["isInFront"]) {
+                            router.backUrl = "/messages/" + res["parent"].id;
+                        } else {
+                            router.backUrl = "/groups/" + util.getId(res.group);
+                        }
+                        break;
+                    case "users":
+                        router.backUrl = "/";
+                        break;
+                    default:
+                        if (router.action) {
+                            router.backUrl = "/";
+                        }
+                }
+            });
+        }
 
         switch (router.route) {
             case "password-reset":
@@ -80,7 +87,7 @@ const router = {
             case "share":
             case "public":
                 // we keep queryParams
-                url = url + queryParams;
+                url = url + "?" + router.search;
             case "messages":
             case "groups":
             case "users":
@@ -90,17 +97,7 @@ const router = {
                 } else {
                     history.pushState(null, "", url);
                 }
-                if (router.entityUrl) {
-                    cache.get(router.entityUrl).then(res => {
-                        router.entity = res;
-                        if (router.entityType == "messages" && res["group"]) {
-                            router.backUrl = "/groups/" + util.getId(res.group);
-                        }
-                        window.dispatchEvent(new CustomEvent("routerStateChange"));
-                    });
-                } else {
-                    window.dispatchEvent(new CustomEvent("routerStateChange"));
-                }
+                window.dispatchEvent(new CustomEvent("routerStateChange"));
                 break;
             case "logout":
                 cache.reset();

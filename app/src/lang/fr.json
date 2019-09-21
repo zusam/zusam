@@ -74,5 +74,7 @@
     "has_joined": "a rejoint",
     "the_message_from": "le message de",
     "in": "dans",
-    "lang": "langue"
+    "lang": "langue",
+    "reply": "répondre",
+    "replies": "{} réponses"
 }

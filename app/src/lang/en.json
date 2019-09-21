@@ -74,5 +74,7 @@
     "has_joined": "has joined",
     "the_message_from": "the message from",
     "in": "in",
-    "lang": "language"
+    "lang": "language",
+    "reply": "reply",
+    "replies": "{} replies"
 }

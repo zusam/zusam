@@ -130,13 +130,13 @@ export default class MessageParent extends Component {
         }
     }
 
-    displayWriter(isChild) {
+    displayWriter(isChild, focus = false) {
         return (
             <Suspense fallback={<br/>}>
                 <Writer
                     cancel={this.state.edit ? this.cancelEdit : null}
                     files={this.state.edit ? this.state.message.files : []}
-                    focus={!!this.state.edit}
+                    focus={focus || !!this.state.edit}
                     group={this.state.message.group}
                     messageId={this.state.edit ? this.state.message.id : null}
                     parent={this.state.edit ? this.state.message["parent"] : this.state.message.id}
@@ -212,7 +212,7 @@ export default class MessageParent extends Component {
                                 />
                             </div>
                         )}
-                        { this.displayWriter(true) }
+                        { this.displayWriter(true, this.props.focus) }
                     </div>
                 )}
             </div>
