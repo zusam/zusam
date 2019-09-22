@@ -62,12 +62,12 @@
     "monthly": "Mensual",
     "notification_emails_stopped": "Notificaciones de correo electrónico detenidas!",
     "group_share_choice": "¿A qué grupo desea enviar este mensaje?",
-    "public_link": "Enlace público",
+    "public_link": "enlace público",
     "default_group": "Grupo predeterminado",
     "destroy_account": "Borra tu cuenta",
     "destroy_account_explain": "Una vez que elimines tu cuenta, no hay vuelta atrás.",
     "are_you_sure": "Estás seguro ?",
-    "share_message": "Comparte el mensaje",
+    "share_message": "comparte el mensaje",
     "users": "usuarios",
     "has_posted_in": "ha publicado en",
     "has_commented_on": "ha comentado",
@@ -79,5 +79,6 @@
     "replies": {
         "0": "{{count}} respuesta",
         "2":"{{count}} respuestas"
-    }
+    },
+    "publish_in_group": "publicar en el grupo"
 }

@@ -22,6 +22,7 @@ export default class MessageParent extends Component {
         this.onNewChild = this.onNewChild.bind(this);
         this.onEditMessage = this.onEditMessage.bind(this);
         this.processEmbed = this.processEmbed.bind(this);
+        this.publishInGroup = this.publishInGroup.bind(this);
 
         window.addEventListener("newChild", this.onNewChild);
 
@@ -38,6 +39,16 @@ export default class MessageParent extends Component {
         } else {
             cache.get(url).then(msg => this.loadMessage(msg));
         }
+    }
+
+    publishInGroup() {
+        http.put("/api/messages/" + this.state.message.id, {isInFront: true}).then(res => {
+            if (!res) {
+                alert.add(lang.t("error"), "alert-danger");
+                return;
+            }
+            router.navigate("/groups/" + this.state.message.group.id);
+        });
     }
 
     loadMessage(msg) {
@@ -165,19 +176,11 @@ export default class MessageParent extends Component {
                             <MessageHead
                                 author={this.state.author}
                                 message={this.state.message}
-                                editMessage={this.editMessage}
-                                deleteMessage={this.deleteMessage}
-                                openPublicLink={this.openPublicLink}
-                                shareMessage={this.shareMessage}
                                 isPublic={this.props.isPublic}
                                 isChild={false}
                             />
                             <MessageBody
                                 message={this.state.message}
-                                editMessage={this.editMessage}
-                                deleteMessage={this.deleteMessage}
-                                openPublicLink={this.openPublicLink}
-                                shareMessage={this.shareMessage}
                                 isPublic={this.props.isPublic}
                                 isChild={false}
                             />
@@ -190,6 +193,7 @@ export default class MessageParent extends Component {
                             editMessage={this.editMessage}
                             deleteMessage={this.deleteMessage}
                             openPublicLink={this.openPublicLink}
+                            publishInGroup={this.publishInGroup}
                             shareMessage={this.shareMessage}
                             isPublic={this.props.isPublic}
                         />

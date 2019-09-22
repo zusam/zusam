@@ -42,10 +42,17 @@ class Edit extends ApiController
         $this->denyAccessUnlessGranted(new Expression('user == object'), $message->getAuthor());
 
         $requestData = json_decode($request->getcontent(), true);
-        $message->setData($requestData['data']);
-        $message->setFiles(new ArrayCollection(array_map(function ($fid) {
-            return $this->em->getRepository(File::class)->findOneById($fid);
-        }, $requestData['files'])));
+        if (!empty($requestData['data'])) {
+            $message->setData($requestData['data']);
+        }
+        if (!empty($requestData['isInFront'])) {
+            $message->setIsInFront($requestData['isInFront']);
+        }
+        if (!empty($requestData['files'])) {
+            $message->setFiles(new ArrayCollection(array_map(function ($fid) {
+                return $this->em->getRepository(File::class)->findOneById($fid);
+            }, $requestData['files'])));
+        }
 
         // regen message miniature
         $message->setPreview($this->create->genPreview($message));

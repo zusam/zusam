@@ -40,7 +40,7 @@ export default class MessageFooter extends Component {
                     </div>
                 </div>
                 <div>
-                    { !this.props.isPublic && !this.props.isChild && (
+                    { !this.props.isPublic && (
                         <div
                             class="options dropdown"
                             onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
@@ -48,9 +48,14 @@ export default class MessageFooter extends Component {
                         >
                             <FaIcon family="solid" icon="ellipsis-h"/>
                             <div class="dropdown-menu dropdown-options">
-                                <a class="seamless-link" onClick={this.props.openPublicLink}>{lang.t("public_link")}</a>
-                                { me.me.groups.length > 1 && (
-                                    <a class="seamless-link" onClick={this.props.shareMessage}>{lang.t("share_message")}</a>
+                                { !this.props.isChild && (
+                                    <a class="seamless-link capitalize" onClick={this.props.openPublicLink}>{lang.t("public_link")}</a>
+                                )}
+                                { !this.props.isChild && me.me.groups.length > 1 && (
+                                    <a class="seamless-link capitalize" onClick={this.props.shareMessage}>{lang.t("share_message")}</a>
+                                )}
+                                { !this.props.message.isInFront && (
+                                    <a class="seamless-link capitalize" onClick={this.props.publishInGroup}>{lang.t("publish_in_group")}</a>
                                 )}
                             </div>
                         </div>
