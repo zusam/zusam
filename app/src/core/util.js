@@ -29,10 +29,10 @@ const util = {
             return lang.t("just_now");
         }
         if (duration < 60) {
-            return lang.t("ago", duration + "mn");
+            return lang.t("ago", {duration:duration + "mn"});
         }
         if (duration < 60 * 24) {
-            return lang.t("ago", Math.floor(duration/60) + "h");
+            return lang.t("ago", {duration:Math.floor(duration/60) + "h"});
         }
         let date = new Date(timestamp*1000);
         return util.humanFullDate(timestamp).split(" ")[0];

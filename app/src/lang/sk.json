@@ -1,6 +1,6 @@
 {
     "more_coms": "Zobraziť viac komentárov",
-    "ago": "{} späť",
+    "ago": "{{duration}} späť",
     "groups": "Skupiny",
     "login_placeholder": "email",
     "password_placeholder": "heslo",
@@ -76,5 +76,8 @@
     "in": "v",
     "lang": "jazyk",
     "reply": "odpoveď",
-    "replies": "{} odpovedí"
+    "replies": {
+        "0": "{{count}} odpoveď",
+        "2":"{{count}} odpovedí"
+    }
 }

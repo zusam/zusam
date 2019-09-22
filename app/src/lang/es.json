@@ -1,6 +1,6 @@
 {
     "more_coms": "Ver los comentarios anteriores",
-    "ago": "Hace {}",
+    "ago": "Hace {{duration}}",
     "groups": "Grupos",
     "login_placeholder": "correo",
     "password_placeholder": "contraseña",
@@ -76,5 +76,8 @@
     "in": "en",
     "lang": "idioma",
     "reply": "responder",
-    "replies": "{} respuestas"
+    "replies": {
+        "0": "{{count}} respuesta",
+        "2":"{{count}} respuestas"
+    }
 }

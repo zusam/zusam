@@ -27,7 +27,10 @@ export default class MessageFooter extends Component {
                                 href={"/messages/" + this.props.message.id + (this.props.message.children.length ? "" : "?focus=reply")}
                                 onClick={router.onClick}
                             >
-                                {this.props.message.children.length ? lang.t("replies", this.props.message.children.length) : lang.t("reply")}
+                                {this.props.message.children.length ?
+                                        lang.t("replies", {count:this.props.message.children.length})
+                                        : lang.t("reply")
+                                }
                             </a>
                             <div class="dot">&bull;</div>
                         </Fragment>
