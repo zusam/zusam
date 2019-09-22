@@ -45,6 +45,9 @@ export default class Writer extends Component {
                 }
             }, 10);
         }
+        if (this.props.focus) {
+            document.getElementById('text').focus();
+        }
     }
 
     onKeyPress(event, doGenPreview = false) {
@@ -61,15 +64,17 @@ export default class Writer extends Component {
     }
 
     genPreview(t) {
+        console.log(t);
         t.style.height = "1px";
-        t.style.height = t.scrollHeight + "px";
+        t.style.height = (25 + t.scrollHeight) + "px";
         // waiting for the dom to be updated
         setTimeout(() => {
-            const text = t.value;
+            const text = t.innerText;
             let links = text.match(/(https?:\/\/[^\s]+)/gi);
+            console.log(links);
             if (links && links[0] != this.state.link) {
                 cache.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => {
-                    if (r && t.value.indexOf(links[0]) >= 0) {
+                    if (r && t.innerText.indexOf(links[0]) >= 0) {
                         this.setState({link: links[0], preview: r});
                     }
                 });
@@ -97,7 +102,7 @@ export default class Writer extends Component {
         let msg = {
             files: this.state.files.filter(e => !e.removed).map(e => e["id"]).filter(e => !!e),
             data: {
-                text: document.getElementById("text").value
+                text: document.getElementById("text").innerText
             },
         };
         if (document.getElementById("title")) {
@@ -122,7 +127,7 @@ export default class Writer extends Component {
             children: [],
             files: this.state.files.filter(e => !e.removed).map(e => e["id"]).filter(e => !!e),
             data: {
-                text: document.getElementById("text").value
+                text: document.getElementById("text").innerText
             },
             lastActivityDate: Math.floor(Date.now()/1000)
         };
@@ -159,7 +164,7 @@ export default class Writer extends Component {
                 writerId: +Date.now(),
             });
             if (document.getElementById("text")) {
-                document.getElementById("text").value = "";
+                document.getElementById("text").innerText = "";
             }
         });
         this.setState({sending: true});
@@ -290,14 +295,12 @@ export default class Writer extends Component {
                         placeholder={lang.t("title_placeholder")}
                     ></input>
                 )}
-                <textarea
+                <div
+                    contentEditable="true"
                     onKeyPress={e => this.onKeyPress(e, true)}
                     id="text"
                     placeholder={lang.t("text_placeholder")}
-                    rows="5"
-                    autocomplete="off"
-                    autofocus={this.props.focus}
-                ></textarea>
+                ></div>
                 { this.state.preview && <EmbedBlock inWriter={true} {...this.state.preview} /> }
                 { !!this.state.files.length && (
                     <FileGrid
