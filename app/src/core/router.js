@@ -46,11 +46,9 @@ const router = {
         router.backUrlPrompt = "";
 
         // set url, backUrl and entityUrl
-        if (router.route && router.id) {
-            if (router.isEntity(router.route)) {
-                router.entityUrl = "/api/" + router.route + "/" + router.id;
-                router.entityType = router.route;
-            }
+        if (router.route && router.id && router.isEntity(router.route)) {
+            router.entityUrl = "/api/" + router.route + "/" + router.id;
+            router.entityType = router.route;
 
             await cache.get(router.entityUrl).then(res => {
                 router.entity = res;
@@ -76,7 +74,7 @@ const router = {
                             router.backUrl = "/";
                         }
                 }
-            });
+            }).catch(e => console.warn(e));
         }
 
         switch (router.route) {
@@ -86,8 +84,6 @@ const router = {
             case "login":
             case "share":
             case "public":
-                // we keep queryParams
-                url = url + "?" + router.search;
             case "messages":
             case "groups":
             case "users":

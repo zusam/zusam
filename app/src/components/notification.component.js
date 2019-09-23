@@ -8,6 +8,7 @@ export default class Notification extends Component {
         this.getMiniatureSrc = this.getMiniatureSrc.bind(this);
         this.setMiniatureOnError = this.setMiniatureOnError.bind(this);
         this.getAction = this.getAction.bind(this);
+        this.getTarget = this.getTarget.bind(this);
     }
 
     getMiniatureSrc() {
@@ -45,7 +46,19 @@ export default class Notification extends Component {
                     </span>
                 );
             case "user_joined_group":
-                return lang.t("has_joined");
+                return <a href={"/groups/" + this.props.fromGroup.id} onClick={router.onClick}>{this.props.fromGroup.name}</a>;
+            default:
+                return "";
+        }
+    }
+
+    getTarget() {
+        switch (this.props.type) {
+            case "user_joined_group":
+                return "/groups/" + this.props.fromGroup.id;
+            case "new_message":
+            case "new_comment":
+                return "/messages/" + this.props.fromMessage.id;
             default:
                 return "";
         }
@@ -53,7 +66,7 @@ export default class Notification extends Component {
 
     render() {
         return (
-            <a class="notification seamless-link unselectable" href={"/messages/" + this.props.fromMessage.id} onClick={router.onClick}>
+            <a class="notification seamless-link unselectable" href={this.getTarget()} onClick={router.onClick}>
                 <div class="miniature unselectable">
                     <img
                         src={this.getMiniatureSrc()}

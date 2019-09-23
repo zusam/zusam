@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Group;
+use App\Entity\Notification;
 use App\Entity\User;
 use App\Service\Mailer;
 use App\Service\Token;
@@ -108,6 +109,20 @@ class Security extends AbstractController
         $group->addUser($user);
         $this->em->persist($user);
         $this->em->persist($group);
+
+        // Notify users of the group
+        foreach ($group->getUsers() as $u) {
+            if ($u->getId() != $user->getId()) {
+                $notif = new Notification();
+                $notif->setTarget($group->getId());
+                $notif->setOwner($u);
+                $notif->setFromUser($user);
+                $notif->setFromGroup($group);
+                $notif->setType(Notification::USER_JOINED_GROUP);
+                $this->em->persist($notif);
+            }
+        }
+
         $this->em->flush();
 
         return new JsonResponse(['api_key' => $user->getSecretKey()], JsonResponse::HTTP_OK);

@@ -4,6 +4,7 @@ namespace App\Controller\Group;
 
 use App\Controller\ApiController;
 use App\Entity\Group;
+use App\Entity\Notification;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +36,21 @@ class AddInvitedUser extends ApiController
         $this->getUser()->addGroup($group);
         $this->em->persist($this->getUser());
         $this->em->persist($group);
+
+
+        // Notify users of the group
+        foreach ($group->getUsers() as $u) {
+            if ($u->getId() != $user->getId()) {
+                $notif = new Notification();
+                $notif->setTarget($group->getId());
+                $notif->setOwner($u);
+                $notif->setFromUser($user);
+                $notif->setFromGroup($group);
+                $notif->setType(Notification::USER_JOINED_GROUP);
+                $this->em->persist($notif);
+            }
+        }
+
         $this->em->flush();
 
         return new JsonResponse(['id' => $group->getId()], Response::HTTP_OK);
