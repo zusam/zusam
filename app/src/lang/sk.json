@@ -80,5 +80,6 @@
         "0": "{{count}} odpoveď",
         "2":"{{count}} odpovedí"
     },
-    "publish_in_group": "publikovať v skupine"
+    "publish_in_group": "publikovať v skupine",
+    "toggle_html_mode": "prepnúť režim html"
 }

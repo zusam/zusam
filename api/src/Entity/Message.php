@@ -245,7 +245,7 @@ class Message
 
     public static function getUrlsFromText(string $text): array
     {
-        preg_match("/(\([^()]*)?https?:\/\/[-A-Za-z0-9+&@#\/%?=~_()|!:,.;*]*[-A-Za-z0-9+&@#\/%=~_()|]/i", $text, $urls);
+        preg_match_all("/(\([^()]*)?https?:\/\/[-A-Za-z0-9+&@#\/%?=~_()|!:,.;*]*[-A-Za-z0-9+&@#\/%=~_()|]/i", $text, $urls);
 
         return array_map(function ($url) {
             if (!empty($url) && '(' === substr($url, 0, 1)) {
@@ -256,7 +256,7 @@ class Message
             }
 
             return $url;
-        }, $urls);
+        }, $urls[0]);
     }
 
     public function getSecretKey(): string

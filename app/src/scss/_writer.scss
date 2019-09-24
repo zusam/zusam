@@ -34,6 +34,7 @@
         display: inline;
         border: none;
         border-bottom: 1px solid #eee;
+        margin-bottom: 5px;
         &::placeholder {
             color: #999;
         }
@@ -48,14 +49,17 @@
         border: none;
         border-bottom: 1px solid #eee;
         margin-bottom: 10px;
-
-        &:empty::before {
-            content: attr(placeholder);
-            color: #999; 
+        &::placeholder {
+            color: #999;
         }
-
-        &:empty:focus::before {
-            content: "";
+        &.html-mode {
+            font-size: 80%;
+            font-family: SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
+            background-color: #222;
+            color: #eee;
+            &::placeholder {
+                color: #aaa;
+            }
         }
     }
 
@@ -69,11 +73,14 @@
             background: none;
             border: none;
             margin: 0 5px;
-            color: #888;
+            color: #999;
             font-size: 1.3rem;
             cursor: pointer;
             &:hover {
-                color: #444;
+                color: #666;
+            }
+            &.on {
+                color: #000;
             }
         }
 

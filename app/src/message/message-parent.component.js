@@ -151,8 +151,9 @@ export default class MessageParent extends Component {
                     group={this.state.message.group}
                     messageId={this.state.edit ? this.state.message.id : null}
                     parent={this.state.edit ? this.state.message["parent"] : this.state.message.id}
-                    text={this.state.edit ? this.state.data.text : ""}
-                    title={this.state.edit ? this.state.data["title"] : ""}
+                    text={this.state.edit ? this.state.message.data["text"] : ""}
+                    title={this.state.edit ? this.state.message.data["title"] : ""}
+                    mode={this.state.edit ? this.state.message.data["type"] : "plain"}
                     isChild={isChild}
                 />
             </Suspense>

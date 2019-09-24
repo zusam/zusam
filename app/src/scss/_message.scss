@@ -351,6 +351,13 @@
 
     .card-text {
         padding: 1rem;
+        overflow-x: auto;
+        position: relative;
+        display: block;
+
+        img {
+            max-width: 100%;
+        }
     }
 
     .options {

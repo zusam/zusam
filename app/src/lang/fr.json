@@ -80,5 +80,6 @@
         "0": "{{count}} réponse",
         "2":"{{count}} réponses"
     },
-    "publish_in_group": "publier dans le groupe"
+    "publish_in_group": "publier dans le groupe",
+    "toggle_html_mode": "basculer en mode HTML"
 }

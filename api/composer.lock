@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd7ace532297c9e32f23a5fbd60ef504",
+    "content-hash": "56dffb0e6f419671f5cab4408fc177e2",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1222,16 +1222,16 @@
         },
         {
             "name": "embed/embed",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oscarotero/Embed.git",
-                "reference": "960bbd5a62c5697302bd5394d58efba2e998b787"
+                "reference": "dc1dc3c126f8a78acdae06b83f591c0728ea131d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/960bbd5a62c5697302bd5394d58efba2e998b787",
-                "reference": "960bbd5a62c5697302bd5394d58efba2e998b787",
+                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/dc1dc3c126f8a78acdae06b83f591c0728ea131d",
+                "reference": "dc1dc3c126f8a78acdae06b83f591c0728ea131d",
                 "shasum": ""
             },
             "require": {
@@ -1257,9 +1257,9 @@
             "authors": [
                 {
                     "name": "Oscar Otero",
-                    "role": "Developer",
                     "email": "oom@oscarotero.com",
-                    "homepage": "http://oscarotero.com"
+                    "homepage": "http://oscarotero.com",
+                    "role": "Developer"
                 }
             ],
             "description": "PHP library to retrieve page info using oembed, opengraph, etc",
@@ -1271,7 +1271,54 @@
                 "opengraph",
                 "twitter cards"
             ],
-            "time": "2019-07-20T17:05:41+00:00"
+            "time": "2019-09-16T19:34:02+00:00"
+        },
+        {
+            "name": "ezyang/htmlpurifier",
+            "version": "v4.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ezyang/htmlpurifier.git",
+                "reference": "83ab08bc1af7d808a9e0fbf024f1c24bfd73c0a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/83ab08bc1af7d808a9e0fbf024f1c24bfd73c0a7",
+                "reference": "83ab08bc1af7d808a9e0fbf024f1c24bfd73c0a7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "require-dev": {
+                "simpletest/simpletest": "dev-master#72de02a7b80c6bb8864ef9bf66d41d2f58f826bd"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "HTMLPurifier": "library/"
+                },
+                "files": [
+                    "library/HTMLPurifier.composer.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Edward Z. Yang",
+                    "email": "admin@htmlpurifier.org",
+                    "homepage": "http://ezyang.com"
+                }
+            ],
+            "description": "Standards compliant HTML filter written in PHP",
+            "homepage": "http://htmlpurifier.org/",
+            "keywords": [
+                "html"
+            ],
+            "time": "2019-07-14T18:58:38+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -1558,16 +1605,16 @@
         },
         {
             "name": "jms/metadata",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/metadata.git",
-                "reference": "e918c3a65105f73b74d94a0837b9f7d611d5bf0c"
+                "reference": "8d8958103485c2cbdd9a9684c3869312ebdaf73a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/metadata/zipball/e918c3a65105f73b74d94a0837b9f7d611d5bf0c",
-                "reference": "e918c3a65105f73b74d94a0837b9f7d611d5bf0c",
+                "url": "https://api.github.com/repos/schmittjoh/metadata/zipball/8d8958103485c2cbdd9a9684c3869312ebdaf73a",
+                "reference": "8d8958103485c2cbdd9a9684c3869312ebdaf73a",
                 "shasum": ""
             },
             "require": {
@@ -1596,12 +1643,12 @@
             ],
             "authors": [
                 {
-                    "name": "Asmir Mustafic",
-                    "email": "goetas@gmail.com"
-                },
-                {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com"
+                },
+                {
+                    "name": "Asmir Mustafic",
+                    "email": "goetas@gmail.com"
                 }
             ],
             "description": "Class/method/property metadata management in PHP",
@@ -1611,7 +1658,7 @@
                 "xml",
                 "yaml"
             ],
-            "time": "2018-11-09T13:57:43+00:00"
+            "time": "2019-09-17T15:30:40+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2946,16 +2993,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.4.5",
+            "version": "v1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "4467ab35c82edebac58fe58c22cea166a805eb1f"
+                "reference": "133e649fdf08aeb8741be1ba955ccbe5cd17c696"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/4467ab35c82edebac58fe58c22cea166a805eb1f",
-                "reference": "4467ab35c82edebac58fe58c22cea166a805eb1f",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/133e649fdf08aeb8741be1ba955ccbe5cd17c696",
+                "reference": "133e649fdf08aeb8741be1ba955ccbe5cd17c696",
                 "shasum": ""
             },
             "require": {
@@ -2991,7 +3038,7 @@
                 }
             ],
             "description": "Composer plugin for Symfony",
-            "time": "2019-07-19T08:59:18+00:00"
+            "time": "2019-09-19T14:55:57+00:00"
         },
         {
             "name": "symfony/form",

@@ -110,6 +110,7 @@ export default class MessageChild extends Component {
                     parent={this.state.edit ? this.state.message["parent"] : this.state.message.id}
                     text={this.state.edit ? this.state.message.data["text"] : ""}
                     title={this.state.edit ? this.state.message.data["title"] : ""}
+                    mode={this.state.edit ? this.state.message.data["type"] : "plain"}
                     isChild={isChild}
                 />
             </Suspense>

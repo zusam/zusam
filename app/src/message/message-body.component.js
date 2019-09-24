@@ -11,27 +11,27 @@ export default class MessageBody extends Component {
         this.state = {preview: null};
     }
 
-
     displayMessageText() {
         if (!this.props.message.data) {
             return "";
         }
-        // escape html a little (just enough to avoid xss I hope)
-        let txt = this.props.message.data["text"].replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
-        // replace url by real links
-        let shift = 0;
-        let match = null;
-        while (match = util.getUrl(txt.slice(shift))) {
-            let url = match[0];
-            if (url.length >= 50) {
-                url = url.slice(0, 25) + "..." + url.slice(-24);
+        let txt = this.props.message.data["text"].trim();
+        if (!this.props.message.data["type"] || this.props.message.data["type"] == "plain") {
+            // replace url by real links
+            let shift = 0;
+            let match = null;
+            while (match = util.getUrl(txt.slice(shift))) {
+                let url = match[0];
+                if (url.length >= 50) {
+                    url = url.slice(0, 25) + "..." + url.slice(-24);
+                }
+                let link = '<a href="' + match[0] + '" target="_blank">' + url + '</a>';
+                txt = txt.slice(0, match["index"] + shift) + link + txt.slice(match["index"] + shift + match[0].length);
+                shift += match["index"] + link.length;
             }
-            let link = '<a href="' + match[0] + '" target="_blank">' + url + '</a>';
-            txt = txt.slice(0, match["index"] + shift) + link + txt.slice(match["index"] + shift + match[0].length);
-            shift += match["index"] + link.length;
+            // replace line returns
+            txt = txt.replace(/\n/g, "<br/>");
         }
-        // replace line returns
-        txt = txt.replace(/\n/g, "<br/>");
         return {__html: txt};
     }
 
@@ -66,7 +66,7 @@ export default class MessageBody extends Component {
                 { this.props.message.data && this.props.message.data.text && this.props.message.data.text.trim() && (
                     <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
                 )}
-                { this.state.preview && (
+                { this.state.preview && this.props.message.data["type"] != "html" && (
                     <EmbedBlock
                         key={this.state.preview.url}
                         url={this.state.preview.url}

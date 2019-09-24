@@ -43,6 +43,12 @@ class Edit extends ApiController
 
         $requestData = json_decode($request->getcontent(), true);
         if (!empty($requestData['data'])) {
+            if (isset($requestData['data']['type']) && $requestData['data']['type'] == 'html') {
+                $htmlPurifier = new \HTMLPurifier(\HTMLPurifier_Config::createDefault());
+                $requestData['data']['text'] = $htmlPurifier->purify($requestData['data']['text']);
+            } else {
+                $requestData['data']['text'] = htmlspecialchars($requestData['data']['text']);
+            }
             $message->setData($requestData['data']);
         }
         if (!empty($requestData['isInFront'])) {

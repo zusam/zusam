@@ -18,7 +18,13 @@ export default class Writer extends Component {
         this.inputVideo = this.inputVideo.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
         this.uploadNextImage = this.uploadNextImage.bind(this);
-        this.state = {files: [], writerId: +Date.now()};
+        this.toggleHtmlMode = this.toggleHtmlMode.bind(this);
+        this.state = {
+            files: [],
+            writerId: Date.now(),
+            lastKeyPress: Date.now(),
+            mode: this.props.mode || "plain",
+        };
     }
 
     componentWillMount() {
@@ -45,9 +51,15 @@ export default class Writer extends Component {
                 }
             }, 10);
         }
-        if (this.props.focus) {
-            document.getElementById('text').focus();
-        }
+    }
+
+    toggleHtmlMode() {
+        this.setState(prevState => {
+            if (prevState.mode != "html") {
+                return {mode: "html"};
+            }
+            return {mode: "plain"};
+        });
     }
 
     onKeyPress(event, doGenPreview = false) {
@@ -58,23 +70,24 @@ export default class Writer extends Component {
         if (![" ", "Enter", "v"].includes(event.key)) {
             return;
         }
+
+        // adjust size of the textarea
+        event.currentTarget.style.height = "1px";
+        event.currentTarget.style.height = (25 + event.currentTarget.scrollHeight) + "px";
+
         if (doGenPreview) {
             this.genPreview(event.currentTarget);
         }
     }
 
     genPreview(t) {
-        console.log(t);
-        t.style.height = "1px";
-        t.style.height = (25 + t.scrollHeight) + "px";
         // waiting for the dom to be updated
         setTimeout(() => {
-            const text = t.innerText;
+            const text = t.value;
             let links = text.match(/(https?:\/\/[^\s]+)/gi);
-            console.log(links);
             if (links && links[0] != this.state.link) {
                 cache.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => {
-                    if (r && t.innerText.indexOf(links[0]) >= 0) {
+                    if (r && t.value.indexOf(links[0]) >= 0) {
                         this.setState({link: links[0], preview: r});
                     }
                 });
@@ -102,7 +115,8 @@ export default class Writer extends Component {
         let msg = {
             files: this.state.files.filter(e => !e.removed).map(e => e["id"]).filter(e => !!e),
             data: {
-                text: document.getElementById("text").innerText
+                text: document.getElementById("text").value,
+                type: this.state.mode
             },
         };
         if (document.getElementById("title")) {
@@ -127,7 +141,8 @@ export default class Writer extends Component {
             children: [],
             files: this.state.files.filter(e => !e.removed).map(e => e["id"]).filter(e => !!e),
             data: {
-                text: document.getElementById("text").innerText
+                text: document.getElementById("text").value,
+                type: this.state.mode
             },
             lastActivityDate: Math.floor(Date.now()/1000)
         };
@@ -164,7 +179,7 @@ export default class Writer extends Component {
                 writerId: +Date.now(),
             });
             if (document.getElementById("text")) {
-                document.getElementById("text").innerText = "";
+                document.getElementById("text").value = "";
             }
         });
         this.setState({sending: true});
@@ -295,13 +310,16 @@ export default class Writer extends Component {
                         placeholder={lang.t("title_placeholder")}
                     ></input>
                 )}
-                <div
-                    contentEditable="true"
-                    onKeyPress={e => this.onKeyPress(e, true)}
+                 <textarea
+                    className={this.state.mode == 'html' ? "html-mode" : ""}
+                    onKeyPress={e => this.onKeyPress(e, this.state.mode != 'html')}
                     id="text"
                     placeholder={lang.t("text_placeholder")}
-                ></div>
-                { this.state.preview && <EmbedBlock inWriter={true} {...this.state.preview} /> }
+                    rows="5"
+                    autocomplete="off"
+                    autofocus={this.props.focus}
+                ></textarea>
+                { this.state.preview && this.state.mode != 'html' && <EmbedBlock inWriter={true} {...this.state.preview} /> }
                 { !!this.state.files.length && (
                     <FileGrid
                         key={this.state.files.reduce((a,c) => a + c.id + c.fileIndex + c.error, "")}
@@ -318,13 +336,20 @@ export default class Writer extends Component {
                     >
                         <FaIcon family={"regular"} icon={"images"}/>
                     </button>
-                        <button
-                            class="option"
-                            onClick={this.inputVideo}
-                            title={lang.t("upload_video")}
-                        >
-                            <FaIcon family={"solid"} icon={"film"}/>
-                        </button>
+                    <button
+                        class="option"
+                        onClick={this.inputVideo}
+                        title={lang.t("upload_video")}
+                    >
+                        <FaIcon family={"solid"} icon={"film"}/>
+                    </button>
+                    <button
+                        className={"option" + (this.state.mode != 'html' ? " off": " on")}
+                        onClick={this.toggleHtmlMode}
+                        title={lang.t("toggle_html_mode")}
+                    >
+                        <FaIcon family={"solid"} icon={"code"}/>
+                    </button>
                     <div class="actions">
                         { this.props.cancel && <button class="cancel" onClick={this.props.cancel}>{lang.t("cancel")}</button> }
                         <button type="submit" class="submit" onClick={this.sendMessage}>{lang.t("submit")}</button>
