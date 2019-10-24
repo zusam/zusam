@@ -116,7 +116,7 @@ class Cron extends Command
             if ($this->output) {
                 $this->output->writeln(['<info>Task already running</info>']);
             }
-            die();
+            return false;
         }
 
         define('TASK_RUNNING', true);
@@ -129,7 +129,7 @@ class Cron extends Command
 
         // if a task is running and it's not older than 4h, do nothing
         if ($task_running && isset($last_task_timestamp) && $last_task_timestamp > time() - 60 * 60 * 4) {
-            die();
+            return false;
         }
 
         // if a task is running but it's old, it's probably a lockup.
