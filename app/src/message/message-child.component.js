@@ -1,13 +1,11 @@
 import { Fragment, h, render, Component } from "preact";
-import { Suspense, lazy } from "preact/compat";
 import { lang, cache, http, me, router, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 import MessageHead from "./message-head.component.js";
 import MessageFooter from "./message-footer.component.js";
 import MessageBody from "./message-body.component.js";
 import MessageChildren from "./message-children.component.js";
-
-const Writer = lazy(() => import("/message/writer.component.js"));
+import Writer from "./writer.component.js";
 
 export default class MessageChild extends Component {
 
@@ -100,19 +98,17 @@ export default class MessageChild extends Component {
 
     displayWriter(isChild) {
         return (
-            <Suspense fallback={<br/>}>
-                <Writer
-                    cancel={this.state.edit ? this.cancelEdit : null}
-                    files={this.state.edit ? this.state.message.files : []}
-                    focus={!!this.state.edit}
-                    group={this.state.message.group}
-                    messageId={this.state.edit ? this.state.message.id : null}
-                    parent={this.state.edit ? this.state.message["parent"] : this.state.message.id}
-                    text={this.state.edit ? this.state.message.data["text"] : ""}
-                    title={this.state.edit ? this.state.message.data["title"] : ""}
-                    isChild={isChild}
-                />
-            </Suspense>
+            <Writer
+                cancel={this.state.edit ? this.cancelEdit : null}
+                files={this.state.edit ? this.state.message.files : []}
+                focus={!!this.state.edit}
+                group={this.state.message.group}
+                messageId={this.state.edit ? this.state.message.id : null}
+                parent={this.state.edit ? this.state.message["parent"] : this.state.message.id}
+                text={this.state.edit ? this.state.message.data["text"] : ""}
+                title={this.state.edit ? this.state.message.data["title"] : ""}
+                isChild={isChild}
+            />
         );
     }
 

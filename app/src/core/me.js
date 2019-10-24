@@ -5,6 +5,9 @@ const me = {
     me: {},
     get: () => me.me.id ? Promise.resolve(me.me) : me.update(),
     update: () => http.get("/api/me", true).then(r => {
+        if (!r) {
+            return;
+        }
         me.me = Object.assign({notifications: []}, r);
         me.loadNotifications();
         lang.fetchDict();

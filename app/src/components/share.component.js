@@ -1,9 +1,7 @@
 import { h, render, Component } from "preact";
-import { Suspense, lazy } from "preact/compat";
 import { lang, me, router, http } from "/core";
 import FaIcon from "./fa-icon.component.js";
-
-const Writer = lazy(() => import("/message/writer.component.js"));
+import Writer from "/message/writer.component.js";
 
 export default class Share extends Component {
 
@@ -66,15 +64,13 @@ export default class Share extends Component {
                             </select>
                         </div>
                     )}
-                    <Suspense fallback={<br/>}>
-                        <Writer
-                            focus={true}
-                            group={this.state.group}
-                            title={this.state.title}
-                            text={this.state.text || this.state.url ? this.state.text + "\n" + this.state.url : ""}
-                            files={this.state.files}
-                        />
-                    </Suspense>
+                    <Writer
+                        focus={true}
+                        group={this.state.group}
+                        title={this.state.title}
+                        text={this.state.text || this.state.url ? this.state.text + "\n" + this.state.url : ""}
+                        files={this.state.files}
+                    />
                 </div>
             </article>
         );
