@@ -1,2 +1,0 @@
-#!/bin/sh
-exec su-exec ${UID}:${GID} php-fpm7

@@ -7,7 +7,8 @@ set -xe
 rm -rf $(find /etc/s6.d -name 'event')
 
 crontab -r
-echo "* * * * * su-exec ${UID}:${GID} /zusam/api/bin/console zusam:cron > /dev/stdout" | crontab -
+#echo "* * * * * su-exec ${UID}:${GID} /zusam/api/bin/console zusam:cron > /dev/stdout" | crontab -
+echo "* * * * * /zusam/api/bin/console zusam:cron > /dev/stdout" | crontab -
 
 DATABASE_URL="sqlite:///%kernel.project_dir%/../data/${DATABASE_NAME}"
 
@@ -31,7 +32,5 @@ if ! [ -L /zusam/public/files ]; then
     ln -s /zusam/data/files /zusam/public/files
 fi
 
-cp /zusam/public/${LANG}.js /zusam/public/lang.js
-
-chown -R "${UID}:${GID}" /var/log/php7 /var/lib/php7 /etc/php7 /zusam
+#chown -R "${UID}:${GID}" /var/log/php7 /var/lib/php7 /etc/php7 /zusam
 exec /bin/s6-svscan /etc/s6.d
