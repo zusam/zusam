@@ -43,22 +43,29 @@ class Cron extends Command
             [
                 'name' => 'zusam:convert:video',
                 'period' => 15 * 60, // 15 minutes
-                'options' => [],
+                'options' => [
+                    'type' => 'heavy',
+                ],
             ],
             [
                 'name' => 'zusam:convert:images',
                 'period' => 30 * 60, // 30 minutes
-                'options' => [],
+                'options' => [
+                    'type' => 'light',
+                ],
             ],
             [
                 'name' => 'zusam:notification-emails',
                 'period' => 60 * 60, // 1 hour
-                'options' => [],
+                'options' => [
+                    'type' => 'light',
+                ],
             ],
             [
                 'name' => 'zusam:clean:cache',
                 'period' => 1440 * 60, // 1 day
                 'options' => [
+                    'type' => 'light',
                     'command' => 'zusam:clean:cache',
                     'max-cache-size' => 512,
                 ],
@@ -66,27 +73,37 @@ class Cron extends Command
             [
                 'name' => 'zusam:clean:files',
                 'period' => 1440 * 7 * 60, // 7 days
-                'options' => [],
+                'options' => [
+                    'type' => 'light',
+                ],
             ],
             [
                 'name' => 'zusam:clean:messages',
                 'period' => 1440 * 7 * 60, // 7 days
-                'options' => [],
+                'options' => [
+                    'type' => 'heavy',
+                ],
             ],
             [
                 'name' => 'zusam:clean:logs',
                 'period' => 1440 * 7 * 60, // 7 days
-                'options' => [],
+                'options' => [
+                    'type' => 'heavy',
+                ],
             ],
             [
                 'name' => 'zusam:clean:groups',
                 'period' => 1440 * 30 * 60, // 30 days
-                'options' => [],
+                'options' => [
+                    'type' => 'heavy',
+                ],
             ],
             [
                 'name' => 'zusam:repair-database',
                 'period' => 1440 * 60 * 60, // 60 days
-                'options' => [],
+                'options' => [
+                    'type' => 'heavy',
+                ],
             ],
         ];
     }
@@ -141,7 +158,20 @@ class Cron extends Command
         // shuffle tasks to randomize priorisation
         shuffle($this->tasks);
 
+        // get idle hours
+        $idle_hours = explode('-', $this->params->get('IDLE_HOURS'));
+
         foreach ($this->tasks as $task) {
+            // if it's a heavy task and we're not in the idle hours, do something else
+            if (
+                $task['type'] == 'heavy'
+                && (
+                    (new DateTime())->format('H') < $idle_hours[0]
+                    || (new DateTime())->format('H') > $idle_hours[1]
+                )
+            ) {
+                continue;
+            }
             $lastLog = $this->em
                         ->createQuery("SELECT log FROM App\Entity\Log log WHERE log.message = '".$task['name']."' ORDER BY log.createdAt DESC")
                         ->setMaxResults(1)->getOneOrNullResult();
