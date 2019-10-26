@@ -49,7 +49,7 @@ class Cron extends Command
             ],
             [
                 'name' => 'zusam:convert:images',
-                'period' => 30 * 60, // 30 minutes
+                'period' => 60 * 60, // 1 hour
                 'options' => [
                     'type' => 'light',
                 ],
@@ -71,6 +71,20 @@ class Cron extends Command
                 ],
             ],
             [
+                'name' => 'zusam:clean:logs',
+                'period' => 1440 * 7 * 60, // 7 days
+                'options' => [
+                    'type' => 'light',
+                ],
+            ],
+            [
+                'name' => 'zusam:clean:notifications',
+                'period' => 1440 * 7 * 60, // 7 days
+                'options' => [
+                    'type' => 'light',
+                ],
+            ],
+            [
                 'name' => 'zusam:clean:files',
                 'period' => 1440 * 7 * 60, // 7 days
                 'options' => [
@@ -81,21 +95,14 @@ class Cron extends Command
                 'name' => 'zusam:clean:messages',
                 'period' => 1440 * 7 * 60, // 7 days
                 'options' => [
-                    'type' => 'heavy',
-                ],
-            ],
-            [
-                'name' => 'zusam:clean:logs',
-                'period' => 1440 * 7 * 60, // 7 days
-                'options' => [
-                    'type' => 'heavy',
+                    'type' => 'light',
                 ],
             ],
             [
                 'name' => 'zusam:clean:groups',
                 'period' => 1440 * 30 * 60, // 30 days
                 'options' => [
-                    'type' => 'heavy',
+                    'type' => 'light',
                 ],
             ],
             [
