@@ -99,11 +99,6 @@ FROM (
 -- delete all notifications not related to messages
 DELETE FROM tmp_notification AS tn WHERE NOT EXISTS (SELECT * FROM `message` WHERE id = tn.target);
 
--- keep only notifications for groups that the user actually has
-DELETE FROM tmp_notification as n WHERE NOT EXISTS (
-    SELECT * FROM users_groups as ug WHERE ug.user_id = n.owner_id AND ug.group_id = n.from_group_id
-);
-
 -- update from_* data
 UPDATE tmp_notification AS tn SET from_user_id = (SELECT author_id FROM message AS m WHERE tn.target = m.id);
 UPDATE tmp_notification AS tn SET miniature_id = (SELECT avatar_id FROM user AS u WHERE tn.from_user_id = u.id);
@@ -111,6 +106,11 @@ UPDATE tmp_notification AS tn SET from_group_id = (SELECT group_id FROM message 
 UPDATE tmp_notification AS tn SET from_message_id = (SELECT parent_id FROM message AS m WHERE tn.target = m.id);
 UPDATE tmp_notification SET from_message_id = target WHERE from_message_id IS NULL;
 UPDATE tmp_notification SET created_at = (SELECT created_at FROM message WHERE id = target);
+
+-- keep only notifications for groups that the user actually has
+DELETE FROM tmp_notification as n WHERE NOT EXISTS (
+    SELECT * FROM users_groups as ug WHERE ug.user_id = n.owner_id AND ug.group_id = n.from_group_id
+);
 
 -- Remove news from user
 -- Add last_activity_date to user
