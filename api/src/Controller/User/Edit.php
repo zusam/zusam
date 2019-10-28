@@ -4,6 +4,7 @@ namespace App\Controller\User;
 
 use App\Controller\ApiController;
 use App\Entity\User;
+use App\Entity\File;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -52,6 +53,13 @@ class Edit extends ApiController
         }
         if (!empty($requestData['data'])) {
             $user->setData($requestData['data']);
+        }
+        if (!empty($requestData['avatar'])) {
+            $file = $this->em->getRepository(File::class)->findOneById($requestData['avatar']);
+            if (empty($file)) {
+                return new JsonResponse(['error' => 'File Not Found'], Response::HTTP_NOT_FOUND);
+            }
+            $user->setAvatar($file);
         }
         $this->em->persist($user);
         $this->em->flush();

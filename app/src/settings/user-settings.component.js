@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { lang, router, me, alert, cache, http, imageService, util } from "/core";
+import { lang, router, me, alert, cache, http, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class UserSettings extends Component {
@@ -24,14 +24,16 @@ export default class UserSettings extends Component {
                 let g = Math.min(w/img.naturalWidth, h/img.naturalHeight);
                 let nw = Math.floor(img.naturalWidth*g);
                 let nh = Math.floor(img.naturalHeight*g);
-                imageService.resize(img, nw, nh, blob => {
-                    const formData = new FormData();
-                    formData.append("file", blob);
-                    http.post("/api/files/upload", formData, false).then(file => {
-                        http.put("/api/users/" + this.state.id, {avatar: "/api/files/" + file["id"]}).then(res => {
-                            this.setState({avatar: file});
-                            cache.resetCache();
-                            alert.add(lang.t("settings_updated"));
+                import("/lazy/image-service.js").then(imageService => {
+                    imageService.default.resize(img, nw, nh, blob => {
+                        const formData = new FormData();
+                        formData.append("file", blob);
+                        http.post("/api/files", formData, false).then(file => {
+                            http.put("/api/users/" + this.state.id, {avatar: file["id"]}).then(res => {
+                                this.setState({avatar: file});
+                                cache.resetCache();
+                                alert.add(lang.t("settings_updated"));
+                            });
                         });
                     });
                 });
