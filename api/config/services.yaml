@@ -90,6 +90,11 @@ services:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $logger: '@monolog.logger.db'
 
+    App\Command\CleanNotifications:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+        $logger: '@monolog.logger.db'
+
     App\Command\CleanLogs:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
