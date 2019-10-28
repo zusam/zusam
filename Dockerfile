@@ -1,12 +1,11 @@
 FROM alpine:3.10
 
 # add tini and s6 to manage processes
-RUN apk add --no-cache -U su-exec tini s6
+RUN apk add --no-cache -U tini s6
 ENTRYPOINT ["/sbin/tini", "--"]
 
 # global environment variables
 ENV LANG=en
-ENV UID=791 GID=791
 ENV DOMAIN=localhost
 ENV DATABASE_NAME=data.db
 EXPOSE 8080
@@ -38,12 +37,12 @@ RUN set -xe && apk add --no-cache nginx php7 openssl ffmpeg unzip \
     php7-xmlwriter
 
 # copy files
-COPY docker/zusam/s6.d /etc/s6.d
-COPY docker/zusam/config /zusam/config
-COPY docker/zusam/php7 /etc/php7
-COPY docker/zusam/nginx /etc/nginx
-COPY docker/zusam/run.sh /usr/local/bin/run.sh
-COPY docker/zusam/example.db /zusam/example.db
+COPY container/zusam/s6.d /etc/s6.d
+COPY container/zusam/config /zusam/config
+COPY container/zusam/php7 /etc/php7
+COPY container/zusam/nginx /etc/nginx
+COPY container/zusam/run.sh /usr/local/bin/run.sh
+COPY container/zusam/example.db /zusam/example.db
 COPY public/api/index.php /zusam/public/api/index.php
 COPY api /zusam/api
 COPY app/dist/* /zusam/public/
