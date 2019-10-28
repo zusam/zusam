@@ -40,11 +40,11 @@ class AddInvitedUser extends ApiController
 
         // Notify users of the group
         foreach ($group->getUsers() as $u) {
-            if ($u->getId() != $user->getId()) {
+            if ($u->getId() != $this->getUser()->getId()) {
                 $notif = new Notification();
                 $notif->setTarget($group->getId());
                 $notif->setOwner($u);
-                $notif->setFromUser($user);
+                $notif->setFromUser($this->getUser());
                 $notif->setFromGroup($group);
                 $notif->setType(Notification::USER_JOINED_GROUP);
                 $this->em->persist($notif);
