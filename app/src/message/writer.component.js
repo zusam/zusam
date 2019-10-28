@@ -64,14 +64,12 @@ export default class Writer extends Component {
     }
 
     genPreview(t) {
-        console.log(t);
         t.style.height = "1px";
         t.style.height = (25 + t.scrollHeight) + "px";
         // waiting for the dom to be updated
         setTimeout(() => {
             const text = t.innerText;
             let links = text.match(/(https?:\/\/[^\s]+)/gi);
-            console.log(links);
             if (links && links[0] != this.state.link) {
                 cache.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => {
                     if (r && t.innerText.indexOf(links[0]) >= 0) {

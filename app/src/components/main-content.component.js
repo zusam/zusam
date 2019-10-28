@@ -44,10 +44,7 @@ export default class MainContent extends Component {
                     return (
                         <article class="mt-2">
                             <div class="container">
-                                <Writer
-                                    focus={true}
-                                    group={this.props.id}
-                                />
+                                <Writer focus={true} group={this.props.id} />
                             </div>
                         </article>
                     );
@@ -55,7 +52,7 @@ export default class MainContent extends Component {
                 return (
                     <div>
                         <GroupBoard key={this.props.id}/>
-                        <a class="write-button material-shadow seamless-link" href={this.props.url + "/write"} onClick={router.onClick}>
+                        <a class="write-button material-shadow seamless-link" href={"/groups/" + this.props.id + "/write"} onClick={router.onClick}>
                             <FaIcon family={"solid"} icon={"pencil-alt"}/>
                         </a>
                     </div>

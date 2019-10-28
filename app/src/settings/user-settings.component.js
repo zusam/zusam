@@ -72,7 +72,6 @@ export default class UserSettings extends Component {
         user.data = {"notification_emails": notification_emails, "default_group": default_group, "lang": lang};
         http.put("/api/users/" + this.state.id, user).then(res => {
             this.setState(prevState => Object.assign(prevState, res));
-            console.log(location.pathname + "?alert=settings_updated")
             location.href = location.pathname + "?alert=settings_updated";
         });
     }
