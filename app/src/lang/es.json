@@ -1,5 +1,6 @@
 {
-    "more_coms": "Ver los comentarios anteriores",
+    "previous_coms": "Ver los comentarios anteriores",
+    "next_coms": "Ver los siguientes comentarios",
     "ago": "Hace {{duration}}",
     "groups": "Grupos",
     "login_placeholder": "correo",

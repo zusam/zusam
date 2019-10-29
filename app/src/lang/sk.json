@@ -1,5 +1,6 @@
 {
-    "more_coms": "Zobraziť viac komentárov",
+    "previous_coms": "Pozri predchádzajúce komentáre",
+    "next_coms": "Pozri nasledujúce komentáre",
     "ago": "{{duration}} späť",
     "groups": "Skupiny",
     "login_placeholder": "email",

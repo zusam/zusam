@@ -54,7 +54,8 @@ export default class MessageParent extends Component {
         this.setState({
             message: msg,
             author: msg.author,
-            displayedChildren: msg.children && 5, // display 5 first children
+            firstDisplayedChild: msg.children && msg.children.length - 5, // display the last 5 children
+            lastDisplayedChild: msg.children && msg.children.length,
         });
         setTimeout(this.processEmbed);
     }
@@ -197,8 +198,14 @@ export default class MessageParent extends Component {
                 </div>
                 <MessageChildren
                     children={this.state.message.children}
-                    displayedChildren={this.state.displayedChildren}
-                    displayMoreChildren={_ => this.setState(prevState => ({displayedChildren: prevState.displayedChildren + 10}))}
+                    firstDisplayedChild={this.state.firstDisplayedChild}
+                    lastDisplayedChild={this.state.lastDisplayedChild}
+                    displayPreviousChildren={_ => this.setState(prevState => ({
+                        firstDisplayedChild: Math.max(0, prevState.firstDisplayedChild - 10)
+                    }))}
+                    displayNextChildren={_ => this.setState(prevState => ({
+                        lastDisplayedChild: Math.min(this.state.message.children, prevState.lastDisplayedChild + 10)
+                    }))}
                     isPublic={this.props.isPublic}
                     key={this.state.message.id}
                 />

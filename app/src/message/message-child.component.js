@@ -141,7 +141,7 @@ export default class MessageChild extends Component {
         }
         return (
             <div>
-                <div class="message child">
+                <div id={this.state.message && this.state.message.id} class="message child">
                     { this.state.edit && me.me && (
                         <div class="message-head p-1 d-none d-md-block">
                             <img

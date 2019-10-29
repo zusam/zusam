@@ -4,13 +4,15 @@ import MessageChild from "./message-child.component.js";
 
 export default class MessageChildren extends Component {
     render() {
-        if (!this.props.children || !this.props.displayedChildren) {
+        if (!this.props.children || (this.props.lastDisplayedChild - this.props.firstDisplayedChild) < 1) {
             return null;
         }
         return  (
             <div>
-                { this.props.displayedChildren < toChildArray(this.props.children).length && (
-                    <a class="more-coms" onClick={this.props.displayMoreChildren}>{lang.t("more_coms")}</a>
+                { this.props.firstDisplayedChild > 0 && (
+                    <div class="d-flex">
+                        <a class="more-coms unselectable" onClick={this.props.displayPreviousChildren}>{lang.t("previous_coms")}</a>
+                    </div>
                 )}
                 { toChildArray(this.props.children).map((e,i,m) => {
                     // bypass empty messages
@@ -22,11 +24,16 @@ export default class MessageChildren extends Component {
                         <MessageChild
                             message={e}
                             key={e.id}
-                            hidden={i < toChildArray(this.props.children).length - this.props.displayedChildren}
+                            hidden={i < this.props.firstDisplayedChild || i > this.props.lastDisplayedChild}
                             isPublic={this.props.isPublic}
                         />
                     );
                 })}
+                { this.props.lastDisplayedChild < toChildArray(this.props.children).length && (
+                    <div class="d-flex">
+                        <a class="more-coms unselectable" onClick={this.props.displayNextChildren}>{lang.t("next_coms")}</a>
+                    </div>
+                )}
             </div>
         );
     }
