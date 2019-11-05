@@ -61,8 +61,10 @@ class Url
         // enhance data by adding a preview if there is none for the video
         if (empty($data['image']) && !empty($data['type']) && 'video' === $data['type']) {
             $image = ImageService::extractImageFromVideo($data['url'], $this->params->get('binaries.ffmpeg'));
-            $data['image'] = $filesDir.'/'.Uuid::uuidv4($data['url']);
-            rename($image, $data['image']);
+            if (!empty($image) && file_exists($image)) {
+                $data['image'] = $filesDir.'/'.Uuid::uuidv4($data['url']);
+                rename($image, $data['image']);
+            }
         }
         $link->setData($data);
         $link->setUpdatedAt(time());
