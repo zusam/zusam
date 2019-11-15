@@ -51,11 +51,23 @@ export default class MessageParent extends Component {
 
     loadMessage(msg) {
         me.removeMatchingNotifications(msg.id);
+        let firstDisplayedChild = null;
+        let lastDisplayedChild = null;
+        if (msg.children.length) {
+            let msgIndex = router.action ? msg.children.findIndex(e => e && e.id === router.action) : -1;
+            if (msgIndex != -1) {
+                firstDisplayedChild = Math.max(0, msgIndex - 1);
+                lastDisplayedChild = Math.min(msg.children.length, msgIndex + 1);
+            } else {
+                firstDisplayedChild = msg.children && msg.children.length - 5; // display the last 5 children
+                lastDisplayedChild = msg.children && msg.children.length;
+            }
+        }
         this.setState({
             message: msg,
             author: msg.author,
-            firstDisplayedChild: msg.children && msg.children.length - 5, // display the last 5 children
-            lastDisplayedChild: msg.children && msg.children.length,
+            firstDisplayedChild: firstDisplayedChild,
+            lastDisplayedChild: lastDisplayedChild,
         });
         setTimeout(this.processEmbed);
     }

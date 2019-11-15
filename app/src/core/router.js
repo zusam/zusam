@@ -38,6 +38,7 @@ const router = {
         "files"
     ].includes(name),
     navigate: async (url, options = {}) => {
+        router.url = new URL(url.match(/^http/) ? url : location.origin + url);
         [router.path, router.search] = url.slice(1).split("?");
         [router.route, router.id, router.action] = router.path.split("/");
         router.entityUrl = "";
@@ -128,7 +129,7 @@ const router = {
                 });
         }
     },
-    sync: () => router.navigate(window.location.pathname, {replace: true}),
+    sync: () => router.navigate(location.pathname + location.search + location.hash, {replace: true}),
     onClick: e => {
         e.preventDefault();
         e.stopPropagation();
