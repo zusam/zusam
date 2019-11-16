@@ -91,7 +91,11 @@ class Security extends AbstractController
         $user = $this->em->getRepository(User::class)->findOneByLogin($login);
 
         if (!empty($user)) {
-            return new JsonResponse(['message' => 'Login already used !'], JsonResponse::HTTP_BAD_REQUEST);
+            // if the user tries to login from an invitation, let's test to eventually connect him
+            if (!$this->encoder->isPasswordValid($user, $password)) {
+                $this->logger->notice('Invalid password for '.$user->getId(), ['ip' => $_SERVER['REMOTE_ADDR']]);
+                return new JsonResponse(['message' => 'Invalid login/password'], JsonResponse::HTTP_UNAUTHORIZED);
+            }
         }
 
         $group = $this->em->getRepository(Group::class)->findOneBySecretKey($inviteKey);
@@ -100,17 +104,22 @@ class Security extends AbstractController
             return new JsonResponse(['message' => 'Invalid invite key !'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $user = new User();
-        $user->setLogin($login);
-        $user->setPassword($this->encoder->encodePassword($user, $password));
-        $user->setName(explode('@', $login)[0]);
-        $user->setData(['mail' => $login]);
+        // if the user didn't already exist, let's create him
+        if (empty($user)) {
+            $user = new User();
+            $user->setLogin($login);
+            $user->setPassword($this->encoder->encodePassword($user, $password));
+            $user->setName(explode('@', $login)[0]);
+            $user->setData(['mail' => $login]);
+        }
+
+        // add the user to the group
         $user->addGroup($group);
         $group->addUser($user);
         $this->em->persist($user);
         $this->em->persist($group);
 
-        // Notify users of the group
+        // notify users of the group
         foreach ($group->getUsers() as $u) {
             if ($u->getId() != $user->getId()) {
                 $notif = new Notification();
