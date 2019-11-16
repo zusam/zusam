@@ -49,7 +49,12 @@ class Edit extends ApiController
             $user->setName($requestData['name']);
         }
         if (!empty($requestData['login'])) {
-            $user->setLogin($requestData['login']);
+            $duplicate = $this->em->getRepository(User::class)->findOneByLogin($requestData['login']);
+            if (empty($duplicate) || $duplicate->getId() === $user->getId()) {
+                $user->setLogin($requestData['login']);
+            } else {
+                return new JsonResponse(['error' => 'User with this login already exists'], Response::HTTP_CONFLICT);
+            }
         }
         if (!empty($requestData['data'])) {
             $user->setData($requestData['data']);
