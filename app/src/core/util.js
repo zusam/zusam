@@ -1,8 +1,9 @@
 import lang from './lang.js';
 
 const util = {
+    urlRegExp: (new RegExp('(\\([^()]*)?https?:\\/\\/[-A-Za-z0-9+&@#/%?=~_()|!:,.;*]*[-A-Za-z0-9+&@#/%=~_()|]', 'i')),
     getUrl: txt => {
-        let url = txt.match(/(\([^()]*)?https?:\/\/[-A-Za-z0-9+&@#/%?=~_()|!:,.;*]*[-A-Za-z0-9+&@#/%=~_()|]/i);
+        let url = txt.match(util.urlRegExp);
         if (url && url[0].startsWith("(")) {
             let link = url[0].match(/https?:\/\//i);
             url["index"] += link["index"];

@@ -11,7 +11,6 @@ export default class MessageBody extends Component {
         this.state = {preview: null};
     }
 
-
     displayMessageText() {
         if (!this.props.message.data) {
             return "";

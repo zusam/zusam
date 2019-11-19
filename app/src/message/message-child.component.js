@@ -133,6 +133,13 @@ export default class MessageChild extends Component {
         if (!this.state.gotPreview) {
             this.processEmbed();
         }
+        let msgElement = document.getElementById(this.state.message.id);
+        if (this.state.message.id == router.action && msgElement.classList.contains('highlight')) {
+            setTimeout(_ => {
+                msgElement.scrollIntoView({block: "start", behavior: "smooth"});
+                setTimeout(_ => msgElement.classList.remove('highlight'), 1000);
+            }, 1000);
+        }
     }
 
     render() {
@@ -141,7 +148,10 @@ export default class MessageChild extends Component {
         }
         return (
             <div>
-                <div id={this.state.message && this.state.message.id} class="message child">
+                <div
+                    id={this.state.message && this.state.message.id}
+                    className={"message child" + (this.state.message.id == router.action ? " highlight" : "")}
+                >
                     { this.state.edit && me.me && (
                         <div class="message-head p-1 d-none d-md-block">
                             <img

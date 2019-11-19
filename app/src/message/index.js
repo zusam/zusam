@@ -6,6 +6,7 @@ import _MessageChildren from "./message-children.component.js";
 import _MessageHead from "./message-head.component.js";
 import _MessageFooter from "./message-footer.component.js";
 import _MessagePreview from "./message-preview.component.js";
+import _MessageSearchResult from "./message-search-result.component.js";
 import _EmbedBlock from "./embed-block.component.js";
 
 export const FileGrid = _FileGrid;
@@ -16,4 +17,5 @@ export const MessageChild = _MessageChild;
 export const MessageChildren = _MessageChildren;
 export const MessageHead = _MessageHead;
 export const MessagePreview = _MessagePreview;
+export const MessageSearchResult = _MessageSearchResult;
 export const EmbedBlock = _EmbedBlock;

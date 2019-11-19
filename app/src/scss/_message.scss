@@ -119,6 +119,12 @@
     background-clip: border-box;
     background-color: #fff;
     box-shadow: $material_shadow;
+    transition: 2s;
+
+    &.child.highlight {
+        background-color: #F7A71B !important;
+        transition: 2s;
+    }
 
     .avatar {
         position: relative;

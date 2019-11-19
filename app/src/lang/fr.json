@@ -81,5 +81,6 @@
         "0": "{{count}} réponse",
         "2":"{{count}} réponses"
     },
-    "publish_in_group": "publier dans le groupe"
+    "publish_in_group": "publier dans le groupe",
+    "search_in_group": "rechercher dans le groupe"
 }

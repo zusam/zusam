@@ -81,5 +81,6 @@
         "0": "{{count}} reply",
         "2":"{{count}} replies"
     },
-    "publish_in_group": "publish in the group"
+    "publish_in_group": "publish in the group",
+    "search_in_group": "search in this group"
 }

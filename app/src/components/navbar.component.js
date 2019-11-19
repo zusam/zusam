@@ -8,6 +8,7 @@ export default class Navbar extends Component {
     constructor(props) {
         super(props);
         this.clickBackButton = this.clickBackButton.bind(this);
+        this.search = this.search.bind(this);
         // force update the navbar when me gets updated
         addEventListener("meStateChange", _ => this.setState({}));
     }
@@ -18,6 +19,13 @@ export default class Navbar extends Component {
             return false;
         }
         router.onClick(evt);
+    }
+
+    search(evt) {
+        evt.preventDefault();
+        let searchTerms = document.getElementById('search').value.replace(/ /, '+')
+        let group_id = router.route == "messages" ? router.entity.group.id : router.entity.id;
+        router.navigate("/groups/" + group_id + "?search=" + encodeURI(searchTerms));
     }
 
     render() {
@@ -45,7 +53,7 @@ export default class Navbar extends Component {
                             </div>
                         </div>
                     )}
-                    { router.backUrl && (
+                    { ["groups", "messages"].includes(router.route) && router.backUrl && (
                         <a class="seamless-link back" href={router.backUrl} onClick={this.clickBackButton}>
                             <FaIcon family={"solid"} icon={"arrow-left"}/>
                         </a>
@@ -66,6 +74,28 @@ export default class Navbar extends Component {
                         </div>
                     </div>
                 </div>
+                { !router.backUrl && (
+                    <form class="navbar-block search-block">
+                        <div class="input-group">
+                            <input
+                                class="form-control"
+                                type="text"
+                                id="search"
+                                placeholder={lang.t("search_in_group")}
+                                value={router.getParam('search').replace(/\+/g," ")}
+                            ></input>
+                            <div class="input-group-append">
+                                <button
+                                    onClick={this.search}
+                                    class="btn btn-secondary"
+                                    type="submit"
+                                >
+                                    <FaIcon family={"solid"} icon={"search"}/>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                )}
                 <div class="navbar-block">
                     { me.me.groups && (
                         <div

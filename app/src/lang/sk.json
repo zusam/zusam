@@ -81,5 +81,6 @@
         "0": "{{count}} odpoveď",
         "2":"{{count}} odpovedí"
     },
-    "publish_in_group": "publikovať v skupine"
+    "publish_in_group": "publikovať v skupine",
+    "search_in_group": "hľadať v tejto skupine"
 }

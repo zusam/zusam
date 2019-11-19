@@ -2,6 +2,7 @@ import { h, render, Component } from "preact";
 import { router } from "/core";
 import { MessageParent } from "/message";
 import CreateGroup from "./create-group.component.js";
+import GroupSearch from "./group-search.component.js";
 import GroupBoard from "./group-board.component.js";
 import FaIcon from "./fa-icon.component.js";
 import Writer from "/message/writer.component.js";
@@ -47,6 +48,13 @@ export default class MainContent extends Component {
                                 <Writer focus={true} group={this.props.id} />
                             </div>
                         </article>
+                    );
+                }
+                if (router.getParam('search')) {
+                    return (
+                        <div>
+                            <GroupSearch key={this.props.id}/>
+                        </div>
                     );
                 }
                 return (
