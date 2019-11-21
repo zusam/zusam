@@ -3,7 +3,9 @@
 namespace App\Controller\Message;
 
 use App\Entity\Group;
+use App\Entity\Link;
 use App\Entity\Message;
+use App\Service\StringUtils;
 use App\Controller\ApiController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -78,25 +80,61 @@ class Search extends ApiController
             $score = 0;
 
             if (!empty($data["text"])) {
-                foreach(explode(" ", $data["text"]) as $word) {
+                foreach(explode(" ", StringUtils::remove_accents($data["text"])) as $word) {
                     foreach ($search_terms as $term) {
                         if (stripos($word, $term) !== false) {
-                            $score++;
+                            $score += 1;
                         }
                     }
                 }
             }
 
             if (!empty($data["title"])) {
-                foreach(explode(" ", $data["title"]) as $word) {
+                foreach(explode(" ", StringUtils::remove_accents($data["title"])) as $word) {
                     foreach ($search_terms as $term) {
                         if (stripos($word, $term) !== false) {
-                            $score++;
+                            $score += 1;
                         }
                     }
                 }
             }
 
+            $message_links = $message->getUrls();
+            if (!empty($message_links)) {
+                $link = $this->em->getRepository(Link::class)->findOneByUrl($message_links[0]);
+                if (!empty($link)) {
+                    $link_data = $link->getData();
+                    if (!empty($link_data)) {
+                        if (!empty($link_data["tags"])) {
+                            foreach($link_data["tags"] as $tag) {
+                                foreach ($search_terms as $term) {
+                                    if (stripos($tag, $term) !== false) {
+                                        $score += 1;
+                                    }
+                                }
+                            }
+                        }
+                        if (!empty($link_data["title"])) {
+                            foreach(explode(" ", StringUtils::remove_accents($link_data["title"])) as $word) {
+                                foreach ($search_terms as $term) {
+                                    if (stripos($word, $term) !== false) {
+                                        $score += 1;
+                                    }
+                                }
+                            }
+                        }
+                        if (!empty($link_data["description"])) {
+                            foreach(explode(" ", StringUtils::remove_accents($link_data["description"])) as $word) {
+                                foreach ($search_terms as $term) {
+                                    if (stripos($word, $term) !== false) {
+                                        $score += 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             if ($score < 1) {
                 continue;
