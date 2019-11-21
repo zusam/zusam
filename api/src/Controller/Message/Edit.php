@@ -48,6 +48,9 @@ class Edit extends ApiController
         if (!empty($requestData['isInFront'])) {
             $message->setIsInFront($requestData['isInFront']);
         }
+        if (!empty($requestData['lastActivityDate'])) {
+            $message->setLastActivityDate($requestData['lastActivityDate']);
+        }
         if (!empty($requestData['files'])) {
             $message->setFiles(new ArrayCollection(array_map(function ($fid) {
                 return $this->em->getRepository(File::class)->findOneById($fid);
