@@ -131,19 +131,39 @@ const router = {
     },
     sync: () => router.navigate(location.pathname + location.search + location.hash, {replace: true}),
     onClick: e => {
+        // get target url
+        let url = null
+        const t = e.target.closest("a")
+        if (t) {
+            url = t.getAttribute("href");
+        }
+
+        if (!url) {
+            return;
+        }
+
+        // check if it's an external url
+        if (url.startsWith('http')) {
+            let targetUrl = new URL(url);
+            if (targetUrl.host != location.host) {
+                return;
+            }
+        }
+
+        // stop propagation
         e.preventDefault();
         e.stopPropagation();
+
         // disable active stances (dropdowns...)
         for (let e of document.getElementsByClassName("active")) {
             e.classList.remove("active");
         }
-        const t = e.target.closest("a")
-        if (t) {
-            if (e.ctrlKey) {
-                open(t.getAttribute("href"),"_blank")
-            } else {
-                router.navigate(t.getAttribute("href"));
-            }
+
+        // go to target url
+        if (e.ctrlKey) {
+            open(url, "_blank")
+        } else {
+            router.navigate(url);
         }
     },
 };
