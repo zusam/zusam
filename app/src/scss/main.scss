@@ -136,6 +136,7 @@ body {
 
 .card-body {
     padding: .45rem .65rem;
+    overflow: hidden;
 }
 
 .pb-1 {
@@ -203,4 +204,8 @@ body {
 
 .font-size-90 {
     font-size: 90%;
+}
+
+*:empty ~ .none-if-follows-empty {
+    display: none;
 }

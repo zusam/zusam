@@ -38,6 +38,12 @@ export default class MessageFooter extends Component {
                     <div class="date font-size-90" title={util.humanFullDate(this.props.message.createdAt)}>
                         { util.humanTime(this.props.message.createdAt) }
                     </div>
+                    { this.props.author && (
+                        <Fragment>
+                            <div class="dot">&bull;</div>
+                            <div class="font-size-90">{this.props.author.name}</div>
+                        </Fragment>
+                    )}
                 </div>
                 <div>
                     { !this.props.isPublic && (
@@ -46,7 +52,6 @@ export default class MessageFooter extends Component {
                             onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                             onClick={e => e.currentTarget.classList.toggle("active")}
                         >
-                            <FaIcon family="solid" icon="ellipsis-h"/>
                             <div class="dropdown-menu dropdown-options">
                                 { !this.props.isChild && (
                                     <a class="seamless-link capitalize" onClick={this.props.openPublicLink}>{lang.t("public_link")}</a>
@@ -54,9 +59,12 @@ export default class MessageFooter extends Component {
                                 { !this.props.isChild && me.me.groups.length > 1 && (
                                     <a class="seamless-link capitalize" onClick={this.props.shareMessage}>{lang.t("share_message")}</a>
                                 )}
-                                { !this.props.message.isInFront && (
+                                { !this.props.message.isInFront && this.props.author.id == me.me.id && (
                                     <a class="seamless-link capitalize" onClick={this.props.publishInGroup}>{lang.t("publish_in_group")}</a>
                                 )}
+                            </div>
+                            <div class="none-if-follows-empty">
+                                <FaIcon family="solid" icon="ellipsis-h"/>
                             </div>
                         </div>
                     )}
