@@ -23,7 +23,8 @@ export default class Navbar extends Component {
 
     search(evt) {
         evt.preventDefault();
-        let searchTerms = document.getElementById('search').value.replace(/ /, '+')
+        // https://stackoverflow.com/a/37511463
+        let searchTerms = document.getElementById('search').value.normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/ /g, '+')
         let group_id = router.route == "messages" ? router.entity.group.id : router.entity.id;
         router.navigate("/groups/" + group_id + "?search=" + encodeURI(searchTerms));
     }
