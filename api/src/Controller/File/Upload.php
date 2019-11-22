@@ -9,6 +9,7 @@ use App\Service\Image as ImageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -50,6 +51,14 @@ class Upload extends ApiController
         if ($form->isValid()) {
             // persist file first to let Vich bundle populate the object attributes
             $this->em->persist($file);
+
+            // check if it's an accepted filetype
+            if (
+                'image/' != substr($file->getType(), 0, 6)
+                && 'video/' != substr($file->getType(), 0, 6)
+            ) {
+                return new JsonResponse(['error' => 'Unsupported file type'], Response::HTTP_BAD_REQUEST);
+            }
 
             // don't convert video if it's an mp4 and under 10Mo
             // TODO: the issue is that these mp4 could have libmp3lame audio instead of aac
