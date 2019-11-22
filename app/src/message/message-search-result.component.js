@@ -61,7 +61,17 @@ export default class MessageSearchResult extends Component {
                 if (!words[j].match(util.urlRegExp)) {
                     let searchTerms = this.props.search.split(" ");
                     for(let k = 0; k < searchTerms.length; k++) {
+                        if (!searchTerms[k]) {
+                            continue;
+                        }
                         words[j] = words[j].replace(new RegExp(searchTerms[k], "gi"), "<b>$&</b>");
+                    }
+                    let hashtags = this.props.hashtags.split(" ").map(e=>'#'+e);
+                    for(let k = 0; k < hashtags.length; k++) {
+                        if (!hashtags[k]) {
+                            continue;
+                        }
+                        words[j] = words[j].replace(new RegExp(hashtags[k], "gi"), "<b>$&</b>");
                     }
                 }
             }

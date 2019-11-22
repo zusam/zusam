@@ -33,10 +33,14 @@ class Search extends ApiController
 
         $requestData = json_decode($request->getcontent(), true);
 
-        if (empty($requestData['search'])) {
+        if (empty($requestData['search']) && empty($requestData['hashtags'])) {
             return new JsonResponse(['error' => 'You must provide search terms'], Response::HTTP_BAD_REQUEST);
         }
         $search_terms = explode(" ", $requestData['search']);
+        $hashtags = explode(" ", $requestData['hashtags']);
+        $hashtags = array_map(function ($h) {
+            return "#$h";
+        }, $hashtags);
 
         // get the asked group
         if (empty($requestData['group'])) {
@@ -83,6 +87,11 @@ class Search extends ApiController
                 foreach(explode(" ", StringUtils::remove_accents($data["text"])) as $word) {
                     foreach ($search_terms as $term) {
                         if (stripos($word, $term) !== false) {
+                            $score += 1;
+                        }
+                    }
+                    foreach ($hashtags as $hashtag) {
+                        if (stripos($word, $hashtag) !== false) {
                             $score += 1;
                         }
                     }

@@ -50,7 +50,7 @@ export default class MainContent extends Component {
                         </article>
                     );
                 }
-                if (router.getParam('search')) {
+                if (router.getParam('search') || router.getParam('hashtags')) {
                     return (
                         <div>
                             <GroupSearch key={this.props.id}/>

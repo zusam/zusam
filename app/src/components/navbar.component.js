@@ -24,9 +24,22 @@ export default class Navbar extends Component {
     search(evt) {
         evt.preventDefault();
         // https://stackoverflow.com/a/37511463
-        let searchTerms = document.getElementById('search').value.normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/ /g, '+')
+        let search = document.getElementById('search').value.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ");
+        let searchTerms = [];
+        let hashtags = [];
+        search.map(e => {
+            if (e.startsWith('#')) {
+                hashtags.push(e.slice(1));
+            } else {
+                searchTerms.push(e);
+            }
+        });
         let group_id = router.route == "messages" ? router.entity.group.id : router.entity.id;
-        router.navigate("/groups/" + group_id + "?search=" + encodeURI(searchTerms));
+        router.navigate(
+            "/groups/" + group_id
+            + "?search=" + encodeURI(searchTerms.join('+'))
+            + "&hashtags=" + encodeURI(hashtags.join('+'))
+        );
     }
 
     render() {
@@ -83,7 +96,14 @@ export default class Navbar extends Component {
                                 type="text"
                                 id="search"
                                 placeholder={lang.t("search_in_group")}
-                                value={router.getParam('search').replace(/\+/g," ")}
+                                value={
+                                    router.getParam('search').replace(/\+/g," ")
+                                        + (
+                                            router.getParam('hashtags') ?
+                                            " #" + router.getParam('hashtags').replace(/\+/g," #")
+                                            : ""
+                                        )
+                                }
                             ></input>
                             <div class="input-group-append">
                                 <button
