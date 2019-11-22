@@ -40,7 +40,10 @@ export default class MessageParent extends Component {
     }
 
     publishInGroup() {
-        http.put("/api/messages/" + this.state.message.id, {isInFront: true}).then(res => {
+        http.put("/api/messages/" + this.state.message.id, {
+            lastActivityDate: Math.floor(Date.now()/1000),
+            isInFront: true,
+        }).then(res => {
             if (!res) {
                 alert.add(lang.t("error"), "alert-danger");
                 return;
@@ -146,7 +149,7 @@ export default class MessageParent extends Component {
             newMsg.author = me.me;
             msg.children = [...msg.children, newMsg];
             this.setState(prevState => ({
-                displayedChildren: prevState.displayedChildren + 1,
+                lastDisplayedChild: prevState.lastDisplayedChild + 1,
                 message: msg,
             }));
         }
