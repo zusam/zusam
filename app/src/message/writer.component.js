@@ -36,18 +36,6 @@ export default class Writer extends Component {
         if (document.getElementById("text")) {
             document.getElementById("text").value = this.props.text || "";
         }
-        if (this.props.focus) {
-            setTimeout(() => {
-                if (document.getElementById("text")) {
-                    document.getElementById("text").focus();
-                    document.getElementById("text").style.height = document.getElementById("text").scrollHeight + "px";
-                    this.genPreview(document.getElementById("text"));
-                }
-            }, 10);
-        }
-        if (this.props.focus) {
-            document.getElementById('text').focus();
-        }
     }
 
     onKeyPress(event, doGenPreview = false) {
@@ -68,11 +56,11 @@ export default class Writer extends Component {
         t.style.height = (25 + t.scrollHeight) + "px";
         // waiting for the dom to be updated
         setTimeout(() => {
-            const text = t.innerText;
+            const text = t.value;
             let links = text.match(/(https?:\/\/[^\s]+)/gi);
             if (links && links[0] != this.state.link) {
                 cache.get("/api/links/by_url?url=" + encodeURIComponent(links[0])).then(r => {
-                    if (r && t.innerText.indexOf(links[0]) >= 0) {
+                    if (r && t.value.indexOf(links[0]) >= 0) {
                         this.setState({link: links[0], preview: r});
                     }
                 });
@@ -100,7 +88,7 @@ export default class Writer extends Component {
         let msg = {
             files: this.state.files.filter(e => !e.removed).map(e => e["id"]).filter(e => !!e),
             data: {
-                text: document.getElementById("text").innerText
+                text: document.getElementById("text").value
             },
         };
         if (document.getElementById("title")) {
@@ -125,7 +113,7 @@ export default class Writer extends Component {
             children: [],
             files: this.state.files.filter(e => !e.removed).map(e => e["id"]).filter(e => !!e),
             data: {
-                text: document.getElementById("text").innerText
+                text: document.getElementById("text").value
             },
             lastActivityDate: Math.floor(Date.now()/1000)
         };
@@ -162,7 +150,7 @@ export default class Writer extends Component {
                 writerId: +Date.now(),
             });
             if (document.getElementById("text")) {
-                document.getElementById("text").innerText = "";
+                document.getElementById("text").value = "";
             }
         });
         this.setState({sending: true});
@@ -293,12 +281,14 @@ export default class Writer extends Component {
                         placeholder={lang.t("title_placeholder")}
                     ></input>
                 )}
-                <div
-                    contentEditable="true"
+                <textarea
                     onKeyPress={e => this.onKeyPress(e, true)}
                     id="text"
+                    rows="5"
+                    autocomplete="off"
+                    autofocus={this.props.focus}
                     placeholder={lang.t("text_placeholder")}
-                ></div>
+                ></textarea>
                 { this.state.preview && <EmbedBlock inWriter={true} {...this.state.preview} /> }
                 { !!this.state.files.length && (
                     <FileGrid
