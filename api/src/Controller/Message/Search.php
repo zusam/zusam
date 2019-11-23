@@ -38,9 +38,10 @@ class Search extends ApiController
         }
         $search_terms = explode(" ", $requestData['search']);
         $hashtags = explode(" ", $requestData['hashtags']);
-        $hashtags = array_map(function ($h) {
-            return "#$h";
-        }, $hashtags);
+
+        $hashtags = array_filter(array_map(function ($h) {
+            return empty(trim($h)) ? null : "#$h";
+        }, $hashtags));
 
         // get the asked group
         if (empty($requestData['group'])) {
@@ -52,20 +53,11 @@ class Search extends ApiController
         }
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
-        // which page of the results are we getting ?
-        if (!empty($requestData['page'])) {
-            $n = intval($requestData['page']);
-        } else {
-            $n = 0;
-        }
-
         $query = $this->em->createQuery(
             "SELECT m FROM App\Entity\Message m"
             ." WHERE m.group = '".$group->getId()."'"
             .' ORDER BY m.id DESC'
         );
-        //$query->setMaxResults(30);
-        //$query->setFirstResult(30 * $n);
         $messages = $query->getResult();
 
         if (empty($messages)) {
@@ -77,22 +69,35 @@ class Search extends ApiController
         $i = 0;
         foreach ($messages as $message) {
             $i++;
-            if ($i < ($n + 1)*30) {
-                continue;
-            }
             $data = $message->getData();
             $score = 0;
+            $termsFound = [];
 
             if (!empty($data["text"])) {
                 foreach(explode(" ", StringUtils::remove_accents($data["text"])) as $word) {
                     foreach ($search_terms as $term) {
-                        if (stripos($word, $term) !== false) {
-                            $score += 1;
+                        if ($word == $term) {
+                            if(in_array($term, $termsFound)) {
+                                $score += 5;
+                            } else {
+                                $score += 500;
+                                $termsFound[] = $term;
+                            }
+                        } else {
+                            if (stripos($word, $term) !== false) {
+                                if(in_array($term, $termsFound)) {
+                                    $score += 1;
+                                } else {
+                                    $score += 100;
+                                    $termsFound[] = $term;
+                                }
+                            }
                         }
                     }
                     foreach ($hashtags as $hashtag) {
-                        if (stripos($word, $hashtag) !== false) {
+                        if(!in_array($term, $termsFound)) {
                             $score += 1;
+                            $termsFound[] = $term;
                         }
                     }
                 }
@@ -102,7 +107,12 @@ class Search extends ApiController
                 foreach(explode(" ", StringUtils::remove_accents($data["title"])) as $word) {
                     foreach ($search_terms as $term) {
                         if (stripos($word, $term) !== false) {
-                            $score += 1;
+                            if(in_array($term, $termsFound)) {
+                                $score += 1;
+                            } else {
+                                $score += 150;
+                                $termsFound[] = $term;
+                            }
                         }
                     }
                 }
@@ -118,7 +128,12 @@ class Search extends ApiController
                             foreach($link_data["tags"] as $tag) {
                                 foreach ($search_terms as $term) {
                                     if (stripos($tag, $term) !== false) {
-                                        $score += 1;
+                                        if(in_array($term, $termsFound)) {
+                                            $score += 1;
+                                        } else {
+                                            $score += 50;
+                                            $termsFound[] = $term;
+                                        }
                                     }
                                 }
                             }
@@ -127,7 +142,12 @@ class Search extends ApiController
                             foreach(explode(" ", StringUtils::remove_accents($link_data["title"])) as $word) {
                                 foreach ($search_terms as $term) {
                                     if (stripos($word, $term) !== false) {
-                                        $score += 1;
+                                        if(in_array($term, $termsFound)) {
+                                            $score += 1;
+                                        } else {
+                                            $score += 50;
+                                            $termsFound[] = $term;
+                                        }
                                     }
                                 }
                             }
@@ -136,7 +156,12 @@ class Search extends ApiController
                             foreach(explode(" ", StringUtils::remove_accents($link_data["description"])) as $word) {
                                 foreach ($search_terms as $term) {
                                     if (stripos($word, $term) !== false) {
-                                        $score += 1;
+                                        if(in_array($term, $termsFound)) {
+                                            $score += 1;
+                                        } else {
+                                            $score += 50;
+                                            $termsFound[] = $term;
+                                        }
                                     }
                                 }
                             }
