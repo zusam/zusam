@@ -20,6 +20,11 @@
             margin: 1rem 0;
         }
 
+        .card-body {
+            max-height: 20rem;
+            overflow-y: auto;
+        }
+
         .card-miniature {
             width: 100px;
             height: 100px;
@@ -27,7 +32,8 @@
             background-position: 50%;
             background-color: grey;
             overflow: hidden;
-            flex-shrink: 0;
+            float: left;
+            margin-right: 15px;
         }
 
         .svg-miniature {
@@ -60,33 +66,26 @@
             border: none;
             border-radius: 4px;
 
-            .result-body {
+            .infos {
                 display: flex;
-                flex-flow: column;
-                width: 100%;
-                padding-left: 1rem;
+                font-size: 90%;
+                color: $gray-600;
+                overflow: hidden;
 
-                .infos {
-                    display: flex;
-                    font-size: 90%;
-                    color: $gray-600;
-                    overflow: hidden;
-
-                    .dot {
-                        top: 1px;
-                        position: relative;
-                    }
-
-                    & > div {
-                        margin-right: 5px;
-                    }
+                .dot {
+                    top: 1px;
+                    position: relative;
                 }
 
-                .children {
-                    font-size: 90%;
-                    color: $gray-600;
-                    text-align: right;
+                & > div {
+                    margin-right: 5px;
                 }
+            }
+
+            .children {
+                font-size: 90%;
+                color: $gray-600;
+                text-align: right;
             }
         }
     }

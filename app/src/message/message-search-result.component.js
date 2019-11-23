@@ -66,12 +66,12 @@ export default class MessageSearchResult extends Component {
                         }
                         words[j] = words[j].replace(new RegExp(searchTerms[k], "gi"), "<b>$&</b>");
                     }
-                    let hashtags = this.props.hashtags.split(" ").map(e=>'#'+e);
+                    let hashtags = this.props.hashtags.split(" ");
                     for(let k = 0; k < hashtags.length; k++) {
                         if (!hashtags[k]) {
                             continue;
                         }
-                        words[j] = words[j].replace(new RegExp(hashtags[k], "gi"), "<b>$&</b>");
+                        words[j] = words[j].replace(new RegExp('#' + hashtags[k], "gi"), "<b>$&</b>");
                     }
                 }
             }
@@ -139,34 +139,32 @@ export default class MessageSearchResult extends Component {
                 title={this.state.title}
             >
                 <div tabindex={this.props.tabindex} class="card material-shadow">
-                    <div class="card-body border-top d-flex justify-content-between">
+                    <div class="card-body border-top">
                         { this.getMiniature() }
-                        <div class="result-body">
-                            <div class="infos">
-                                <div class="title">
-                                    { this.state.author ? this.state.author.name : "--" }
-                                </div>
-                                <div class="dot">&bull;</div>
-                                <div
-                                    class="title"
-                                    title={ this.state.title || util.humanFullDate(this.state.message.lastActivityDate)}
-                                    dangerouslySetInnerHTML={this.displayMessageTitle()}
-                                >
-                                </div>
+                        <div class="infos">
+                            <div class="title">
+                                { this.state.author ? this.state.author.name : "--" }
                             </div>
-                            <div class="text">
-                                { this.state.text.trim() && (
-                                    <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
-                                )}
+                            <div class="dot">&bull;</div>
+                            <div
+                                class="title"
+                                title={ this.state.title || util.humanFullDate(this.state.message.lastActivityDate)}
+                                dangerouslySetInnerHTML={this.displayMessageTitle()}
+                            >
                             </div>
-                            <div class="children">
-                                { !!this.state.message.children && (
-                                    <span>
-                                        { this.state.message.children + " " }
-                                        <FaIcon family={me.isNew(this.state.message.id) ? "solid" : "regular"} icon={"comment"} />
-                                    </span>
-                                )}
-                            </div>
+                        </div>
+                        <div class="text">
+                            { this.state.text.trim() && (
+                                <p class="card-text" dangerouslySetInnerHTML={this.displayMessageText()}></p>
+                            )}
+                        </div>
+                        <div class="children">
+                            { !!this.state.message.children && (
+                                <span>
+                                    { this.state.message.children + " " }
+                                    <FaIcon family={me.isNew(this.state.message.id) ? "solid" : "regular"} icon={"comment"} />
+                                </span>
+                            )}
                         </div>
                     </div>
                 </div>
