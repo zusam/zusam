@@ -55,7 +55,7 @@ class Cron extends Command
                 ],
             ],
             [
-                'name' => 'zusam:notification-emails',
+                'name' => 'zusam:notification:emails',
                 'period' => 60 * 60, // 1 hour
                 'options' => [
                     'type' => 'light',

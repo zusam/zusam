@@ -31,7 +31,7 @@ class NotificationEmails extends Command
 
     protected function configure()
     {
-        $this->setName('zusam:notification-emails')
+        $this->setName('zusam:notification:emails')
              ->setDescription('Send notification emails.')
             ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list user ids that would get a notification.')
              ->setHelp('Send a notification email to the users that asked for it.');

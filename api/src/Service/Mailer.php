@@ -13,7 +13,7 @@ class Mailer
 
     public function __construct(
         \Swift_Mailer $swift,
-        \Twig_Environment $twig,
+        \Twig\Environment $twig,
         $domain,
         $lang
     ) {
