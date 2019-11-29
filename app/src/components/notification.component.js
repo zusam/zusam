@@ -1,4 +1,4 @@
-import { h, render, Component } from "preact";
+import { h, render, Component, Fragment } from "preact";
 import { lang, me, router, util } from "/core";
 
 export default class Notification extends Component {
@@ -9,9 +9,16 @@ export default class Notification extends Component {
         this.setMiniatureOnError = this.setMiniatureOnError.bind(this);
         this.getAction = this.getAction.bind(this);
         this.getTarget = this.getTarget.bind(this);
+        this.state = {
+            target: this.getTarget(),
+            action: this.getAction(),
+        };
     }
 
     getMiniatureSrc() {
+        if (this.props.type == "global_notification") {
+            return util.defaultAvatar;
+        }
         return this.props.fromUser.avatar ? util.crop(this.props.fromUser.avatar["id"], 80, 80) : util.defaultAvatar;
     }
 
@@ -27,6 +34,8 @@ export default class Notification extends Component {
                 return lang.t("has_commented_on");
             case "user_joined_group":
                 return lang.t("has_joined");
+            case "global_notification":
+                return lang.t("global_notification");
             default:
                 return "";
         }
@@ -47,6 +56,8 @@ export default class Notification extends Component {
                 );
             case "user_joined_group":
                 return <a href={"/groups/" + this.props.fromGroup.id} onClick={router.onClick}>{this.props.fromGroup.name}</a>;
+            case "global_notification":
+                return this.props.data["text"];
             default:
                 return "";
         }
@@ -59,6 +70,8 @@ export default class Notification extends Component {
             case "new_message":
             case "new_comment":
                 return "/messages/" + this.props.fromMessage.id;
+            case "global_notification":
+                return this.props.target;
             default:
                 return "";
         }
@@ -66,7 +79,14 @@ export default class Notification extends Component {
 
     render() {
         return (
-            <a class="notification seamless-link unselectable" href={this.getTarget()} onClick={router.onClick}>
+            <a
+                class="notification seamless-link unselectable"
+                href={this.state.target}
+                onClick={e => {
+                    e.preventDefault();
+                    me.removeMatchingNotifications(this.props.id).then(_ => router.onClick(e, false, this.state.target));
+                }}
+            >
                 <div class="miniature unselectable">
                     <img
                         src={this.getMiniatureSrc()}
@@ -75,8 +95,12 @@ export default class Notification extends Component {
                 </div>
                 <div class="infos">
                     <div class="description">
-                        <strong>{this.props.fromUser.name}</strong>
-                        <span>{" " + this.getAction() + " "}</span>
+                        { this.props.type != "global_notification" && (
+                            <Fragment>
+                                <strong>{this.props.fromUser.name}</strong>
+                                <span>{" " + this.state.action + " "}</span>
+                            </Fragment>
+                        )}
                         {this.getObject()}
                     </div>
                     <div class="date" title={util.humanFullDate(this.props.createdAt)}>

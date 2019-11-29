@@ -84,7 +84,7 @@ export default class Navbar extends Component {
                             <FaIcon family={me.me.notifications.length ? "solid" : "regular"} icon={"bell"}/>
                         </div>
                         <div class="dropdown-menu dropdown-right notifications-menu">
-                            {me.me.notifications.sort((a, b) => b.createdAt - a.createdAt).map(e => <Notification {...e}/>)}
+                            {me.me.notifications.sort((a, b) => b.createdAt - a.createdAt).map(e => <Notification key={e.id} {...e}/>)}
                         </div>
                     </div>
                 </div>

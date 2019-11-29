@@ -14,13 +14,14 @@ const me = {
         window.dispatchEvent(new CustomEvent("meStateChange"));
         return r;
     }),
-    loadNotifications: () => {
-        http.get("/api/users/" + me.me.id + "/notifications").then(r => {
-            me.me.notifications = r;
-            window.dispatchEvent(new CustomEvent("meStateChange"));
-        });
-    },
+    loadNotifications: () => http.get("/api/users/" + me.me.id + "/notifications").then(r => {
+        me.me.notifications = r;
+        window.dispatchEvent(new CustomEvent("meStateChange"));
+    }),
     matchNotification: (notif, id) => {
+        if (notif.id === id) {
+            return true;
+        }
         if (notif.target === id) {
             return true;
         }
@@ -34,11 +35,13 @@ const me = {
     },
     isNew: id => me.me.notifications.some(n => me.matchNotification(n, id)),
     removeMatchingNotifications: id => {
-        me.me.notifications.filter(n => me.matchNotification(n, id)).map(n => {
-            http.delete('/api/notifications/' + n.id).then(r => {
-                me.me.notifications = me.me.notifications.filter(e => !me.matchNotification(e, id));
-                window.dispatchEvent(new CustomEvent("meStateChange"));
-            });
+        return me.loadNotifications().then(_ => {
+            return Promise.all(me.me.notifications.filter(n => me.matchNotification(n, id)).map(
+                n => http.delete('/api/notifications/' + n.id).then(r => {
+                    me.me.notifications = me.me.notifications.filter(e => !me.matchNotification(e, id));
+                    window.dispatchEvent(new CustomEvent("meStateChange"));
+                })
+            ));
         });
     },
 }

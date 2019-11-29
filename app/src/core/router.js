@@ -130,12 +130,20 @@ const router = {
         }
     },
     sync: () => router.navigate(location.pathname + location.search + location.hash, {replace: true}),
-    onClick: e => {
-        // get target url
-        let url = null
-        const t = e.target.closest("a")
-        if (t) {
-            url = t.getAttribute("href");
+    onClick: (e, newTab = false, url = null) => {
+        // stop propagation
+        e.preventDefault();
+        e.stopPropagation();
+
+        // if url is not given, try to guess it
+        if (!url) {
+            const t = e.target.closest("a");
+            if (t) {
+                if(t.target == "_blank") {
+                    newTab = true;
+                }
+                url = t.getAttribute("href");
+            }
         }
 
         if (!url) {
@@ -146,13 +154,14 @@ const router = {
         if (url.startsWith('http')) {
             let targetUrl = new URL(url);
             if (targetUrl.host != location.host) {
+                if (e.ctrlKey || newTab) {
+                    open(url, "_blank");
+                } else {
+                    location.href = url;
+                }
                 return;
             }
         }
-
-        // stop propagation
-        e.preventDefault();
-        e.stopPropagation();
 
         // disable active stances (dropdowns...)
         for (let e of document.getElementsByClassName("active")) {
@@ -160,8 +169,8 @@ const router = {
         }
 
         // go to target url
-        if (e.ctrlKey) {
-            open(url, "_blank")
+        if (e.ctrlKey || newTab) {
+            open(url, "_blank");
         } else {
             router.navigate(url);
         }
