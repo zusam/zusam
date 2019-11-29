@@ -2,6 +2,7 @@
 /.git
 /data
 /documentation
+/dev
 
 # API
 /api/.web-server-pid
