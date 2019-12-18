@@ -1,18 +1,12 @@
 monolog:
-    channels: ["db"]
     handlers:
         main:
             type: fingers_crossed
             action_level: error
-            handler: db
+            handler: main
             excluded_404s:
                 # regex: exclude all 404 errors from the logs
                 - ^/
-        db:
-            type: service
-            id: App\Service\Logger
-            level: debug
-            channels: ["db"]
         console:
             type: console
             process_psr_3_messages: false

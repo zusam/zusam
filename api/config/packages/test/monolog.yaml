@@ -1,13 +1,7 @@
 monolog:
-    channels: ["db"]
     handlers:
         main:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
             channels: ["!event"]
-        db:
-            type: service
-            id: App\Service\Logger
-            level: debug
-            channels: ["db"]
