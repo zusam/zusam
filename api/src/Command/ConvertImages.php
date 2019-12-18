@@ -47,7 +47,7 @@ class ConvertImages extends Command
             ->setHelp('This command search for raw image files in the database and converts them.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'image%';");
@@ -66,8 +66,9 @@ class ConvertImages extends Command
             $q = $this->pdo->prepare("UPDATE file SET content_url = '".$rawFile['id'].".jpg', status = '".File::STATUS_READY."', type = 'image/jpeg' WHERE id = '".$rawFile['id']."';");
             $q->execute();
             if (!empty($input->getOption('max-convert')) && intval($input->getOption('max-convert')) < $i) {
-                return;
+                return 0;
             }
         }
+        return 0;
     }
 }

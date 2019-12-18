@@ -30,7 +30,7 @@ class CleanNotifications extends Command
        ->setHelp('This command deletes notifications from removed users/groups and related to groups in which the user is not anymore.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
 
@@ -70,5 +70,6 @@ class CleanNotifications extends Command
                 $this->pdo->query("DELETE FROM `notification` WHERE id = '".$i['id']."';");
             }
         }
+        return 0;
     }
 }

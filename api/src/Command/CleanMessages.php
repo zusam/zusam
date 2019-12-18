@@ -30,7 +30,7 @@ class CleanMessages extends Command
        ->setHelp('This command deletes messages not linked to any group.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
 
@@ -62,5 +62,6 @@ class CleanMessages extends Command
                 $this->pdo->query("DELETE FROM `message` WHERE id = '".$i['id']."';");
             }
         }
+        return 0;
     }
 }

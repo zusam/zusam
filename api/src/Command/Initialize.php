@@ -41,7 +41,7 @@ class Initialize extends Command
              ->addOption('seed', null, InputOption::VALUE_REQUIRED, 'Specify a seed for UUIDs generation.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('remove-existing')) {
             $doctrineDatabaseDrop = $this->getApplication()->find('doctrine:database:drop');
@@ -94,6 +94,7 @@ class Initialize extends Command
         $message_1 = new Message();
         $message_1->setAuthor($user);
         $message_1->setGroup($group);
+        $message_1->setIsInFront(true);
         $message_1->setData([
             'title' => 'Welcome on Zusam !',
             'text' => '
@@ -115,5 +116,6 @@ class Initialize extends Command
         $this->em->persist($group);
         $this->em->persist($message_1);
         $this->em->flush();
+        return 0;
     }
 }

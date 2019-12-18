@@ -17,12 +17,12 @@ abstract class ApiTestCase extends WebTestCase
     protected $firstUser;
     protected $firstGroup;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->standardSetUp();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->standardTearDown();
     }
@@ -32,6 +32,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     public function standardSetUp()
     {
+        $this->client = static::createClient();
         self::bootKernel();
 
         $application = new Application(static::$kernel);
@@ -49,7 +50,6 @@ abstract class ApiTestCase extends WebTestCase
         ]), new NullOutput());
 
         $this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
-        $this->client = static::createClient();
 
         $this->firstUser = $this->em->getRepository(User::class)->findOneByLogin("zusam");
         $this->firstGroup = $this->em->getRepository(Group::class)->findOneByName("zusam");

@@ -34,7 +34,7 @@ class IssueNotification extends Command
              ->addArgument('target', InputArgument::REQUIRED, 'Target URL when notification is clicked.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
 
@@ -51,5 +51,6 @@ class IssueNotification extends Command
         }
 
         $this->em->flush();
+        return 0;
     }
 }

@@ -46,7 +46,7 @@ class ConvertVideo extends Command
             ->setHelp('This command search for a raw video file in the database and converts it.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'video%';");
@@ -73,7 +73,8 @@ class ConvertVideo extends Command
                 ]);
             }
 
-            return;
+            return 0;
         }
+        return 0;
     }
 }

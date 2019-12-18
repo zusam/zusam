@@ -42,7 +42,7 @@ class CleanFiles extends Command
        ->setHelp('This command deletes files not linked to any message or user.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
         // First we get all files not linked to a user and/or a message
@@ -74,5 +74,6 @@ class CleanFiles extends Command
                 }
             }
         }
+        return 0;
     }
 }

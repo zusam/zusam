@@ -31,7 +31,7 @@ class RepairDatabase extends Command
             ->setHelp('Tries to "repair" the database by doing some housekeeping actions on it.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
 
@@ -113,5 +113,6 @@ class RepairDatabase extends Command
                 $this->pdo->query("UPDATE link SET secret_key = '".Uuid::uuidv4()."' WHERE id = '".$i['id']."';");
             }
         }
+        return 0;
     }
 }

@@ -43,7 +43,7 @@ class CleanCache extends Command
             ->setHelp('This command removes cache files older than one month.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
         $max_cache_size = 1024 * 1024 * ($input->getArgument('max-cache-size') ?? 512);
@@ -77,5 +77,6 @@ class CleanCache extends Command
             }
             $cache_size -= $file['size'];
         }
+        return 0;
     }
 }

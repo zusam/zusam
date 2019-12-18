@@ -43,7 +43,7 @@ class PreparePreviews extends Command
             ->setHelp('This command preprocesses previews of parent messages for a faster first load.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
         $max_memory = $input->getArgument('memory') ? intval($input->getArgument('memory')) : 70;
@@ -95,5 +95,6 @@ class PreparePreviews extends Command
 
             $this->em->flush();
         }
+        return 0;
     }
 }

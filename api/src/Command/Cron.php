@@ -19,7 +19,6 @@ class Cron extends Command
     private $em;
     private $logger;
     private $output;
-    private $params;
     private $running;
     private $system;
     private $tasks;
@@ -28,7 +27,6 @@ class Cron extends Command
     public function __construct(
         LoggerInterface $logger,
         EntityManagerInterface $em,
-        ParameterBagInterface $params,
         System $system,
         KernelInterface $kernel
     ) {
@@ -36,7 +34,6 @@ class Cron extends Command
         $this->em = $em;
         $this->logger = $logger;
         $this->running = false;
-        $this->params = $params;
         $this->system = $system;
         $this->kernel = $kernel;
         $this->tasks = [
@@ -122,10 +119,11 @@ class Cron extends Command
             ->setHelp('This command launches recurrent tasks defined as symfony commands.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->output = $output;
         $this->runTask();
+        return 0;
     }
 
     // This can be called in controllers to avoid relying on system cron
@@ -166,12 +164,16 @@ class Cron extends Command
         shuffle($this->tasks);
 
         // get idle hours
-        $idle_hours = explode('-', $this->params->get('IDLE_HOURS'));
+        if (isset($_SERVER['IDLE_HOURS'])) {
+            $idle_hours = explode('-', $_SERVER['IDLE_HOURS']);
+        } else {
+            $idle_hours = [INF, -INF];
+        }
 
         foreach ($this->tasks as $task) {
             // if it's a heavy task and we're not in the idle hours, do something else
             if (
-                $task['type'] == 'heavy'
+                $task['options']['type'] == 'heavy'
                 && (
                     (new DateTime())->format('H') < $idle_hours[0]
                     || (new DateTime())->format('H') > $idle_hours[1]
@@ -203,7 +205,7 @@ class Cron extends Command
             $returnCode = $command->run(new ArrayInput($options), $this->output ?? new NullOutput());
         } catch (\Exception $e) {
             if (null != $this->output) {
-                $this->output->writeln(['<error>'.$e->getMessage.'</error>']);
+                $this->output->writeln(['<error>'.$e->getMessage().'</error>']);
             }
             $this->logger->error($id);
         }

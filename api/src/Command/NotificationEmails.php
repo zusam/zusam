@@ -37,7 +37,7 @@ class NotificationEmails extends Command
              ->setHelp('Send a notification email to the users that asked for it.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
         $users = $this->em->getRepository(User::class)->findAll();
@@ -88,5 +88,6 @@ class NotificationEmails extends Command
                 break;
             }
         }
+        return 0;
     }
 }

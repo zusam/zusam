@@ -30,7 +30,7 @@ class CleanGroups extends Command
        ->setHelp('This command deletes groups not linked to any user.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
         $c = $this->pdo->query('SELECT g.id FROM `group` g LEFT JOIN users_groups ug ON ug.group_id = g.id WHERE ug.group_id IS NULL;');
@@ -42,5 +42,6 @@ class CleanGroups extends Command
                 $this->pdo->query("DELETE FROM `group` WHERE id = '".$i['id']."';");
             }
         }
+        return 0;
     }
 }

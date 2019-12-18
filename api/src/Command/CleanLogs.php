@@ -30,7 +30,7 @@ class CleanLogs extends Command
        ->setHelp('This command deletes all logs except for the most 10000 recents.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
         $c = $this->pdo->query('SELECT id FROM log WHERE created_at < (SELECT MIN(created_at) FROM (SELECT created_at FROM log ORDER BY created_at DESC LIMIT 10000));');
@@ -42,5 +42,6 @@ class CleanLogs extends Command
                 $this->pdo->query("DELETE FROM `log` WHERE id = '".$i['id']."';");
             }
         }
+        return 0;
     }
 }
