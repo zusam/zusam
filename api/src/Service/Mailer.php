@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\User;
+use Psr\Log\LoggerInterface;
 
 class Mailer
 {
@@ -10,17 +11,37 @@ class Mailer
     private $twig;
     private $domain;
     private $lang;
+    private $logger;
 
     public function __construct(
         \Swift_Mailer $swift,
         \Twig\Environment $twig,
         $domain,
-        $lang
+        $lang,
+        LoggerInterface $logger
     ) {
         $this->swift = $swift;
         $this->twig = $twig;
         $this->domain = $domain;
         $this->lang = $lang;
+        $this->logger = $logger;
+    }
+
+    private function sendMail(\Swift_Message $email)
+    {
+        $failures = [];
+        try {
+            $ret = $this->swift->send($email, $failures);
+            if (!$ret) {
+                $this->logger->error("Could not send email to " . array_key_first($email->getTo()));
+                return $failures;
+            }
+        } catch (\Exception $e) {
+            $this->logger->error("Could not send email to " . array_key_first($email->getTo()));
+            return [$e->getMessage()];
+        }
+
+        return true;
     }
 
     public function sendNotificationEmail(User $user)
@@ -53,12 +74,7 @@ class Mailer
             )
         ;
 
-        $failures = [];
-        if (!$this->swift->send($email, $failures)) {
-            return $failures;
-        }
-
-        return true;
+        return $this->sendMail($email);
     }
 
     public function sendPasswordReset(User $user)
@@ -94,11 +110,6 @@ class Mailer
             )
         ;
 
-        $failures = [];
-        if (!$this->swift->send($email, $failures)) {
-            return $failures;
-        }
-
-        return true;
+        return $this->sendMail($email);
     }
 }

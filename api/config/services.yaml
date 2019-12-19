@@ -104,6 +104,10 @@ services:
       arguments:
         $logger: '@monolog.logger.zusam'
 
+    App\Command\NotificationEmails:
+      arguments:
+        $logger: '@monolog.logger.zusam'
+
     App\Service\Mailer:
       arguments:
         - '@mailer'

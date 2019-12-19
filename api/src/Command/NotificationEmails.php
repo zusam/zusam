@@ -33,7 +33,8 @@ class NotificationEmails extends Command
     {
         $this->setName('zusam:notification:emails')
              ->setDescription('Send notification emails.')
-            ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list user ids that would get a notification.')
+             ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list user ids that would get a notification.')
+             ->addOption('log-send', null, InputOption::VALUE_NONE, 'Log when sending an email.')
              ->setHelp('Send a notification email to the users that asked for it.');
     }
 
@@ -81,6 +82,9 @@ class NotificationEmails extends Command
                     $output->writeln([
                         '<info>Notification email sent to '.$user->getId().'.</info>',
                     ]);
+                }
+                if ($input->getOption('log-send')) {
+                    $this->logger->info('Notification email sent to '.$user->getId());
                 }
                 if (!$input->getOption('only-list')) {
                     $this->mailer->sendNotificationEmail($user);
