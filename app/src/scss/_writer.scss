@@ -34,9 +34,6 @@
         display: inline;
         border: none;
         border-bottom: 1px solid #eee;
-        &::placeholder {
-            color: #999;
-        }
     }
 
     #text {
@@ -48,15 +45,6 @@
         border: none;
         border-bottom: 1px solid #eee;
         margin-bottom: 10px;
-
-        &:empty::before {
-            content: attr(placeholder);
-            color: #999; 
-        }
-
-        &:empty:focus::before {
-            content: "";
-        }
     }
 
     .options {
