@@ -3,7 +3,8 @@ monolog:
     channels: ["zusam"]
     handlers:
         zusam:
-            type: stream
+            type: rotating_file
             path: "%kernel.logs_dir%/zusam.log"
             level: debug
             channels: ["zusam"]
+            max_files: 10
