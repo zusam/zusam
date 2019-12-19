@@ -203,3 +203,6 @@ INSERT INTO `notification` (
     , `target`
 FROM `tmp_notification`;
 DROP TABLE `tmp_notification`;
+
+-- Drop log table
+DROP TABLE `log`;
