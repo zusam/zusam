@@ -66,6 +66,8 @@ class Edit extends ApiController
             }
             $user->setAvatar($file);
         }
+        $this->getUser()->setLastActivityDate(time());
+        $this->em->persist($this->getUser());
         $this->em->persist($user);
         $this->em->flush();
 

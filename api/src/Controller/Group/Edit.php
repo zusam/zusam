@@ -41,6 +41,12 @@ class Edit extends ApiController
             $group->setName($requestData['name']);
         }
 
+        $this->getUser()->setLastActivityDate(time());
+        $this->em->persist($this->getUser());
+
+        $this->em->persist($group);
+        $this->em->flush();
+
         return new Response(
             $this->serialize($group, ['read_message']),
             Response::HTTP_OK

@@ -60,6 +60,9 @@ class Edit extends ApiController
         // regen message miniature
         $message->setPreview($this->create->genPreview($message));
 
+        $this->getUser()->setLastActivityDate(time());
+        $this->em->persist($this->getUser());
+
         $this->em->persist($message);
         $this->em->flush();
 

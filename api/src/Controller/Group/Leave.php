@@ -44,6 +44,7 @@ class Leave extends ApiController
             }
         }
 
+        $this->getUser()->setLastActivityDate(time());
         $this->em->persist($this->getUser());
         $this->em->persist($group);
         $this->em->flush();

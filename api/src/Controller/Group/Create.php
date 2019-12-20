@@ -38,6 +38,9 @@ class Create extends ApiController
         $group->setName($requestData['name']);
         $this->em->persist($group);
 
+        $this->getUser()->setLastActivityDate(time());
+        $this->em->persist($this->getUser());
+
         $this->em->flush();
 
         return new Response(

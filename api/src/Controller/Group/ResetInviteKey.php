@@ -35,6 +35,9 @@ class ResetInviteKey extends ApiController
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
         $group->resetSecretKey();
+
+        $this->getUser()->setLastActivityDate(time());
+        $this->em->persist($this->getUser());
         $this->em->persist($group);
         $this->em->flush();
 

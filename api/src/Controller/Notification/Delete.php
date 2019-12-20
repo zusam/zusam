@@ -34,6 +34,8 @@ class Delete extends ApiController
 
         $this->denyAccessUnlessGranted(new Expression('user == object'), $notification->getOwner());
 
+        $this->getUser()->setLastActivityDate(time());
+        $this->em->persist($this->getUser());
         $this->em->remove($notification);
         $this->em->flush();
 
