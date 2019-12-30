@@ -2,7 +2,7 @@
     "name": "Zusam",
     "license": "AGPL-3.0-or-later",
     "scripts": {
-        "build": "parcel build --public-url './' --no-source-maps src/index.html",
+        "build": "parcel build --public-url './' src/index.html",
         "clean": "rm -rf dist/*",
         "lang": "cp -r src/lang dist/",
         "prebuild": "yarn lang",
@@ -12,7 +12,7 @@
         "node-sass": "~4.13",
         "parcel-bundler": "~1.12",
         "pica": "~5.1",
-        "preact": "10.0.2"
+        "preact": "~10.1"
     },
     "devDependencies": {
         "babel-core": "~6.26",
