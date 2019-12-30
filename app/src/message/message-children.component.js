@@ -11,7 +11,12 @@ export default class MessageChildren extends Component {
             <div>
                 { this.props.firstDisplayedChild > 0 && (
                     <div class="d-flex">
-                        <a class="more-coms unselectable" onClick={this.props.displayPreviousChildren}>{lang.t("previous_coms")}</a>
+                        <a
+                            class="more-coms unselectable"
+                            onClick={e => this.props.displayPreviousChildren(e)}
+                        >
+                            {lang.t("previous_coms")}
+                        </a>
                     </div>
                 )}
                 { toChildArray(this.props.children).map((e,i,m) => {
@@ -31,7 +36,12 @@ export default class MessageChildren extends Component {
                 })}
                 { this.props.lastDisplayedChild < toChildArray(this.props.children).length && (
                     <div class="d-flex">
-                        <a class="more-coms unselectable" onClick={this.props.displayNextChildren}>{lang.t("next_coms")}</a>
+                        <a
+                            class="more-coms unselectable"
+                            onClick={e => this.props.displayNextChildren(e)}
+                        >
+                            {lang.t("next_coms")}
+                        </a>
                     </div>
                 )}
             </div>

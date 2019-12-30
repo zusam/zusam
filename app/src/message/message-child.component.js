@@ -28,12 +28,6 @@ export default class MessageChild extends Component {
         }
 
         this.state = {url: url, preview: null};
-
-        if (props.message) {
-            this.loadMessage(props.message);
-        } else {
-            cache.get(url).then(msg => this.loadMessage(msg));
-        }
     }
 
     loadMessage(msg) {
@@ -116,6 +110,11 @@ export default class MessageChild extends Component {
     }
 
     componentDidMount() {
+        if (this.props.message) {
+            this.loadMessage(this.props.message);
+        } else {
+            cache.get(url).then(msg => this.loadMessage(msg));
+        }
         setTimeout(() => window.scrollTo(0, 0));
     }
 
@@ -136,12 +135,14 @@ export default class MessageChild extends Component {
         if (!this.state.gotPreview) {
             this.processEmbed();
         }
-        let msgElement = document.getElementById(this.state.message.id);
-        if (this.state.message.id == router.action && msgElement.classList.contains('highlight')) {
-            setTimeout(_ => {
-                msgElement.scrollIntoView({block: "start", behavior: "smooth"});
-                setTimeout(_ => msgElement.classList.remove('highlight'), 1000);
-            }, 1000);
+        if (this.state.message) {
+            let msgElement = document.getElementById(this.state.message.id);
+            if (this.state.message.id == router.action && msgElement.classList.contains('highlight')) {
+                setTimeout(_ => {
+                    msgElement.scrollIntoView({block: "start", behavior: "smooth"});
+                    setTimeout(_ => msgElement.classList.remove('highlight'), 1000);
+                }, 1000);
+            }
         }
     }
 

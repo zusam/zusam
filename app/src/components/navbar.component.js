@@ -63,14 +63,14 @@ export default class Navbar extends Component {
                                 <a
                                     class="d-block seamless-link"
                                     href={router.toApp("/users/" + me.me.id + "/settings")}
-                                    onClick={router.onClick}
+                                    onClick={e => router.onClick(e)}
                                 >
                                     {lang.t("settings")}
                                 </a>
                                 <a
                                     class="d-block seamless-link"
                                     href={router.toApp("/logout")}
-                                    onClick={router.onClick}
+                                    onClick={e => router.onClick(e)}
                                 >
                                     {lang.t("logout")}
                                 </a>
@@ -81,7 +81,7 @@ export default class Navbar extends Component {
                         <a
                             class="seamless-link back"
                             href={router.toApp(router.backUrl)}
-                            onClick={this.clickBackButton}
+                            onClick={e => this.clickBackButton(e)}
                         >
                             <FaIcon family={"solid"} icon={"arrow-left"}/>
                         </a>
@@ -121,7 +121,7 @@ export default class Navbar extends Component {
                             ></input>
                             <div class="input-group-append">
                                 <button
-                                    onClick={this.search}
+                                    onClick={e => this.search(e)}
                                     class="btn btn-secondary"
                                     type="submit"
                                 >
@@ -138,7 +138,7 @@ export default class Navbar extends Component {
                             onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
                             onClick={e => e.currentTarget.classList.toggle("active")}
                         >
-                            <div class="unselectable">
+                            <div class="unselectable pr-5px">
                                 { lang.t("groups") } <FaIcon family={"solid"} icon={"caret-down"}/>
                             </div>
                             <div class="dropdown-menu dropdown-left">
@@ -147,7 +147,7 @@ export default class Navbar extends Component {
                                         <a
                                             class="d-block seamless-link unselectable"
                                             href={router.toApp("/groups/" + e.id)}
-                                            onClick={router.onClick}
+                                            onClick={e => router.onClick(e)}
                                         >
                                             {e.name}
                                         </a>
@@ -156,7 +156,7 @@ export default class Navbar extends Component {
                                 <a
                                     class="seamless-link unselectable"
                                     href={router.toApp("/create-group")}
-                                    onClick={router.onClick}
+                                    onClick={e => router.onClick(e)}
                                 >
                                     {"+ " + lang.t("create_a_group")}
                                 </a>

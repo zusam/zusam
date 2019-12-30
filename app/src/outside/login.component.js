@@ -16,7 +16,7 @@ export default class Login extends Component {
         // reroute if already logged in
         cache.get("apiKey").then(apiKey => apiKey && router.navigate("/"));
     }
-    
+
     sendPasswordReset(e) {
         e.preventDefault();
         let login = document.getElementById("login").value || "";
@@ -73,8 +73,17 @@ export default class Login extends Component {
                             <div class="form-group">
                                 <input type="password" class="form-control" required id="password" placeholder={lang.t("password_placeholder")} />
                             </div>
-                            <div class="forgot-password"><span onClick={this.showPasswordReset}>{lang.t("forgot_password")}</span></div>
-                            <button type="submit" class="btn btn-light" onClick={this.sendLoginForm} disabled={this.state.sending}>
+                            <div class="forgot-password">
+                                <span onClick={e => this.showPasswordReset(e)}>
+                                    {lang.t("forgot_password")}
+                                </span>
+                            </div>
+                            <button
+                                type="submit"
+                                class="btn btn-light"
+                                onClick={e => this.sendLoginForm(e)}
+                                disabled={this.state.sending}
+                            >
                                 {lang.t("connect")}
                             </button>
                         </form>
@@ -84,7 +93,12 @@ export default class Login extends Component {
                             <div class="form-group">
                                 <input type="email" class="form-control" required id="login" placeholder={lang.t("login_placeholder")} />
                             </div>
-                            <button type="submit" class="btn btn-light" onClick={this.sendPasswordReset} disabled={this.state.sending}>
+                            <button
+                                type="submit"
+                                class="btn btn-light"
+                                onClick={e => this.sendPasswordReset(e)}
+                                disabled={this.state.sending}
+                            >
                                 {lang.t("submit")}
                             </button>
                         </form>

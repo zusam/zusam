@@ -44,18 +44,37 @@ export default class Notification extends Component {
     getObject() {
         switch (this.props.type) {
             case "new_message":
-                return <a href={router.toApp("/groups/" + this.props.fromGroup.id)} onClick={router.onClick}>{this.props.fromGroup.name}</a>;
+                return (
+                    <a
+                        href={router.toApp("/groups/" + this.props.fromGroup.id)}
+                        onClick={e => router.onClick(e)}
+                    >
+                        {this.props.fromGroup.name}
+                    </a>
+                );
             case "new_comment":
                 return (
                     <span>
                         {lang.t("the_message_from") + " "}
                         <strong>{this.props.fromMessage.author["name"]}</strong>
                         {" " + lang.t("in") + " "}
-                        <a href={router.toApp("/groups/" + this.props.fromGroup.id)} onClick={router.onClick}>{this.props.fromGroup.name}</a>
+                        <a
+                            href={router.toApp("/groups/" + this.props.fromGroup.id)}
+                            onClick={e => router.onClick(e)}
+                        >
+                            {this.props.fromGroup.name}
+                        </a>
                     </span>
                 );
             case "user_joined_group":
-                return <a href={router.toApp("/groups/" + this.props.fromGroup.id)} onClick={router.onClick}>{this.props.fromGroup.name}</a>;
+                return (
+                    <a
+                        href={router.toApp("/groups/" + this.props.fromGroup.id)}
+                        onClick={e => router.onClick(e)}
+                    >
+                        {this.props.fromGroup.name}
+                    </a>
+                );
             case "global_notification":
                 return this.props.data["text"];
             default:
@@ -90,7 +109,7 @@ export default class Notification extends Component {
                 <div class="miniature unselectable">
                     <img
                         src={this.getMiniatureSrc()}
-                        onError={this.setMiniatureOnError}
+                        onError={e => this.setMiniatureOnError(e)}
                     />
                 </div>
                 <div class="infos">

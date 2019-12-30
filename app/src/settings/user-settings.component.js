@@ -94,7 +94,7 @@ export default class UserSettings extends Component {
                                         class="img-fluid rounded-circle material-shadow avatar"
                                         src={this.state.avatar ? util.crop(this.state.avatar["id"], 100, 100) : util.defaultAvatar}
                                         onError={e => e.currentTarget.src = util.defaultAvatar}
-                                        onClick={this.inputAvatar}
+                                        onClick={e => this.inputAvatar(e)}
                                     />
                                 </div>
                                 <div class="col-12 col-md-10">
@@ -167,11 +167,20 @@ export default class UserSettings extends Component {
                                                 { Object.keys(lang.possibleLang).map(k => <option value={k}>{lang.possibleLang[k]}</option>)}
                                             </select>
                                         </div>
-                                        <button onClick={this.updateSettings} class="btn btn-primary">{lang.t("save_changes")}</button>
+                                        <button
+                                            onClick={e => this.updateSettings(e)}
+                                            class="btn btn-primary"
+                                        >
+                                            {lang.t("save_changes")}
+                                        </button>
                                     </form>
                                     <form id="destroy_form">
                                         <label class="d-block" for="destroy_account">{ lang.t("destroy_account_explain") }</label>
-                                        <button onClick={this.destroyAccount} name="destroy_account" class="btn btn-danger">
+                                        <button
+                                            onClick={e => this.destroyAccount(e)}
+                                            name="destroy_account"
+                                            class="btn btn-danger"
+                                        >
                                             {lang.t("destroy_account")}
                                         </button>
                                     </form>

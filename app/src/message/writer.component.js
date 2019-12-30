@@ -277,7 +277,7 @@ export default class Writer extends Component {
                 { !this.props.isChild && (
                     <input
                         type="text" id="title"
-                        onKeyPress={this.onKeyPress}
+                        onKeyPress={e => this.onKeyPress(e)}
                         placeholder={lang.t("title_placeholder")}
                     ></input>
                 )}
@@ -301,14 +301,14 @@ export default class Writer extends Component {
                 <div class="options">
                     <button
                         class="option"
-                        onClick={this.inputImages}
+                        onClick={e => this.inputImages(e)}
                         title={lang.t("upload_image")}
                     >
                         <FaIcon family={"regular"} icon={"images"}/>
                     </button>
                         <button
                             class="option"
-                            onClick={this.inputVideo}
+                            onClick={e => this.inputVideo(e)}
                             title={lang.t("upload_video")}
                         >
                             <FaIcon family={"solid"} icon={"film"}/>
@@ -319,7 +319,7 @@ export default class Writer extends Component {
                             disabled={!this.state.group}
                             type="submit"
                             class="submit"
-                            onClick={this.sendMessage}
+                            onClick={e => this.sendMessage(e)}
                         >
                             {lang.t("submit")}
                         </button>

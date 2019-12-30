@@ -63,7 +63,7 @@ export default class MainContent extends Component {
                         <a
                             class="write-button material-shadow seamless-link"
                             href={router.toApp("/groups/" + this.props.id + "/write")}
-                            onClick={router.onClick}
+                            onClick={e => router.onClick(e)}
                         >
                             <FaIcon family={"solid"} icon={"pencil-alt"}/>
                         </a>

@@ -21,10 +21,10 @@ export default class GroupBoard extends Component {
         this.onScroll = this.onScroll.bind(this);
         this.loadMessages = this.loadMessages.bind(this);
         window.addEventListener("resetCache", this.resetGroupDisplay);
-        this.loadMessages(0);
     }
 
     componentDidMount() {
+        this.loadMessages(0);
         window.addEventListener("scroll", this.onScroll);
     }
 

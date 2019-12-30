@@ -18,7 +18,6 @@ export default class GroupSearch extends Component {
         };
         this.loadMessages = this.loadMessages.bind(this);
         window.addEventListener("routerStateChange", _ => this.loadMessages());
-        this.loadMessages();
     }
 
     getGroupName() {
@@ -29,10 +28,13 @@ export default class GroupSearch extends Component {
         return "";
     }
 
+    componentDidMount() {
+        this.loadMessages();
+    }
+
     loadMessages() {
         let search = router.getParam('search').replace(/\+/g, " ");
         let hashtags = router.getParam('hashtags').split('+').join(" ");
-        this.setState({search: search});
         http.post("/api/messages/search", {
             group: this.state.groupId,
             search: search,
@@ -40,6 +42,7 @@ export default class GroupSearch extends Component {
         }).then(res => {
             if(res && Array.isArray(res["messages"])) {
                 this.setState({
+                    search: search,
                     messages: res["messages"],
                     totalMessages: res["totalItems"],
                     loaded: res.messages.length,
@@ -51,7 +54,7 @@ export default class GroupSearch extends Component {
     render() {
         return Array.isArray(this.state.messages) && (
             <div>
-                <div class="group-name">{ this.getGroupName() }</div>
+                <div class="group-name">{this.getGroupName()}</div>
                 <article id="group" class="justify-content-center d-flex">
                     <div class="search-results-container container-fluid d-flex justify-content-center flex-wrap">
                         { this.state.messages.slice(0, this.state.loaded).map((msg, i) => {

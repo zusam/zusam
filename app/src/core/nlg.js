@@ -188,8 +188,8 @@ let nlg = {
                 document.getElementById("nlg-origin").outerHTML = "";
             }
             if (keepBackground != true) {
-                document.querySelector("#nlg-close").outerHTML = "";
-                document.getElementById("nlg-modal-bg").outerHTML = "";
+                (document.querySelector("#nlg-close") || {}).outerHTML = "";
+                (document.getElementById("nlg-modal-bg") || {}).outerHTML = "";
                 window.removeEventListener("keydown", nlg.keyPressClose);
             }
         }

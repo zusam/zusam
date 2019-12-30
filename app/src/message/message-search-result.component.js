@@ -7,21 +7,20 @@ export default class MessageSearchResult extends Component {
         super(props);
         this.state = {
             message: props.message,
-        };
-        if (props.message.author) {
-            cache.get("/api/users/" + props.message.author).then(author => author && this.setState({author: author}));
-        }
-        this.setState({
             title: props.message.data["title"] || "",
-            text: props.message.data["text"] || ""
-        });
-        if (props.message.preview) {
-            this.setState({preview: props.message.preview});
-        }
+            text: props.message.data["text"] || "",
+            preview: props.message["preview"] || null,
+        };
         this.getMiniature = this.getMiniature.bind(this);
         this.getLink = this.getLink.bind(this);
         this.displayMessageTitle = this.displayMessageTitle.bind(this);
         this.displayMessageText = this.displayMessageText.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.props.message.author) {
+            cache.get("/api/users/" + this.props.message.author).then(author => author && this.setState({author: author}));
+        }
     }
 
     displayMessageTitle() {
@@ -135,7 +134,7 @@ export default class MessageSearchResult extends Component {
             <a
                 class="d-inline-block seamless-link message-preview unselectable"
                 href={router.toApp(this.getLink())}
-                onClick={router.onClick}
+                onClick={e => router.onClick(e)}
                 title={this.state.title}
             >
                 <div tabindex={this.props.tabindex} class="card material-shadow">

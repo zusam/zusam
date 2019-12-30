@@ -1,35 +1,22 @@
 import { h, render, Component } from "preact";
-import { nlg, cache, util } from "/core";
+import { nlg, cache, util, router } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class FileGrid extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {files: []};
         this.toggleFile = this.toggleFile.bind(this);
+        let files = [];
         if (Array.isArray(props.files)) {
             props.files.forEach((e,i) => {
-                if (typeof(e) == "string") {
-                    cache.get(e).then(r => {
-                        let a = this.state.files;
-                        if (r.fileIndex == null) {
-                            r.fileIndex = i;
-                        }
-                        a.splice(r.fileIndex, 0, r);
-                        this.setState({files: a})
-                    });
+                if (e.fileIndex == null) {
+                    e.fileIndex = i;
                 }
-                if (typeof(e) == "object") {
-                    let a = this.state.files;
-                    if (e.fileIndex == null) {
-                        e.fileIndex = i;
-                    }
-                    a.splice(e.fileIndex, 0, e);
-                    this.setState({files: a});
-                }
+                files.splice(e.fileIndex, 0, e);
             });
         }
+        this.state = {files: files};
     }
 
     toggleFile(evt, fileIndex) {
@@ -65,7 +52,7 @@ export default class FileGrid extends Component {
                             class="remove-button"
                             style={file.removed ? "color:red" : ""}
                             fileIndex={file.fileIndex}
-                            onClick={this.toggleFile}
+                            onClick={e => this.toggleFile(e)}
                         >
                             <FaIcon family={"solid"} icon={"times"}/>
                         </div>
@@ -116,7 +103,7 @@ export default class FileGrid extends Component {
                             class="remove-button"
                             style={file.removed ? "color:red" : ""}
                             fileIndex={file.fileIndex}
-                            onClick={this.toggleFile}
+                            onClick={e => this.toggleFile(e)}
                         >
                             <FaIcon family={"solid"} icon={"times"}/>
                         </div>

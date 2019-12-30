@@ -10,13 +10,23 @@ export default class MessageFooter extends Component {
                 <div class="infos">
                     { this.props.author && this.props.author.id == me.me.id && (
                         <Fragment>
-                            <a class="action seamless-link font-size-90" onClick={this.props.editMessage}>{lang.t("edit")}</a>
+                            <a
+                                class="action seamless-link font-size-90"
+                                onClick={e => this.props.editMessage(e)}
+                            >
+                                {lang.t("edit")}
+                            </a>
                             <div class="dot">&bull;</div>
                         </Fragment>
                     )}
                     { this.props.author && this.props.author.id == me.me.id && (
                         <Fragment>
-                            <a class="action seamless-link font-size-90" onClick={this.props.deleteMessage}>{lang.t("delete")}</a>
+                            <a
+                                class="action seamless-link font-size-90"
+                                onClick={e => this.props.deleteMessage(e)}
+                            >
+                                {lang.t("delete")}
+                            </a>
                             <div class="dot">&bull;</div>
                         </Fragment>
                     )}
@@ -27,7 +37,7 @@ export default class MessageFooter extends Component {
                                 href={router.toApp(
                                     "/messages/" + this.props.message.id + (this.props.message.children.length ? "" : "?focus=reply")
                                 )}
-                                onClick={router.onClick}
+                                onClick={e => router.onClick(e)}
                             >
                                 {this.props.message.children.length ?
                                         lang.t("replies", {count:this.props.message.children.length})
@@ -56,13 +66,28 @@ export default class MessageFooter extends Component {
                         >
                             <div class="dropdown-menu dropdown-options">
                                 { !this.props.isChild && (
-                                    <a class="seamless-link capitalize" onClick={this.props.openPublicLink}>{lang.t("public_link")}</a>
+                                    <a
+                                        class="seamless-link capitalize"
+                                        onClick={e => this.props.openPublicLink(e)}
+                                    >
+                                        {lang.t("public_link")}
+                                    </a>
                                 )}
                                 { !this.props.isChild && me.me.groups.length > 1 && (
-                                    <a class="seamless-link capitalize" onClick={this.props.shareMessage}>{lang.t("share_message")}</a>
+                                    <a
+                                        class="seamless-link capitalize"
+                                        onClick={e => this.props.shareMessage(e)}
+                                    >
+                                        {lang.t("share_message")}
+                                    </a>
                                 )}
                                 { !this.props.message.isInFront && this.props.author.id == me.me.id && (
-                                    <a class="seamless-link capitalize" onClick={this.props.publishInGroup}>{lang.t("publish_in_group")}</a>
+                                    <a
+                                        class="seamless-link capitalize"
+                                        onClick={e => this.props.publishInGroup(e)}
+                                    >
+                                        {lang.t("publish_in_group")}
+                                    </a>
                                 )}
                             </div>
                             <div class="none-if-follows-empty">

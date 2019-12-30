@@ -11,13 +11,6 @@ export default class MessagePreview extends Component {
         if (props.message.author) {
             cache.get("/api/users/" + props.message.author).then(author => author && this.setState({author: author}));
         }
-        this.setState({
-            title: props.message.data.title || "",
-            text: props.message.data.text || ""
-        });
-        if (props.message.preview) {
-            this.setState({preview: props.message.preview});
-        }
     }
 
     getAvatar(user) {
@@ -36,19 +29,19 @@ export default class MessagePreview extends Component {
             <a
                 class="d-inline-block seamless-link message-preview unselectable"
                 href={router.toApp("/messages/" + this.state.message.id)}
-                onClick={ router.onClick }
-                title={ this.state.title }
+                onClick={e => router.onClick(e)}
+                title={this.props.title}
             >
                 <div tabindex={this.props.tabindex} class="card material-shadow">
                     { this.getAvatar(this.state.author) }
-                    { this.state.preview ?
-                            <div class="card-miniature" style={"background-image: url('" + util.crop(this.state.preview, 320, 180) + "')" } />
-                            : <div class="text-preview">{ this.state.text }</div>
+                    { this.props.message.preview ?
+                            <div class="card-miniature" style={"background-image: url('" + util.crop(this.props.message.preview, 320, 180) + "')" } />
+                            : <div class="text-preview">{ this.props.text }</div>
                     }
                     <div class="card-body border-top d-flex justify-content-between">
                         <span class="left-buffer"></span>
-                        <span class="title" title={ this.state.title || util.humanFullDate(this.state.message.lastActivityDate)}>
-                            { this.state.title || util.humanTime(this.state.message.lastActivityDate) }
+                        <span class="title" title={ this.props.title || util.humanFullDate(this.state.message.lastActivityDate)}>
+                            { this.props.title || util.humanTime(this.state.message.lastActivityDate) }
                         </span>
                         <span class="children">
                             { !!this.state.message.children && (

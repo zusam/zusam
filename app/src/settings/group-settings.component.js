@@ -108,7 +108,12 @@ export default class GroupSettings extends Component {
                                             </button>
                                         </form>
                                         <form>
-                                            <button onClick={this.leaveGroup} class="btn btn-outline-danger">{lang.t("quit_group")}</button>
+                                            <button
+                                                onClick={e => this.leaveGroup(e)}
+                                                class="btn btn-outline-danger"
+                                            >
+                                                {lang.t("quit_group")}
+                                            </button>
                                         </form>
                                     </div>
                                 </div>

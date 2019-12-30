@@ -57,7 +57,7 @@ export default class Share extends Component {
                                 selectedIndex="-1"
                                 class="form-control"
                                 name="group_share_choice"
-                                onChange={this.groupSelect}
+                                onChange={e => this.groupSelect(e)}
                                 required
                             >
                                 { me.me.groups.map(e => <option value={e["id"]}>{e.name}</option>) }

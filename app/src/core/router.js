@@ -15,8 +15,24 @@ const router = {
     entityType: "",
     search: "",
     entity: {},
+    isValidUrl: url => {
+        try {
+            new URL(url);
+            return true;
+        } catch (_) {
+            return false;
+        }
+    },
     getSubpath: () => (new URL(document.baseURI)).pathname.replace(/\/$/, ''),
-    toApp: url => url ? location.origin + router.getSubpath() + url : "",
+    toApp: url => {
+        if (!url || typeof(url) != "string") {
+            return "";
+        }
+        if (router.isValidUrl(url)) {
+            return url;
+        }
+        return location.origin + router.getSubpath() + url;
+    },
     removeSubpath: path => path ? path.replace(new RegExp('^' + router.getSubpath()), '') : "",
     getParam: (param, searchParams = window.location.search.substring(1)) => {
         let res = searchParams.split("&").find(e => e.split("=")[0] === param);

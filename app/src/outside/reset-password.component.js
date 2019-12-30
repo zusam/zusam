@@ -43,7 +43,13 @@ export default class ResetPassword extends Component {
                         <div class="form-group">
                             <input type="password" class="form-control" required id="password_confirmation" placeholder={lang.t("confirm_password_placeholder")} />
                         </div>
-                        <button type="submit" class="btn btn-light" onClick={this.sendNewPassword}>{lang.t("submit")}</button>
+                        <button
+                            type="submit"
+                            class="btn btn-light"
+                            onClick={e => this.sendNewPassword(e)}
+                        >
+                            {lang.t("submit")}
+                        </button>
                     </form>
                 </div>
             </div>

@@ -47,7 +47,12 @@ export default class CreateGroup extends Component {
                                                     required
                                                 ></input>
                                             </div>
-                                            <button onClick={this.postNewGroup} class="btn btn-primary">{lang.t("create_the_group")}</button>
+                                            <button
+                                                onClick={e => this.postNewGroup(e)}
+                                                class="btn btn-primary"
+                                            >
+                                                {lang.t("create_the_group")}
+                                            </button>
                                         </form>
                                     </div>
                                 </div>

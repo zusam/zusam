@@ -44,7 +44,13 @@ export default class Signup extends Component {
                         <div class="form-group">
                             <input type="password" class="form-control" required id="password" placeholder={lang.t("password_placeholder")} />
                         </div>
-                        <button type="submit" class="btn btn-light" onClick={this.sendSignupForm}>{lang.t("signup")}</button>
+                        <button
+                            type="submit"
+                            class="btn btn-light"
+                            onClick={e => this.sendSignupForm(e)}
+                        >
+                            {lang.t("signup")}
+                        </button>
                     </form>
                 </div>
             </div>
