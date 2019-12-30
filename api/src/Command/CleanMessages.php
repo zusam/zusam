@@ -36,12 +36,14 @@ class CleanMessages extends Command
 
         // remove messages without groups
         $c = $this->pdo->query('SELECT m.id from `message` m LEFT JOIN `group` g ON g.id = m.group_id WHERE g.id IS NULL;');
-        while ($i = $c->fetch()) {
-            if ($input->getOption('verbose') || $input->getOption('only-list')) {
-                echo $i['id']."\n";
-            }
-            if (!$input->getOption('only-list')) {
-                $this->pdo->query("DELETE FROM `message` WHERE id = '".$i['id']."';");
+        if ($c !== false) {
+            while ($i = $c->fetch()) {
+                if ($input->getOption('verbose') || $input->getOption('only-list')) {
+                    echo $i['id']."\n";
+                }
+                if (!$input->getOption('only-list')) {
+                    $this->pdo->query("DELETE FROM `message` WHERE id = '".$i['id']."';");
+                }
             }
         }
 
@@ -54,12 +56,14 @@ class CleanMessages extends Command
             AND c.parent_id IS NULL
             AND m.data LIKE '%\"text\":\"\"%';
         ");
-        while ($i = $c->fetch()) {
-            if ($input->getOption('verbose') || $input->getOption('only-list')) {
-                echo $i['id']."\n";
-            }
-            if (!$input->getOption('only-list')) {
-                $this->pdo->query("DELETE FROM `message` WHERE id = '".$i['id']."';");
+        if ($c !== false) {
+            while ($i = $c->fetch()) {
+                if ($input->getOption('verbose') || $input->getOption('only-list')) {
+                    echo $i['id']."\n";
+                }
+                if (!$input->getOption('only-list')) {
+                    $this->pdo->query("DELETE FROM `message` WHERE id = '".$i['id']."';");
+                }
             }
         }
         return 0;

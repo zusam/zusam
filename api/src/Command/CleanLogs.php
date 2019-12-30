@@ -34,6 +34,9 @@ class CleanLogs extends Command
     {
         $this->logger->info($this->getName());
         $c = $this->pdo->query('SELECT id FROM log WHERE created_at < (SELECT MIN(created_at) FROM (SELECT created_at FROM log ORDER BY created_at DESC LIMIT 10000));');
+        if ($c === false) {
+            return 0;
+        }
         while ($i = $c->fetch()) {
             if ($input->getOption('verbose') || $input->getOption('only-list')) {
                 echo $i['id']."\n";

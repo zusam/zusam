@@ -34,6 +34,9 @@ class CleanGroups extends Command
     {
         $this->logger->info($this->getName());
         $c = $this->pdo->query('SELECT g.id FROM `group` g LEFT JOIN users_groups ug ON ug.group_id = g.id WHERE ug.group_id IS NULL;');
+        if ($c === false) {
+            return 0;
+        }
         while ($i = $c->fetch()) {
             if ($input->getOption('verbose') || $input->getOption('only-list')) {
                 echo $i['id']."\n";
