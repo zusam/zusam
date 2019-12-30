@@ -15,7 +15,9 @@ const router = {
     entityType: "",
     search: "",
     entity: {},
-    toApp: entity => entity ? "/api/" + entity.entityType + "s/" + entity.id : console.warn(entity) && null,
+    getSubpath: () => (new URL(document.baseURI)).pathname.replace(/\/$/, ''),
+    toApp: url => url ? location.origin + router.getSubpath() + url : "",
+    removeSubpath: path => path ? path.replace(new RegExp('^' + router.getSubpath()), '') : "",
     getParam: (param, searchParams = window.location.search.substring(1)) => {
         let res = searchParams.split("&").find(e => e.split("=")[0] === param);
         return res ? res.split("=")[1] : "";
@@ -38,9 +40,13 @@ const router = {
         "files"
     ].includes(name),
     navigate: async (url, options = {}) => {
-        router.url = new URL(url.match(/^http/) ? url : location.origin + url);
-        [router.path, router.search] = url.slice(1).split("?");
-        [router.route, router.id, router.action] = router.path.split("/");
+        if (!url.match(/^http/) && !options["raw_url"]) {
+            url = router.toApp(url);
+        }
+        router.url = new URL(url);
+        router.path = router.url.pathname;
+        router.search = router.url.search.slice(1);
+        [router.route, router.id, router.action] = router.removeSubpath(router.path).slice(1).split("/");
         router.entityUrl = "";
         router.entityType = "";
         router.backUrl = "";

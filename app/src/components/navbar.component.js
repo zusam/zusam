@@ -60,15 +60,29 @@ export default class Navbar extends Component {
                                 />
                             </div>
                             <div class="dropdown-menu dropdown-right">
-                                <a class="d-block seamless-link" href={"/users/" + me.me.id + "/settings"} onClick={router.onClick}>
+                                <a
+                                    class="d-block seamless-link"
+                                    href={router.toApp("/users/" + me.me.id + "/settings")}
+                                    onClick={router.onClick}
+                                >
                                     {lang.t("settings")}
                                 </a>
-                                <a class="d-block seamless-link" href="/logout" onClick={router.onClick}>{lang.t("logout")}</a>
+                                <a
+                                    class="d-block seamless-link"
+                                    href={router.toApp("/logout")}
+                                    onClick={router.onClick}
+                                >
+                                    {lang.t("logout")}
+                                </a>
                             </div>
                         </div>
                     )}
                     { ["groups", "messages"].includes(router.route) && router.backUrl && (
-                        <a class="seamless-link back" href={router.backUrl} onClick={this.clickBackButton}>
+                        <a
+                            class="seamless-link back"
+                            href={router.toApp(router.backUrl)}
+                            onClick={this.clickBackButton}
+                        >
                             <FaIcon family={"solid"} icon={"arrow-left"}/>
                         </a>
                     )}
@@ -132,12 +146,20 @@ export default class Navbar extends Component {
                                     e => (
                                         <a
                                             class="d-block seamless-link unselectable"
-                                            href={"/groups/" + e.id}
+                                            href={router.toApp("/groups/" + e.id)}
                                             onClick={router.onClick}
-                                        >{e.name}</a>
+                                        >
+                                            {e.name}
+                                        </a>
                                     )
                                 )}
-                                <a class="seamless-link unselectable" href="/create-group" onClick={router.onClick}>{"+ " + lang.t("create_a_group")}</a>
+                                <a
+                                    class="seamless-link unselectable"
+                                    href={router.toApp("/create-group")}
+                                    onClick={router.onClick}
+                                >
+                                    {"+ " + lang.t("create_a_group")}
+                                </a>
                             </div>
                         </div>
                     )}

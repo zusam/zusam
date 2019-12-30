@@ -2,22 +2,22 @@
     "name": "Zusam",
     "license": "AGPL-3.0-or-later",
     "scripts": {
-        "build": "parcel build --no-source-maps src/index.html",
+        "build": "parcel build --public-url './' --no-source-maps src/index.html",
         "clean": "rm -rf dist/*",
         "lang": "cp -r src/lang dist/",
         "prebuild": "yarn lang",
         "prelang": "yarn clean"
     },
     "dependencies": {
-        "node-sass": "~4",
-        "parcel-bundler": "~1",
-        "pica": "~5",
-        "preact": "~10.0"
+        "node-sass": "~4.13",
+        "parcel-bundler": "~1.12",
+        "pica": "~5.1",
+        "preact": "10.0.2"
     },
     "devDependencies": {
-        "babel-core": "~6",
-        "babel-plugin-transform-react-jsx": "~6",
-        "babel-preset-env": "~1",
-        "sass": "~1"
+        "babel-core": "~6.26",
+        "babel-plugin-transform-react-jsx": "~6.24",
+        "babel-preset-env": "~1.7",
+        "sass": "~1.23"
     }
 }

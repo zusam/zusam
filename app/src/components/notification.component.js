@@ -44,18 +44,18 @@ export default class Notification extends Component {
     getObject() {
         switch (this.props.type) {
             case "new_message":
-                return <a href={"/groups/" + this.props.fromGroup.id} onClick={router.onClick}>{this.props.fromGroup.name}</a>;
+                return <a href={router.toApp("/groups/" + this.props.fromGroup.id)} onClick={router.onClick}>{this.props.fromGroup.name}</a>;
             case "new_comment":
                 return (
                     <span>
                         {lang.t("the_message_from") + " "}
                         <strong>{this.props.fromMessage.author["name"]}</strong>
                         {" " + lang.t("in") + " "}
-                        <a href={"/groups/" + this.props.fromGroup.id} onClick={router.onClick}>{this.props.fromGroup.name}</a>
+                        <a href={router.toApp("/groups/" + this.props.fromGroup.id)} onClick={router.onClick}>{this.props.fromGroup.name}</a>
                     </span>
                 );
             case "user_joined_group":
-                return <a href={"/groups/" + this.props.fromGroup.id} onClick={router.onClick}>{this.props.fromGroup.name}</a>;
+                return <a href={router.toApp("/groups/" + this.props.fromGroup.id)} onClick={router.onClick}>{this.props.fromGroup.name}</a>;
             case "global_notification":
                 return this.props.data["text"];
             default:
@@ -81,7 +81,7 @@ export default class Notification extends Component {
         return (
             <a
                 class="notification seamless-link unselectable"
-                href={this.state.target}
+                href={router.toApp(this.state.target)}
                 onClick={e => {
                     e.preventDefault();
                     me.removeMatchingNotifications(this.props.id).then(_ => router.onClick(e, false, this.state.target));

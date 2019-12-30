@@ -113,7 +113,7 @@ export default class EmbedBlock extends Component {
                 <div class="container d-flex justify-content-center flex-wrap align-items-center">
                     <img
                         data-nlg={!this.props.inWriter}
-                        href={this.props.url}
+                        href={router.toApp(this.props.url)}
                         class="img-fluid cursor-pointer"
                         data-src={this.props.url}
                         src={ this.props.preview && !/gif/.test(this.props.data["content-type"]) ? util.thumbnail(this.props.preview.id, 1366, 99999) : this.props.url }
@@ -130,7 +130,7 @@ export default class EmbedBlock extends Component {
         }
         if (this.props.data["title"] && (this.props.preview || this.props.data["description"])) {
             return (
-                <a class="preview-card seamless-link d-inline-block" target="_blank" href={ this.props.url }>
+                <a class="preview-card seamless-link d-inline-block" target="_blank" href={router.toApp(this.props.url)}>
                     <div class="card" style="max-width: 480px">
                         { this.props.preview && <img class="card-img-top" src={ util.crop(this.props.preview.id, 320, 180) } /> }
                         <div class="card-body p-1">

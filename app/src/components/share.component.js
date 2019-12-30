@@ -32,7 +32,7 @@ export default class Share extends Component {
         me.get().then(user => {
             if (user.groups.length == 1) {
                 this.setState({group: user.groups[0]["id"]});
-                router.backUrl = router.toApp(user.groups[0]).slice(4);
+                router.backUrl = "/groups/" + user.groups[0];
             }
         });
         this.groupSelect = this.groupSelect.bind(this);

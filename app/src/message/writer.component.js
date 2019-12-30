@@ -315,7 +315,14 @@ export default class Writer extends Component {
                         </button>
                     <div class="actions">
                         { this.props.cancel && <button class="cancel" onClick={this.props.cancel}>{lang.t("cancel")}</button> }
-                        <button type="submit" class="submit" onClick={this.sendMessage}>{lang.t("submit")}</button>
+                        <button
+                            disabled={!this.state.group}
+                            type="submit"
+                            class="submit"
+                            onClick={this.sendMessage}
+                        >
+                            {lang.t("submit")}
+                        </button>
                     </div>
                 </div>
             </div>

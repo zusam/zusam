@@ -77,7 +77,7 @@ export default class UserSettings extends Component {
                 alert.add(res["error"], "alert-danger");
             } else {
                 this.setState(prevState => Object.assign(prevState, res));
-                location.href = location.pathname + "?alert=settings_updated";
+                location.href = router.toApp(location.pathname + "?alert=settings_updated");
             }
         });
     }

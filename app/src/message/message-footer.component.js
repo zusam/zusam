@@ -24,7 +24,9 @@ export default class MessageFooter extends Component {
                         <Fragment>
                             <a
                                 class="action seamless-link font-size-90"
-                                href={"/messages/" + this.props.message.id + (this.props.message.children.length ? "" : "?focus=reply")}
+                                href={router.toApp(
+                                    "/messages/" + this.props.message.id + (this.props.message.children.length ? "" : "?focus=reply")
+                                )}
                                 onClick={router.onClick}
                             >
                                 {this.props.message.children.length ?

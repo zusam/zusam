@@ -54,7 +54,7 @@ export default class FileGrid extends Component {
                         data-nlg={!this.props.inWriter}
                         data-origin={filePath}
                         data-src={util.thumbnail(file.id, 1366, 768)}
-                        href={!this.props.inWriter && url}
+                        href={!this.props.inWriter && router.toApp(url)}
                         class="rounded"
                     >
                         <div
@@ -108,7 +108,7 @@ export default class FileGrid extends Component {
                     <a
                         data-nlg={!this.props.inWriter}
                         data-origin={filePath}
-                        href={!this.props.inWriter && url}
+                        href={!this.props.inWriter && router.toApp(url)}
                         className={"image" + (file.removed ? " removed" : "")}
                     >
                         <img class="img-fluid" src={url}></img>

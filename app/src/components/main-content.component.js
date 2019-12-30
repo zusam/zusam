@@ -60,7 +60,11 @@ export default class MainContent extends Component {
                 return (
                     <div>
                         <GroupBoard key={this.props.id}/>
-                        <a class="write-button material-shadow seamless-link" href={"/groups/" + this.props.id + "/write"} onClick={router.onClick}>
+                        <a
+                            class="write-button material-shadow seamless-link"
+                            href={router.toApp("/groups/" + this.props.id + "/write")}
+                            onClick={router.onClick}
+                        >
                             <FaIcon family={"solid"} icon={"pencil-alt"}/>
                         </a>
                     </div>

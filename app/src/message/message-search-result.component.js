@@ -134,7 +134,7 @@ export default class MessageSearchResult extends Component {
         return (
             <a
                 class="d-inline-block seamless-link message-preview unselectable"
-                href={this.getLink()}
+                href={router.toApp(this.getLink())}
                 onClick={router.onClick}
                 title={this.state.title}
             >

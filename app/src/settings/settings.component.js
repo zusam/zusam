@@ -24,7 +24,7 @@ export default class Settings extends Component {
                     <li class="nav-item">
                         <a
                             class={ "nav-link" + (this.state.entity["entityType"] == "user" ? " active" : "")}
-                            href={"/users/" + me.me.id + "/settings"}
+                            href={router.toApp("/users/" + me.me.id + "/settings")}
                             onClick={router.onClick}
                         >{lang.t("account")}</a>
                     </li>
@@ -40,7 +40,7 @@ export default class Settings extends Component {
                                     e => (
                                         <a
                                             class="seamless-link"
-                                            href={"/groups/" + e.id + "/settings"}
+                                            href={router.toApp("/groups/" + e.id + "/settings")}
                                             onClick={router.onClick}
                                         >{e.name}</a>
                                     )

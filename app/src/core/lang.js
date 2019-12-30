@@ -9,7 +9,7 @@ const lang = {
         "fr": "Français",
         "sk": "Slovenský",
     }, // possible dicts names to load
-    getDefaultLang: () => Object.assign({}, document.querySelector("meta[name='zusam:default-lang']")).content || "en",
+    getDefaultLang: () => (document.querySelector("meta[name='zusam:default-lang']") || {}).content || "en",
     getCurrentLang: () => me.me && me.me["data"] ? me.me.data["lang"] || lang.getDefaultLang() : lang.getDefaultLang(),
     fetchDict: (dict = lang.getCurrentLang()) => !lang.dict[dict] && http.get("/lang/" + dict + ".json").then(r => {
         lang.dict[dict] = r;
