@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { nlg, cache, util, router } from "/core";
+import { cache, util, router } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class FileGrid extends Component {
@@ -140,10 +140,10 @@ export default class FileGrid extends Component {
     }
 
     componentDidMount() {
-        nlg.start();
+        import("/lazy/nlg.js").then(nlg => nlg.default.start());
     }
 
     componentDidUpdate() {
-        nlg.start();
+        import("/lazy/nlg.js").then(nlg => nlg.default.start());
     }
 }
