@@ -70,6 +70,10 @@
         .fa-icon {
             font-size: 0.7rem;
         }
+
+        &.active {
+            background-color: adjust-hue($zusam_color, 5deg);
+        }
     }
 
     .back {

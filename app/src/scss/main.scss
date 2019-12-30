@@ -131,7 +131,7 @@ body {
 }
 
 .video {
-	margin: 5px;
+    margin: 5px;
 }
 
 .card-body {
@@ -208,4 +208,8 @@ body {
 
 *:empty ~ .none-if-follows-empty {
     display: none;
+}
+
+.pr-5px {
+    padding-right: 5px;
 }
