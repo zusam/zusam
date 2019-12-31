@@ -11,7 +11,7 @@ export default class MessageFooter extends Component {
                     { this.props.author && this.props.author.id == me.me.id && (
                         <Fragment>
                             <a
-                                class="action seamless-link font-size-90"
+                                class="action seamless-link font-size-90 capitalize"
                                 onClick={e => this.props.editMessage(e)}
                             >
                                 {lang.t("edit")}
@@ -22,7 +22,7 @@ export default class MessageFooter extends Component {
                     { this.props.author && this.props.author.id == me.me.id && (
                         <Fragment>
                             <a
-                                class="action seamless-link font-size-90"
+                                class="action seamless-link font-size-90 capitalize"
                                 onClick={e => this.props.deleteMessage(e)}
                             >
                                 {lang.t("delete")}
@@ -33,7 +33,7 @@ export default class MessageFooter extends Component {
                     { !this.props.isPublic && this.props.isChild && (
                         <Fragment>
                             <a
-                                class="action seamless-link font-size-90"
+                                class="action seamless-link font-size-90 capitalize"
                                 href={router.toApp(
                                     "/messages/" + this.props.message.id + (this.props.message.children.length ? "" : "?focus=reply")
                                 )}
@@ -65,7 +65,7 @@ export default class MessageFooter extends Component {
                             onClick={e => e.currentTarget.classList.toggle("active")}
                         >
                             <div class="dropdown-menu dropdown-options">
-                                { !this.props.isChild && (
+                                {(
                                     <a
                                         class="seamless-link capitalize"
                                         onClick={e => this.props.openPublicLink(e)}
@@ -73,7 +73,7 @@ export default class MessageFooter extends Component {
                                         {lang.t("public_link")}
                                     </a>
                                 )}
-                                { !this.props.isChild && me.me.groups.length > 1 && (
+                                { me.me.groups.length > 1 && (
                                     <a
                                         class="seamless-link capitalize"
                                         onClick={e => this.props.shareMessage(e)}
