@@ -1,6 +1,7 @@
-window.lang = {
-    "more_coms": "See more comments",
-    "ago": "{} ago",
+{
+    "previous_coms": "See previous comments",
+    "next_coms": "See next comments",
+    "ago": "{{duration}} ago",
     "groups": "Groups",
     "login_placeholder": "email",
     "password_placeholder": "password",
@@ -62,11 +63,24 @@ window.lang = {
     "monthly": "Monthly",
     "notification_emails_stopped": "Email notifications stopped !",
     "group_share_choice": "To which group do you want to send this message?",
-    "public_link": "Public link",
+    "public_link": "public link",
     "default_group": "Default group",
     "destroy_account": "Delete your account",
     "destroy_account_explain": "Once you delete your account, there is no going back. Please be certain.",
     "are_you_sure": "Are you sure?",
-    "share_message": "Share the message",
-    "users": "users"
-};
+    "share_message": "share the message",
+    "users": "users",
+    "has_posted_in": "has posted in",
+    "has_commented_on": "has commented on",
+    "has_joined": "has joined",
+    "the_message_from": "the message from",
+    "in": "in",
+    "lang": "language",
+    "reply": "reply",
+    "replies": {
+        "0": "{{count}} reply",
+        "2":"{{count}} replies"
+    },
+    "publish_in_group": "publish in the group",
+    "search_in_group": "search in this group"
+}

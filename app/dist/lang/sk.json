@@ -1,6 +1,7 @@
-window.lang = {
-    "more_coms": "Zobraziť viac komentárov",
-    "ago": "{} späť",
+{
+    "previous_coms": "Pozri predchádzajúce komentáre",
+    "next_coms": "Pozri nasledujúce komentáre",
+    "ago": "{{duration}} späť",
     "groups": "Skupiny",
     "login_placeholder": "email",
     "password_placeholder": "heslo",
@@ -62,11 +63,24 @@ window.lang = {
     "monthly": "Mesačne",
     "notification_emails_stopped": "E-mailové upozornenia sa zastavili!",
     "group_share_choice": "Do ktorej skupiny chcete odoslať túto správu ?",
-    "public_link": "Verejné spojenie"
+    "public_link": "verejné spojenie",
     "default_group": "Predvolenú skupinu",
-    "destroy_account": "Odstráňte svoj účet"
+    "destroy_account": "Odstráňte svoj účet",
     "destroy_account_explain": "Po odstránení účtu sa už nevráti",
     "are_you_sure": "Si si istý ?",
-    "share_message": "Zdieľajte správu",
-    "users": "užívatelia"
-};
+    "share_message": "zdieľajte správu",
+    "users": "užívatelia",
+    "has_posted_in": "zverejnila v",
+    "has_commented_on": "komentoval",
+    "has_joined": "sa pripojil k",
+    "the_message_from": "správa od",
+    "in": "v",
+    "lang": "jazyk",
+    "reply": "odpoveď",
+    "replies": {
+        "0": "{{count}} odpoveď",
+        "2":"{{count}} odpovedí"
+    },
+    "publish_in_group": "publikovať v skupine",
+    "search_in_group": "hľadať v tejto skupine"
+}
