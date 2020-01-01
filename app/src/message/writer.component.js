@@ -314,9 +314,13 @@ export default class Writer extends Component {
                             <FaIcon family={"solid"} icon={"film"}/>
                         </button>
                     <div class="actions">
-                        { this.props.cancel && <button class="cancel" onClick={this.props.cancel}>{lang.t("cancel")}</button> }
+                        { this.props.cancel && (
+                            <button class="cancel" onClick={e => this.props.cancel(e)}>
+                                {lang.t("cancel")}
+                            </button>
+                        )}
                         <button
-                            disabled={!this.state.group}
+                            disabled={!this.props.group}
                             type="submit"
                             class="submit"
                             onClick={e => this.sendMessage(e)}
