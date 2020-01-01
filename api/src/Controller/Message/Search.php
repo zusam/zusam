@@ -33,15 +33,10 @@ class Search extends ApiController
 
         $requestData = json_decode($request->getcontent(), true);
 
-        if (empty($requestData['search']) && empty($requestData['hashtags'])) {
+        if (empty($requestData['search'])) {
             return new JsonResponse(['error' => 'You must provide search terms'], Response::HTTP_BAD_REQUEST);
         }
-        $search_terms = explode(" ", $requestData['search']);
-        $hashtags = explode(" ", $requestData['hashtags']);
-
-        $hashtags = array_filter(array_map(function ($h) {
-            return empty(trim($h)) ? null : "#$h";
-        }, $hashtags));
+        $search_terms = explode(" ", urldecode($requestData['search']));
 
         // get the asked group
         if (empty($requestData['group'])) {
@@ -92,12 +87,6 @@ class Search extends ApiController
                                     $termsFound[] = $term;
                                 }
                             }
-                        }
-                    }
-                    foreach ($hashtags as $hashtag) {
-                        if(!in_array($term, $termsFound)) {
-                            $score += 1;
-                            $termsFound[] = $term;
                         }
                     }
                 }
@@ -207,6 +196,7 @@ class Search extends ApiController
         $data = [
             'messages' => $page,
             'totalItems' => $totalItems,
+            'searchterms' => $search_terms,
         ];
         $response = new JsonResponse($data, JsonResponse::HTTP_OK);
         $response->setCache([
