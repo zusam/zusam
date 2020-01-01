@@ -34,6 +34,20 @@ class CleanMessages extends Command
     {
         $this->logger->info($this->getName());
 
+
+        // remove messages without parent and not in front (hidden messages)
+        $c = $this->pdo->query('SELECT m.id from message m LEFT JOIN message p ON p.id = m.parent_id WHERE p.id IS NULL AND (m.is_in_front != 1 OR m.is_in_front IS NULL);');
+        if ($c !== false) {
+            while ($i = $c->fetch()) {
+                if ($input->getOption('verbose') || $input->getOption('only-list')) {
+                    echo $i['id']."\n";
+                }
+                if (!$input->getOption('only-list')) {
+                    $this->pdo->query("DELETE FROM `message` WHERE id = '".$i['id']."';");
+                }
+            }
+        }
+
         // remove messages without groups
         $c = $this->pdo->query('SELECT m.id from `message` m LEFT JOIN `group` g ON g.id = m.group_id WHERE g.id IS NULL;');
         if ($c !== false) {
