@@ -54,7 +54,7 @@ const router = {
         "links",
         "files"
     ].includes(name),
-    navigate: async (url, options = {}) => {
+    navigate: async (url = "/", options = {}) => {
         if (!url.match(/^http/) && !options["raw_url"]) {
             url = router.toApp(url);
         }
@@ -73,6 +73,11 @@ const router = {
             router.entityType = router.route;
 
             await cache.get(router.entityUrl).then(res => {
+                if (!res) {
+                    console.warn("Unknown entity");
+                    router.navigate();
+                    return;
+                }
                 router.entity = res;
                 switch(router.route) {
                     case "groups":
