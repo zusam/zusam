@@ -86,6 +86,9 @@
                 font-size: 90%;
                 color: $gray-600;
                 text-align: right;
+                position: sticky;
+                top: 80px;
+                margin-bottom: 5px;
             }
         }
     }
