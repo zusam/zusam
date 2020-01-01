@@ -167,6 +167,10 @@ class Search extends ApiController
             $previewId = $message->getPreview() ? $message->getPreview()->getId() : '';
             $authorId = $message->getAuthor() ? $message->getAuthor()->getId() : '';
             $parentId = $message->getParent() ? $message->getParent()->getId() : '';
+            // check if the parent exists
+            if (NULL == $this->em->getRepository(Message::class)->findOneById($parentId)) {
+                $parentId = '';
+            }
             $page[] = [
                 'id' => $message->getId(),
                 'entityType' => $message->getEntityType(),
