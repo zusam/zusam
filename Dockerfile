@@ -43,7 +43,7 @@ COPY container/zusam/run.sh /usr/local/bin/run.sh
 COPY container/zusam/example.db /zusam/example.db
 COPY public/api/index.php /zusam/public/api/index.php
 COPY api /zusam/api
-COPY app/dist/* /zusam/public/
+COPY app/dist /zusam/public
 
 # handle build config
 RUN set -xe \

@@ -23,6 +23,9 @@ sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
        -e "s|<LANG>|${LANG}|g" \
        /zusam/config
 
+sed -i -e "s|content=\"en\"|content=\"${LANG}\"|g" \
+       /zusam/public/index.html
+
 if ! [ -f /zusam/data/config ]; then
     cp /zusam/config /zusam/data/config
 fi
