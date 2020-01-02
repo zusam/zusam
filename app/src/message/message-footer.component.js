@@ -19,17 +19,6 @@ export default class MessageFooter extends Component {
                             <div class="dot">&bull;</div>
                         </Fragment>
                     )}
-                    { this.props.author && this.props.author.id == me.me.id && (
-                        <Fragment>
-                            <a
-                                class="action seamless-link font-size-90 capitalize"
-                                onClick={e => this.props.deleteMessage(e)}
-                            >
-                                {lang.t("delete")}
-                            </a>
-                            <div class="dot">&bull;</div>
-                        </Fragment>
-                    )}
                     { !this.props.isPublic && this.props.isChild && (
                         <Fragment>
                             <a
@@ -65,6 +54,14 @@ export default class MessageFooter extends Component {
                             onClick={e => e.currentTarget.classList.toggle("active")}
                         >
                             <div class="dropdown-menu dropdown-options">
+                                { this.props.author && this.props.author.id == me.me.id && (
+                                    <a
+                                        class="seamless-link capitalize"
+                                        onClick={e => this.props.deleteMessage(e)}
+                                    >
+                                        {lang.t("delete")}
+                                    </a>
+                                )}
                                 {(
                                     <a
                                         class="seamless-link capitalize"
