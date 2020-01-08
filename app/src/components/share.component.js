@@ -8,34 +8,43 @@ export default class Share extends Component {
     constructor() {
         super();
         let currentUrl = new URL(window.location);
-        if (!currentUrl.searchParams.get('message')) {
-            this.state = {
-                loaded: true,
-                group: null,
-                title: currentUrl.searchParams.get('title') || "",
-                text: currentUrl.searchParams.get('text') || "",
-                url: currentUrl.searchParams.get('url') || "",
-                files: null,
-            };
-        } else {
-            http.get("/api/messages/" + currentUrl.searchParams.get('message')).then(m => {
-                this.setState({
-                    loaded: true,
-                    group: null,
-                    title: (m && m.data.title) || "",
-                    text: (m && m.data.text) || "",
-                    url: "",
-                    files: (m && m.files) || null,
-                });
-            });
-        }
+        this.state = {
+            loaded: false,
+            group: null,
+            currentUrl: currentUrl,
+            title: currentUrl.searchParams.get('title') || "",
+            text: currentUrl.searchParams.get('text') || "",
+            url: currentUrl.searchParams.get('url') || "",
+            files: null,
+        };
+        this.groupSelect = this.groupSelect.bind(this);
+    }
+
+    componentDidMount() {
         me.get().then(user => {
-            if (user.groups.length == 1) {
-                this.setState({group: user.groups[0]["id"]});
-                router.backUrl = "/groups/" + user.groups[0];
+            if (user.data["default_group"]) {
+                this.setState({group: user.data["default_group"]});
+                router.backUrl = "/groups/" + user.data["default_group"];
+            } else {
+                if (user.groups.length == 1) {
+                    this.setState({group: user.groups[0]["id"]});
+                    router.backUrl = "/groups/" + user.groups[0];
+                }
+            }
+            if (this.state.currentUrl.searchParams.get('message')) {
+                http.get("/api/messages/" + this.state.currentUrl.searchParams.get('message')).then(m => {
+                    this.setState({
+                        loaded: true,
+                        title: (m && m.data.title) || "",
+                        text: (m && m.data.text) || "",
+                        url: "",
+                        files: (m && m.files) || null,
+                    });
+                });
+            } else {
+                this.setState({loaded: true});
             }
         });
-        this.groupSelect = this.groupSelect.bind(this);
     }
 
     groupSelect(e) {
@@ -54,7 +63,7 @@ export default class Share extends Component {
                         <div class="mb-1">
                             <label for="group_share_choice">{lang.t("group_share_choice")}</label>
                             <select
-                                selectedIndex="-1"
+                                value={this.state.group}
                                 class="form-control"
                                 name="group_share_choice"
                                 onChange={e => this.groupSelect(e)}

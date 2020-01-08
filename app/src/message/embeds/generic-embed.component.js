@@ -1,5 +1,4 @@
 import { h, render, Component } from "preact";
-import { util } from "/core";
 
 export default class GenericEmbed extends Component {
     render() {
