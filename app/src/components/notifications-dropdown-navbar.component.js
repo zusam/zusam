@@ -23,6 +23,9 @@ export default class NotificationsDropdownNavbar extends Component {
             >
                 <div class="unselectable notification-button">
                     <FaIcon family={me.me.notifications.length ? "solid" : "regular"} icon={"bell"}/>
+                    { !!me.me.notifications.length && (
+                        <span class="notification-count">{me.me.notifications.length}</span>
+                    )}
                 </div>
                 <div class="dropdown-menu dropdown-right notifications-menu">
                     {
