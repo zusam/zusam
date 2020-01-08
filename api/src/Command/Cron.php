@@ -66,11 +66,6 @@ class Cron extends Command
                 ],
             ],
             [
-                'name' => 'zusam:clean:logs',
-                'period' => 1440 * 7 * 60, // 7 days
-                'type' => 'light',
-            ],
-            [
                 'name' => 'zusam:clean:notifications',
                 'period' => 1440 * 7 * 60, // 7 days
                 'type' => 'light',
@@ -138,7 +133,7 @@ class Cron extends Command
 
         // if a task is running and it's not older than 4h, do nothing
         if ($task_running && isset($last_task_timestamp) && $last_task_timestamp > time() - 60 * 60 * 4) {
-            if ($this->input->getOption('verbose')) {
+            if (isset($this->input) && $this->input->getOption('verbose')) {
                 $this->output->writeln([
                     '<info>'.$last_task_name.' is already running since '.(time() - $last_task_timestamp).'s</info>',
                 ]);
@@ -149,7 +144,7 @@ class Cron extends Command
         // if a task is running but it's old, it's probably a lockup.
         // continue but log it
         if (isset($last_task_timestamp) && $last_task_timestamp < time() - 60 * 60 * 4) {
-            if ($this->input->getOption('verbose')) {
+            if (isset($this->input) && $this->input->getOption('verbose')) {
                 $this->output->writeln([
                     '<info>Ignoring the lock</info>',
                 ]);
@@ -180,7 +175,7 @@ class Cron extends Command
             }
             $lastExecution = $this->system->get($task['name']);
             if (empty($lastExecution) || $lastExecution < time() - $task['period']) {
-                if ($this->input->getOption('verbose')) {
+                if (isset($this->input) && $this->input->getOption('verbose')) {
                     $this->output->writeln([
                         '<info>Running '.$task['name'].'</info>',
                     ]);
