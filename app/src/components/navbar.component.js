@@ -26,7 +26,7 @@ export default class Navbar extends Component {
         return (
             <div class="main-nav nav align-items-center z-index-100">
                 <div class="navbar-block">
-                    { !router.backUrl && (
+                    { (["share"].includes(router.route) || !router.backUrl) && (
                         <div
                             class="menu dropdown cursor-pointer" tabindex="-1"
                             onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
