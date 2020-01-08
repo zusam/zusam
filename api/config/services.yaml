@@ -95,11 +95,6 @@ services:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $logger: '@monolog.logger.zusam'
 
-    App\Command\CleanLogs:
-      arguments:
-        $dsn: '%env(resolve:DATABASE_URL)%'
-        $logger: '@monolog.logger.zusam'
-
     App\Command\IssueNotification:
       arguments:
         $logger: '@monolog.logger.zusam'
