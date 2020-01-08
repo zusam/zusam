@@ -71,12 +71,18 @@ export default class EmbedBlock extends Component {
                     return <TwitchEmbed preview={this.props.preview} url={this.props.data["url"]}/>;
                 case "bandcamp.com":
                     if (this.props.data["code"]) {
-                        return (
-                            <BandCampEmbed
-                                preview={util.crop(this.props.preview.id, 1024, 270)}
-                                url={this.props.data["code"].match(/https:\/\/.*album=\d+/)[0]}
-                            />
-                        );
+                        let id = this.props.data["code"].match(/https:\/\/.*album=\d+/);
+                        if (!id) {
+                            id = this.props.data["code"].match(/https:\/\/.*track=\d+/);
+                        }
+                        if (id) {
+                            return (
+                                <BandCampEmbed
+                                    preview={util.crop(this.props.preview.id, 1024, 270)}
+                                    url={id[0]}
+                                />
+                            );
+                        }
                     }
                 case "imgur.com":
                     // skip default embed code if it's an imgur image
