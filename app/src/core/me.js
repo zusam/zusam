@@ -33,7 +33,7 @@ const me = {
         }
         return false;
     },
-    isNew: id => me.me.notifications.some(n => me.matchNotification(n, id)),
+    isNew: id => me.me.notifications.length ? me.me.notifications.some(n => me.matchNotification(n, id)) : false,
     removeMatchingNotifications: id => {
         return me.loadNotifications().then(_ => {
             return Promise.all(me.me.notifications.filter(n => me.matchNotification(n, id)).map(
