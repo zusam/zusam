@@ -159,4 +159,66 @@ class Image
             throw new \Exception('Could not save output image');
         }
     }
+
+    // https://www.php.net/manual/en/function.imagecreatefromgif.php#104473
+    // Returns the number of frames in a given gif
+    public static function getGifFrameCount(string $filename): int
+    {
+        if(!($fh = @fopen($filename, 'rb'))) {
+            return 0;
+        }
+        $count = 0;
+        // an animated gif contains multiple "frames", with each frame having a
+        // header made up of:
+        // * a static 4-byte sequence (\x00\x21\xF9\x04)
+        // * 4 variable bytes
+        // * a static 2-byte sequence (\x00\x2C) (some variants may use \x00\x21 ?)
+
+        // We read through the file til we reach the end of the file, or we've found
+        // at least 2 frame headers
+        while(!feof($fh)) {
+            $chunk = fread($fh, 1024 * 100); //read 100kb at a time
+            $count += preg_match_all('#\x00\x21\xF9\x04.{4}\x00(\x2C|\x21)#s', $chunk, $matches);
+        }
+
+        fclose($fh);
+        return $count;
+    }
+
+    // Reduce the size of the given gif
+    // Should be used only if
+    // filesize(filename) > $target_size*$target_size*250*getGifFrameCount($filename)/1024
+    public static function compressGif(string $filename, string $outputname, int $target_size)
+    {
+        try {
+            $animation = new \Imagick($filename);
+            $gif = new \Imagick();
+
+            $animation = $animation->coalesceImages();
+            foreach ($animation as $frame) {
+                // Resize each frame
+                $frame->resizeImage(
+                    min($frame->getImageWidth(), $target_size),
+                    min($frame->getImageHeight(), $target_size),
+                    \Imagick::FILTER_BOX,
+                    1,
+                    true
+                );
+
+                // Reduce number of colors by creating a palette based on the current image
+                $palette = clone $frame;
+                $palette->quantizeImage(48, \Imagick::COLORSPACE_YCBCR, 0, false, false);
+                $palette->uniqueImageColors();
+                $frame->remapImage($palette, \Imagick::DITHERMETHOD_FLOYDSTEINBERG);
+                $palette->clear();
+
+                $gif->addImage($frame->getImage());
+            }
+
+            $gif->writeImages($outputname, true);
+
+        } catch(Exception $e) {
+            throw new \Exception("Something went wrong while processing $filename.");
+        }
+    }
 }
