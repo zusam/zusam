@@ -15,25 +15,13 @@
         align-items: center;
         width: 100%;
         max-width: 30rem;
-    }
+        padding: 0 5px;
 
-    .title {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        width: 100%;
-        text-align: center;
-        a {
-            color: white;
-            text-decoration: none;
-            font-size: 1.3rem;
-        }
-    }
-    @media (min-width: 400px) {
-        .title {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: -1;
+        @media (max-width: 400px) {
+            &:focus-within {
+                position: absolute;
+                z-index: 2;
+            }
         }
     }
 
