@@ -68,6 +68,12 @@ services:
         $targetDir: '%env(resolve:dir_files)%'
         $logger: '@monolog.logger.zusam'
 
+    App\Command\CompressGifs:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+        $targetDir: '%env(resolve:dir_files)%'
+        $logger: '@monolog.logger.zusam'
+
     App\Command\CleanCache:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'

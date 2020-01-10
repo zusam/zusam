@@ -40,7 +40,7 @@ class Cron extends Command
         $this->tasks = [
             [
                 'name' => 'zusam:convert:video',
-                'period' => 15 * 60, // 15 minutes
+                'period' => 60 * 60, // 1 hour
                 'type' => 'heavy',
             ],
             [
@@ -54,6 +54,14 @@ class Cron extends Command
                 'type' => 'light',
                 'options' => [
                     'log-send' => true,
+                ],
+            ],
+            [
+                'name' => 'zusam:compress:gifs',
+                'period' => 60 * 60, // 1 hour
+                'type' => 'heavy',
+                'options' => [
+                    'max-compressions' => 5,
                 ],
             ],
             [
