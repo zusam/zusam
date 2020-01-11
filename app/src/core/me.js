@@ -33,9 +33,12 @@ const me = {
         }
         return false;
     },
-    isNew: id => me.me.notifications.length ? me.me.notifications.some(n => me.matchNotification(n, id)) : false,
+    isNew: id => Array.isArray(me.me.notifications) ? me.me.notifications.some(n => me.matchNotification(n, id)) : false,
     removeMatchingNotifications: id => {
         return me.loadNotifications().then(_ => {
+            if (!Array.isArray(me.me.notifications)) {
+                return Promise.reject("Failed to get notifications from server");
+            }
             return Promise.all(me.me.notifications.filter(n => me.matchNotification(n, id)).map(
                 n => http.delete('/api/notifications/' + n.id).then(r => {
                     me.me.notifications = me.me.notifications.filter(e => !me.matchNotification(e, id));
