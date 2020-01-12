@@ -34,6 +34,8 @@ export default class Notification extends Component {
                 return lang.t("has_commented_on");
             case "user_joined_group":
                 return lang.t("has_joined");
+            case "user_left_group":
+                return lang.t("has_left");
             case "global_notification":
                 return lang.t("global_notification");
             default:
@@ -56,7 +58,9 @@ export default class Notification extends Component {
                 return (
                     <span>
                         {lang.t("the_message_from") + " "}
-                        <strong>{this.props.fromMessage.author["name"]}</strong>
+                        <strong>{
+                            this.props.fromMessage && this.props.fromMessage["author"] ? this.props.fromMessage["author"]["name"] : ""
+                        }</strong>
                         {" " + lang.t("in") + " "}
                         <a
                             href={router.toApp("/groups/" + this.props.fromGroup.id)}
@@ -67,6 +71,7 @@ export default class Notification extends Component {
                     </span>
                 );
             case "user_joined_group":
+            case "user_left_group":
                 return (
                     <a
                         href={router.toApp("/groups/" + this.props.fromGroup.id)}
@@ -85,6 +90,7 @@ export default class Notification extends Component {
     getTarget() {
         switch (this.props.type) {
             case "user_joined_group":
+            case "user_left_group":
                 return "/groups/" + this.props.fromGroup.id;
             case "new_message":
                 return "/messages/" + this.props.target;
