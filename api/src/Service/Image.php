@@ -111,6 +111,7 @@ class Image
     private function load(string $input): ?\Imagick
     {
         $im = new \Imagick();
+        // TODO: add a check if file_exists and filesize > 0
         try {
             if (is_readable($input)) {
                 if (preg_match('/video/', mime_content_type($input))) {
