@@ -1,5 +1,6 @@
 import http from "./http.js";
 import lang from "./lang.js";
+import cache from "./cache.js";
 
 const me = {
     me: {},
