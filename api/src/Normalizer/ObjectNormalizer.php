@@ -45,6 +45,11 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
      */
     protected const TREE_DEPTH_LIMIT_COUNTERS = 'tree_depth_limit_counters';
 
+    /**
+     * @internal
+     */
+    private $discriminatorCache = [];
+
     public function __construct(
         ClassMetadataFactoryInterface $classMetadataFactory = null,
         NameConverterInterface $nameConverter = null,
@@ -170,5 +175,30 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
         }
 
         return $allowedAttributes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAttributeValue(object $object, string $attribute, string $format = null, array $context = [])
+    {
+        $cacheKey = \get_class($object);
+        if (!\array_key_exists($cacheKey, $this->discriminatorCache)) {
+            $this->discriminatorCache[$cacheKey] = null;
+            if (null !== $this->classDiscriminatorResolver) {
+                $mapping = $this->classDiscriminatorResolver->getMappingForMappedObject($object);
+                $this->discriminatorCache[$cacheKey] = null === $mapping ? null : $mapping->getTypeProperty();
+            }
+        }
+
+        if ($attribute === $this->discriminatorCache[$cacheKey]) {
+            return $this->classDiscriminatorResolver->getTypeForMappedObject($object);
+        } else {
+            try {
+                return $this->propertyAccessor->getValue($object, $attribute);
+            } catch (\Exception $e) {
+                return NULL;
+            }
+        }
     }
 }
