@@ -4,7 +4,7 @@ import lang from "./lang.js";
 const me = {
     me: {},
     get: () => me.me.id ? Promise.resolve(me.me) : me.update(),
-    update: () => http.get("/api/me", true).then(r => {
+    update: () => cache.get("/api/me", true).then(r => {
         if (!r) {
             return;
         }
@@ -14,7 +14,7 @@ const me = {
         window.dispatchEvent(new CustomEvent("meStateChange"));
         return r;
     }),
-    loadNotifications: () => http.get("/api/users/" + me.me.id + "/notifications").then(r => {
+    loadNotifications: () => cache.get("/api/users/" + me.me.id + "/notifications").then(r => {
         me.me.notifications = r;
         window.dispatchEvent(new CustomEvent("meStateChange"));
     }),
