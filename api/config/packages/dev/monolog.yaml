@@ -3,7 +3,7 @@ monolog:
         main:
             type: stream
             level: debug
-            channels: ["!event"]
+            channels: ["!event", "!zusam"]
         console:
             type: console
             process_psr_3_messages: false

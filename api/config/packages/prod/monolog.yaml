@@ -8,7 +8,7 @@ monolog:
         nested:
             type: rotating_file
             level: debug
-            channels: ["!event"]
+            channels: ["!event", "!php", "!zusam"]
             max_files: 10
         console:
             type: console
