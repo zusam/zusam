@@ -17,6 +17,7 @@ class Notification
     const NEW_MESSAGE = 'new_message';
     const NEW_COMMENT = 'new_comment';
     const USER_JOINED_GROUP = 'user_joined_group';
+    const USER_LEAVED_GROUP = 'user_leaved_group';
     const GLOBAL_NOTIFICATION = 'global_notification';
 
     /**

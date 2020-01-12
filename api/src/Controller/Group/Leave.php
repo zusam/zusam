@@ -47,6 +47,20 @@ class Leave extends ApiController
         $this->getUser()->setLastActivityDate(time());
         $this->em->persist($this->getUser());
         $this->em->persist($group);
+
+        // Notify users of the group
+        foreach ($group->getUsers() as $u) {
+            if ($u->getId() != $this->getUser()->getId()) {
+                $notif = new Notification();
+                $notif->setTarget($group->getId());
+                $notif->setOwner($u);
+                $notif->setFromUser($this->getUser());
+                $notif->setFromGroup($group);
+                $notif->setType(Notification::USER_LEAVED_GROUP);
+                $this->em->persist($notif);
+            }
+        }
+
         $this->em->flush();
 
         return new Response(

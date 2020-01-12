@@ -37,7 +37,6 @@ class AddInvitedUser extends ApiController
         $this->em->persist($this->getUser());
         $this->em->persist($group);
 
-
         // Notify users of the group
         foreach ($group->getUsers() as $u) {
             if ($u->getId() != $this->getUser()->getId()) {
