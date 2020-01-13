@@ -15,9 +15,13 @@
 
     .message-preview {
         width: 100%;
-        max-width: 320px;
         margin: 1rem;
         position: relative;
+        max-width: 320px;
+
+        @media (min-width: map-get($grid-breakpoints, "sm")) and (max-width: map-get($grid-breakpoints, "md")) {
+            max-width: 250px;
+        }
 
         @media (max-width: map-get($grid-breakpoints, "sm")) {
             margin: 1rem 0;
@@ -149,7 +153,10 @@
         .main {
             display: flex;
             flex-flow: column;
-            width: 100%;
+            width: calc(100% - 5rem);
+            @media (min-width: map-get($grid-breakpoints, "md")) {
+                width: 100%;
+            }
         }
 
         .avatar {
