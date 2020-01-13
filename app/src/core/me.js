@@ -26,12 +26,6 @@ const me = {
         if (notif.target === id) {
             return true;
         }
-        if (
-            notif.type === "new_comment"
-            && notif.fromMessage.id === id
-        ) {
-            return true;
-        }
         return false;
     },
     isNew: id => Array.isArray(me.me.notifications) ? me.me.notifications.some(n => me.matchNotification(n, id)) : false,
