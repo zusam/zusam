@@ -56,6 +56,17 @@ class CleanNotifications extends Command
             }
         }
 
+        // remove notifications older than 1 year
+        $c = $this->pdo->query('SELECT n.id from `notification` n WHERE n.created_at < '.strval(time() - 86400*365).';');
+        while ($i = $c->fetch()) {
+            if ($input->getOption('verbose') || $input->getOption('only-list')) {
+                echo $i['id']."\n";
+            }
+            if (!$input->getOption('only-list')) {
+                $this->pdo->query("DELETE FROM `notification` WHERE id = '".$i['id']."';");
+            }
+        }
+
         // remove notifications related to groups where their owner is not
         $c = $this->pdo->query("
             SELECT n.id FROM notification as n WHERE NOT EXISTS (
