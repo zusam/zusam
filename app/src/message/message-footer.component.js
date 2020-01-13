@@ -29,8 +29,11 @@ export default class MessageFooter extends Component {
                                 onClick={e => router.onClick(e)}
                             >
                                 {this.props.message.children.length ?
-                                        lang.t("replies", {count:this.props.message.children.length})
-                                        : lang.t("reply")
+                                    (this.props.message.children.some(e => me.isNew(e.id)) ?
+                                        <b>{lang.t("replies", {count:this.props.message.children.length})}</b>
+                                        : lang.t("replies", {count:this.props.message.children.length})
+                                    )
+                                    : lang.t("reply")
                                 }
                             </a>
                             <div class="dot">&bull;</div>
