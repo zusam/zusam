@@ -54,18 +54,29 @@ const router = {
         "links",
         "files"
     ].includes(name),
+    getUrlComponents: url => {
+        let components = {};
+        components.url = new URL(url);
+        components.path = components.url.pathname;
+        components.search = components.url.search.slice(1);
+        [components.route, components.id, components.action] = router.removeSubpath(components.path).slice(1).split("/");
+        components.entityUrl = "";
+        components.entityType = "";
+        components.backUrl = "";
+        components.backUrlPrompt = "";
+        return components;
+    },
     navigate: async (url = "/", options = {}) => {
         if (!url.match(/^http/) && !options["raw_url"]) {
             url = router.toApp(url);
         }
-        router.url = new URL(url);
-        router.path = router.url.pathname;
-        router.search = router.url.search.slice(1);
-        [router.route, router.id, router.action] = router.removeSubpath(router.path).slice(1).split("/");
-        router.entityUrl = "";
-        router.entityType = "";
-        router.backUrl = "";
-        router.backUrlPrompt = "";
+        let components = router.getUrlComponents(url);
+        // do not allow to renavigate to the same url. This is done to avoid accidental navigate locks
+        if (router.url && router.url.href == components.url.href) {
+            console.warn("navigate lock !");
+            return;
+        }
+        Object.assign(router, components);
 
         // set url, backUrl and entityUrl
         if (router.route && router.id && router.isEntity(router.route)) {
@@ -105,16 +116,17 @@ const router = {
         }
 
         switch (router.route) {
-            case "password-reset":
-            case "stop-notification-emails":
-            case "signup":
             case "login":
-            case "share":
-            case "public":
-            case "messages":
-            case "groups":
-            case "users":
+                cache.reset();
             case "create-group":
+            case "groups":
+            case "messages":
+            case "password-reset":
+            case "public":
+            case "share":
+            case "signup":
+            case "stop-notification-emails":
+            case "users":
                 if (options.replace) {
                     history.replaceState(null, "", url);
                 } else {

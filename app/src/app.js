@@ -40,7 +40,7 @@ class App extends Component {
         });
         setTimeout(() => window.scrollTo(0, 0));
         cache.get("apiKey").then(apiKey => {
-            if (apiKey) {
+            if (apiKey && router.route != "login") {
                 me.get().then(user => {
                     if (!user && !router.isOutside()) {
                         cache.set("apiKey", "").then(_ => router.navigate("/login"));
