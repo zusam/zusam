@@ -38,7 +38,7 @@ class Leave extends ApiController
         $this->getUser()->removeGroup($group);
 
         // delete all notifications related to this group
-        foreach($this->getUser()->getNotifications() as $notif) {
+        foreach ($this->getUser()->getNotifications() as $notif) {
             if ($notif->getFromGroup() == $group) {
                 $this->em->remove($notif);
             }

@@ -69,10 +69,10 @@ class Search extends ApiController
             $termsFound = [];
 
             if (!empty($data["text"])) {
-                foreach(explode(" ", StringUtils::remove_accents($data["text"])) as $word) {
+                foreach (explode(" ", StringUtils::remove_accents($data["text"])) as $word) {
                     foreach ($search_terms as $term) {
                         if ($word == $term) {
-                            if(in_array($term, $termsFound)) {
+                            if (in_array($term, $termsFound)) {
                                 $score += 5;
                             } else {
                                 $score += 500;
@@ -80,7 +80,7 @@ class Search extends ApiController
                             }
                         } else {
                             if (stripos($word, $term) !== false) {
-                                if(in_array($term, $termsFound)) {
+                                if (in_array($term, $termsFound)) {
                                     $score += 1;
                                 } else {
                                     $score += 100;
@@ -93,10 +93,10 @@ class Search extends ApiController
             }
 
             if (!empty($data["title"])) {
-                foreach(explode(" ", StringUtils::remove_accents($data["title"])) as $word) {
+                foreach (explode(" ", StringUtils::remove_accents($data["title"])) as $word) {
                     foreach ($search_terms as $term) {
                         if (stripos($word, $term) !== false) {
-                            if(in_array($term, $termsFound)) {
+                            if (in_array($term, $termsFound)) {
                                 $score += 1;
                             } else {
                                 $score += 150;
@@ -109,10 +109,10 @@ class Search extends ApiController
 
             $authorName = $message->getAuthor()->getName();
             if (!empty($authorName)) {
-                foreach(explode(" ", StringUtils::remove_accents($authorName)) as $word) {
+                foreach (explode(" ", StringUtils::remove_accents($authorName)) as $word) {
                     foreach ($search_terms as $term) {
                         if (stripos($word, $term) !== false) {
-                            if(in_array($term, $termsFound)) {
+                            if (in_array($term, $termsFound)) {
                                 $score += 1;
                             } else {
                                 $score += 50;
@@ -130,10 +130,10 @@ class Search extends ApiController
                     $link_data = $link->getData();
                     if (!empty($link_data)) {
                         if (!empty($link_data["tags"])) {
-                            foreach($link_data["tags"] as $tag) {
+                            foreach ($link_data["tags"] as $tag) {
                                 foreach ($search_terms as $term) {
                                     if (stripos($tag, $term) !== false) {
-                                        if(in_array($term, $termsFound)) {
+                                        if (in_array($term, $termsFound)) {
                                             $score += 1;
                                         } else {
                                             $score += 50;
@@ -144,10 +144,10 @@ class Search extends ApiController
                             }
                         }
                         if (!empty($link_data["title"])) {
-                            foreach(explode(" ", StringUtils::remove_accents($link_data["title"])) as $word) {
+                            foreach (explode(" ", StringUtils::remove_accents($link_data["title"])) as $word) {
                                 foreach ($search_terms as $term) {
                                     if (stripos($word, $term) !== false) {
-                                        if(in_array($term, $termsFound)) {
+                                        if (in_array($term, $termsFound)) {
                                             $score += 1;
                                         } else {
                                             $score += 50;
@@ -158,10 +158,10 @@ class Search extends ApiController
                             }
                         }
                         if (!empty($link_data["description"])) {
-                            foreach(explode(" ", StringUtils::remove_accents($link_data["description"])) as $word) {
+                            foreach (explode(" ", StringUtils::remove_accents($link_data["description"])) as $word) {
                                 foreach ($search_terms as $term) {
                                     if (stripos($word, $term) !== false) {
-                                        if(in_array($term, $termsFound)) {
+                                        if (in_array($term, $termsFound)) {
                                             $score += 1;
                                         } else {
                                             $score += 50;
@@ -184,7 +184,7 @@ class Search extends ApiController
             $authorId = $message->getAuthor() ? $message->getAuthor()->getId() : '';
             $parentId = $message->getParent() ? $message->getParent()->getId() : '';
             // check if the parent exists
-            if (NULL == $this->em->getRepository(Message::class)->findOneById($parentId)) {
+            if (null == $this->em->getRepository(Message::class)->findOneById($parentId)) {
                 $parentId = '';
             }
             $page[] = [

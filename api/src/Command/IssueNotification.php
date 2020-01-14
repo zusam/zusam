@@ -39,7 +39,7 @@ class IssueNotification extends Command
         $this->logger->info($this->getName());
 
         $users = $this->em->getRepository(User::class)->findAll();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             $notification = new Notification();
             $notification->setType(Notification::GLOBAL_NOTIFICATION);
             $notification->setTarget($input->getArgument('target'));
