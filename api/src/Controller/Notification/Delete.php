@@ -37,6 +37,10 @@ class Delete extends ApiController
         $this->getUser()->setLastActivityDate(time());
         $this->em->persist($this->getUser());
         $this->em->remove($notification);
+
+        $this->getUser()->setLastActivityDate(time());
+        $this->em->persist($this->getUser());
+
         $this->em->flush();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);

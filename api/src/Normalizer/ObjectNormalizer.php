@@ -197,6 +197,7 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
             try {
                 return $this->propertyAccessor->getValue($object, $attribute);
             } catch (\Exception $e) {
+                // TODO: log exception
                 return NULL;
             }
         }
