@@ -154,7 +154,7 @@
             display: flex;
             flex-flow: column;
             width: calc(100% - 5rem);
-            @media (min-width: map-get($grid-breakpoints, "md")) {
+            @media (max-width: map-get($grid-breakpoints, "md")) {
                 width: 100%;
             }
         }
