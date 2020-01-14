@@ -39,6 +39,10 @@ export default class MessageBody extends Component {
     return { __html: txt };
   }
 
+  componentDidMount() {
+    this.componentWillUpdate();
+  }
+
   componentWillUpdate() {
     if (!this.state.gotPreview && this.props.message) {
       if (this.props.message.data) {
