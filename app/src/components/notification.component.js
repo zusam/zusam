@@ -98,7 +98,7 @@ export default class Notification extends Component {
       case "new_message":
         return "/messages/" + this.props.target;
       case "new_comment":
-        return "/messages/" + this.props.fromMessage.id;
+        return "/messages/" + this.props.fromMessage.id + "/" + this.props.target;
       case "global_notification":
         return this.props.target;
       default:
