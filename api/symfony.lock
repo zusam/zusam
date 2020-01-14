@@ -1,7 +1,4 @@
 {
-    "behat/transliterator": {
-        "version": "v1.2.0"
-    },
     "composer/ca-bundle": {
         "version": "1.2.5"
     },
@@ -365,10 +362,16 @@
     "symfony/polyfill-ctype": {
         "version": "v1.13.1"
     },
+    "symfony/polyfill-intl-grapheme": {
+        "version": "v1.13.1"
+    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.13.1"
     },
     "symfony/polyfill-intl-idn": {
+        "version": "v1.13.1"
+    },
+    "symfony/polyfill-intl-normalizer": {
         "version": "v1.13.1"
     },
     "symfony/polyfill-mbstring": {
@@ -436,6 +439,9 @@
     "symfony/stopwatch": {
         "version": "v5.0.1"
     },
+    "symfony/string": {
+        "version": "v5.0.2"
+    },
     "symfony/swiftmailer-bundle": {
         "version": "2.5",
         "recipe": {
@@ -449,9 +455,6 @@
             "config/packages/swiftmailer.yaml",
             "config/packages/test/swiftmailer.yaml"
         ]
-    },
-    "symfony/templating": {
-        "version": "v5.0.1"
     },
     "symfony/translation-contracts": {
         "version": "v2.0.1"
