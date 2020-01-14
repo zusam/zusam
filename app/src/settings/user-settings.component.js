@@ -134,7 +134,7 @@ export default class UserSettings extends Component {
                                             ></input>
                                         </div>
                                         <div class="form-group">
-                                            <label for="notification_emails">{ lang.t("notification_emails") }:</label>
+                                            <label for="notification_emails">{lang.t("notification_emails")}:</label>
                                             <select
                                                 name="notification_emails"
                                                 class="form-control"
@@ -148,22 +148,22 @@ export default class UserSettings extends Component {
                                                     ].indexOf(this.state.data["notification_emails"])
                                                 }
                                             >
-                                                <option value="none">{ lang.t("none") }</option>
-                                                <option value="hourly">{ lang.t("hourly") }</option>
-                                                <option value="daily">{ lang.t("daily") }</option>
-                                                <option value="weekly">{ lang.t("weekly") }</option>
-                                                <option value="monthly">{ lang.t("monthly") }</option>
+                                                <option value="none">{lang.t("none")}</option>
+                                                <option value="hourly">{lang.t("hourly")}</option>
+                                                <option value="daily">{lang.t("daily")}</option>
+                                                <option value="weekly">{lang.t("weekly")}</option>
+                                                <option value="monthly">{lang.t("monthly")}</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="default_group">{ lang.t("default_group") }:</label>
+                                            <label for="default_group">{lang.t("default_group")}:</label>
                                             <select name="default_group" class="form-control" value={this.state.data["default_group"]}>
                                                 { me.me.groups.map(e => <option value={e.id}>{e.name}</option>)}
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label class="capitalize" for="lang">{lang.t("lang")}:</label>
-                                            <select name="lang" class="form-control" value={this.state.data["lang"]}>
+                                            <select name="lang" class="form-control" value={lang.getCurrentLang()}>
                                                 { Object.keys(lang.possibleLang).map(k => <option value={k}>{lang.possibleLang[k]}</option>)}
                                             </select>
                                         </div>
