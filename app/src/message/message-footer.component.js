@@ -11,12 +11,12 @@ export default class MessageFooter extends Component {
                     { this.props.author && this.props.author.id == me.me.id && (
                         <Fragment>
                             <a
-                                class="action seamless-link font-size-90 capitalize"
+                                class="action seamless-link font-size-90 capitalize d-none d-sm-block"
                                 onClick={e => this.props.editMessage(e)}
                             >
                                 {lang.t("edit")}
                             </a>
-                            <div class="dot">&bull;</div>
+                            <div class="dot d-none d-sm-block">&bull;</div>
                         </Fragment>
                     )}
                     { !this.props.isPublic && this.props.isChild && (
@@ -87,6 +87,14 @@ export default class MessageFooter extends Component {
                                         onClick={e => this.props.publishInGroup(e)}
                                     >
                                         {lang.t("publish_in_group")}
+                                    </a>
+                                )}
+                                { this.props.author && this.props.author.id == me.me.id && (
+                                    <a
+                                        class="seamless-link capitalize d-block d-sm-none"
+                                        onClick={e => this.props.editMessage(e)}
+                                    >
+                                        {lang.t("edit")}
                                     </a>
                                 )}
                             </div>
