@@ -137,20 +137,21 @@ export default class Writer extends Component {
     }
     http.post("/api/messages", msg).then(res => {
       if (!res) {
-        alert.add(lang.t("error_new_message"), "alert-danger");
         this.setState({ sending: false });
+        alert.add(lang.t("error_new_message"), "alert-danger");
         return;
       }
       if (this.props.isChild) {
+        this.setState({ sending: false });
         cache.remove("/api/messages/" + this.props.parent);
         window.dispatchEvent(new CustomEvent("newChild", { detail: res }));
       } else {
         cache.remove(this.props.group);
-        router.navigate(router.backUrl || msg.group.slice(4));
-        window.dispatchEvent(new CustomEvent("newMessage", { detail: res }));
+        setTimeout(_ => {
+          router.navigate(router.backUrl || msg.group.slice(4));
+        }, 500);
       }
       this.setState({
-        sending: false,
         files: [],
         link: null,
         preview: null,
