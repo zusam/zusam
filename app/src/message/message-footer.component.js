@@ -3,108 +3,124 @@ import { router, lang, me, util } from "/core";
 import FaIcon from "../components/fa-icon.component.js";
 
 export default class MessageFooter extends Component {
-
-    render() {
-        return (
-            <div class="message-footer">
-                <div class="infos">
-                    { this.props.author && this.props.author.id == me.me.id && (
-                        <Fragment>
-                            <a
-                                class="action seamless-link font-size-90 capitalize d-none d-sm-block"
-                                onClick={e => this.props.editMessage(e)}
-                            >
-                                {lang.t("edit")}
-                            </a>
-                            <div class="dot d-none d-sm-block">&bull;</div>
-                        </Fragment>
-                    )}
-                    { !this.props.isPublic && this.props.isChild && (
-                        <Fragment>
-                            <a
-                                class="action seamless-link font-size-90 capitalize"
-                                href={router.toApp(
-                                    "/messages/" + this.props.message.id + (this.props.message.children.length ? "" : "?focus=reply")
-                                )}
-                                onClick={e => router.onClick(e)}
-                            >
-                                {this.props.message.children.length ?
-                                    (this.props.message.children.some(e => me.isNew(e.id)) ?
-                                        <b>{lang.t("replies", {count:this.props.message.children.length})}</b>
-                                        : lang.t("replies", {count:this.props.message.children.length})
-                                    )
-                                    : lang.t("reply")
-                                }
-                            </a>
-                            <div class="dot">&bull;</div>
-                        </Fragment>
-                    )}
-                    <div class="date font-size-90" title={util.humanFullDate(this.props.message.createdAt)}>
-                        { util.humanTime(this.props.message.createdAt) }
-                    </div>
-                    { this.props.author && (
-                        <Fragment>
-                            <div class="dot">&bull;</div>
-                            <div class="font-size-90">{this.props.author.name}</div>
-                        </Fragment>
-                    )}
-                </div>
-                <div>
-                    { !this.props.isPublic && (
-                        <div
-                            class="options dropdown"
-                            onBlur={e => (!e.relatedTarget || !e.relatedTarget.href) && e.target.classList.remove("active")}
-                            onClick={e => e.currentTarget.classList.toggle("active")}
-                        >
-                            <div class="dropdown-menu dropdown-options">
-                                { this.props.author && this.props.author.id == me.me.id && (
-                                    <a
-                                        class="seamless-link capitalize"
-                                        onClick={e => this.props.deleteMessage(e)}
-                                    >
-                                        {lang.t("delete")}
-                                    </a>
-                                )}
-                                {(
-                                    <a
-                                        class="seamless-link capitalize"
-                                        onClick={e => this.props.openPublicLink(e)}
-                                    >
-                                        {lang.t("public_link")}
-                                    </a>
-                                )}
-                                { me.me.groups.length > 1 && (
-                                    <a
-                                        class="seamless-link capitalize"
-                                        onClick={e => this.props.shareMessage(e)}
-                                    >
-                                        {lang.t("share_message")}
-                                    </a>
-                                )}
-                                { !this.props.message.isInFront && this.props.author.id == me.me.id && (
-                                    <a
-                                        class="seamless-link capitalize"
-                                        onClick={e => this.props.publishInGroup(e)}
-                                    >
-                                        {lang.t("publish_in_group")}
-                                    </a>
-                                )}
-                                { this.props.author && this.props.author.id == me.me.id && (
-                                    <a
-                                        class="seamless-link capitalize d-block d-sm-none"
-                                        onClick={e => this.props.editMessage(e)}
-                                    >
-                                        {lang.t("edit")}
-                                    </a>
-                                )}
-                            </div>
-                            <div class="none-if-follows-empty">
-                                <FaIcon family="solid" icon="ellipsis-h"/>
-                            </div>
-                        </div>
-                    )}
-                </div>
+  render() {
+    return (
+      <div class="message-footer">
+        <div class="infos">
+          {this.props.author && this.props.author.id == me.me.id && (
+            <Fragment>
+              <a
+                class="action seamless-link font-size-90 capitalize d-none d-sm-block"
+                onClick={e => this.props.editMessage(e)}
+              >
+                {lang.t("edit")}
+              </a>
+              <div class="dot d-none d-sm-block">&bull;</div>
+            </Fragment>
+          )}
+          {!this.props.isPublic && this.props.isChild && (
+            <Fragment>
+              <a
+                class="action seamless-link font-size-90 capitalize"
+                href={router.toApp(
+                  "/messages/" +
+                    this.props.message.id +
+                    (this.props.message.children.length ? "" : "?focus=reply")
+                )}
+                onClick={e => router.onClick(e)}
+              >
+                {this.props.message.children.length ? (
+                  this.props.message.children.some(e => me.isNew(e.id)) ? (
+                    <b>
+                      {lang.t("replies", {
+                        count: this.props.message.children.length
+                      })}
+                    </b>
+                  ) : (
+                    lang.t("replies", {
+                      count: this.props.message.children.length
+                    })
+                  )
+                ) : (
+                  lang.t("reply")
+                )}
+              </a>
+              <div class="dot">&bull;</div>
+            </Fragment>
+          )}
+          <div
+            class="date font-size-90"
+            title={util.humanFullDate(this.props.message.createdAt)}
+          >
+            {util.humanTime(this.props.message.createdAt)}
+          </div>
+          {this.props.author && (
+            <Fragment>
+              <div class="dot">&bull;</div>
+              <div class="font-size-90">{this.props.author.name}</div>
+            </Fragment>
+          )}
+        </div>
+        <div>
+          {!this.props.isPublic && (
+            <div
+              class="options dropdown"
+              onBlur={e =>
+                (!e.relatedTarget || !e.relatedTarget.href) &&
+                e.target.classList.remove("active")
+              }
+              onClick={e => e.currentTarget.classList.toggle("active")}
+            >
+              <div class="dropdown-menu dropdown-options">
+                {this.props.author && this.props.author.id == me.me.id && (
+                  <a
+                    class="seamless-link capitalize"
+                    onClick={e => this.props.deleteMessage(e)}
+                  >
+                    {lang.t("delete")}
+                  </a>
+                )}
+                {
+                  <a
+                    class="seamless-link capitalize"
+                    onClick={e => this.props.openPublicLink(e)}
+                  >
+                    {lang.t("public_link")}
+                  </a>
+                }
+                {me.me.groups.length > 1 && (
+                  <a
+                    class="seamless-link capitalize"
+                    onClick={e => this.props.shareMessage(e)}
+                  >
+                    {lang.t("share_message")}
+                  </a>
+                )}
+                {!this.props.message.isInFront &&
+                  this.props.author.id == me.me.id && (
+                    <a
+                      class="seamless-link capitalize"
+                      onClick={e => this.props.publishInGroup(e)}
+                    >
+                      {lang.t("publish_in_group")}
+                    </a>
+                  )}
+                {this.props.author && this.props.author.id == me.me.id && (
+                  <a
+                    class="seamless-link capitalize d-block d-sm-none"
+                    onClick={e => this.props.editMessage(e)}
+                  >
+                    {lang.t("edit")}
+                  </a>
+                )}
+              </div>
+              <div class="none-if-follows-empty">
+                <FaIcon family="solid" icon="ellipsis-h" />
+              </div>
             </div>
-        );
-    }
+          )}
+        </div>
+      </div>
+    );
+  }
 }
