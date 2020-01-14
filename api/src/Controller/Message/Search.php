@@ -107,6 +107,22 @@ class Search extends ApiController
                 }
             }
 
+            $authorName = $message->getAuthor()->getName();
+            if (!empty($authorName)) {
+                foreach(explode(" ", StringUtils::remove_accents($authorName)) as $word) {
+                    foreach ($search_terms as $term) {
+                        if (stripos($word, $term) !== false) {
+                            if(in_array($term, $termsFound)) {
+                                $score += 1;
+                            } else {
+                                $score += 50;
+                                $termsFound[] = $term;
+                            }
+                        }
+                    }
+                }
+            }
+
             $message_links = $message->getUrls();
             if (!empty($message_links)) {
                 $link = $this->em->getRepository(Link::class)->findOneByUrl($message_links[0]);

@@ -23,6 +23,26 @@ export default class MessageSearchResult extends Component {
         }
     }
 
+    displayAuthorName() {
+        if (!this.state.author) {
+            return {__html: "--"};
+        }
+        let authorName = this.state.author.name;
+
+        // make the search terms stand out
+        let words = authorName.split(" ");
+        for (let j = 0; j < words.length; j++) {
+            if (!words[j].match(util.urlRegExp)) {
+                let searchTerms = this.props.search.split(" ");
+                for(let k = 0; k < searchTerms.length; k++) {
+                    words[j] = words[j].replace(new RegExp(searchTerms[k], "gi"), "<b>$&</b>");
+                }
+            }
+        }
+        authorName = words.join(" ");
+        return {__html: authorName};
+    }
+
     displayMessageTitle() {
         if (!this.props.message.data || !this.props.message.data["title"]) {
             return {__html: util.humanTime(this.props.message.lastActivityDate)};
@@ -141,9 +161,7 @@ export default class MessageSearchResult extends Component {
                     <div class="card-body border-top">
                         { this.getMiniature() }
                         <div class="infos">
-                            <div class="title">
-                                { this.state.author ? this.state.author.name : "--" }
-                            </div>
+                            <div class="title" dangerouslySetInnerHTML={this.displayAuthorName()}></div>
                             <div class="dot">&bull;</div>
                             <div
                                 class="title"
