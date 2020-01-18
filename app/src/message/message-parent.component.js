@@ -248,7 +248,7 @@ export default class MessageParent extends Component {
         {!this.state.edit && !this.props.isPublic && (
           <div class="message child">
             {me.me && (
-              <div class="message-head p-1 d-none d-md-block">
+              <div class="message-head d-none d-md-block">
                 <img
                   class="rounded-circle w-3 material-shadow avatar"
                   src={
