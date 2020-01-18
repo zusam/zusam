@@ -111,6 +111,7 @@ export default class EmbedBlock extends Component {
         case "vimeo.com":
         case "dailymotion.com":
         case "facebook.com":
+        case "kickstarter.com":
           // default embed code
           if (this.props.data["code"]) {
             return (
