@@ -120,7 +120,7 @@ export default class Writer extends Component {
         .map(e => e["id"])
         .filter(e => !!e),
       data: {
-        text: document.getElementById("text").value
+        text: (document.getElementById("text").value || "").substring(0, 50000)
       },
       lastActivityDate: Math.floor(Date.now() / 1000)
     };
@@ -319,6 +319,7 @@ export default class Writer extends Component {
           autocomplete="off"
           autofocus={this.props.focus}
           placeholder={lang.t("text_placeholder")}
+          maxlength="50000"
         ></textarea>
         {this.state.preview && (
           <EmbedBlock inWriter={true} {...this.state.preview} />
