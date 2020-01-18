@@ -32,7 +32,11 @@ const me = {
   },
   isNew: id =>
     Array.isArray(me.me.notifications)
-      ? me.me.notifications.some(n => me.matchNotification(n, id))
+      ? me.me.notifications.some(
+          n =>
+            me.matchNotification(n, id) ||
+            (n.type == "new_comment" && n.fromMessage.id === id)
+        )
       : false,
   removeMatchingNotifications: id => {
     return me.loadNotifications().then(_ => {
