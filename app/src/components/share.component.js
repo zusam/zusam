@@ -52,7 +52,7 @@ export default class Share extends Component {
 
   groupSelect(e) {
     this.setState({ group: e.target.value });
-    router.backUrl = e.target.value.slice(4);
+    router.backUrl = "/groups/" + e.target.value;
   }
 
   render() {
