@@ -83,5 +83,7 @@
         "2":"{{count}} replies"
     },
     "publish_in_group": "publish in the group",
-    "search_in_group": "search in this group"
+    "search_in_group": "search in this group",
+    "changed_group_name": "changed the group's name",
+    "to": "to"
 }

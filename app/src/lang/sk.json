@@ -83,5 +83,7 @@
         "2":"{{count}} odpovedí"
     },
     "publish_in_group": "publikovať v skupine",
-    "search_in_group": "hľadať v tejto skupine"
+    "search_in_group": "hľadať v tejto skupine",
+    "changed_group_name": "zmenil názov skupiny",
+    "to": "na"
 }

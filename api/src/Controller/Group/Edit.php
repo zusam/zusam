@@ -4,6 +4,7 @@ namespace App\Controller\Group;
 
 use App\Controller\ApiController;
 use App\Entity\Group;
+use App\Entity\Notification;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,7 +39,29 @@ class Edit extends ApiController
         $requestData = json_decode($request->getcontent(), true);
 
         if (!empty($requestData['name'])) {
+            $previousName = $group->getName();
             $group->setName($requestData['name']);
+            $newName = $group->getName();
+
+            if ($newName != $previousName) {
+                // create associated notifications
+                $author = $this->getUser();
+                foreach ($group->getUsers() as $user) {
+                    if ($user->getId() != $author->getId()) {
+                        $notif = new Notification();
+                        $notif->setTarget($group->getId());
+                        $notif->setOwner($user);
+                        $notif->setFromUser($author);
+                        $notif->setFromGroup($group);
+                        $notif->setData([
+                            "previousGroupName" => $previousName,
+                            "newGroupName" => $newName
+                        ]);
+                        $notif->setType(Notification::GROUP_NAME_CHANGE);
+                        $this->em->persist($notif);
+                    }
+                }
+            }
         }
 
         $this->getUser()->setLastActivityDate(time());

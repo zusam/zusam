@@ -19,6 +19,7 @@ class Notification
     const USER_JOINED_GROUP = 'user_joined_group';
     const USER_LEFT_GROUP = 'user_left_group';
     const GLOBAL_NOTIFICATION = 'global_notification';
+    const GROUP_NAME_CHANGE = 'group_name_change';
 
     /**
      * @ORM\Id

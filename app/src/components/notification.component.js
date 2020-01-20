@@ -37,8 +37,8 @@ export default class Notification extends Component {
         return lang.t("has_joined");
       case "user_left_group":
         return lang.t("has_left");
-      case "global_notification":
-        return lang.t("global_notification");
+      case "group_name_change":
+        return lang.t("changed_group_name");
       default:
         return "";
     }
@@ -83,6 +83,14 @@ export default class Notification extends Component {
             {this.props.fromGroup.name}
           </a>
         );
+      case "group_name_change":
+        return (
+          <span>
+            <strong>{this.props.data["previousGroupName"]}</strong>
+            {" " + lang.t("to") + " "}
+            <strong>{this.props.data["newGroupName"]}</strong>
+          </span>
+        );
       case "global_notification":
         return this.props.data["text"];
       default:
@@ -94,6 +102,7 @@ export default class Notification extends Component {
     switch (this.props.type) {
       case "user_joined_group":
       case "user_left_group":
+      case "group_name_change":
         return "/groups/" + this.props.fromGroup.id;
       case "new_message":
         return "/messages/" + this.props.target;
