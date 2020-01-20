@@ -30,7 +30,7 @@ export default class MainContent extends Component {
         return <Share />;
       case "messages":
         return (
-          <article class="mt-2 mb-2 justify-content-center d-flex">
+          <article class="mt-2 mb-3 justify-content-center d-flex">
             <div class="container pb-1">
               <MessageParent
                 focus={!!router.getParam("focus", router.search)}

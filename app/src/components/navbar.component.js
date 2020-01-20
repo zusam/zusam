@@ -25,7 +25,9 @@ export default class Navbar extends Component {
     return (
       <div class="main-nav nav align-items-center z-index-100">
         <div class="navbar-block">
-          {(["share"].includes(router.route) || !router.backUrl) && (
+          {(["share"].includes(router.route) ||
+            ["settings"].includes(router.action) ||
+            !router.backUrl) && (
             <div
               class="menu dropdown cursor-pointer"
               tabindex="-1"
