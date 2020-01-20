@@ -246,7 +246,7 @@ export default class MessageParent extends Component {
           key={this.state.message.id}
         />
         {!this.state.edit && !this.props.isPublic && (
-          <div class="message child">
+          <div class="message child mt-2">
             {me.me && (
               <div class="message-head d-none d-md-block">
                 <img

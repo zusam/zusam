@@ -168,7 +168,7 @@ export default class MessageChild extends Component {
           }
         >
           {this.state.edit && me.me && (
-            <div class="message-head p-1 d-none d-md-block">
+            <div class="message-head d-none d-md-block">
               <img
                 class="rounded-circle w-3 material-shadow avatar"
                 src={
