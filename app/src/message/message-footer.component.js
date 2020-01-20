@@ -97,6 +97,7 @@ export default class MessageFooter extends Component {
                   </a>
                 )}
                 {!this.props.message.isInFront &&
+                  this.props.author &&
                   this.props.author.id == me.me.id && (
                     <a
                       class="seamless-link capitalize"
