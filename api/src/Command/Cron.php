@@ -53,7 +53,8 @@ class Cron extends Command
                 'period' => 60 * 60, // 1 hour
                 'type' => 'light',
                 'options' => [
-                    'log-send' => true,
+                    '--log-send' => true,
+                    '--only-list' => true,
                 ],
             ],
             [
@@ -61,7 +62,7 @@ class Cron extends Command
                 'period' => 60 * 60, // 1 hour
                 'type' => 'heavy',
                 'options' => [
-                    'max-compressions' => 5,
+                    '--max-compressions' => 5,
                 ],
             ],
             [
@@ -69,8 +70,7 @@ class Cron extends Command
                 'period' => 1440 * 60, // 1 day
                 'type' => 'light',
                 'options' => [
-                    'command' => 'zusam:clean:cache',
-                    'max-cache-size' => 512,
+                    '--max-cache-size' => 512,
                 ],
             ],
             [
