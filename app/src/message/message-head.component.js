@@ -12,6 +12,10 @@ export default class MessageHead extends Component {
               "rounded-circle material-shadow avatar" +
               (this.props.author ? "" : " removed-user")
             }
+            style={
+              this.props.author &&
+              "background-color:#" + util.colorHash(this.props.author.id)
+            }
             src={
               this.props.author && this.props.author.avatar
                 ? util.crop(this.props.author.avatar.id, 100, 100)

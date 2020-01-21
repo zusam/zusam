@@ -57,13 +57,15 @@ const router = {
     ["messages", "groups", "users", "links", "files"].includes(name),
   getUrlComponents: url => {
     let components = {};
-    components.url = new URL(url);
-    components.path = components.url.pathname;
-    components.search = components.url.search.slice(1);
-    [components.route, components.id, components.action] = router
-      .removeSubpath(components.path)
-      .slice(1)
-      .split("/");
+    if (url) {
+      components.url = new URL(url);
+      components.path = components.url.pathname;
+      components.search = components.url.search.slice(1);
+      [components.route, components.id, components.action] = router
+        .removeSubpath(components.path)
+        .slice(1)
+        .split("/");
+    }
     components.entityUrl = "";
     components.entityType = "";
     components.backUrl = "";

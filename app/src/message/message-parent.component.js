@@ -28,14 +28,16 @@ export default class MessageParent extends Component {
     if (!url && props.message) {
       url = "/api/message/" + props.message.id;
     }
-
     this.state = { url: url };
+  }
 
-    if (props.message) {
-      this.loadMessage(props.message);
+  componentDidMount() {
+    if (this.props.message) {
+      this.loadMessage(this.props.message);
     } else {
-      cache.get(url).then(msg => this.loadMessage(msg));
+      cache.get(this.state.url).then(msg => this.loadMessage(msg));
     }
+    setTimeout(() => window.scrollTo(0, 0));
   }
 
   publishInGroup() {
@@ -54,6 +56,9 @@ export default class MessageParent extends Component {
   }
 
   loadMessage(msg) {
+    if (!msg) {
+      return;
+    }
     me.removeMatchingNotifications(msg.id);
     let firstDisplayedChild = null;
     let lastDisplayedChild = null;
@@ -182,10 +187,6 @@ export default class MessageParent extends Component {
     );
   }
 
-  componentDidMount() {
-    setTimeout(() => window.scrollTo(0, 0));
-  }
-
   render() {
     if (this.props.hidden || !this.state.message || this.state.isRemoved) {
       return;
@@ -251,6 +252,7 @@ export default class MessageParent extends Component {
               <div class="message-head d-none d-md-block">
                 <img
                   class="rounded-circle w-3 material-shadow avatar"
+                  style={"background-color:#" + util.colorHash(me.me.id)}
                   src={
                     me.me.avatar
                       ? util.crop(me.me.avatar["id"], 100, 100)

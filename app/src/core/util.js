@@ -7,6 +7,9 @@ const util = {
     "i"
   ),
   getUrl: txt => {
+    if (!txt) {
+      return "";
+    }
     let url = txt.match(util.urlRegExp);
     if (url && url[0].startsWith("(")) {
       let link = url[0].match(/https?:\/\//i);
@@ -72,6 +75,35 @@ const util = {
       : null,
   // default avatar in base64
   defaultAvatar:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAI4AAACOCAYAAADn/TAIAAAFIklEQVR4nO2dQW4UVxCGuQcnyA04QS6QnIBcILlAOEFOkOwRSNmwgQ0bIgErb0IkViwwG28SJUIKnrE9zN922208tqd/7K6qfl9J39rdrm9e1Xv9+vWd/x/eXQGM5U70BUBNEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsEAcsSoiz//z71cHu09Xh3svV8u2vq0+/fxN+Ta2TXhxJ82Uc/v0GeYJJL87Rx/cXxFEcvHsUfm0tk1qcxR8/bJTmdORZly6NSNHX2SKpxVm+/e1KcfrQqKTeZ//5d+HX7KDrFosX91fLP3/pUE+ne9KPJ/r6yolzWZm6LvomevH6x+OkPPt2WhHWf2+jDOvyqmsTY+4tY1lOK46a39sIJaxPnlBS+sRexzDxQ472/72Vax1GtpEnrTibZlMth2aS0TlBnKLx6cm98LwgTsFYvP4pPC+IUzDUZ0XnJb04gjgfWp6IzkkJcY4W/0XnKlUc7r0Kz0kJcQ4+PIvOVapAnC257pFDa0GpGgHl6ixojkegfxZxHEzHR3L4z1/ROUsRUz9zKy+O/mGtlyzdf3QeyomDPHpC/jg8ByXFOZXn4250DkMi24a1UuIIbbfYdoPXXEI9XvT/vbw4pwI9udcN33MPledMTXF5cYYCLXcezHLmpXvKKM0sxDkn0bqMabVZpUzL85Wbad1D5leAZiXOZaixFFpAu2xbqEQ7R9AI1pWmZI1ws+KMFq2bvXkb5b8m9FA38yiDOFcQ8YhDo4z6tOh7RxwDjTLaED51ZG6AEecaljs/T/KKy5eRaZsE4oxAU3m9FzV1VGmAEWcDmrZHjDKVGmDEGaCk6Y3MqaNiA4w4J4Q1wHuvUr1MhzgjUAM8dcxtlGlKnK407T6dXJo5jjLNiKOZy9QN8JxHmSbE0fk4U0fVxTzEeRjXAGd6dQVxRhKxAtzSKDM7caIa4MqPDJoXJ2IFWA1wtqPVEGdLjjetxzTAc55mz1qcqI1WLZem8uJEbbTK9N52BsqIE7nRitJUVJywjVaNrc3MRpyoafYcNlo1K07Ec6ZOmnXTrWP0+yP1L6P18pVSnIqHKan/Gh7xL/nmLFcqcbo9wAEN8G2GRs3uSzDrPm1OIqURp1ubCShNU4d+GPqqTfV9xynE0T+xBWmGofutPGtLIU7FnuamQs14xafrKcRpbbTZFNVWpsPF4WMfZ1FJnnBxWi5Tm6LKwmO4OHobgDgL9TwVZlzh4kRsj8geFd6SCBeHuBj6MUXnBXGKRvZeB3GSRvbFQcRJGjoOJTo3iFMwMn0NL6U4czzY+qYiOjepxWnhWH03onOTWhwtsxMXg1K1BZmOzlfpzHCcP+Jswdd+7VffsOqP0lfpGx61rxGtP5K/4wa2MGgn36Zj/jUTuqlHKNk+bJZSnF6e4UfM9IvvZdAblF1ydh6cJiz7NkxdX/dBkpPvRIwdwbK/m55GnBbQaCeRtvnKX/YHnYgTxFWTguyLfwJxAtm0F0klLXsZFogTTFe6TvoflbAq+48RJwlVhOlBHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLBAHLD4DOVazhHAxfyaAAAAAElFTkSuQmCC"
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAI4AAACOAQMAAADdM6JLAAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlMA+1z85qwAAADgSURBVEjH7dUxDoIwGAXgRxxIdOAIXMONo3AFD2BSbyZHcHHnCI4dkOcAxLYPkKDGmPQfv6T8/cujALFi/XntlY5KrRJFEtYAgJ1LLQCUrBwiryUZEEn261fQ7X3CDNWzZJQKpVwp6+l5EkiVhr2eIC3d0+9W+i9qeyZp/be08Ucc9lH5lAcN+5nCDJBNmAFpmPpDTzQceboJxwEWjTPR8LSk4etxfnJ+AWYSpSFeFhpCzY27NaOJM9OxH/k4rFKzltrvkFlEBe8ASpfyS/fIRi67TCkZIasX5yH+dGJ9th7sZ6igNEF8KgAAAABJRU5ErkJggg==",
+  hash: str =>
+    str.split("").reduce((a, c) => ((a << 5) - a + c.charCodeAt()) | 0),
+  colorHash: str =>
+    [
+      "018E42",
+      "084887",
+      "0F4C5C",
+      "221E22",
+      "255957",
+      "32936F",
+      "437C90",
+      "454E9E",
+      "5F04F0",
+      "7FB800",
+      "9A031E",
+      "A4036F",
+      "B26700",
+      "B87C14",
+      "BF1A2F",
+      "C30909",
+      "DE1A1A",
+      "DE9518",
+      "EE4266",
+      "F00699",
+      "F17105",
+      "F6511D",
+      "F7A71B",
+      "F9C366"
+    ][Math.abs(util.hash(str)) % 24]
 };
 export default util;
