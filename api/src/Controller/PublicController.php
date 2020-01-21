@@ -2,23 +2,22 @@
 
 namespace App\Controller;
 
+use App\Controller\ApiController;
 use App\Entity\Message;
 use App\Service\Token;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class PublicController extends AbstractController
+class PublicController extends ApiController
 {
-    private $em;
-    private $serializer;
-
-    public function __construct(EntityManagerInterface $em, SerializerInterface $serializer)
-    {
-        $this->em = $em;
-        $this->serializer = $serializer;
+    public function __construct(
+        EntityManagerInterface $em,
+        SerializerInterface $serializer
+    ) {
+        parent::__construct($em, $serializer);
     }
 
     /**
@@ -38,7 +37,7 @@ class PublicController extends AbstractController
         return new JsonResponse(['message' => 'Invalid token'], JsonResponse::HTTP_BAD_REQUEST);
     }
 
-    private function getMessage(string $id, string $token): JsonResponse
+    private function getMessage(string $id, string $token): Response
     {
         $message = $this->em->getRepository(Message::class)->findOneById($id);
         if (empty($message)) {
@@ -50,8 +49,8 @@ class PublicController extends AbstractController
             return new JsonResponse(['message' => 'Invalid token'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse(
-            $this->serializer->normalize($message, 'json', ['groups' => 'read_message']),
+        return new Response(
+            $this->serialize($message, ['groups' => 'read_message']),
             JsonResponse::HTTP_OK
         );
     }

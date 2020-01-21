@@ -1,14 +1,17 @@
 import { h, render, Component } from "preact";
 import { http, router } from "/core";
-import { Message } from "/message";
+import { MessageParent } from "/message";
 
 export default class Public extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {};
-    if (router.id) {
+  }
+
+  componentDidMount() {
+    if (this.props.token) {
       http
-        .get("/api/public/" + router.id)
+        .get("/api/public/" + this.props.token)
         .then(res => this.setState({ message: res }));
     }
   }
@@ -18,9 +21,9 @@ export default class Public extends Component {
       return;
     }
     return (
-      <article class="justify-content-center d-flex">
+      <article class="justify-content-center d-flex mt-2">
         <div class="container">
-          <Message
+          <MessageParent
             isPublic={true}
             key={this.state.message.id}
             message={this.state.message}

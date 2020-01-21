@@ -10,12 +10,22 @@ use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
 /**
- * Adds a MAX_TREE_DEPTH limitation to symfony's objectNormalizer.
+ * Changes to Symfony's ObjectNormalizer :
  *
+ * Adds a MAX_TREE_DEPTH limitation
  * The usual objectNormalizer has a MAX_DEPTH limitation that can be used but it's
  * counting depth of objects of the same class (not global depth of the resulting tree).
  * See 4.3 implementation here:
  * https://github.com/symfony/symfony/blob/4.3/src/Symfony/Component/Serializer/Normalizer/AbstractObjectNormalizer.php#L527
+ *
+ * Removes the "read_me" group if we normalize a user that is not us.
+ * This is done to avoid serializing objects the caller shoudn't have access to
+ *
+ * Returns null for non existent properties instead of throwing
+ * I made this choice to be more resilient
+ *
+ * Returns null for properties that are API entities without id
+ * I made this choice to be more resilient
  */
 class ObjectNormalizer extends SymfonyObjectNormalizer
 {
@@ -129,6 +139,9 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
         // Remove the "read_me" group if we normalize a user that is not us.
         if ('User' === array_values(array_slice(explode('\\', get_class($object)), -1))[0]) {
             if (!isset($context['currentUser']) || $object->getId() !== $context['currentUser']) {
+                if (is_string($context['groups'])) {
+                    $context['groups'] = [$context['groups']];
+                }
                 $context['groups'] = array_filter($context['groups'], function ($g) {
                     return 'read_me' !== $g;
                 });
@@ -195,7 +208,21 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
             return $this->classDiscriminatorResolver->getTypeForMappedObject($object);
         } else {
             try {
-                return $this->propertyAccessor->getValue($object, $attribute);
+                $attributeValue = $this->propertyAccessor->getValue($object, $attribute);
+                // API objects always should have an id
+                // If it's not the case, return null
+                // TODO log it
+                if (
+                    is_object($attributeValue)
+                    && in_array(
+                        array_values(array_slice(explode('\\', \get_class($attributeValue)), -1))[0],
+                        ['User', 'File', 'Message', 'Notification', 'Group', 'Link']
+                    )
+                    && empty($attributeValue->getId())
+                ) {
+                    return null;
+                }
+                return $attributeValue;
             } catch (\Exception $e) {
                 // TODO: log exception
                 return null;

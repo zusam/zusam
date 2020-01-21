@@ -78,7 +78,7 @@ class App extends Component {
         return <StopNotificationEmails />;
         break;
       case "public":
-        return <Public />;
+        return <Public token={this.state.id} key={this.state.id}/>;
         break;
       case "password-reset":
         return <ResetPassword />;

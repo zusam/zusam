@@ -6,7 +6,7 @@ use App\Normalizer\ObjectNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer as SymfonyObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 abstract class ApiController extends AbstractController
@@ -33,17 +33,17 @@ abstract class ApiController extends AbstractController
             'json',
             [
                 ObjectNormalizer::MAX_TREE_DEPTH_HANDLER => function ($object, $format = null, array $context = []) {
-                    return \method_exists($object, 'getId') ? ['id' => $object->getId()] : null;
+                    return \method_exists($object, 'getId') ? ['id' => $object->getId()] : "";
                 },
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format = null, array $context = []) {
-                    return \method_exists($object, 'getId') ? ['id' => $object->getId()] : null;
+                    return \method_exists($object, 'getId') ? ['id' => $object->getId()] : "";
                 },
-                SymfonyObjectNormalizer::SKIP_NULL_VALUES => true,
-                SymfonyObjectNormalizer::CIRCULAR_REFERENCE_LIMIT => 1, // symfony default
-                SymfonyObjectNormalizer::ALLOW_EXTRA_ATTRIBUTES => true, // symfony default
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
+                AbstractObjectNormalizer::CIRCULAR_REFERENCE_LIMIT => 1, // symfony default
+                AbstractObjectNormalizer::ALLOW_EXTRA_ATTRIBUTES => true, // symfony default
                 ObjectNormalizer::ENABLE_MAX_TREE_DEPTH => true,
                 ObjectNormalizer::TREE_DEPTH_LIMIT => 3,
-                'currentUser' => $this->getUser()->getId(),
+                'currentUser' => $this->getUser() ? $this->getUser()->getId() : null,
                 'groups' => $groups,
             ]
         );
