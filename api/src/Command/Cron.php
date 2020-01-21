@@ -70,7 +70,7 @@ class Cron extends Command
                 'period' => 1440 * 60, // 1 day
                 'type' => 'light',
                 'options' => [
-                    '--max-cache-size' => 512,
+                    'max-cache-size' => 512,
                 ],
             ],
             [
