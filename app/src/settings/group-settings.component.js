@@ -142,7 +142,7 @@ export default class GroupSettings extends Component {
                 <div class="user-card">
                   <img
                     class="avatar material-shadow"
-                    style={"background-color:#" + util.colorHash(user.id)}
+                    style={util.backgroundHash(user.id)}
                     src={
                       user.avatar
                         ? util.crop(user.avatar["id"], 200, 200)

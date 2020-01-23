@@ -24,7 +24,7 @@ export default class Notification extends Component {
     }
     return (
       <img
-        style={"background-color:#" + util.colorHash(this.props.fromUser.id)}
+        style={util.backgroundHash(this.props.fromUser.id)}
         src={imgSrc}
         onError={e => this.setMiniatureOnError(e)}
       />

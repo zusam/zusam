@@ -252,7 +252,7 @@ export default class MessageParent extends Component {
               <div class="message-head d-none d-md-block">
                 <img
                   class="rounded-circle w-3 material-shadow avatar"
-                  style={"background-color:#" + util.colorHash(me.me.id)}
+                  style={util.backgroundHash(me.me.id)}
                   src={
                     me.me.avatar
                       ? util.crop(me.me.avatar["id"], 100, 100)

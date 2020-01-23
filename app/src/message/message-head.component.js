@@ -13,8 +13,7 @@ export default class MessageHead extends Component {
               (this.props.author ? "" : " removed-user")
             }
             style={
-              this.props.author &&
-              "background-color:#" + util.colorHash(this.props.author.id)
+              this.props.author && util.backgroundHash(this.props.author.id)
             }
             src={
               this.props.author && this.props.author.avatar
