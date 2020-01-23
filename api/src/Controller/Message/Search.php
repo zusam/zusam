@@ -107,16 +107,18 @@ class Search extends ApiController
                 }
             }
 
-            $authorName = $message->getAuthor()->getName();
-            if (!empty($authorName)) {
-                foreach (explode(" ", StringUtils::remove_accents($authorName)) as $word) {
-                    foreach ($search_terms as $term) {
-                        if (stripos($word, $term) !== false) {
-                            if (in_array($term, $termsFound)) {
-                                $score += 1;
-                            } else {
-                                $score += 50;
-                                $termsFound[] = $term;
+            if (!empty($message->getAuthor())) {
+                $authorName = $message->getAuthor()->getName();
+                if (!empty($authorName)) {
+                    foreach (explode(" ", StringUtils::remove_accents($authorName)) as $word) {
+                        foreach ($search_terms as $term) {
+                            if (stripos($word, $term) !== false) {
+                                if (in_array($term, $termsFound)) {
+                                    $score += 1;
+                                } else {
+                                    $score += 50;
+                                    $termsFound[] = $term;
+                                }
                             }
                         }
                     }
