@@ -12,14 +12,17 @@ class Mailer
     private $domain;
     private $lang;
     private $logger;
+    private $env;
 
     public function __construct(
         \Swift_Mailer $swift,
         \Twig\Environment $twig,
         $domain,
         $lang,
+        string $env,
         LoggerInterface $logger
     ) {
+        $this->env = $env;
         $this->swift = $swift;
         $this->twig = $twig;
         $this->domain = $domain;
@@ -30,15 +33,17 @@ class Mailer
     private function sendMail(\Swift_Message $email)
     {
         $failures = [];
-        try {
-            $ret = $this->swift->send($email, $failures);
-            if (!$ret) {
+        if ('prod' == $this->env) {
+            try {
+                $ret = $this->swift->send($email, $failures);
+                if (!$ret) {
+                    $this->logger->error("Could not send email to " . array_key_first($email->getTo()));
+                    return $failures;
+                }
+            } catch (\Exception $e) {
                 $this->logger->error("Could not send email to " . array_key_first($email->getTo()));
-                return $failures;
+                return [$e->getMessage()];
             }
-        } catch (\Exception $e) {
-            $this->logger->error("Could not send email to " . array_key_first($email->getTo()));
-            return [$e->getMessage()];
         }
 
         return true;
@@ -72,7 +77,7 @@ class Mailer
                 ),
                 'text/plain'
             )
-        ;
+            ;
 
         return $this->sendMail($email);
     }
@@ -100,15 +105,15 @@ class Mailer
                     [
                         'name' => ucfirst($user->getName()),
                         'url' => 'https://'
-                            .$this->domain
-                            .'/password-reset'
-                            .'?mail='.urlencode($user->getLogin())
-                            .'&key='.$token,
+                        .$this->domain
+                        .'/password-reset'
+                        .'?mail='.urlencode($user->getLogin())
+                        .'&key='.$token,
                     ]
                 ),
                 'text/plain'
             )
-        ;
+            ;
 
         return $this->sendMail($email);
     }

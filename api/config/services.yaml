@@ -111,10 +111,11 @@ services:
 
     App\Service\Mailer:
       arguments:
-        - '@mailer'
-        - '@twig'
-        - '%env(resolve:DOMAIN)%'
-        - '%env(resolve:LANG)%'
+        $swift: '@mailer'
+        $twig: '@twig'
+        $domain: '%env(resolve:DOMAIN)%'
+        $lang: '%env(resolve:LANG)%'
+        $env: '%kernel.environment%'
 
     App\Service\Namer:
       public: true
