@@ -26,13 +26,13 @@ class Create extends ApiController
     public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
+        $requestData = json_decode($request->getcontent(), true);
         if (empty($requestData)) {
             return new JsonResponse(
                 ['error' => 'Bad Request'],
                 Response::HTTP_BAD_REQUEST
             );
         }
-        $requestData = json_decode($request->getcontent(), true);
 
         $group = new Group();
         $group->setName($requestData['name']);
