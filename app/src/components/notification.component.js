@@ -4,7 +4,7 @@ import { lang, me, router, util } from "/core";
 export default class Notification extends Component {
   constructor(props) {
     super(props);
-    this.getMiniatureSrc = this.getMiniatureSrc.bind(this);
+    this.getMiniature = this.getMiniature.bind(this);
     this.setMiniatureOnError = this.setMiniatureOnError.bind(this);
     this.getAction = this.getAction.bind(this);
     this.getTarget = this.getTarget.bind(this);
@@ -14,13 +14,21 @@ export default class Notification extends Component {
     };
   }
 
-  getMiniatureSrc() {
-    if (this.props.type == "global_notification") {
-      return util.defaultAvatar;
+  getMiniature() {
+    let imgSrc = util.defaultAvatar;
+    if (
+      this.props.fromUser.avatar &&
+      this.props.type != "global_notification"
+    ) {
+      imgSrc = util.crop(this.props.fromUser.avatar["id"], 80, 80);
     }
-    return this.props.fromUser.avatar
-      ? util.crop(this.props.fromUser.avatar["id"], 80, 80)
-      : util.defaultAvatar;
+    return (
+      <img
+        style={"background-color:#" + util.colorHash(this.props.fromUser.id)}
+        src={imgSrc}
+        onError={e => this.setMiniatureOnError(e)}
+      />
+    );
   }
 
   setMiniatureOnError(event) {
@@ -129,12 +137,7 @@ export default class Notification extends Component {
           );
         }}
       >
-        <div class="miniature unselectable">
-          <img
-            src={this.getMiniatureSrc()}
-            onError={e => this.setMiniatureOnError(e)}
-          />
-        </div>
+        <div class="miniature unselectable">{this.getMiniature()}</div>
         <div class="infos">
           <div class="description">
             {this.props.type != "global_notification" && (

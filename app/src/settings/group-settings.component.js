@@ -105,7 +105,7 @@ export default class GroupSettings extends Component {
                           value={
                             location.protocol +
                             "//" +
-                            location.hostname +
+                            location.host +
                             "/invitation/" +
                             this.state.secretKey
                           }
@@ -142,6 +142,7 @@ export default class GroupSettings extends Component {
                 <div class="user-card">
                   <img
                     class="avatar material-shadow"
+                    style={"background-color:#" + util.colorHash(user.id)}
                     src={
                       user.avatar
                         ? util.crop(user.avatar["id"], 200, 200)
