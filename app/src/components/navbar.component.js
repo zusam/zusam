@@ -40,6 +40,7 @@ export default class Navbar extends Component {
               <div class="rounded-circle avatar unselectable">
                 <img
                   class="rounded-circle"
+                  style={util.backgroundHash(me.me.id)}
                   src={
                     me.me.avatar
                       ? util.crop(me.me.avatar["id"], 80, 80)
