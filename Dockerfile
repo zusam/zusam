@@ -20,6 +20,7 @@ RUN set -xe && apk add --no-cache nginx php7 openssl ffmpeg unzip \
     php7-fileinfo \
     php7-fpm \
     php7-iconv \
+    php7-intl \
     php7-json \
     php7-mbstring \
     php7-opcache \
