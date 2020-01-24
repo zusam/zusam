@@ -85,5 +85,7 @@
     "publish_in_group": "publier dans le groupe",
     "search_in_group": "rechercher dans le groupe",
     "changed_group_name": "a changé le nom du groupe",
-    "to": "en"
+    "to": "en",
+    "notifications": "notifications",
+    "mark_all_as_read": "tout marquer comme lu"
 }

@@ -27,10 +27,10 @@
         max-width: calc(100vw - 1rem);
         overflow-x: hidden;
 
-        & > * {
+        & > a {
             display: block;
-            padding: 5px 10px;
             cursor: pointer;
+            padding: 5px 10px;
             white-space: nowrap;
             &:hover {
                 background-color: #eee;
@@ -50,6 +50,9 @@
         right: 0;
         border-bottom-left-radius: 4px;
         box-shadow: 4px 4px 4px #0003;
+        & > a {
+            padding: 5px 15px 5px 10px;
+        }
     }
 
     .dropdown-options {

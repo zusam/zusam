@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { lang, me, router } from "/core";
+import { lang, me, router, http } from "/core";
 import FaIcon from "./fa-icon.component.js";
 import Notification from "./notification.component.js";
 
@@ -8,6 +8,15 @@ export default class NotificationsDropdownNavbar extends Component {
     super(props);
     // force update the navbar when me gets updated
     addEventListener("meStateChange", _ => this.setState({}));
+    this.clearAllNotifications = this.clearAllNotifications.bind(this);
+  }
+
+  clearAllNotifications() {
+    if (me.me.notifications.length) {
+      Promise.all(
+        me.me.notifications.map(n => http.delete("/api/notifications/" + n.id))
+      ).then(me.update());
+    }
   }
 
   render() {
@@ -37,6 +46,15 @@ export default class NotificationsDropdownNavbar extends Component {
           )}
         </div>
         <div class="dropdown-menu dropdown-right notifications-menu">
+          <div class="notification-header">
+            <strong class="capitalize">{lang.t("notifications")}</strong>
+            <div
+              class="action capitalize"
+              onClick={e => this.clearAllNotifications()}
+            >
+              {lang.t("mark_all_as_read")}
+            </div>
+          </div>
           {me.me.notifications
             ? me.me.notifications
                 .sort((a, b) => b.createdAt - a.createdAt)

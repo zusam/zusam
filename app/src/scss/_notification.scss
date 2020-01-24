@@ -1,5 +1,23 @@
 .notifications-menu {
-    left: -60px !important;
+    left: -48px !important;
+}
+
+.notification-header {
+    font-size: 85%;
+    padding: 0px 13px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    cursor: initial;
+    .action {
+        color: #007bff;
+        text-decoration: none;
+        background-color: transparent;
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 .notification {
