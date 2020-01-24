@@ -80,47 +80,55 @@ const util = {
     str.split("").reduce((a, c) => ((a << 5) - a + c.charCodeAt()) | 0),
   colorHash: str =>
     [
-      "018E42",
-      "084887",
-      "0F4C5C",
-      "221E22",
-      "255957",
-      "32936F",
-      "437C90",
-      "454E9E",
-      "5F04F0",
-      "7FB800",
-      "9A031E",
-      "A4036F",
-      "B26700",
-      "B87C14",
-      "BF1A2F",
-      "C30909",
-      "DE1A1A",
-      "DE9518",
-      "EE4266",
-      "F00699",
-      "F17105",
-      "F6511D",
-      "F7A71B",
-      "F9C366"
-    ][Math.abs(util.hash(str)) % 24],
+      "#000000",
+      "#333366",
+      "#333399",
+      "#3333CC",
+      "#339933",
+      "#339999",
+      "#33CC33",
+      "#33CC99",
+      "#663333",
+      "#663366",
+      "#666633",
+      "#666699",
+      "#66CC33",
+      "#66CCCC",
+      "#993333",
+      "#993366",
+      "#993399",
+      "#996633",
+      "#999966",
+      "#CC3333",
+      "#CC3366",
+      "#CC3399",
+      "#CC33CC",
+      "#CC6633",
+      "#CC9933",
+      "#CC99CC",
+      "#CCCC33"
+    ][Math.abs(util.hash(str)) % 27],
   backgroundHash: str => {
     let c1 = util.colorHash(str);
-    let c2 = util.colorHash(str.split('').reverse().join('.'));
-    let deg = 30*(Math.abs(util.hash(str)) % 12);
+    let c2 = util.colorHash(
+      str
+        .split("")
+        .reverse()
+        .join(".")
+    );
+    let deg = 45 * (Math.abs(util.hash(str)) % 4);
     return (
-      "background-color:#" +
+      "background-color:" +
       c1 +
       ";background-image:linear-gradient(" +
       deg +
-      "deg, #" +
+      "deg, " +
       c2 +
-      " 15%, transparent 15% 30%, #" +
+      " 15%, transparent 15% 30%, " +
       c2 +
-      " 30% 45%, transparent 45% 60%, #" +
+      " 30% 45%, transparent 45% 60%, " +
       c2 +
-      " 60% 75%, transparent 75% 90%, #" +
+      " 60% 75%, transparent 75% 90%, " +
       c2 +
       " 90%);"
     );
