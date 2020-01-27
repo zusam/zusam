@@ -85,5 +85,7 @@
     "publish_in_group": "publikovať v skupine",
     "search_in_group": "hľadať v tejto skupine",
     "changed_group_name": "zmenil názov skupiny",
-    "to": "na"
+    "to": "na",
+    "notifications": "oznámenia",
+    "mark_all_as_read": "označiť všetko ako prečítané"
 }
