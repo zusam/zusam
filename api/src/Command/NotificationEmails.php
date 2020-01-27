@@ -35,6 +35,7 @@ class NotificationEmails extends Command
              ->setDescription('Send notification emails.')
              ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list user ids that would get a notification.')
              ->addOption('log-send', null, InputOption::VALUE_NONE, 'Log when sending an email.')
+             ->addOption('log-as-error', null, InputOption::VALUE_NONE, 'Log sent emails as errors.')
              ->setHelp('Send a notification email to the users that asked for it.');
     }
 
@@ -49,11 +50,13 @@ class NotificationEmails extends Command
 
             $data = $user->getData();
             $notif = isset($data['notification_emails']) ? $data['notification_emails'] : '';
+
+            // don't evaluate further if we are not in the right conditions
             if (
-                empty($notif) || 'none' == $notif
-                || ('monthly' == $notif && '1-1' != date('j-G'))
-                || ('weekly' == $notif && '1-1' != date('N-G'))
-                || ('daily' == $notif && '1' != date('G'))
+                'hourly' != $notif
+                && ('monthly' != $notif || '1-1' != date('j-G')) // first of the month at 1AM
+                && ('weekly' != $notif || '1-1' != date('N-G')) // monday at 1AM
+                && ('daily' != $notif || '1' != date('G')) // 1AM
             ) {
                 continue;
             }
@@ -77,17 +80,26 @@ class NotificationEmails extends Command
                     $max_age = 0;
             }
 
-            if (count($user->getNotifications()) > 0) {
+            // only get recent enough notifications
+            $notifications = array_filter($user->getNotifications(), function ($n) {
+                return time() - $n->getCreatedAt() < $max_age;
+            });
+
+            if (count($notifications) > 0) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
                     $output->writeln([
-                        '<info>Notification email sent to '.$user->getId().'.</info>',
+                        '<info>Notification email sent to '.$user->getId().' for '.count($notifications).' notifications.</info>',
                     ]);
                 }
                 if ($input->getOption('log-send')) {
-                    $this->logger->info('Notification email sent to '.$user->getId());
+                    if ($input->getOption('log-as-error')) {
+                        $this->logger->error('Notification email sent to '.$user->getId().' for '.count($notifications).' notifications.');
+                    } else {
+                        $this->logger->info('Notification email sent to '.$user->getId().' for '.count($notifications).' notifications.');
+                    }
                 }
                 if (!$input->getOption('only-list')) {
-                    $this->mailer->sendNotificationEmail($user);
+                    $this->mailer->sendNotificationEmail($user, $notifications);
                 }
                 break;
             }

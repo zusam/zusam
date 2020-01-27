@@ -23,3 +23,9 @@ monolog:
             handler: deprecation
             max_level: info
             channels: ["php"]
+        zusam:
+            type: rotating_file
+            path: "%kernel.logs_dir%/zusam.log"
+            level: error
+            channels: ["zusam"]
+            max_files: 10
