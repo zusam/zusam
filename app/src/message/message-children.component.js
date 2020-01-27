@@ -40,7 +40,7 @@ export default class MessageChildren extends Component {
             />
           );
         })}
-        {this.props.lastDisplayedChild <
+        {this.props.lastDisplayedChild + 1 <
           toChildArray(this.props.children).length && (
           <div class="d-flex">
             <a
