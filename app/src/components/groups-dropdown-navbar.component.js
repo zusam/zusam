@@ -16,10 +16,6 @@ export default class GroupsDropdownNavbar extends Component {
           <div
             class="nav-link dropdown groups unselectable"
             tabindex="-1"
-            onBlur={e =>
-              (!e.relatedTarget || !e.relatedTarget.href) &&
-              e.target.classList.remove("active")
-            }
             onClick={e => e.currentTarget.classList.toggle("active")}
           >
             <div class="unselectable pr-5px">

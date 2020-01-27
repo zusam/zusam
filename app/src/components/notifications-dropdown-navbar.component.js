@@ -27,10 +27,6 @@ export default class NotificationsDropdownNavbar extends Component {
           (me.me.notifications.length ? " cursor-pointer" : "")
         }
         tabindex="-1"
-        onBlur={e =>
-          (!e.relatedTarget || !e.relatedTarget.href) &&
-          e.target.classList.remove("active")
-        }
         onClick={e =>
           me.me.notifications.length &&
           e.currentTarget.classList.toggle("active")

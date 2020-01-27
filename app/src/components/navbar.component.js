@@ -31,10 +31,6 @@ export default class Navbar extends Component {
             <div
               class="menu dropdown cursor-pointer"
               tabindex="-1"
-              onBlur={e =>
-                (!e.relatedTarget || !e.relatedTarget.href) &&
-                e.target.classList.remove("active")
-              }
               onClick={e => e.currentTarget.classList.toggle("active")}
             >
               <div class="rounded-circle avatar unselectable">

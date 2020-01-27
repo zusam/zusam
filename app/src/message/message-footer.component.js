@@ -65,11 +65,9 @@ export default class MessageFooter extends Component {
           {!this.props.isPublic && (
             <div
               class="options dropdown"
-              onBlur={e =>
-                (!e.relatedTarget || !e.relatedTarget.href) &&
-                e.target.classList.remove("active")
+              onClick={e =>
+                e.target.closest(".dropdown").classList.toggle("active")
               }
-              onClick={e => e.currentTarget.classList.toggle("active")}
             >
               <div class="dropdown-menu dropdown-options">
                 {this.props.author && this.props.author.id == me.me.id && (

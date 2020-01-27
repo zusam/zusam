@@ -19,6 +19,12 @@ class App extends Component {
     window.addEventListener("meStateChange", _ => this.setState({ me: me.me }));
     window.addEventListener("fetchedNewDict", _ => this.setState({}));
     window.addEventListener("popstate", router.sync);
+    window.addEventListener("click", e => {
+      // close dropdowns if we are clicking on something else
+      if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown').forEach(n => n.classList.remove("active"));
+      }
+    });
     lang.fetchDict();
     cache.get("apiKey").then(apiKey => {
       if (router.isOutside() || apiKey) {

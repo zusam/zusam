@@ -36,10 +36,6 @@ export default class Settings extends Component {
             <li
               class="nav-item dropdown group-list"
               tabindex="-1"
-              onBlur={e =>
-                (!e.relatedTarget || !e.relatedTarget.href) &&
-                e.target.classList.remove("active")
-              }
               onClick={e => e.currentTarget.classList.toggle("active")}
             >
               <div
