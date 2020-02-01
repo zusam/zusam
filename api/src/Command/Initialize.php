@@ -80,19 +80,16 @@ class Initialize extends Command
             }
         }
 
-        $group = $this->em->getRepository(Group::class)->findOneByLogin($input->getArgument('group'));
-        if (empty($group)) {
-            $group = new Group();
-            $group->setName($input->getArgument('group'));
-            if ($input->getOption('seed')) {
-                $reflection = new \ReflectionClass($group);
-                $id = $reflection->getProperty('id');
-                $id->setAccessible(true);
-                $id->setValue($group, Uuid::uuidv4($input->getOption('seed').'_group'));
-                $secretKey = $reflection->getProperty('secretKey');
-                $secretKey->setAccessible(true);
-                $secretKey->setValue($group, Uuid::uuidv4($input->getOption('seed').'_group_secret_key'));
-            }
+        $group = new Group();
+        $group->setName($input->getArgument('group'));
+        if ($input->getOption('seed')) {
+            $reflection = new \ReflectionClass($group);
+            $id = $reflection->getProperty('id');
+            $id->setAccessible(true);
+            $id->setValue($group, Uuid::uuidv4($input->getOption('seed').'_group'));
+            $secretKey = $reflection->getProperty('secretKey');
+            $secretKey->setAccessible(true);
+            $secretKey->setValue($group, Uuid::uuidv4($input->getOption('seed').'_group_secret_key'));
         }
 
         $group->addUser($user);
