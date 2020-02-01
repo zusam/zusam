@@ -24,7 +24,7 @@ class CleanCache extends Command
         $this->pdo = new \PDO($dsn, null, null);
         $this->logger = $logger;
 
-        mkdir($targetDir, 0777, true);
+        @mkdir($targetDir, 0777, true);
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {

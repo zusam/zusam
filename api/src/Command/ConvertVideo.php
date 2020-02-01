@@ -27,7 +27,7 @@ class ConvertVideo extends Command
         $this->logger = $logger;
         $this->pdo = new \PDO($dsn, null, null);
 
-        mkdir($targetDir, 0777, true);
+        @mkdir($targetDir, 0777, true);
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
