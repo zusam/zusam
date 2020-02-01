@@ -28,14 +28,15 @@ class CompressGifs extends Command
         $this->pdo = new \PDO($dsn, null, null);
         $this->logger = $logger;
 
+        mkdir($targetDir, 0777, true);
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
-            throw new \Exception('Target directory ('.$this->targetDir.') could not be found !');
+            throw new \Exception('Target directory ('.$targetDir.') could not be found !');
         }
 
         if (!is_writeable($this->targetDir)) {
-            throw new \Exception('Target directory ('.$this->targetDir.') is not writable !');
+            throw new \Exception('Target directory ('.$targetDir.') is not writable !');
         }
     }
 
