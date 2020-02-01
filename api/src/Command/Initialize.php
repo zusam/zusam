@@ -62,30 +62,37 @@ class Initialize extends Command
             '--force' => true,
         ]), $output);
 
-        $user = new User();
-        $user->setLogin($input->getArgument('user'));
-        $user->setName(explode('@', $input->getArgument('user'))[0]);
-        $user->setPassword($this->encoder->encodePassword($user, $input->getArgument('password')));
-        if ($input->getOption('seed')) {
-            $reflection = new \ReflectionClass($user);
-            $id = $reflection->getProperty('id');
-            $id->setAccessible(true);
-            $id->setValue($user, Uuid::uuidv4($input->getOption('seed').'_user'));
-            $secretKey = $reflection->getProperty('secretKey');
-            $secretKey->setAccessible(true);
-            $secretKey->setValue($user, Uuid::uuidv4($input->getOption('seed').'_user_secret_key'));
+
+        $user = $this->em->getRepository(User::class)->findOneByLogin($input->getArgument('user'));
+        if (empty($user)) {
+            $user = new User();
+            $user->setLogin($input->getArgument('user'));
+            $user->setName(explode('@', $input->getArgument('user'))[0]);
+            $user->setPassword($this->encoder->encodePassword($user, $input->getArgument('password')));
+            if ($input->getOption('seed')) {
+                $reflection = new \ReflectionClass($user);
+                $id = $reflection->getProperty('id');
+                $id->setAccessible(true);
+                $id->setValue($user, Uuid::uuidv4($input->getOption('seed').'_user'));
+                $secretKey = $reflection->getProperty('secretKey');
+                $secretKey->setAccessible(true);
+                $secretKey->setValue($user, Uuid::uuidv4($input->getOption('seed').'_user_secret_key'));
+            }
         }
 
-        $group = new Group();
-        $group->setName($input->getArgument('group'));
-        if ($input->getOption('seed')) {
-            $reflection = new \ReflectionClass($group);
-            $id = $reflection->getProperty('id');
-            $id->setAccessible(true);
-            $id->setValue($group, Uuid::uuidv4($input->getOption('seed').'_group'));
-            $secretKey = $reflection->getProperty('secretKey');
-            $secretKey->setAccessible(true);
-            $secretKey->setValue($group, Uuid::uuidv4($input->getOption('seed').'_group_secret_key'));
+        $group = $this->em->getRepository(Group::class)->findOneByLogin($input->getArgument('group'));
+        if (empty($group)) {
+            $group = new Group();
+            $group->setName($input->getArgument('group'));
+            if ($input->getOption('seed')) {
+                $reflection = new \ReflectionClass($group);
+                $id = $reflection->getProperty('id');
+                $id->setAccessible(true);
+                $id->setValue($group, Uuid::uuidv4($input->getOption('seed').'_group'));
+                $secretKey = $reflection->getProperty('secretKey');
+                $secretKey->setAccessible(true);
+                $secretKey->setValue($group, Uuid::uuidv4($input->getOption('seed').'_group_secret_key'));
+            }
         }
 
         $group->addUser($user);
