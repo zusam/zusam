@@ -5,6 +5,7 @@ namespace App\Controller\Message;
 use App\Controller\ApiController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Message;
+use App\Entity\Notification;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,6 +34,11 @@ class Delete extends ApiController
         }
 
         $this->denyAccessUnlessGranted(new Expression('user == object.getAuthor()'), $message);
+
+        $notifications = $this->em->getRepository(Notification::class)->findAllByTarget($id);
+        foreach ($notifications as $n) {
+            $this->em->remove($n);
+        }
 
         $this->getUser()->setLastActivityDate(time());
         $this->em->persist($this->getUser());
