@@ -31,7 +31,7 @@ fi
 
 # initialize database if none is present
 if ! [ -f "/zusam/data/${DATABASE_NAME}" ]; then
-    /zusam/api/bin/console zusam:init "${INIT_NAME}" "${INIT_GROUP}" "${INIT_PASSWORD}"
+    /zusam/api/bin/console zusam:init "${INIT_USER}" "${INIT_GROUP}" "${INIT_PASSWORD}"
 fi
 
 exec /bin/s6-svscan /etc/s6.d

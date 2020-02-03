@@ -8,7 +8,7 @@ ENTRYPOINT ["/sbin/tini", "--"]
 ENV LANG=en
 ENV DOMAIN=localhost
 ENV DATABASE_NAME=data.db
-ENV INIT_NAME=zusam
+ENV INIT_USER=zusam
 ENV INIT_GROUP=zusam
 ENV INIT_PASSWORD=zusam
 EXPOSE 8080
