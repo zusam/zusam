@@ -81,7 +81,7 @@ class NotificationEmails extends Command
             }
 
             // only get recent enough notifications
-            $notifications = array_filter($user->getNotifications()->toArray(), function ($n) ($max_age) {
+            $notifications = array_filter($user->getNotifications()->toArray(), function ($n) use ($max_age) {
                 return time() - $n->getCreatedAt() < $max_age;
             });
 
