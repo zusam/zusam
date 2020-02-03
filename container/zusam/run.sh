@@ -11,11 +11,6 @@ echo "* * * * * /zusam/api/bin/console zusam:cron > /dev/stdout" | crontab -
 
 DATABASE_URL="sqlite:///%kernel.project_dir%/../data/${DATABASE_NAME}"
 
-# copy example database if none is present
-if ! [ -f "/zusam/data/${DATABASE_NAME}" ]; then
-    cp /zusam/example.db "/zusam/data/${DATABASE_NAME}"
-fi
-
 sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
        -e "s|<DOMAIN>|${DOMAIN}|g" \
        -e "s|<DATABASE_URL>|${DATABASE_URL}|g" \
@@ -32,6 +27,11 @@ fi
 
 if ! [ -L /zusam/public/files ]; then
     ln -s /zusam/data/files /zusam/public/files
+fi
+
+# initialize database if none is present
+if ! [ -f "/zusam/data/${DATABASE_NAME}" ]; then
+    /zusam/api/bin/console zusam:init "${INIT_NAME}" "${INIT_GROUP}" "${INIT_PASSWORD}"
 fi
 
 exec /bin/s6-svscan /etc/s6.d

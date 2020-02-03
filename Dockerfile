@@ -8,6 +8,9 @@ ENTRYPOINT ["/sbin/tini", "--"]
 ENV LANG=en
 ENV DOMAIN=localhost
 ENV DATABASE_NAME=data.db
+ENV INIT_NAME=zusam
+ENV INIT_GROUP=zusam
+ENV INIT_PASSWORD=zusam
 EXPOSE 8080
 WORKDIR /zusam
 
@@ -41,7 +44,6 @@ COPY container/zusam/config /zusam/config
 COPY container/zusam/php7 /etc/php7
 COPY container/zusam/nginx /etc/nginx
 COPY container/zusam/run.sh /usr/local/bin/run.sh
-COPY container/zusam/example.db /zusam/example.db
 COPY public/api/index.php /zusam/public/api/index.php
 COPY api /zusam/api
 COPY app/dist /zusam/public
