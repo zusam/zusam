@@ -1,8 +1,7 @@
 vich_uploader:
-    db_driver: orm
-
-    mappings:
-        files:
-            uri_prefix: /uploaded
-            upload_destination: '%dir.files%'
-            namer: App\Service\Namer
+  db_driver: orm
+  mappings:
+    files:
+      uri_prefix: /uploaded
+      upload_destination: '%dir.files%'
+      namer: App\Service\Namer

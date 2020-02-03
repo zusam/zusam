@@ -1,25 +1,25 @@
 security:
-    encoders:
-        App\Entity\User:
-            algorithm: auto
-            cost: 12
-    providers:
-        user_provider:
-            entity:
-                class: App\Entity\User
-                property: secretKey
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt))/
-            security: false
-        public:
-            pattern: ^/(public|images)/
-            security: false
-        main:
-            stateless: true
-            anonymous: ~
-            access_denied_handler: App\Security\AccessDeniedHandler
-            entry_point: App\Security\EntryPointService
-            guard:
-                authenticators:
-                    - App\Security\TokenAuthenticator
+  encoders:
+    App\Entity\User:
+      algorithm: auto
+      cost: 12
+  providers:
+    user_provider:
+      entity:
+        class: App\Entity\User
+        property: secretKey
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt))/
+      security: false
+    public:
+      pattern: ^/(public|images)/
+      security: false
+    main:
+      stateless: true
+      anonymous: ~
+      access_denied_handler: App\Security\AccessDeniedHandler
+      entry_point: App\Security\EntryPointService
+      guard:
+        authenticators:
+          - App\Security\TokenAuthenticator
