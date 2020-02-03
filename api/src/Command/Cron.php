@@ -205,9 +205,9 @@ class Cron extends Command
 
     private function runCommand($id, $options = [])
     {
-        $this->logger->info("Executing $id from Cron");
-        $command = (new Application($this->kernel))->find($id);
         try {
+            $this->logger->info("Executing $id from Cron");
+            $command = (new Application($this->kernel))->find($id);
             $returnCode = $command->run(new ArrayInput($options), $this->output ?? new NullOutput());
         } catch (\Exception $e) {
             if (null != $this->output) {
@@ -219,6 +219,7 @@ class Cron extends Command
             if (null != $this->output) {
                 $this->output->writeln("<error>$id failed, return code: $returnCode</error>");
             }
+            $this->logger->error("$id failed, return code: $returnCode");
         }
     }
 }
