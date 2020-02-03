@@ -22,11 +22,11 @@ class Mailer
         string $env,
         LoggerInterface $logger
     ) {
-        $this->env = $env;
         $this->swift = $swift;
         $this->twig = $twig;
         $this->domain = $domain;
         $this->lang = $lang;
+        $this->env = $env;
         $this->logger = $logger;
     }
 
