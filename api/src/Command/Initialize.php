@@ -64,6 +64,7 @@ class Initialize extends Command
 
 
         $user = $this->em->getRepository(User::class)->findOneByLogin($input->getArgument('user'));
+        // Only execute the rest of the initialization if the user doesn't exist
         if (empty($user)) {
             $user = new User();
             $user->setLogin($input->getArgument('user'));
@@ -78,47 +79,47 @@ class Initialize extends Command
                 $secretKey->setAccessible(true);
                 $secretKey->setValue($user, Uuid::uuidv4($input->getOption('seed').'_user_secret_key'));
             }
+
+            $group = new Group();
+            $group->setName($input->getArgument('group'));
+            if ($input->getOption('seed')) {
+                $reflection = new \ReflectionClass($group);
+                $id = $reflection->getProperty('id');
+                $id->setAccessible(true);
+                $id->setValue($group, Uuid::uuidv4($input->getOption('seed').'_group'));
+                $secretKey = $reflection->getProperty('secretKey');
+                $secretKey->setAccessible(true);
+                $secretKey->setValue($group, Uuid::uuidv4($input->getOption('seed').'_group_secret_key'));
+            }
+
+            $group->addUser($user);
+            $user->addGroup($group);
+
+            $message_1 = new Message();
+            $message_1->setAuthor($user);
+            $message_1->setGroup($group);
+            $message_1->setIsInFront(true);
+            $message_1->setData([
+                'title' => 'Welcome on Zusam !',
+                'text' => '
+                    This is a simple message.
+                    Try to post something yourself by using the new message button on the group page or by leaving a comment here.
+                ',
+            ]);
+            if ($input->getOption('seed')) {
+                $reflection = new \ReflectionClass($message_1);
+                $id = $reflection->getProperty('id');
+                $id->setAccessible(true);
+                $id->setValue($message_1, Uuid::uuidv4($input->getOption('seed').'_message'));
+                $secretKey = $reflection->getProperty('secretKey');
+                $secretKey->setAccessible(true);
+                $secretKey->setValue($message_1, Uuid::uuidv4($input->getOption('seed').'_message_secret_key'));
+            }
+
+            $this->em->persist($user);
+            $this->em->persist($group);
+            $this->em->persist($message_1);
         }
-
-        $group = new Group();
-        $group->setName($input->getArgument('group'));
-        if ($input->getOption('seed')) {
-            $reflection = new \ReflectionClass($group);
-            $id = $reflection->getProperty('id');
-            $id->setAccessible(true);
-            $id->setValue($group, Uuid::uuidv4($input->getOption('seed').'_group'));
-            $secretKey = $reflection->getProperty('secretKey');
-            $secretKey->setAccessible(true);
-            $secretKey->setValue($group, Uuid::uuidv4($input->getOption('seed').'_group_secret_key'));
-        }
-
-        $group->addUser($user);
-        $user->addGroup($group);
-
-        $message_1 = new Message();
-        $message_1->setAuthor($user);
-        $message_1->setGroup($group);
-        $message_1->setIsInFront(true);
-        $message_1->setData([
-            'title' => 'Welcome on Zusam !',
-            'text' => '
-                This is a simple message.
-                Try to post something yourself by using the new message button on the group page or by leaving a comment here.
-            ',
-        ]);
-        if ($input->getOption('seed')) {
-            $reflection = new \ReflectionClass($message_1);
-            $id = $reflection->getProperty('id');
-            $id->setAccessible(true);
-            $id->setValue($message_1, Uuid::uuidv4($input->getOption('seed').'_message'));
-            $secretKey = $reflection->getProperty('secretKey');
-            $secretKey->setAccessible(true);
-            $secretKey->setValue($message_1, Uuid::uuidv4($input->getOption('seed').'_message_secret_key'));
-        }
-
-        $this->em->persist($user);
-        $this->em->persist($group);
-        $this->em->persist($message_1);
         $this->em->flush();
         return 0;
     }
