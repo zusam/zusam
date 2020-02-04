@@ -35,7 +35,7 @@ class Delete extends ApiController
 
         $this->denyAccessUnlessGranted(new Expression('user == object.getAuthor()'), $message);
 
-        $notifications = $this->em->getRepository(Notification::class)->findAllByTarget($id);
+        $notifications = $this->em->getRepository(Notification::class)->findByTarget($id);
         foreach ($notifications as $n) {
             $this->em->remove($n);
         }
