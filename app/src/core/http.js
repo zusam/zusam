@@ -9,7 +9,7 @@ const http = {
       .get("apiKey")
       .then(apiKey => {
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", "/api/files", true);
+        xhr.open("POST", document.baseURI + "api/files", true);
         xhr.setRequestHeader("X-AUTH-TOKEN", apiKey);
         xhr.addEventListener("load", e => {
           if (e.target.status > 199 && e.target.status < 300) {
