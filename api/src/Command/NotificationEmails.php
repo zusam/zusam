@@ -99,7 +99,10 @@ class NotificationEmails extends Command
                     }
                 }
                 if (!$input->getOption('only-list')) {
-                    $this->mailer->sendNotificationEmail($user, $notifications);
+                    // TODO XXX REMOVE THIS; THIS IS FOR TESTING PURPOSES
+                    if ("1b82b8e9-552d-4d94-B2ba-ae86b9a6a5be" == $user->getId()) {
+                        $this->mailer->sendNotificationEmail($user, $notifications);
+                    }
                 }
                 break;
             }
