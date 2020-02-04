@@ -42,7 +42,7 @@ class Uuid
             substr($str, 0, 8),
             substr($str, 8, 4),
             4 .substr($str, 12, 3),
-            [8, 9, 'A', 'B'][$num % 4].substr($str, 15, 3),
+            [8, 9, 'a', 'b'][$num % 4].substr($str, 15, 3),
             substr($str, 18, 12),
         ]);
     }
