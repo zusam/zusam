@@ -54,7 +54,6 @@ class Cron extends Command
                 'type' => 'light',
                 'options' => [
                     '--log-send' => true,
-                    '--log-as-error' => true,
                 ],
             ],
             [
