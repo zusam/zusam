@@ -160,13 +160,7 @@ export default class UserSettings extends Component {
                       <select
                         name="notification_emails"
                         class="form-control"
-                        selectedIndex={[
-                          "none",
-                          "hourly",
-                          "daily",
-                          "weekly",
-                          "monthly"
-                        ].indexOf(this.state.data["notification_emails"])}
+                        value={this.state.data["notification_emails"]}
                       >
                         <option value="none">{lang.t("none")}</option>
                         <option value="hourly">{lang.t("hourly")}</option>
