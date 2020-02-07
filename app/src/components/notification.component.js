@@ -24,7 +24,9 @@ export default class Notification extends Component {
     }
     return (
       <img
-        style={util.backgroundHash(this.props.fromUser ? this.props.fromUser.id : "")}
+        style={util.backgroundHash(
+          this.props.fromUser ? this.props.fromUser.id : ""
+        )}
         src={imgSrc}
         onError={e => this.setMiniatureOnError(e)}
       />
@@ -142,7 +144,7 @@ export default class Notification extends Component {
           <div class="description">
             {this.props.type != "global_notification" && (
               <Fragment>
-                <strong>{this.props.fromUser.name || "--" }</strong>
+                <strong>{this.props.fromUser.name || "--"}</strong>
                 <span>{" " + this.state.action + " "}</span>
               </Fragment>
             )}
