@@ -4,6 +4,7 @@ namespace App\Controller\Group;
 
 use App\Controller\ApiController;
 use App\Entity\Group;
+use App\Entity\Notification;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -56,7 +57,7 @@ class Leave extends ApiController
                 $notif->setOwner($u);
                 $notif->setFromUser($this->getUser());
                 $notif->setFromGroup($group);
-                $notif->setType(Notification::USER_LEAVED_GROUP);
+                $notif->setType(Notification::USER_LEFT_GROUP);
                 $this->em->persist($notif);
             }
         }
