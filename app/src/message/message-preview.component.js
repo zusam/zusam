@@ -21,9 +21,9 @@ export default class MessagePreview extends Component {
   getAvatar(user) {
     return (
       <img
-        title={user ? user.name : ""}
+        title={user ? user.name : "--"}
         className={"avatar material-shadow" + (user ? "" : " removed-user")}
-        style={user && util.backgroundHash(user.id)}
+        style={util.backgroundHash(user ? user.id : "")}
         src={
           user && user.avatar
             ? util.crop(user.avatar["id"], 100, 100)

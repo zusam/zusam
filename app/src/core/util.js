@@ -109,6 +109,9 @@ const util = {
       "#CCCC33"
     ][Math.abs(util.hash(str)) % 27],
   backgroundHash: str => {
+    if (!str) {
+      return "background-color: #aaa;";
+    }
     let c1 = util.colorHash(str);
     let c2 = util.colorHash(
       str

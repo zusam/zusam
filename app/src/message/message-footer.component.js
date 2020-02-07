@@ -54,12 +54,10 @@ export default class MessageFooter extends Component {
           >
             {util.humanTime(this.props.message.createdAt)}
           </div>
-          {this.props.author && (
-            <Fragment>
-              <div class="dot">&bull;</div>
-              <div class="font-size-90">{this.props.author.name}</div>
-            </Fragment>
-          )}
+          <Fragment>
+            <div class="dot">&bull;</div>
+            <div class="font-size-90">{this.props.author.name || "--"}</div>
+          </Fragment>
         </div>
         <div>
           {!this.props.isPublic && (
