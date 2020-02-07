@@ -40,7 +40,7 @@ abstract class ApiTestCase extends WebTestCase
 
         // Remove existing test db
         $application->run(new ArrayInput([
-            "command" => "zusam:initialize",
+            "command" => "zusam:init",
             "user" => "zusam",
             "group" => "zusam",
             "password" => "zusam",

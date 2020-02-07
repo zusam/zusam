@@ -1,4 +1,6 @@
 monolog:
+  # https://symfony.com/doc/current/logging/channels_handlers.html#configure-additional-channels-without-tagged-services
+  channels: ["zusam"]
   handlers:
     main:
       type: stream
