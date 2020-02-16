@@ -1,6 +1,33 @@
 # Changelog
 
-To upgrade, follow the [upgrade guide](https://github.com/nrobinaubertin/zusam/blob/master/documentation/update.md).
+To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
+
+## [0.4] - 2020-02-16
+
+### Log
+- Rework backend to remove dependency to api-platform
+- Rework container to be compatible with podman
+- Start writing tests and prepare test environment
+- Store log outside of the database in a plain file
+- Upgrade to Preact 10
+- Upgrade to Symfony 5
+- Split out some modules from the webapp
+- Add notifications feature
+- Add reply to comments feature
+- Add search feature
+- Fix loadEnv issues on the backend
+- Add IDLE_HOURS parameter for the backend
+- Fix Uuid service from producing invalid UUIDs
+- Allow Zusam to be on a subpath of the domain
+- Fix notification emails
+- Add CSP headers to the container
+- Rework the container to be "podman compatible"
+- Create identicons for users without an avatar
+- Use prettier on the webapp
+
+### Remarks
+Feature release.  
+This update has a database structure change. Please see the corresponding migration file.  
 
 ## [0.3.2] - 2019-08-24
 
