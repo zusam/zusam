@@ -6,16 +6,16 @@ Zusam is meant to share files that can be played/viewed through the browser. It 
 If you want to send generic files and/or keep them intact while sharing them, Zusam is not the right tool.
 
 ## How are the photos compressed ?
-Photos are reduced to a maximum of 2048x2048 pixels.
+Photos are reduced to a maximum of 2048x2048 pixels and converted to `jpeg`. All metadata is stripped away.
 
 ## How are the videos compressed ?
-TODO
+Videos are compressed to mp4 with `ffmpeg` using the `libx264` library. They are scaled down to 720p (maximum height of 720 pixels) and the audio is converted to `aac`.
 
 ## How is the preview of a link calculated ?
-TODO
+Link previews are calculated using [Oscatero's embed library](https://github.com/oscarotero/embed). You can visualize informations that Zusam is getting out of a link [here](https://oscarotero.com/embed3/demo/).
 
 ## How to make a photo album ?
-A photo album is just a different view of the files that is triggered when you add more than 3 files to a message.
+A photo album is just a different view of the files that is triggered when you add 4 or more files to a message.
 
 ## Composer: "Fatal error: Allowed memory size of * bytes exhausted"
 This can happen when php is limiting its memory usage. See [this github issue](https://github.com/composer/composer/issues/4373#issuecomment-394599327) for more informations.  

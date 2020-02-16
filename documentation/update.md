@@ -19,7 +19,6 @@ You can see the latest release [here](https://github.com/zusam/zusam/releases).
 5. If `api/migrations/$version.sql` exists, apply it: `sqlite3 data/data.db < api/migrations/$version.sql`
 6. Apply latest composer changes: `php bin/composer install`
 7. Copy the webapp to the public directory: `cp app/dist/* public/`
-8. Rename the lang file (english here, adapt it to the one you want): `cp public/en.js public/lang.js`
 
 ## If you are using docker
 

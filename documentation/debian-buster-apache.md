@@ -18,11 +18,6 @@ Let's copy the webapp in the public directory (you don't need to do this if you 
 cp app/dist/* public/
 ```
 
-Rename the language file of your choice (here it's the english one):
-```
-cp public/en.js public/lang.js
-```
-
 Install the server dependencies:
 ```
 cd api
