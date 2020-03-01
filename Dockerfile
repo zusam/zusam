@@ -39,11 +39,11 @@ RUN set -xe && apk add --no-cache nginx php7 openssl ffmpeg unzip \
     php7-xmlwriter
 
 # copy files
-COPY container/zusam/s6.d /etc/s6.d
-COPY container/zusam/config /zusam/config
-COPY container/zusam/php7 /etc/php7
-COPY container/zusam/nginx /etc/nginx
-COPY container/zusam/run.sh /usr/local/bin/run.sh
+COPY container/s6.d /etc/s6.d
+COPY container/config /zusam/config
+COPY container/php7 /etc/php7
+COPY container/nginx /etc/nginx
+COPY container/run.sh /usr/local/bin/run.sh
 COPY public/api/index.php /zusam/public/api/index.php
 COPY api /zusam/api
 COPY app/dist /zusam/public
