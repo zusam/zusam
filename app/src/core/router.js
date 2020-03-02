@@ -104,6 +104,9 @@ const router = {
                 router.backUrl = "/" + router.route + "/" + router.id;
                 router.backUrlPrompt = lang.t("cancel_write");
               }
+              if (router.search) {
+                router.backUrl = "/" + router.route + "/" + router.id;
+              }
               break;
             case "messages":
               if (res["parent"] && !res["isInFront"]) {
