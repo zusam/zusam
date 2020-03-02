@@ -1,34 +1,21 @@
-@import "bootstrap-functions";
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+// pass in a map to define number of columns for each breakpoint
+@mixin cols-per-breakpoint($params:()) {
+    $gutter: 6px;
+    @each $value in $params {
+        @media (min-width: #{map-get($grid-breakpoints, nth($value, 1))}) {
+            width: calc(#{100 / nth($value, 2)}% - #{$gutter});
+        }
+    }
+}
+
 @import "custom";
 @import "variables";
-@import "mixins";
 
-@import "bootstrap-mixins-breakpoints";
-@import "bootstrap-mixins-grid";
-@import "bootstrap-mixins-grid-framework";
-@import "bootstrap-mixins-transition";
-@import "bootstrap-mixins-forms";
-@import "bootstrap-mixins-gradients";
-@import "bootstrap-mixins-buttons";
-@import "bootstrap-mixins-borders";
-@import "bootstrap-mixins-utilities";
-@import "bootstrap-input-group";
-@import "utilities";
-@import "bootstrap-api";
-
-@import "root";
-@import "reboot";
-@import "types";
-@import "images";
-@import "grid";
-@import "forms";
-@import "buttons";
-@import "nav";
-@import "card";
 @import "embed";
 @import "utils";
 @import "message";
-@import "embed";
 @import "writer";
 @import "spinner";
 @import "nlg";

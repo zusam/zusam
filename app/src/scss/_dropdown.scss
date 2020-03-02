@@ -26,6 +26,8 @@
         overflow-y: auto;
         max-width: calc(100vw - 1rem);
         overflow-x: hidden;
+        margin: 0;
+        border-radius: 0;
 
         & > a {
             display: block;
@@ -41,6 +43,7 @@
     .dropdown-right {
         top: 100%;
         left: 0;
+        right: auto;
         border-bottom-right-radius: 4px;
         box-shadow: -4px 4px 4px #0003;
     }
@@ -48,6 +51,7 @@
     .dropdown-left {
         top: 100%;
         right: 0;
+        left: auto;
         border-bottom-left-radius: 4px;
         box-shadow: 4px 4px 4px #0003;
         & > a {
