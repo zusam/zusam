@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { router } from "/core";
+import { util, router } from "/core";
 import { MessageParent } from "/message";
 import CreateGroup from "./create-group.component.js";
 import GroupSearch from "./group-search.component.js";
@@ -14,7 +14,7 @@ export default class MainContent extends Component {
     if (this.props.action == "settings") {
       return (
         <article class="mt-2 justify-content-center d-flex">
-          <div class="container">
+          <div class="container pb-3">
             <Settings
               key={this.props.entityUrl}
               entityUrl={this.props.entityUrl}
@@ -30,8 +30,9 @@ export default class MainContent extends Component {
         return <Share />;
       case "messages":
         return (
-          <article class="mt-2 mb-3 justify-content-center d-flex">
-            <div class="container pb-1">
+          <article class="mb-3 justify-content-center d-flex">
+            <div class="container pb-3">
+              <div class="group-name">{util.getGroupName()}</div>
               <MessageParent
                 focus={!!router.getParam("focus", router.search)}
                 key={this.props.id}
@@ -43,8 +44,9 @@ export default class MainContent extends Component {
       case "groups":
         if (this.props.action == "write") {
           return (
-            <article class="mt-2">
-              <div class="container">
+            <article class="mb-3">
+              <div class="container pb-3">
+                <div class="group-name">{util.getGroupName()}</div>
                 <Writer focus={true} group={this.props.id} />
               </div>
             </article>

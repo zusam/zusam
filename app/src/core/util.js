@@ -1,5 +1,6 @@
 import lang from "./lang.js";
 import router from "./router.js";
+import me from "./me.js";
 
 const util = {
   urlRegExp: new RegExp(
@@ -48,6 +49,23 @@ const util = {
     let date = new Date(timestamp * 1000);
     return util.humanFullDate(timestamp).split(" ")[0];
   },
+  getGroupName: _ => {
+    let group = null;
+    if (me.me.groups) {
+      switch (router.entity.entityType) {
+        case "group":
+          group = me.me.groups.find(g => g["id"] == util.getId(router.entity));
+          break;
+        case "message":
+          group = me.me.groups.find(g => g["id"] == util.getId(router.entity.group));
+          break;
+        default:
+          group = null;
+          break;
+      }
+    }
+    return group ? group["name"] : "";
+  },
   // get the id of an object from an url
   getId: e => {
     switch (typeof e) {
@@ -59,9 +77,10 @@ const util = {
           .pop()
           .replace(/\?.*$/, "")
           .replace(/\.\w+$/, "");
+      default:
+        console.warn(e);
+        throw "Could not extract id !";
     }
-    console.warn(e);
-    throw "Could not extract id !";
   },
   // get the url to a thubmnail
   thumbnail: (id, width, height) =>

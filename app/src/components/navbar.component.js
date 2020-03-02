@@ -74,7 +74,7 @@ export default class Navbar extends Component {
           )}
           <NotificationsDropdownNavbar />
         </div>
-        {!router.backUrl && <Search />}
+        <Search />
         <GroupsDropdownNavbar />
       </div>
     );

@@ -33,14 +33,6 @@ export default class GroupBoard extends Component {
     window.removeEventListener("scroll", this.onScroll);
   }
 
-  getGroupName() {
-    if (me.me.groups && router.entity.entityType == "group") {
-      let group = me.me.groups.find(g => g["id"] == util.getId(router.entity));
-      return group ? group["name"] : "";
-    }
-    return "";
-  }
-
   loadMessages(page) {
     cache
       .get("/api/groups/" + this.state.groupId + "/page/" + page)
@@ -98,7 +90,7 @@ export default class GroupBoard extends Component {
     return (
       Array.isArray(this.state.messages) && (
         <div>
-          <div class="group-name">{this.getGroupName()}</div>
+          <div class="group-name">{util.getGroupName()}</div>
           <article id="group" class="justify-content-center d-flex">
             <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
               {this.state.messages.slice(0, this.state.loaded).map((msg, i) => {

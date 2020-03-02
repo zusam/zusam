@@ -17,6 +17,7 @@ export default class Notification extends Component {
   getMiniature() {
     let imgSrc = util.defaultAvatar;
     if (
+      this.props.fromUser &&
       this.props.fromUser.avatar &&
       this.props.type != "global_notification"
     ) {
