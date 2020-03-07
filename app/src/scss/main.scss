@@ -167,6 +167,11 @@ body {
     border-bottom: 1px solid #ccc;
     margin: 0 auto 10px auto;
     width: 90%;
+    cursor: pointer;
+    &:hover {
+        font-weight: bold;
+        color: #555;
+    }
 }
 
 .navbar-block {

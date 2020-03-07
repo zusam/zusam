@@ -49,21 +49,19 @@ const util = {
     let date = new Date(timestamp * 1000);
     return util.humanFullDate(timestamp).split(" ")[0];
   },
-  getGroupName: _ => {
-    let group = null;
+  getGroupId: _ => {
     if (me.me.groups) {
       switch (router.entity.entityType) {
         case "group":
-          group = me.me.groups.find(g => g["id"] == util.getId(router.entity));
-          break;
+          return util.getId(router.entity);
         case "message":
-          group = me.me.groups.find(g => g["id"] == util.getId(router.entity.group));
-          break;
-        default:
-          group = null;
-          break;
+          return util.getId(router.entity.group);
       }
     }
+    return "";
+  },
+  getGroupName: _ => {
+    let group = me.me.groups.find(g => g["id"] == util.getGroupId());
     return group ? group["name"] : "";
   },
   // get the id of an object from an url

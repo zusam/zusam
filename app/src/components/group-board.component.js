@@ -90,7 +90,12 @@ export default class GroupBoard extends Component {
     return (
       Array.isArray(this.state.messages) && (
         <div>
-          <div class="group-name">{util.getGroupName()}</div>
+          <a
+            href={router.toApp("/groups/" + util.getGroupId())}
+            onClick={e => router.onClick(e)}
+          >
+            <div class="group-name">{util.getGroupName()}</div>
+          </a>
           <article id="group" class="justify-content-center d-flex">
             <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
               {this.state.messages.slice(0, this.state.loaded).map((msg, i) => {

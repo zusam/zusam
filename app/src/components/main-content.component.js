@@ -32,7 +32,12 @@ export default class MainContent extends Component {
         return (
           <article class="mb-3 justify-content-center d-flex">
             <div class="container pb-3">
-              <div class="group-name">{util.getGroupName()}</div>
+              <a
+                href={router.toApp("/groups/" + util.getGroupId())}
+                onClick={e => router.onClick(e)}
+              >
+                <div class="group-name">{util.getGroupName()}</div>
+              </a>
               <MessageParent
                 focus={!!router.getParam("focus", router.search)}
                 key={this.props.id}
@@ -46,7 +51,12 @@ export default class MainContent extends Component {
           return (
             <article class="mb-3">
               <div class="container pb-3">
-                <div class="group-name">{util.getGroupName()}</div>
+                <a
+                  href={router.toApp("/groups/" + util.getGroupId())}
+                  onClick={e => router.onClick(e)}
+                >
+                  <div class="group-name">{util.getGroupName()}</div>
+                </a>
                 <Writer focus={true} group={this.props.id} />
               </div>
             </article>
