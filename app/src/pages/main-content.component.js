@@ -1,13 +1,10 @@
 import { h, render, Component } from "preact";
 import { util, router } from "/core";
 import { MessageParent } from "/message";
-import CreateGroup from "./create-group.component.js";
-import GroupSearch from "./group-search.component.js";
-import GroupBoard from "./group-board.component.js";
-import FaIcon from "./fa-icon.component.js";
+import { CreateGroup, GroupTitle, GroupBoard, Settings, Share } from "/pages";
+import { GroupSearch } from "/navbar";
+import { FaIcon } from "/misc";
 import Writer from "/message/writer.component.js";
-import Settings from "/settings/settings.component.js";
-import Share from "./share.component.js";
 
 export default class MainContent extends Component {
   render() {
@@ -32,12 +29,11 @@ export default class MainContent extends Component {
         return (
           <article class="mb-3 justify-content-center d-flex">
             <div class="container pb-3">
-              <a
-                href={router.toApp("/groups/" + util.getGroupId())}
-                onClick={e => router.onClick(e)}
-              >
-                <div class="group-name">{util.getGroupName()}</div>
-              </a>
+              <GroupTitle
+                key={util.getGroupId()}
+                id={util.getGroupId()}
+                name={util.getGroupName()}
+              />
               <MessageParent
                 focus={!!router.getParam("focus", router.search)}
                 key={this.props.id}
@@ -51,12 +47,11 @@ export default class MainContent extends Component {
           return (
             <article class="mb-3">
               <div class="container pb-3">
-                <a
-                  href={router.toApp("/groups/" + util.getGroupId())}
-                  onClick={e => router.onClick(e)}
-                >
-                  <div class="group-name">{util.getGroupName()}</div>
-                </a>
+                <GroupTitle
+                  key={util.getGroupId()}
+                  id={util.getGroupId()}
+                  name={util.getGroupName()}
+                />
                 <Writer focus={true} group={this.props.id} />
               </div>
             </article>

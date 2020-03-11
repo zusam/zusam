@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import { lang, me, router, http } from "/core";
-import FaIcon from "./fa-icon.component.js";
+import { FaIcon } from "/misc";
 import Writer from "/message/writer.component.js";
 
 export default class Share extends Component {

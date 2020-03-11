@@ -1,7 +1,7 @@
 import { h, render, Component } from "preact";
 import { lang, me, router, http } from "/core";
-import FaIcon from "./fa-icon.component.js";
-import Notification from "./notification.component.js";
+import { FaIcon } from "/misc";
+import { Notification } from "/pages";
 
 export default class NotificationsDropdownNavbar extends Component {
   constructor(props) {

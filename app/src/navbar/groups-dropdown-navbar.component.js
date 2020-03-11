@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import { lang, me, router } from "/core";
-import FaIcon from "./fa-icon.component.js";
+import { FaIcon } from "/misc";
 
 export default class GroupsDropdownNavbar extends Component {
   constructor(props) {

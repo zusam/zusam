@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import { lang, cache, me, router } from "/core";
-import FaIcon from "../components/fa-icon.component.js";
+import { FaIcon } from "/misc";
 import UserSettings from "./user-settings.component.js";
 import GroupSettings from "./group-settings.component.js";
 

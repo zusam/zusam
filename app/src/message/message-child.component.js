@@ -1,6 +1,6 @@
 import { Fragment, h, render, Component } from "preact";
 import { lang, cache, http, me, router, util } from "/core";
-import FaIcon from "../components/fa-icon.component.js";
+import { FaIcon } from "/misc";
 import MessageHead from "./message-head.component.js";
 import MessageFooter from "./message-footer.component.js";
 import MessageBody from "./message-body.component.js";

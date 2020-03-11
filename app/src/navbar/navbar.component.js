@@ -1,9 +1,8 @@
 import { h, render, Component } from "preact";
 import { lang, me, router, util } from "/core";
-import FaIcon from "./fa-icon.component.js";
-import Search from "./search.component.js";
-import GroupsDropdownNavbar from "./groups-dropdown-navbar.component.js";
-import NotificationsDropdownNavbar from "./notifications-dropdown-navbar.component.js";
+import { FaIcon } from "/misc";
+import { Search } from "/pages";
+import { GroupsDropdownNavbar, NotificationsDropdownNavbar } from "/navbar";
 
 export default class Navbar extends Component {
   constructor(props) {

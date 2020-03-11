@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import { lang, me, alert, cache, http, router, util } from "/core";
-import FaIcon from "../components/fa-icon.component.js";
+import { FaIcon } from "/misc";
 
 export default class GroupSettings extends Component {
   constructor(props) {

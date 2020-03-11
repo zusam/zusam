@@ -1,6 +1,7 @@
 import { h, render, Component } from "preact";
 import { cache, me, router, util } from "/core";
 import { MessagePreview } from "/message";
+import { GroupTitle } from "/pages";
 
 export default class GroupBoard extends Component {
   constructor(props) {
@@ -90,12 +91,11 @@ export default class GroupBoard extends Component {
     return (
       Array.isArray(this.state.messages) && (
         <div>
-          <a
-            href={router.toApp("/groups/" + util.getGroupId())}
-            onClick={e => router.onClick(e)}
-          >
-            <div class="group-name">{util.getGroupName()}</div>
-          </a>
+          <GroupTitle
+            key={util.getGroupId()}
+            id={util.getGroupId()}
+            name={util.getGroupName()}
+          />
           <article id="group" class="justify-content-center d-flex">
             <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
               {this.state.messages.slice(0, this.state.loaded).map((msg, i) => {

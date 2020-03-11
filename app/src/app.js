@@ -1,8 +1,8 @@
 import { h, render, Component } from "preact";
 import { lazy } from "preact/compat";
 import { alert, lang, cache, router, me } from "/core";
-import Navbar from "./components/navbar.component.js";
-import MainContent from "./components/main-content.component.js";
+import { Navbar } from "/navbar";
+import { MainContent } from "/pages";
 import {
   Login,
   Public,

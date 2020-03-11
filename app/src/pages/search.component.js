@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import { lang, router, util } from "/core";
-import FaIcon from "./fa-icon.component.js";
+import { FaIcon } from "/misc";
 
 export default class Search extends Component {
   constructor(props) {

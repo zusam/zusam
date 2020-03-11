@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import { lang, alert, cache, http, me, router, util } from "/core";
-import FaIcon from "../components/fa-icon.component.js";
+import { FaIcon } from "/misc";
 import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
 

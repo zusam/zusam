@@ -2,7 +2,7 @@ import { h, render, Component } from "preact";
 import { cache, lang, me, util } from "/core";
 import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
-import FaIcon from "../components/fa-icon.component.js";
+import { FaIcon } from "/misc";
 
 export default class MessageBody extends Component {
   constructor(props) {

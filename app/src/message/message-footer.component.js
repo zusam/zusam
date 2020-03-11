@@ -1,6 +1,6 @@
 import { Fragment, h, render, Component } from "preact";
 import { router, lang, me, util } from "/core";
-import FaIcon from "../components/fa-icon.component.js";
+import { FaIcon } from "/misc";
 
 export default class MessageFooter extends Component {
   render() {
