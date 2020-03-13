@@ -1,7 +1,8 @@
 import { h, render, Component } from "preact";
 import { util, router } from "/core";
 import { MessageParent } from "/message";
-import { CreateGroup, GroupTitle, GroupBoard, Settings, Share } from "/pages";
+import { CreateGroup, GroupTitle, GroupBoard, Share } from "/pages";
+import { Settings } from "/settings";
 import { GroupSearch } from "/navbar";
 import { FaIcon } from "/misc";
 import Writer from "/message/writer.component.js";
