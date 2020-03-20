@@ -5,10 +5,10 @@
             {
                 "targets": {
                     "browsers": [
-                        "Chrome >= 70",
-                        "ChromeAndroid >= 70",
-                        "Firefox >= 60",
-                        "FirefoxAndroid >= 60"
+                        "Chrome >= 76",
+                        "ChromeAndroid >= 76",
+                        "Firefox >= 68",
+                        "FirefoxAndroid >= 68"
                     ]
                 }
             }

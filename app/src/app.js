@@ -113,8 +113,14 @@ class App extends Component {
 
 render(<App />, document.body);
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("/service-worker.js")
-    .catch(err => console.warn(err));
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      // registration failed
+      console.warn('ServiceWorker registration failed: ', err);
+    });
+  });
 }
