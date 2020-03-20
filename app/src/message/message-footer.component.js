@@ -67,6 +67,9 @@ export default class MessageFooter extends Component {
                 e.target.closest(".dropdown").classList.toggle("active")
               }
             >
+              <div class="none-if-follows-empty">
+                <FaIcon family="solid" icon="ellipsis-h" />
+              </div>
               <div class="dropdown-menu dropdown-options">
                 {this.props.author && this.props.author.id == me.me.id && (
                   <a
@@ -110,9 +113,6 @@ export default class MessageFooter extends Component {
                     {lang.t("edit")}
                   </a>
                 )}
-              </div>
-              <div class="none-if-follows-empty">
-                <FaIcon family="solid" icon="ellipsis-h" />
               </div>
             </div>
           )}
