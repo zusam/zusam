@@ -148,7 +148,12 @@ export default class EmbedBlock extends Component {
             data-nlg={!this.props.inWriter}
             href={router.toApp(this.props.url)}
             class="img-fluid cursor-pointer"
-            data-src={this.props.url}
+            data-origin={this.props.url}
+            data-src={
+              this.props.preview && !/gif/.test(this.props.data["content-type"])
+                ? util.thumbnail(this.props.preview.id, 1366, 768)
+                : this.props.url
+            }
             src={
               this.props.preview && !/gif/.test(this.props.data["content-type"])
                 ? util.thumbnail(this.props.preview.id, 1366, 99999)
