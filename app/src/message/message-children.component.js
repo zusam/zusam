@@ -28,14 +28,14 @@ export default class MessageChildren extends Component {
             return null;
           }
 
+          if (i < this.props.firstDisplayedChild || i > this.props.lastDisplayedChild) {
+            return null;
+          }
+
           return (
             <MessageChild
               message={e}
               key={e.id}
-              hidden={
-                i < this.props.firstDisplayedChild ||
-                i > this.props.lastDisplayedChild
-              }
               isPublic={this.props.isPublic}
             />
           );

@@ -34,7 +34,6 @@ export default class MessageChild extends Component {
     this.setState({
       message: msg,
       author: msg.author,
-      displayedChildren: msg.children && 5 // display 5 first children
     });
     setTimeout(this.processEmbed);
   }
@@ -155,7 +154,7 @@ export default class MessageChild extends Component {
   }
 
   render() {
-    if (this.props.hidden || !this.state.message || this.state.isRemoved) {
+    if (!this.state.message || this.state.isRemoved) {
       return;
     }
     return (

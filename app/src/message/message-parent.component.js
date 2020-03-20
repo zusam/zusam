@@ -188,7 +188,7 @@ export default class MessageParent extends Component {
   }
 
   render() {
-    if (this.props.hidden || !this.state.message || this.state.isRemoved) {
+    if (!this.state.message || this.state.isRemoved) {
       return;
     }
     return (
