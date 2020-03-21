@@ -17,10 +17,7 @@ export default class MessageChild extends Component {
   }
 
   componentDidMount() {
-    if (this.props.message) {
-      this.loadMessage(this.props.message);
-    }
-    setTimeout(() => window.scrollTo(0, 0));
+    this.loadMessage(this.props.message);
   }
 
   componentWillUpdate() {

@@ -1,6 +1,7 @@
 import { Fragment, h, render, Component } from "preact";
 import { lang, cache, http, me, router, util } from "/core";
 import { FaIcon } from "/misc";
+import MessageChildren from "./message-children.component.js";
 import MessageHead from "./message-head.component.js";
 import MessageFooter from "./message-footer.component.js";
 import MessageBody from "./message-body.component.js";
@@ -89,12 +90,12 @@ export default class Message extends Component {
     this.setState({ edit: false });
   }
 
-  displayWriter(isChild) {
+  displayWriter(isChild, focus) {
     return (
       <Writer
         cancel={this.state.edit ? this.cancelEdit : null}
         files={this.state.edit ? this.props.message.files : []}
-        focus={!!this.state.edit}
+        focus={focus || !!this.state.edit}
         group={this.props.message.group}
         messageId={this.state.edit ? this.props.message.id : null}
         parent={
@@ -114,7 +115,7 @@ export default class Message extends Component {
           id={this.props.message.id}
           className={this.getComponentClass()}
         >
-          {this.state.edit && this.displayWriter(true)}
+          {this.state.edit && this.displayWriter(this.props.isChild)}
           {!this.state.edit && (
             <Fragment>
               {this.props.preMessageHeadComponent}
@@ -145,6 +146,13 @@ export default class Message extends Component {
           )}
         </div>
         {this.props.postMessageComponent}
+        {!this.props.isChild && (
+          <MessageChildren
+            childMessages={this.props.message.children}
+            isPublic={this.props.isPublic}
+            key={this.props.message.id}
+          />
+        )}
         {!this.state.edit && !this.props.isPublic && !this.props.isChild && (
           <div class="message child mt-2">
             {me.me && (

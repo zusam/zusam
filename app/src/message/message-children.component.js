@@ -1,34 +1,85 @@
 import { h, render, Component, toChildArray } from "preact";
-import { lang } from "/core";
+import { lang, router } from "/core";
 import MessageChild from "./message-child.component.js";
 
 export default class MessageChildren extends Component {
+  constructor(props) {
+    super(props);
+    this.loadMessage = this.loadMessage.bind(this);
+    this.displayPreviousChildren = this.displayPreviousChildren.bind(this);
+    this.displayNextChildren = this.displayNextChildren.bind(this);
+    this.state = {firstDisplayedChild: 0, lastDisplayedChild: 0};
+  }
+
+  loadMessage() {
+    let firstDisplayedChild = null;
+    let lastDisplayedChild = null;
+    if (this.props.childMessages.length) {
+      let msgIndex = router.action
+        ? this.props.childMessages.findIndex(e => e && e.id === router.action)
+        : -1;
+      if (msgIndex != -1) {
+        firstDisplayedChild = Math.max(0, msgIndex - 1);
+        lastDisplayedChild = Math.min(this.props.childMessages.length, msgIndex + 1);
+      } else {
+        firstDisplayedChild = this.props.childMessages && this.props.childMessages.length - 5; // display the last 5 children
+        lastDisplayedChild = this.props.childMessages && this.props.childMessages.length;
+      }
+    }
+    this.setState({
+      firstDisplayedChild: firstDisplayedChild,
+      lastDisplayedChild: lastDisplayedChild
+    });
+  }
+
+  displayPreviousChildren() {
+    this.setState(prevState => ({
+      firstDisplayedChild: Math.max(
+        0,
+        prevState.firstDisplayedChild - 10
+      )
+    }))
+  }
+
+  displayNextChildren() {
+    this.setState(prevState => ({
+      lastDisplayedChild: Math.min(
+        this.props.childMessages.length,
+        prevState.lastDisplayedChild + 10
+      )
+    }))
+  }
+
+  componentDidMount() {
+    this.loadMessage();
+  }
+
   render() {
     if (
-      !this.props.children ||
-      this.props.lastDisplayedChild - this.props.firstDisplayedChild < 1
+      this.state.lastDisplayedChild - this.state.firstDisplayedChild < 1
+      || !this.props.childMessages
     ) {
       return null;
     }
     return (
       <div>
-        {this.props.firstDisplayedChild > 0 && (
+        {this.state.firstDisplayedChild > 0 && (
           <div class="d-flex">
-            <a
+            <span
               class="more-coms unselectable"
-              onClick={e => this.props.displayPreviousChildren(e)}
+              onClick={_ => this.displayPreviousChildren()}
             >
               {lang.t("previous_coms")}
-            </a>
+            </span>
           </div>
         )}
-        {toChildArray(this.props.children).map((e, i, m) => {
+        {this.props.childMessages.map((e, i, m) => {
           // bypass empty messages
           if (!e.files.length && e.data["text"] == "" && !e.children.length) {
             return null;
           }
 
-          if (i < this.props.firstDisplayedChild || i > this.props.lastDisplayedChild) {
+          if (i < this.state.firstDisplayedChild || i > this.state.lastDisplayedChild) {
             return null;
           }
 
@@ -40,15 +91,15 @@ export default class MessageChildren extends Component {
             />
           );
         })}
-        {this.props.lastDisplayedChild + 1 <
-          toChildArray(this.props.children).length && (
+        {this.state.lastDisplayedChild + 1 <
+          this.props.childMessages.length && (
           <div class="d-flex">
-            <a
+            <span
               class="more-coms unselectable"
-              onClick={e => this.props.displayNextChildren(e)}
+              onClick={_ => this.displayNextChildren()}
             >
               {lang.t("next_coms")}
-            </a>
+            </span>
           </div>
         )}
       </div>
