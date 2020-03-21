@@ -69,7 +69,36 @@
         position: relative;
         left: 50%;
         top: 135px; // not 50% because it doesn't work in chromium
-        min-width: 320px;
+        min-width: 270px;
+    }
+
+    .lichess::before {
+        background: #212121;
+        height: 68px;
+        width: 68px;
+        margin-left: -34px;
+        margin-top: -34px;
+        opacity: .8;
+        transition: .8s;
+    }
+
+    &:hover > .lichess::before {
+        opacity: 1;
+        background: #000;
+    }
+
+    .lichess::after {
+        border-width: 12px;
+        margin: -12px 0 0 -12px;
+        border-color: #fff;
+        transform: rotate(45deg);
+        transition: .8s;
+    }
+
+    &:hover > .lichess::after {
+        transform: rotate(360deg);
+        border-radius: 100%;
+        transition: .8s;
     }
 
     .youtube::before {
