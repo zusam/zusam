@@ -41,7 +41,7 @@ export default class Message extends Component {
       cn += " child";
     }
     if (this.props.message.id == router.action) {
-      cn + " highlight";
+      cn += " highlight";
     }
     return cn;
   }

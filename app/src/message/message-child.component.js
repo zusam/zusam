@@ -5,33 +5,23 @@ import Message from "./message.component.js";
 export default class MessageChild extends Component {
   constructor(props) {
     super(props);
-    this.loadMessage = this.loadMessage.bind(this);
-  }
-
-  loadMessage(msg) {
-    me.removeMatchingNotifications(msg.id);
-    this.setState({
-      message: msg,
-      author: msg.author,
-    });
+    this.state = {message: this.props.message};
   }
 
   componentDidMount() {
-    this.loadMessage(this.props.message);
+    me.removeMatchingNotifications(this.props.message.id);
   }
 
   componentWillUpdate() {
-    if (this.state.message) {
-      let msgElement = document.getElementById(this.state.message.id);
-      if (
-        this.state.message.id == router.action &&
-        msgElement.classList.contains("highlight")
-      ) {
-        setTimeout(_ => {
-          msgElement.scrollIntoView({ block: "start", behavior: "smooth" });
-          setTimeout(_ => msgElement.classList.remove("highlight"), 1000);
-        }, 1000);
-      }
+    let msgElement = document.getElementById(this.state.message.id);
+    if (
+      this.state.message.id == router.action &&
+      msgElement.classList.contains("highlight")
+    ) {
+      setTimeout(_ => {
+        msgElement.scrollIntoView({ block: "start", behavior: "smooth" });
+        setTimeout(_ => msgElement.classList.remove("highlight"), 1000);
+      }, 1000);
     }
   }
 
