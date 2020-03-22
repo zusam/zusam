@@ -10,21 +10,9 @@ import Writer from "/message/writer.component.js";
 export default class MainContent extends Component {
   constructor(props) {
     super(props);
-    this.state = {loading: true};
-  }
-
-  componentDidMount() {
-    if (this.props.entityUrl) {
-      cache.get(this.props.entityUrl).then(e => this.setState({entity: e, loading: false}));
-    } else {
-      this.setState({loading: false});
-    }
   }
 
   render() {
-    if (this.state.loading) {
-      return null;
-    }
     if (this.props.action == "settings") {
       return (
         <article class="mt-2 justify-content-center d-flex">
@@ -53,8 +41,8 @@ export default class MainContent extends Component {
               />
               <MessageParent
                 focus={!!router.getParam("focus", router.search)}
-                key={this.state.entity.id}
-                message={this.state.entity}
+                key={router.entity.id}
+                message={router.entity}
               />
             </div>
           </article>
