@@ -18,7 +18,7 @@ export default class GroupsDropdownNavbar extends Component {
             tabindex="-1"
             onClick={e => e.currentTarget.classList.toggle("active")}
           >
-            <div class="unselectable pr-5px">
+            <div class="unselectable pr-1">
               {lang.t("groups")} <FaIcon family={"solid"} icon={"caret-down"} />
             </div>
             <div class="dropdown-menu dropdown-left">

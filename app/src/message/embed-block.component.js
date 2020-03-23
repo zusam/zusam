@@ -181,7 +181,7 @@ export default class EmbedBlock extends Component {
     if (/audio/.test(this.props.data["content-type"])) {
       return (
         <div class="container d-flex justify-content-center flex-wrap align-items-center">
-          <audio class="width-100" controls>
+          <audio class="w-100" controls>
             <source src={this.props.url}></source>
           </audio>
         </div>

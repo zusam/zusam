@@ -131,18 +131,6 @@ body {
     overflow: hidden;
 }
 
-.pb-1 {
-    padding-bottom: 1rem;
-}
-
-.mb-3 {
-    margin-bottom: 3rem;
-}
-
-.mt-2 {
-    margin-top: 2rem;
-}
-
 .removed-user {
     filter: grayscale(100);
 }
@@ -174,23 +162,6 @@ body {
     }
 }
 
-.navbar-block {
-    display: flex;
-    height: 100%;
-}
-
-.notification-button {
-    font-size: 1.2rem;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0 5px;
-}
-
-.d-block {
-    display: block;
-}
-
 .cursor-pointer {
     cursor: pointer;
 }
@@ -205,14 +176,6 @@ body {
 
 *:empty ~ .none-if-follows-empty {
     display: none;
-}
-
-.pr-5px {
-    padding-right: 5px;
-}
-
-.width-100 {
-    width: 100%;
 }
 
 .no-decoration, .no-decoration:hover {
