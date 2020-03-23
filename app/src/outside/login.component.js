@@ -46,7 +46,7 @@ export default class Login extends Component {
           });
         });
       } else {
-        if (res.message) {
+        if (res && res.message) {
           alert.add(lang.t(res.message), "alert-danger");
         } else {
           alert.add(lang.t("error"), "alert-danger");
