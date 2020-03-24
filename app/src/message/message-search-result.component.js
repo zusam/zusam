@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { cache, me, router, util } from "/core";
+import { storage, me, router, util } from "/core";
 import { FaIcon } from "/misc";
 
 export default class MessageSearchResult extends Component {
@@ -19,7 +19,7 @@ export default class MessageSearchResult extends Component {
 
   componentDidMount() {
     if (this.props.message.author) {
-      cache
+      http
         .get("/api/users/" + this.props.message.author)
         .then(author => author && this.setState({ author: author }));
     }

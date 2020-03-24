@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { cache, me, router, util, http } from "/core";
+import { storage, me, router, util, http } from "/core";
 import { MessageSearchResult } from "/message";
 
 export default class GroupSearch extends Component {

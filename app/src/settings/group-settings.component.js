@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { lang, me, alert, cache, http, router, util } from "/core";
+import { lang, me, alert, storage, http, router, util } from "/core";
 import { FaIcon } from "/misc";
 
 export default class GroupSettings extends Component {
@@ -18,7 +18,6 @@ export default class GroupSettings extends Component {
       .post("/api/groups/" + this.state.id + "/reset-invite-key", {})
       .then(res => {
         alert.add(lang.t("group_updated"));
-        cache.resetCache();
         this.setState({ secretKey: res["inviteKey"] });
       });
   }
@@ -33,7 +32,6 @@ export default class GroupSettings extends Component {
     }
     http.put("/api/groups/" + this.state.id, group).then(res => {
       alert.add(lang.t("group_updated"));
-      cache.resetCache();
       this.setState(prevState => Object.assign(prevState, res));
     });
   }

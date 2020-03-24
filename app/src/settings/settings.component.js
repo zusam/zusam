@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { lang, cache, me, router } from "/core";
+import { lang, storage, me, router } from "/core";
 import { FaIcon } from "/misc";
 import UserSettings from "./user-settings.component.js";
 import GroupSettings from "./group-settings.component.js";
@@ -9,7 +9,7 @@ export default class Settings extends Component {
     super(props);
     this.state = {};
     if (props.entityUrl) {
-      cache.get(props.entityUrl).then(res => this.setState({ entity: res }));
+      http.get(props.entityUrl).then(res => this.setState({ entity: res }));
     }
   }
 

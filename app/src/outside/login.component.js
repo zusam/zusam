@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { lang, me, alert, cache, http, router } from "/core";
+import { lang, me, alert, storage, http, router } from "/core";
 import zusam_logo from "/assets/zusam_logo.svg";
 
 export default class Login extends Component {
@@ -13,7 +13,7 @@ export default class Login extends Component {
     this.sendPasswordReset = this.sendPasswordReset.bind(this);
     this.showPasswordReset = this.showPasswordReset.bind(this);
     // reroute if already logged in
-    cache.get("apiKey").then(apiKey => apiKey && router.navigate("/"));
+    storage.get("apiKey").then(apiKey => apiKey && router.navigate("/"));
   }
 
   sendPasswordReset(e) {
@@ -40,7 +40,7 @@ export default class Login extends Component {
     http.post("/api/login", { login: login, password: password }).then(res => {
       this.setState({ sending: false });
       if (res && res.api_key) {
-        cache.set("apiKey", res.api_key).then(() => {
+        storage.set("apiKey", res.api_key).then(() => {
           me.update().then(() => {
             setTimeout(() => router.navigate("/"), 100);
           });

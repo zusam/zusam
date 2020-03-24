@@ -1,5 +1,5 @@
 import { Fragment, h, render, Component } from "preact";
-import { lang, cache, http, me, router, util } from "/core";
+import { lang, storage, http, me, router, util } from "/core";
 import Message from "./message.component.js";
 
 export default class MessageParent extends Component {

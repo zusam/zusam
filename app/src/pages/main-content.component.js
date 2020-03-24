@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { util, router, cache } from "/core";
+import { util, router, storage } from "/core";
 import { MessageParent } from "/message";
 import { CreateGroup, GroupTitle, GroupBoard, Share } from "/pages";
 import { Settings } from "/settings";

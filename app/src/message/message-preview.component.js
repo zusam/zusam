@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { cache, me, router, util } from "/core";
+import { http, storage, me, router, util } from "/core";
 import { FaIcon } from "/misc";
 
 export default class MessagePreview extends Component {
@@ -12,7 +12,7 @@ export default class MessagePreview extends Component {
 
   componentDidMount() {
     if (this.state.message && this.state.message.author) {
-      cache
+      http
         .get("/api/users/" + this.state.message.author)
         .then(author => author && this.setState({ author: author }));
     }

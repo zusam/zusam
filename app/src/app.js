@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import { lazy } from "preact/compat";
-import { alert, lang, cache, router, me } from "/core";
+import { alert, lang, storage, router, me } from "/core";
 import { Navbar } from "/navbar";
 import { MainContent } from "/pages";
 import {
@@ -26,7 +26,7 @@ class App extends Component {
       }
     });
     lang.fetchDict();
-    cache.get("apiKey").then(apiKey => {
+    storage.get("apiKey").then(apiKey => {
       if (router.isOutside() || apiKey) {
         router.sync();
       } else {
@@ -50,11 +50,11 @@ class App extends Component {
       entityUrl: router.entityUrl
     });
     setTimeout(() => window.scrollTo(0, 0));
-    cache.get("apiKey").then(apiKey => {
+    storage.get("apiKey").then(apiKey => {
       if (apiKey && router.route != "login") {
         me.get().then(user => {
           if (!user && !router.isOutside()) {
-            cache.set("apiKey", "").then(_ => router.navigate("/login"));
+            storage.set("apiKey", "").then(_ => router.navigate("/login"));
           } else {
             this.setState({
               action: router.action,

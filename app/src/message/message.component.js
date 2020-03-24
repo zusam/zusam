@@ -1,5 +1,5 @@
 import { Fragment, h, render, Component } from "preact";
-import { lang, cache, http, me, router, util } from "/core";
+import { lang, storage, http, me, router, util } from "/core";
 import { FaIcon } from "/misc";
 import MessageChildren from "./message-children.component.js";
 import MessageHead from "./message-head.component.js";
@@ -50,8 +50,7 @@ export default class Message extends Component {
     event.preventDefault();
     if (confirm(lang.t("ask_delete_message"))) {
       http.delete("/api/messages/" + this.props.message["id"]);
-      cache.resetCache();
-      // give some time to the cache to delete itself properly
+      // give some time to the storage to delete itself properly
       setTimeout(() => {
         router.navigate("/groups/" + this.props.message.group.id, {
           data: { resetGroupDisplay: true }

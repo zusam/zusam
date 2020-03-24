@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { lang, alert, cache, http, router } from "/core";
+import { lang, alert, storage, http, router } from "/core";
 import zusam_logo from "/assets/zusam_logo.svg";
 
 export default class Signup extends Component {
@@ -19,7 +19,7 @@ export default class Signup extends Component {
     let login = document.getElementById("login").value || "";
     login.toLowerCase();
     const password = document.getElementById("password").value;
-    cache.set("apiKey", "");
+    storage.set("apiKey", "");
     http
       .post("/api/signup", {
         login: login,
@@ -28,7 +28,7 @@ export default class Signup extends Component {
       })
       .then(res => {
         if (res && !res.message) {
-          cache.set("apiKey", res.api_key);
+          storage.set("apiKey", res.api_key);
           setTimeout(() => router.navigate("/"), 100);
         } else {
           alert.add(lang.t(res.message));

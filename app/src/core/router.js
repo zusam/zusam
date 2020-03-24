@@ -1,8 +1,8 @@
-import cache from "./cache.js";
 import http from "./http.js";
 import me from "./me.js";
 import util from "./util.js";
 import lang from "./lang.js";
+import storage from "./storage.js";
 
 const router = {
   route: "",
@@ -89,7 +89,7 @@ const router = {
       router.entityUrl = "/api/" + router.route + "/" + router.id;
       router.entityType = router.route;
 
-      await cache
+      await http
         .get(router.entityUrl)
         .then(res => {
           if (!res) {
@@ -129,7 +129,7 @@ const router = {
 
     switch (router.route) {
       case "login":
-        cache.reset();
+        storage.reset();
       case "create-group":
       case "groups":
       case "messages":
@@ -147,11 +147,11 @@ const router = {
         window.dispatchEvent(new CustomEvent("routerStateChange"));
         break;
       case "logout":
-        cache.reset();
+        storage.reset();
         window.location.href = window.location.origin;
         break;
       case "invitation":
-        cache.get("apiKey").then(apiKey => {
+        storage.get("apiKey").then(apiKey => {
           if (apiKey) {
             http.post("/api/groups/invitation/" + router.id, {}).then(res => {
               window.location.href = window.location.origin;
@@ -179,10 +179,11 @@ const router = {
         });
     }
   },
-  sync: () =>
+  sync: () => {
     router.navigate(location.pathname + location.search + location.hash, {
       replace: true
-    }),
+    });
+  },
   onClick: (e, newTab = false, url = null) => {
     // stop propagation
     e.preventDefault();

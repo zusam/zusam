@@ -1,11 +1,11 @@
 import util from "./util.js";
 import alert from "./alert.js";
-import cache from "./cache.js";
+import storage from "./storage.js";
 import router from "./router.js";
 
 const http = {
   sendFile: (formData, loadFn, progressFn = null, errorFn = null) => {
-    return cache
+    return storage
       .get("apiKey")
       .then(apiKey => {
         let xhr = new XMLHttpRequest();
@@ -37,7 +37,7 @@ const http = {
       .catch(error => alert.add(error, "alert-danger"));
   },
   get: (url, nocache = false) => {
-    return cache
+    return storage
       .get("apiKey")
       .then(apiKey => {
         url = router.toApp(url);
@@ -67,7 +67,7 @@ const http = {
   delete: (url, data, contentType = "application/json") =>
     http.request(url, null, "DELETE", contentType),
   request: (url, data, method, contentType = "application/json") => {
-    return cache
+    return storage
       .get("apiKey")
       .then(apiKey => {
         url = router.toApp(url);

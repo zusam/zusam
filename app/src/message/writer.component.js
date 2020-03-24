@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { lang, alert, cache, http, me, router, util } from "/core";
+import { lang, alert, storage, http, me, router, util } from "/core";
 import { FaIcon } from "/misc";
 import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
@@ -58,7 +58,7 @@ export default class Writer extends Component {
       const text = t.value;
       let links = text.match(/(https?:\/\/[^\s]+)/gi);
       if (links && links[0] != this.state.link) {
-        cache
+        http
           .get("/api/links/by_url?url=" + encodeURIComponent(links[0]))
           .then(r => {
             if (r && t.value.indexOf(links[0]) >= 0) {
@@ -143,10 +143,8 @@ export default class Writer extends Component {
       }
       if (this.props.isChild) {
         this.setState({ sending: false });
-        cache.remove("/api/messages/" + this.props.parent);
         window.dispatchEvent(new CustomEvent("newChild", { detail: res }));
       } else {
-        cache.remove(this.props.group);
         setTimeout(_ => {
           router.navigate(router.backUrl || msg.group.slice(4));
         }, 500);

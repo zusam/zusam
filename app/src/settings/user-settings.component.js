@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { lang, router, me, alert, cache, http, util } from "/core";
+import { lang, router, me, alert, storage, http, util } from "/core";
 import { FaIcon } from "/misc";
 
 export default class UserSettings extends Component {
@@ -32,7 +32,6 @@ export default class UserSettings extends Component {
                 .put("/api/users/" + this.state.id, { avatar: file["id"] })
                 .then(res => {
                   this.setState({ avatar: file });
-                  cache.resetCache();
                   alert.add(lang.t("settings_updated"));
                 });
             });

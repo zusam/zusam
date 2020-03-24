@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { cache, me, router, util } from "/core";
+import { http, storage, me, router, util } from "/core";
 import { MessagePreview } from "/message";
 import { GroupTitle } from "/pages";
 
@@ -35,7 +35,7 @@ export default class GroupBoard extends Component {
   }
 
   loadMessages(page) {
-    cache
+    http
       .get("/api/groups/" + this.state.groupId + "/page/" + page)
       .then(res => {
         if (res && Array.isArray(res["messages"])) {

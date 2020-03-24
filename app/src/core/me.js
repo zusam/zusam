@@ -1,12 +1,11 @@
 import http from "./http.js";
 import lang from "./lang.js";
-import cache from "./cache.js";
 
 const me = {
   me: {},
   get: () => (me.me.id ? Promise.resolve(me.me) : me.update()),
   update: () =>
-    cache.get("/api/me", true).then(r => {
+    http.get("/api/me", true).then(r => {
       if (!r) {
         return;
       }
@@ -17,7 +16,7 @@ const me = {
       return r;
     }),
   loadNotifications: () =>
-    cache.get("/api/users/" + me.me.id + "/notifications").then(r => {
+    http.get("/api/users/" + me.me.id + "/notifications").then(r => {
       me.me.notifications = r;
       window.dispatchEvent(new CustomEvent("meStateChange"));
     }),

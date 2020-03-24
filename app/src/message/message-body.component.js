@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { cache, lang, me, util } from "/core";
+import { http, storage, lang, me, util } from "/core";
 import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
 import { FaIcon } from "/misc";
@@ -48,7 +48,7 @@ export default class MessageBody extends Component {
       if (this.props.message.data) {
         let previewUrl = util.getUrl(this.props.message.data["text"]);
         if (previewUrl) {
-          cache
+          http
             .get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0]))
             .then(r => {
               this.setState(prevState => ({
