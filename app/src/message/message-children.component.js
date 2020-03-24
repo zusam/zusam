@@ -8,7 +8,7 @@ export default class MessageChildren extends Component {
     this.loadMessage = this.loadMessage.bind(this);
     this.displayPreviousChildren = this.displayPreviousChildren.bind(this);
     this.displayNextChildren = this.displayNextChildren.bind(this);
-    this.state = {firstDisplayedChild: 0, lastDisplayedChild: 0};
+    this.state = { firstDisplayedChild: 0, lastDisplayedChild: 0 };
   }
 
   loadMessage() {
@@ -20,10 +20,15 @@ export default class MessageChildren extends Component {
         : -1;
       if (msgIndex != -1) {
         firstDisplayedChild = Math.max(0, msgIndex - 1);
-        lastDisplayedChild = Math.min(this.props.childMessages.length, msgIndex + 1);
+        lastDisplayedChild = Math.min(
+          this.props.childMessages.length,
+          msgIndex + 1
+        );
       } else {
-        firstDisplayedChild = this.props.childMessages && this.props.childMessages.length - 5; // display the last 5 children
-        lastDisplayedChild = this.props.childMessages && this.props.childMessages.length;
+        firstDisplayedChild =
+          this.props.childMessages && this.props.childMessages.length - 5; // display the last 5 children
+        lastDisplayedChild =
+          this.props.childMessages && this.props.childMessages.length;
       }
     }
     this.setState({
@@ -34,11 +39,8 @@ export default class MessageChildren extends Component {
 
   displayPreviousChildren() {
     this.setState(prevState => ({
-      firstDisplayedChild: Math.max(
-        0,
-        prevState.firstDisplayedChild - 10
-      )
-    }))
+      firstDisplayedChild: Math.max(0, prevState.firstDisplayedChild - 10)
+    }));
   }
 
   displayNextChildren() {
@@ -47,7 +49,7 @@ export default class MessageChildren extends Component {
         this.props.childMessages.length,
         prevState.lastDisplayedChild + 10
       )
-    }))
+    }));
   }
 
   componentDidMount() {
@@ -56,8 +58,8 @@ export default class MessageChildren extends Component {
 
   render() {
     if (
-      this.state.lastDisplayedChild - this.state.firstDisplayedChild < 1
-      || !this.props.childMessages
+      this.state.lastDisplayedChild - this.state.firstDisplayedChild < 1 ||
+      !this.props.childMessages
     ) {
       return null;
     }
@@ -79,7 +81,10 @@ export default class MessageChildren extends Component {
             return null;
           }
 
-          if (i < this.state.firstDisplayedChild || i > this.state.lastDisplayedChild) {
+          if (
+            i < this.state.firstDisplayedChild ||
+            i > this.state.lastDisplayedChild
+          ) {
             return null;
           }
 

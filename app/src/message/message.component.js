@@ -110,10 +110,7 @@ export default class Message extends Component {
   render() {
     return (
       <Fragment>
-        <div
-          id={this.props.message.id}
-          className={this.getComponentClass()}
-        >
+        <div id={this.props.message.id} className={this.getComponentClass()}>
           {this.state.edit && this.displayWriter(this.props.isChild)}
           {!this.state.edit && (
             <Fragment>
@@ -170,7 +167,7 @@ export default class Message extends Component {
             {this.displayWriter(true, this.props.focus)}
           </div>
         )}
-        </Fragment>
+      </Fragment>
     );
   }
 }

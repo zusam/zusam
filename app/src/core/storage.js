@@ -20,6 +20,8 @@ const storage = {
     }
     return new Promise(r => r(null));
   },
-  reset: _ => localStorage.clear() && window.dispatchEvent(new CustomEvent("resetStorage")),
+  reset: _ =>
+    localStorage.clear() &&
+    window.dispatchEvent(new CustomEvent("resetStorage"))
 };
 export default storage;

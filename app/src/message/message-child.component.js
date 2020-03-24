@@ -5,7 +5,7 @@ import Message from "./message.component.js";
 export default class MessageChild extends Component {
   constructor(props) {
     super(props);
-    this.state = {message: this.props.message};
+    this.state = { message: this.props.message };
   }
 
   componentDidMount() {
@@ -35,7 +35,8 @@ export default class MessageChild extends Component {
         isPublic={this.props.isPublic}
         isChild={true}
         preMessageHeadComponent={
-          this.state.edit && me.me && (
+          this.state.edit &&
+          me.me && (
             <div class="message-head d-none d-md-block">
               <img
                 class="rounded-circle w-3 material-shadow avatar"
@@ -49,8 +50,7 @@ export default class MessageChild extends Component {
             </div>
           )
         }
-      >
-      </Message>
+      ></Message>
     );
   }
 }
