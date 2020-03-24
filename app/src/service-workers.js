@@ -1,17 +1,19 @@
-const CACHE = 'zusam-4.1-simplecache-0.1';
+const CACHE = 'zusam-4.1-simplecache-0.2';
 
 // On fetch, use cache but update the entry with the latest contents
 // from the server.
 self.addEventListener('fetch', function(evt) {
-  if (evt.request.method == "GET" && isCacheableUrl(evt.request.url)) {
-    // You can use `respondWith()` to answer immediately, without waiting for the
-    // network response to reach the service worker...
-    evt.respondWith(fromCache(evt.request));
-    // ...and `waitUntil()` to prevent the worker from being killed until the
-    // cache is updated.
-    evt.waitUntil(update(evt.request));
-  } else {
-    return fromNetwork(evt.request, false);
+  if (evt.request.method == "GET") {
+    if (isCacheableUrl(evt.request.url)) {
+      // You can use `respondWith()` to answer immediately, without waiting for the
+      // network response to reach the service worker...
+      evt.respondWith(fromCache(evt.request));
+      // ...and `waitUntil()` to prevent the worker from being killed until the
+      // cache is updated.
+      evt.waitUntil(update(evt.request));
+    } else {
+      return fromNetwork(evt.request, false);
+    }
   }
 });
 
