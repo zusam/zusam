@@ -16,10 +16,10 @@ export default class GenericEmbed extends Component {
     return (
       <div
         class="embed-preview"
-        onClick={() => this.setState({ revealed: true })}
+        onClick={() => this.setState({revealed: true})}
       >
         <div className={this.props.playBtnClass}></div>
-        <img src={this.props.preview} />
+        <img src={this.props.preview} OnError={this.setState({revealed: true})}/>
       </div>
     );
   }
