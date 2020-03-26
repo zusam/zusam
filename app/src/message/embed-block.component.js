@@ -45,7 +45,13 @@ export default class EmbedBlock extends Component {
       ) {
         case "lichess.org":
           let url = new URL(this.props.url);
-          let embedUrl = url.pathname.slice(1).split("/").reduce((a, c) => a + "/" + (c == "study" ? "study/embed" : c), url.origin);
+          let embedUrl = url.pathname
+            .slice(1)
+            .split("/")
+            .reduce(
+              (a, c) => a + "/" + (c == "study" ? "study/embed" : c),
+              url.origin
+            );
           return (
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 270, 270)}

@@ -4,19 +4,22 @@ const storage = {
     let k;
     for (k in localStorage) {
       if (localStorage.hasOwnProperty(k)) {
-        total += ((localStorage[k].length + k.length) * 2);
+        total += (localStorage[k].length + k.length) * 2;
       }
     }
     return total;
   },
   createStorageBox: (data, metadata = null) => ({
-      data: data,
-      createdAt: Date.now(),
-      metadata: metadata
+    data: data,
+    createdAt: Date.now(),
+    metadata: metadata
   }),
   remove: id => localStorage.removeItem(id),
   set: (id, data, metadata = null) => {
-    localStorage.setItem(id, JSON.stringify(storage.createStorageBox(data, metadata)));
+    localStorage.setItem(
+      id,
+      JSON.stringify(storage.createStorageBox(data, metadata))
+    );
     return Promise.resolve(id);
   },
   get: id => {
