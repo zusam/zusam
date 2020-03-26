@@ -22,5 +22,10 @@
         "babel-preset-env": "^1.7",
         "prettier": "^1.19.1",
         "sass": "^1.23"
+    },
+    "alias": {
+        "react": "preact/compat",
+        "react-dom/test-utils": "preact/test-utils",
+        "react-dom": "preact/compat"
     }
 }
