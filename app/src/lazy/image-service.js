@@ -13,15 +13,12 @@ const imageService = {
   handleImage: (source, callback) => {
     let fileSize = source.size;
     try {
-      // don't use image reduction for iOS & firefoxMobile as it's problematic.
+      // don't use image reduction for iOS as it's problematic.
       // TODO: Find a fix and test those platforms.
       let iOS =
         /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-      let firefoxMobile =
-        /Firefox/.test(navigator.userAgent) &&
-        /Mobile/.test(navigator.userAgent);
-      if (firefoxMobile || iOS) {
-        console.warn("Do not use image reduction on iOS/FirefoxMobile !");
+      if (iOS) {
+        console.warn("Do not use image reduction on iOS !");
         callback(source);
         return;
       }
