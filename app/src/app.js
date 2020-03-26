@@ -15,6 +15,7 @@ class App extends Component {
   constructor() {
     super();
     this.onRouterStateChange = this.onRouterStateChange.bind(this);
+    console.log("localStorage usage: " + storage.usage());
     window.addEventListener("routerStateChange", this.onRouterStateChange);
     window.addEventListener("meStateChange", _ => this.setState({ me: me.me }));
     window.addEventListener("fetchedNewDict", _ => this.setState({}));
