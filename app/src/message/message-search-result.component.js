@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { storage, me, router, util } from "/core";
+import { http, storage, me, router, util } from "/core";
 import { FaIcon } from "/misc";
 
 export default class MessageSearchResult extends Component {
