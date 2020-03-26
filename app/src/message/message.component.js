@@ -50,12 +50,13 @@ export default class Message extends Component {
     event.preventDefault();
     if (confirm(lang.t("ask_delete_message"))) {
       http.delete("/api/messages/" + this.props.message["id"]);
-      // give some time to the storage to delete itself properly
-      setTimeout(() => {
+      if (this.props.isChild) {
+        this.setState({ isRemoved: true });
+      } else {
         router.navigate("/groups/" + this.props.message.group.id, {
           data: { resetGroupDisplay: true }
         });
-      }, 100);
+      }
     }
   }
 
@@ -108,6 +109,9 @@ export default class Message extends Component {
   }
 
   render() {
+    if (this.state.isRemoved) {
+      return null;
+    }
     return (
       <Fragment>
         <div id={this.props.message.id} className={this.getComponentClass()}>
