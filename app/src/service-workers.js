@@ -23,6 +23,7 @@ function isCacheableUrl(url) {
     '/api/images/crop/',
     '/api/images/thumbnail/',
     '/api/links/by_url?',
+    '/api/users/',
   ];
   return routes.some(r => url.includes(r));
 }
