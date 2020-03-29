@@ -47,7 +47,11 @@ export default class EmbedBlock extends Component {
           return (
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 270, 270)}
-              url={this.props.url.match("/study/") ? this.props.url.replace("/study/", "/study/embed/") : this.props.url.replace("lichess.org/", "lichess.org/embed/")}
+              url={
+                this.props.url.match("/study/")
+                  ? this.props.url.replace("/study/", "/study/embed/")
+                  : this.props.url.replace("lichess.org/", "lichess.org/embed/")
+              }
               playBtnClass={"lichess"}
             />
           );
