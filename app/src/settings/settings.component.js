@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { lang, storage, me, router } from "/core";
+import { http, lang, storage, me, router } from "/core";
 import { FaIcon } from "/misc";
 import UserSettings from "./user-settings.component.js";
 import GroupSettings from "./group-settings.component.js";
