@@ -22,8 +22,10 @@ class App extends Component {
     window.addEventListener("popstate", router.sync);
     window.addEventListener("click", e => {
       // close dropdowns if we are clicking on something else
-      if (!e.target.closest('.dropdown')) {
-        document.querySelectorAll('.dropdown').forEach(n => n.classList.remove("active"));
+      if (!e.target.closest(".dropdown")) {
+        document
+          .querySelectorAll(".dropdown")
+          .forEach(n => n.classList.remove("active"));
       }
     });
     lang.fetchDict();
@@ -85,7 +87,7 @@ class App extends Component {
         return <StopNotificationEmails />;
         break;
       case "public":
-        return <Public token={this.state.id} key={this.state.id}/>;
+        return <Public token={this.state.id} key={this.state.id} />;
         break;
       case "password-reset":
         return <ResetPassword />;
@@ -114,17 +116,26 @@ class App extends Component {
 
 render(<App />, document.body);
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    //navigator.serviceWorker.getRegistrations().then(function(registrations) {
-    //  for(let registration of registrations) {
-    //    registration.unregister()
-    //  }
-    //})
-    navigator.serviceWorker.register('/service-workers.js').then(function(registration) {
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }, function(err) {
-      console.warn('ServiceWorker registration failed: ', err);
-    });
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    if (location.search.includes("service-workers=unregister")) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+      console.log("Service workers unregistered");
+    }
+    navigator.serviceWorker.register("/service-workers.js").then(
+      function(registration) {
+        console.log(
+          "ServiceWorker registration successful with scope: ",
+          registration.scope
+        );
+      },
+      function(err) {
+        console.warn("ServiceWorker registration failed: ", err);
+      }
+    );
   });
 }
