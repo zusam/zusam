@@ -44,18 +44,10 @@ export default class EmbedBlock extends Component {
           .replace(/^https?:\/\/(www\.)?/, "")
       ) {
         case "lichess.org":
-          let url = new URL(this.props.url);
-          let embedUrl = url.pathname
-            .slice(1)
-            .split("/")
-            .reduce(
-              (a, c) => a + "/" + (c == "study" ? "study/embed" : c),
-              url.origin
-            );
           return (
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 270, 270)}
-              url={embedUrl}
+              url={this.props.url.match("/study/") ? this.props.url.replace("/study/", "/study/embed/") : this.props.url.replace("lichess.org/", "lichess.org/embed/")}
               playBtnClass={"lichess"}
             />
           );
