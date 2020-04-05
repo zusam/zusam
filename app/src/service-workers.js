@@ -50,14 +50,14 @@ self.addEventListener("fetch", function(evt) {
 
 // Make a network request, return the result and add it to cache if asked
 function fromNetwork(request, addToCache) {
-  return fetch(request).then(function(response) {
+  return fetch(request).then(response => {
     if (addToCache) {
       // response may be used only once
       // we need to save clone to put one copy in cache
       // and serve second one
       let responseClone = response.clone();
-      caches.open(CACHE).then(function(cache) {
-        addToCache(request, responseClone);
+      caches.open(CACHE).then(cache => {
+        addToCache(cache, request, responseClone);
       });
     }
     return response;
@@ -68,10 +68,21 @@ function fromNetwork(request, addToCache) {
 // resource. Notice that in case of no matching, the promise still resolves
 // but it does with `undefined` as value.
 function fromCache(request) {
-  return caches.open(CACHE).then(function(cache) {
-    return cache.match(request).then(function(matching) {
-      // if nothing matches, return response from network
-      return matching || fromNetwork(request, true);
+  return caches.open(CACHE).then(cache => {
+    return cache.match(request).then(matching => {
+      if (matching) {
+        // reset lastUsed
+        return set(
+          request.url,
+          {
+            lastUsed: Date.now()
+          },
+          cache_store
+        ).then(_ => matching);
+      } else {
+        // if nothing matches, return response from network
+        return fromNetwork(request, true);
+      }
     });
   });
 }
@@ -79,15 +90,15 @@ function fromCache(request) {
 // Update consists in opening the cache, performing a network request and
 // storing the new response data.
 function update(request) {
-  return caches.open(CACHE).then(function(cache) {
-    return fetch(request).then(function(response) {
-      return addToCache(request, response);
+  return caches.open(CACHE).then(cache => {
+    return fetch(request).then(response => {
+      return addToCache(cache, request, response);
     });
   });
 }
 
 // Add response to cache and store the lastUsed timestamp at the same time
-function addToCache(request, response) {
+function addToCache(cache, request, response) {
   return set(
     request.url,
     {

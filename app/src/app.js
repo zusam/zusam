@@ -1,6 +1,6 @@
 import { h, render, Component } from "preact";
 import { lazy } from "preact/compat";
-import { alert, lang, storage, router, me } from "/core";
+import { alert, lang, storage, router, me, cache } from "/core";
 import { Navbar } from "/navbar";
 import { MainContent } from "/pages";
 import {
@@ -16,6 +16,7 @@ class App extends Component {
     super();
     this.onRouterStateChange = this.onRouterStateChange.bind(this);
     console.log("localStorage usage: " + storage.usage());
+    cache.purgeOldCache();
     window.addEventListener("routerStateChange", this.onRouterStateChange);
     window.addEventListener("meStateChange", _ => this.setState({ me: me.me }));
     window.addEventListener("fetchedNewDict", _ => this.setState({}));
