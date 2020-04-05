@@ -64,7 +64,7 @@ export default class MessageChildren extends Component {
       return null;
     }
     return (
-      <div>
+      <div class="children">
         {this.state.firstDisplayedChild > 0 && (
           <div class="d-flex">
             <span
