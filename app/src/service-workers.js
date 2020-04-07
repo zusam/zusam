@@ -45,9 +45,6 @@ self.addEventListener("fetch", function(evt) {
       // from-network without cache is the default
       return fromNetwork(evt.request, false);
     }
-  } else {
-    // from-network without cache is the default
-    return fromNetwork(evt.request, false);
   }
 });
 
