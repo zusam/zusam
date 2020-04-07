@@ -1,19 +1,30 @@
 import { h, render, Component, toChildArray } from "preact";
-import { lang, router } from "/core";
+import { lang, router, util } from "/core";
 import MessageChild from "./message-child.component.js";
 
 export default class MessageChildren extends Component {
   constructor(props) {
     super(props);
+    this.onNewChild = this.onNewChild.bind(this);
     this.loadMessage = this.loadMessage.bind(this);
     this.displayPreviousChildren = this.displayPreviousChildren.bind(this);
     this.displayNextChildren = this.displayNextChildren.bind(this);
     this.state = { firstDisplayedChild: 0, lastDisplayedChild: 0 };
+    window.addEventListener("newChild", this.onNewChild);
+  }
+
+  onNewChild(event) {
+    const newMsg = event.detail;
+    if (newMsg.parent && util.getId(newMsg.parent) == this.props.id) {
+      this.setState(prevState => ({
+        lastDisplayedChild: prevState.lastDisplayedChild + 1,
+      }));
+    }
   }
 
   loadMessage() {
-    let firstDisplayedChild = null;
-    let lastDisplayedChild = null;
+    let firstDisplayedChild = 0;
+    let lastDisplayedChild = 0;
     if (this.props.childMessages.length) {
       let msgIndex = router.action
         ? this.props.childMessages.findIndex(e => e && e.id === router.action)

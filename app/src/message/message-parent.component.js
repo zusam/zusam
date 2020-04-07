@@ -6,7 +6,6 @@ export default class MessageParent extends Component {
   constructor(props) {
     super(props);
     this.onNewChild = this.onNewChild.bind(this);
-
     window.addEventListener("newChild", this.onNewChild);
     this.state = { message: this.props.message };
   }

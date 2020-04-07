@@ -162,6 +162,7 @@ export default class Message extends Component {
             childMessages={this.props.message.children}
             isPublic={this.props.isPublic}
             key={this.props.message.id}
+            id={this.props.message.id}
           />
         )}
         {!this.state.edit && !this.props.isPublic && !this.props.isChild && (
