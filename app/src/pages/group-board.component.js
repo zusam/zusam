@@ -22,7 +22,13 @@ export default class GroupBoard extends Component {
     this.scroll_cooldown = Date.now();
     this.onScroll = this.onScroll.bind(this);
     this.loadMessages = this.loadMessages.bind(this);
+    this.onNewParent = this.onNewParent.bind(this);
+    window.addEventListener("newParent", this.onNewParent);
     window.addEventListener("resetCache", this.resetGroupDisplay);
+  }
+
+  onNewParent(event) {
+    this.loadMessages(0);
   }
 
   componentDidMount() {

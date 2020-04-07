@@ -146,6 +146,7 @@ export default class Writer extends Component {
         window.dispatchEvent(new CustomEvent("newChild", { detail: res }));
       } else {
         setTimeout(_ => {
+          window.dispatchEvent(new CustomEvent("newParent", { detail: res }));
           router.navigate(router.backUrl || msg.group.slice(4));
         }, 500);
       }
