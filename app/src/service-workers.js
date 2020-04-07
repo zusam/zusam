@@ -45,20 +45,32 @@ self.addEventListener("fetch", function(evt) {
       // from-network without cache is the default
       return fromNetwork(evt.request, false);
     }
+  } else {
+    // from-network without cache is the default
+    return fromNetwork(evt.request, false);
   }
 });
 
+// Add response to cache and store the lastUsed timestamp at the same time
+function addToCache(cache, request, response) {
+  return set(
+    request.url,
+    {
+      lastUsed: Date.now()
+    },
+    cache_store
+  ).then(_ => cache.put(request, response));
+}
+
 // Make a network request, return the result and add it to cache if asked
-function fromNetwork(request, addToCache) {
+function fromNetwork(request, toCache) {
   return fetch(request).then(response => {
-    if (addToCache) {
+    if (toCache) {
       // response may be used only once
       // we need to save clone to put one copy in cache
       // and serve second one
       let responseClone = response.clone();
-      caches.open(CACHE).then(cache => {
-        addToCache(cache, request, responseClone);
-      });
+      caches.open(CACHE).then(cache => addToCache(cache, request, responseClone));
     }
     return response;
   });
@@ -95,15 +107,4 @@ function update(request) {
       return addToCache(cache, request, response);
     });
   });
-}
-
-// Add response to cache and store the lastUsed timestamp at the same time
-function addToCache(cache, request, response) {
-  return set(
-    request.url,
-    {
-      lastUsed: Date.now()
-    },
-    cache_store
-  ).then(_ => cache.put(request, response));
 }
