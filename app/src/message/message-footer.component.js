@@ -7,7 +7,7 @@ export default class MessageFooter extends Component {
     return (
       <div class="message-footer">
         <div class="infos">
-          {this.props.author && this.props.author.id == me.me.id && (
+          {!this.props.isPublic && this.props.author && this.props.author.id == me.me.id && (
             <Fragment>
               <a
                 class="action seamless-link font-size-90 capitalize d-none d-sm-block"

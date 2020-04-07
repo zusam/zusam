@@ -17,7 +17,17 @@ export default class Message extends Component {
     this.publishInGroup = this.publishInGroup.bind(this);
     this.cancelEdit = this.cancelEdit.bind(this);
     this.onEditMessage = this.onEditMessage.bind(this);
+    this.openPublicLink = this.openPublicLink.bind(this);
     window.addEventListener("editMessage", this.onEditMessage);
+  }
+
+  async openPublicLink(event) {
+    event.preventDefault();
+    let newTab = window.open("about:blank", "_blank");
+    const res = await http.get(
+      "/api/messages/" + this.props.message.id + "/get-public-link"
+    );
+    newTab.location = window.origin + "/public/" + res.token;
   }
 
   onEditMessage(event) {
@@ -138,6 +148,7 @@ export default class Message extends Component {
                   deleteMessage={this.deleteMessage}
                   shareMessage={this.shareMessage}
                   publishInGroup={this.publishInGroup}
+                  openPublicLink={this.openPublicLink}
                   isPublic={this.props.isPublic}
                   isChild={this.props.isChild}
                 />

@@ -5,7 +5,6 @@ import Message from "./message.component.js";
 export default class MessageParent extends Component {
   constructor(props) {
     super(props);
-    this.openPublicLink = this.openPublicLink.bind(this);
     this.onNewChild = this.onNewChild.bind(this);
 
     window.addEventListener("newChild", this.onNewChild);
@@ -15,15 +14,6 @@ export default class MessageParent extends Component {
   componentDidMount() {
     me.removeMatchingNotifications(this.props.message.id);
     setTimeout(() => window.scrollTo(0, 0));
-  }
-
-  async openPublicLink(event) {
-    event.preventDefault();
-    let newTab = window.open("about:blank", "_blank");
-    const res = await http.get(
-      "/api/messages/" + this.state.message["id"] + "/get-public-link"
-    );
-    newTab.location = window.origin + "/public/" + res.token;
   }
 
   onNewChild(event) {
