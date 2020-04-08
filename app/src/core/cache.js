@@ -1,7 +1,7 @@
 import { Store, set, get, keys, del } from "idb-keyval";
 
 const ZUSAM_VERSION = "4.1";
-const CACHE_VERSION = "0.2";
+const CACHE_VERSION = "0.3";
 const CACHE = "zusam-" + ZUSAM_VERSION + "-simplecache-" + CACHE_VERSION;
 
 const cache = {

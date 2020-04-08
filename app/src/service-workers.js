@@ -1,22 +1,34 @@
 import { Store, set, get } from "idb-keyval";
 
 const ZUSAM_VERSION = "4.1";
-const CACHE_VERSION = "0.2";
+const CACHE_VERSION = "0.3";
 const CACHE = "zusam-" + ZUSAM_VERSION + "-simplecache-" + CACHE_VERSION;
 const cache_store = new Store("zusam-" + ZUSAM_VERSION, CACHE);
-const cached_routes = {
-  "/api/users/": 1000 * 60 * 60 * 24, // 24h
-  "/api/images/crop/": null,
-  "/api/images/thumbnail/": null,
-  "/api/links/by_url?": null
-};
+const cached_routes = [
+  {
+    route: new RegExp("/api/users/[^/]+/?$"),
+    duration: 1000 * 60 * 60 * 24, // 24h
+  },
+  {
+    route: new RegExp("/api/images/crop/"),
+    duration: 1000 * 60 * 60 * 24 * 365, // 1 year
+  },
+  {
+    route: new RegExp("/api/images/thumbnail/"),
+    duration: 1000 * 60 * 60 * 24 * 365, // 1 year
+  },
+  {
+    route: new RegExp("/api/links/by_url\?"),
+    duration: 1000 * 60 * 60 * 24 * 365, // 1 year
+  }
+];
 
 // On fetch, use cache but update the entry with the latest contents
 // from the server.
 self.addEventListener("fetch", function(evt) {
   if (evt.request.method == "GET") {
     // cache-update routes: retrieve from cache and update in background
-    if (Object.keys(cached_routes).some(r => evt.request.url.includes(r))) {
+    if (cached_routes.some(r => evt.request.url.match(r.route))) {
       // You can use `respondWith()` to answer immediately, without waiting for the
       // network response to reach the service worker...
       evt.respondWith(fromCache(evt.request));
@@ -26,13 +38,7 @@ self.addEventListener("fetch", function(evt) {
         get(evt.request.url, cache_store)
           .then(r => {
             if (r && r.hasOwnProperty("lastUsed") && r.lastUsed != null) {
-              const timeout =
-                r.lastUsed +
-                cached_routes[
-                  Object.keys(cached_routes).find(r =>
-                    evt.request.url.includes(r)
-                  )
-                ];
+              const timeout = r.lastUsed + cached_routes.find(r => evt.request.url.match(r.route))["duration"];
               // update the cache only if the timeout is reached
               if (timeout < Date.now()) {
                 update(evt.request);
@@ -41,9 +47,6 @@ self.addEventListener("fetch", function(evt) {
           })
           .catch(_ => update(evt.request));
       });
-    } else {
-      // from-network without cache is the default
-      return fromNetwork(evt.request, false);
     }
   }
 });
