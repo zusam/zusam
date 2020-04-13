@@ -3,7 +3,7 @@ Install on Debian buster
 
 First we're going to install the necessary packages:
 ```
-sudo apt install -y nginx unzip ffmpeg php7.3 php7.3-fpm php7.3-xml php7.3-curl php7.3-mbstring php7.3-sqlite3 php-imagick php7.3-intl
+sudo apt install -y nginx unzip ffmpeg php7.3 php7.3-fpm php7.3-xml php7.3-curl php7.3-mbstring php7.3-sqlite3 php-imagick php7.3-intl curl
 ```
 
 Download the latest release (here in `/srv/zusam`):
@@ -15,7 +15,7 @@ wget -qO- https://github.com/zusam/zusam/archive/$version.tar.gz | tar xz --stri
 
 Let's copy the webapp in the public directory (you don't need to do this if you only want the api server running):
 ```
-cp app/dist/* public/
+cp -R app/dist/* public/
 ```
 
 Install the server dependencies:
