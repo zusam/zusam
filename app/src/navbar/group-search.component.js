@@ -6,12 +6,9 @@ export default class GroupSearch extends Component {
   constructor(props) {
     super(props);
     let groupId = util.getId(router.id);
-    let loaded =
-      1 +
-      Math.floor((window.screen.width * window.screen.height) / (320 * 215));
     this.state = {
       groupId: groupId,
-      loaded: loaded,
+      loaded: false,
       messages: [],
       totalMessages: 0,
       search: router.getParam("search").replace(/\+/g, " "),
@@ -51,7 +48,7 @@ export default class GroupSearch extends Component {
             search: search,
             messages: res["messages"],
             totalMessages: res["totalItems"],
-            loaded: res.messages.length
+            loaded: true
           });
         }
       });
@@ -69,10 +66,10 @@ export default class GroupSearch extends Component {
           </a>
           <article id="group" class="justify-content-center d-flex">
             <div class="search-results-container container-fluid d-flex justify-content-center flex-wrap">
-              {this.state.messages.length == 0 && (
+              {this.state.messages.length == 0 && this.state.loaded && (
                 <p>{lang.t("search_without_result")}</p>
               )}
-              {this.state.messages.slice(0, this.state.loaded).map((msg, i) => {
+              {this.state.messages.map((msg, i) => {
                 return (
                   <MessageSearchResult
                     tabindex={i + 1}
