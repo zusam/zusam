@@ -53,10 +53,14 @@ class Upload extends ApiController
             $this->em->persist($file);
 
             // check if it's an accepted filetype
-            if ($this->getParameter('allow.upload.image') != "true" || 'image/' != substr($file->getType(), 0, 6)) {
+            // TODO: rework this ugly code
+            if ('image/' != substr($file->getType(), 0, 6) && 'video/' != substr($file->getType(), 0, 6)) {
                 return new JsonResponse(['error' => 'Unsupported file type'], Response::HTTP_BAD_REQUEST);
             }
-            if ($this->getParameter('allow.upload.video') != "true" || 'video/' != substr($file->getType(), 0, 6)) {
+            if ('image/' == substr($file->getType(), 0, 6) && $this->getParameter('allow.upload.image') != "true") {
+                return new JsonResponse(['error' => 'Unsupported file type'], Response::HTTP_BAD_REQUEST);
+            }
+            if ('video/' == substr($file->getType(), 0, 6) && $this->getParameter('allow.upload.video') != "true") {
                 return new JsonResponse(['error' => 'Unsupported file type'], Response::HTTP_BAD_REQUEST);
             }
 
