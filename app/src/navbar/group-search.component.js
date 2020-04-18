@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { storage, me, router, util, http } from "/core";
+import { lang, storage, me, router, util, http } from "/core";
 import { MessageSearchResult } from "/message";
 
 export default class GroupSearch extends Component {
@@ -69,6 +69,9 @@ export default class GroupSearch extends Component {
           </a>
           <article id="group" class="justify-content-center d-flex">
             <div class="search-results-container container-fluid d-flex justify-content-center flex-wrap">
+              {this.state.messages.length == 0 && (
+                <p>{lang.t("search_without_result")}</p>
+              )}
               {this.state.messages.slice(0, this.state.loaded).map((msg, i) => {
                 return (
                   <MessageSearchResult

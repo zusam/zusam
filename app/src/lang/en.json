@@ -87,5 +87,6 @@
     "changed_group_name": "changed the group's name",
     "to": "to",
     "notifications": "notifications",
-    "mark_all_as_read": "mark all as read"
+    "mark_all_as_read": "mark all as read",
+    "search_without_result": "Your search did not match any message."
 }
