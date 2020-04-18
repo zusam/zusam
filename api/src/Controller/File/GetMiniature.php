@@ -34,15 +34,7 @@ class GetMiniature extends ApiController
         }
         $cacheFile = $cacheDir.'/images/'.Uuid::uuidv4($id.$width.'x'.$height.$type).'.jpg';
         if (is_readable($cacheFile)) {
-            $response = new BinaryFileResponse($cacheFile, 200, ['Content-Type' => mime_content_type($cacheFile)]);
-            $response->setCache([
-                'etag' => md5($cacheFile),
-                'max_age' => 0,
-                's_maxage' => 3600,
-                'public' => true,
-            ]);
-
-            return $response;
+            return new BinaryFileResponse($cacheFile, 200, ['Content-Type' => mime_content_type($cacheFile)]);
         }
         $sourceFile = $this->getDoctrine()->getRepository(File::class)->findOneById($id);
         if (empty($sourceFile)) {
@@ -58,15 +50,7 @@ class GetMiniature extends ApiController
             }
         }
         if (is_readable($cacheFile)) {
-            $response = new BinaryFileResponse($cacheFile, 200, ['Content-Type' => mime_content_type($cacheFile)]);
-            $response->setCache([
-                'etag' => md5($cacheFile),
-                'max_age' => 0,
-                's_maxage' => 3600,
-                'public' => true,
-            ]);
-
-            return $response;
+            return new BinaryFileResponse($cacheFile, 200, ['Content-Type' => mime_content_type($cacheFile)]);
         }
 
         return new JsonResponse(['message' => 'Not Found'], JsonResponse::HTTP_NOT_FOUND);

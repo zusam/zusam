@@ -19,6 +19,7 @@ class Mailer
         \Twig\Environment $twig,
         $domain,
         $lang,
+        $allow_email,
         string $env,
         LoggerInterface $logger
     ) {
@@ -26,6 +27,7 @@ class Mailer
         $this->twig = $twig;
         $this->domain = $domain;
         $this->lang = $lang;
+        $this->allow_email = $allow_email;
         $this->env = $env;
         $this->logger = $logger;
     }
@@ -33,7 +35,7 @@ class Mailer
     private function sendMail(\Swift_Message $email)
     {
         $failures = [];
-        if ('prod' == $this->env) {
+        if ('prod' == $this->env && $allow_email == 'true') {
             try {
                 $ret = $this->swift->send($email, $failures);
                 if (!$ret) {
