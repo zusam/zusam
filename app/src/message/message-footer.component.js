@@ -7,17 +7,19 @@ export default class MessageFooter extends Component {
     return (
       <div class="message-footer">
         <div class="infos">
-          {!this.props.isPublic && this.props.author && this.props.author.id == me.me.id && (
-            <Fragment>
-              <a
-                class="action seamless-link font-size-90 capitalize d-none d-sm-block"
-                onClick={e => this.props.editMessage(e)}
-              >
-                {lang.t("edit")}
-              </a>
-              <div class="dot d-none d-sm-block">&bull;</div>
-            </Fragment>
-          )}
+          {!this.props.isPublic &&
+            this.props.author &&
+            this.props.author.id == me.me.id && (
+              <Fragment>
+                <a
+                  class="action seamless-link font-size-90 capitalize d-none d-sm-block"
+                  onClick={e => this.props.editMessage(e)}
+                >
+                  {lang.t("edit")}
+                </a>
+                <div class="dot d-none d-sm-block">&bull;</div>
+              </Fragment>
+            )}
           {!this.props.isPublic && this.props.isChild && (
             <Fragment>
               <a

@@ -17,7 +17,7 @@ export default class MessageChildren extends Component {
     const newMsg = event.detail;
     if (newMsg.parent && util.getId(newMsg.parent) == this.props.id) {
       this.setState(prevState => ({
-        lastDisplayedChild: prevState.lastDisplayedChild + 1,
+        lastDisplayedChild: prevState.lastDisplayedChild + 1
       }));
     }
   }
