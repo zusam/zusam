@@ -1,3 +1,4 @@
+import _param from "./param.js";
 import _alert from "./alert.js";
 import _cache from "./cache.js";
 import _storage from "./storage.js";
@@ -7,6 +8,7 @@ import _router from "./router.js";
 import _util from "./util.js";
 import _lang from "./lang.js";
 
+export const param = _param;
 export const alert = _alert;
 export const cache = _cache;
 export const storage = _storage;

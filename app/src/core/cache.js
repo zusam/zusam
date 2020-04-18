@@ -1,12 +1,9 @@
 import { Store, set, get, keys, del } from "idb-keyval";
-
-const ZUSAM_VERSION = "4.1";
-const CACHE_VERSION = "0.3";
-const CACHE = "zusam-" + ZUSAM_VERSION + "-simplecache-" + CACHE_VERSION;
+import param from "./param.js";
 
 const cache = {
-  name: CACHE,
-  cache_store: new Store("zusam-" + ZUSAM_VERSION, CACHE),
+  name: param.CACHE,
+  cache_store: new Store(param.CACHE_STORE, param.CACHE),
   purgeOldCache: _ => {
     keys().then(keys => keys.map(k => get(k).then(e => {
       // purge if older than 30 days

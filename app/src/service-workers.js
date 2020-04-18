@@ -1,9 +1,7 @@
 import { Store, set, get } from "idb-keyval";
+import param from "/core";
 
-const ZUSAM_VERSION = "4.1";
-const CACHE_VERSION = "0.3";
-const CACHE = "zusam-" + ZUSAM_VERSION + "-simplecache-" + CACHE_VERSION;
-const cache_store = new Store("zusam-" + ZUSAM_VERSION, CACHE);
+const cache_store = new Store(param.CACHE_STORE, param.CACHE);
 const cached_routes = [
   {
     route: new RegExp("/api/users/[^/]+/?$"),
@@ -70,7 +68,7 @@ function fromNetwork(request, toCache) {
       // we need to save clone to put one copy in cache
       // and serve second one
       let responseClone = response.clone();
-      caches.open(CACHE).then(cache => addToCache(cache, request, responseClone));
+      caches.open(param.CACHE).then(cache => addToCache(cache, request, responseClone));
     }
     return response;
   });
@@ -80,7 +78,7 @@ function fromNetwork(request, toCache) {
 // resource. Notice that in case of no matching, the promise still resolves
 // but it does with `undefined` as value.
 function fromCache(request) {
-  return caches.open(CACHE).then(cache => {
+  return caches.open(param.CACHE).then(cache => {
     return cache.match(request).then(matching => {
       if (matching) {
         // reset lastUsed
@@ -102,7 +100,7 @@ function fromCache(request) {
 // Update consists in opening the cache, performing a network request and
 // storing the new response data.
 function update(request) {
-  return caches.open(CACHE).then(cache => {
+  return caches.open(param.CACHE).then(cache => {
     return fetch(request).then(response => {
       return addToCache(cache, request, response);
     });
