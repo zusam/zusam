@@ -1,6 +1,11 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+  lang: '%env(resolve:LANG)%'
+  version: '%env(resolve:VERSION)%'
+  allow.upload.image: '%env(resolve:ALLOW_IMAGE_UPLOAD)%'
+  allow.upload.video: '%env(resolve:ALLOW_VIDEO_UPLOAD)%'
+  allow.email: '%env(resolve:ALLOW_EMAIL)%'
   database_url: '%env(resolve:DATABASE_URL)%'
   binaries.ffmpeg: '%env(resolve:FFMPEG_PATH)%'
   dir.public: '%kernel.project_dir%/../public'
@@ -115,6 +120,7 @@ services:
         $twig: '@twig'
         $domain: '%env(resolve:DOMAIN)%'
         $lang: '%env(resolve:LANG)%'
+        $allow_email: '%env(resolve:ALLOW_EMAIL)%'
         $env: '%kernel.environment%'
         $logger: '@monolog.logger.zusam'
 
