@@ -2,6 +2,23 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [0.4.1] - 2020-04-21
+
+### Log
+- Rework the cache by offloading it to service workers.
+- Add ALLOW_* parameters to the API to only allow certain types of uploads
+- Embed lichess.org
+- Decorelate cache and long term storage
+- Use bootstrap as the base for the scss (again)
+- Add purgeCSS to remove unused compiled css
+- Display group names in messages
+- Rework message component (code simplifications)
+- Remove href for images while in edit mode (clicking on it would quit editing)
+- Various tiny fixes
+
+### Remarks
+Mostly bugfix release.
+
 ## [0.4] - 2020-02-16
 
 ### Log
