@@ -35,7 +35,7 @@ class Mailer
     private function sendMail(\Swift_Message $email)
     {
         $failures = [];
-        if ('prod' == $this->env && $allow_email == 'true') {
+        if ('prod' == $this->env && $this->allow_email == 'true') {
             try {
                 $ret = $this->swift->send($email, $failures);
                 if (!$ret) {
