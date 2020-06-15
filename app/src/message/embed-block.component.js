@@ -5,36 +5,6 @@ import BandCampEmbed from "./embeds/bandcamp-embed.component.js";
 import GenericEmbed from "./embeds/generic-embed.component.js";
 
 export default class EmbedBlock extends Component {
-  execute(e) {
-    if (e.innerHTML) {
-      eval(e.innerHTML);
-    } else {
-      const url = e.getAttribute("src");
-      if (url) {
-        const script = document.createElement("script");
-        script.async = true;
-        script.src = url;
-        document.head.appendChild(script);
-      }
-    }
-  }
-
-  componentDidMount() {
-    if (this.embedContainer) {
-      Array.from(
-        this.embedContainer.getElementsByTagName("script")
-      ).forEach(e => this.execute(e));
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.embedContainer) {
-      Array.from(
-        this.embedContainer.getElementsByTagName("script")
-      ).forEach(e => this.execute(e));
-    }
-  }
-
   getPreview() {
     if (this.props.data["providerUrl"]) {
       switch (
@@ -123,17 +93,6 @@ export default class EmbedBlock extends Component {
         case "vimeo.com":
         case "dailymotion.com":
         case "facebook.com":
-        case "kickstarter.com":
-          // default embed code
-          if (this.props.data["code"]) {
-            return (
-              <div
-                class="embed-container"
-                ref={e => (this.embedContainer = e)}
-                dangerouslySetInnerHTML={{ __html: this.props.data["code"] }}
-              ></div>
-            );
-          }
         default:
       }
     }
@@ -143,11 +102,7 @@ export default class EmbedBlock extends Component {
           // default embed code
           if (this.props.data["code"]) {
             return (
-              <div
-                class="embed-container"
-                ref={e => (this.embedContainer = e)}
-                dangerouslySetInnerHTML={{ __html: this.props.data["code"] }}
-              ></div>
+              <div class="embed-container" dangerouslySetInnerHTML={{ __html: this.props.data["code"] }}></div>
             );
           }
         default:
