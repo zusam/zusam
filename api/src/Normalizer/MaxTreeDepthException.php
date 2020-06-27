@@ -2,6 +2,6 @@
 
 namespace App\Normalizer;
 
-class MaxTreeDepthException extends RuntimeException
+class MaxTreeDepthException extends \RuntimeException
 {
 }

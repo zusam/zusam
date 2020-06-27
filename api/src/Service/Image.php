@@ -25,7 +25,7 @@ class Image
         return $im;
     }
 
-    public function createThumbnail(string $input, string $output, $w, $h, $respectFormat = true): void
+    public function createThumbnail(string $input, string $output, int $w, int $h, bool $respectFormat = true): void
     {
         $im = new \Imagick();
         if ($respectFormat) {
@@ -69,7 +69,7 @@ class Image
         $im->destroy();
     }
 
-    public static function extractImageFromVideo($input, $ffmpegPath): string
+    public static function extractImageFromVideo(string $input, $ffmpegPath): string
     {
         $output = tempnam(sys_get_temp_dir(), 'zusam_temp').'.jpg';
         exec($ffmpegPath.' -y -i '.$input.' -vframes 1 -ss 0 -f image2 '.$output);
@@ -217,7 +217,7 @@ class Image
             }
 
             $gif->writeImages($outputname, true);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new \Exception("Something went wrong while processing $filename.");
         }
     }

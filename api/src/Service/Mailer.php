@@ -7,12 +7,13 @@ use Psr\Log\LoggerInterface;
 
 class Mailer
 {
-    private $swift;
-    private $twig;
+    private $allow_email;
     private $domain;
+    private $env;
     private $lang;
     private $logger;
-    private $env;
+    private $swift;
+    private $twig;
 
     public function __construct(
         \Swift_Mailer $swift,
@@ -23,13 +24,13 @@ class Mailer
         string $env,
         LoggerInterface $logger
     ) {
+        $this->allow_email = $allow_email;
+        $this->domain = $domain;
+        $this->env = $env;
+        $this->lang = $lang;
+        $this->logger = $logger;
         $this->swift = $swift;
         $this->twig = $twig;
-        $this->domain = $domain;
-        $this->lang = $lang;
-        $this->allow_email = $allow_email;
-        $this->env = $env;
-        $this->logger = $logger;
     }
 
     private function sendMail(\Swift_Message $email)

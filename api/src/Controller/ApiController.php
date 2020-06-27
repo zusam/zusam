@@ -25,8 +25,9 @@ abstract class ApiController extends AbstractController
     /*
      * Standard serialize method for all API controllers
      * Returns JSON and handle circular references by returning an json object with only the id
+     * @param null|object $object
      */
-    public function serialize($object, array $groups = [])
+    public function serialize(?object $object, array $groups = [])
     {
         return $this->serializer->serialize(
             $object,

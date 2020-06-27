@@ -89,7 +89,7 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
         if (!$enableMaxTreeDepth) {
             return false;
         }
-        $treeDepthLimit = $context[self::TREE_DEPTH_LIMIT] ?? $this->defaultContext[self::TREE_DEPTH_LIMIT] ?? $this->treeDepthLimit;
+        $treeDepthLimit = $context[self::TREE_DEPTH_LIMIT] ?? $this->defaultContext[self::TREE_DEPTH_LIMIT];
         if (isset($context[self::TREE_DEPTH_LIMIT_COUNTERS])) {
             if ($context[self::TREE_DEPTH_LIMIT_COUNTERS] >= $treeDepthLimit) {
                 unset($context[self::TREE_DEPTH_LIMIT_COUNTERS]);
@@ -120,11 +120,11 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
      */
     protected function handleMaxTreeDepth($object, string $format = null, array $context = [])
     {
-        $maxTreeDepthHandler = $context[self::MAX_TREE_DEPTH_HANDLER] ?? $this->defaultContext[self::MAX_TREE_DEPTH_HANDLER] ?? $this->maxTreeDepthHandler;
+        $maxTreeDepthHandler = $context[self::MAX_TREE_DEPTH_HANDLER] ?? $this->defaultContext[self::MAX_TREE_DEPTH_HANDLER];
         if ($maxTreeDepthHandler) {
             return $maxTreeDepthHandler($object, $format, $context);
         }
-        throw new MaxTreeDepthException(sprintf('Max tree depth has been reached when serializing the object of class "%s" (configured limit: %d)', \get_class($object), $this->treeDepthLimit));
+        throw new MaxTreeDepthException(sprintf('Max tree depth has been reached when serializing the object of class "%s" (configured limit: %d)', \get_class($object), $this->defaultContext[self::TREE_DEPTH_LIMIT]));
     }
 
     /**
@@ -159,7 +159,7 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
         $allowExtraAttributes = $context[self::ALLOW_EXTRA_ATTRIBUTES] ?? $this->defaultContext[self::ALLOW_EXTRA_ATTRIBUTES];
         if (!$this->classMetadataFactory) {
             if (!$allowExtraAttributes) {
-                throw new LogicException(sprintf('A class metadata factory must be provided in the constructor when setting "%s" to false.', self::ALLOW_EXTRA_ATTRIBUTES));
+                throw new \LogicException(sprintf('A class metadata factory must be provided in the constructor when setting "%s" to false.', self::ALLOW_EXTRA_ATTRIBUTES));
             }
 
             return false;

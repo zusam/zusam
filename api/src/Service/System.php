@@ -14,7 +14,7 @@ class System
         $this->em = $em;
     }
 
-    public function set(string $key, $value)
+    public function set(string $key, $value): void
     {
         if (!empty($system = $this->em->getRepository(SystemEntity::class)->findOneByKey($key))) {
             $system->setValue($value);

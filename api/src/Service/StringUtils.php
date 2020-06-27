@@ -4,7 +4,7 @@ namespace App\Service;
 
 class StringUtils
 {
-    public static function seems_utf8($str)
+    public static function seems_utf8(string $str)
     {
         $length = strlen($str);
         for ($i=0; $i < $length; $i++) {

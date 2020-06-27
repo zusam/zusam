@@ -39,10 +39,10 @@ class Edit extends ApiController
 
         $requestData = json_decode($request->getcontent(), true);
         if (!empty($requestData['readAt'])) {
-            $user->setReadAt($requestData['readAt']);
+            $notification->setReadAt($requestData['readAt']);
         }
         if (!empty($requestData['data'])) {
-            $user->setData($requestData['data']);
+            $notification->setData($requestData['data']);
         }
         $this->getUser()->setLastActivityDate(time());
         $this->em->persist($this->getUser());
