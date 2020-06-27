@@ -54,6 +54,7 @@ class ConvertVideo extends Command
         while ($rawFile = $c->fetch()) {
             $outputFile = $this->targetDir.'/'.$rawFile['id'];
             $output->writeln(['Converting '.$rawFile['content_url']]);
+            $threads = '';
             if (!$input->getOption('all-cores')) {
                 $threads = '-threads 1 ';
             }

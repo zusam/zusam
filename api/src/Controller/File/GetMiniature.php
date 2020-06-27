@@ -36,7 +36,7 @@ class GetMiniature extends ApiController
         if (is_readable($cacheFile)) {
             return new BinaryFileResponse($cacheFile, 200, ['Content-Type' => mime_content_type($cacheFile)]);
         }
-        $sourceFile = $this->getDoctrine()->getRepository(File::class)->findOneById($id);
+        $sourceFile = $this->getDoctrine()->getRepository(File::class)->findOneBy(['id' => $id]);
         if (empty($sourceFile)) {
             return new JsonResponse(['message' => 'Not Found'], JsonResponse::HTTP_NOT_FOUND);
         }

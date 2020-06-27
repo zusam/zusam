@@ -77,7 +77,7 @@ class Image
         return $output;
     }
 
-    private function loadResizeImage(string $input, int $w, int $h): ?\Imagick
+    private function loadResizeImage(string $input, int $w, int $h): \Imagick
     {
         $im = new \Imagick();
         try {
@@ -92,7 +92,7 @@ class Image
                     $width = min($w, $im->getImageWidth());
                     $height = min($h, floor($width / $aspect_ratio), $im->getImageHeight());
                     $width = floor($height * $aspect_ratio);
-                    $im->setSize($width, $height);
+                    $im->setSize(intval($width), intval($height));
                 }
 
                 if ($im->readImage($input)) {
@@ -108,7 +108,7 @@ class Image
         }
     }
 
-    private function load(string $input): ?\Imagick
+    private function load(string $input): \Imagick
     {
         $im = new \Imagick();
         // TODO: add a check if file_exists and filesize > 0

@@ -40,7 +40,7 @@ class Url
         return null;
     }
 
-    public function getLink($url, $rescan = false): Link
+    public function getLink($url, $rescan = false): ?Link
     {
         $filesDir = realpath($this->params->get('dir.files'));
         $link = $this->em->getRepository(Link::class)->findOneByUrl($url);
@@ -103,7 +103,6 @@ class Url
 
             return [
                 'tags' => $info->tags, //The page keywords (tags)
-                'linkedData' => $info->linkedData, //The linked-data info (http://json-ld.org/)
                 'feeds' => $info->feeds, //The RSS/Atom feeds
                 'title' => $info->title, //The page title
                 'description' => $info->description, //The page description
@@ -128,9 +127,6 @@ class Url
                 'providerUrl' => $info->providerUrl, //The provider url
                 'providerIcons' => $info->providerIcons, //All provider icons found in the page
                 'providerIcon' => $info->providerIcon, //The icon choosen as main icon
-
-                'publishedDate' => $info->publishedDate, //The published date of the resource
-                'license' => $info->license, //The license url of the resource
             ];
         } catch (\Exception $e) {
             return [];

@@ -40,7 +40,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         $secretKey = $credentials['token'];
 
         if (null === $secretKey) {
-            return;
+            return null;
         }
 
         // if a User object, checkCredentials() is called
