@@ -78,12 +78,12 @@ export default class MessageChildren extends Component {
       <div class="children">
         {this.state.firstDisplayedChild > 0 && (
           <div class="d-flex">
-            <span
+            <a
               class="more-coms unselectable"
               onClick={() => this.displayPreviousChildren()}
             >
               {lang.t("previous_coms")}
-            </span>
+            </a>
           </div>
         )}
         {this.props.childMessages.map((e, i) => {
