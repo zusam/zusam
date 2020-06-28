@@ -112,6 +112,7 @@ export default class UserSettings extends Component {
                         ? util.crop(this.state.avatar["id"], 100, 100)
                         : util.defaultAvatar
                     }
+                    style={util.backgroundHash(this.state['id'] || "")}
                     onError={e => (e.currentTarget.src = util.defaultAvatar)}
                     onClick={e => this.inputAvatar(e)}
                   />
