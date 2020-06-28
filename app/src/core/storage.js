@@ -1,18 +1,18 @@
 const storage = {
-  usage: _ => {
+  usage: () => {
     let total = 0;
     let k;
     for (k in localStorage) {
-      if (localStorage.hasOwnProperty(k)) {
+      if (Object.prototype.hasOwnProperty.call(localStorage, k)) {
         total += (localStorage[k].length + k.length) * 2;
       }
     }
     return total;
   },
   createStorageBox: (data, metadata = null) => ({
-    data: data,
+    data,
     createdAt: Date.now(),
-    metadata: metadata
+    metadata
   }),
   remove: id => localStorage.removeItem(id),
   set: (id, data, metadata = null) => {
@@ -26,13 +26,13 @@ const storage = {
     let data = localStorage.getItem(id);
     if (data != null) {
       data = JSON.parse(data);
-      if (data.hasOwnProperty("data")) {
+      if (Object.prototype.hasOwnProperty.call(data, "data")) {
         return new Promise(r => r(data.data));
       }
     }
     return new Promise(r => r(null));
   },
-  reset: _ =>
+  reset: () =>
     localStorage.clear() &&
     window.dispatchEvent(new CustomEvent("resetStorage"))
 };

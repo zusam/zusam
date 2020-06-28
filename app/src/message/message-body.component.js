@@ -1,8 +1,7 @@
-import { h, render, Component } from "preact";
-import { http, storage, lang, me, util } from "/core";
+import { h, Component } from "preact";
+import { http, util } from "/core";
 import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
-import { FaIcon } from "/misc";
 
 export default class MessageBody extends Component {
   constructor(props) {
@@ -25,9 +24,9 @@ export default class MessageBody extends Component {
     while ((match = util.getUrl(txt.slice(shift)))) {
       let url = match[0];
       if (url.length >= 50) {
-        url = url.slice(0, 25) + "..." + url.slice(-24);
+        url = `${url.slice(0, 25)  }...${  url.slice(-24)}`;
       }
-      let link = '<a href="' + match[0] + '" target="_blank">' + url + "</a>";
+      let link = `<a href="${  match[0]  }" target="_blank">${  url  }</a>`;
       txt =
         txt.slice(0, match["index"] + shift) +
         link +
@@ -49,17 +48,17 @@ export default class MessageBody extends Component {
         let previewUrl = util.getUrl(this.props.message.data["text"]);
         if (previewUrl) {
           http
-            .get("/api/links/by_url?url=" + encodeURIComponent(previewUrl[0]))
+            .get(`/api/links/by_url?url=${  encodeURIComponent(previewUrl[0])}`)
             .then(r => {
-              this.setState(prevState => ({
+              this.setState({
                 preview: r,
                 gotPreview: true
-              }));
+              });
             });
         } else {
-          this.setState(prevState => ({
+          this.setState({
             gotPreview: true
-          }));
+          });
         }
       }
     }
@@ -79,7 +78,7 @@ export default class MessageBody extends Component {
             <p
               class="card-text"
               dangerouslySetInnerHTML={this.displayMessageText()}
-            ></p>
+             />
           )}
         {this.state.preview && (
           <EmbedBlock

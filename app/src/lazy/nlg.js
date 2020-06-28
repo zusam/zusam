@@ -61,7 +61,7 @@ let nlg = {
     }
     media.classList.add("nlg-media");
     if (side) {
-      media.classList.add("nlg-" + side);
+      media.classList.add(`nlg-${  side}`);
     }
     nlg.bodyStyle = document.body.style.cssText;
     document.body.style.cssText = "overflow: hidden";

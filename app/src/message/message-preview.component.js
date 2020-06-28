@@ -1,5 +1,5 @@
-import { h, render, Component } from "preact";
-import { http, storage, me, router, util } from "/core";
+import { h, Component } from "preact";
+import { http, me, router, util } from "/core";
 import { FaIcon } from "/misc";
 
 export default class MessagePreview extends Component {
@@ -13,8 +13,8 @@ export default class MessagePreview extends Component {
   componentDidMount() {
     if (this.state.message && this.state.message.author) {
       http
-        .get("/api/users/" + this.state.message.author)
-        .then(author => author && this.setState({ author: author }));
+        .get(`/api/users/${  this.state.message.author}`)
+        .then(author => author && this.setState({ author }));
     }
   }
 
@@ -22,7 +22,7 @@ export default class MessagePreview extends Component {
     return (
       <img
         title={user ? user.name : "--"}
-        className={"avatar material-shadow" + (user ? "" : " removed-user")}
+        className={`avatar material-shadow${  user ? "" : " removed-user"}`}
         style={util.backgroundHash(user ? user.id : "")}
         src={
           user && user.avatar
@@ -41,7 +41,7 @@ export default class MessagePreview extends Component {
     return (
       <a
         class="d-inline-block seamless-link message-preview unselectable"
-        href={router.toApp("/messages/" + this.state.message.id)}
+        href={router.toApp(`/messages/${  this.state.message.id}`)}
         onClick={e => router.onClick(e)}
         title={this.state.message.data["title"]}
       >
@@ -51,16 +51,16 @@ export default class MessagePreview extends Component {
             <div
               class="card-miniature"
               style={
-                "background-image: url('" +
-                util.crop(this.state.message.preview, 320, 180) +
-                "')"
+                `background-image: url('${ 
+                util.crop(this.state.message.preview, 320, 180) 
+                }')`
               }
             />
           ) : (
             <div class="text-preview">{this.state.message.data["text"]}</div>
           )}
           <div class="card-body border-top d-flex justify-content-between">
-            <span class="left-buffer"></span>
+            <span class="left-buffer" />
             <span
               class="title"
               title={
@@ -74,7 +74,7 @@ export default class MessagePreview extends Component {
             <span class="children">
               {!!this.state.message.children && (
                 <span>
-                  {this.state.message.children + " "}
+                  {`${this.state.message.children  } `}
                   <FaIcon
                     family={
                       me.isNew(this.state.message.id) ? "solid" : "regular"

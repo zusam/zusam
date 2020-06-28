@@ -1,15 +1,11 @@
-import { h, render, Component } from "preact";
+import { h, Component } from "preact";
 import { router } from "/core";
 
 export default class GroupTitle extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <a
-        href={router.toApp("/groups/" + this.props.id)}
+        href={router.toApp(`/groups/${  this.props.id}`)}
         onClick={e => router.onClick(e)}
         class="no-decoration"
       >

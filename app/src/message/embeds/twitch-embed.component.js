@@ -1,4 +1,4 @@
-import { h, render, Component } from "preact";
+import { h, Component } from "preact";
 import { router } from "/core";
 
 export default class TwitchEmbed extends Component {
@@ -10,22 +10,22 @@ export default class TwitchEmbed extends Component {
       case "www.twitch.tv":
         if (splits.length > 5 && splits[4] == "clip") {
           embedUrl =
-            "https://clips.twitch.tv/embed?clip=" +
-            splits[5].replace(/\?.*$/, "") +
-            "&autoplay=false";
+            `https://clips.twitch.tv/embed?clip=${ 
+            splits[5].replace(/\?.*$/, "") 
+            }&autoplay=false`;
         } else {
           embedUrl =
-            "https://player.twitch.tv/?video=" +
-            splits[4].replace(/\?.*$/, "") +
-            "&autoplay=false" +
-            (t ? "&t=" + t : "");
+            `https://player.twitch.tv/?video=${ 
+            splits[4].replace(/\?.*$/, "") 
+            }&autoplay=false${ 
+            t ? `&t=${  t}` : ""}`;
         }
         break;
       case "clips.twitch.tv":
         embedUrl =
-          "https://clips.twitch.tv/embed?clip=" +
-          splits[3].replace(/\?.*$/, "") +
-          "&autoplay=false";
+          `https://clips.twitch.tv/embed?clip=${ 
+          splits[3].replace(/\?.*$/, "") 
+          }&autoplay=false`;
         break;
     }
     return (
@@ -34,7 +34,7 @@ export default class TwitchEmbed extends Component {
           allowfullscreen
           class="embed-responsive-item"
           src={embedUrl}
-        ></iframe>
+         />
       </div>
     );
   }

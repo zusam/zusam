@@ -1,4 +1,4 @@
-import { h, render, Component } from "preact";
+import { h, Component } from "preact";
 import { lang, alert, storage, http, router } from "/core";
 import zusam_logo from "/assets/zusam_logo.svg";
 
@@ -22,8 +22,8 @@ export default class Signup extends Component {
     storage.set("apiKey", "");
     http
       .post("/api/signup", {
-        login: login,
-        password: password,
+        login,
+        password,
         invite_key: this.state.inviteKey
       })
       .then(res => {

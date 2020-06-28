@@ -1,4 +1,4 @@
-import { h, render, Component } from "preact";
+import { h, Component } from "preact";
 import { lang, me, router, util } from "/core";
 import { FaIcon } from "/misc";
 import { Search } from "/pages";
@@ -9,7 +9,7 @@ export default class Navbar extends Component {
     super(props);
     this.clickBackButton = this.clickBackButton.bind(this);
     // force update the navbar when me gets updated
-    addEventListener("meStateChange", _ => this.setState({}));
+    addEventListener("meStateChange", () => this.setState({}));
   }
 
   clickBackButton(evt) {
@@ -47,7 +47,7 @@ export default class Navbar extends Component {
               <div class="dropdown-menu dropdown-right">
                 <a
                   class="d-block seamless-link"
-                  href={router.toApp("/users/" + me.me.id + "/settings")}
+                  href={router.toApp(`/users/${  me.me.id  }/settings`)}
                   onClick={e => router.onClick(e)}
                 >
                   {lang.t("settings")}

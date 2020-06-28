@@ -1,5 +1,5 @@
-import { h, render, Component } from "preact";
-import { http, storage, me, router, util } from "/core";
+import { h, Component } from "preact";
+import { http, router, util } from "/core";
 import { MessagePreview } from "/message";
 import { GroupTitle } from "/pages";
 
@@ -11,8 +11,8 @@ export default class GroupBoard extends Component {
       1 +
       Math.floor((window.screen.width * window.screen.height) / (320 * 215));
     this.state = {
-      groupId: groupId,
-      loaded: loaded,
+      groupId,
+      loaded,
       messages: [],
       scrollTop: 0,
       totalMessages: 0,
@@ -27,7 +27,7 @@ export default class GroupBoard extends Component {
     window.addEventListener("resetCache", this.resetGroupDisplay);
   }
 
-  onNewParent(event) {
+  onNewParent() {
     this.loadMessages(0);
   }
 
@@ -42,7 +42,7 @@ export default class GroupBoard extends Component {
 
   loadMessages(page) {
     http
-      .get("/api/groups/" + this.state.groupId + "/page/" + page)
+      .get(`/api/groups/${  this.state.groupId  }/page/${  page}`)
       .then(res => {
         if (res && Array.isArray(res["messages"])) {
           let new_loaded = Math.max(this.state.loaded, page * 30);
@@ -54,7 +54,7 @@ export default class GroupBoard extends Component {
           this.setState({
             messages: msgList,
             totalMessages: res["totalItems"],
-            page: page,
+            page,
             loaded: new_loaded
           });
           if ((page + 1) * 30 < new_loaded) {

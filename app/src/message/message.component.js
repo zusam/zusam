@@ -1,6 +1,5 @@
-import { Fragment, h, render, Component } from "preact";
-import { lang, storage, http, me, router, util } from "/core";
-import { FaIcon } from "/misc";
+import { Fragment, h, Component } from "preact";
+import { lang, http, me, router, util } from "/core";
 import MessageChildren from "./message-children.component.js";
 import MessageHead from "./message-head.component.js";
 import MessageFooter from "./message-footer.component.js";
@@ -25,9 +24,9 @@ export default class Message extends Component {
     event.preventDefault();
     let newTab = window.open("about:blank", "_blank");
     const res = await http.get(
-      "/api/messages/" + this.props.message.id + "/get-public-link"
+      `/api/messages/${  this.props.message.id  }/get-public-link`
     );
-    newTab.location = window.origin + "/public/" + res.token;
+    newTab.location = `${window.origin  }/public/${  res.token}`;
   }
 
   onEditMessage(event) {
@@ -41,7 +40,7 @@ export default class Message extends Component {
         data: msg.data,
         gotPreview: false
       });
-      setTimeout(_ => this.setState({ edit: false }));
+      setTimeout(() => this.setState({ edit: false }));
     }
   }
 
@@ -59,11 +58,11 @@ export default class Message extends Component {
   deleteMessage(event) {
     event.preventDefault();
     if (confirm(lang.t("ask_delete_message"))) {
-      http.delete("/api/messages/" + this.props.message["id"]);
+      http.delete(`/api/messages/${  this.props.message["id"]}`);
       if (this.props.isChild) {
         this.setState({ isRemoved: true });
       } else {
-        router.navigate("/groups/" + this.props.message.group.id, {
+        router.navigate(`/groups/${  this.props.message.group.id}`, {
           data: { resetGroupDisplay: true }
         });
       }
@@ -72,7 +71,7 @@ export default class Message extends Component {
 
   shareMessage(event) {
     event.preventDefault();
-    router.navigate("/share?message=" + this.props.message.id);
+    router.navigate(`/share?message=${  this.props.message.id}`);
   }
 
   editMessage(event) {
@@ -82,7 +81,7 @@ export default class Message extends Component {
 
   publishInGroup() {
     http
-      .put("/api/messages/" + this.props.message.id, {
+      .put(`/api/messages/${  this.props.message.id}`, {
         lastActivityDate: Math.floor(Date.now() / 1000),
         isInFront: true
       })
@@ -91,7 +90,7 @@ export default class Message extends Component {
           alert.add(lang.t("error"), "alert-danger");
           return;
         }
-        router.navigate("/groups/" + this.props.message.group.id);
+        router.navigate(`/groups/${  this.props.message.group.id}`);
       });
   }
 

@@ -33,7 +33,7 @@ const router = {
     return location.origin + router.getSubpath() + url;
   },
   removeSubpath: path =>
-    path ? path.replace(new RegExp("^" + router.getSubpath()), "") : "",
+    path ? path.replace(new RegExp(`^${  router.getSubpath()}`), "") : "",
   getParam: (param, searchParams = window.location.search.substring(1)) => {
     let res = searchParams.split("&").find(e => e.split("=")[0] === param);
     return res ? res.split("=")[1] : "";
@@ -86,7 +86,7 @@ const router = {
 
     // set url, backUrl and entityUrl
     if (router.route && router.id && router.isEntity(router.route)) {
-      router.entityUrl = "/api/" + router.route + "/" + router.id;
+      router.entityUrl = `/api/${  router.route  }/${  router.id}`;
       router.entityType = router.route;
 
       await http
@@ -101,18 +101,18 @@ const router = {
           switch (router.route) {
             case "groups":
               if (router.action == "write") {
-                router.backUrl = "/" + router.route + "/" + router.id;
+                router.backUrl = `/${  router.route  }/${  router.id}`;
                 router.backUrlPrompt = lang.t("cancel_write");
               }
               if (router.search) {
-                router.backUrl = "/" + router.route + "/" + router.id;
+                router.backUrl = `/${  router.route  }/${  router.id}`;
               }
               break;
             case "messages":
               if (res["parent"] && !res["isInFront"]) {
-                router.backUrl = "/messages/" + res["parent"].id;
+                router.backUrl = `/messages/${  res["parent"].id}`;
               } else {
-                router.backUrl = "/groups/" + util.getId(res.group);
+                router.backUrl = `/groups/${  util.getId(res.group)}`;
               }
               break;
             case "users":
@@ -153,11 +153,11 @@ const router = {
       case "invitation":
         storage.get("apiKey").then(apiKey => {
           if (apiKey) {
-            http.post("/api/groups/invitation/" + router.id, {}).then(res => {
+            http.post(`/api/groups/invitation/${  router.id}`, {}).then(() => {
               window.location.href = window.location.origin;
             });
           } else {
-            router.navigate("/signup?inviteKey=" + router.id);
+            router.navigate(`/signup?inviteKey=${  router.id}`);
           }
         });
         break;
@@ -168,14 +168,12 @@ const router = {
             return;
           }
           if (user.data["default_group"]) {
-            router.navigate("/groups/" + user.data["default_group"]);
-          } else {
-            if (user.groups[0]) {
-              router.navigate("/groups/" + user.groups[0].id);
+            router.navigate(`/groups/${  user.data["default_group"]}`);
+          } else if (user.groups[0]) {
+              router.navigate(`/groups/${  user.groups[0].id}`);
             } else {
               window.location = "/create-group";
             }
-          }
         });
     }
   },

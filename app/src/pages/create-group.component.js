@@ -1,5 +1,5 @@
-import { h, render, Component } from "preact";
-import { lang, http, router } from "/core";
+import { h, Component } from "preact";
+import { lang, http } from "/core";
 
 export default class CreateGroup extends Component {
   constructor() {
@@ -19,8 +19,8 @@ export default class CreateGroup extends Component {
     }
     group.createdAt = Math.floor(Date.now() / 1000);
     http.post("/api/groups", group).then(res => {
-      http.post("/api/groups/invitation/" + res.secretKey, {}).then(res => {
-        window.location = "/groups/" + res.id;
+      http.post(`/api/groups/invitation/${  res.secretKey}`, {}).then(res => {
+        window.location = `/groups/${  res.id}`;
       });
     });
   }
@@ -45,7 +45,7 @@ export default class CreateGroup extends Component {
                           placeholder={lang.t("name_input")}
                           class="form-control"
                           required
-                        ></input>
+                         />
                       </div>
                       <button
                         onClick={e => this.postNewGroup(e)}

@@ -1,4 +1,4 @@
-import { h, render, Component, Fragment } from "preact";
+import { h, Component, Fragment } from "preact";
 import { lang, me, router, util } from "/core";
 
 export default class Notification extends Component {
@@ -60,7 +60,7 @@ export default class Notification extends Component {
       case "new_message":
         return (
           <a
-            href={router.toApp("/groups/" + this.props.fromGroup.id)}
+            href={router.toApp(`/groups/${  this.props.fromGroup.id}`)}
             onClick={e => router.onClick(e)}
           >
             {this.props.fromGroup.name}
@@ -69,15 +69,15 @@ export default class Notification extends Component {
       case "new_comment":
         return (
           <span>
-            {lang.t("the_message_from") + " "}
+            {`${lang.t("the_message_from")  } `}
             <strong>
               {this.props.fromMessage && this.props.fromMessage["author"]
                 ? this.props.fromMessage["author"]["name"]
                 : ""}
             </strong>
-            {" " + lang.t("in") + " "}
+            {` ${  lang.t("in")  } `}
             <a
-              href={router.toApp("/groups/" + this.props.fromGroup.id)}
+              href={router.toApp(`/groups/${  this.props.fromGroup.id}`)}
               onClick={e => router.onClick(e)}
             >
               {this.props.fromGroup.name}
@@ -88,7 +88,7 @@ export default class Notification extends Component {
       case "user_left_group":
         return (
           <a
-            href={router.toApp("/groups/" + this.props.fromGroup.id)}
+            href={router.toApp(`/groups/${  this.props.fromGroup.id}`)}
             onClick={e => router.onClick(e)}
           >
             {this.props.fromGroup.name}
@@ -98,7 +98,7 @@ export default class Notification extends Component {
         return (
           <span>
             <strong>{this.props.data["previousGroupName"]}</strong>
-            {" " + lang.t("to") + " "}
+            {` ${  lang.t("to")  } `}
             <strong>{this.props.data["newGroupName"]}</strong>
           </span>
         );
@@ -114,12 +114,12 @@ export default class Notification extends Component {
       case "user_joined_group":
       case "user_left_group":
       case "group_name_change":
-        return "/groups/" + this.props.fromGroup.id;
+        return `/groups/${  this.props.fromGroup.id}`;
       case "new_message":
-        return "/messages/" + this.props.target;
+        return `/messages/${  this.props.target}`;
       case "new_comment":
         return (
-          "/messages/" + this.props.fromMessage.id + "/" + this.props.target
+          `/messages/${  this.props.fromMessage.id  }/${  this.props.target}`
         );
       case "global_notification":
         return this.props.target;
@@ -135,7 +135,7 @@ export default class Notification extends Component {
         href={router.toApp(this.state.target)}
         onClick={e => {
           e.preventDefault();
-          me.removeMatchingNotifications(this.props.id).then(_ =>
+          me.removeMatchingNotifications(this.props.id).then(() =>
             router.onClick(e, false, this.state.target)
           );
         }}
@@ -146,7 +146,7 @@ export default class Notification extends Component {
             {this.props.type != "global_notification" && (
               <Fragment>
                 <strong>{this.props.fromUser.name || "--"}</strong>
-                <span>{" " + this.state.action + " "}</span>
+                <span>{` ${  this.state.action  } `}</span>
               </Fragment>
             )}
             {this.getObject()}

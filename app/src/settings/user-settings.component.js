@@ -1,6 +1,5 @@
-import { h, render, Component } from "preact";
-import { lang, router, me, alert, storage, http, util, cache } from "/core";
-import { FaIcon } from "/misc";
+import { h, Component } from "preact";
+import { lang, router, me, alert, http, util, cache } from "/core";
 
 export default class UserSettings extends Component {
   constructor(props) {
@@ -11,7 +10,7 @@ export default class UserSettings extends Component {
     this.state = Object.assign({}, props);
   }
 
-  inputAvatar(event) {
+  inputAvatar() {
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
@@ -29,8 +28,8 @@ export default class UserSettings extends Component {
             formData.append("file", blob);
             http.post("/api/files", formData, false).then(file => {
               http
-                .put("/api/users/" + this.state.id, { avatar: file["id"] })
-                .then(res => {
+                .put(`/api/users/${  this.state.id}`, { avatar: file["id"] })
+                .then(() => {
                   this.setState({ avatar: file });
                   alert.add(lang.t("settings_updated"));
                 });
@@ -47,7 +46,7 @@ export default class UserSettings extends Component {
     event.preventDefault();
     let confirmDeletion = confirm(lang.t("are_you_sure"));
     if (confirmDeletion) {
-      http.delete("/api/users/" + this.state.id).then(res => {
+      http.delete(`/api/users/${  this.state.id}`).then(() => {
         router.navigate("/logout");
       });
     }
@@ -81,18 +80,18 @@ export default class UserSettings extends Component {
       user.password = password;
     }
     user.data = {
-      notification_emails: notification_emails,
-      default_group: default_group,
-      lang: lang
+      notification_emails,
+      default_group,
+      lang
     };
-    http.put("/api/users/" + this.state.id, user).then(res => {
+    http.put(`/api/users/${  this.state.id}`, user).then(res => {
       if (res["error"]) {
         alert.add(res["error"], "alert-danger");
       } else {
         cache.removeMatching(this.state.id);
         this.setState(prevState => Object.assign(prevState, res));
         location.href = router.toApp(
-          location.pathname + "?alert=settings_updated"
+          `${location.pathname  }?alert=settings_updated`
         );
       }
     });
@@ -129,7 +128,7 @@ export default class UserSettings extends Component {
                         placeholder={lang.t("name_input")}
                         value={this.state.name}
                         class="form-control"
-                      ></input>
+                       />
                     </div>
                     <div class="form-group">
                       <label for="email">{lang.t("email")}: </label>
@@ -139,7 +138,7 @@ export default class UserSettings extends Component {
                         placeholder={lang.t("email_input")}
                         value={this.state.login}
                         class="form-control"
-                      ></input>
+                       />
                     </div>
                     <div class="form-group">
                       <label for="password">{lang.t("password")}: </label>
@@ -151,7 +150,7 @@ export default class UserSettings extends Component {
                         maxlength="128"
                         placeholder={lang.t("password_input")}
                         class="form-control"
-                      ></input>
+                       />
                     </div>
                     <div class="form-group">
                       <label for="notification_emails">

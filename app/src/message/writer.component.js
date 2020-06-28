@@ -1,5 +1,5 @@
-import { h, render, Component } from "preact";
-import { lang, alert, storage, http, me, router, util } from "/core";
+import { h, Component } from "preact";
+import { lang, alert, http, me, router, util } from "/core";
 import { FaIcon } from "/misc";
 import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
@@ -52,14 +52,14 @@ export default class Writer extends Component {
 
   genPreview(t) {
     t.style.height = "1px";
-    t.style.height = 25 + t.scrollHeight + "px";
+    t.style.height = `${25 + t.scrollHeight  }px`;
     // waiting for the dom to be updated
     setTimeout(() => {
       const text = t.value;
       let links = text.match(/(https?:\/\/[^\s]+)/gi);
       if (links && links[0] != this.state.link) {
         http
-          .get("/api/links/by_url?url=" + encodeURIComponent(links[0]))
+          .get(`/api/links/by_url?url=${  encodeURIComponent(links[0])}`)
           .then(r => {
             if (r && t.value.indexOf(links[0]) >= 0) {
               this.setState({ link: links[0], preview: r });
@@ -73,8 +73,8 @@ export default class Writer extends Component {
   toggleFile(fileIndex) {
     let files = this.state.files;
     let f = files.find(f => f.fileIndex == fileIndex);
-    f.removed = f.removed ? false : true;
-    this.setState({ files: files });
+    f.removed = !f.removed;
+    this.setState({ files });
   }
 
   sendMessage() {
@@ -98,7 +98,7 @@ export default class Writer extends Component {
     if (document.getElementById("title")) {
       msg.data.title = document.getElementById("title").value || "";
     }
-    http.put("/api/messages/" + this.props.messageId, msg).then(res => {
+    http.put(`/api/messages/${  this.props.messageId}`, msg).then(res => {
       this.setState({ sending: false });
       if (!res) {
         alert.add(lang.t("error_new_message"), "alert-danger");
@@ -145,7 +145,7 @@ export default class Writer extends Component {
         this.setState({ sending: false });
         window.dispatchEvent(new CustomEvent("newChild", { detail: res }));
       } else {
-        setTimeout(_ => {
+        setTimeout(() => {
           window.dispatchEvent(new CustomEvent("newParent", { detail: res }));
           router.navigate(router.backUrl || msg.group.slice(4));
         }, 500);
@@ -163,7 +163,7 @@ export default class Writer extends Component {
     this.setState({ sending: true });
   }
 
-  inputImages(event) {
+  inputImages() {
     const input = document.createElement("input");
     document.body.appendChild(input);
     input.style.display = "none";
@@ -177,7 +177,7 @@ export default class Writer extends Component {
         files: [
           ...files,
           ...Array.apply(null, Array(list.length)).map(
-            _ =>
+            () =>
               new Object({
                 fileIndex: 1000
               })
@@ -189,7 +189,7 @@ export default class Writer extends Component {
     input.click();
   }
 
-  inputVideo(event) {
+  inputVideo() {
     const input = document.createElement("input");
     document.body.appendChild(input);
     input.style.display = "none";
@@ -223,7 +223,6 @@ export default class Writer extends Component {
       if (!e || !e.value) {
         return;
       }
-      let fileSize = e.value.size;
     } catch (evt) {
       // this is a fix for firefox mobile
       // firefox mobile only gets one file on "input multiple" and throws on getting the size
@@ -281,7 +280,7 @@ export default class Writer extends Component {
         console.warn(e);
         alert.add(lang.t("error_upload"), "alert-danger");
         let a = this.state.files;
-        a.splice(fileIndex, 1, { fileIndex: fileIndex, error: e });
+        a.splice(fileIndex, 1, { fileIndex, error: e });
         this.setState({ files: a });
       }
     );
@@ -292,11 +291,11 @@ export default class Writer extends Component {
       return (
         <div class="message-placeholder">
           <div class="spinner orange-spinner">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
           </div>
         </div>
       );
@@ -309,7 +308,7 @@ export default class Writer extends Component {
             id="title"
             onKeyPress={e => this.onKeyPress(e)}
             placeholder={lang.t("title_placeholder")}
-          ></input>
+           />
         )}
         <textarea
           onKeyPress={e => this.onKeyPress(e, true)}
@@ -319,7 +318,7 @@ export default class Writer extends Component {
           autofocus={this.props.focus}
           placeholder={lang.t("text_placeholder")}
           maxlength="50000"
-        ></textarea>
+         />
         {this.state.preview && (
           <EmbedBlock inWriter={true} {...this.state.preview} />
         )}

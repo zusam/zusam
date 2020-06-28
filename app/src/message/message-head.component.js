@@ -1,6 +1,5 @@
-import { h, render, Component } from "preact";
-import { lang, me, util } from "/core";
-import { FaIcon } from "/misc";
+import { h, Component } from "preact";
+import { util } from "/core";
 
 export default class MessageHead extends Component {
   render() {
@@ -9,8 +8,8 @@ export default class MessageHead extends Component {
         <div>
           <img
             className={
-              "rounded-circle material-shadow avatar" +
-              (this.props.author.name ? "" : " removed-user")
+              `rounded-circle material-shadow avatar${ 
+              this.props.author.name ? "" : " removed-user"}`
             }
             style={util.backgroundHash(
               this.props.author.name ? this.props.author.id : ""

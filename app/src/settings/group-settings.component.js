@@ -1,6 +1,5 @@
-import { h, render, Component } from "preact";
-import { lang, me, alert, storage, http, router, util } from "/core";
-import { FaIcon } from "/misc";
+import { h, Component } from "preact";
+import { lang, me, alert, http, router, util } from "/core";
 
 export default class GroupSettings extends Component {
   constructor(props) {
@@ -15,7 +14,7 @@ export default class GroupSettings extends Component {
   resetSecretKey(event) {
     event.preventDefault();
     http
-      .post("/api/groups/" + this.state.id + "/reset-invite-key", {})
+      .post(`/api/groups/${  this.state.id  }/reset-invite-key`, {})
       .then(res => {
         alert.add(lang.t("group_updated"));
         this.setState({ secretKey: res["inviteKey"] });
@@ -30,7 +29,7 @@ export default class GroupSettings extends Component {
     if (name) {
       group.name = name;
     }
-    http.put("/api/groups/" + this.state.id, group).then(res => {
+    http.put(`/api/groups/${  this.state.id}`, group).then(res => {
       alert.add(lang.t("group_updated"));
       this.setState(prevState => Object.assign(prevState, res));
     });
@@ -41,7 +40,7 @@ export default class GroupSettings extends Component {
     if (me.me.data["default_group"] == this.state.id) {
       let user = {};
       user.data = { default_group: me.me.groups[0].id };
-      http.put("/api/users/" + me.me.id, user).then(res => {
+      http.put(`/api/users/${  me.me.id}`, user).then(() => {
         me.update();
         this.leave();
       });
@@ -51,7 +50,7 @@ export default class GroupSettings extends Component {
   }
 
   leave() {
-    http.post("/api/groups/" + this.state.id + "/leave", {}).then(res => {
+    http.post(`/api/groups/${  this.state.id  }/leave`, {}).then(res => {
       if (!res || !res["entityType"]) {
         alert.add(lang.t("error"), "alert-danger");
       } else {
@@ -83,7 +82,7 @@ export default class GroupSettings extends Component {
                           value={this.state.name}
                           class="form-control"
                           required
-                        ></input>
+                         />
                       </div>
                       <button
                         onClick={this.updateSettings}
@@ -101,15 +100,15 @@ export default class GroupSettings extends Component {
                           type="text"
                           name="inviteKey"
                           value={
-                            location.protocol +
-                            "//" +
-                            location.host +
-                            "/invitation/" +
-                            this.state.secretKey
+                            `${location.protocol 
+                            }//${ 
+                            location.host 
+                            }/invitation/${ 
+                            this.state.secretKey}`
                           }
                           class="form-control font-size-80"
                           readonly="readonly"
-                        ></input>
+                         />
                       </div>
                       <button
                         class="btn btn-outline-secondary"

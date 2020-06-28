@@ -1,4 +1,4 @@
-import { Fragment, h, render, Component } from "preact";
+import { Fragment, h, Component } from "preact";
 import { router, lang, me, util } from "/core";
 import { FaIcon } from "/misc";
 
@@ -25,9 +25,9 @@ export default class MessageFooter extends Component {
               <a
                 class="action seamless-link font-size-90 capitalize"
                 href={router.toApp(
-                  "/messages/" +
-                    this.props.message.id +
-                    (this.props.message.children.length ? "" : "?focus=reply")
+                  `/messages/${ 
+                    this.props.message.id 
+                    }${this.props.message.children.length ? "" : "?focus=reply"}`
                 )}
                 onClick={e => router.onClick(e)}
               >

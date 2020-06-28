@@ -1,4 +1,4 @@
-import { h, render, Component } from "preact";
+import { h, Component } from "preact";
 import { util, router } from "/core";
 import TwitchEmbed from "./embeds/twitch-embed.component.js";
 import BandCampEmbed from "./embeds/bandcamp-embed.component.js";
@@ -30,7 +30,7 @@ export default class EmbedBlock extends Component {
             return (
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 1024, 270)}
-                url={this.props.data["url"] + "/embed"}
+                url={`${this.props.data["url"]  }/embed`}
                 playBtnClass={"gamerdvr"}
               />
             );
@@ -42,8 +42,8 @@ export default class EmbedBlock extends Component {
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 1024, 270)}
                 url={
-                  this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] +
-                  "&autoplay=1&controls=2&wmode=opaque"
+                  `${this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] 
+                  }&autoplay=1&controls=2&wmode=opaque`
                 }
                 playBtnClass={"youtube"}
               />
@@ -56,13 +56,14 @@ export default class EmbedBlock extends Component {
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 1024, 270)}
                 url={
-                  this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] +
-                  "&auto_play=true"
+                  `${this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] 
+                  }&auto_play=true`
                 }
                 playBtnClass={"soundcloud"}
               />
             );
           }
+          break;
         case "twitch.tv":
           return (
             <TwitchEmbed
@@ -85,6 +86,7 @@ export default class EmbedBlock extends Component {
               );
             }
           }
+          break;
         case "imgur.com":
           // skip default embed code if it's an imgur image
           if (this.props.data["type"] == "photo") {
@@ -102,7 +104,7 @@ export default class EmbedBlock extends Component {
           // default embed code
           if (this.props.data["code"]) {
             return (
-              <div class="embed-container" dangerouslySetInnerHTML={{ __html: this.props.data["code"] }}></div>
+              <div class="embed-container" dangerouslySetInnerHTML={{ __html: this.props.data["code"] }} />
             );
           }
         default:
@@ -141,7 +143,7 @@ export default class EmbedBlock extends Component {
       return (
         <div class="container d-flex justify-content-center flex-wrap align-items-center">
           <audio class="w-100" controls>
-            <source src={this.props.url}></source>
+            <source src={this.props.url} />
           </audio>
         </div>
       );
@@ -154,6 +156,7 @@ export default class EmbedBlock extends Component {
         <a
           class="preview-card seamless-link d-inline-block"
           target="_blank"
+          rel="noreferrer"
           href={router.toApp(this.props.url)}
         >
           <div class="card" style="max-width: 480px">

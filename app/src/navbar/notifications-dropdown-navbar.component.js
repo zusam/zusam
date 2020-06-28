@@ -1,5 +1,5 @@
-import { h, render, Component } from "preact";
-import { lang, me, router, http } from "/core";
+import { h, Component } from "preact";
+import { lang, me, http } from "/core";
 import { FaIcon } from "/misc";
 import { Notification } from "/pages";
 
@@ -7,14 +7,14 @@ export default class NotificationsDropdownNavbar extends Component {
   constructor(props) {
     super(props);
     // force update the navbar when me gets updated
-    addEventListener("meStateChange", _ => this.setState({}));
+    addEventListener("meStateChange", () => this.setState({}));
     this.clearAllNotifications = this.clearAllNotifications.bind(this);
   }
 
   clearAllNotifications() {
     if (me.me.notifications.length) {
       Promise.all(
-        me.me.notifications.map(n => http.delete("/api/notifications/" + n.id))
+        me.me.notifications.map(n => http.delete(`/api/notifications/${  n.id}`))
       ).then(me.update());
     }
   }
@@ -23,8 +23,8 @@ export default class NotificationsDropdownNavbar extends Component {
     return (
       <div
         className={
-          "menu dropdown" +
-          (me.me.notifications.length ? " cursor-pointer" : "")
+          `menu dropdown${ 
+          me.me.notifications.length ? " cursor-pointer" : ""}`
         }
         tabindex="-1"
         onClick={e =>
@@ -46,7 +46,7 @@ export default class NotificationsDropdownNavbar extends Component {
             <strong class="capitalize">{lang.t("notifications")}</strong>
             <div
               class="action capitalize"
-              onClick={e => this.clearAllNotifications()}
+              onClick={() => this.clearAllNotifications()}
             >
               {lang.t("mark_all_as_read")}
             </div>

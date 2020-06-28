@@ -1,5 +1,5 @@
-import { h, render, Component } from "preact";
-import { util, router, storage } from "/core";
+import { h, Component } from "preact";
+import { util, router } from "/core";
 import { MessageParent } from "/message";
 import { CreateGroup, GroupTitle, GroupBoard, Share } from "/pages";
 import { Settings } from "/settings";
@@ -8,10 +8,6 @@ import { FaIcon } from "/misc";
 import Writer from "/message/writer.component.js";
 
 export default class MainContent extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     if (this.props.action == "settings") {
       return (
@@ -74,7 +70,7 @@ export default class MainContent extends Component {
             <GroupBoard key={this.props.id} />
             <a
               class="write-button material-shadow seamless-link"
-              href={router.toApp("/groups/" + this.props.id + "/write")}
+              href={router.toApp(`/groups/${  this.props.id  }/write`)}
               onClick={e => router.onClick(e)}
             >
               <FaIcon family={"solid"} icon={"pencil-alt"} />

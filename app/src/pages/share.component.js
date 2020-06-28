@@ -1,6 +1,5 @@
-import { h, render, Component } from "preact";
+import { h, Component } from "preact";
 import { lang, me, router, http } from "/core";
-import { FaIcon } from "/misc";
 import Writer from "/message/writer.component.js";
 
 export default class Share extends Component {
@@ -10,7 +9,7 @@ export default class Share extends Component {
     this.state = {
       loaded: false,
       group: null,
-      currentUrl: currentUrl,
+      currentUrl,
       title: currentUrl.searchParams.get("title") || "",
       text: currentUrl.searchParams.get("text") || "",
       url: currentUrl.searchParams.get("url") || "",
@@ -23,17 +22,15 @@ export default class Share extends Component {
     me.get().then(user => {
       if (user.data["default_group"]) {
         this.setState({ group: user.data["default_group"] });
-        router.backUrl = "/groups/" + user.data["default_group"];
-      } else {
-        if (user.groups.length == 1) {
+        router.backUrl = `/groups/${  user.data["default_group"]}`;
+      } else if (user.groups.length == 1) {
           this.setState({ group: user.groups[0]["id"] });
-          router.backUrl = "/groups/" + user.groups[0];
+          router.backUrl = `/groups/${  user.groups[0]}`;
         }
-      }
       if (this.state.currentUrl.searchParams.get("message")) {
         http
           .get(
-            "/api/messages/" + this.state.currentUrl.searchParams.get("message")
+            `/api/messages/${  this.state.currentUrl.searchParams.get("message")}`
           )
           .then(m => {
             this.setState({
@@ -52,7 +49,7 @@ export default class Share extends Component {
 
   groupSelect(e) {
     this.setState({ group: e.target.value });
-    router.backUrl = "/groups/" + e.target.value;
+    router.backUrl = `/groups/${  e.target.value}`;
   }
 
   render() {
@@ -86,7 +83,7 @@ export default class Share extends Component {
             title={this.state.title}
             text={
               this.state.text || this.state.url
-                ? this.state.text + "\n" + this.state.url
+                ? `${this.state.text  }\n${  this.state.url}`
                 : ""
             }
             files={this.state.files}

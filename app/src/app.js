@@ -1,5 +1,4 @@
 import { h, render, Component } from "preact";
-import { lazy } from "preact/compat";
 import { alert, lang, storage, router, me, cache } from "/core";
 import { Navbar } from "/navbar";
 import { MainContent } from "/pages";
@@ -15,11 +14,11 @@ class App extends Component {
   constructor() {
     super();
     this.onRouterStateChange = this.onRouterStateChange.bind(this);
-    console.log("localStorage usage: " + storage.usage());
+    console.log(`localStorage usage: ${  storage.usage()}`);
     cache.purgeOldCache();
     window.addEventListener("routerStateChange", this.onRouterStateChange);
-    window.addEventListener("meStateChange", _ => this.setState({ me: me.me }));
-    window.addEventListener("fetchedNewDict", _ => this.setState({}));
+    window.addEventListener("meStateChange", () => this.setState({ me: me.me }));
+    window.addEventListener("fetchedNewDict", () => this.setState({}));
     window.addEventListener("popstate", router.sync);
     window.addEventListener("click", e => {
       // close dropdowns if we are clicking on something else
@@ -58,7 +57,7 @@ class App extends Component {
       if (apiKey && router.route != "login") {
         me.get().then(user => {
           if (!user && !router.isOutside()) {
-            storage.set("apiKey", "").then(_ => router.navigate("/login"));
+            storage.set("apiKey", "").then(() => router.navigate("/login"));
           } else {
             this.setState({
               action: router.action,
@@ -69,11 +68,9 @@ class App extends Component {
             });
           }
         });
-      } else {
-        if (!router.isOutside()) {
+      } else if (!router.isOutside()) {
           router.navigate("/login");
         }
-      }
     });
     alert.add(lang.t(router.getParam("alert", router.search)));
   }
@@ -83,19 +80,14 @@ class App extends Component {
     switch (this.state.route) {
       case "signup":
         return <Signup />;
-        break;
       case "stop-notification-emails":
         return <StopNotificationEmails />;
-        break;
       case "public":
         return <Public token={this.state.id} key={this.state.id} />;
-        break;
       case "password-reset":
         return <ResetPassword />;
-        break;
       case "login":
         return <Login />;
-        break;
     }
 
     // here, we enter the "connected" realm of pages.
@@ -118,9 +110,9 @@ class App extends Component {
 render(<App />, document.body);
 
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function() {
+  window.addEventListener("load", () => {
     if (location.search.includes("service-workers=unregister")) {
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
         for (let registration of registrations) {
           registration.unregister();
         }
@@ -128,13 +120,13 @@ if ("serviceWorker" in navigator) {
       console.log("Service workers unregistered");
     }
     navigator.serviceWorker.register("/service-workers.js").then(
-      function(registration) {
+      (registration) => {
         console.log(
           "ServiceWorker registration successful with scope: ",
           registration.scope
         );
       },
-      function(err) {
+      (err) => {
         console.warn("ServiceWorker registration failed: ", err);
       }
     );

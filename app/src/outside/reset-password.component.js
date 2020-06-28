@@ -1,4 +1,4 @@
-import { h, render, Component } from "preact";
+import { h, Component } from "preact";
 import { lang, alert, storage, http, router } from "/core";
 
 export default class ResetPassword extends Component {
@@ -21,7 +21,7 @@ export default class ResetPassword extends Component {
         return;
       }
       http
-        .post("/api/new-password", { mail: mail, key: key, password: password })
+        .post("/api/new-password", { mail, key, password })
         .then(res => {
           if (res.api_key) {
             storage.set("apiKey", res.api_key);

@@ -1,4 +1,4 @@
-import { h, render, Component, toChildArray } from "preact";
+import { h, Component } from "preact";
 import { lang, router, util } from "/core";
 import MessageChild from "./message-child.component.js";
 
@@ -43,8 +43,8 @@ export default class MessageChildren extends Component {
       }
     }
     this.setState({
-      firstDisplayedChild: firstDisplayedChild,
-      lastDisplayedChild: lastDisplayedChild
+      firstDisplayedChild,
+      lastDisplayedChild
     });
   }
 
@@ -80,13 +80,13 @@ export default class MessageChildren extends Component {
           <div class="d-flex">
             <span
               class="more-coms unselectable"
-              onClick={_ => this.displayPreviousChildren()}
+              onClick={() => this.displayPreviousChildren()}
             >
               {lang.t("previous_coms")}
             </span>
           </div>
         )}
-        {this.props.childMessages.map((e, i, m) => {
+        {this.props.childMessages.map((e, i) => {
           // bypass empty messages
           if (!e.files.length && e.data["text"] == "" && !e.children.length) {
             return null;
@@ -112,7 +112,7 @@ export default class MessageChildren extends Component {
           <div class="d-flex">
             <span
               class="more-coms unselectable"
-              onClick={_ => this.displayNextChildren()}
+              onClick={() => this.displayNextChildren()}
             >
               {lang.t("next_coms")}
             </span>

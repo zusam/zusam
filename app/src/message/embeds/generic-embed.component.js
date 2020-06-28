@@ -1,4 +1,4 @@
-import { h, render, Component } from "preact";
+import { h, Component } from "preact";
 
 export default class GenericEmbed extends Component {
   render() {
@@ -9,7 +9,7 @@ export default class GenericEmbed extends Component {
             allowfullscreen
             class="embed-responsive-item"
             src={this.props.url}
-          ></iframe>
+           />
         </div>
       );
     }
@@ -18,7 +18,7 @@ export default class GenericEmbed extends Component {
         class="embed-preview"
         onClick={() => this.setState({revealed: true})}
       >
-        <div className={this.props.playBtnClass}></div>
+        <div className={this.props.playBtnClass} />
         <img src={this.props.preview} />
       </div>
     );

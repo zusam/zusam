@@ -18,7 +18,7 @@ const lang = {
       : lang.getDefaultLang(),
   fetchDict: (dict = lang.getCurrentLang()) =>
     !lang.dict[dict] &&
-    http.get("/lang/" + dict + ".json").then(r => {
+    http.get(`/lang/${  dict  }.json`).then(r => {
       lang.dict[dict] = r;
       window.dispatchEvent(new CustomEvent("fetchedNewDict"));
     }),

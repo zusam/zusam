@@ -1,6 +1,5 @@
-import { h, render, Component } from "preact";
-import { http, lang, storage, me, router } from "/core";
-import { FaIcon } from "/misc";
+import { h, Component } from "preact";
+import { http, lang, me, router } from "/core";
 import UserSettings from "./user-settings.component.js";
 import GroupSettings from "./group-settings.component.js";
 
@@ -23,10 +22,10 @@ export default class Settings extends Component {
           <li class="nav-item">
             <a
               class={
-                "nav-link" +
-                (this.state.entity["entityType"] == "user" ? " active" : "")
+                `nav-link${ 
+                this.state.entity["entityType"] == "user" ? " active" : ""}`
               }
-              href={router.toApp("/users/" + me.me.id + "/settings")}
+              href={router.toApp(`/users/${  me.me.id  }/settings`)}
               onClick={e => router.onClick(e)}
             >
               {lang.t("account")}
@@ -40,8 +39,8 @@ export default class Settings extends Component {
             >
               <div
                 class={
-                  "nav-link" +
-                  (this.state.entity["entityType"] == "group" ? " active" : "")
+                  `nav-link${ 
+                  this.state.entity["entityType"] == "group" ? " active" : ""}`
                 }
               >
                 {lang.t("groups")}
@@ -50,7 +49,7 @@ export default class Settings extends Component {
                 {me.me.groups.map(e => (
                   <a
                     class="seamless-link"
-                    href={router.toApp("/groups/" + e.id + "/settings")}
+                    href={router.toApp(`/groups/${  e.id  }/settings`)}
                     onClick={e => router.onClick(e)}
                   >
                     {e.name}

@@ -1,5 +1,5 @@
-import { h, render, Component } from "preact";
-import { lang, storage, me, router, util, http } from "/core";
+import { h, Component } from "preact";
+import { lang, me, router, util, http } from "/core";
 import { MessageSearchResult } from "/message";
 
 export default class GroupSearch extends Component {
@@ -7,7 +7,7 @@ export default class GroupSearch extends Component {
     super(props);
     let groupId = util.getId(router.id);
     this.state = {
-      groupId: groupId,
+      groupId,
       loaded: false,
       messages: [],
       totalMessages: 0,
@@ -15,7 +15,7 @@ export default class GroupSearch extends Component {
       hashtags: router.getParam("hashtags").replace(/\+/g, " ")
     };
     this.loadMessages = this.loadMessages.bind(this);
-    window.addEventListener("routerStateChange", _ => this.loadMessages());
+    window.addEventListener("routerStateChange", () => this.loadMessages());
   }
 
   getGroupName() {
@@ -39,13 +39,13 @@ export default class GroupSearch extends Component {
     http
       .post("/api/messages/search", {
         group: this.state.groupId,
-        search: search,
-        hashtags: hashtags
+        search,
+        hashtags
       })
       .then(res => {
         if (res && Array.isArray(res["messages"])) {
           this.setState({
-            search: search,
+            search,
             messages: res["messages"],
             totalMessages: res["totalItems"],
             loaded: true
@@ -59,7 +59,7 @@ export default class GroupSearch extends Component {
       Array.isArray(this.state.messages) && (
         <div>
           <a
-            href={router.toApp("/groups/" + util.getGroupId())}
+            href={router.toApp(`/groups/${  util.getGroupId()}`)}
             onClick={e => router.onClick(e)}
           >
             <div class="group-name no-decoration">{util.getGroupName()}</div>

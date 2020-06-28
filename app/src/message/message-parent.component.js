@@ -1,5 +1,5 @@
-import { Fragment, h, render, Component } from "preact";
-import { lang, storage, http, me, router, util } from "/core";
+import { h, Component } from "preact";
+import { me, util } from "/core";
 import Message from "./message.component.js";
 
 export default class MessageParent extends Component {
@@ -40,7 +40,7 @@ export default class MessageParent extends Component {
         focus={this.props.focus}
         isPublic={this.props.isPublic}
         isChild={false}
-      ></Message>
+       />
     );
   }
 }

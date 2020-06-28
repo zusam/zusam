@@ -1,4 +1,4 @@
-import { h, render, Component } from "preact";
+import { h, Component } from "preact";
 
 // Fontawesome icons taken from https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/js/all.js
 
@@ -116,10 +116,10 @@ export default class FaIcon extends Component {
     return (
       icon && (
         <svg
-          className={"fa-icon " + this.props.family + " " + this.props.icon}
-          viewBox={"0 0 " + icon[0] + " " + icon[1]}
+          className={`fa-icon ${  this.props.family  } ${  this.props.icon}`}
+          viewBox={`0 0 ${  icon[0]  } ${  icon[1]}`}
         >
-          <path fill="currentColor" d={icon[4]}></path>
+          <path fill="currentColor" d={icon[4]} />
         </svg>
       )
     );

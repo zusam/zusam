@@ -1,4 +1,3 @@
-import util from "./util.js";
 import alert from "./alert.js";
 import storage from "./storage.js";
 import router from "./router.js";
@@ -9,18 +8,16 @@ const http = {
       .get("apiKey")
       .then(apiKey => {
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", document.baseURI + "api/files", true);
+        xhr.open("POST", `${document.baseURI  }api/files`, true);
         xhr.setRequestHeader("X-AUTH-TOKEN", apiKey);
         xhr.addEventListener("load", e => {
           if (e.target.status > 199 && e.target.status < 300) {
             loadFn(JSON.parse(e.target.response));
-          } else {
-            if (errorFn) {
+          } else if (errorFn) {
               errorFn(e.target.statusText);
             } else {
               console.error(e.target.statusText);
             }
-          }
         });
         if (progressFn) {
           xhr.upload.onprogress = e =>
@@ -30,9 +27,6 @@ const http = {
           xhr.addEventListener("error", e => errorFn(e));
         }
         xhr.send(formData);
-      })
-      .catch(err => {
-        err => console.warn("ERROR for " + url, err);
       })
       .catch(error => alert.add(error, "alert-danger"));
   },
@@ -56,7 +50,7 @@ const http = {
           headers: new Headers(h)
         })
           .then(res => res.ok && res.json())
-          .catch(err => console.warn("ERROR for " + url, err));
+          .catch(err => console.warn(`ERROR for ${  url}`, err));
       })
       .catch(error => alert.add(error, "alert-danger"));
   },
@@ -82,7 +76,7 @@ const http = {
           h["Content-type"] = contentType;
         }
         let fetchOptions = {
-          method: method,
+          method,
           headers: new Headers(h)
         };
         if (data) {
@@ -103,7 +97,7 @@ const http = {
               return Promise.reject(exception.message);
             }
           })
-          .catch(err => console.warn("ERROR for " + url, err));
+          .catch(err => console.warn(`ERROR for ${  url}`, err));
       })
       .catch(error => alert.add(error, "alert-danger"));
   }

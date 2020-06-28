@@ -41,15 +41,14 @@ const util = {
       return lang.t("just_now");
     }
     if (duration < 60) {
-      return lang.t("ago", { duration: duration + "mn" });
+      return lang.t("ago", { duration: `${duration  }mn` });
     }
     if (duration < 60 * 24) {
-      return lang.t("ago", { duration: Math.floor(duration / 60) + "h" });
+      return lang.t("ago", { duration: `${Math.floor(duration / 60)  }h` });
     }
-    let date = new Date(timestamp * 1000);
     return util.humanFullDate(timestamp).split(" ")[0];
   },
-  getGroupId: _ => {
+  getGroupId: () => {
     if (me.me.groups) {
       switch (router.entity.entityType) {
         case "group":
@@ -60,7 +59,7 @@ const util = {
     }
     return "";
   },
-  getGroupName: _ => {
+  getGroupName: () => {
     let group = me.me.groups.find(g => g["id"] == util.getGroupId());
     return group ? group["name"] : "";
   },
@@ -83,12 +82,12 @@ const util = {
   // get the url to a thubmnail
   thumbnail: (id, width, height) =>
     id
-      ? router.toApp("/api/images/thumbnail/" + width + "/" + height + "/" + id)
+      ? router.toApp(`/api/images/thumbnail/${  width  }/${  height  }/${  id}`)
       : null,
   // same as http.thumbnail but for a crop
   crop: (id, width, height) =>
     id
-      ? router.toApp("/api/images/crop/" + width + "/" + height + "/" + id)
+      ? router.toApp(`/api/images/crop/${  width  }/${  height  }/${  id}`)
       : null,
   // default avatar in base64
   defaultAvatar:
@@ -138,19 +137,19 @@ const util = {
     );
     let deg = 45 * (Math.abs(util.hash(str)) % 4);
     return (
-      "background-color:" +
-      c1 +
-      ";background-image:linear-gradient(" +
-      deg +
-      "deg, " +
-      c2 +
-      " 15%, transparent 15% 30%, " +
-      c2 +
-      " 30% 45%, transparent 45% 60%, " +
-      c2 +
-      " 60% 75%, transparent 75% 90%, " +
-      c2 +
-      " 90%);"
+      `background-color:${ 
+      c1 
+      };background-image:linear-gradient(${ 
+      deg 
+      }deg, ${ 
+      c2 
+      } 15%, transparent 15% 30%, ${ 
+      c2 
+      } 30% 45%, transparent 45% 60%, ${ 
+      c2 
+      } 60% 75%, transparent 75% 90%, ${ 
+      c2 
+      } 90%);`
     );
   }
 };

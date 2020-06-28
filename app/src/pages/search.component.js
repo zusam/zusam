@@ -1,5 +1,5 @@
-import { h, render, Component } from "preact";
-import { lang, router, util } from "/core";
+import { h, Component } from "preact";
+import { lang, router } from "/core";
 import { FaIcon } from "/misc";
 
 export default class Search extends Component {
@@ -19,10 +19,10 @@ export default class Search extends Component {
     let group_id =
       router.route == "messages" ? router.entity.group.id : router.entity.id;
     router.navigate(
-      "/groups/" +
-        group_id +
-        "?search=" +
-        searchTerms.map(e => encodeURIComponent(e)).join("+")
+      `/groups/${ 
+        group_id 
+        }?search=${ 
+        searchTerms.map(e => encodeURIComponent(e)).join("+")}`
     );
   }
 
@@ -38,7 +38,7 @@ export default class Search extends Component {
             value={decodeURIComponent(
               router.getParam("search").replace(/\+/g, " ")
             )}
-          ></input>
+           />
           <div class="input-group-append">
             <button
               onClick={e => this.search(e)}

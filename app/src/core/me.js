@@ -16,7 +16,7 @@ const me = {
       return r;
     }),
   loadNotifications: () =>
-    http.get("/api/users/" + me.me.id + "/notifications").then(r => {
+    http.get(`/api/users/${  me.me.id  }/notifications`).then(r => {
       me.me.notifications = r;
       window.dispatchEvent(new CustomEvent("meStateChange"));
     }),
@@ -38,7 +38,7 @@ const me = {
         )
       : false,
   removeMatchingNotifications: id => {
-    return me.loadNotifications().then(_ => {
+    return me.loadNotifications().then(() => {
       if (!Array.isArray(me.me.notifications)) {
         return Promise.reject("Failed to get notifications from server");
       }
@@ -46,7 +46,7 @@ const me = {
         me.me.notifications
           .filter(n => me.matchNotification(n, id))
           .map(n =>
-            http.delete("/api/notifications/" + n.id).then(r => {
+            http.delete(`/api/notifications/${  n.id}`).then(() => {
               me.me.notifications = me.me.notifications.filter(
                 e => !me.matchNotification(e, id)
               );

@@ -1,4 +1,4 @@
-import { h, render, Component } from "preact";
+import { h, Component } from "preact";
 import { lang, me, alert, storage, http, router } from "/core";
 import zusam_logo from "/assets/zusam_logo.svg";
 
@@ -37,7 +37,7 @@ export default class Login extends Component {
     let login = document.getElementById("login").value || "";
     login.toLowerCase();
     const password = document.getElementById("password").value;
-    http.post("/api/login", { login: login, password: password }).then(res => {
+    http.post("/api/login", { login, password }).then(res => {
       this.setState({ sending: false });
       if (res && res.api_key) {
         storage.set("apiKey", res.api_key).then(() => {
@@ -45,13 +45,11 @@ export default class Login extends Component {
             setTimeout(() => router.navigate("/"), 100);
           });
         });
-      } else {
-        if (res && res.message) {
+      } else if (res && res.message) {
           alert.add(lang.t(res.message), "alert-danger");
         } else {
           alert.add(lang.t("error"), "alert-danger");
         }
-      }
     });
   }
 

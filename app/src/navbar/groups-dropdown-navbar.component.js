@@ -1,4 +1,4 @@
-import { h, render, Component } from "preact";
+import { h, Component } from "preact";
 import { lang, me, router } from "/core";
 import { FaIcon } from "/misc";
 
@@ -6,7 +6,7 @@ export default class GroupsDropdownNavbar extends Component {
   constructor(props) {
     super(props);
     // force update the navbar when me gets updated
-    addEventListener("meStateChange", _ => this.setState({}));
+    addEventListener("meStateChange", () => this.setState({}));
   }
 
   render() {
@@ -25,7 +25,7 @@ export default class GroupsDropdownNavbar extends Component {
               {me.me.groups.map(e => (
                 <a
                   class="d-block seamless-link unselectable"
-                  href={router.toApp("/groups/" + e.id)}
+                  href={router.toApp(`/groups/${  e.id}`)}
                   onClick={e => router.onClick(e)}
                 >
                   {e.name}
@@ -36,7 +36,7 @@ export default class GroupsDropdownNavbar extends Component {
                 href={router.toApp("/create-group")}
                 onClick={e => router.onClick(e)}
               >
-                {"+ " + lang.t("create_a_group")}
+                {`+ ${  lang.t("create_a_group")}`}
               </a>
             </div>
           </div>

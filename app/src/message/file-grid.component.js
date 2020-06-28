@@ -1,5 +1,5 @@
-import { h, render, Component } from "preact";
-import { storage, util, router } from "/core";
+import { h, Component } from "preact";
+import { util, router } from "/core";
 import { FaIcon } from "/misc";
 
 export default class FileGrid extends Component {
@@ -15,10 +15,10 @@ export default class FileGrid extends Component {
         files.splice(e.fileIndex, 0, e);
       });
     }
-    this.state = { files: files };
+    this.state = { files };
   }
 
-  toggleFile(evt, fileIndex) {
+  toggleFile(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     if (typeof this.props.toggleFile == "function") {
@@ -27,7 +27,7 @@ export default class FileGrid extends Component {
   }
 
   renderFile(file, miniature = false) {
-    let filePath = file.contentUrl ? "/files/" + file.contentUrl : null;
+    let filePath = file.contentUrl ? `/files/${  file.contentUrl}` : null;
     let url = filePath;
     if (/image/.test(file.type) && file.type != "image/gif") {
       // no limit in height for long format images
@@ -44,11 +44,11 @@ export default class FileGrid extends Component {
             class="rounded"
           >
             <div
-              className={"miniature" + (file.removed ? " removed" : "")}
+              className={`miniature${  file.removed ? " removed" : ""}`}
               style={
-                "background-image:url('" + util.crop(file.id, 160, 160) + "')"
+                `background-image:url('${  util.crop(file.id, 160, 160)  }')`
               }
-            ></div>
+             />
             <div
               class="remove-button"
               style={file.removed ? "color:red" : ""}
@@ -74,15 +74,15 @@ export default class FileGrid extends Component {
           <div
             class="miniature video-raw"
             style={
-              "background-image:url('" + util.crop(file.id, 160, 160) + "')"
+              `background-image:url('${  util.crop(file.id, 160, 160)  }')`
             }
-          ></div>
+           />
           <div class="spinner orange-spinner">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
           </div>
         </a>
       );
@@ -96,7 +96,7 @@ export default class FileGrid extends Component {
               class="img-fluid contained-height video"
               controls="true"
               src={url}
-            ></video>
+             />
           );
         }
         return (
@@ -104,13 +104,13 @@ export default class FileGrid extends Component {
             <img
               class="img-fluid video-raw"
               src={util.crop(file.id, 320, 180)}
-            ></img>
+             />
             <div class="spinner orange-spinner">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
+              <div />
+              <div />
+              <div />
+              <div />
+              <div />
             </div>
           </a>
         );
@@ -121,9 +121,9 @@ export default class FileGrid extends Component {
             data-nlg={!this.props.inWriter}
             data-origin={filePath}
             href={!this.props.inWriter ? router.toApp(url) : undefined}
-            className={"image" + (file.removed ? " removed" : "")}
+            className={`image${  file.removed ? " removed" : ""}`}
           >
-            <img class="img-fluid" src={url}></img>
+            <img class="img-fluid" src={url} />
             <div
               class="remove-button"
               style={file.removed ? "color:red" : ""}
@@ -142,15 +142,15 @@ export default class FileGrid extends Component {
           <div class="orange-error">&times;</div>
         ) : (
           <div class="spinner orange-spinner">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
           </div>
         )}
         <div class="progress-bar">
-          <div style={{ width: file.progress + "%" }}></div>
+          <div style={{ width: `${file.progress  }%` }} />
         </div>
       </div>
     );

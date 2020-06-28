@@ -1,5 +1,5 @@
-import { h, render, Component } from "preact";
-import { http, storage, me, router, util } from "/core";
+import { h, Component } from "preact";
+import { http, me, router, util } from "/core";
 import { FaIcon } from "/misc";
 
 export default class MessageSearchResult extends Component {
@@ -20,8 +20,8 @@ export default class MessageSearchResult extends Component {
   componentDidMount() {
     if (this.props.message.author) {
       http
-        .get("/api/users/" + this.props.message.author)
-        .then(author => author && this.setState({ author: author }));
+        .get(`/api/users/${  this.props.message.author}`)
+        .then(author => author && this.setState({ author }));
     }
   }
 
@@ -108,7 +108,7 @@ export default class MessageSearchResult extends Component {
               continue;
             }
             words[j] = words[j].replace(
-              new RegExp("#" + hashtags[k], "gi"),
+              new RegExp(`#${  hashtags[k]}`, "gi"),
               "<b>$&</b>"
             );
           }
@@ -124,13 +124,13 @@ export default class MessageSearchResult extends Component {
     while ((match = util.getUrl(txt.slice(shift)))) {
       let url = match[0];
       if (url.length >= 50) {
-        url = url.slice(0, 25) + "..." + url.slice(-24);
+        url = `${url.slice(0, 25)  }...${  url.slice(-24)}`;
       }
       let searchTerms = this.props.search.split(" ");
       for (let i = 0; i < searchTerms.length; i++) {
         url = url.replace(new RegExp(searchTerms[i], "gi"), "<b>$&</b>");
       }
-      let link = '<a href="' + match[0] + '" target="_blank">' + url + "</a>";
+      let link = `<a href="${  match[0]  }" target="_blank">${  url  }</a>`;
       txt =
         txt.slice(0, match["index"] + shift) +
         link +
@@ -150,9 +150,9 @@ export default class MessageSearchResult extends Component {
         <div
           class="card-miniature"
           style={
-            "background-image: url('" +
-            util.crop(this.state.preview, 100, 100) +
-            "')"
+            `background-image: url('${ 
+            util.crop(this.state.preview, 100, 100) 
+            }')`
           }
         />
       );
@@ -168,7 +168,7 @@ export default class MessageSearchResult extends Component {
     return (
       <div
         class="card-miniature"
-        style={"background-image: url('" + avatar + "')"}
+        style={`background-image: url('${  avatar  }')`}
       />
     );
   }
@@ -176,10 +176,10 @@ export default class MessageSearchResult extends Component {
   getLink() {
     if (this.state.message.parent && this.state.message.children == 0) {
       return (
-        "/messages/" + this.state.message.parent + "/" + this.state.message.id
+        `/messages/${  this.state.message.parent  }/${  this.state.message.id}`
       );
     }
-    return "/messages/" + this.state.message.id;
+    return `/messages/${  this.state.message.id}`;
   }
 
   render() {
@@ -197,7 +197,7 @@ export default class MessageSearchResult extends Component {
               <div
                 class="title"
                 dangerouslySetInnerHTML={this.displayAuthorName()}
-              ></div>
+               />
               <div class="dot">&bull;</div>
               <div
                 class="title"
@@ -206,20 +206,20 @@ export default class MessageSearchResult extends Component {
                   util.humanFullDate(this.state.message.lastActivityDate)
                 }
                 dangerouslySetInnerHTML={this.displayMessageTitle()}
-              ></div>
+               />
             </div>
             <div class="text">
               {this.state.text.trim() && (
                 <p
                   class="card-text"
                   dangerouslySetInnerHTML={this.displayMessageText()}
-                ></p>
+                 />
               )}
             </div>
             <div class="children">
               {!!this.state.message.children && (
                 <span>
-                  {this.state.message.children + " "}
+                  {`${this.state.message.children  } `}
                   <FaIcon
                     family={
                       me.isNew(this.state.message.id) ? "solid" : "regular"

@@ -1,5 +1,5 @@
-import { Fragment, h, render, Component } from "preact";
-import { lang, storage, http, me, router, util } from "/core";
+import { h, Component } from "preact";
+import { me, router, util } from "/core";
 import Message from "./message.component.js";
 
 export default class MessageChild extends Component {
@@ -18,9 +18,9 @@ export default class MessageChild extends Component {
       this.state.message.id == router.action &&
       msgElement.classList.contains("highlight")
     ) {
-      setTimeout(_ => {
+      setTimeout(() => {
         msgElement.scrollIntoView({ block: "start", behavior: "smooth" });
-        setTimeout(_ => msgElement.classList.remove("highlight"), 1000);
+        setTimeout(() => msgElement.classList.remove("highlight"), 1000);
       }, 1000);
     }
   }
@@ -50,7 +50,7 @@ export default class MessageChild extends Component {
             </div>
           )
         }
-      ></Message>
+       />
     );
   }
 }
