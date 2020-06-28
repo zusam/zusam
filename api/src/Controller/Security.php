@@ -40,7 +40,7 @@ class Security extends AbstractController
     public function login(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $login = urldecode($data['login']) ?? '';
+        $login = $data['login'] ?? '';
         $password = $data['password'] ?? '';
 
         if (empty($login)) {
@@ -72,7 +72,7 @@ class Security extends AbstractController
     public function signup(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $login = urldecode($data['login']) ?? '';
+        $login = $data['login'] ?? '';
         $password = $data['password'] ?? '';
         $inviteKey = $data['invite_key'] ?? '';
 
@@ -162,7 +162,7 @@ class Security extends AbstractController
     public function newPassword(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $mail = urldecode($data['mail']) ?? '';
+        $mail = $data['mail'] ?? '';
         $password = $data['password'] ?? '';
         $key = $data['key'] ?? '';
         $user = $this->em->getRepository(User::class)->findOneByLogin($mail);
