@@ -5,7 +5,7 @@ Download the latest release (here in ~/zusam):
 ```
 mkdir -p ~/zusam && cd ~/zusam
 version="$(curl -Ls -o /dev/null -w '%{url_effective}' https://github.com/zusam/zusam/releases/latest | rev | cut -d'/' -f1 | rev)"
-wget -qO- https://github.com/zusam/zusam/archive/$version.tar.gz | tar xz --strip 1
+curl -Ls https://github.com/zusam/zusam/archive/$version.tar.gz | tar xz --strip 1
 ```
 
 Build the container:

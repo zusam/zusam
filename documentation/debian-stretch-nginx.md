@@ -4,7 +4,7 @@ Install on Debian stretch
 First, we'll need to add the sury repository to get up-to-date versions of php:
 ```
 sudo apt install ca-certificates apt-transport-https
-wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -
+curl -Ls https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -
 echo "deb https://packages.sury.org/php/ stretch main" | sudo tee /etc/apt/sources.list.d/php.list
 sudo apt update
 ```
@@ -18,7 +18,7 @@ Download the latest release (here in `/srv/zusam`):
 ```
 mkdir -p /srv/zusam && cd /srv/zusam
 version="$(curl -Ls -o /dev/null -w '%{url_effective}' https://github.com/zusam/zusam/releases/latest | rev | cut -d'/' -f1 | rev)"
-wget -qO- https://github.com/zusam/zusam/archive/$version.tar.gz | tar xz --strip 1
+curl -Ls https://github.com/zusam/zusam/archive/$version.tar.gz | tar xz --strip 1
 ```
 
 Let's copy the webapp in the public directory (you don't need to do this if you only want the api server running):
