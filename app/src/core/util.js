@@ -3,10 +3,7 @@ import router from "./router.js";
 import me from "./me.js";
 
 const util = {
-  urlRegExp: new RegExp(
-    "(\\([^()]*)?https?:\\/\\/[-A-Za-z0-9+&@#/%?=~_()|!:,.;*]*[-A-Za-z0-9+&@#/%=~_()|]",
-    "i"
-  ),
+  urlRegExp: /(\([^()]*)?https?:\/\/[^\[\]\ ]*[^\[\]!:,.;*\?\ ]/i,
   getUrl: txt => {
     if (!txt) {
       return "";
