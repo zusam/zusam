@@ -2,8 +2,11 @@
     width: 100%;
 }
 
-.children .message .writer {
-    margin-left: 5rem;
+@media (min-width: map-get($grid-breakpoints, "md")) {
+    .children .message .writer {
+        margin-left: 5rem;
+        margin-bottom: 1rem;
+    }
 }
 
 @media (min-width: map-get($grid-breakpoints, "md")) {
