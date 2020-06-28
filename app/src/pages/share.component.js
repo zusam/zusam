@@ -61,7 +61,7 @@ export default class Share extends Component {
         <div class="container">
           {me.me && me.me.groups.length > 1 && (
             <div class="mb-1">
-              <label for="group_share_choice">
+              <label class="px-1" for="group_share_choice">
                 {lang.t("group_share_choice")}
               </label>
               <select

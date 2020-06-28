@@ -19,10 +19,7 @@ export default class Search extends Component {
     let group_id =
       router.route == "messages" ? router.entity.group.id : router.entity.id;
     router.navigate(
-      `/groups/${ 
-        group_id 
-        }?search=${ 
-        searchTerms.map(e => encodeURIComponent(e)).join("+")}`
+      `/groups/${group_id}?search=${searchTerms.map(e => encodeURIComponent(e)).join("+")}`
     );
   }
 
