@@ -24,6 +24,19 @@ class Search extends ApiController
         parent::__construct($em, $serializer);
     }
 
+    public static function has_term($terms, $text): bool {
+        if (empty($text) || empty($terms)) {
+            return false;
+        }
+        $flat_text = StringUtils::remove_accents($text);
+        foreach ($terms as $term) {
+            if (mb_stripos($text, $term) !== false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @Route("/messages/search", methods={"POST"})
      */
@@ -51,7 +64,6 @@ class Search extends ApiController
         $query = $this->em->createQuery(
             "SELECT m FROM App\Entity\Message m"
             ." WHERE m.group = '".$group->getId()."'"
-            .' ORDER BY m.id DESC'
         );
         $messages = $query->getResult();
 
@@ -68,60 +80,17 @@ class Search extends ApiController
             $score = 0;
             $termsFound = [];
 
-            if (!empty($data["text"])) {
-                foreach (explode(" ", StringUtils::remove_accents($data["text"])) as $word) {
-                    foreach ($search_terms as $term) {
-                        if ($word == $term) {
-                            if (in_array($term, $termsFound)) {
-                                $score += 5;
-                            } else {
-                                $score += 500;
-                                $termsFound[] = $term;
-                            }
-                        } else {
-                            if (stripos($word, $term) !== false) {
-                                if (in_array($term, $termsFound)) {
-                                    $score += 1;
-                                } else {
-                                    $score += 100;
-                                    $termsFound[] = $term;
-                                }
-                            }
-                        }
-                    }
-                }
+            if (isset($data['text']) && self::has_term($search_terms, $data['text'])) {
+                $score += 100;
             }
 
-            if (!empty($data["title"])) {
-                foreach (explode(" ", StringUtils::remove_accents($data["title"])) as $word) {
-                    foreach ($search_terms as $term) {
-                        if (stripos($word, $term) !== false) {
-                            if (in_array($term, $termsFound)) {
-                                $score += 1;
-                            } else {
-                                $score += 150;
-                                $termsFound[] = $term;
-                            }
-                        }
-                    }
-                }
+            if (isset($data['title']) && self::has_term($search_terms, $data['title'])) {
+                $score += 150;
             }
 
             if (!empty($message->getAuthor())) {
-                $authorName = $message->getAuthor()->getName();
-                if (!empty($authorName)) {
-                    foreach (explode(" ", StringUtils::remove_accents($authorName)) as $word) {
-                        foreach ($search_terms as $term) {
-                            if (stripos($word, $term) !== false) {
-                                if (in_array($term, $termsFound)) {
-                                    $score += 1;
-                                } else {
-                                    $score += 50;
-                                    $termsFound[] = $term;
-                                }
-                            }
-                        }
-                    }
+                if (self::has_term($search_terms, $message->getAuthor()->getName())) {
+                    $score += 50;
                 }
             }
 
@@ -131,47 +100,14 @@ class Search extends ApiController
                 if (!empty($link)) {
                     $link_data = $link->getData();
                     if (!empty($link_data)) {
-                        if (!empty($link_data["tags"])) {
-                            foreach ($link_data["tags"] as $tag) {
-                                foreach ($search_terms as $term) {
-                                    if (stripos($tag, $term) !== false) {
-                                        if (in_array($term, $termsFound)) {
-                                            $score += 1;
-                                        } else {
-                                            $score += 50;
-                                            $termsFound[] = $term;
-                                        }
-                                    }
-                                }
-                            }
+                        if (self::has_term($search_terms, implode(' ', $link_data["tags"]))) {
+                            $score += 25;
                         }
-                        if (!empty($link_data["title"])) {
-                            foreach (explode(" ", StringUtils::remove_accents($link_data["title"])) as $word) {
-                                foreach ($search_terms as $term) {
-                                    if (stripos($word, $term) !== false) {
-                                        if (in_array($term, $termsFound)) {
-                                            $score += 1;
-                                        } else {
-                                            $score += 50;
-                                            $termsFound[] = $term;
-                                        }
-                                    }
-                                }
-                            }
+                        if (isset($link_data["title"]) && self::has_term($search_terms, $link_data["title"])) {
+                            $score += 30;
                         }
-                        if (!empty($link_data["description"])) {
-                            foreach (explode(" ", StringUtils::remove_accents($link_data["description"])) as $word) {
-                                foreach ($search_terms as $term) {
-                                    if (stripos($word, $term) !== false) {
-                                        if (in_array($term, $termsFound)) {
-                                            $score += 1;
-                                        } else {
-                                            $score += 50;
-                                            $termsFound[] = $term;
-                                        }
-                                    }
-                                }
-                            }
+                        if (isset($link_data['description']) && self::has_term($search_terms, $link_data["description"])) {
+                            $score += 20;
                         }
                     }
                 }
