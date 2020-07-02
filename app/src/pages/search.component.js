@@ -25,7 +25,7 @@ export default class Search extends Component {
 
   render() {
     return (
-      <form class="navbar-block search-block">
+      <form class="navbar-block search-block" onSubmit={e => this.search(e)}>
         <div class="input-group">
           <input
             class="form-control"
@@ -38,7 +38,6 @@ export default class Search extends Component {
            />
           <div class="input-group-append">
             <button
-              onClick={e => this.search(e)}
               class="btn btn-secondary"
               type="submit"
             >
