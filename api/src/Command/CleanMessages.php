@@ -34,7 +34,6 @@ class CleanMessages extends Command
     {
         $this->logger->info($this->getName());
 
-
         // remove messages without parent and not in front (hidden messages)
         $c = $this->pdo->query('SELECT m.id from message m LEFT JOIN message p ON p.id = m.parent_id WHERE p.id IS NULL AND (m.is_in_front != 1 OR m.is_in_front IS NULL);');
         if ($c !== false) {

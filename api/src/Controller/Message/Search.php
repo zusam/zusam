@@ -72,13 +72,12 @@ class Search extends ApiController
         }
 
         $totalItems = 0;
-        $page = [];
+        $results = [];
         $i = 0;
         foreach ($messages as $message) {
             $i++;
             $data = $message->getData();
             $score = 0;
-            $termsFound = [];
 
             if (isset($data['text']) && self::has_term($search_terms, $data['text'])) {
                 $score += 100;
@@ -118,6 +117,28 @@ class Search extends ApiController
             }
 
             $totalItems++;
+            $results[] = [
+                'message' => $message,
+                'score' => $score
+            ];
+        }
+
+        usort($results, function ($a, $b) {
+            if ($a['score'] < $b['score']) {
+                return 1;
+            }
+            if ($a['score'] > $b['score']) {
+                return -1;
+            }
+            return $a['message']->getLastActivityDate() < $b['message']->getLastActivityDate();
+        });
+
+        // limit returned results
+        $results = array_slice($results, 0, 100);
+
+        $page = [];
+        foreach($results as $res) {
+            $message = $res['message'];
             $previewId = $message->getPreview() ? $message->getPreview()->getId() : '';
             $authorId = $message->getAuthor() ? $message->getAuthor()->getId() : '';
             $parentId = $message->getParent() ? $message->getParent()->getId() : '';
@@ -137,19 +158,6 @@ class Search extends ApiController
                 'score' => $score,
             ];
         }
-
-        usort($page, function ($a, $b) {
-            if ($a['score'] < $b['score']) {
-                return 1;
-            }
-            if ($a['score'] > $b['score']) {
-                return -1;
-            }
-            return $a['lastActivityDate'] < $b['lastActivityDate'];
-        });
-
-        // limit returned results
-        $page = array_slice($page, 0, 100);
 
         $data = [
             'messages' => $page,
