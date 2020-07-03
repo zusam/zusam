@@ -1,5 +1,5 @@
 import { h, Component, Fragment } from "preact";
-import { lang, me, router, util } from "/core";
+import { http, lang, me, router, util } from "/core";
 
 export default class Notification extends Component {
   constructor(props) {
@@ -8,9 +8,11 @@ export default class Notification extends Component {
     this.setMiniatureOnError = this.setMiniatureOnError.bind(this);
     this.getAction = this.getAction.bind(this);
     this.getTarget = this.getTarget.bind(this);
+    this.getTitle = this.getTitle.bind(this);
     this.state = {
       target: this.getTarget(),
-      action: this.getAction()
+      action: this.getAction(),
+      title: this.getTitle(),
     };
   }
 
@@ -55,16 +57,49 @@ export default class Notification extends Component {
     }
   }
 
+  getTitle() {
+    switch (this.props.type) {
+      case "new_message":
+      case "new_comment":
+        if (this.props.fromMessage && this.props.fromMessage['data']) {
+          if (this.props.fromMessage['data']['title']) {
+            return this.props.fromMessage['data']['title'];
+          }
+          if (this.props.fromMessage['data']['text']) {
+            let url = util.getUrl(this.props.fromMessage['data']['text']);
+            if (url && url.length > 0) {
+              url = url[0];
+            }
+            if (url) {
+              http.get(`/api/links/by_url?url=${encodeURIComponent(url)}`).then(r => {
+                this.setState({title: r.data['title'] || r.data['description'] || r.data['url']});
+              });
+              return url;
+            }
+            return this.props.fromMessage['data']['text'];
+          }
+        }
+        return "";
+      default:
+        return "";
+    }
+  }
+
   getObject() {
     switch (this.props.type) {
       case "new_message":
         return (
-          <a
-            href={router.toApp(`/groups/${  this.props.fromGroup.id}`)}
-            onClick={e => router.onClick(e)}
-          >
-            {this.props.fromGroup.name}
-          </a>
+          <Fragment>
+            <strong>
+              {this.props.fromGroup.name}
+            </strong>
+            {this.state.title && (
+              <Fragment>
+                <br />
+                <small><em>{util.limitStrSize(this.state.title, 52)}</em></small>
+              </Fragment>
+            )}
+          </Fragment>
         );
       case "new_comment":
         return (
@@ -75,30 +110,26 @@ export default class Notification extends Component {
                 ? this.props.fromMessage["author"]["name"]
                 : ""}
             </strong>
-            {` ${  lang.t("in")  } `}
-            <a
-              href={router.toApp(`/groups/${  this.props.fromGroup.id}`)}
-              onClick={e => router.onClick(e)}
-            >
-              {this.props.fromGroup.name}
-            </a>
+            {this.state.title && (
+              <Fragment>
+                <br />
+                <small><em>{util.limitStrSize(this.state.title, 52)}</em></small>
+              </Fragment>
+            )}
           </span>
         );
       case "user_joined_group":
       case "user_left_group":
         return (
-          <a
-            href={router.toApp(`/groups/${  this.props.fromGroup.id}`)}
-            onClick={e => router.onClick(e)}
-          >
+          <strong>
             {this.props.fromGroup.name}
-          </a>
+          </strong>
         );
       case "group_name_change":
         return (
           <span>
             <strong>{this.props.data["previousGroupName"]}</strong>
-            {` ${  lang.t("to")  } `}
+            {` ${lang.t("to")} `}
             <strong>{this.props.data["newGroupName"]}</strong>
           </span>
         );
@@ -114,12 +145,12 @@ export default class Notification extends Component {
       case "user_joined_group":
       case "user_left_group":
       case "group_name_change":
-        return `/groups/${  this.props.fromGroup.id}`;
+        return `/groups/${this.props.fromGroup.id}`;
       case "new_message":
-        return `/messages/${  this.props.target}`;
+        return `/messages/${this.props.target}`;
       case "new_comment":
         return (
-          `/messages/${  this.props.fromMessage.id  }/${  this.props.target}`
+          `/messages/${this.props.fromMessage.id}/${this.props.target}`
         );
       case "global_notification":
         return this.props.target;
@@ -146,7 +177,7 @@ export default class Notification extends Component {
             {this.props.type != "global_notification" && (
               <Fragment>
                 <strong>{this.props.fromUser.name || "--"}</strong>
-                <span>{` ${  this.state.action  } `}</span>
+                <span>{` ${this.state.action} `}</span>
               </Fragment>
             )}
             {this.getObject()}

@@ -36,7 +36,7 @@ class Message
     /**
      * @ORM\Column(type="json", nullable=true)
      * @Assert\NotBlank()
-     * @Groups({"read_message"})
+     * @Groups({"read_message", "read_notification"})
      */
     private $data;
 

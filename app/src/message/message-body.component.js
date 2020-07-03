@@ -26,7 +26,7 @@ export default class MessageBody extends Component {
       if (url.length >= 50) {
         url = `${url.slice(0, 25)  }...${  url.slice(-24)}`;
       }
-      let link = `<a href="${  match[0]  }" target="_blank">${  url  }</a>`;
+      let link = `<a href="${match[0]}" target="_blank">${url}</a>`;
       txt =
         txt.slice(0, match["index"] + shift) +
         link +

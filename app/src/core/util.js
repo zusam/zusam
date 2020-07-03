@@ -3,7 +3,7 @@ import router from "./router.js";
 import me from "./me.js";
 
 const util = {
-  urlRegExp: /(\([^()]*)?https?:\/\/[^\[\]\n\r\ ]*[^\[\]\n\r!:,.;*\?\ ]/i,
+  urlRegExp: /(\([^()]*)?https?:\/\/[^\[\]\n\r\ ]*[-A-Za-z0-9+&@#/%=~_()|]/i,
   getUrl: txt => {
     if (!txt) {
       return "";
@@ -19,6 +19,7 @@ const util = {
     }
     return url;
   },
+  limitStrSize: (str, limit) => str.length > limit ? str.slice(0, limit-3) + "..." : str,
   // full datetime as a string adapted to the users timezone
   humanFullDate: timestamp => {
     let d = new Date(timestamp * 1000);

@@ -84,6 +84,7 @@ class Create extends ApiController
                     $notif->setFromMessage($parent);
                     $notif->setType(Notification::NEW_COMMENT);
                 } else {
+                    $notif->setFromMessage($message);
                     $notif->setType(Notification::NEW_MESSAGE);
                 }
                 $this->em->persist($notif);

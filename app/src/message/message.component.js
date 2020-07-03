@@ -24,9 +24,9 @@ export default class Message extends Component {
     event.preventDefault();
     let newTab = window.open("about:blank", "_blank");
     const res = await http.get(
-      `/api/messages/${  this.props.message.id  }/get-public-link`
+      `/api/messages/${this.props.message.id}/get-public-link`
     );
-    newTab.location = `${window.origin  }/public/${  res.token}`;
+    newTab.location = `${window.origin}/public/${res.token}`;
   }
 
   onEditMessage(event) {
