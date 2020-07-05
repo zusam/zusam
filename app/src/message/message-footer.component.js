@@ -8,8 +8,7 @@ export default class MessageFooter extends Component {
       <div class="message-footer">
         <div class="infos">
           {!this.props.isPublic &&
-            this.props.author &&
-            this.props.author.id == me.me.id && (
+            this.props.author?.id == me.me.id && (
               <Fragment>
                 <a
                   class="action seamless-link font-size-90 capitalize d-none d-sm-block"
@@ -58,7 +57,7 @@ export default class MessageFooter extends Component {
           </div>
           <Fragment>
             <div class="dot">&bull;</div>
-            <div class="font-size-90">{this.props.author.name || "--"}</div>
+            <div class="font-size-90">{this.props.author?.name || "--"}</div>
           </Fragment>
         </div>
         <div>
@@ -73,7 +72,7 @@ export default class MessageFooter extends Component {
                 <FaIcon family="solid" icon="ellipsis-h" />
               </div>
               <div class="dropdown-menu dropdown-options">
-                {this.props.author && this.props.author.id == me.me.id && (
+                {this.props.author?.id == me.me.id && (
                   <a
                     class="seamless-link capitalize"
                     onClick={e => this.props.deleteMessage(e)}
@@ -98,8 +97,7 @@ export default class MessageFooter extends Component {
                   </a>
                 )}
                 {!this.props.message.isInFront &&
-                  this.props.author &&
-                  this.props.author.id == me.me.id && (
+                  this.props.author?.id == me.me.id && (
                     <a
                       class="seamless-link capitalize"
                       onClick={e => this.props.publishInGroup(e)}
@@ -107,7 +105,7 @@ export default class MessageFooter extends Component {
                       {lang.t("publish_in_group")}
                     </a>
                   )}
-                {this.props.author && this.props.author.id == me.me.id && (
+                {this.props.author?.id == me.me.id && (
                   <a
                     class="seamless-link capitalize d-block d-sm-none"
                     onClick={e => this.props.editMessage(e)}
