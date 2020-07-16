@@ -41,7 +41,7 @@ export default class MessagePreview extends Component {
     return (
       <a
         class="d-inline-block seamless-link message-preview unselectable"
-        href={router.toApp(`/messages/${  this.state.message.id}`)}
+        href={router.toApp(`/messages/${this.state.message.id}`)}
         onClick={e => router.onClick(e)}
         title={this.state.message.data["title"]}
       >

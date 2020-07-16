@@ -3,7 +3,16 @@ import router from "./router.js";
 import me from "./me.js";
 
 const util = {
-  urlRegExp: /(\([^()]*)?https?:\/\/[^\[\]\n\r\ ]*[-A-Za-z0-9+&@#/%=~_()|]/i,
+  // genId starts with a letter to be DOM friendly
+  // seed can be used to order ids
+  genId: seed => `z${seed}-${
+      Date.now().toString().slice(-5)
+    }${
+      Math.random().toString().slice(-5)
+    }`,
+  // transform an id into int for the API (TODO: revisit this on 0.5)
+  id2Int: id => parseInt(id.replace(/[^\d]/g,''), 10),
+  urlRegExp: /(\([^()]*)?https?:\/\/[^[\]\n\r ]*[-A-Za-z0-9+&@#/%=~_()|]/i,
   getUrl: txt => {
     if (!txt) {
       return "";
@@ -19,15 +28,12 @@ const util = {
     }
     return url;
   },
-  limitStrSize: (str, limit) => str.length > limit ? str.slice(0, limit-3) + "..." : str,
+  limitStrSize: (str, limit) => str.length > limit ? `${str.slice(0, limit-3)}...` : str,
   // full datetime as a string adapted to the users timezone
   humanFullDate: timestamp => {
     let d = new Date(timestamp * 1000);
     d = new Date(d.getTime() + d.getTimezoneOffset() * 60000 * -1);
-    return d
-      .toISOString()
-      .replace("T", " ")
-      .replace(/\..*$/, "");
+    return d.toISOString().replace("T", " ").replace(/\..*$/, "");
   },
   // duration relative to event
   humanTime: timestamp => {
@@ -135,19 +141,7 @@ const util = {
     );
     let deg = 45 * (Math.abs(util.hash(str)) % 4);
     return (
-      `background-color:${ 
-      c1 
-      };background-image:linear-gradient(${ 
-      deg 
-      }deg, ${ 
-      c2 
-      } 15%, transparent 15% 30%, ${ 
-      c2 
-      } 30% 45%, transparent 45% 60%, ${ 
-      c2 
-      } 60% 75%, transparent 75% 90%, ${ 
-      c2 
-      } 90%);`
+      `background-color:${c1};background-image:linear-gradient(${deg}deg, ${c2} 15%, transparent 15% 30%, ${c2} 30% 45%, transparent 45% 60%, ${c2} 60% 75%, transparent 75% 90%, ${c2} 90%);`
     );
   }
 };

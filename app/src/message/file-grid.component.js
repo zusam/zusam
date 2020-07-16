@@ -34,58 +34,59 @@ export default class FileGrid extends Component {
       url = util.thumbnail(file.id, 1366, 999999);
     }
     if (miniature == true) {
-      if (file.status == "ready") {
-        return (
-          <a
-            data-nlg={!this.props.inWriter}
-            data-origin={filePath}
-            data-src={util.thumbnail(file.id, 1366, 768)}
-            href={!this.props.inWriter ? router.toApp(url) : undefined}
-            class="rounded"
-          >
-            <div
-              className={`miniature${  file.removed ? " removed" : ""}`}
-              style={
-                `background-image:url('${  util.crop(file.id, 160, 160)  }')`
-              }
-             />
-            <div
-              class="remove-button"
-              style={file.removed ? "color:red" : ""}
-              fileIndex={file.fileIndex}
-              onClick={e => this.toggleFile(e)}
+      switch (file.status) {
+        case "raw":
+          return (
+            <a class="rounded">
+              <div class="miniature">
+                <FaIcon family={"regular"} icon={"check-circle"} />
+              </div>
+            </a>
+          );
+        case "initial":
+          return (
+            <a class="rounded">
+              <div
+                class="miniature video-raw"
+                style={`background-image:url('${util.crop(file.id, 160, 160)}')`}
+               />
+              <div class="spinner orange-spinner">
+                <div /><div /><div /><div /><div />
+              </div>
+              { file?.progress > 0 && (
+                <div class="progress-bar">
+                  <div style={{ width: `${file.progress}%` }} />
+                </div>
+              )}
+            </a>
+          );
+        case "ready":
+        default:
+          return (
+            <a
+              data-nlg={!this.props.inWriter}
+              data-origin={filePath}
+              data-src={util.thumbnail(file.id, 1366, 768)}
+              href={!this.props.inWriter ? router.toApp(url) : undefined}
+              class="rounded"
             >
-              <FaIcon family={"solid"} icon={"times"} />
-            </div>
-          </a>
-        );
+              <div
+                className={`miniature${file.removed ? " removed" : ""}`}
+                style={
+                  `background-image:url('${util.crop(file.id, 160, 160)}')`
+                }
+               />
+              <div
+                class="remove-button"
+                style={file.removed ? "color:red" : ""}
+                fileIndex={file.fileIndex}
+                onClick={e => this.toggleFile(e)}
+              >
+                <FaIcon family={"solid"} icon={"times"} />
+              </div>
+            </a>
+          );
       }
-      if (file.status == "raw") {
-        return (
-          <a class="rounded">
-            <div class="miniature">
-              <FaIcon family={"regular"} icon={"check-circle"} />
-            </div>
-          </a>
-        );
-      }
-      return (
-        <a class="rounded">
-          <div
-            class="miniature video-raw"
-            style={
-              `background-image:url('${  util.crop(file.id, 160, 160)  }')`
-            }
-           />
-          <div class="spinner orange-spinner">
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-          </div>
-        </a>
-      );
     }
     if (file.contentUrl) {
       if (/video/.test(file.type)) {
@@ -106,11 +107,7 @@ export default class FileGrid extends Component {
               src={util.crop(file.id, 320, 180)}
              />
             <div class="spinner orange-spinner">
-              <div />
-              <div />
-              <div />
-              <div />
-              <div />
+              <div /><div /><div /><div /><div />
             </div>
           </a>
         );
@@ -142,15 +139,11 @@ export default class FileGrid extends Component {
           <div class="orange-error">&times;</div>
         ) : (
           <div class="spinner orange-spinner">
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
+            <div /><div /><div /><div /><div />
           </div>
         )}
         <div class="progress-bar">
-          <div style={{ width: `${file.progress  }%` }} />
+          <div style={{ width: `${file.progress}%` }} />
         </div>
       </div>
     );

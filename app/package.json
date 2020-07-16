@@ -15,10 +15,10 @@
     "@babel/preset-react": "^7.10",
     "bootstrap": "^4.4",
     "idb-keyval": "^3.2",
+    "image-blob-reduce": "^1.0.4",
     "node-sass": "^4.13",
     "parcel-bundler": "^1.12",
     "parcel-plugin-purgecss": "^3.0",
-    "pica": "^6.0",
     "preact": "^10.1"
   },
   "devDependencies": {

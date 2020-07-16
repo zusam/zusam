@@ -5,6 +5,7 @@ import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
 
 export default class Writer extends Component {
+
   constructor(props) {
     super(props);
     this.sendMessage = this.sendMessage.bind(this);
@@ -16,8 +17,18 @@ export default class Writer extends Component {
     this.inputImages = this.inputImages.bind(this);
     this.inputVideo = this.inputVideo.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
-    this.uploadNextImage = this.uploadNextImage.bind(this);
-    this.state = { files: [], writerId: +Date.now() };
+    this.addFile = this.addFile.bind(this);
+    this.removeFile = this.removeFile.bind(this);
+    this.updateFile = this.updateFile.bind(this);
+    this.manageWorkers = this.manageWorkers.bind(this);
+    this.removeWorker = this.removeWorker.bind(this);
+    this.addWorker = this.addWorker.bind(this);
+    this.state = {
+      files: [],
+      writerId: util.genId(),
+      workers: [],
+      workerManager: setInterval(this.manageWorkers, 1000),
+    };
   }
 
   componentWillMount() {
@@ -35,6 +46,10 @@ export default class Writer extends Component {
     if (document.getElementById("text")) {
       document.getElementById("text").value = this.props.text || "";
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.workerManager);
   }
 
   onKeyPress(event, doGenPreview = false) {
@@ -147,20 +162,32 @@ export default class Writer extends Component {
       } else {
         setTimeout(() => {
           window.dispatchEvent(new CustomEvent("newParent", { detail: res }));
-          router.navigate(router.backUrl || msg.group.slice(4));
+          router.navigate(router.toApp(`/messages/${res.id}`));
         }, 500);
       }
       this.setState({
         files: [],
         link: null,
         preview: null,
-        writerId: +Date.now()
+        writerId: util.genId(),
       });
       if (document.getElementById("text")) {
         document.getElementById("text").value = "";
       }
     });
     this.setState({ sending: true });
+  }
+
+  inputVideo() {
+    const input = document.createElement("input");
+    document.body.appendChild(input);
+    input.style.display = "none";
+    input.type = "file";
+    input.accept = "video/*";
+    input.addEventListener("change", event => {
+      this.addFile(event.target.files[0], "video");
+    });
+    input.click();
   }
 
   inputImages() {
@@ -172,116 +199,119 @@ export default class Writer extends Component {
     input.accept = "image/*";
     input.addEventListener("change", event => {
       let list = Array.from(event.target.files);
-      let files = this.state.files;
-      this.setState({
-        files: [
-          ...files,
-          ...Array.apply(null, Array(list.length)).map(
-            () =>
-              new Object({
-                fileIndex: 1000
-              })
-          )
-        ]
-      });
-      this.uploadNextImage(list, list[Symbol.iterator](), files.length);
+      list.map(e => this.addFile(e, "image"));
     });
     input.click();
   }
 
-  inputVideo() {
-    const input = document.createElement("input");
-    document.body.appendChild(input);
-    input.style.display = "none";
-    input.type = "file";
-    input.accept = "video/*";
-    input.addEventListener("change", event => {
-      let files = this.state.files;
-      let placeholderIndex = Date.now();
-      this.setState({
-        files: [
-          ...files,
-          {
-            fileIndex: placeholderIndex,
-            type: "video",
-            progress: 0
-          }
-        ]
-      });
-      this.uploadFile(event.target.files[0], files.length, placeholderIndex);
-    });
-    input.click();
+  addFile(inputFile, type) {
+    this.setState(prevState => ({
+      files: [...prevState.files, {
+        inputFile,
+        type,
+        id: util.genId(),
+        progress: 0,
+        status: 'initial'
+      }]
+    }));
   }
 
-  uploadNextImage(list, it, n) {
-    let e = null;
-    try {
-      if (!it) {
-        return;
-      }
-      e = it.next();
-      if (!e || !e.value) {
-        return;
-      }
-    } catch (evt) {
-      // this is a fix for firefox mobile
-      // firefox mobile only gets one file on "input multiple" and throws on getting the size
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=1456557
-      alert.add(lang.t("multiple_photos_upload"), "alert-danger");
+  updateFile(id, file, callback = null) {
+    this.setState(prevState => ({
+      files: prevState.files.map(f => f.id === id ? Object.assign(f, file) : f)
+    }), callback);
+  }
+
+  removeFile(id) {
+    this.setState(prevState => ({
+      files: prevState.files.filter(f => f.id != id)
+    }));
+  }
+
+  manageWorkers() {
+    if (this.state.workers.length >= window.navigator.hardwareConcurrency) {
       return;
     }
-    import("/lazy/image-service.js").then(imageService => {
-      imageService.default.handleImage(e.value, res =>
-        this.uploadFile(res, n + list.indexOf(e.value), null, () =>
-          this.uploadNextImage(list, it, n)
-        )
-      );
-    });
+    let target = this.state.files.find(
+      e => !this.state.workers.map(w => w.target?.id).includes(e.id) && e?.status == 'initial'
+    );
+    if (target) {
+      let worker = {
+        target,
+        id: util.genId(),
+      };
+      this.setState(prevState => ({
+        workers: [...prevState.workers, worker]
+      }), () => this.addWorker(worker.id));
+    }
   }
 
-  uploadFile(file, fileIndex, placeholderIndex, callback = null) {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("fileIndex", fileIndex);
-    let progressFn = placeholderIndex
-      ? e => {
-          if (Array.isArray(this.state.files)) {
-            let a = this.state.files;
-            file = a.find(f => f.fileIndex == placeholderIndex);
-            if (file) {
-              file.progress = Math.floor((e.loaded / e.total) * 100);
-              a.splice(fileIndex, 1, file);
-              this.setState({ files: a });
+  removeWorker(workerId) {
+    this.setState(prevState => ({
+      workers: prevState.workers.filter(e => e.id != workerId)
+    }));
+  }
+
+  addWorker(workerId) {
+    let worker = this.state.workers.find(e => e.id == workerId);
+    switch (worker.target.type) {
+      case "image":
+        import("/lazy/image-service.js").then(imageService => {
+          imageService.default.handleImage(
+            worker.target.inputFile,
+            res => {
+              this.updateFile(
+                worker.target.id,
+                {inputFile: res},
+                this.uploadFile(worker.target.id, () => this.removeWorker(workerId))
+              );
             }
-          }
-        }
-      : null;
-    // update state only if it's the good writeId
+          );
+        });
+        break;
+      case "video":
+        this.uploadFile(worker.target.inputFile, () => this.removeWorker(workerId));
+        break;
+      default:
+        // don't know what to do
+        // TODO handle this properly
+        console.warn(worker.target);
+        console.warn("unknown file type for worker");
+    }
+  }
+
+  uploadFile(fileId, callback = null) {
+    const formData = new FormData();
+    let file = this.state.files.find(e => e.id == fileId);
+    if (!file?.inputFile) {
+      console.log(this.state, file, fileId);
+      throw "error";
+    }
+    formData.append("file", file.inputFile);
+    formData.append("fileIndex", this.state.files.findIndex(f => f.id == file.id));
+
+    // store current writerId for later comparison
     let writerId = this.state.writerId;
+
     http.sendFile(
       formData,
       file => {
-        if (writerId != this.state.writerId) {
-          return;
-        }
-        let a = this.state.files;
-        if (!file) {
-          alert.add(lang.t("error_upload"), "alert-danger");
-        } else {
-          a.splice(fileIndex, 1, file);
-        }
-        this.setState({ files: a });
-        if (callback) {
-          callback();
+        // update state only if it's the good writeId
+        if (writerId == this.state.writerId) {
+          file['status'] = 'ready';
+          this.updateFile(fileId, file, callback);
         }
       },
-      progressFn,
+      e => {
+        this.updateFile(
+          fileId,
+          {progress: Math.floor((e.loaded / e.total) * 100)}
+        )
+      },
       e => {
         console.warn(e);
         alert.add(lang.t("error_upload"), "alert-danger");
-        let a = this.state.files;
-        a.splice(fileIndex, 1, { fileIndex, error: e });
-        this.setState({ files: a });
+        this.removeFile(fileId);
       }
     );
   }
@@ -291,11 +321,7 @@ export default class Writer extends Component {
       return (
         <div class="message-placeholder">
           <div class="spinner orange-spinner">
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
+            <div /><div /><div /><div /><div />
           </div>
         </div>
       );
