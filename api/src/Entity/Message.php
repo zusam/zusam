@@ -55,13 +55,13 @@ class Message
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Message", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * @Groups("*")
+     * @Groups({"read_message"})
      */
     private $parent;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="parent")
-     * @Groups("*")
+     * @Groups({"read_message"})
      */
     private $children;
 
