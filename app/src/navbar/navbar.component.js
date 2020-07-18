@@ -76,7 +76,7 @@ export default class Navbar extends Component {
         <Search />
         <div class="navbar-block">
           <a
-            href={router.toApp("/bookmarks")}
+            href={me.me.data?.bookmarks?.length ? router.toApp("/bookmarks") : null}
             onClick={e => me.me.data?.bookmarks?.length ? router.onClick(e) : null}
             title={lang.t('bookmarks')}
             className={
