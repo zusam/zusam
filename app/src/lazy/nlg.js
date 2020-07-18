@@ -139,7 +139,7 @@ let nlg = {
         let next = document.createElement("a");
         next.classList.add("nlg-next");
         next.innerHTML = "&#10095;";
-        let nextFn = e => {
+        let nextFn = () => {
           nlg.moveLeft();
           setTimeout(() => {
             nlg.hide(true);
@@ -156,7 +156,7 @@ let nlg = {
         let prev = document.createElement("a");
         prev.innerHTML = "&#10094;";
         prev.classList.add("nlg-prev");
-        let prevFn = e => {
+        let prevFn = () => {
           nlg.moveRight();
           setTimeout(() => {
             nlg.hide(true);

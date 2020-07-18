@@ -55,6 +55,22 @@ const me = {
           )
       );
     });
-  }
+  },
+  hasBookmark: id => {
+    return Array.isArray(me.me?.data?.bookmarks) ? me.me.data.bookmarks.some(bid => bid === id) : false;
+  },
+  addBookmark: id => {
+    if (!me.hasBookmark(id)) {
+      http.post(`/api/users/${me.me.id}/bookmarks`, {id}).then(user => me.me = Object.assign(me.me, user));
+    }
+  },
+  removeBookmark: id => {
+    if (me.hasBookmark(id)) {
+      http.delete(`/api/users/${me.me.id}/bookmarks`, {id}).then(user => me.me = Object.assign(me.me, user));
+    }
+  },
+  loadBookmarks: () => Promise.all(me.me.data?.bookmarks?.map(bid => {
+    return http.get(`/api/messages/${bid}`);
+  })),
 };
 export default me;

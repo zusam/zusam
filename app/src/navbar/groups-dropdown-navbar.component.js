@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import { h, Component, Fragment } from "preact";
 import { lang, me, router } from "/core";
 import { FaIcon } from "/misc";
 
@@ -11,7 +11,7 @@ export default class GroupsDropdownNavbar extends Component {
 
   render() {
     return (
-      <div class="navbar-block">
+      <Fragment>
         {me.me.groups && (
           <div
             class="nav-link dropdown groups unselectable"
@@ -41,7 +41,7 @@ export default class GroupsDropdownNavbar extends Component {
             </div>
           </div>
         )}
-      </div>
+      </Fragment>
     );
   }
 }

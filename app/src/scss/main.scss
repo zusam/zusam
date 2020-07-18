@@ -181,3 +181,30 @@ body {
 .no-decoration, .no-decoration:hover {
     text-decoration: none;
 }
+
+.align-middle-inside {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+}
+
+.button-with-count {
+    position: relative;
+    font-size: 1.2rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+}
+
+.badge-count {
+    color: #fff;
+    background: linear-gradient(0, #333, #777);
+    border-radius: 4px;
+    font-size: .7rem;
+    padding: 0px 6px;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    font-weight: bold;
+}

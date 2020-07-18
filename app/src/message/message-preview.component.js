@@ -6,15 +6,19 @@ export default class MessagePreview extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: props.message
+      author: null,
     };
   }
 
   componentDidMount() {
-    if (this.state.message && this.state.message.author) {
-      http
-        .get(`/api/users/${  this.state.message.author}`)
-        .then(author => author && this.setState({ author }));
+    if (this.props.message?.author) {
+      if (typeof(this.props.message.author) == "string") {
+        http
+          .get(`/api/users/${this.props.message.author}`)
+          .then(author => author && this.setState({ author }));
+      } else {
+        this.setState({author: this.props.message.author});
+      }
     }
   }
 
@@ -22,10 +26,10 @@ export default class MessagePreview extends Component {
     return (
       <img
         title={user ? user.name : "--"}
-        className={`avatar material-shadow${  user ? "" : " removed-user"}`}
+        className={`avatar material-shadow${user ? "" : " removed-user"}`}
         style={util.backgroundHash(user ? user.id : "")}
         src={
-          user && user.avatar
+          user?.avatar
             ? util.crop(user.avatar["id"], 100, 100)
             : util.defaultAvatar
         }
@@ -35,49 +39,47 @@ export default class MessagePreview extends Component {
   }
 
   render() {
-    if (!this.state.message) {
+    if (!this.props.message) {
       return null;
     }
     return (
       <a
         class="d-inline-block seamless-link message-preview unselectable"
-        href={router.toApp(`/messages/${this.state.message.id}`)}
+        href={router.toApp(`/messages/${this.props.message.id}`)}
         onClick={e => router.onClick(e)}
-        title={this.state.message.data["title"]}
+        title={this.props.message.data["title"]}
       >
         <div tabindex={this.props.tabindex} class="card material-shadow">
           {this.getAvatar(this.state.author)}
-          {this.state.message.preview ? (
+          {this.props.message.preview ? (
             <div
               class="card-miniature"
               style={
-                `background-image: url('${ 
-                util.crop(this.state.message.preview, 320, 180) 
-                }')`
+                `background-image: url('${util.crop(util.getId(this.props.message.preview), 320, 180)}')`
               }
             />
           ) : (
-            <div class="text-preview">{this.state.message.data["text"]}</div>
+            <div class="text-preview">{this.props.message.data["text"]}</div>
           )}
           <div class="card-body border-top d-flex justify-content-between">
             <span class="left-buffer" />
             <span
               class="title"
               title={
-                this.state.message.data["title"] ||
-                util.humanFullDate(this.state.message.lastActivityDate)
+                this.props.message.data["title"] ||
+                util.humanFullDate(this.props.message.lastActivityDate)
               }
             >
-              {this.state.message.data["title"] ||
-                util.humanTime(this.state.message.lastActivityDate)}
+              {this.props.message.data["title"] ||
+                util.humanTime(this.props.message.lastActivityDate)}
             </span>
             <span class="children">
-              {!!this.state.message.children && (
+              {!!this.props.message.children && (
                 <span>
-                  {`${this.state.message.children  } `}
+                  {`${Array.isArray(this.props.message.children) ? this.props.message.children.length : this.props.message.children} `}
                   <FaIcon
                     family={
-                      me.isNew(this.state.message.id) ? "solid" : "regular"
+                      me.isNew(this.props.message.id) ? "solid" : "regular"
                     }
                     icon={"comment"}
                   />

@@ -46,7 +46,7 @@ const lang = {
 
     // replace parameters
     Object.assign([], str.match(/{{\w+}}/g)).forEach(s => {
-      let rid = s.replace(/[\{\}]/g, "");
+      let rid = s.replace(/[{}]/g, "");
       if (params[rid]) {
         str = str.replace(s, params[rid]);
       }

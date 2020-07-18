@@ -130,6 +130,7 @@ const router = {
     switch (router.route) {
       case "login":
         storage.reset();
+      case "bookmarks":
       case "create-group":
       case "groups":
       case "messages":

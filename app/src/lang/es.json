@@ -88,5 +88,8 @@
     "to": "a",
     "notifications": "notificaciones",
     "mark_all_as_read": "marcar todo como leido",
-    "search_without_result": "Su búsqueda no coincide con ningún mensaje."
+    "search_without_result": "Su búsqueda no coincide con ningún mensaje.",
+    "add_bookmark": "Marcar este mensaje",
+    "remove_bookmark": "Desmarcar este mensaje",
+    "bookmarks": "marcadores"
 }

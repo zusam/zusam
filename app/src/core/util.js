@@ -79,19 +79,19 @@ const util = {
           .replace(/\?.*$/, "")
           .replace(/\.\w+$/, "");
       default:
-        console.warn(e);
+        console.error(e);
         throw "Could not extract id !";
     }
   },
   // get the url to a thubmnail
   thumbnail: (id, width, height) =>
     id
-      ? router.toApp(`/api/images/thumbnail/${  width  }/${  height  }/${  id}`)
+      ? router.toApp(`/api/images/thumbnail/${width}/${height}/${id}`)
       : null,
   // same as http.thumbnail but for a crop
   crop: (id, width, height) =>
     id
-      ? router.toApp(`/api/images/crop/${  width  }/${  height  }/${  id}`)
+      ? router.toApp(`/api/images/crop/${width}/${height}/${id}`)
       : null,
   // default avatar in base64
   defaultAvatar:

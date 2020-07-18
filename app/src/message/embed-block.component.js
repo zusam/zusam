@@ -42,7 +42,7 @@ export default class EmbedBlock extends Component {
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 1024, 270)}
                 url={
-                  `${this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] 
+                  `${this.props.data["code"].match(/https:\/\/[^"\s]+/)[0] 
                   }&autoplay=1&controls=2&wmode=opaque`
                 }
                 playBtnClass={"youtube"}
@@ -56,7 +56,7 @@ export default class EmbedBlock extends Component {
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 1024, 270)}
                 url={
-                  `${this.props.data["code"].match(/https:\/\/[^\"\s]+/)[0] 
+                  `${this.props.data["code"].match(/https:\/\/[^"\s]+/)[0] 
                   }&auto_play=true`
                 }
                 playBtnClass={"soundcloud"}

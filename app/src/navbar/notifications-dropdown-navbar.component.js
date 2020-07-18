@@ -26,19 +26,20 @@ export default class NotificationsDropdownNavbar extends Component {
           `menu dropdown${ 
           me.me.notifications.length ? " cursor-pointer" : ""}`
         }
+        title={lang.t('notifications')}
         tabindex="-1"
         onClick={e =>
           me.me.notifications.length &&
           e.currentTarget.classList.toggle("active")
         }
       >
-        <div class="unselectable notification-button">
+        <div class="unselectable button-with-count">
           <FaIcon
             family={me.me.notifications.length ? "solid" : "regular"}
             icon={"bell"}
           />
           {!!me.me.notifications.length && (
-            <span class="notification-count">{me.me.notifications.length}</span>
+            <span class="badge-count">{me.me.notifications.length}</span>
           )}
         </div>
         <div class="dropdown-menu dropdown-right notifications-menu">

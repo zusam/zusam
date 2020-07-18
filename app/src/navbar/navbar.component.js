@@ -27,41 +27,41 @@ export default class Navbar extends Component {
           {(["share"].includes(router.route) ||
             ["settings"].includes(router.action) ||
             !router.backUrl) && (
-            <div
-              class="menu dropdown cursor-pointer"
-              tabindex="-1"
-              onClick={e => e.currentTarget.classList.toggle("active")}
-            >
-              <div class="rounded-circle avatar unselectable">
-                <img
-                  class="rounded-circle"
-                  style={util.backgroundHash(me.me.id)}
-                  src={
-                    me.me.avatar
-                      ? util.crop(me.me.avatar["id"], 80, 80)
-                      : util.defaultAvatar
-                  }
-                  onError={e => (e.currentTarget.src = util.defaultAvatar)}
-                />
+              <div
+                class="menu dropdown cursor-pointer"
+                tabindex="-1"
+                onClick={e => e.currentTarget.classList.toggle("active")}
+              >
+                <div class="rounded-circle avatar unselectable">
+                  <img
+                    class="rounded-circle"
+                    style={util.backgroundHash(me.me.id)}
+                    src={
+                      me.me.avatar
+                        ? util.crop(me.me.avatar["id"], 80, 80)
+                        : util.defaultAvatar
+                    }
+                    onError={e => (e.currentTarget.src = util.defaultAvatar)}
+                  />
+                </div>
+                <div class="dropdown-menu dropdown-right">
+                  <a
+                    class="d-block seamless-link"
+                    href={router.toApp(`/users/${  me.me.id  }/settings`)}
+                    onClick={e => router.onClick(e)}
+                  >
+                    {lang.t("settings")}
+                  </a>
+                  <a
+                    class="d-block seamless-link"
+                    href={router.toApp("/logout")}
+                    onClick={e => router.onClick(e)}
+                  >
+                    {lang.t("logout")}
+                  </a>
+                </div>
               </div>
-              <div class="dropdown-menu dropdown-right">
-                <a
-                  class="d-block seamless-link"
-                  href={router.toApp(`/users/${  me.me.id  }/settings`)}
-                  onClick={e => router.onClick(e)}
-                >
-                  {lang.t("settings")}
-                </a>
-                <a
-                  class="d-block seamless-link"
-                  href={router.toApp("/logout")}
-                  onClick={e => router.onClick(e)}
-                >
-                  {lang.t("logout")}
-                </a>
-              </div>
-            </div>
-          )}
+            )}
           {["groups", "messages"].includes(router.route) && router.backUrl && (
             <a
               class="seamless-link back"
@@ -74,7 +74,27 @@ export default class Navbar extends Component {
           <NotificationsDropdownNavbar />
         </div>
         <Search />
-        <GroupsDropdownNavbar />
+        <div class="navbar-block">
+          <a
+            href={router.toApp("/bookmarks")}
+            onClick={e => me.me.data?.bookmarks?.length ? router.onClick(e) : null}
+            title={lang.t('bookmarks')}
+            className={
+              `seamless-link menu align-middle-inside${me.me.data?.bookmarks?.length ? " cursor-pointer" : ""}`
+            }
+          >
+            <div class="unselectable button-with-count">
+              <FaIcon
+                family={me.me.data?.bookmarks?.length ? "solid" : "regular"}
+                icon={"bookmark"}
+              />
+              {!!me.me.data?.bookmarks?.length && (
+                <span class="badge-count">{me.me.data?.bookmarks?.length}</span>
+              )}
+            </div>
+          </a>
+          <GroupsDropdownNavbar />
+        </div>
       </div>
     );
   }
