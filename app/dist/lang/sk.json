@@ -88,5 +88,8 @@
     "to": "na",
     "notifications": "oznámenia",
     "mark_all_as_read": "označiť všetko ako prečítané",
-    "search_without_result": "Vášmu vyhľadávaniu nezodpovedá žiadna správa"
+    "search_without_result": "Vášmu vyhľadávaniu nezodpovedá žiadna správa",
+    "add_bookmark": "Túto správu uložiť medzi záložky",
+    "remove_bookmark": "Zrušte označenie tejto správy",
+    "bookmarks": "záložky"
 }

@@ -88,5 +88,8 @@
     "to": "en",
     "notifications": "notifications",
     "mark_all_as_read": "tout marquer comme lu",
-    "search_without_result": "Votre recherche ne correspond à aucun message."
+    "search_without_result": "Votre recherche ne correspond à aucun message.",
+    "add_bookmark": "Ajouter aux marque-pages",
+    "remove_bookmark": "Supprimer des marque-pages",
+    "bookmarks": "marque-pages"
 }

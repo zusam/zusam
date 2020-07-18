@@ -88,5 +88,8 @@
     "to": "to",
     "notifications": "notifications",
     "mark_all_as_read": "mark all as read",
-    "search_without_result": "Your search did not match any message."
+    "search_without_result": "Your search did not match any message.",
+    "add_bookmark": "Bookmark message",
+    "remove_bookmark": "Unbookmark message",
+    "bookmarks": "bookmarks"
 }
