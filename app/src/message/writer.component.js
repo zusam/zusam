@@ -229,7 +229,7 @@ export default class Writer extends Component {
   }
 
   manageWorkers() {
-    if (this.state.workers.length >= window.navigator.hardwareConcurrency) {
+    if (this.state.workers.length >= navigator.hardwareConcurrency) {
       return;
     }
     let target = this.state.files.find(

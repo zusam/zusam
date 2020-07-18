@@ -36,7 +36,7 @@ const router = {
     path ? path.replace(new RegExp(`^${  router.getSubpath()}`), "") : "",
   getParam: (param, searchParams = window.location.search.substring(1)) => {
     let res = searchParams.split("&").find(e => e.split("=")[0] === param);
-    return res ? res.split("=")[1] : "";
+    return res ? decodeURIComponent(res.split("=")[1]) : "";
   },
   getSegments: () =>
     window.location.pathname

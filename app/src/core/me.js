@@ -16,7 +16,7 @@ const me = {
       return r;
     }),
   loadNotifications: () =>
-    http.get(`/api/users/${  me.me.id  }/notifications`).then(r => {
+    http.get(`/api/users/${me.me.id}/notifications`).then(r => {
       me.me.notifications = r;
       window.dispatchEvent(new CustomEvent("meStateChange"));
     }),
@@ -46,7 +46,7 @@ const me = {
         me.me.notifications
           .filter(n => me.matchNotification(n, id))
           .map(n =>
-            http.delete(`/api/notifications/${  n.id}`).then(() => {
+            http.delete(`/api/notifications/${n.id}`).then(() => {
               me.me.notifications = me.me.notifications.filter(
                 e => !me.matchNotification(e, id)
               );

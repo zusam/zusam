@@ -11,8 +11,7 @@ export default class ResetPassword extends Component {
     e.preventDefault();
     storage.set("apiKey", "");
     const password = document.getElementById("password").value || "";
-    const passwordConfirmation =
-      document.getElementById("password_confirmation").value || "";
+    const passwordConfirmation = document.getElementById("password_confirmation").value || "";
     const mail = router.getParam("mail");
     const key = router.getParam("key");
     if (mail && password) {
