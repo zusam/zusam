@@ -85,8 +85,8 @@ const router = {
     Object.assign(router, components);
 
     // set url, backUrl and entityUrl
-    if (router.route && router.id && router.isEntity(router.route)) {
-      router.entityUrl = `/api/${  router.route  }/${  router.id}`;
+    if (router.id && router.isEntity(router?.route)) {
+      router.entityUrl = `/api/${router.route}/${router.id}`;
       router.entityType = router.route;
 
       await http
@@ -125,6 +125,8 @@ const router = {
           }
         })
         .catch(e => console.warn(e));
+    } else {
+      router.entity = null;
     }
 
     switch (router.route) {
