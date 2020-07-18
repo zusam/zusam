@@ -28,6 +28,73 @@ class Edit extends ApiController
     }
 
     /**
+     * @Route("/users/{id}/bookmarks", methods={"POST"})
+     */
+    public function post_bookmark(string $id, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $user = $this->em->getRepository(User::class)->findOneById($id);
+        if (empty($user)) {
+            return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $this->denyAccessUnlessGranted(new Expression('user == object'), $user);
+
+        $requestData = json_decode($request->getcontent(), true);
+        if (!empty($requestData['id'])) {
+            $data = $user->getData();
+            $data['bookmarks'][] = $requestData['id'];
+            $user->setData($data);
+        }
+
+        $this->getUser()->setLastActivityDate(time());
+        $this->em->persist($this->getUser());
+        $this->em->persist($user);
+        $this->em->flush();
+
+        return new Response(
+            $this->serialize($user, ['read_user']),
+            Response::HTTP_OK
+        );
+    }
+
+    /**
+     * @Route("/users/{id}/bookmarks", methods={"DELETE"})
+     */
+    public function delete_bookmark(string $id, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $user = $this->em->getRepository(User::class)->findOneById($id);
+        if (empty($user)) {
+            return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $this->denyAccessUnlessGranted(new Expression('user == object'), $user);
+
+        $requestData = json_decode($request->getcontent(), true);
+        if (!empty($requestData['id'])) {
+            $data = $user->getData();
+            $index = array_search($requestData['id'], $data['bookmarks']);
+            if ($index !== false) {
+                unset($data['bookmarks'][$index]);
+                $user->setData($data);
+            }
+        }
+
+        $this->getUser()->setLastActivityDate(time());
+        $this->em->persist($this->getUser());
+        $this->em->persist($user);
+        $this->em->flush();
+
+        return new Response(
+            $this->serialize($user, ['read_user']),
+            Response::HTTP_OK
+        );
+    }
+
+    /**
      * @Route("/users/{id}", methods={"PUT"})
      */
     public function index(string $id, Request $request): Response
