@@ -76,11 +76,11 @@ export default class Navbar extends Component {
         <Search />
         <div class="navbar-block">
           <a
-            href={me.me.data?.bookmarks?.length ? router.toApp("/bookmarks") : null}
-            onClick={e => me.me.data?.bookmarks?.length ? router.onClick(e) : null}
+            href={me.me.data?.bookmarks?.length ? router.toApp("/bookmarks") : undefined}
+            onClick={e => me.me.data?.bookmarks?.length ? router.onClick(e) : undefined}
             title={lang.t('bookmarks')}
             className={
-              `seamless-link menu align-middle-inside${me.me.data?.bookmarks?.length ? " cursor-pointer" : ""}`
+              `menu align-middle-inside color-white${me.me.data?.bookmarks?.length ? " cursor-pointer" : ""}`
             }
           >
             <div class="unselectable button-with-count">

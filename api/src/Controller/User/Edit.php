@@ -28,28 +28,21 @@ class Edit extends ApiController
     }
 
     /**
-     * @Route("/users/{id}/bookmarks", methods={"POST"})
+     * @Route("/bookmarks/{id}", methods={"POST"})
      */
-    public function post_bookmark(string $id, Request $request): Response
+    public function post_bookmark(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $user = $this->em->getRepository(User::class)->findOneById($id);
-        if (empty($user)) {
-            return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
+        $user = $this->getUser();
+        $data = $user->getData();
+        if (!isset($data['bookmarks'])) {
+            $data['bookmarks'] = [];
         }
+        $data['bookmarks'] = array_values(array_merge($data['bookmarks'], [$id]));
+        $user->setData($data);
 
-        $this->denyAccessUnlessGranted(new Expression('user == object'), $user);
-
-        $requestData = json_decode($request->getcontent(), true);
-        if (!empty($requestData['id'])) {
-            $data = $user->getData();
-            $data['bookmarks'][] = $requestData['id'];
-            $user->setData($data);
-        }
-
-        $this->getUser()->setLastActivityDate(time());
-        $this->em->persist($this->getUser());
+        $user->setLastActivityDate(time());
         $this->em->persist($user);
         $this->em->flush();
 
@@ -60,31 +53,25 @@ class Edit extends ApiController
     }
 
     /**
-     * @Route("/users/{id}/bookmarks", methods={"DELETE"})
+     * @Route("/bookmarks/{id}", methods={"DELETE"})
      */
-    public function delete_bookmark(string $id, Request $request): Response
+    public function delete_bookmark(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $user = $this->em->getRepository(User::class)->findOneById($id);
-        if (empty($user)) {
-            return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
-        }
+        $user = $this->getUser();
+        $data = $user->getData();
+        $data['bookmarks'] = array_values(
+            array_filter(
+                $data['bookmarks'],
+                function($e) use ($id) {
+                    return $e != $id;
+                }
+            )
+        );
+        $user->setData($data);
 
-        $this->denyAccessUnlessGranted(new Expression('user == object'), $user);
-
-        $requestData = json_decode($request->getcontent(), true);
-        if (!empty($requestData['id'])) {
-            $data = $user->getData();
-            $index = array_search($requestData['id'], $data['bookmarks']);
-            if ($index !== false) {
-                unset($data['bookmarks'][$index]);
-                $user->setData($data);
-            }
-        }
-
-        $this->getUser()->setLastActivityDate(time());
-        $this->em->persist($this->getUser());
+        $user->setLastActivityDate(time());
         $this->em->persist($user);
         $this->em->flush();
 
@@ -124,7 +111,7 @@ class Edit extends ApiController
             }
         }
         if (!empty($requestData['data'])) {
-            $user->setData($requestData['data']);
+            $user->setData(array_merge($user->getData(), $requestData['data']));
         }
         if (!empty($requestData['avatar'])) {
             $file = $this->em->getRepository(File::class)->findOneById($requestData['avatar']);

@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { me, lang, router } from "/core";
+import { http, me, lang, router } from "/core";
 import { MessagePreview } from "/message";
 
 export default class BookmarkBoard extends Component {
@@ -7,12 +7,21 @@ export default class BookmarkBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: [],
+      messages: [],
     }
+    this.loadBookmarks = this.loadBookmarks.bind(this);
+    // force update the navbar when me gets updated
+    addEventListener("meStateChange", () => this.loadBookmarks());
+  }
+
+  loadBookmarks() {
+    Promise.all(me.me.data?.bookmarks?.map(bid => {
+      return http.get(`/api/messages/${bid}`);
+    })).then(messages => this.setState({messages}));
   }
 
   componentDidMount() {
-    me.loadBookmarks().then(messages => this.setState({messages}));
+    this.loadBookmarks();
   }
 
   render() {

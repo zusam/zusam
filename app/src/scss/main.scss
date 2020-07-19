@@ -208,3 +208,10 @@ body {
     left: 50%;
     font-weight: bold;
 }
+
+.color-white {
+    color: white;
+    &:hover {
+        color: white;
+    }
+}

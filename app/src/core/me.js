@@ -12,13 +12,13 @@ const me = {
       me.me = Object.assign({ notifications: [] }, r);
       me.loadNotifications();
       lang.fetchDict();
-      window.dispatchEvent(new CustomEvent("meStateChange"));
+      setTimeout(dispatchEvent(new CustomEvent("meStateChange")));
       return r;
     }),
   loadNotifications: () =>
     http.get(`/api/users/${me.me.id}/notifications`).then(r => {
       me.me.notifications = r;
-      window.dispatchEvent(new CustomEvent("meStateChange"));
+      setTimeout(dispatchEvent(new CustomEvent("meStateChange")));
     }),
   matchNotification: (notif, id) => {
     if (notif.id === id) {
@@ -50,7 +50,7 @@ const me = {
               me.me.notifications = me.me.notifications.filter(
                 e => !me.matchNotification(e, id)
               );
-              window.dispatchEvent(new CustomEvent("meStateChange"));
+              setTimeout(dispatchEvent(new CustomEvent("meStateChange")));
             })
           )
       );
@@ -61,16 +61,19 @@ const me = {
   },
   addBookmark: id => {
     if (!me.hasBookmark(id)) {
-      http.post(`/api/users/${me.me.id}/bookmarks`, {id}).then(user => me.me = Object.assign(me.me, user));
+      http.post(`/api/bookmarks/${id}`).then(user => {
+        me.me = Object.assign(me.me, user);
+        setTimeout(dispatchEvent(new CustomEvent("meStateChange")));
+      });
     }
   },
   removeBookmark: id => {
     if (me.hasBookmark(id)) {
-      http.delete(`/api/users/${me.me.id}/bookmarks`, {id}).then(user => me.me = Object.assign(me.me, user));
+      http.delete(`/api/bookmarks/${id}`).then(user => {
+        me.me = Object.assign(me.me, user);
+        setTimeout(dispatchEvent(new CustomEvent("meStateChange")));
+      });
     }
   },
-  loadBookmarks: () => Promise.all(me.me.data?.bookmarks?.map(bid => {
-    return http.get(`/api/messages/${bid}`);
-  })),
 };
 export default me;

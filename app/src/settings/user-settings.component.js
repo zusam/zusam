@@ -46,7 +46,7 @@ export default class UserSettings extends Component {
     event.preventDefault();
     let confirmDeletion = confirm(lang.t("are_you_sure"));
     if (confirmDeletion) {
-      http.delete(`/api/users/${  this.state.id}`).then(() => {
+      http.delete(`/api/users/${this.state.id}`).then(() => {
         router.navigate("/logout");
       });
     }
@@ -84,14 +84,14 @@ export default class UserSettings extends Component {
       default_group,
       lang
     };
-    http.put(`/api/users/${  this.state.id}`, user).then(res => {
+    http.put(`/api/users/${this.state.id}`, user).then(res => {
       if (res["error"]) {
         alert.add(res["error"], "alert-danger");
       } else {
         cache.removeMatching(this.state.id);
         this.setState(prevState => Object.assign(prevState, res));
         location.href = router.toApp(
-          `${location.pathname  }?alert=settings_updated`
+          `${location.pathname}?alert=settings_updated`
         );
       }
     });

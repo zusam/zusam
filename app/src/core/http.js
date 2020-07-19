@@ -87,9 +87,6 @@ const http = {
         }
         return fetch(url, fetchOptions)
           .then(res => {
-            if (method == "DELETE") {
-              return res;
-            }
             try {
               return res.json();
             } catch (exception) {
