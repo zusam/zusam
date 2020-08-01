@@ -5,6 +5,7 @@ RUN apk add --no-cache -U tini s6
 ENTRYPOINT ["/sbin/tini", "--"]
 
 # global environment variables
+ENV APP_ENV=prod
 ENV LANG=en
 ENV DOMAIN=localhost
 ENV DATABASE_NAME=data.db
@@ -55,7 +56,6 @@ COPY app/dist /zusam/public
 # handle build config
 RUN set -xe \
     && mkdir -p /run/nginx /zusam/data /var/tmp/nginx /var/lib/nginx \
-    && sed -e "s|<ENV>|prod|g" /zusam/config > /zusam/data/config \
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar unzip \
     && cd /zusam/api && php bin/composer install --prefer-dist \
     && apk del .build-deps \

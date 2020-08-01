@@ -17,7 +17,7 @@ sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
        -e "s|<ALLOW_IMAGE_UPLOAD>|${ALLOW_IMAGE_UPLOAD}|g" \
        -e "s|<ALLOW_VIDEO_UPLOAD>|${ALLOW_VIDEO_UPLOAD}|g" \
        -e "s|<DATABASE_URL>|${DATABASE_URL}|g" \
-       -e "s|<ENV>|${ENV}|g" \
+       -e "s|<APP_ENV>|${APP_ENV}|g" \
        -e "s|<LANG>|${LANG}|g" \
        /zusam/config
 
