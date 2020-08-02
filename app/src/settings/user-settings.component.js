@@ -15,29 +15,23 @@ export default class UserSettings extends Component {
     input.type = "file";
     input.accept = "image/*";
     input.addEventListener("change", event => {
-      let img = new Image();
-      img.onload = () => {
-        let w = Math.min(img.naturalWidth, 1024);
-        let h = Math.min(img.naturalHeight, 1024);
-        let g = Math.min(w / img.naturalWidth, h / img.naturalHeight);
-        let nw = Math.floor(img.naturalWidth * g);
-        let nh = Math.floor(img.naturalHeight * g);
-        import("/lazy/image-service.js").then(imageService => {
-          imageService.default.resize(img, nw, nh, blob => {
+      import("/lazy/image-service.js").then(imageService => {
+        imageService.default.handleImage(
+          event.target.files[0],
+          blob => {
             const formData = new FormData();
             formData.append("file", blob);
             http.post("/api/files", formData, false).then(file => {
               http
-                .put(`/api/users/${  this.state.id}`, { avatar: file["id"] })
+                .put(`/api/users/${this.state.id}`, { avatar: file["id"] })
                 .then(() => {
                   this.setState({ avatar: file });
                   alert.add(lang.t("settings_updated"));
                 });
             });
-          });
-        });
-      };
-      img.src = URL.createObjectURL(event.target.files[0]);
+          }
+        );
+      });
     });
     input.click();
   }
