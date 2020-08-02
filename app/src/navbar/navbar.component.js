@@ -46,14 +46,14 @@ export default class Navbar extends Component {
                 </div>
                 <div class="dropdown-menu dropdown-right">
                   <a
-                    class="d-block seamless-link"
+                    class="d-block seamless-link capitalize"
                     href={router.toApp(`/users/${  me.me.id  }/settings`)}
                     onClick={e => router.onClick(e)}
                   >
                     {lang.t("settings")}
                   </a>
                   <a
-                    class="d-block seamless-link"
+                    class="d-block seamless-link capitalize"
                     href={router.toApp("/logout")}
                     onClick={e => router.onClick(e)}
                   >
@@ -61,7 +61,7 @@ export default class Navbar extends Component {
                   </a>
                   { me.me.data?.bookmarks?.length && (
                     <a
-                      class="d-block seamless-link"
+                      class="d-block seamless-link capitalize"
                       href={router.toApp("/bookmarks")}
                       onClick={e => router.onClick(e)}
                     >
