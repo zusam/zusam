@@ -104,6 +104,7 @@ export default class Writer extends Component {
     let msg = {
       files: this.state.files
         .filter(e => !e.removed)
+        .filter(e => e.status == "ready")
         .map(e => e["id"])
         .filter(e => !!e),
       data: {
@@ -132,6 +133,7 @@ export default class Writer extends Component {
       children: [],
       files: this.state.files
         .filter(e => !e.removed)
+        .filter(e => e.status == "ready")
         .map(e => e["id"])
         .filter(e => !!e),
       data: {

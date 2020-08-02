@@ -21,12 +21,12 @@ const imageService = {
         callback(source);
         return;
       }
-      if (fileSize < 1024 * 512) {
+      if (fileSize < 1024 * 256) {
         console.warn("Do not use image reduction on small file !");
         callback(source);
         return;
       }
-      reduce.toBlob(source, {max: 2048}).then(blob => callback(blob));
+      reduce.toBlob(source, {max: 2048, unsharpAmount: 100, unsharpRadius: 1, quality: 2}).then(blob => callback(blob));
     } catch (error) {
       // TODO error logging
       console.warn(error);
