@@ -59,6 +59,15 @@ export default class Navbar extends Component {
                   >
                     {lang.t("logout")}
                   </a>
+                  { me.me.data?.bookmarks?.length && (
+                    <a
+                      class="d-block seamless-link"
+                      href={router.toApp("/bookmarks")}
+                      onClick={e => router.onClick(e)}
+                    >
+                      {lang.t('bookmarks')}
+                    </a>
+                  )}
                 </div>
               </div>
             )}
@@ -75,24 +84,6 @@ export default class Navbar extends Component {
         </div>
         <Search />
         <div class="navbar-block">
-          <a
-            href={me.me.data?.bookmarks?.length ? router.toApp("/bookmarks") : undefined}
-            onClick={e => me.me.data?.bookmarks?.length ? router.onClick(e) : undefined}
-            title={lang.t('bookmarks')}
-            className={
-              `menu align-middle-inside color-white${me.me.data?.bookmarks?.length ? " cursor-pointer" : ""}`
-            }
-          >
-            <div class="unselectable button-with-count">
-              <FaIcon
-                family={me.me.data?.bookmarks?.length ? "solid" : "regular"}
-                icon={"bookmark"}
-              />
-              {!!me.me.data?.bookmarks?.length && (
-                <span class="badge-count">{me.me.data?.bookmarks?.length}</span>
-              )}
-            </div>
-          </a>
           <GroupsDropdownNavbar />
         </div>
       </div>
