@@ -58,6 +58,7 @@ RUN set -xe \
     && mkdir -p /run/nginx /zusam/data /var/tmp/nginx /var/lib/nginx \
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar unzip \
     && cd /zusam/api && php bin/composer install --prefer-dist \
+    && rm -rf /zusam/data/data.db \
     && apk del .build-deps \
     && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public /var/tmp/nginx
 
