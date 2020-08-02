@@ -81,12 +81,12 @@ const util = {
   },
   // get the url to a thubmnail
   thumbnail: (id, width, height) =>
-    id
+    typeof(id) == "string" && !id.startsWith("z")
       ? router.toApp(`/api/images/thumbnail/${width}/${height}/${id}`)
       : null,
   // same as http.thumbnail but for a crop
   crop: (id, width, height) =>
-    id
+    typeof(id) == "string" && !id.startsWith("z")
       ? router.toApp(`/api/images/crop/${width}/${height}/${id}`)
       : null,
   // default avatar in base64
