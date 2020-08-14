@@ -32,7 +32,7 @@ export default function TwitchEmbed() {
       <iframe
         allowfullscreen
         class="embed-responsive-item"
-        src={embedUrl}
+        src={`${embedUrl}&parent=${location.hostname}`}
       />
     </div>
   );
