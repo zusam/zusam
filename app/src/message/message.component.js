@@ -58,12 +58,12 @@ export default class Message extends Component {
   deleteMessage(event) {
     event.preventDefault();
     if (confirm(lang.t("ask_delete_message"))) {
-      http.delete(`/api/messages/${  this.props.message["id"]}`);
+      http.delete(`/api/messages/${this.props.message["id"]}`);
       if (this.props.isChild) {
-        this.setState({ isRemoved: true });
+        this.setState({isRemoved: true});
       } else {
-        router.navigate(`/groups/${  this.props.message.group.id}`, {
-          data: { resetGroupDisplay: true }
+        router.navigate(`/groups/${this.props.message.group.id}`, {
+          data: {resetGroupDisplay: true}
         });
       }
     }

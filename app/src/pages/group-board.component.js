@@ -24,7 +24,6 @@ export default class GroupBoard extends Component {
     this.loadMessages = this.loadMessages.bind(this);
     this.onNewParent = this.onNewParent.bind(this);
     window.addEventListener("newParent", this.onNewParent);
-    window.addEventListener("resetCache", this.resetGroupDisplay);
   }
 
   onNewParent() {

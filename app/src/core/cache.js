@@ -10,7 +10,7 @@ const cache = {
         get(k).then(e => {
           // purge if older than 30 days
           if (e.lastUsed + 1000 * 60 * 60 * 24 * 30 < Date.now()) {
-            console.log(`Remove from cache: ${  k.url}`);
+            console.log(`Remove from cache: ${k.url}`);
             del(k);
             caches.open(cache.name).then(c => c.delete(k));
           }
