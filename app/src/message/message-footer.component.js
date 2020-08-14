@@ -122,7 +122,7 @@ export default function MessageFooter() {
               )}
               {this.props.author?.id == me.me.id && (
                 <a
-                  class="seamless-link capitalize d-block d-sm-none"
+                  class="seamless-link capitalize"
                   onClick={e => this.props.editMessage(e)}
                 >
                   {lang.t("edit")}
