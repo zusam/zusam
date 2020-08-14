@@ -14,18 +14,27 @@ class App extends Component {
   constructor() {
     super();
     this.onRouterStateChange = this.onRouterStateChange.bind(this);
-    console.log(`localStorage usage: ${  storage.usage()}`);
+    console.log(`localStorage usage: ${storage.usage()}`);
     cache.purgeOldCache();
     window.addEventListener("routerStateChange", this.onRouterStateChange);
     window.addEventListener("meStateChange", () => this.setState({ me: me.me }));
     window.addEventListener("fetchedNewDict", () => this.setState({}));
     window.addEventListener("popstate", router.sync);
     window.addEventListener("click", e => {
-      // close dropdowns if we are clicking on something else
       if (!e.target.closest(".dropdown")) {
+        // close dropdowns if we are clicking on something else
         document
           .querySelectorAll(".dropdown")
           .forEach(n => n.classList.remove("active"));
+      } else {
+        // close dropdowns that are not clicked on
+        document
+          .querySelectorAll(".dropdown")
+          .forEach(n => {
+            if(n != e.target.closest(".dropdown")) {
+              n.classList.remove("active")
+            }
+          });
       }
     });
     lang.fetchDict();
