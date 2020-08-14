@@ -64,6 +64,26 @@ export default class EmbedBlock extends Component {
             );
           }
           break;
+        case "arte.tv":
+          let segments = this.props.data['url'].split("/");
+          let videoId = "";
+          for (let i = 0; i < segments.length; i++) {
+            if (segments[i] == "videos") {
+              videoId = segments[i + 1];
+              break;
+            }
+          }
+          return (
+            <GenericEmbed
+              preview={util.crop(this.props.preview.id, 1024, 270)}
+              url={
+                `https://www.arte.tv/player/v5/index.php?json_url=${
+                  encodeURIComponent(`https://api.arte.tv/api/player/v2/config/en/${videoId}`)
+                }&lang=en&autoplay=true&mute=0`
+              }
+              playBtnClass={"generic"}
+            />
+          );
         case "twitch.tv":
           return (
             <TwitchEmbed

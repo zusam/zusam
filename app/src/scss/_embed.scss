@@ -72,6 +72,27 @@
         min-width: 270px;
     }
 
+    .generic::before {
+      background: #212121;
+      height: 80px;
+      width: 80px;
+      margin-left: -43px;
+      margin-top: -40px;
+      opacity: .8;
+      border-radius: 20px;
+      transition: all .25s;
+    }
+
+    &:hover > .generic::before {
+      background: #000;
+    }
+
+    .generic::after {
+      border-width: 16px 0 16px 30px;
+      margin: -17px 0 0 -15px;
+      transition: all .25s;
+    }
+
     .lichess::before {
         background: #212121;
         height: 68px;
