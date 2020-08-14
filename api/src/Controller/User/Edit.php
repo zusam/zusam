@@ -130,4 +130,28 @@ class Edit extends ApiController
             Response::HTTP_OK
         );
     }
+
+    /**
+     * @Route("/users/{id}/reset-api-key", methods={"POST"})
+     */
+    public function resetApiKey(string $id): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $user = $this->em->getRepository(User::class)->findOneById($id);
+        if (empty($user)) {
+            return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $this->denyAccessUnlessGranted(new Expression('user == object'), $user);
+
+        $user->resetSecretKey();
+
+        $this->getUser()->setLastActivityDate(time());
+        $this->em->persist($this->getUser());
+        $this->em->persist($user);
+        $this->em->flush();
+
+        return new JsonResponse(['apiKey' => $user->getSecretKey()], JsonResponse::HTTP_OK);
+    }
 }
