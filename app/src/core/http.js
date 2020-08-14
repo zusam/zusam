@@ -50,7 +50,7 @@ const http = {
           headers: new Headers(h)
         })
           .then(res => res.ok && res.json())
-          .catch(err => console.warn(`ERROR for ${  url}`, err));
+          .catch(err => console.warn(`ERROR for ${url}`, err));
       })
       .catch(error => alert.add(error, "alert-danger"));
   },

@@ -1,6 +1,7 @@
 import lang from "./lang.js";
 import router from "./router.js";
 import me from "./me.js";
+import storage from "./storage.js";
 
 const util = {
   // genId starts with a letter to be DOM friendly
@@ -139,6 +140,10 @@ const util = {
     return (
       `background-color:${c1};background-image:linear-gradient(${deg}deg, ${c2} 15%, transparent 15% 30%, ${c2} 30% 45%, transparent 45% 60%, ${c2} 60% 75%, transparent 75% 90%, ${c2} 90%);`
     );
+  },
+  logout: () => {
+    storage.reset();
+    window.location.href = window.location.origin;
   }
 };
 export default util;

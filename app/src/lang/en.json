@@ -91,5 +91,7 @@
     "search_without_result": "Your search did not match any message.",
     "add_bookmark": "Bookmark message",
     "remove_bookmark": "Unbookmark message",
-    "bookmarks": "bookmarks"
+    "bookmarks": "bookmarks",
+    "api_key": "API key",
+    "reset_api_key": "Reset the API key (you will be disconnected)"
 }

@@ -91,5 +91,7 @@
     "search_without_result": "Vášmu vyhľadávaniu nezodpovedá žiadna správa",
     "add_bookmark": "Túto správu uložiť medzi záložky",
     "remove_bookmark": "Zrušte označenie tejto správy",
-    "bookmarks": "záložky"
+    "bookmarks": "záložky",
+    "api_key": "Kľúč API",
+    "reset_api_key": "Obnovte kľúč rozhrania API (budete odpojení)"
 }

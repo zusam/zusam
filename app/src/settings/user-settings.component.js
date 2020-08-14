@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { lang, router, me, alert, http, util, cache } from "/core";
+import { lang, router, me, alert, http, util, cache, storage } from "/core";
 
 export default class UserSettings extends Component {
   constructor(props) {
@@ -7,7 +7,17 @@ export default class UserSettings extends Component {
     this.destroyAccount = this.destroyAccount.bind(this);
     this.inputAvatar = this.inputAvatar.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
-    this.state = Object.assign({}, props);
+    this.resetApiKey = this.resetApiKey.bind(this);
+    this.state = Object.assign({apiKey: ""}, props);
+  }
+
+  componentDidMount() {
+    storage.get("apiKey").then(apiKey => this.setState({apiKey}));
+  }
+
+  resetApiKey(event) {
+    event.preventDefault();
+    http.post(`/api/users/${this.state.id}/reset-api-key`, {}).then(() => util.logout());
   }
 
   inputAvatar() {
@@ -196,6 +206,26 @@ export default class UserSettings extends Component {
                       class="btn btn-primary"
                     >
                       {lang.t("save_changes")}
+                    </button>
+                  </form>
+                  <form id="api_key_form">
+                    <div class="form-group">
+                      <label for="apiKey">
+                        {lang.t("api_key")}:{" "}
+                      </label>
+                      <input
+                        type="text"
+                        name="apiKey"
+                        value={this.state.apiKey}
+                        class="form-control font-size-80"
+                        readonly="readonly"
+                       />
+                    </div>
+                    <button
+                      class="btn btn-outline-secondary"
+                      onClick={this.resetApiKey}
+                    >
+                      {lang.t("reset_api_key")}
                     </button>
                   </form>
                   <form id="destroy_form">

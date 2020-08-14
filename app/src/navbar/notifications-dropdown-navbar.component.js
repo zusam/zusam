@@ -52,11 +52,9 @@ export default class NotificationsDropdownNavbar extends Component {
               {lang.t("mark_all_as_read")}
             </div>
           </div>
-          {me.me.notifications
-            ? me.me.notifications
-                .sort((a, b) => b.createdAt - a.createdAt)
-                .map(e => <Notification key={e.id} {...e} />)
-            : null}
+          {me.me?.notifications?.length && (
+            me.me.notifications.sort((a, b) => b.createdAt - a.createdAt).map(e => <Notification key={e.id} {...e} />)
+          )}
         </div>
       </div>
     );

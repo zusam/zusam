@@ -91,5 +91,7 @@
     "search_without_result": "Su búsqueda no coincide con ningún mensaje.",
     "add_bookmark": "Marcar este mensaje",
     "remove_bookmark": "Desmarcar este mensaje",
-    "bookmarks": "marcadores"
+    "bookmarks": "marcadores",
+    "api_key": "Clave API",
+    "reset_api_key": "Restablecer la clave API (se desconectará)"
 }

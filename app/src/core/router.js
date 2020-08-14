@@ -94,25 +94,26 @@ const router = {
         .then(res => {
           if (!res) {
             console.warn("Unknown entity");
-            router.navigate();
+            // TODO: what should we do here ?
+            //router.navigate(); // could go into navigate loop if disconnected
             return;
           }
           router.entity = res;
           switch (router.route) {
             case "groups":
               if (router.action == "write") {
-                router.backUrl = `/${  router.route  }/${  router.id}`;
+                router.backUrl = `/${router.route}/${router.id}`;
                 router.backUrlPrompt = lang.t("cancel_write");
               }
               if (router.search) {
-                router.backUrl = `/${  router.route  }/${  router.id}`;
+                router.backUrl = `/${router.route}/${router.id}`;
               }
               break;
             case "messages":
               if (res["parent"] && !res["isInFront"]) {
-                router.backUrl = `/messages/${  res["parent"].id}`;
+                router.backUrl = `/messages/${res["parent"].id}`;
               } else {
-                router.backUrl = `/groups/${  util.getId(res.group)}`;
+                router.backUrl = `/groups/${util.getId(res.group)}`;
               }
               break;
             case "users":
@@ -150,8 +151,7 @@ const router = {
         window.dispatchEvent(new CustomEvent("routerStateChange"));
         break;
       case "logout":
-        storage.reset();
-        window.location.href = window.location.origin;
+        util.logout();
         break;
       case "invitation":
         storage.get("apiKey").then(apiKey => {

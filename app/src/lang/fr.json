@@ -91,5 +91,7 @@
     "search_without_result": "Votre recherche ne correspond à aucun message.",
     "add_bookmark": "Ajouter aux marque-pages",
     "remove_bookmark": "Supprimer des marque-pages",
-    "bookmarks": "marque-pages"
+    "bookmarks": "marque-pages",
+    "api_key": "Clef d'API",
+    "reset_api_key": "Changer votre clef d'API (vous allez être déconnecté)"
 }
