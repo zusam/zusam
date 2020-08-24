@@ -1,5 +1,5 @@
 import { h, render, Component } from "preact";
-import { alert, lang, storage, router, me, cache } from "/core";
+import { alert, lang, storage, router, me, cache, api } from "/core";
 import { Navbar } from "/navbar";
 import { MainContent } from "/pages";
 import {
@@ -13,9 +13,15 @@ import {
 class App extends Component {
   constructor() {
     super();
-    this.onRouterStateChange = this.onRouterStateChange.bind(this);
+
+    // load api infos
+    api.update();
+
+    // cache management
     console.log(`localStorage usage: ${storage.usage()}`);
     cache.purgeOldCache();
+
+    this.onRouterStateChange = this.onRouterStateChange.bind(this);
     window.addEventListener("routerStateChange", this.onRouterStateChange);
     window.addEventListener("meStateChange", () => this.setState({ me: me.me }));
     window.addEventListener("fetchedNewDict", () => this.setState({}));
@@ -37,7 +43,11 @@ class App extends Component {
           });
       }
     });
+
+    // fetch language file
     lang.fetchDict();
+
+    // get apiKey from the logged in user
     storage.get("apiKey").then(apiKey => {
       if (router.isOutside() || apiKey) {
         router.sync();
@@ -46,6 +56,7 @@ class App extends Component {
         router.navigate("/login");
       }
     });
+
     this.state = {
       action: router.action,
       route: router.route,

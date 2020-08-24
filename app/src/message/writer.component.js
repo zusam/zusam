@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { lang, alert, http, me, router, util } from "/core";
+import { lang, alert, http, me, router, util, api } from "/core";
 import { FaIcon } from "/misc";
 import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
@@ -114,15 +114,15 @@ export default class Writer extends Component {
     if (document.getElementById("title")) {
       msg.data.title = document.getElementById("title").value || "";
     }
-    http.put(`/api/messages/${  this.props.messageId}`, msg).then(res => {
-      this.setState({ sending: false });
+    http.put(`/api/messages/${this.props.messageId}`, msg).then(res => {
+      this.setState({sending: false});
       if (!res) {
         alert.add(lang.t("error_new_message"), "alert-danger");
         return;
       }
       window.dispatchEvent(new CustomEvent("editMessage", { detail: res }));
     });
-    this.setState({ sending: true });
+    this.setState({sending: true});
   }
 
   postMessage() {
@@ -272,7 +272,8 @@ export default class Writer extends Component {
         });
         break;
       case "video":
-        this.uploadFile(worker.target.inputFile, () => this.removeWorker(workerId));
+        console.log(worker);
+        this.uploadFile(worker.target.id, () => this.removeWorker(workerId));
         break;
       default:
         // don't know what to do
@@ -285,8 +286,10 @@ export default class Writer extends Component {
   uploadFile(fileId, callback = null) {
     const formData = new FormData();
     let file = this.state.files.find(e => e.id == fileId);
+    console.log(file);
     if (!file?.inputFile) {
-      console.log(this.state, file, fileId);
+      // TODO handle this properly
+      console.error(this.state, file, fileId);
       throw "error";
     }
     formData.append("file", file.inputFile);
@@ -362,20 +365,24 @@ export default class Writer extends Component {
           />
         )}
         <div class="options">
-          <button
-            class="option"
-            onClick={e => this.inputImages(e)}
-            title={lang.t("upload_image")}
-          >
-            <FaIcon family={"regular"} icon={"images"} />
-          </button>
-          <button
-            class="option"
-            onClick={e => this.inputVideo(e)}
-            title={lang.t("upload_video")}
-          >
-            <FaIcon family={"solid"} icon={"film"} />
-          </button>
+          {api?.info?.upload?.image && (
+            <button
+              class="option"
+              onClick={e => this.inputImages(e)}
+              title={lang.t("upload_image")}
+            >
+              <FaIcon family={"regular"} icon={"images"} />
+            </button>
+          )}
+          {api?.info?.upload?.video && (
+            <button
+              class="option"
+              onClick={e => this.inputVideo(e)}
+              title={lang.t("upload_video")}
+            >
+              <FaIcon family={"solid"} icon={"film"} />
+            </button>
+          )}
           <div class="actions">
             {this.props.cancel && (
               <button class="cancel" onClick={e => this.props.cancel(e)}>
