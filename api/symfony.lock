@@ -86,6 +86,9 @@
     "embed/embed": {
         "version": "v3.4.2"
     },
+    "exsyst/swagger": {
+        "version": "v0.4.1"
+    },
     "felixfbecker/advanced-json-rpc": {
         "version": "v3.1.1"
     },
@@ -124,6 +127,19 @@
     },
     "monolog/monolog": {
         "version": "2.0.1"
+    },
+    "nelmio/api-doc-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "c8e0c38e1a280ab9e37587a8fa32b251d5bc1c94"
+        },
+        "files": [
+            "config/packages/nelmio_api_doc.yaml",
+            "config/routes/nelmio_api_doc.yaml"
+        ]
     },
     "nelmio/cors-bundle": {
         "version": "1.5",
@@ -169,6 +185,9 @@
     },
     "openlss/lib-array2xml": {
         "version": "1.0.0"
+    },
+    "paragonie/random_compat": {
+        "version": "v9.99.99"
     },
     "php": {
         "version": "7.3"
@@ -410,6 +429,9 @@
     "symfony/polyfill-php80": {
         "version": "v1.17.1"
     },
+    "symfony/polyfill-uuid": {
+        "version": "v1.18.1"
+    },
     "symfony/process": {
         "version": "v5.0.1"
     },
@@ -506,6 +528,9 @@
             "templates/base.html.twig"
         ]
     },
+    "symfony/twig-pack": {
+        "version": "v1.0.0"
+    },
     "symfony/validator": {
         "version": "4.3",
         "recipe": {
@@ -542,6 +567,9 @@
     "symfony/yaml": {
         "version": "v5.0.1"
     },
+    "twig/extra-bundle": {
+        "version": "v3.0.5"
+    },
     "twig/twig": {
         "version": "v3.0.0"
     },
@@ -568,5 +596,8 @@
     },
     "webmozart/path-util": {
         "version": "2.3.0"
+    },
+    "zircote/swagger-php": {
+        "version": "2.0.16"
     }
 }
