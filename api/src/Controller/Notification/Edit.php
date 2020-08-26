@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class Edit extends ApiController
 {
@@ -25,6 +28,13 @@ class Edit extends ApiController
 
     /**
      * @Route("/notifications/{id}", methods={"PUT"})
+     * @SWG\Response(
+     *  response=200,
+     *  description="Modify a notification",
+     *  @Model(type=App\Entity\Notification::class, groups={"read_notification"})
+     * )
+     * @SWG\Tag(name="notification")
+     * @Security(name="api_key")
      */
     public function index(string $id, Request $request): Response
     {

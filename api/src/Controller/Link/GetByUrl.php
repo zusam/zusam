@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class GetByUrl extends ApiController
 {
@@ -26,9 +29,51 @@ class GetByUrl extends ApiController
 
     /**
      * @Route("/links/by_url", methods={"POST"})
+     * @SWG\Parameter(
+     *  name="url",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="string"
+     *  )
+     * )
+     * @SWG\Parameter(
+     *  name="rescan",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="boolean"
+     *  )
+     * )
+     * @SWG\Parameter(
+     *  name="onlyData",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="boolean"
+     *  )
+     * )
+     * @SWG\Response(
+     *  response=200,
+     *  description="Get a link by its url",
+     *  @SWG\Schema(
+     *    type="object",
+     *    @SWG\Property(property="id", type="string"),
+     *    @SWG\Property(property="data", type="object"),
+     *    @SWG\Property(property="url", type="string"),
+     *    @SWG\Property(property="updatedAt", type="integer"),
+     *    @SWG\Property(
+     *      property="preview",
+     *      type="object",
+     *      @SWG\Property(property="id", type="string"),
+     *      @SWG\Property(property="entityType", type="string")
+     *    )
+     *  )
+     * )
+     * @SWG\Tag(name="link")
+     * @Security(name="api_key")
      */
     public function getLinkByPost(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $data = json_decode($request->getContent(), true);
         $url = $data['url'] ?? '';
         if (!$url) {
@@ -41,10 +86,36 @@ class GetByUrl extends ApiController
     }
 
     /**
-     * @Route("/links/by_url", methods={"GET", "HEAD"})
+     * @Route("/links/by_url", methods={"GET"})
+     * @SWG\Parameter(
+     *  name="url",
+     *  in="query",
+     *  type="string"
+     * )
+     * @SWG\Response(
+     *  response=200,
+     *  description="Get a link by its url",
+     *  @SWG\Schema(
+     *    type="object",
+     *    @SWG\Property(property="id", type="string"),
+     *    @SWG\Property(property="data", type="object"),
+     *    @SWG\Property(property="url", type="string"),
+     *    @SWG\Property(property="updatedAt", type="integer"),
+     *    @SWG\Property(
+     *      property="preview",
+     *      type="object",
+     *      @SWG\Property(property="id", type="string"),
+     *      @SWG\Property(property="entityType", type="string")
+     *    )
+     *  )
+     * )
+     * @SWG\Tag(name="link")
+     * @Security(name="api_key")
      */
     public function getLinkByGet(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $url = $request->query->get('url') ?? '';
         if (!$url) {
             return new JsonResponse(['error' => 'Invalid url'], Response::HTTP_BAD_REQUEST);

@@ -5,6 +5,9 @@ namespace App\Entity;
 use App\Service\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 
 /**
  * @ORM\Table(name="`link`")
@@ -16,6 +19,7 @@ class Link
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @Assert\NotBlank()
+     * @SWG\Property(type="guid")
      */
     private $id;
 
@@ -23,6 +27,7 @@ class Link
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotNull()
+     * @SWG\Property(type="integer")
      */
     private $createdAt;
 
@@ -30,33 +35,42 @@ class Link
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotNull()
+     * @SWG\Property(type="integer")
      */
     private $updatedAt;
 
     /**
      * @ORM\Column(type="json")
      * @Assert\NotBlank()
+     * @SWG\Property(type="object")
      */
     private $data;
 
     /**
      * @ORM\Column(type="string", unique=true)
      * @Assert\NotBlank()
+     * @SWG\Property(type="string")
      */
     private $url;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="preview_id", referencedColumnName="id")
+     * @SWG\Property(type="App\Entity\File")
      */
     private $preview;
 
     /**
      * @ORM\Column(type="guid", unique=true)
      * @Assert\NotBlank()
+     * @SWG\Property(type="guid")
      */
     private $secretKey;
 
+    /**
+     * @Groups("*")
+     * @SWG\Property(type="string")
+     */
     private $entityType;
 
     public function getEntityType(): string

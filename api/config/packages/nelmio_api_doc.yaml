@@ -1,0 +1,24 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: Zusam
+      description: A truly private space for you and your friends
+      version: '%env(resolve:VERSION)%'
+    securityDefinitions:
+      api_key:
+          type: apiKey
+          description: 'Your API key can be found in your parameters'
+          name: X-AUTH-TOKEN
+          in: header
+    security:
+      - api_key: []
+  areas: # to filter documented areas
+    path_patterns:
+      - ^/me$
+      - ^/users
+      - ^/notifications
+      - ^/messages
+      - ^/links
+      - ^/groups
+      - ^/files
+      - ^/images

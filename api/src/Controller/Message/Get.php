@@ -10,6 +10,9 @@ use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class Get extends ApiController
 {
@@ -21,7 +24,14 @@ class Get extends ApiController
     }
 
     /**
-     * @Route("/messages/{id}", methods={"GET","HEAD"})
+     * @Route("/messages/{id}", methods={"GET"})
+     * @SWG\Response(
+     *  response=200,
+     *  description="Get a message",
+     *  @Model(type=App\Entity\Message::class, groups={"read_message"})
+     * )
+     * @SWG\Tag(name="message")
+     * @Security(name="api_key")
      */
     public function index(string $id): Response
     {

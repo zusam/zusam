@@ -9,6 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class Get extends ApiController
 {
@@ -20,7 +23,14 @@ class Get extends ApiController
     }
 
     /**
-     * @Route("/users/{id}", methods={"GET","HEAD"})
+     * @Route("/users/{id}", methods={"GET"})
+     * @SWG\Response(
+     *  response=200,
+     *  description="Returns a user given its id",
+     *  @Model(type=App\Entity\User::class, groups={"read_user"})
+     * )
+     * @SWG\Tag(name="user")
+     * @Security(name="api_key")
      */
     public function index(string $id): Response
     {

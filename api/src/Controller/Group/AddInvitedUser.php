@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class AddInvitedUser extends ApiController
 {
@@ -22,6 +25,13 @@ class AddInvitedUser extends ApiController
 
     /**
      * @Route("/groups/invitation/{inviteKey}", methods={"POST"})
+     * @SWG\Response(
+     *  response=200,
+     *  description="Add the logged in user to the group",
+     *  @SWG\Schema(type="string")
+     * )
+     * @SWG\Tag(name="group")
+     * @Security(name="api_key")
      */
     public function index(string $inviteKey): Response
     {

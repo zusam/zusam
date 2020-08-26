@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class Edit extends ApiController
 {
@@ -24,6 +27,20 @@ class Edit extends ApiController
 
     /**
      * @Route("/groups/{id}", methods={"PUT"})
+     * @SWG\Parameter(
+     *  name="name",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="string",
+     *  )
+     * )
+     * @SWG\Response(
+     *  response=200,
+     *  description="Modify a group",
+     *  @Model(type=App\Entity\Group::class, groups={"read_group"})
+     * )
+     * @SWG\Tag(name="group")
+     * @Security(name="api_key")
      */
     public function index(string $id, Request $request): Response
     {
@@ -71,7 +88,7 @@ class Edit extends ApiController
         $this->em->flush();
 
         return new Response(
-            $this->serialize($group, ['read_message']),
+            $this->serialize($group, ['read_group']),
             Response::HTTP_OK
         );
     }

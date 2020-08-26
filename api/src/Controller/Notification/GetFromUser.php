@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class GetFromUser extends ApiController
 {
@@ -21,7 +24,17 @@ class GetFromUser extends ApiController
     }
 
     /**
-     * @Route("/users/{id}/notifications", methods={"GET","HEAD"})
+     * @Route("/users/{id}/notifications", methods={"GET"})
+     * @SWG\Response(
+     *  response=200,
+     *  description="Get all notifications from a user",
+     *  @SWG\Schema(
+     *    type="array",
+     *    @SWG\Items(ref=@Model(type=App\Entity\Notification::class, groups={"read_notification"}))
+     *  )
+     * )
+     * @SWG\Tag(name="notification")
+     * @Security(name="api_key")
      */
     public function index(string $id): Response
     {

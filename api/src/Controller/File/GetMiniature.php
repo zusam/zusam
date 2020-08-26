@@ -10,11 +10,23 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class GetMiniature extends ApiController
 {
     /**
-     * @Route("/images/{type}/{width}/{height}/{id}", methods={"GET", "HEAD"})
+     * @Route("/images/{type}/{width}/{height}/{id}", methods={"GET"})
+     * @SWG\Response(
+     *  response=200,
+     *  description="Get a miniature of a file",
+     *  @SWG\Schema(
+     *    type="binary",
+     *  )
+     * )
+     * @SWG\Tag(name="file")
+     * @Security(name="api_key")
      */
     public function index(
         string $id,

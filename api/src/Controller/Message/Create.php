@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class Create extends ApiController
 {
@@ -32,6 +35,30 @@ class Create extends ApiController
 
     /**
      * @Route("/messages", methods={"POST"})
+     * @SWG\Parameter(
+     *  name="data",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="object",
+     *    @SWG\Property(property="text", type="string"),
+     *    @SWG\Property(property="title", type="string")
+     *  )
+     * )
+     * @SWG\Parameter(
+     *  name="files",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="array",
+     *    @SWG\Items(type="string")
+     *  )
+     * )
+     * @SWG\Response(
+     *  response=201,
+     *  description="Create a message",
+     *  @Model(type=App\Entity\Message::class, groups={"read_message"})
+     * )
+     * @SWG\Tag(name="message")
+     * @Security(name="api_key")
      */
     public function index(Request $request): Response
     {

@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class Edit extends ApiController
 {
@@ -29,6 +32,13 @@ class Edit extends ApiController
 
     /**
      * @Route("/bookmarks/{id}", methods={"POST"})
+     * @SWG\Response(
+     *  response=200,
+     *  description="Register a bookmark",
+     *  @Model(type=App\Entity\User::class, groups={"read_user"})
+     * )
+     * @SWG\Tag(name="user")
+     * @Security(name="api_key")
      */
     public function post_bookmark(string $id): Response
     {
@@ -54,6 +64,13 @@ class Edit extends ApiController
 
     /**
      * @Route("/bookmarks/{id}", methods={"DELETE"})
+     * @SWG\Response(
+     *  response=200,
+     *  description="Unregister a bookmark",
+     *  @Model(type=App\Entity\User::class, groups={"read_user"})
+     * )
+     * @SWG\Tag(name="user")
+     * @Security(name="api_key")
      */
     public function delete_bookmark(string $id): Response
     {
@@ -83,6 +100,53 @@ class Edit extends ApiController
 
     /**
      * @Route("/users/{id}", methods={"PUT"})
+     * @SWG\Parameter(
+     *  name="password",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="string",
+     *    description="New password"
+     *  )
+     * )
+     * @SWG\Parameter(
+     *  name="name",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="string",
+     *    description="New name"
+     *  )
+     * )
+     * @SWG\Parameter(
+     *  name="login",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="string",
+     *    description="New login"
+     *  )
+     * )
+     * @SWG\Parameter(
+     *  name="data",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="object",
+     *    description="New data"
+     *  )
+     * )
+     * @SWG\Parameter(
+     *  name="avatar",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="string",
+     *    description="New avatar"
+     *  )
+     * )
+     * @SWG\Response(
+     *  response=200,
+     *  description="Modify a user",
+     *  @Model(type=App\Entity\User::class, groups={"read_user"})
+     * )
+     * @SWG\Tag(name="user")
+     * @Security(name="api_key")
      */
     public function index(string $id, Request $request): Response
     {
@@ -133,6 +197,13 @@ class Edit extends ApiController
 
     /**
      * @Route("/users/{id}/reset-api-key", methods={"POST"})
+     * @SWG\Response(
+     *  response=200,
+     *  description="Reset a user api key",
+     *  @SWG\Schema(type="string")
+     * )
+     * @SWG\Tag(name="user")
+     * @Security(name="api_key")
      */
     public function resetApiKey(string $id): Response
     {

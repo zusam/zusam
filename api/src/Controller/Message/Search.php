@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class Search extends ApiController
 {
@@ -39,6 +42,47 @@ class Search extends ApiController
 
     /**
      * @Route("/messages/search", methods={"POST"})
+     * @SWG\Parameter(
+     *  name="search",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="string",
+     *  )
+     * )
+     * @SWG\Parameter(
+     *  name="group",
+     *  in="body",
+     *  @SWG\Schema(
+     *    type="string",
+     *  )
+     * )
+     * @SWG\Response(
+     *  response=200,
+     *  description="Search for a message",
+     *  @SWG\Schema(
+     *    type="object",
+     *    @SWG\Property(
+     *      property="messages",
+     *      type="array",
+     *      @SWG\Items(
+     *        type="object",
+     *        @SWG\Property(property="id", type="string"),
+     *        @SWG\Property(property="entityType", type="string"),
+     *        @SWG\Property(property="data", type="object"),
+     *        @SWG\Property(property="author", type="string"),
+     *        @SWG\Property(property="preview", type="string"),
+     *        @SWG\Property(property="parent", type="string"),
+     *        @SWG\Property(property="children", type="integer"),
+     *        @SWG\Property(property="lastActivityDate", type="integer"),
+     *        @SWG\Property(property="score", type="integer")
+     *      )
+     *    ),
+     *    @SWG\Property(property="totalItems", type="integer"),
+     *    @SWG\Property(property="searchTerms", type="string")
+     *  )
+     * )
+     * @SWG\Tag(name="message")
+     * @Security(name="api_key")
      */
     public function index(Request $request): Response
     {

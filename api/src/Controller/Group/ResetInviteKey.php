@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class ResetInviteKey extends ApiController
 {
@@ -22,6 +25,15 @@ class ResetInviteKey extends ApiController
 
     /**
      * @Route("/groups/{id}/reset-invite-key", methods={"POST"})
+     * @SWG\Response(
+     *  response=200,
+     *  description="Reset invite key of a group",
+     *  @SWG\Schema(
+     *    type="string",
+     *  )
+     * )
+     * @SWG\Tag(name="group")
+     * @Security(name="api_key")
      */
     public function index(string $id): Response
     {

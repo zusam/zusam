@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 
 /**
  * @ORM\Table(name="`file`")
@@ -28,6 +30,7 @@ class File
      * @ORM\Column(type="guid")
      * @Assert\NotBlank()
      * @Groups("*")
+     * @SWG\Property(type="guid")
      */
     private $id;
 
@@ -36,12 +39,14 @@ class File
      * @Assert\Type("integer")
      * @Assert\NotNull()
      * @Groups({"read_file"})
+     * @SWG\Property(type="integer")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string")
      * @Groups({"read_message", "read_file"})
+     * @SWG\Property(type="string")
      */
     private $type;
 
@@ -49,6 +54,7 @@ class File
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      * @Groups({"read_message", "read_file"})
+     * @SWG\Property(type="string")
      */
     private $status;
 
@@ -61,29 +67,34 @@ class File
     /**
      * @ORM\Column(type="string")
      * @Groups("*")
+     * @SWG\Property(type="string")
      */
     private $contentUrl;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"read_file"})
+     * @SWG\Property(type="integer")
      */
     private $size;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"read_message", "read_file"})
+     * @SWG\Property(type="integer")
      */
     private $fileIndex;
 
     /**
      * @ORM\Column(type="guid", unique=true)
      * @Assert\NotBlank()
+     * @SWG\Property(type="guid")
      */
     private $secretKey;
 
     /**
      * @Groups("*")
+     * @SWG\Property(type="string")
      */
     private $entityType;
 

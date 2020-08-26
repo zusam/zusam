@@ -47,13 +47,6 @@ class Url
         if (!empty($link) && !$rescan) {
             return $link;
         }
-        // need to be connected to process links (trying to avoid DOS)
-        if (!$this->security->isGranted('ROLE_USER')) {
-            if (empty($link)) {
-                return null;
-            }
-            throw new AccessDeniedException();
-        }
         if (empty($link)) {
             $link = new Link($url);
         }
