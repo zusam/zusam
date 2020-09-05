@@ -22,3 +22,4 @@ nelmio_api_doc:
       - ^/groups
       - ^/files
       - ^/images
+      - ^/info
