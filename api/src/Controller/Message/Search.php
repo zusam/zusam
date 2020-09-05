@@ -27,7 +27,8 @@ class Search extends ApiController
         parent::__construct($em, $serializer);
     }
 
-    public static function has_term($terms, $text): bool {
+    public static function has_term($terms, $text): bool
+    {
         if (empty($text) || empty($terms)) {
             return false;
         }
@@ -181,7 +182,7 @@ class Search extends ApiController
         $results = array_slice($results, 0, 100);
 
         $page = [];
-        foreach($results as $res) {
+        foreach ($results as $res) {
             $message = $res['message'];
             $previewId = $message->getPreview() ? $message->getPreview()->getId() : '';
             $authorId = $message->getAuthor() ? $message->getAuthor()->getId() : '';

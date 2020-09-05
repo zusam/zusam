@@ -81,7 +81,7 @@ class Edit extends ApiController
         $data['bookmarks'] = array_values(
             array_filter(
                 $data['bookmarks'],
-                function($e) use ($id) {
+                function ($e) use ($id) {
                     return $e != $id;
                 }
             )
