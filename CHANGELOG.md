@@ -2,6 +2,27 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [0.4.2] - 2020-09-06
+
+### Log
+- Add auto-generated API documentation at /api/doc
+- The webapp now correctly handles api upload capabilities
+- Enable reset of the user's own API key
+- Use the Symfony UUID polyfill
+- Embed arte.tv
+- Add a new feature: bookmarks
+- Rework file upload inner working to make them more reliable
+- Enhance notifications display
+- Various fixes
+
+### Remarks
+Minor feature release.  
+This release fixes support for emails login with a '+' in them. If you have user like that, they will not be able to log in anymore.  
+You can fix this by running the following on the database:
+```
+UPDATE user SET login = replace(login, ' ', '+');
+```
+
 ## [0.4.1] - 2020-04-21
 
 ### Log
