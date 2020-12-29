@@ -81,10 +81,6 @@
                 overflow: hidden;
                 border: 2px solid white;
                 transition: all 0.2s ease-in-out;
-
-                &:hover {
-                    transform: scale(2.3);
-                }
             }
             .left-buffer {
                 width: 65px;
@@ -136,9 +132,6 @@
         height: 3.6rem;
         width: 3.6rem;
         margin-right: 1rem;
-        &:hover {
-            transform: scale(2.3);
-        }
     }
 
     &.child {
@@ -160,9 +153,6 @@
         .avatar {
             height: 3rem;
             width: 3rem;
-            &:hover {
-                transform: scale(1.7);
-            }
         }
 
         .message-head {

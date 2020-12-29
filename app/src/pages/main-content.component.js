@@ -74,7 +74,7 @@ export default function MainContent(props) {
         <div>
           <GroupBoard key={props.id} />
           <a
-            class="write-button material-shadow seamless-link"
+            class="write-button material-shadow-with-hover seamless-link"
             href={router.toApp(`/groups/${props.id}/write`)}
             onClick={e => router.onClick(e)}
           >

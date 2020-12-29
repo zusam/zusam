@@ -190,7 +190,7 @@ export default class MessageSearchResult extends Component {
         onClick={e => router.onClick(e)}
         title={this.state.title}
       >
-        <div tabindex={this.props.tabindex} class="card material-shadow">
+        <div tabindex={this.props.tabindex} class="card material-shadow-with-hover">
           <div class="card-body border-top">
             {this.getMiniature()}
             <div class="infos">

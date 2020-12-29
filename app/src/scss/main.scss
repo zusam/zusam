@@ -80,6 +80,10 @@ $grid-breakpoints: (
 
 .material-shadow {
     box-shadow: $material_shadow;
+}
+
+.material-shadow-with-hover {
+    box-shadow: $material_shadow;
     transition: all 0.2s ease-in-out;
     &:hover, &:focus {
         box-shadow: $material_shadow_hover;

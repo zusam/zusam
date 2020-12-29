@@ -138,7 +138,7 @@ export default class GroupSettings extends Component {
               user && (
                 <div class="user-card">
                   <img
-                    class="avatar material-shadow"
+                    class="avatar material-shadow-with-hover"
                     style={util.backgroundHash(user.id)}
                     src={
                       user.avatar

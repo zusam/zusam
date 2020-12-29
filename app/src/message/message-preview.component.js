@@ -49,7 +49,7 @@ export default class MessagePreview extends Component {
         onClick={e => router.onClick(e)}
         title={this.props.message.data["title"]}
       >
-        <div tabindex={this.props.tabindex} class="card material-shadow">
+        <div tabindex={this.props.tabindex} class="card material-shadow-with-hover">
           {this.getAvatar(this.state.author)}
           {this.props.message.preview ? (
             <div
