@@ -164,6 +164,7 @@ export default class Notification extends Component {
       <a
         class="notification seamless-link unselectable"
         href={router.toApp(this.state.target)}
+        title={this.state.title}
         onClick={e => {
           e.preventDefault();
           me.removeMatchingNotifications(this.props.id).then(() =>
@@ -182,7 +183,7 @@ export default class Notification extends Component {
             )}
             {this.getObject()}
           </div>
-          <div class="date" title={util.humanFullDate(this.props.createdAt)}>
+          <div class="date">
             {util.humanTime(this.props.createdAt)}
           </div>
         </div>
