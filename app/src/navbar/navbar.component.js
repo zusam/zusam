@@ -77,7 +77,7 @@ export default class Navbar extends Component {
               href={router.toApp(router.backUrl)}
               onClick={e => this.clickBackButton(e)}
             >
-              <FaIcon family={"solid"} icon={"arrow-left"} />
+              <FaIcon family={"regular"} icon={"level-down-alt"} rotation={"180deg"} />
             </a>
           )}
           <NotificationsDropdownNavbar />
