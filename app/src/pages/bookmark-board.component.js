@@ -40,14 +40,16 @@ export default class BookmarkBoard extends Component {
         <article id="group" class="justify-content-center d-flex">
           <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
             {this.state.messages.map((msg, i) => {
-              return (
-                <MessagePreview
-                  tabindex={i + 1}
-                  key={msg.id}
-                  message={msg}
-                  groupId={msg.group.id}
-                />
-              );
+              if (msg && msg["id"]) {
+                return (
+                  <MessagePreview
+                    tabindex={i + 1}
+                    key={msg.id}
+                    message={msg}
+                    groupId={msg.group.id}
+                  />
+                );
+              }
             })}
           </div>
         </article>
