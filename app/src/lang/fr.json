@@ -93,5 +93,6 @@
     "remove_bookmark": "Supprimer des marque-pages",
     "bookmarks": "marque-pages",
     "api_key": "Clef d'API",
-    "reset_api_key": "Changer votre clef d'API (vous allez être déconnecté)"
+    "reset_api_key": "Changer votre clef d'API (vous allez être déconnecté)",
+    "video_not_ready": "La vidéo n'est pas encore prête."
 }

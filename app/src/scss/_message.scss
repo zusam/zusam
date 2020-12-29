@@ -311,6 +311,18 @@
     }
 }
 
+.video-not-ready {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    color: white;
+    text-shadow: 0 0 1px black;
+    font-weight: bold;
+    line-height: 2rem;
+}
+
 .message-head {
     width: 100%;
     padding: 1rem 1rem 5px 1rem;

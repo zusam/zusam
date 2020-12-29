@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { util, router } from "/core";
+import { util, router, lang } from "/core";
 import { FaIcon } from "/misc";
 
 export default class FileGrid extends Component {
@@ -90,7 +90,7 @@ export default class FileGrid extends Component {
     }
     if (file.contentUrl) {
       if (/video/.test(file.type)) {
-        if (file.status == "ready") {
+        if (file.status != "ready") {
           return (
             <video
               poster={util.thumbnail(file.id, 1280, 720)}
@@ -106,8 +106,8 @@ export default class FileGrid extends Component {
               class="img-fluid video-raw"
               src={util.crop(file.id, 320, 180)}
              />
-            <div class="spinner orange-spinner">
-              <div /><div /><div /><div /><div />
+            <div class="video-not-ready">
+              {lang.t("video_not_ready")}
             </div>
           </a>
         );
