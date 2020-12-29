@@ -93,5 +93,6 @@
     "remove_bookmark": "Zrušte označenie tejto správy",
     "bookmarks": "záložky",
     "api_key": "Kľúč API",
-    "reset_api_key": "Obnovte kľúč rozhrania API (budete odpojení)"
+    "reset_api_key": "Obnovte kľúč rozhrania API (budete odpojení)",
+    "video_not_ready": "Video ešte nie je pripravené"
 }
