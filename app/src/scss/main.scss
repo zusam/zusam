@@ -1,3 +1,14 @@
+// override boostraps variables here
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1300px
+);
+
+// import bootstrap
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
 // pass in a map to define number of columns for each breakpoint
@@ -10,7 +21,6 @@
     }
 }
 
-@import "custom";
 @import "variables";
 
 @import "embed";
