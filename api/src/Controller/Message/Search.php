@@ -32,7 +32,6 @@ class Search extends ApiController
         if (empty($text) || empty($terms)) {
             return false;
         }
-        $flat_text = StringUtils::remove_accents($text);
         foreach ($terms as $term) {
             if (mb_stripos($text, $term) !== false) {
                 return true;
@@ -116,6 +115,11 @@ class Search extends ApiController
             return new JsonResponse(['error' => 'No Message found'], Response::HTTP_NOT_FOUND);
         }
 
+        // flatten the search terms before starting the search
+        $flattened_search_terms = array_map(function($e) {
+            return StringUtils::remove_accents($e);
+        }, $search_terms);
+
         $totalItems = 0;
         $results = [];
         $i = 0;
@@ -124,16 +128,16 @@ class Search extends ApiController
             $data = $message->getData();
             $score = 0;
 
-            if (isset($data['text']) && self::has_term($search_terms, $data['text'])) {
+            if (isset($data['text']) && self::has_term($flattened_search_terms, $data['text'])) {
                 $score += 100;
             }
 
-            if (isset($data['title']) && self::has_term($search_terms, $data['title'])) {
+            if (isset($data['title']) && self::has_term($flattened_search_terms, $data['title'])) {
                 $score += 150;
             }
 
             if (!empty($message->getAuthor())) {
-                if (self::has_term($search_terms, $message->getAuthor()->getName())) {
+                if (self::has_term($flattened_search_terms, $message->getAuthor()->getName())) {
                     $score += 50;
                 }
             }
@@ -144,13 +148,13 @@ class Search extends ApiController
                 if (!empty($link)) {
                     $link_data = $link->getData();
                     if (!empty($link_data)) {
-                        if (self::has_term($search_terms, implode(' ', $link_data["tags"]))) {
+                        if (self::has_term($flattened_search_terms, implode(' ', $link_data["tags"]))) {
                             $score += 25;
                         }
-                        if (isset($link_data["title"]) && self::has_term($search_terms, $link_data["title"])) {
+                        if (isset($link_data["title"]) && self::has_term($flattened_search_terms, $link_data["title"])) {
                             $score += 30;
                         }
-                        if (isset($link_data['description']) && self::has_term($search_terms, $link_data["description"])) {
+                        if (isset($link_data['description']) && self::has_term($flattened_search_terms, $link_data["description"])) {
                             $score += 20;
                         }
                     }

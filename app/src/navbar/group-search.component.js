@@ -11,11 +11,10 @@ export default class GroupSearch extends Component {
       loaded: false,
       messages: [],
       totalMessages: 0,
-      search: router.getParam("search").replace(/\+/g, " "),
-      hashtags: router.getParam("hashtags").replace(/\+/g, " ")
+      search: "",
+      hashtags: "",
     };
     this.loadMessages = this.loadMessages.bind(this);
-    window.addEventListener("routerStateChange", () => this.loadMessages());
   }
 
   getGroupName() {
@@ -26,16 +25,19 @@ export default class GroupSearch extends Component {
     return "";
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("routerStateChange", this.loadMessages);
+  }
+
   componentDidMount() {
     this.loadMessages();
+    window.addEventListener("routerStateChange", this.loadMessages);
   }
 
   loadMessages() {
-    let search = router.getParam("search").replace(/\+/g, " ");
-    let hashtags = router
-      .getParam("hashtags")
-      .split("+")
-      .join(" ");
+    const search = router.getParam("search").replace(/\+/g, " ");
+    const hashtags = router.getParam("hashtags").replace(/\+/g, " ");
+    this.setState({search, hashtags});
     http
       .post("/api/messages/search", {
         group: this.state.groupId,
