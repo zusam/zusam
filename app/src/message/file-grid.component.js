@@ -90,7 +90,7 @@ export default class FileGrid extends Component {
     }
     if (file.contentUrl) {
       if (/video/.test(file.type)) {
-        if (file.status != "ready") {
+        if (file.status == "ready") {
           return (
             <video
               poster={util.thumbnail(file.id, 1280, 720)}
