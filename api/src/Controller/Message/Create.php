@@ -75,6 +75,10 @@ class Create extends ApiController
         $message->setAuthor($this->getUser());
         $message->setGroup($group);
 
+        if (!empty($requestData['createdAt'])) {
+            $message->setCreatedAt($requestData['createdAt']);
+        }
+
         if (!empty($requestData['parent'])) {
             $parent = $this->em->getRepository(Message::class)->findOneById($requestData['parent']);
             $message->setIsInFront(false);
