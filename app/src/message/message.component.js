@@ -26,7 +26,7 @@ export default class Message extends Component {
     const res = await http.get(
       `/api/messages/${this.props.message.id}/get-public-link`
     );
-    newTab.location = `${window.origin}/public/${res.token}`;
+    newTab.location = `${document.baseURI}public/${res.token}`;
   }
 
   onEditMessage(event) {
