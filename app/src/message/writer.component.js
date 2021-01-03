@@ -127,6 +127,7 @@ export default class Writer extends Component {
 
   postMessage() {
     let msg = {
+      createdAt: Math.floor(Date.now() / 1000),
       author: me.me["id"],
       group: util.getId(this.props.group),
       children: [],
