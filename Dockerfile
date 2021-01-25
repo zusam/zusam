@@ -5,16 +5,17 @@ RUN apk add --no-cache -U tini s6
 ENTRYPOINT ["/sbin/tini", "--"]
 
 # global environment variables
-ENV APP_ENV=prod
-ENV LANG=en
-ENV DOMAIN=localhost
-ENV DATABASE_NAME=data.db
 ENV ALLOW_EMAIL=true
-ENV ALLOW_VIDEO_UPLOAD=true
 ENV ALLOW_IMAGE_UPLOAD=true
-ENV INIT_USER=zusam
+ENV ALLOW_VIDEO_UPLOAD=true
+ENV APP_ENV=prod
+ENV DATABASE_NAME=data.db
+ENV DOMAIN=localhost
 ENV INIT_GROUP=zusam
 ENV INIT_PASSWORD=zusam
+ENV INIT_USER=zusam
+ENV LANG=en
+ENV SUBPATH=
 EXPOSE 8080
 WORKDIR /zusam
 
