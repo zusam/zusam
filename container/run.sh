@@ -37,4 +37,12 @@ if ! [ -f "/zusam/data/${DATABASE_NAME}" ]; then
     /zusam/api/bin/console zusam:init "${INIT_USER}" "${INIT_GROUP}" "${INIT_PASSWORD}"
 fi
 
+if [ -n "${SUBPATH}" ]; then
+    ln -sfn /etc/nginx/nginx-subpath.conf /etc/nginx/nginx.conf
+    sed -i -e "s|<SUBPATH>|${SUBPATH}|g" /etc/nginx/nginx.conf
+    sed -i -e "s|<base href=\"/\">|<base href=\"/${SUBPATH}/\">|g" /zusam/public/index.html
+else
+    ln -sfn /etc/nginx/nginx-root.conf /etc/nginx/nginx.conf
+fi
+
 exec /bin/s6-svscan /etc/s6.d
