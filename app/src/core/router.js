@@ -30,7 +30,7 @@ const router = {
     if (router.isValidUrl(url)) {
       return url;
     }
-    return location.origin + router.getSubpath() + url;
+    return location.origin + router.getSubpath() + router.removeSubpath(url);
   },
   removeSubpath: path =>
     path ? path.replace(new RegExp(`^${  router.getSubpath()}`), "") : "",
@@ -39,7 +39,8 @@ const router = {
     return res ? decodeURIComponent(res.split("=")[1]) : "";
   },
   getSegments: () =>
-    window.location.pathname
+      router
+      .removeSubpath(window.location.pathname)
       .slice(1)
       .split("?")[0]
       .split("/"),
