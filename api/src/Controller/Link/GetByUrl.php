@@ -114,7 +114,7 @@ class GetByUrl extends ApiController
      */
     public function getLinkByGet(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        // No api token verification because this endpoint is used in public posts
 
         $url = $request->query->get('url') ?? '';
         if (!$url) {
