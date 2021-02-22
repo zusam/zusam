@@ -1,9 +1,11 @@
 import { Store, get, keys, del } from "idb-keyval";
-import param from "./param.js";
+
+// update at the same time as the version in service-workers.js
+const CACHE_VERSION = "0.4";
 
 const cache = {
-  name: param.CACHE,
-  cache_store: new Store(param.CACHE_STORE, param.CACHE),
+  name: `zusam-simplecache-${CACHE_VERSION}`,
+  cache_store: new Store(`zusam-${CACHE_VERSION}`, `zusam-simplecache-${CACHE_VERSION}`),
   purgeOldCache: () => {
     keys().then(keys =>
       keys.map(k =>

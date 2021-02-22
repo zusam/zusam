@@ -1,7 +1,9 @@
 import { Store, set, get } from "idb-keyval";
-import param from "/core";
 
-const cache_store = new Store(param.CACHE_STORE, param.CACHE);
+// update at the same time as the version in cache.js
+const CACHE_VERSION = "0.4";
+
+const cache_store = new Store(`zusam-${CACHE_VERSION}`, `zusam-simplecache-${CACHE_VERSION}`);
 const cached_routes = [
   {
     route: new RegExp("/api/users/[^/]+/?$"),

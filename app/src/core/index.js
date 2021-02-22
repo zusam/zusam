@@ -1,4 +1,3 @@
-import _param from "./param.js";
 import _api from "./api.js";
 import _alert from "./alert.js";
 import _cache from "./cache.js";
@@ -9,7 +8,6 @@ import _router from "./router.js";
 import _util from "./util.js";
 import _lang from "./lang.js";
 
-export const param = _param;
 export const api = _api;
 export const alert = _alert;
 export const cache = _cache;
