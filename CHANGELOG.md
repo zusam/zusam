@@ -2,6 +2,20 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [0.4.4] - 2021-03-03
+
+### Log
+- Add pdf upload support
+- Replace the "view original" button by a download button in the media view
+- Add confirmation effect on bookmark addition/removal
+- Fix a lot of possible crashes with the search
+- Fix twitch embeds
+- Fix ctrl+enter not working on multiple browsers (to send current message)
+- Fix issues when installing on a subpath
+
+### Remarks
+Minor feature release.  
+
 ## [0.4.3] - 2021-01-17
 
 ### Log
