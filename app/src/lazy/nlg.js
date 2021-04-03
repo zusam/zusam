@@ -19,6 +19,7 @@ let nlg = {
     }
   },
   stop: () => {
+    nlg.hide();
     document
       .querySelectorAll("[data-nlg]")
       .forEach(elm => elm.removeEventListener("click", nlg.clickFn));
