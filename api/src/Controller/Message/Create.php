@@ -153,11 +153,11 @@ class Create extends ApiController
 
             return $firstFile;
         }
-        // if no files, search for urls in text
-        $urls = $message->getUrls();
-        if (count($urls) > 0) {
-            return $this->urlService->getLink($urls[0])->getPreview();
-        }
+        // We don't want to generate a preview based on urls now. It can be time consuming.
+        //$urls = $message->getUrls();
+        //if (count($urls) > 0) {
+        //    return $this->urlService->getLink($urls[0])->getPreview();
+        //}
 
         return null;
     }
