@@ -68,6 +68,13 @@ export default class GroupSearch extends Component {
           </a>
           <article id="group" class="justify-content-center d-flex">
             <div class="search-results-container container-fluid d-flex justify-content-center flex-wrap">
+              {this.state.messages.length == 0 && !this.state.loaded && (
+                <p>
+                  <div class="mt-5 spinner orange-spinner">
+                    <div /><div /><div /><div /><div />
+                  </div>
+                </p>
+              )}
               {this.state.messages.length == 0 && this.state.loaded && (
                 <p>{lang.t("search_without_result")}</p>
               )}
