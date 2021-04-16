@@ -140,7 +140,7 @@ class Create extends ApiController
         );
     }
 
-    public function genPreview(Message $message): ?File
+    public function genPreview(Message $message, bool $urlBased): ?File
     {
         // get preview with files
         if (count($message->getFiles()) > 0) {
@@ -153,11 +153,14 @@ class Create extends ApiController
 
             return $firstFile;
         }
-        // We don't want to generate a preview based on urls now. It can be time consuming.
-        //$urls = $message->getUrls();
-        //if (count($urls) > 0) {
-        //    return $this->urlService->getLink($urls[0])->getPreview();
-        //}
+
+        // We don't want to generate a preview based on urls when just creating the message
+        if ($urlBased) {
+            $urls = $message->getUrls();
+            if (count($urls) > 0) {
+                return $this->urlService->getLink($urls[0])->getPreview();
+            }
+        }
 
         return null;
     }

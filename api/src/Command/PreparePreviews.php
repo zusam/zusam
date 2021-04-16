@@ -105,7 +105,7 @@ class PreparePreviews extends Command
 
             // process preview
             $message = $this->em->getRepository(Message::class)->findOneById($i['id']);
-            $message->setPreview($this->createMessageController->genPreview($message));
+            $message->setPreview($this->createMessageController->genPreview($message, true));
             $this->em->persist($message);
 
             $this->em->flush();
