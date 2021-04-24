@@ -2,37 +2,37 @@
 
 namespace App\Command;
 
-use App\Controller\Message\Create;
 use App\Entity\Message;
+use App\Service\Preview as PreviewService;
 use App\Service\Url as UrlService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PreparePreviews extends Command
 {
     private $em;
-    private $pdo;
-    private $createMessageController;
-    private $urlService;
     private $logger;
+    private $pdo;
+    private $previewService;
+    private $urlService;
 
     public function __construct(
         string $dsn,
-        LoggerInterface $logger,
         EntityManagerInterface $em,
-        Create $createMessageController,
+        LoggerInterface $logger,
+        PreviewService $previewService,
         UrlService $urlService
     ) {
         parent::__construct();
-        $this->pdo = new \PDO($dsn, null, null);
         $this->em = $em;
-        $this->createMessageController = $createMessageController;
-        $this->urlService = $urlService;
         $this->logger = $logger;
+        $this->pdo = new \PDO($dsn, null, null);
+        $this->previewService = $previewService;
+        $this->urlService = $urlService;
     }
 
     protected function configure()
@@ -105,7 +105,7 @@ class PreparePreviews extends Command
 
             // process preview
             $message = $this->em->getRepository(Message::class)->findOneById($i['id']);
-            $message->setPreview($this->createMessageController->genPreview($message, true));
+            $message->setPreview($this->previewService->genPreview($message));
             $this->em->persist($message);
 
             $this->em->flush();

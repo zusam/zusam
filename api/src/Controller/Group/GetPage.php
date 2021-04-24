@@ -4,6 +4,7 @@ namespace App\Controller\Group;
 
 use App\Controller\ApiController;
 use App\Entity\Group;
+use App\Service\Preview as PreviewService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,11 +17,15 @@ use Swagger\Annotations as SWG;
 
 class GetPage extends ApiController
 {
+    private $previewService;
+
     public function __construct(
         EntityManagerInterface $em,
+        PreviewService $previewService,
         SerializerInterface $serializer
     ) {
         parent::__construct($em, $serializer);
+        $this->previewService = $previewService;
     }
 
     /**
@@ -78,6 +83,15 @@ class GetPage extends ApiController
 
         $page = [];
         foreach ($messages as $message) {
+            // eventually generate a preview if there is none
+            if (!$message->getPreview()) {
+                $preview = $this->previewService->genPreview($message);
+                if ($preview) {
+                    $message->setPreview($preview);
+                    $this->em->persist($message);
+                    $this->em->flush();
+                }
+            }
             $previewId = $message->getPreview() ? $message->getPreview()->getId() : '';
             $authorId = $message->getAuthor() ? $message->getAuthor()->getId() : '';
             $page[] = [

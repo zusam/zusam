@@ -7,30 +7,30 @@ use App\Entity\File;
 use App\Entity\Group;
 use App\Entity\Message;
 use App\Entity\Notification;
-use App\Service\Url as UrlService;
+use App\Service\Url as PreviewService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
-use Swagger\Annotations as SWG;
 
 class Create extends ApiController
 {
-    private $urlService;
+    private $previewService;
 
     public function __construct(
         EntityManagerInterface $em,
-        SerializerInterface $serializer,
-        UrlService $urlService
+        PreviewService $previewService,
+        SerializerInterface $serializer
     ) {
         parent::__construct($em, $serializer);
-        $this->urlService = $urlService;
+        $this->previewService = $previewService;
     }
 
     /**
@@ -98,7 +98,7 @@ class Create extends ApiController
             }, $requestData['files'])));
         }
 
-        $message->setPreview($this->genPreview($message));
+        $message->setPreview($this->genPreview($message, false));
         $this->em->persist($message);
 
         // Update tasks
@@ -140,7 +140,7 @@ class Create extends ApiController
         );
     }
 
-    public function genPreview(Message $message, bool $urlBased): ?File
+    public function genPreview(Message $message, bool $urlBased = true): ?File
     {
         // get preview with files
         if (count($message->getFiles()) > 0) {
@@ -158,7 +158,7 @@ class Create extends ApiController
         if ($urlBased) {
             $urls = $message->getUrls();
             if (count($urls) > 0) {
-                return $this->urlService->getLink($urls[0])->getPreview();
+                return $this->previewService->getLink($urls[0])->getPreview();
             }
         }
 
