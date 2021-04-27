@@ -116,6 +116,12 @@ services:
       arguments:
         $logger: '@monolog.logger.zusam'
 
+    App\Command\StorageStatistics:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+        $logger: '@monolog.logger.zusam'
+        $targetDir: '%env(resolve:dir_files)%'
+
     App\Service\Mailer:
       arguments:
         $swift: '@mailer'
