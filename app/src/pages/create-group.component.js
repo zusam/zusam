@@ -20,7 +20,7 @@ export default class CreateGroup extends Component {
     group.createdAt = Math.floor(Date.now() / 1000);
     http.post("/api/groups", group).then(res => {
       http.post(`/api/groups/invitation/${  res.secretKey}`, {}).then(res => {
-        window.location = `/groups/${  res.id}`;
+        window.location = `${window.location.origin}/groups/${res.id}`;
       });
     });
   }

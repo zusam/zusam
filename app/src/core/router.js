@@ -176,7 +176,7 @@ const router = {
           } else if (user.groups[0]) {
               router.navigate(`/groups/${  user.groups[0].id}`);
             } else {
-              window.location = "/create-group";
+              window.location = `${window.location.origin}/create-group`;
             }
         });
     }
