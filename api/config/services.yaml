@@ -122,6 +122,12 @@ services:
         $logger: '@monolog.logger.zusam'
         $targetDir: '%env(resolve:dir_files)%'
 
+    App\Command\GroupStatistics:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+        $logger: '@monolog.logger.zusam'
+        $targetDir: '%env(resolve:dir_files)%'
+
     App\Service\Mailer:
       arguments:
         $swift: '@mailer'

@@ -38,7 +38,7 @@ class StorageStatistics extends Command
 
     protected function configure()
     {
-        $this->setName('zusam:storage:statistics')
+        $this->setName('zusam:statistics:storage')
        ->setDescription('Storage statistics')
        ->setHelp('This command outputs statistics about files stored.');
     }
@@ -108,7 +108,7 @@ class StorageStatistics extends Command
         });
         $table = new Table($output);
         $table
-            ->setHeaders(['group id', 'files', 'Total size', 'videos', 'videros size', 'images', 'images size', 'pdfs', 'pdfs size'])
+            ->setHeaders(['group id', 'files', 'Total size', 'videos', 'videos size', 'images', 'images size', 'pdfs', 'pdfs size'])
             ->setRows($groups);
         $table->render();
         return 0;
