@@ -20,8 +20,12 @@ EXPOSE 8080
 WORKDIR /zusam
 
 # install base packages
-RUN set -xe && apk add --no-cache nginx php7 openssl ffmpeg unzip \
+RUN set -xe && apk add --no-cache \
+    ffmpeg \
     imagemagick \
+    nginx \
+    openssl \
+    php7 \
     php7-common \
     php7-ctype \
     php7-curl \
@@ -57,8 +61,8 @@ COPY app/dist /zusam/public
 # handle build config
 RUN set -xe \
     && mkdir -p /run/nginx /zusam/data /var/tmp/nginx /var/lib/nginx \
-    && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar unzip \
-    && cd /zusam/api && php bin/composer install --prefer-dist \
+    && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar unzip composer \
+    && composer install -d /zusam/api --no-dev --prefer-dist \
     && rm -rf /zusam/data/data.db \
     && apk del .build-deps \
     && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public /var/tmp/nginx
