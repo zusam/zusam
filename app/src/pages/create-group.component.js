@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { lang, http } from "/core";
+import { lang, http, router } from "/core";
 
 export default class CreateGroup extends Component {
   constructor() {
@@ -20,7 +20,7 @@ export default class CreateGroup extends Component {
     group.createdAt = Math.floor(Date.now() / 1000);
     http.post("/api/groups", group).then(res => {
       http.post(`/api/groups/invitation/${  res.secretKey}`, {}).then(res => {
-        window.location = `${window.location.origin}/groups/${res.id}`;
+        window.location = router.toApp(`/groups/${res.id}`);
       });
     });
   }
