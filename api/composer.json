@@ -16,7 +16,7 @@
         "embed/embed": "~3.3",
         "firebase/php-jwt": "~5.0",
         "guzzlehttp/guzzle": "~6.0",
-        "nelmio/api-doc-bundle": "^3.7",
+        "nelmio/api-doc-bundle": "^3.8.3@dev",
         "nelmio/cors-bundle": "~2.0",
         "sensio/framework-extra-bundle": "~5.0",
         "symfony/asset": "5.*",
@@ -27,6 +27,7 @@
         "symfony/flex": "~1.6",
         "symfony/framework-bundle": "~5.0",
         "symfony/intl": "~5.0",
+        "symfony/mime": "5.*",
         "symfony/monolog-bundle": "~3.0",
         "symfony/polyfill-ctype": "~1.13",
         "symfony/polyfill-uuid": "^1.18",
@@ -38,8 +39,7 @@
         "symfony/validator": "~5.0",
         "symfony/yaml": "~5.0",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0",
-        "vich/uploader-bundle": "~1.0"
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "~2.0",

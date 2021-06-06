@@ -24,12 +24,14 @@ class Cron extends Command
     private $system;
     private $tasks;
     private $kernel;
+    private $params;
 
     public function __construct(
         LoggerInterface $logger,
         EntityManagerInterface $em,
         System $system,
-        KernelInterface $kernel
+        KernelInterface $kernel,
+        ParameterBagInterface $params
     ) {
         parent::__construct();
         $this->em = $em;
@@ -37,6 +39,7 @@ class Cron extends Command
         $this->running = false;
         $this->system = $system;
         $this->kernel = $kernel;
+        $this->params = $params;
         $this->tasks = [
             [
                 'name' => 'zusam:convert:video',
@@ -62,6 +65,14 @@ class Cron extends Command
                 'type' => 'heavy',
                 'options' => [
                     '--max-compressions' => 5,
+                ],
+            ],
+            [
+                'name' => 'zusam:bot:activate',
+                'period' => 60 * 60, // 1 hour
+                'type' => 'light',
+                'options' => [
+                    'bot_id' => 'all'
                 ],
             ],
             [

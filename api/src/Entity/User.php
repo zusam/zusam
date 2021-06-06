@@ -279,6 +279,11 @@ class User implements UserInterface, \Serializable
         return ['ROLE_USER'];
     }
 
+    public function getUserIdentifier()
+    {
+        return $this->login;
+    }
+
     // necessary for UserInterface
     public function eraseCredentials()
     {

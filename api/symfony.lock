@@ -8,6 +8,9 @@
     "composer/ca-bundle": {
         "version": "1.2.5"
     },
+    "composer/package-versions-deprecated": {
+        "version": "1.11.99.2"
+    },
     "composer/semver": {
         "version": "1.5.0"
     },
@@ -127,9 +130,6 @@
     },
     "jean85/pretty-package-versions": {
         "version": "1.2"
-    },
-    "jms/metadata": {
-        "version": "2.1.0"
     },
     "monolog/monolog": {
         "version": "2.0.1"
@@ -337,9 +337,6 @@
             ".env"
         ]
     },
-    "symfony/form": {
-        "version": "v5.0.1"
-    },
     "symfony/framework-bundle": {
         "version": "4.4",
         "recipe": {
@@ -373,7 +370,7 @@
         "version": "v5.0.1"
     },
     "symfony/mime": {
-        "version": "v5.0.1"
+        "version": "v5.3.0"
     },
     "symfony/monolog-bridge": {
         "version": "v5.0.1"
@@ -394,6 +391,9 @@
     },
     "symfony/options-resolver": {
         "version": "v5.0.1"
+    },
+    "symfony/password-hasher": {
+        "version": "v5.3.0"
     },
     "symfony/phpunit-bridge": {
         "version": "4.3",
@@ -418,7 +418,7 @@
         "version": "v1.13.1"
     },
     "symfony/polyfill-intl-icu": {
-        "version": "v1.13.1"
+        "version": "v1.23.0"
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.13.1"
@@ -437,6 +437,9 @@
     },
     "symfony/polyfill-php80": {
         "version": "v1.17.1"
+    },
+    "symfony/polyfill-php81": {
+        "version": "v1.23.0"
     },
     "symfony/polyfill-uuid": {
         "version": "v1.18.1"
@@ -581,18 +584,6 @@
     },
     "twig/twig": {
         "version": "v3.0.0"
-    },
-    "vich/uploader-bundle": {
-        "version": "1.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.5",
-            "ref": "c4f5755b37fb65b9c6a3cbdae91205c15a137ed4"
-        },
-        "files": [
-            "config/packages/vich_uploader.yaml"
-        ]
     },
     "vimeo/psalm": {
         "version": "3.12.1"

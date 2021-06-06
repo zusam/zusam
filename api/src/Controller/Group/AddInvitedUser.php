@@ -5,6 +5,7 @@ namespace App\Controller\Group;
 use App\Controller\ApiController;
 use App\Entity\Group;
 use App\Entity\Notification;
+use App\Service\Group as GroupService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,11 +17,15 @@ use Swagger\Annotations as SWG;
 
 class AddInvitedUser extends ApiController
 {
+    private $groupService;
+
     public function __construct(
         EntityManagerInterface $em,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        GroupService $groupService
     ) {
         parent::__construct($em, $serializer);
+        $this->groupService = $groupService;
     }
 
     /**
@@ -42,26 +47,7 @@ class AddInvitedUser extends ApiController
             return new JsonResponse(['error' => 'Invalid invite key !'], Response::HTTP_BAD_REQUEST);
         }
 
-        $group->addUser($this->getUser());
-        $this->getUser()->addGroup($group);
-        $this->em->persist($this->getUser());
-        $this->em->persist($group);
-
-        // Notify users of the group
-        foreach ($group->getUsers() as $u) {
-            if ($u->getId() != $this->getUser()->getId()) {
-                $notif = new Notification();
-                $notif->setTarget($group->getId());
-                $notif->setOwner($u);
-                $notif->setFromUser($this->getUser());
-                $notif->setFromGroup($group);
-                $notif->setType(Notification::USER_JOINED_GROUP);
-                $this->em->persist($notif);
-            }
-        }
-
-        $this->em->flush();
-
+        $this->groupService->addUser($group, $this->getUser());
         return new JsonResponse(['id' => $group->getId()], Response::HTTP_OK);
     }
 }

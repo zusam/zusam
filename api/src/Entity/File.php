@@ -7,14 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 
 /**
  * @ORM\Table(name="`file`")
  * @ORM\Entity
- * @Vich\Uploadable
  */
 class File
 {
@@ -60,7 +58,6 @@ class File
 
     /**
      * @Assert\NotNull()
-     * @Vich\UploadableField(mapping="files", fileNameProperty="contentUrl", size="size", mimeType="type")
      */
     private $file;
 

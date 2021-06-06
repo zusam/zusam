@@ -17,8 +17,8 @@ class StorageStatistics extends Command
 
     public function __construct(
         string $dsn,
-        string $targetDir,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        string $targetDir
     ) {
         parent::__construct();
         $this->pdo = new \PDO($dsn, null, null);

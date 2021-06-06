@@ -13,6 +13,7 @@ parameters:
   dir.public: '%kernel.project_dir%/../public'
   dir.files: '%env(resolve:dir_files)%'
   dir.cache: '%env(resolve:dir_cache)%'
+  dir.bots: '%env(resolve:dir_bots)%'
 
 services:
     # default configuration for services in *this* file
@@ -133,6 +134,20 @@ services:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $logger: '@monolog.logger.zusam'
         $targetDir: '%env(resolve:dir_files)%'
+
+    App\Command\ActivateBot:
+      arguments:
+        $botDir: '%env(resolve:dir_bots)%'
+        $logger: '@monolog.logger.zusam'
+        $allow_bots: '%env(resolve:ALLOW_BOTS)%'
+
+    App\Service\Bot:
+      arguments:
+        $botDir: '%env(resolve:dir_bots)%'
+        $domain: '%env(resolve:DOMAIN)%'
+        $env: '%kernel.environment%'
+        $lang: '%env(resolve:LANG)%'
+        $logger: '@monolog.logger.zusam'
 
     App\Service\Mailer:
       arguments:
