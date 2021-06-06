@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class Create extends ApiController
 {
-    private $previewService;
+    private $messageService;
 
     public function __construct(
         EntityManagerInterface $em,

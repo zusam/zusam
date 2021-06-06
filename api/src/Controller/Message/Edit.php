@@ -3,31 +3,32 @@
 namespace App\Controller\Message;
 
 use App\Controller\ApiController;
-use App\Entity\Message;
 use App\Entity\File;
+use App\Entity\Message;
+use App\Service\Message as MessageService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
-use Swagger\Annotations as SWG;
 
 class Edit extends ApiController
 {
-    private $create;
+    private $messageService;
 
     public function __construct(
         EntityManagerInterface $em,
         SerializerInterface $serializer,
-        Create $create
+        MessageService $messageService
     ) {
         parent::__construct($em, $serializer);
-        $this->create = $create;
+        $this->messageService = $messageService;
     }
 
     /**
@@ -85,7 +86,7 @@ class Edit extends ApiController
         }
 
         // regen message miniature
-        $message->setPreview($this->create->genPreview($message));
+        $message->setPreview($this->messageService->genPreview($message));
 
         $this->getUser()->setLastActivityDate(time());
         $this->em->persist($this->getUser());

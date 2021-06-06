@@ -22,8 +22,8 @@ class Message
         $this->urlService = $urlService;
     }
 
-    public function create($data, $author, $group) {
-
+    public function create($data, $author, $group)
+    {
         $message = new MessageEntity();
         $message->setAuthor($author);
         $message->setGroup($group);

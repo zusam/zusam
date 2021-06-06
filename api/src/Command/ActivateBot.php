@@ -73,7 +73,7 @@ class ActivateBot extends Command
             $this->runBot($input->getArgument('bot_id'));
         } else {
             // activate all bots
-            foreach(scandir($this->params->get('dir.bots')) as $file) {
+            foreach (scandir($this->params->get('dir.bots')) as $file) {
                 if ($file != "." && $file != ".." && is_dir($this->params->get('dir.bots')."/$file")) {
                     $this->runBot($file);
                 }

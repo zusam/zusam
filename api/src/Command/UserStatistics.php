@@ -51,7 +51,6 @@ class UserStatistics extends Command
         $users = [];
         if ($c !== false) {
             while ($user = $c->fetch()) {
-
                 $groups = [];
                 $messages = [];
                 $messages_last_month = 0;
@@ -83,7 +82,7 @@ class UserStatistics extends Command
             }
         }
         uasort($users, function ($a, $b) {
-            return $a[4] < $b[4];
+            return $a[4] < $b[4] ? 1 : -1;
         });
         $table = new Table($output);
         $table

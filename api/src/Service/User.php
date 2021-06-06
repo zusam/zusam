@@ -19,20 +19,23 @@ class User
         $this->encoder = $encoder;
     }
 
-    public function getByLogin($id) {
+    public function getByLogin($login)
+    {
         return $this->em->getRepository(UserEntity::class)->findOneByLogin($login);
     }
 
-    public function getBySecretKey($key) {
+    public function getBySecretKey($key)
+    {
         return $this->em->getRepository(UserEntity::class)->findOneBySecretKey($key);
     }
 
-    public function getById($id) {
+    public function getById($id)
+    {
         return $this->em->getRepository(UserEntity::class)->findOneById($id);
     }
 
-    public function create($login, $password = "") {
-
+    public function create($login, $password = "")
+    {
         $user = $this->em->getRepository(UserEntity::class)->findOneByLogin($login);
 
         if (!empty($user)) {

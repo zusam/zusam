@@ -4,11 +4,9 @@ namespace App\Controller\File;
 
 use App\Controller\ApiController;
 use App\Entity\File;
-use App\Form\FileType;
 use App\Service\Image as ImageService;
 use App\Service\File as FileService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

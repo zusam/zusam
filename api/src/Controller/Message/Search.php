@@ -112,7 +112,7 @@ class Search extends ApiController
         $messages = $query->iterate();
 
         // flatten the search terms before starting the search
-        $flattened_search_terms = array_map(function($e) {
+        $flattened_search_terms = array_map(function ($e) {
             return StringUtils::remove_accents($e);
         }, $search_terms);
 

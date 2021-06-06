@@ -130,11 +130,13 @@ class File
             return null; // TODO throw exception
         }
 
+        $target = $this->params->get('dir.files') . "/" . $file->getContentUrl();
         if ($copy) {
-            copy($symfonyFile->getRealPath(), $this->params->get('dir.files') . "/" . $file->getContentUrl());
+            copy($symfonyFile->getRealPath(), $target);
         } else {
-            rename($symfonyFile->getRealPath(), $this->params->get('dir.files') . "/" . $file->getContentUrl());
+            rename($symfonyFile->getRealPath(), $target);
         }
+        @chmod($target, 0666 & ~umask());
         $file = $this->initialConversion($file);
         $this->em->persist($file);
         $this->em->flush();

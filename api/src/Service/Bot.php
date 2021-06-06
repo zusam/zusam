@@ -52,7 +52,8 @@ class Bot
         $this->userService = $us;
     }
 
-    public function get_bot_dir($bot_id) {
+    public function get_bot_dir($bot_id)
+    {
         return realpath($this->botDir . "/" . $bot_id);
     }
 
@@ -111,7 +112,7 @@ class Bot
     {
         $bot = $this->get_bot($bot_id);
         if ($bot->getAvatar() == null) {
-            $this->set_avatar($bot_id, $this->get_bot_dir() . "/avatar.png");
+            $this->set_avatar($bot_id, $this->get_bot_dir($bot_id) . "/avatar.png");
         }
         $group = $this->groupService->getById($group_id);
         $this->messageService->create(

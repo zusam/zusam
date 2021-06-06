@@ -12,6 +12,7 @@ class Preview
 {
     private $em;
     private $params;
+    private $urlService;
 
     public function __construct(
         EntityManagerInterface $em,
