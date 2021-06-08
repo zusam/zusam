@@ -80,7 +80,7 @@ export default class MessageBody extends Component {
               dangerouslySetInnerHTML={this.displayMessageText()}
              />
           )}
-        {this.state.preview && (
+        {this.state.preview && (!this.props.message.data || !this.props.message.data["no_embed"]) && (
           <EmbedBlock
             key={this.state.preview.url}
             url={this.state.preview.url}
