@@ -50,6 +50,7 @@ class User
             $user->setPassword($this->encoder->encodePassword($user, $password));
         }
         $user->setName(explode('@', $login)[0]);
+        $this->em->persist($user);
         $this->em->flush();
 
         return $user;
