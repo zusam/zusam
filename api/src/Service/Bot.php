@@ -96,8 +96,10 @@ class Bot
     {
         $bot = $this->get_bot($bot_id);
         $avatar = $this->fileService->createFromPath($avatar_path, true);
-        $bot->setAvatar($avatar);
-        $this->em->persist($bot);
+        if (!empty($avatar)) {
+            $bot->setAvatar($avatar);
+            $this->em->persist($bot);
+        }
     }
 
     public function add_bot_to_group(string $bot_id, string $group_id): void
