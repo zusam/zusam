@@ -38,7 +38,7 @@ export default class NotificationsDropdownNavbar extends Component {
             icon={"bell"}
           />
           {!!me.me.notifications.length && (
-            <span class="badge-count">{me.me.notifications.length}</span>
+            <span class="badge-count">{Math.min(me.me.notifications.length, 99) + (me.me.notifications.length > 99 ? "+" : "")}</span>
           )}
         </div>
         <div class="dropdown-menu dropdown-right notifications-menu">
@@ -52,7 +52,7 @@ export default class NotificationsDropdownNavbar extends Component {
             </div>
           </div>
           {me.me && Array.isArray(me.me.notifications) && me.me.notifications.length && (
-            me.me.notifications.sort((a, b) => b.createdAt - a.createdAt).map(e => <Notification key={e.id} {...e} />)
+            me.me.notifications.sort((a, b) => b.createdAt - a.createdAt).slice(0,99).map(e => <Notification key={e.id} {...e} />)
           )}
         </div>
       </div>

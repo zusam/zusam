@@ -17,7 +17,7 @@ const me = {
       return r;
     }),
   loadNotifications: () =>
-    http.get(`/api/users/${me.me.id}/notifications`).then(r => {
+    http.get(`/api/users/${me.me.id}/notifications/100`).then(r => {
       me.me.notifications = r;
       setTimeout(dispatchEvent(new CustomEvent("meStateChange")));
     }),

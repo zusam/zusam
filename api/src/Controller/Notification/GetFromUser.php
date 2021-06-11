@@ -36,7 +36,7 @@ class GetFromUser extends ApiController
      * @SWG\Tag(name="notification")
      * @Security(name="api_key")
      */
-    public function index(string $id): Response
+    public function get_notifications(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -49,6 +49,38 @@ class GetFromUser extends ApiController
 
         return new Response(
             $this->serialize($user->getNotifications(), ['read_notification']),
+            Response::HTTP_OK,
+        );
+    }
+
+    /**
+     * @Route("/users/{id}/notifications/{limit}", methods={"GET"})
+     * @SWG\Response(
+     *  response=200,
+     *  description="Get recent notifications from a user",
+     *  @SWG\Schema(
+     *    type="array",
+     *    @SWG\Items(ref=@Model(type=App\Entity\Notification::class, groups={"read_notification"}))
+     *  )
+     * )
+     * @SWG\Tag(name="notification")
+     * @Security(name="api_key")
+     */
+    public function get_notifications_with_limit(string $id, int $limit): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $user = $this->em->getRepository(User::class)->findOneById($id);
+        if (empty($user)) {
+            return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $this->denyAccessUnlessGranted(new Expression('user == object'), $user);
+
+        $notifications = $user->getNotifications($limit);
+
+        return new Response(
+            $this->serialize($notifications, ['read_notification']),
             Response::HTTP_OK,
         );
     }

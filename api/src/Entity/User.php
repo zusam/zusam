@@ -98,6 +98,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="owner")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      * @SWG\Property(type="array", @SWG\Items(type="App\Entity\Notification"))
      */
     private $notifications;
@@ -236,9 +237,13 @@ class User implements UserInterface, \Serializable
         $this->data = $data;
     }
 
-    public function getNotifications(): Collection
+    public function getNotifications(?int $limit): Collection
     {
-        return $this->notifications;
+        if (is_null($limit)) {
+            return $this->notifications;
+        } else {
+            return new ArrayCollection($this->notifications->slice(0, $limit));
+        }
     }
 
     public function addNotification(Notification $notification): void
