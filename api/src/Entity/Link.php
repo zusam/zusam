@@ -85,6 +85,7 @@ class Link
         $this->createdAt = time();
         $this->updatedAt = time();
         $this->secretKey = Uuid::uuidv4();
+        $this->data = [];
     }
 
     public function getId(): string

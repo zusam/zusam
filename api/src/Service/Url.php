@@ -49,7 +49,14 @@ class Url
         }
         if (empty($link)) {
             $link = new Link($url);
+            $link->setData(["loading" => true]);
         }
+
+        // immediatly persist the link to avoid race conditions
+        // and to force saving a link that could throw an unexpected exception
+        $this->em->persist($link);
+        $this->em->flush();
+
         $data = Url::getData($url);
         // enhance data by adding a preview if there is none for the video
         if (empty($data['image']) && !empty($data['type']) && 'video' === $data['type']) {
@@ -59,6 +66,7 @@ class Url
                 rename($image, $data['image']);
             }
         }
+        $data["loading"] = false;
         $link->setData($data);
         $link->setUpdatedAt(time());
         if (!empty($data['image'])) {
@@ -75,16 +83,8 @@ class Url
                 // TODO
             }
         }
-        // check again if the link was not processed
-        // it can happen while processing the link (race condition)
-        $doubleLink = $this->em->getRepository(Link::class)->findOneByUrl($url);
-        if (empty($doubleLink)) {
-            $this->em->persist($link);
-            $this->em->flush();
-        } else {
-            // if there was already a link, use it instead
-            $link = $doubleLink;
-        }
+        $this->em->persist($link);
+        $this->em->flush();
 
         return $link;
     }
