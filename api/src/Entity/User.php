@@ -237,7 +237,7 @@ class User implements UserInterface, \Serializable
         $this->data = $data;
     }
 
-    public function getNotifications(?int $limit): Collection
+    public function getNotifications(?int $limit = null): Collection
     {
         if (is_null($limit)) {
             return $this->notifications;
