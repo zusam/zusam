@@ -1,11 +1,32 @@
 import lang from "./lang.js";
-import router from "./router.js";
-import me from "./me.js";
-import storage from "./storage.js";
+
+// Stateless utilities
+// Should be agnostic of other components of zusam if possible
 
 const util = {
+  // check if the input is a valid URL
+  isValidUrl: url => {
+    try {
+      new URL(url);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  },
+  getSubpath: () => new URL(document.baseURI).pathname.replace(/\/$/, ""),
+  // toApp transforms an api url into an "app" url that the user can naviate to
+  toApp: url => {
+    if (!url || typeof url != "string") {
+      return "";
+    }
+    if (util.isValidUrl(url)) {
+      return url;
+    }
+    return location.origin + util.getSubpath() + url;
+  },
   // genId starts with a letter to be DOM friendly
   // seed can be used to order ids
+  // TODO improve using ideas from ai/nanoid
   genId: seed => `z${seed || ""}-${Date.now().toString().slice(-5)}${Math.random().toString().slice(-5)}`,
   // transform an id into int for the API (TODO: revisit this on 0.5)
   id2Int: id => parseInt(id.replace(/[^\d]/g,''), 10),
@@ -28,6 +49,9 @@ const util = {
   limitStrSize: (str, limit) => str.length > limit ? `${str.slice(0, limit-3)}...` : str,
   // full datetime as a string adapted to the users timezone
   humanFullDate: timestamp => {
+    if (!timestamp) {
+      return "";
+    }
     let d = new Date(timestamp * 1000);
     d = new Date(d.getTime() + d.getTimezoneOffset() * 60000 * -1);
     return d.toISOString().replace("T", " ").replace(/\..*$/, "");
@@ -49,21 +73,6 @@ const util = {
     }
     return util.humanFullDate(timestamp).split(" ")[0];
   },
-  getGroupId: () => {
-    if (me.me.groups) {
-      switch (router.entity.entityType) {
-        case "group":
-          return util.getId(router.entity);
-        case "message":
-          return util.getId(router.entity.group);
-      }
-    }
-    return "";
-  },
-  getGroupName: () => {
-    let group = me.me.groups.find(g => g["id"] == util.getGroupId());
-    return group ? group["name"] : "";
-  },
   // get the id of an object from an url
   getId: e => {
     switch (typeof e) {
@@ -83,12 +92,12 @@ const util = {
   // get the url to a thubmnail
   thumbnail: (id, width, height) =>
     typeof(id) == "string" && !id.startsWith("z")
-      ? router.toApp(`/api/images/thumbnail/${width}/${height}/${id}`)
+      ? util.toApp(`/api/images/thumbnail/${width}/${height}/${id}`)
       : null,
   // same as http.thumbnail but for a crop
   crop: (id, width, height) =>
     typeof(id) == "string" && !id.startsWith("z")
-      ? router.toApp(`/api/images/crop/${width}/${height}/${id}`)
+      ? util.toApp(`/api/images/crop/${width}/${height}/${id}`)
       : null,
   // default avatar in base64
   defaultAvatar:

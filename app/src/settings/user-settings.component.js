@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { lang, router, me, alert, http, util, cache, storage } from "/core";
+import { lang, router, alert, http, util, storage, me } from "/core";
 
 export default class UserSettings extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export default class UserSettings extends Component {
 
   resetApiKey(event) {
     event.preventDefault();
-    http.post(`/api/users/${this.state.id}/reset-api-key`, {}).then(() => util.logout());
+    http.post(`/api/users/${this.state.id}/reset-api-key`, {}).then(() => router.logout());
   }
 
   inputAvatar() {
@@ -51,7 +51,7 @@ export default class UserSettings extends Component {
     let confirmDeletion = confirm(lang.t("are_you_sure"));
     if (confirmDeletion) {
       http.delete(`/api/users/${this.state.id}`).then(() => {
-        router.navigate("/logout");
+        this.props.history.push("/logout");
       });
     }
   }
@@ -92,9 +92,8 @@ export default class UserSettings extends Component {
       if (res["error"]) {
         alert.add(res["error"], "alert-danger");
       } else {
-        cache.removeMatching(this.state.id);
         this.setState(prevState => Object.assign(prevState, res));
-        location.href = router.toApp(
+        location.href = util.toApp(
           `${location.pathname}?alert=settings_updated`
         );
       }
@@ -182,7 +181,7 @@ export default class UserSettings extends Component {
                         class="form-control"
                         value={this.state.data["default_group"]}
                       >
-                        {me.me.groups.map(e => (
+                        {me.groups?.map(e => (
                           <option value={e.id}>{e.name}</option>
                         ))}
                       </select>

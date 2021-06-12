@@ -1,7 +1,8 @@
 import { h, Component } from "preact";
-import { lang, me, alert, http, router, util } from "/core";
+import { lang, alert, http, router, util, me } from "/core";
+import { withRouter } from "react-router-dom";
 
-export default class GroupSettings extends Component {
+class GroupSettings extends Component {
   constructor(props) {
     super(props);
     this.updateSettings = this.updateSettings.bind(this);
@@ -14,7 +15,7 @@ export default class GroupSettings extends Component {
   resetSecretKey(event) {
     event.preventDefault();
     http
-      .post(`/api/groups/${  this.state.id  }/reset-invite-key`, {})
+      .post(`/api/groups/${this.state.id}/reset-invite-key`, {})
       .then(res => {
         alert.add(lang.t("group_updated"));
         this.setState({ secretKey: res["inviteKey"] });
@@ -37,11 +38,11 @@ export default class GroupSettings extends Component {
 
   leaveGroup(event) {
     event.preventDefault();
-    if (me.me.data["default_group"] == this.state.id) {
+    if (me.data?.default_group == this.state.id) {
       let user = {};
-      user.data = { default_group: me.me.groups[0].id };
-      http.put(`/api/users/${  me.me.id}`, user).then(() => {
-        me.update();
+      user.data = { default_group: me.groups[0].id };
+      http.put(`/api/users/${me.id}`, user).then(() => {
+        this.props.dispatch('me/fetch');
         this.leave();
       });
     } else {
@@ -54,9 +55,9 @@ export default class GroupSettings extends Component {
       if (!res || !res["entityType"]) {
         alert.add(lang.t("error"), "alert-danger");
       } else {
-        me.update();
+        this.props.dispatch('me/fetch');
         alert.add(lang.t("group_left"));
-        router.navigate("/");
+        this.props.history.push("/");
       }
     });
   }
@@ -100,11 +101,7 @@ export default class GroupSettings extends Component {
                           type="text"
                           name="inviteKey"
                           value={
-                            `${location.protocol 
-                            }//${ 
-                            location.host 
-                            }/invitation/${ 
-                            this.state.secretKey}`
+                            `${location.protocol}//${location.host}/invitation/${this.state.secretKey}`
                           }
                           class="form-control font-size-80"
                           readonly="readonly"
@@ -156,3 +153,5 @@ export default class GroupSettings extends Component {
     );
   }
 }
+
+export default withRouter(GroupSettings);

@@ -1,61 +1,52 @@
-import { h, Component } from "preact";
-import { lang, me, http } from "/core";
+import { h } from "preact";
+import { lang, me } from "/core";
 import { FaIcon } from "/misc";
 import { Notification } from "/pages";
+import { useStoreon } from 'storeon/preact'
 
-export default class NotificationsDropdownNavbar extends Component {
-  constructor(props) {
-    super(props);
-    // force update the navbar when me gets updated
-    addEventListener("meStateChange", () => this.setState({}));
-    this.clearAllNotifications = this.clearAllNotifications.bind(this);
+export default function NotificationsDropdownNavbar() {
+
+  // TODO remove dispatch
+  const { dispatch, notifications } = useStoreon('notifications');
+  if (!notifications) {
+    return null;
   }
 
-  clearAllNotifications() {
-    if (me.me.notifications.length) {
-      Promise.all(
-        me.me.notifications.map(n => http.delete(`/api/notifications/${  n.id}`))
-      ).then(me.update());
-    }
-  }
-
-  render() {
-    return (
-      <div
-        className={
-          `menu dropdown${me.me.notifications && me.me.notifications.length ? " cursor-pointer" : ""}`
-        }
-        title={lang.t('notifications')}
-        tabindex="-1"
-        onClick={e =>
-          me.me.notifications.length &&
-          e.currentTarget.classList.toggle("active")
-        }
-      >
-        <div class="unselectable button-with-count">
-          <FaIcon
-            family={me.me.notifications.length ? "solid" : "regular"}
-            icon={"bell"}
-          />
-          {!!me.me.notifications.length && (
-            <span class="badge-count">{Math.min(me.me.notifications.length, 99) + (me.me.notifications.length > 99 ? "+" : "")}</span>
-          )}
-        </div>
-        <div class="dropdown-menu dropdown-right notifications-menu">
-          <div class="notification-header">
-            <strong class="capitalize">{lang.t("notifications")}</strong>
-            <div
-              class="action capitalize"
-              onClick={() => this.clearAllNotifications()}
-            >
-              {lang.t("mark_all_as_read")}
-            </div>
-          </div>
-          {me.me && Array.isArray(me.me.notifications) && me.me.notifications.length && (
-            me.me.notifications.sort((a, b) => b.createdAt - a.createdAt).slice(0,99).map(e => <Notification key={e.id} {...e} />)
-          )}
-        </div>
+  return (
+    <div
+      className={
+        `menu dropdown${notifications.length ? " cursor-pointer" : ""}`
+      }
+      title={lang.t('notifications')}
+      tabindex="-1"
+      onClick={e =>
+        notifications.length &&
+        e.currentTarget.classList.toggle("active")
+      }
+    >
+      <div class="unselectable button-with-count">
+        <FaIcon
+          family={notifications.length ? "solid" : "regular"}
+          icon={"bell"}
+        />
+        {!!notifications.length && (
+          <span class="badge-count">{Math.min(notifications.length, 99) + (notifications.length > 99 ? "+" : "")}</span>
+        )}
       </div>
-    );
-  }
+      <div class="dropdown-menu dropdown-right notifications-menu">
+        <div class="notification-header">
+          <strong class="capitalize">{lang.t("notifications")}</strong>
+          <div
+            class="action capitalize"
+            onClick={() => me.removeAllNotifications()}
+          >
+            {lang.t("mark_all_as_read")}
+          </div>
+        </div>
+        {notifications?.length && (
+          notifications.sort((a, b) => b.createdAt - a.createdAt).slice(0,99).map(e => <Notification key={e.id} {...e} />)
+        )}
+      </div>
+    </div>
+  );
 }

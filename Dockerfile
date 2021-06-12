@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.13
 
 # add tini and s6 to manage processes
 RUN apk add --no-cache -U tini s6
@@ -62,8 +62,7 @@ COPY app/dist /zusam/public
 RUN set -xe \
     && mkdir -p /run/nginx /zusam/data /var/tmp/nginx /var/lib/nginx \
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar unzip composer \
-    && ln -sf /zusam/data/config /zusam/api/.env.local \
-    && composer install -d /zusam/api --no-dev --prefer-dist \
+    && COMPOSER_ALLOW_SUPERUSER=1 composer install -d /zusam/api --no-dev --prefer-dist \
     && rm -rf /zusam/data/data.db \
     && apk del .build-deps \
     && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public /var/tmp/nginx

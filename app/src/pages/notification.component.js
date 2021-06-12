@@ -1,7 +1,8 @@
 import { h, Component, Fragment } from "preact";
-import { http, lang, me, router, util } from "/core";
+import { http, lang, util } from "/core";
+import { Link } from "react-router-dom";
 
-export default class Notification extends Component {
+class Notification extends Component {
   constructor(props) {
     super(props);
     this.getMiniature = this.getMiniature.bind(this);
@@ -161,16 +162,10 @@ export default class Notification extends Component {
 
   render() {
     return (
-      <a
+      <Link
         class="notification seamless-link unselectable"
-        href={router.toApp(this.state.target)}
+        to={this.state.target}
         title={this.state.title}
-        onClick={e => {
-          e.preventDefault();
-          me.removeMatchingNotifications(this.props.id).then(() =>
-            router.onClick(e, false, this.state.target)
-          );
-        }}
       >
         <div class="miniature unselectable">{this.getMiniature()}</div>
         <div class="infos">
@@ -187,7 +182,9 @@ export default class Notification extends Component {
             {util.humanTime(this.props.createdAt)}
           </div>
         </div>
-      </a>
+      </Link>
     );
   }
 }
+
+export default Notification;

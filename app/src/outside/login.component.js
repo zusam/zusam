@@ -1,8 +1,9 @@
 import { h, Component } from "preact";
-import { lang, me, alert, storage, http, router } from "/core";
+import { lang, alert, storage, http, router, me } from "/core";
 import zusam_logo from "/assets/zusam_logo.svg";
+import { withRouter } from "react-router-dom";
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.state = {
@@ -13,7 +14,11 @@ export default class Login extends Component {
     this.sendPasswordReset = this.sendPasswordReset.bind(this);
     this.showPasswordReset = this.showPasswordReset.bind(this);
     // reroute if already logged in
-    storage.get("apiKey").then(apiKey => apiKey && router.navigate("/"));
+    storage.get("apiKey").then(apiKey => apiKey && this.props.history.push("/"));
+  }
+
+  componentDidMount() {
+    storage.reset();
   }
 
   sendPasswordReset(e) {
@@ -41,8 +46,9 @@ export default class Login extends Component {
       this.setState({ sending: false });
       if (res && res.api_key) {
         storage.set("apiKey", res.api_key).then(() => {
+          console.log('login');
           me.update().then(() => {
-            setTimeout(() => router.navigate("/"), 100);
+            setTimeout(() => this.props.history.push("/"), 100);
           });
         });
       } else if (res && res.message) {
@@ -123,3 +129,5 @@ export default class Login extends Component {
     );
   }
 }
+
+export default withRouter(Login);

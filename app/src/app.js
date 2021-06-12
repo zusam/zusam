@@ -1,7 +1,5 @@
-import { h, render, Component } from "preact";
-import { alert, lang, storage, router, me, cache, api } from "/core";
-import { Navbar } from "/navbar";
-import { MainContent } from "/pages";
+import { h, Component } from "preact";
+import { http, storage, router, api, me } from "/core";
 import {
   Login,
   Public,
@@ -9,23 +7,34 @@ import {
   Signup,
   StopNotificationEmails
 } from "/outside";
+import { MessageParent } from "/message";
+import { Home, CreateGroup, GroupTitle, GroupBoard, Share, BookmarkBoard } from "/pages";
+import { Settings } from "/settings";
+import { Navbar, GroupSearch } from "/navbar";
+import Writer from "/message/writer.component.js";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  withRouter,
+} from "react-router-dom";
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     // load api infos
     api.update();
 
-    // cache management
-    console.log(`localStorage usage: ${storage.usage()}`);
-    cache.purgeOldCache();
+    // update me
+    me.update();
 
-    this.onRouterStateChange = this.onRouterStateChange.bind(this);
-    window.addEventListener("routerStateChange", this.onRouterStateChange);
-    window.addEventListener("meStateChange", () => this.setState({ me: me.me }));
-    window.addEventListener("fetchedNewDict", () => this.setState({}));
-    window.addEventListener("popstate", router.sync);
+    // i18n dict management
+    window.addEventListener("fetchedNewDict", () => {
+      setTimeout(() => this.setState({lang: "up"}), 10);
+    });
+
+    // manage dropdowns
     window.addEventListener("click", e => {
       if (!e.target.closest(".dropdown")) {
         // close dropdowns if we are clicking on something else
@@ -44,118 +53,136 @@ class App extends Component {
       }
     });
 
-    // fetch language file
-    lang.fetchDict();
-
-    // get apiKey from the logged in user
+    // check if user is connected
     storage.get("apiKey").then(apiKey => {
-      if (router.isOutside() || apiKey) {
-        router.sync();
-      } else {
+      if (router.route == "invitation") {
+          if (apiKey) {
+            http.post(`/api/groups/invitation/${router.id}`, {}).then(() => {
+              this.props.history.push("/");
+            });
+          } else {
+            this.props.history.push(`/signup?inviteKey=${router.id}`);
+          }
+      } else if (!router.isOutside() && !apiKey) {
         // redirect to login if we don't have an apiKey
-        //  log this so that we can later remove a falsy behavior
-        //  We don't want to logout the user if the network is slow
-        console.warn("No API key");
-        router.navigate("/login");
+        this.props.history.push("/login");
       }
     });
-
-    this.state = {
-      action: router.action,
-      route: router.route,
-      id: router.id,
-      entityUrl: router.entityUrl
-    };
-  }
-
-  onRouterStateChange() {
-    this.setState({
-      action: router.action,
-      route: router.route,
-      id: router.id,
-      entityUrl: router.entityUrl
-    });
-    setTimeout(() => window.scrollTo(0, 0));
-    storage.get("apiKey").then(apiKey => {
-      if (apiKey && router.route != "login") {
-        me.get().then(user => {
-          if (!user && !router.isOutside()) {
-            // let's log this so we can later know what causes disconnects when the network is slow
-            console.warn("No user data => logout.");
-            storage.set("apiKey", "").then(() => router.navigate("/login"));
-          } else {
-            this.setState({
-              action: router.action,
-              route: router.route,
-              id: router.id,
-              me: user,
-              entityUrl: router.entityUrl
-            });
-          }
-        });
-      } else if (!router.isOutside()) {
-            // let's log this so we can later know what causes disconnects when the network is slow
-            console.warn("No API key => logout.");
-          router.navigate("/login");
-        }
-    });
-    alert.add(lang.t(router.getParam("alert", router.search)));
   }
 
   render() {
-    // external pages for non connected users
-    switch (this.state.route) {
-      case "signup":
-        return <Signup />;
-      case "stop-notification-emails":
-        return <StopNotificationEmails />;
-      case "public":
-        return <Public token={this.state.id} key={this.state.id} />;
-      case "password-reset":
-        return <ResetPassword />;
-      case "login":
-        return <Login />;
-    }
-
-    // here, we enter the "connected" realm of pages.
-    // If the user is not connected, what should we do ?
-    if (!this.state.me || !this.state.me.groups) {
-      return;
-    }
 
     return (
-      <main>
-        <Navbar />
-        <div class="content">
-          <MainContent {...this.state} />
-        </div>
-      </main>
+      <Router>
+        <Switch>
+
+          <Route path="/" exact={true} render={() => (
+              <Home />
+          )} />
+
+          <Route path="/signup" render={() => (
+            <Signup />
+          )} />
+
+          <Route path="/stop-notification-emails" render={() => (
+            <StopNotificationEmails />
+          )} />
+
+          <Route path="/public/:token" render={props => (
+            <Public token={props.match.params.token} key={props.match.params.token} />
+          )} />
+
+          <Route path="/reset-password" render={() => (
+            <ResetPassword />
+          )} />
+
+          <Route path="/login" render={() => (
+            <Login />
+          )} />
+
+          <Route path="/:type/:id/settings" render={props => (
+            <Settings
+              type={props.match.params.type}
+              id={props.match.params.id}
+              key={props.match.params.id}
+            />
+          )} />
+
+          <Route path="/create-group" render={() => (
+            <main>
+              <Navbar />
+              <div class="content">
+                <CreateGroup />;
+              </div>
+            </main>
+          )} />
+
+          <Route path="/share" render={() => (
+            <main>
+              <Navbar />
+              <div class="content">
+                <Share />;
+              </div>
+            </main>
+          )} />
+
+          <Route path="/messages/:id" render={props => (
+            <MessageParent key={props.match.params.id} id={props.match.params.id} isPublic={false} />
+          )} />
+
+          <Route path="/bookmarks" render={() => (
+            <main>
+              <Navbar />
+              <div class="content">
+                <div>
+                  <BookmarkBoard />
+                </div>
+              </div>
+            </main>
+          )} />
+
+          <Route path="/groups/:id" render={props => {
+
+            if (
+              router.getParam("search", props.location.search.substring(1))
+              || router.getParam("hashtags", props.location.search.substring(1))
+            ) {
+              return (
+                <main>
+                  <Navbar />
+                  <div class="content">
+                    <article class="mb-3">
+                      <div class="container pb-3">
+                        <GroupTitle />
+                        <GroupSearch key={props.match.params.id} id={props.match.params.id} />
+                      </div>
+                    </article>
+                  </div>
+                </main>
+              );
+            }
+
+            return <GroupBoard key={props.match.params.id} id={props.match.params.id} />
+          }} />
+
+          <Route path="/groups/:id/write" render={props => (
+            <main>
+              <Navbar />
+              <div class="content">
+                <article class="mb-3">
+                  <div class="container pb-3">
+                    <GroupTitle />
+                    <Writer focus={true} group={props.match.params.id} />
+                  </div>
+                </article>
+              </div>
+            </main>
+          )} />
+
+        </Switch>
+      </Router>
     );
   }
 }
 
-render(<App />, document.body);
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    if (location.search.includes("service-workers=unregister")) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        for (let registration of registrations) {
-          registration.unregister();
-        }
-      });
-      console.log("Service workers unregistered");
-    }
-    navigator.serviceWorker.register("/service-workers.js").then(
-      (registration) => {
-        console.log(
-          "ServiceWorker registration successful with scope: ",
-          registration.scope
-        );
-      },
-      (err) => {
-        console.warn("ServiceWorker registration failed: ", err);
-      }
-    );
-  });
-}
+export default withRouter(App);

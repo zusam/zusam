@@ -1,17 +1,16 @@
 import { h, Component } from "preact";
-import { http, router, util } from "/core";
+import { http } from "/core";
+import { FaIcon } from "/misc";
+import { Navbar } from "/navbar";
 import { MessagePreview } from "/message";
 import { GroupTitle } from "/pages";
+import { Link } from "react-router-dom";
 
 export default class GroupBoard extends Component {
   constructor(props) {
     super(props);
-    let groupId = util.getId(router.id);
-    let loaded =
-      1 +
-      Math.floor((window.screen.width * window.screen.height) / (320 * 215));
+    let loaded = 1 + Math.floor((window.screen.width * window.screen.height) / (320 * 215));
     this.state = {
-      groupId,
       loaded,
       messages: [],
       scrollTop: 0,
@@ -41,7 +40,15 @@ export default class GroupBoard extends Component {
 
   loadMessages(page) {
     http
-      .get(`/api/groups/${  this.state.groupId  }/page/${  page}`)
+      .get(`/api/groups/${this.props.id}`)
+      .then(res => {
+        this.setState({
+          group: res
+        });
+      });
+
+    http
+      .get(`/api/groups/${this.props.id}/page/${page}`)
       .then(res => {
         if (res && Array.isArray(res["messages"])) {
           let new_loaded = Math.max(this.state.loaded, page * 30);
@@ -93,30 +100,40 @@ export default class GroupBoard extends Component {
   }
 
   render() {
+    if (!this.props.id) {
+      return;
+    }
     return (
-      Array.isArray(this.state.messages) && (
-        <div>
-          <GroupTitle
-            key={util.getGroupId()}
-            id={util.getGroupId()}
-            name={util.getGroupName()}
-          />
-          <article id="group" class="justify-content-center d-flex">
-            <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
-              {this.state.messages.slice(0, this.state.loaded).map((msg, i) => {
-                return (
-                  <MessagePreview
-                    tabindex={i + 1}
-                    key={msg.id}
-                    message={msg}
-                    groupId={util.getId(router.id)}
-                  />
-                );
-              })}
-            </div>
-          </article>
+      <main>
+        <Navbar />
+        <div class="content">
+          <div>
+              <div>
+                <GroupTitle />
+                <article id="group" class="justify-content-center d-flex">
+                  <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
+                    {Array.isArray(this.state.messages) && this.state.messages.slice(0, this.state.loaded).map((msg, i) => {
+                      return (
+                        <MessagePreview
+                          tabindex={i + 1}
+                          key={msg.id}
+                          message={msg}
+                          groupId={this.props.id}
+                        />
+                      );
+                    })}
+                  </div>
+                </article>
+              </div>
+            <Link
+              class="write-button material-shadow seamless-link"
+              to={`/groups/${this.props.id}/write`}
+            >
+              <FaIcon family={"solid"} icon={"pencil-alt"} />
+            </Link>
+          </div>
         </div>
-      )
+      </main>
     );
   }
 }

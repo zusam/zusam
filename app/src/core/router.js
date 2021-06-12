@@ -1,49 +1,134 @@
-import http from "./http.js";
-import me from "./me.js";
 import util from "./util.js";
-import lang from "./lang.js";
 import storage from "./storage.js";
+import http from "./http.js";
+import store from "/store";
 
 const router = {
-  route: "",
-  id: "",
-  action: "",
-  backUrl: "",
-  backUrlPrompt: "",
-  entityUrl: "",
-  entityType: "",
-  search: "",
-  entity: {},
-  isValidUrl: url => {
-    try {
-      new URL(url);
-      return true;
-    } catch (_) {
-      return false;
-    }
+
+  get() {
+    return store.get();
   },
-  getSubpath: () => new URL(document.baseURI).pathname.replace(/\/$/, ""),
-  toApp: url => {
-    if (!url || typeof url != "string") {
+
+  get route() {
+    //return store?.get()?.route;
+    try {
+      return router.removeSubpath(location.pathname).slice(1).split("/")[0];
+    } catch {
       return "";
     }
-    if (router.isValidUrl(url)) {
-      return url;
-    }
-    return location.origin + router.getSubpath() + router.removeSubpath(url);
   },
+
+  get id() {
+    //return store?.get()?.id;
+    try {
+      return router.removeSubpath(location.pathname).slice(1).split("/")[1];
+    } catch {
+      return "";
+    }
+  },
+
+  get action() {
+    //return store?.get()?.action;
+    try {
+      return router.removeSubpath(location.pathname).slice(1).split("/")[2];
+    } catch {
+      return "";
+    }
+  },
+
+  get backUrl() {
+    console.warn("don't use backUrl");
+    return store.get()?.backUrl;
+  },
+
+  get backUrlPrompt() {
+    console.warn("don't use backUrlPrompt");
+    return store.get()?.backUrlPrompt;
+  },
+
+  get entityUrl() {
+    //return store?.get()?.entityUrl;
+    try {
+      return `/api/${router.removeSubpath(location.pathname).slice(1).split("/").slice(0,2).join("/")}`;
+    } catch {
+      return "";
+    }
+  },
+
+  get entityType() {
+    console.warn("don't use entityType");
+    return store.get()?.entityType;
+  },
+
+  get search() {
+    //return store?.get()?.search;
+    return location.search.slice(1);
+  },
+
+  getBackUrl() {
+    return router.getEntity().then(entity => {
+      switch (router.route) {
+        case "groups":
+          if (router.action == "write") {
+            return `/${router.route}/${router.id}`;
+          }
+          if (location.search) {
+            return `/${router.route}/${router.id}`;
+          }
+          return "";
+        case "messages":
+          if (entity["parent"] && !entity["isInFront"]) {
+            return `/messages/${entity["parent"].id}`;
+          }
+          return `/groups/${util.getId(entity.group)}`;
+        case "users":
+          return "/";
+        default:
+          if (router.action) {
+            return "/";
+          }
+          return "";
+      }
+    });
+  },
+
+  getEntity() {
+    const newState = router.getUrlComponents(util.toApp(location.pathname));
+    return storage.get("apiKey").then(apiKey => {
+      if (apiKey && newState.id && router.isEntity(newState?.route)) {
+        return http.get(`/api/${newState.route}/${newState.id}`).then(res => {
+          if (!res) {
+            console.warn("Unknown entity");
+            // TODO: what should we do here ?
+            return null;
+          }
+          return res;
+        });
+      }
+      return null;
+    });
+  },
+
+  get entity() {
+    console.warn("don't use entity");
+    return store.get()?.entity;
+  },
+
   removeSubpath: path =>
-    path ? path.replace(new RegExp(`^${  router.getSubpath()}`), "") : "",
+    path ? path.replace(new RegExp(`^${util.getSubpath()}`), "") : "",
+
   getParam: (param, searchParams = window.location.search.substring(1)) => {
     let res = searchParams.split("&").find(e => e.split("=")[0] === param);
     return res ? decodeURIComponent(res.split("=")[1]) : "";
   },
+
   getSegments: () =>
       router
       .removeSubpath(window.location.pathname)
       .slice(1)
       .split("?")[0]
       .split("/"),
+
   // check if route is "outside": accessible to non connected user
   isOutside: () =>
     [
@@ -54,8 +139,9 @@ const router = {
       "stop-notification-emails",
       "public"
     ].includes(router.route || router.getSegments()[0]),
-  isEntity: name =>
-    ["messages", "groups", "users", "links", "files"].includes(name),
+
+  isEntity: () => ["messages", "groups", "users", "links", "files"].includes(router.getSegments()[0]),
+
   getUrlComponents: url => {
     let components = {};
     if (url) {
@@ -73,119 +159,31 @@ const router = {
     components.backUrlPrompt = "";
     return components;
   },
-  navigate: async (url = "/", options = {}) => {
+
+  navigate: async (url = "/", options = {replace: false}) => {
+    console.warn("FORCE NAVIGATE");
     if (!url.match(/^http/) && !options["raw_url"]) {
-      url = router.toApp(url);
-    }
-    let components = router.getUrlComponents(url);
-    // do not allow to renavigate to the same url. This is done to avoid accidental navigate locks
-    if (router.url && router.url.href == components.url.href) {
-      console.warn("navigate lock !");
-      return;
-    }
-    Object.assign(router, components);
-
-    // set url, backUrl and entityUrl
-    if (router.id && router.isEntity(router.route)) {
-      router.entityUrl = `/api/${router.route}/${router.id}`;
-      router.entityType = router.route;
-
-      await http
-        .get(router.entityUrl)
-        .then(res => {
-          if (!res) {
-            console.warn("Unknown entity");
-            // TODO: what should we do here ?
-            //router.navigate(); // could go into navigate loop if disconnected
-            return;
-          }
-          router.entity = res;
-          switch (router.route) {
-            case "groups":
-              if (router.action == "write") {
-                router.backUrl = `/${router.route}/${router.id}`;
-                router.backUrlPrompt = lang.t("cancel_write");
-              }
-              if (router.search) {
-                router.backUrl = `/${router.route}/${router.id}`;
-              }
-              break;
-            case "messages":
-              if (res["parent"] && !res["isInFront"]) {
-                router.backUrl = `/messages/${res["parent"].id}`;
-              } else {
-                router.backUrl = `/groups/${util.getId(res.group)}`;
-              }
-              break;
-            case "users":
-              router.backUrl = "/";
-              break;
-            default:
-              if (router.action) {
-                router.backUrl = "/";
-              }
-          }
-        })
-        .catch(e => console.warn(e));
-    } else {
-      router.entity = null;
+      url = util.toApp(url);
     }
 
-    switch (router.route) {
-      case "login":
-        storage.reset();
-      case "bookmarks":
-      case "create-group":
-      case "groups":
-      case "messages":
-      case "password-reset":
-      case "public":
-      case "share":
-      case "signup":
-      case "stop-notification-emails":
-      case "users":
-        if (options.replace) {
-          history.replaceState(null, "", url);
-        } else {
-          history.pushState(null, "", url);
-        }
-        window.dispatchEvent(new CustomEvent("routerStateChange"));
-        break;
-      case "logout":
-        util.logout();
-        break;
-      case "invitation":
-        storage.get("apiKey").then(apiKey => {
-          if (apiKey) {
-            http.post(`/api/groups/invitation/${  router.id}`, {}).then(() => {
-              window.location.href = window.location.origin;
-            });
-          } else {
-            router.navigate(`/signup?inviteKey=${  router.id}`);
-          }
-        });
-        break;
-      default:
-        me.get().then(user => {
-          if (!user) {
-            router.navigate("/login");
-            return;
-          }
-          if (user.data["default_group"]) {
-            router.navigate(`/groups/${  user.data["default_group"]}`);
-          } else if (user.groups[0]) {
-              router.navigate(`/groups/${  user.groups[0].id}`);
-            } else {
-              window.location = router.toApp("/create-group");
-            }
-        });
-    }
+    window.dispatchEvent(new CustomEvent("navigate", {detail:{url}}));
+    //if (options.replace) {
+    //  history.replaceState(null, "", url);
+    //} else {
+    //  history.pushState(null, "", url);
+    //}
   },
-  sync: () => {
-    router.navigate(location.pathname + location.search + location.hash, {
-      replace: true
-    });
+
+  recalculate: path => {
+    store.dispatch('router/recalculate', path);
   },
+
+  //sync: () => {
+  //  router.navigate(location.pathname + location.search + location.hash, {
+  //    replace: true
+  //  });
+  //},
+
   onClick: (e, newTab = false, url = null) => {
     // stop propagation
     e.preventDefault();
@@ -207,17 +205,18 @@ const router = {
     }
 
     // check if it's an external url
-    if (url.startsWith("http")) {
-      let targetUrl = new URL(url);
-      if (targetUrl.host != location.host) {
-        if (e.ctrlKey || newTab) {
-          open(url, "_blank");
-        } else {
-          location.href = url;
-        }
-        return;
-      }
-    }
+    // FIXME TODO
+    //if (url.startsWith("http")) {
+    //  let targetUrl = new URL(url);
+    //  if (targetUrl.host != location.host) {
+    //    if (e.ctrlKey || newTab) {
+    //      open(url, "_blank");
+    //    } else {
+    //      location.href = url;
+    //    }
+    //    return;
+    //  }
+    //}
 
     // disable active stances (dropdowns...)
     for (let e of document.getElementsByClassName("active")) {
@@ -230,6 +229,11 @@ const router = {
     } else {
       router.navigate(url);
     }
+  },
+
+  logout: () => {
+    storage.reset();
+    window.location.href = window.location.origin;
   }
 };
 export default router;

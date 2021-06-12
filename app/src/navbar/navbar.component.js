@@ -1,23 +1,32 @@
 import { h, Component } from "preact";
-import { lang, me, router, util } from "/core";
+import { lang, router, util } from "/core";
 import { FaIcon } from "/misc";
 import { Search } from "/pages";
 import { GroupsDropdownNavbar, NotificationsDropdownNavbar } from "/navbar";
+import { Link, withRouter } from "react-router-dom";
+import { connectStoreon } from 'storeon/preact'
 
-export default class Navbar extends Component {
-  constructor(props) {
-    super(props);
-    this.clickBackButton = this.clickBackButton.bind(this);
-    // force update the navbar when me gets updated
-    addEventListener("meStateChange", () => this.setState({}));
-  }
+class Navbar extends Component {
 
-  clickBackButton(evt) {
-    evt.preventDefault();
-    if (router.backUrlPrompt && !confirm(router.backUrlPrompt)) {
-      return false;
-    }
-    router.onClick(evt);
+  // TODO
+  //clickBackButton(evt) {
+  //  evt.preventDefault();
+  //  if (router.backUrlPrompt && !confirm(router.backUrlPrompt)) {
+  //    return false;
+  //  }
+  //  router.onClick(evt);
+  //}
+
+  // TODO remove dispatch
+  //const { dispatch, me, backUrl } = useStoreon('me', 'backUrl');
+  //if (!me) {
+  //  return null;
+  //}
+
+  componentDidMount() {
+    router.getBackUrl().then(backUrl => {
+      this.setState({backUrl});
+    });
   }
 
   render() {
@@ -26,7 +35,7 @@ export default class Navbar extends Component {
         <div class="navbar-block">
           {(["share"].includes(router.route) ||
             ["settings"].includes(router.action) ||
-            !router.backUrl) && (
+            !this.state.backUrl) && (
               <div
                 class="menu dropdown cursor-pointer"
                 tabindex="-1"
@@ -35,58 +44,56 @@ export default class Navbar extends Component {
                 <div class="rounded-circle avatar unselectable">
                   <img
                     class="rounded-circle"
-                    style={util.backgroundHash(me.me.id)}
+                    style={util.backgroundHash(this.props.me.id)}
                     src={
-                      me.me.avatar
-                        ? util.crop(me.me.avatar["id"], 80, 80)
+                      this.props.me.avatar
+                        ? util.crop(this.props.me.avatar["id"], 80, 80)
                         : util.defaultAvatar
                     }
                     onError={e => (e.currentTarget.src = util.defaultAvatar)}
                   />
                 </div>
                 <div class="dropdown-menu dropdown-right">
-                  { me.me && me.me.data && Array.isArray(me.me.data.bookmarks) && me.me.data.bookmarks.length && (
-                    <a
+                  { this.props.me.data?.bookmarks?.length && (
+                    <Link
                       class="d-block seamless-link capitalize"
-                      href={router.toApp("/bookmarks")}
-                      onClick={e => router.onClick(e)}
+                      to={"/bookmarks"}
                     >
                       {lang.t('bookmarks')}
-                    </a>
+                    </Link>
                   )}
-                  <a
+                  <Link
                     class="d-block seamless-link capitalize"
-                    href={router.toApp(`/users/${  me.me.id  }/settings`)}
-                    onClick={e => router.onClick(e)}
+                    to={`/users/${this.props.me.id}/settings`}
                   >
                     {lang.t("settings")}
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     class="d-block seamless-link capitalize"
-                    href={router.toApp("/logout")}
-                    onClick={e => router.onClick(e)}
+                    to={"/logout"}
                   >
                     {lang.t("logout")}
-                  </a>
+                  </Link>
                 </div>
               </div>
             )}
-          {["groups", "messages"].includes(router.route) && router.backUrl && (
-            <a
+          {["groups", "messages"].includes(router.route) && this.state.backUrl && (
+            <Link
               class="seamless-link back"
-              href={router.toApp(router.backUrl)}
-              onClick={e => this.clickBackButton(e)}
+              to={this.state.backUrl}
             >
-              <FaIcon family={"regular"} icon={"level-down-alt"} rotation={"180deg"} />
-            </a>
+              <FaIcon family={"solid"} icon={"arrow-left"} />
+            </Link>
           )}
           <NotificationsDropdownNavbar />
         </div>
         <Search />
         <div class="navbar-block">
-          <GroupsDropdownNavbar />
+          <GroupsDropdownNavbar groups={this.props.me.groups} />
         </div>
       </div>
     );
   }
 }
+
+export default connectStoreon('me', withRouter(Navbar));

@@ -1,47 +1,38 @@
-import { h, Component, Fragment } from "preact";
-import { lang, me, router } from "/core";
+import { h, Fragment } from "preact";
+import { lang } from "/core";
 import { FaIcon } from "/misc";
+import { Link } from "react-router-dom";
 
-export default class GroupsDropdownNavbar extends Component {
-  constructor(props) {
-    super(props);
-    // force update the navbar when me gets updated
-    addEventListener("meStateChange", () => this.setState({}));
-  }
-
-  render() {
-    return (
-      <Fragment>
-        {me.me.groups && (
-          <div
-            class="nav-link dropdown groups unselectable"
-            tabindex="-1"
-            onClick={e => e.currentTarget.classList.toggle("active")}
-          >
-            <div class="unselectable pr-1">
-              {lang.t("groups")} <FaIcon family={"solid"} icon={"caret-down"} />
-            </div>
-            <div class="dropdown-menu dropdown-left">
-              {me.me.groups.map(e => (
-                <a
-                  class="d-block seamless-link unselectable"
-                  href={router.toApp(`/groups/${  e.id}`)}
-                  onClick={e => router.onClick(e)}
-                >
-                  {e.name}
-                </a>
-              ))}
-              <a
-                class="seamless-link unselectable"
-                href={router.toApp("/create-group")}
-                onClick={e => router.onClick(e)}
-              >
-                {`+ ${  lang.t("create_a_group")}`}
-              </a>
-            </div>
+export default function GroupsDropdownNavbar() {
+  return (
+    <Fragment>
+      {this.props.groups && (
+        <div
+          class="nav-link dropdown groups unselectable"
+          tabindex="-1"
+          onClick={e => e.currentTarget.classList.toggle("active")}
+        >
+          <div class="unselectable pr-1">
+            {lang.t("groups")} <FaIcon family={"solid"} icon={"caret-down"} />
           </div>
-        )}
-      </Fragment>
-    );
-  }
+          <div class="dropdown-menu dropdown-left">
+            {this.props.groups.map(e => (
+              <Link
+                to={`/groups/${e.id}`}
+                class="d-block seamless-link unselectable"
+              >
+                {e.name}
+              </Link>
+            ))}
+            <Link
+              to={"/create-group"}
+              class="seamless-link unselectable"
+            >
+              {`+ ${lang.t("create_a_group")}`}
+            </Link>
+          </div>
+        </div>
+      )}
+    </Fragment>
+  );
 }
