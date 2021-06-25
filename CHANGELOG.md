@@ -2,6 +2,26 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [0.4.5] - 2021-06-25
+
+### Log
+- Add bot feature
+- Add UserStatistics command
+- Add GroupStatistics command
+- Add StorageStatistics command
+- Add spinner during search
+- Add warning when javascript is disabled
+- Allow messages to disable embeds with the `no_embed` key
+- Don't generate preview based on URLs on message creation
+- Limit number of notifications on the frontend to 100
+- Use alpine's composer in the container build
+- Fix api info 'allow_email' not being boolean
+- Fix nlg not hidding on navigation
+- Fix subpath issues on create-group
+
+### Remarks
+Minor feature release.  
+
 ## [0.4.4] - 2021-03-03
 
 ### Log
