@@ -68,22 +68,12 @@ class Upload extends ApiController
 
         $file = $this->fileService->createFromSymfonyFile($uploadedFile);
 
-        //if (!$this->fileService->isSupportedFileType($file)) {
-        //    return new JsonResponse(['error' => 'Unsupported file type'], Response::HTTP_BAD_REQUEST);
-        //}
-
-        //$file = $this->fileService->initialConversion($file);
-
         if ($request->request->get('fileIndex')) {
             $file->setFileIndex($request->request->get('fileIndex'));
         }
 
-        $this->em->flush();
-
-        // Prevent the serialization of the file property
-        //$file->setFile(null);
-
         $this->em->persist($file);
+        $this->em->flush();
 
         return new Response(
             $this->serialize($file, ['read_file']),
