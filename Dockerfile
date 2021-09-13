@@ -62,6 +62,7 @@ COPY app/dist /zusam/public
 RUN set -xe \
     && mkdir -p /run/nginx /zusam/data /var/tmp/nginx /var/lib/nginx \
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar unzip composer \
+    && ln -sf /zusam/data/config /zusam/api/.env.local \
     && composer install -d /zusam/api --no-dev --prefer-dist \
     && rm -rf /zusam/data/data.db \
     && apk del .build-deps \
