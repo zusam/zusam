@@ -141,6 +141,20 @@ class App extends Component {
             </main>
           )} />
 
+          <Route path="/groups/:id/write" render={props => (
+            <main>
+              <Navbar />
+              <div class="content">
+                <article class="mb-3">
+                  <div class="container pb-3">
+                    <GroupTitle />
+                    <Writer focus={true} group={props.match.params.id} />
+                  </div>
+                </article>
+              </div>
+            </main>
+          )} />
+
           <Route path="/groups/:id" render={props => {
 
             if (
@@ -164,20 +178,6 @@ class App extends Component {
 
             return <GroupBoard key={props.match.params.id} id={props.match.params.id} />
           }} />
-
-          <Route path="/groups/:id/write" render={props => (
-            <main>
-              <Navbar />
-              <div class="content">
-                <article class="mb-3">
-                  <div class="container pb-3">
-                    <GroupTitle />
-                    <Writer focus={true} group={props.match.params.id} />
-                  </div>
-                </article>
-              </div>
-            </main>
-          )} />
 
         </Switch>
       </Router>

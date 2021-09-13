@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { router, util, me } from "/core";
+import { router } from "/core";
 import Message from "./message.component.js";
 import { Navbar } from "/navbar";
 

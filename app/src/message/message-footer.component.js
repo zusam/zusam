@@ -1,5 +1,6 @@
-import { Fragment, h } from "preact";
+import { h, Fragment } from "preact";
 import { router, lang, util, me } from "/core";
+import { Link } from "react-router-dom";
 import { FaIcon } from "/misc";
 
 export default function MessageFooter() {
@@ -8,7 +9,7 @@ export default function MessageFooter() {
       <div class="infos">
         {!this.props.isPublic &&
             this.props.author &&
-            this.props.author.id == me.me.id && (
+            this.props.author.id == me?.me?.id && (
               <Fragment>
                 <a
                   class="action seamless-link font-size-90 capitalize d-none d-sm-block"
@@ -21,12 +22,11 @@ export default function MessageFooter() {
             )}
         {!this.props.isPublic && this.props.isChild && (
           <Fragment>
-            <a
+            <Link
               class="action seamless-link font-size-90 capitalize"
-              href={util.toApp(
+              to={
                 `/messages/${this.props.message.id}${this.props.message.children.length ? "" : "?focus=reply"}`
-              )}
-              onClick={e => router.onClick(e)}
+              }
             >
               {this.props.message.children.length ? (
                 this.props.message.children.some(e => me.isNew(e.id)) ? (
@@ -43,7 +43,7 @@ export default function MessageFooter() {
               ) : (
                 lang.t("reply")
               )}
-            </a>
+            </Link>
             <div class="dot">&bull;</div>
           </Fragment>
         )}
@@ -74,13 +74,13 @@ export default function MessageFooter() {
               <FaIcon family="solid" icon="ellipsis-h" />
             </div>
             <div class="dropdown-menu dropdown-options">
-              {this.props.author && this.props.author.id == me.me.id && (
-                <a
+              {this.props.author && this.props.author.id == me?.me?.id && (
+                <Link
                   class="seamless-link capitalize"
                   onClick={e => this.props.deleteMessage(e)}
                 >
                   {lang.t("delete")}
-                </a>
+                </Link>
               )}
               {
                 <a
@@ -100,7 +100,7 @@ export default function MessageFooter() {
               )}
               {!this.props.message.isInFront &&
                   this.props.author &&
-                  this.props.author.id == me.me.id && (
+                  this.props.author.id == me?.me?.id && (
                     <a
                       class="seamless-link capitalize"
                       onClick={e => this.props.publishInGroup(e)}
@@ -124,7 +124,7 @@ export default function MessageFooter() {
                   {lang.t("remove_bookmark")}
                 </a>
               )}
-              {this.props.author && this.props.author.id == me.me.id && (
+              {this.props.author && this.props.author.id == me?.me?.id && (
                 <a
                   class="seamless-link capitalize"
                   onClick={e => this.props.editMessage(e)}

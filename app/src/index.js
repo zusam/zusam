@@ -5,8 +5,6 @@ import {
 } from "react-router-dom";
 import { StoreContext } from 'storeon/preact';
 import store from "/store";
-//import { router } from "/core";
-//import { useEffect } from "preact/hooks";
 
 function Index() {
   return (
@@ -17,20 +15,6 @@ function Index() {
 }
 
 function MainRouter() {
-
-  //let history = useHistory();
-  //history.listen((location, action) => {
-  //  // location is an object like window.location
-  //  console.log(action, location.pathname, location.state)
-  //  console.log("DETECTED INDEX");
-  //  router.recalculate(location.pathname);
-  //});
-
-  //useEffect(() => {
-  //  console.log("DETECTED INDEX");
-  //  router.recalculate(location.pathname);
-  //});
-
   return (
     <StoreContext.Provider value={store}>
       <App />

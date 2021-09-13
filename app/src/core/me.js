@@ -29,7 +29,6 @@ const me = {
   },
 
   getGroupName(id) {
-    console.warn("getGroupName: looking for " + id)
     let group = store.get()["groups"]?.find(g => g["id"] == id);
     return group ? group["name"] : "";
   },

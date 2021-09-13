@@ -10,7 +10,6 @@ const router = {
   },
 
   get route() {
-    //return store?.get()?.route;
     try {
       return router.removeSubpath(location.pathname).slice(1).split("/")[0];
     } catch {
@@ -19,7 +18,6 @@ const router = {
   },
 
   get id() {
-    //return store?.get()?.id;
     try {
       return router.removeSubpath(location.pathname).slice(1).split("/")[1];
     } catch {
@@ -28,7 +26,6 @@ const router = {
   },
 
   get action() {
-    //return store?.get()?.action;
     try {
       return router.removeSubpath(location.pathname).slice(1).split("/")[2];
     } catch {
@@ -37,31 +34,16 @@ const router = {
   },
 
   get backUrl() {
-    console.warn("don't use backUrl");
+    console.err("don't use backUrl");
     return store.get()?.backUrl;
   },
 
-  get backUrlPrompt() {
-    console.warn("don't use backUrlPrompt");
-    return store.get()?.backUrlPrompt;
-  },
-
-  get entityUrl() {
-    //return store?.get()?.entityUrl;
-    try {
-      return `/api/${router.removeSubpath(location.pathname).slice(1).split("/").slice(0,2).join("/")}`;
-    } catch {
-      return "";
-    }
-  },
-
   get entityType() {
-    console.warn("don't use entityType");
+    console.err("don't use entityType");
     return store.get()?.entityType;
   },
 
   get search() {
-    //return store?.get()?.search;
     return location.search.slice(1);
   },
 
@@ -110,7 +92,7 @@ const router = {
   },
 
   get entity() {
-    console.warn("don't use entity");
+    console.err("don't use entity");
     return store.get()?.entity;
   },
 
@@ -153,82 +135,9 @@ const router = {
         .slice(1)
         .split("/");
     }
-    components.entityUrl = "";
     components.entityType = "";
     components.backUrl = "";
-    components.backUrlPrompt = "";
     return components;
-  },
-
-  navigate: async (url = "/", options = {replace: false}) => {
-    console.warn("FORCE NAVIGATE");
-    if (!url.match(/^http/) && !options["raw_url"]) {
-      url = util.toApp(url);
-    }
-
-    window.dispatchEvent(new CustomEvent("navigate", {detail:{url}}));
-    //if (options.replace) {
-    //  history.replaceState(null, "", url);
-    //} else {
-    //  history.pushState(null, "", url);
-    //}
-  },
-
-  recalculate: path => {
-    store.dispatch('router/recalculate', path);
-  },
-
-  //sync: () => {
-  //  router.navigate(location.pathname + location.search + location.hash, {
-  //    replace: true
-  //  });
-  //},
-
-  onClick: (e, newTab = false, url = null) => {
-    // stop propagation
-    e.preventDefault();
-    e.stopPropagation();
-
-    // if url is not given, try to guess it
-    if (!url) {
-      const t = e.target.closest("a");
-      if (t) {
-        if (t.target == "_blank") {
-          newTab = true;
-        }
-        url = t.getAttribute("href");
-      }
-    }
-
-    if (!url) {
-      return;
-    }
-
-    // check if it's an external url
-    // FIXME TODO
-    //if (url.startsWith("http")) {
-    //  let targetUrl = new URL(url);
-    //  if (targetUrl.host != location.host) {
-    //    if (e.ctrlKey || newTab) {
-    //      open(url, "_blank");
-    //    } else {
-    //      location.href = url;
-    //    }
-    //    return;
-    //  }
-    //}
-
-    // disable active stances (dropdowns...)
-    for (let e of document.getElementsByClassName("active")) {
-      e.classList.remove("active");
-    }
-
-    // go to target url
-    if (e.ctrlKey || newTab) {
-      open(url, "_blank");
-    } else {
-      router.navigate(url);
-    }
   },
 
   logout: () => {

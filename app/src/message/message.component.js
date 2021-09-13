@@ -1,10 +1,10 @@
-import { Fragment, h, Component } from "preact";
+import { h, Fragment, Component } from "preact";
 import { lang, http, router, util, me, cache } from "/core";
 import MessageChildren from "./message-children.component.js";
 import MessageHead from "./message-head.component.js";
 import MessageFooter from "./message-footer.component.js";
 import MessageBody from "./message-body.component.js";
-import { GroupTitle } from "/pages";
+import MessageBreadcrumbs from "./message-breadcrumbs.component.js";
 import Writer from "./writer.component.js";
 import { withRouter } from "react-router-dom";
 
@@ -147,7 +147,7 @@ class Message extends Component {
     return (
       <Fragment>
         {!this.props.isChild && (
-          <GroupTitle />
+          <MessageBreadcrumbs id={this.props.id} />
         )}
         <div id={this.props.id} className={this.getComponentClass()}>
           {this.state.edit && this.displayWriter(this.props.isChild)}

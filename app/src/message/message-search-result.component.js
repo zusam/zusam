@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
-import { http, router, util, me } from "/core";
+import { http, util, me } from "/core";
 import { FaIcon } from "/misc";
+import { Link } from "react-router-dom";
 
 export default class MessageSearchResult extends Component {
   constructor(props) {
@@ -184,10 +185,9 @@ export default class MessageSearchResult extends Component {
 
   render() {
     return (
-      <a
+      <Link
         class="d-inline-block seamless-link message-preview unselectable"
-        href={util.toApp(this.getLink())}
-        onClick={e => router.onClick(e)}
+        to={util.toApp(this.getLink())}
         title={this.state.title}
       >
         <div tabindex={this.props.tabindex} class="card material-shadow-with-hover">
@@ -231,7 +231,7 @@ export default class MessageSearchResult extends Component {
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     );
   }
 }

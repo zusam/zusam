@@ -65,8 +65,8 @@ export default class FileGrid extends Component {
           return (
             <a
               data-nlg={!this.props.inWriter}
-              data-origin={router.toApp(filePath)}
-              href={!this.props.inWriter ? router.toApp(url) : undefined}
+              data-origin={util.toApp(filePath)}
+              href={!this.props.inWriter ? util.toApp(url) : undefined}
               className={`rounded image${file.removed ? " removed" : ""}`}
             >
               <div
@@ -90,7 +90,7 @@ export default class FileGrid extends Component {
           return (
             <a
               data-nlg={!this.props.inWriter}
-              data-origin={router.toApp(filePath)}
+              data-origin={util.toApp(filePath)}
               data-src={util.thumbnail(file.id, 1366, 768)}
               href={!this.props.inWriter ? util.toApp(url) : undefined}
               class="rounded"
@@ -150,8 +150,8 @@ export default class FileGrid extends Component {
         return (
           <a
             data-nlg={!this.props.inWriter}
-            data-origin={router.toApp(filePath)}
-            href={!this.props.inWriter ? router.toApp(url) : undefined}
+            data-origin={util.toApp(filePath)}
+            href={!this.props.inWriter ? util.toApp(url) : undefined}
             className={`pdf-outline image${file.removed ? " removed" : ""}`}
           >
             <img class="img-fluid" src={util.thumbnail(file.id, 210*2, 497*2)} />
@@ -170,7 +170,7 @@ export default class FileGrid extends Component {
         return (
           <a
             data-nlg={!this.props.inWriter}
-            data-origin={router.toApp(filePath)}
+            data-origin={util.toApp(filePath)}
             href={!this.props.inWriter ? util.toApp(url) : undefined}
             className={`image${  file.removed ? " removed" : ""}`}
           >
