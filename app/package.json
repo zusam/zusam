@@ -15,7 +15,7 @@
     "@babel/preset-react": "^7.10",
     "@storeon/crosstab": "^1.0.2",
     "@storeon/localstorage": "^1.2.0",
-    "bootstrap": "^4.4",
+    "bootstrap": "^5.1",
     "i18next": "^19.8.4",
     "idb-keyval": "^3.2",
     "image-blob-reduce": "^1.0.4",
