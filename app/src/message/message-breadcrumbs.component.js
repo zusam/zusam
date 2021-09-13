@@ -43,7 +43,7 @@ class MessageBreadcrumbs extends Component {
         <div class="message-breadcrumbs">
           <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
-              {[this.state.stack[0], ...this.state.stack.slice(Math.min(2, this.state.stack.length - 1) * -1)].map((e, i) => e && e.id && (
+              {[this.state.stack[0], ...this.state.stack.slice(Math.min(3, this.state.stack.length) * -1).slice(1)].map((e, i) => e && e.id && (
                 <Fragment>
                   <Fragment>
                     {i == 1 && this.state.stack.length > 3 && (
@@ -55,7 +55,7 @@ class MessageBreadcrumbs extends Component {
                       key={e.id}
                       to={`/${e.entityType}s/${e.id}`}
                       class="no-decoration"
-                    >{(e.entityType == "message" ? this.getTitle(e) : e?.name) || e.id}</Link>
+                    >{util.limitLength((e.entityType == "message" ? this.getTitle(e) : e?.name) || e.id, 40)}</Link>
                   </li>
                 </Fragment>
               ))}

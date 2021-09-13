@@ -8,7 +8,7 @@ import {
   StopNotificationEmails
 } from "/outside";
 import { MessageParent } from "/message";
-import { Home, CreateGroup, GroupTitle, GroupBoard, Share, BookmarkBoard } from "/pages";
+import { Home, CreateGroup, GroupBoard, Share, BookmarkBoard } from "/pages";
 import { Settings } from "/settings";
 import { Navbar, GroupSearch } from "/navbar";
 import Writer from "/message/writer.component.js";
@@ -147,7 +147,6 @@ class App extends Component {
               <div class="content">
                 <article class="mb-3">
                   <div class="container pb-3">
-                    <GroupTitle />
                     <Writer focus={true} group={props.match.params.id} />
                   </div>
                 </article>
@@ -167,7 +166,6 @@ class App extends Component {
                   <div class="content">
                     <article class="mb-3">
                       <div class="container pb-3">
-                        <GroupTitle />
                         <GroupSearch key={props.match.params.id} id={props.match.params.id} />
                       </div>
                     </article>

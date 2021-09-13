@@ -1,4 +1,5 @@
 import lang from "./lang.js";
+import storage from "./storage.js";
 
 // Stateless utilities
 // Should be agnostic of other components of zusam if possible
@@ -12,6 +13,12 @@ const util = {
     } catch (_) {
       return false;
     }
+  },
+  limitLength: (string, size = 20) => {
+    return [
+      ...string.split('').slice(0, Math.floor(size/2)),
+      string.length > size ? '...' : '',
+      ...string.split('').slice(Math.floor(size/2)).slice(Math.floor(size/2) * -1)].join('')
   },
   getSubpath: () => new URL(document.baseURI).pathname.replace(/\/$/, ""),
   // toApp transforms an api url into an "app" url that the user can naviate to

@@ -5,7 +5,8 @@ $grid-breakpoints: (
   sm: 576px,
   md: 768px,
   lg: 992px,
-  xl: 1400px
+  xl: 1400px,
+  xxl: 1800px
 );
 
 // import bootstrap
@@ -75,6 +76,7 @@ $grid-breakpoints: (
 .content {
     position: relative;
     z-index: 0;
+    margin-top: 1rem;
 }
 
 .material-shadow {
