@@ -187,7 +187,7 @@ export default class MessageSearchResult extends Component {
     return (
       <Link
         class="d-inline-block seamless-link message-preview unselectable"
-        to={util.toApp(this.getLink())}
+        to={this.getLink()}
         title={this.state.title}
       >
         <div tabindex={this.props.tabindex} class="card material-shadow-with-hover">
