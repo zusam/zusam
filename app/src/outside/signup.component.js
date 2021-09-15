@@ -1,6 +1,5 @@
 import { h, Component } from "preact";
-import { lang, alert, storage, http, router } from "/core";
-import zusam_logo from "/assets/zusam_logo.svg";
+import { lang, alert, storage, http, router } from "/src/core";
 import { withRouter } from "react-router-dom";
 
 class Signup extends Component {
@@ -41,7 +40,7 @@ class Signup extends Component {
     return (
       <div class="signup">
         <div class="signup-form">
-          <img src={zusam_logo} />
+          <img src="/src/assets/zusam_logo.svg" />
           <div class="welcome lead">{lang.t("invitation_welcome")}</div>
           <form>
             <div class="form-group">

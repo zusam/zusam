@@ -1,17 +1,17 @@
 import { h, Component } from "preact";
-import { http, storage, router, api, me } from "/core";
+import { http, storage, router, api, me } from "/src/core";
 import {
   Login,
   Public,
   ResetPassword,
   Signup,
   StopNotificationEmails
-} from "/outside";
-import { MessageParent } from "/message";
-import { Home, CreateGroup, GroupBoard, Share, BookmarkBoard } from "/pages";
-import { Settings } from "/settings";
-import { Navbar, GroupSearch } from "/navbar";
-import Writer from "/message/writer.component.js";
+} from "/src/outside";
+import { MessageParent } from "/src/message";
+import { Home, CreateGroup, GroupBoard, Share, BookmarkBoard } from "/src/pages";
+import { Settings } from "/src/settings";
+import { Navbar, GroupSearch } from "/src/navbar";
+import Writer from "/src/message/writer.component.js";
 import {
   BrowserRouter as Router,
   Switch,

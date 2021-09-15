@@ -1,4 +1,4 @@
-import http from "/core";
+import { http } from "/src/core";
 
 export const meStore = store => {
   store.on('@init', () => ({

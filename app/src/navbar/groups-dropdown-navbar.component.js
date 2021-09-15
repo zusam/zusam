@@ -1,6 +1,6 @@
 import { h, Fragment } from "preact";
-import { lang } from "/core";
-import { FaIcon } from "/misc";
+import { lang } from "/src/core";
+import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
 
 export default function GroupsDropdownNavbar() {
@@ -18,6 +18,7 @@ export default function GroupsDropdownNavbar() {
           <div class="dropdown-menu dropdown-left">
             {this.props.groups.map(e => (
               <Link
+                key={e.id}
                 to={`/groups/${e.id}`}
                 class="d-block seamless-link unselectable"
               >

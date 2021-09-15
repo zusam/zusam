@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
-import { lang, router } from "/core";
-import { FaIcon } from "/misc";
+import { lang, router } from "/src/core";
+import { FaIcon } from "/src/misc";
 import { connectStoreon } from 'storeon/preact'
 import { withRouter } from "react-router-dom";
 
@@ -12,8 +12,7 @@ class Search extends Component {
 
   search(evt) {
     evt.preventDefault();
-    let group_id =
-    router.route == "messages" ? this.props.entity?.group?.id : this.props.entity?.id;
+    let group_id = router.route == "messages" ? this.props.entity?.group?.id : this.props.entity?.id;
     // https://stackoverflow.com/a/37511463
     let searchTerms = document
       .getElementById("search")
@@ -27,31 +26,29 @@ class Search extends Component {
   }
 
   render() {
-    if (this.props.entity?.group?.id || this.props.entity?.id) {
-      return (
-        <form class="navbar-block search-block" onSubmit={e => this.search(e)}>
-          <div class="input-group">
-            <input
-              class="form-control"
-              type="text"
-              id="search"
-              placeholder={lang.t("search_in_group")}
-              value={decodeURIComponent(
-                router.getParam("search").replace(/\+/g, " ")
-              )}
-             />
-            <div class="input-group-append">
-              <button
-                class="btn btn-secondary"
-                type="submit"
-              >
-                <FaIcon family={"solid"} icon={"search"} />
-              </button>
-            </div>
+    return (
+      <form class="navbar-block search-block" onSubmit={e => this.search(e)}>
+        <div class="input-group">
+          <input
+            class="form-control"
+            type="text"
+            id="search"
+            placeholder={lang.t("search_in_group")}
+            value={decodeURIComponent(
+              router.getParam("search").replace(/\+/g, " ")
+            )}
+           />
+          <div class="input-group-append">
+            <button
+              class="btn btn-secondary"
+              type="submit"
+            >
+              <FaIcon family={"solid"} icon={"search"} />
+            </button>
           </div>
-        </form>
-      );
-    }
+        </div>
+      </form>
+    );
   }
 }
 

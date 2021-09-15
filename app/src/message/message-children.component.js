@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { lang, router, util } from "/core";
+import { lang, router, util } from "/src/core";
 import MessageChild from "./message-child.component.js";
 
 export default class MessageChildren extends Component {

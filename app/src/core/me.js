@@ -1,6 +1,6 @@
 import http from "./http.js";
 import lang from "./lang.js";
-import store from "/store";
+import store from "/src/store";
 
 const me = {
 

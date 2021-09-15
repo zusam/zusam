@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { lang, http, router } from "/core";
+import { lang, http, router } from "/src/core";
 
 export default class CreateGroup extends Component {
   constructor() {

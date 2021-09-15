@@ -1,5 +1,5 @@
 import { h, Component, Fragment } from "preact";
-import { cache, http, util } from "/core";
+import { cache, util } from "/src/core";
 import { Link, withRouter } from "react-router-dom";
 
 class MessageBreadcrumbs extends Component {

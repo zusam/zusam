@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom";
 import { StoreContext } from 'storeon/preact';
-import store from "/store";
+import store from "/src/store";
 
 function Index() {
   return (

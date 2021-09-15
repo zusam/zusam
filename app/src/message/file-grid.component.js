@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
-import { util } from "/core";
-import { FaIcon } from "/misc";
+import { util } from "/src/core";
+import { FaIcon } from "/src/misc";
 
 export default class FileGrid extends Component {
   constructor(props) {
@@ -226,10 +226,10 @@ export default class FileGrid extends Component {
   }
 
   componentDidMount() {
-    import("/lazy/nlg.js").then(nlg => nlg.default.start());
+    import("/src/lazy/nlg.js").then(nlg => nlg.default.start());
   }
 
   componentDidUpdate() {
-    import("/lazy/nlg.js").then(nlg => nlg.default.start());
+    import("/src/lazy/nlg.js").then(nlg => nlg.default.start());
   }
 }

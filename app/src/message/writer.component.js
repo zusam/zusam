@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
-import { lang, alert, http, router, util, api, me } from "/core";
-import { FaIcon } from "/misc";
+import { lang, alert, http, util, api, me } from "/src/core";
+import { FaIcon } from "/src/misc";
 import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
 import { withRouter } from "react-router-dom";
@@ -271,7 +271,7 @@ class Writer extends Component {
     let worker = this.state.workers.find(e => e.id == workerId);
     switch (worker.target.type) {
       case "image":
-        import("/lazy/image-service.js").then(imageService => {
+        import("/src/lazy/image-service.js").then(imageService => {
           imageService.default.handleImage(
             worker.target.inputFile,
             res => {

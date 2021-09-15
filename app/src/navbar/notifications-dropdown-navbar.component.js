@@ -1,7 +1,7 @@
 import { h } from "preact";
-import { lang, me } from "/core";
-import { FaIcon } from "/misc";
-import { Notification } from "/pages";
+import { lang, me } from "/src/core";
+import { FaIcon } from "/src/misc";
+import { Notification } from "/src/pages";
 import { useStoreon } from 'storeon/preact'
 
 export default function NotificationsDropdownNavbar() {

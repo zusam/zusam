@@ -279,13 +279,13 @@
     margin: $gutter;
     position: relative;
     @include cols-per-breakpoint(
-    (
-    xs: 2,
-    sm: 3,
-    md: 4,
-    lg: 5,
-    xl: 6
-    )
+      (
+        xs: 2,
+        sm: 3,
+        md: 4,
+        lg: 5,
+        xl: 6
+      )
     );
 
     .miniature {
@@ -362,6 +362,13 @@
 
   .card-text {
     padding: 1rem;
+
+    a {
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   .options {

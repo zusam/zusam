@@ -1,5 +1,5 @@
 import { h, Fragment, Component } from "preact";
-import { lang, http, router, util, me, cache } from "/core";
+import { lang, http, router, util, me, cache } from "/src/core";
 import MessageChildren from "./message-children.component.js";
 import MessageHead from "./message-head.component.js";
 import MessageFooter from "./message-footer.component.js";
@@ -19,6 +19,8 @@ class Message extends Component {
     this.cancelEdit = this.cancelEdit.bind(this);
     this.onEditMessage = this.onEditMessage.bind(this);
     this.openPublicLink = this.openPublicLink.bind(this);
+    this.onNewChild = this.onNewChild.bind(this);
+    window.addEventListener("newChild", this.onNewChild);
     window.addEventListener("editMessage", this.onEditMessage);
   }
 
@@ -41,6 +43,16 @@ class Message extends Component {
       }
     }, 1000);
 
+  }
+
+  onNewChild(event) {
+    const newMsg = event.detail;
+    let msg = this.state.message;
+    if (newMsg.parent && util.getId(newMsg.parent) == msg.id) {
+      newMsg.author = me.get();
+      msg.children = [...msg.children, newMsg];
+      this.setState({message: msg});
+    }
   }
 
   async openPublicLink(event) {

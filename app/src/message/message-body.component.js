@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { http, util } from "/core";
+import { http, util } from "/src/core";
 import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
 

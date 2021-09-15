@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
-import { util, me, cache } from "/core";
-import { FaIcon } from "/misc";
+import { util, me, cache } from "/src/core";
+import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
 
 function getAvatar(user) {

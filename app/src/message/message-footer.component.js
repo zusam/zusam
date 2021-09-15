@@ -1,7 +1,7 @@
 import { h, Fragment } from "preact";
-import { router, lang, util, me } from "/core";
+import { lang, util, me } from "/src/core";
 import { Link } from "react-router-dom";
-import { FaIcon } from "/misc";
+import { FaIcon } from "/src/misc";
 
 export default function MessageFooter() {
   return (

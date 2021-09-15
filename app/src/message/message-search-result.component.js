@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
-import { http, util, me } from "/core";
-import { FaIcon } from "/misc";
+import { http, util, me } from "/src/core";
+import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
 
 export default class MessageSearchResult extends Component {

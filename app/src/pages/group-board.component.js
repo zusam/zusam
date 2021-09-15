@@ -1,9 +1,8 @@
 import { h, Component } from "preact";
-import { http } from "/core";
-import { FaIcon } from "/misc";
-import { Navbar } from "/navbar";
-import { MessagePreview } from "/message";
-import { GroupTitle } from "/pages";
+import { http } from "/src/core";
+import { FaIcon } from "/src/misc";
+import { Navbar } from "/src/navbar";
+import { MessagePreview } from "/src/message";
 import { Link } from "react-router-dom";
 
 export default class GroupBoard extends Component {
@@ -109,7 +108,6 @@ export default class GroupBoard extends Component {
         <div class="content">
           <div>
               <div>
-                <GroupTitle />
                 <article id="group" class="justify-content-center d-flex">
                   <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
                     {Array.isArray(this.state.messages) && this.state.messages.slice(0, this.state.loaded).map((msg, i) => {

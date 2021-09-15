@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { lang, http } from "/core";
+import { lang, http } from "/src/core";
 
 export default class StopNotificationEmails extends Component {
   constructor() {

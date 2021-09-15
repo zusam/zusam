@@ -1,9 +1,21 @@
 {
   "presets": [
     "@babel/preset-env",
-    "@babel/preset-react"
+    "@babel/preset-react",
+    "@babel/preset-typescript"
   ],
   "plugins": [
-    ["@babel/transform-react-jsx"]
+    ["@babel/plugin-transform-react-jsx", {
+      "pragma": "h",
+      "pragmaFrag": "Fragment"
+    }],
+    ["module-resolver", {
+      "alias": {
+        "react": "preact/compat",
+        "react-dom/test-utils": "preact/test-utils",
+        "react-dom": "preact/compat",
+        "react/jsx-runtime": "preact/jsx-runtime"
+      }
+    }]
   ]
 }

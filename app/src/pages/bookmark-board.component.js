@@ -1,7 +1,7 @@
 import { h, Component } from "preact";
-import { util, http, lang, router, me } from "/core";
-import { MessagePreview } from "/message";
-import store from "/store";
+import { util, http, lang, me } from "/src/core";
+import { MessagePreview } from "/src/message";
+import store from "/src/store";
 import { Link } from "react-router-dom";
 
 export default class BookmarkBoard extends Component {

@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { me } from "/core";
+import { me } from "/src/core";
 import { Redirect } from "react-router-dom";
 
 export default class Home extends Component {

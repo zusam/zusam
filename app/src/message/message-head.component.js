@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { util } from "/core";
+import { util } from "/src/core";
 
 export default function MessageHead() {
   return (

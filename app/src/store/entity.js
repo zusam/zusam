@@ -1,4 +1,4 @@
-import { http, util } from "/core";
+import { http, util } from "/src/core";
 
 export const entityStore = store => {
   store.on('@init', () => ({}))

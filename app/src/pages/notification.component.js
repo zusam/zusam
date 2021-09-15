@@ -1,5 +1,5 @@
 import { h, Component, Fragment } from "preact";
-import { http, lang, util } from "/core";
+import { http, lang, util } from "/src/core";
 import { Link } from "react-router-dom";
 
 class Notification extends Component {

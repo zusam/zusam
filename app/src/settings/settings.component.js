@@ -1,8 +1,8 @@
 import { h, Component } from "preact";
-import { http, lang } from "/core";
+import { http, lang } from "/src/core";
 import UserSettings from "./user-settings.component.js";
 import GroupSettings from "./group-settings.component.js";
-import { Navbar } from "/navbar";
+import { Navbar } from "/src/navbar";
 import { Link } from "react-router-dom";
 import { connectStoreon } from 'storeon/preact'
 

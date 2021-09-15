@@ -1,5 +1,5 @@
 import http from "./http.js";
-import store from "/store";
+import store from "/src/store";
 
 const cache = {
   get(url) {

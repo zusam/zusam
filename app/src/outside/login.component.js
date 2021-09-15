@@ -1,6 +1,5 @@
 import { h, Component } from "preact";
-import { lang, alert, storage, http, router, me } from "/core";
-import zusam_logo from "/assets/zusam_logo.svg";
+import { lang, alert, storage, http, me } from "/src/core";
 import { withRouter } from "react-router-dom";
 
 class Login extends Component {
@@ -67,7 +66,7 @@ class Login extends Component {
     return (
       <div class="login">
         <div class="login-form">
-          <img src={zusam_logo} />
+          <img src="/src/assets/zusam_logo.svg" />
           {!this.state.showResetPassword && (
             <form>
               <div class="form-group">

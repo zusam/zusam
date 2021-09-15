@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
-import { lang, me, router, http } from "/core";
-import Writer from "/message/writer.component.js";
+import { lang, me, router, http } from "/src/core";
+import Writer from "/src/message/writer.component.js";
 import { connectStoreon } from "storeon/preact";
 
 class Share extends Component {

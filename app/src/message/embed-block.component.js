@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { util } from "/core";
+import { util } from "/src/core";
 import TwitchEmbed from "./embeds/twitch-embed.component.js";
 import BandCampEmbed from "./embeds/bandcamp-embed.component.js";
 import GenericEmbed from "./embeds/generic-embed.component.js";

@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { lang, alert, http, router, util, me } from "/core";
+import { lang, alert, http, util, me } from "/src/core";
 import { withRouter } from "react-router-dom";
 
 class GroupSettings extends Component {

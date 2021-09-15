@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { lang, router, alert, http, util, storage, me } from "/core";
+import { lang, router, alert, http, util, storage, me } from "/src/core";
 
 export default class UserSettings extends Component {
   constructor(props) {
@@ -25,7 +25,7 @@ export default class UserSettings extends Component {
     input.type = "file";
     input.accept = "image/*";
     input.addEventListener("change", event => {
-      import("/lazy/image-service.js").then(imageService => {
+      import("/src/lazy/image-service.js").then(imageService => {
         imageService.default.handleImage(
           event.target.files[0],
           blob => {

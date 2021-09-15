@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { router } from "/core";
+import { router } from "/src/core";
 
 function getEmbedUrl(url) {
   const splits = url.split("/");

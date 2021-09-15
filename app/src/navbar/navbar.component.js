@@ -1,7 +1,7 @@
 import { h } from "preact";
-import { lang, util } from "/core";
-import { Search } from "/pages";
-import { GroupsDropdownNavbar, NotificationsDropdownNavbar } from "/navbar";
+import { router, lang, util } from "/src/core";
+import { Search } from "/src/pages";
+import { GroupsDropdownNavbar, NotificationsDropdownNavbar } from "/src/navbar";
 import { Link, withRouter } from "react-router-dom";
 import { connectStoreon } from 'storeon/preact'
 
@@ -51,7 +51,9 @@ function Navbar() {
         </div>
         <NotificationsDropdownNavbar />
       </div>
-      <Search />
+      { ["messages", "groups"].includes(router.route) && (
+        <Search />
+      )}
       <div class="navbar-block">
         <GroupsDropdownNavbar groups={this.props.me.groups} />
       </div>

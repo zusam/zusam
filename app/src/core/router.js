@@ -1,7 +1,7 @@
 import util from "./util.js";
 import storage from "./storage.js";
 import http from "./http.js";
-import store from "/store";
+import store from "/src/store";
 
 const router = {
 

@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { lang, alert, storage, http, router } from "/core";
+import { lang, alert, storage, http, router } from "/src/core";
 import { withRouter } from "react-router-dom";
 
 class ResetPassword extends Component {

@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
-import { http } from "/core";
-import { MessageParent } from "/message";
+import { http } from "/src/core";
+import { MessageParent } from "/src/message";
 
 export default class Public extends Component {
   constructor(props) {
