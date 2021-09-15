@@ -18,3 +18,7 @@
 /.php_cs.cache
 /.php_cs.dist
 ###< friendsofphp/php-cs-fixer ###
+
+# Manually added
+auth.json
+.web-server-pid

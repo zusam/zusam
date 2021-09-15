@@ -1,0 +1,15 @@
+# APP
+node_modules/
+.cache
+yarn-error.log
+.parcel-cache/
+dist/
+
+# YARN
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

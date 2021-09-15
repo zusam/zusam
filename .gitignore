@@ -3,12 +3,6 @@
 .viminfo
 TODO/
 
-# API
-/api/var/
-/api/vendor/
-/api/auth.json
-/api/.web-server-pid
-
 # EXEC
 /.composer
 /.bash_history
@@ -20,12 +14,6 @@ TODO/
 /.config
 /.npm
 /.ssh
-
-# APP
-/app/node_modules/
-/app/.cache
-/app/yarn-error.log
-/app/.parcel-cache/
 
 # PUBLIC
 /public/api/bundles/
