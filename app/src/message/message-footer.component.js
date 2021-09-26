@@ -69,14 +69,14 @@ export default function MessageFooter() {
           <div
             class="options dropdown"
             onClick={e =>
-                e.target.closest(".dropdown").classList.toggle("active")
+                e?.target?.closest(".dropdown")?.classList.toggle("active")
             }
           >
             <div class="none-if-follows-empty">
               <FaIcon family="solid" icon="ellipsis-h" />
             </div>
             <div class="dropdown-menu dropdown-options">
-              {this.props.author && this.props.author.id == me?.me?.id && (
+              {this.props.author && this.props.author.id == me.id && (
                 <Link
                   class="seamless-link capitalize"
                   onClick={e => this.props.deleteMessage(e)}
@@ -102,7 +102,7 @@ export default function MessageFooter() {
               )}
               {!this.props.message.isInFront &&
                   this.props.author &&
-                  this.props.author.id == me?.me?.id && (
+                  this.props.author.id == me.id && (
                     <a
                       class="seamless-link capitalize"
                       onClick={e => this.props.publishInGroup(e)}
@@ -126,7 +126,7 @@ export default function MessageFooter() {
                   {t("remove_bookmark")}
                 </a>
               )}
-              {this.props.author && this.props.author.id == me?.me?.id && (
+              {this.props.author && this.props.author.id == me.id && (
                 <a
                   class="seamless-link capitalize"
                   onClick={e => this.props.editMessage(e)}
