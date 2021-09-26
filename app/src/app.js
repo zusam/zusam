@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { http, storage, router, api, me } from "/src/core";
+import { http, storage, router, api, me, lang } from "/src/core";
 import {
   Login,
   Public,
@@ -30,6 +30,7 @@ class App extends Component {
     me.update();
 
     // i18n dict management
+    lang.init();
     window.addEventListener("fetchedNewDict", () => {
       setTimeout(() => this.setState({lang: "up"}), 10);
     });

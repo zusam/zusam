@@ -1,6 +1,6 @@
 import http from "./http.js";
-import lang from "./lang.js";
 import store from "/src/store";
+import i18n from "i18next";
 
 const me = {
 
@@ -10,6 +10,10 @@ const me = {
 
   get data() {
     return store.get()?.me?.data;
+  },
+
+  get lang() {
+    return store.get()?.me?.data?.lang;
   },
 
   get groups() {
@@ -43,7 +47,7 @@ const me = {
       http.get(`/api/users/${store.get()?.me?.id}/notifications`).then(r => {
         store.dispatch('notifications/update', r);
       });
-      lang.fetchDict();
+      i18n.changeLanguage(r?.data?.lang);
       return r;
     });
   },

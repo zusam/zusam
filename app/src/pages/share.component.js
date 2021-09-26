@@ -1,7 +1,8 @@
 import { h, Component } from "preact";
-import { lang, me, router, http } from "/src/core";
+import { me, router, http } from "/src/core";
 import Writer from "/src/message/writer.component.js";
 import { connectStoreon } from "storeon/preact";
+import { withTranslation } from 'react-i18next';
 
 class Share extends Component {
   constructor() {
@@ -75,7 +76,7 @@ class Share extends Component {
           {this.state.parent && this.props.me && this.props.me.groups.length > 1 && (
             <div class="mb-1">
               <label class="px-1" for="group_share_choice">
-                {lang.t("group_share_choice")}
+                {this.props.t("group_share_choice")}
               </label>
               <select
                 value={this.state.group}
@@ -93,7 +94,7 @@ class Share extends Component {
           {this.state.parent && (
             <div class="form-group">
               <label for="apiKey">
-                {lang.t("parent_message")}:{" "}
+                {this.props.t("parent_message")}:{" "}
               </label>
               <input
                 type="text"
@@ -122,4 +123,4 @@ class Share extends Component {
   }
 }
 
-export default connectStoreon('me', Share)
+export default withTranslation()(connectStoreon('me', Share));

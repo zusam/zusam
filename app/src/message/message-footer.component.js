@@ -1,9 +1,11 @@
 import { h, Fragment } from "preact";
-import { lang, util, me } from "/src/core";
+import { util, me } from "/src/core";
 import { Link } from "react-router-dom";
 import { FaIcon } from "/src/misc";
+import { useTranslation } from "react-i18next";
 
 export default function MessageFooter() {
+  const { t } = useTranslation();
   return (
     <div class="message-footer">
       <div class="infos">
@@ -15,7 +17,7 @@ export default function MessageFooter() {
                   class="action seamless-link font-size-90 capitalize d-none d-sm-block"
                   onClick={e => this.props.editMessage(e)}
                 >
-                  {lang.t("edit")}
+                  {t("edit")}
                 </a>
                 <div class="dot d-none d-sm-block">&bull;</div>
               </Fragment>
@@ -31,17 +33,17 @@ export default function MessageFooter() {
               {this.props.message.children.length ? (
                 this.props.message.children.some(e => me.isNew(e.id)) ? (
                   <b>
-                    {lang.t("replies", {
+                    {t("replies", {
                       count: this.props.message.children.length
                     })}
                   </b>
                 ) : (
-                  lang.t("replies", {
+                  t("replies", {
                     count: this.props.message.children.length
                   })
                 )
               ) : (
-                lang.t("reply")
+                t("reply")
               )}
             </Link>
             <div class="dot">&bull;</div>
@@ -79,7 +81,7 @@ export default function MessageFooter() {
                   class="seamless-link capitalize"
                   onClick={e => this.props.deleteMessage(e)}
                 >
-                  {lang.t("delete")}
+                  {t("delete")}
                 </Link>
               )}
               {
@@ -87,7 +89,7 @@ export default function MessageFooter() {
                   class="seamless-link capitalize"
                   onClick={e => this.props.openPublicLink(e)}
                 >
-                  {lang.t("public_link")}
+                  {t("public_link")}
                 </a>
               }
               {me.groups?.length > 1 && (
@@ -95,7 +97,7 @@ export default function MessageFooter() {
                   class="seamless-link capitalize"
                   onClick={e => this.props.shareMessage(e)}
                 >
-                  {lang.t("share_message")}
+                  {t("share_message")}
                 </a>
               )}
               {!this.props.message.isInFront &&
@@ -105,7 +107,7 @@ export default function MessageFooter() {
                       class="seamless-link capitalize"
                       onClick={e => this.props.publishInGroup(e)}
                     >
-                      {lang.t("publish_in_group")}
+                      {t("publish_in_group")}
                     </a>
                   )}
               {!me.hasBookmark(this.props.message.id) && (
@@ -113,7 +115,7 @@ export default function MessageFooter() {
                   class="seamless-link capitalize"
                   onClick={() => me.addBookmark(this.props.message.id)}
                 >
-                  {lang.t("add_bookmark")}
+                  {t("add_bookmark")}
                 </a>
               )}
               {me.hasBookmark(this.props.message.id) && (
@@ -121,7 +123,7 @@ export default function MessageFooter() {
                   class="seamless-link capitalize"
                   onClick={() => me.removeBookmark(this.props.message.id)}
                 >
-                  {lang.t("remove_bookmark")}
+                  {t("remove_bookmark")}
                 </a>
               )}
               {this.props.author && this.props.author.id == me?.me?.id && (
@@ -129,7 +131,7 @@ export default function MessageFooter() {
                   class="seamless-link capitalize"
                   onClick={e => this.props.editMessage(e)}
                 >
-                  {lang.t("edit")}
+                  {t("edit")}
                 </a>
               )}
             </div>

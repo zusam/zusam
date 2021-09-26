@@ -1,9 +1,10 @@
 import { h, Fragment } from "preact";
-import { lang } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function GroupsDropdownNavbar() {
+  const { t } = useTranslation();
   return (
     <Fragment>
       {this.props.groups && (
@@ -13,7 +14,7 @@ export default function GroupsDropdownNavbar() {
           onClick={e => e.currentTarget.classList.toggle("active")}
         >
           <div class="unselectable pr-1">
-            {lang.t("groups")} <FaIcon family={"solid"} icon={"caret-down"} />
+            {t("groups")} <FaIcon family={"solid"} icon={"caret-down"} />
           </div>
           <div class="dropdown-menu dropdown-left">
             {this.props.groups.map(e => (
@@ -29,7 +30,7 @@ export default function GroupsDropdownNavbar() {
               to={"/create-group"}
               class="seamless-link unselectable"
             >
-              {`+ ${lang.t("create_a_group")}`}
+              {`+ ${t("create_a_group")}`}
             </Link>
           </div>
         </div>

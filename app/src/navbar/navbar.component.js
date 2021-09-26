@@ -1,11 +1,13 @@
 import { h } from "preact";
-import { router, lang, util } from "/src/core";
+import { router, util } from "/src/core";
 import { Search } from "/src/pages";
 import { GroupsDropdownNavbar, NotificationsDropdownNavbar } from "/src/navbar";
 import { Link, withRouter } from "react-router-dom";
-import { connectStoreon } from 'storeon/preact'
+import { connectStoreon } from 'storeon/preact';
+import { useTranslation } from "react-i18next";
 
 function Navbar() {
+  const { t } = useTranslation();
   return (
     <div class="main-nav nav align-items-center z-index-100">
       <div class="navbar-block">
@@ -32,20 +34,20 @@ function Navbar() {
                 class="d-block seamless-link capitalize"
                 to={"/bookmarks"}
               >
-                {lang.t('bookmarks')}
+                {t('bookmarks')}
               </Link>
             )}
             <Link
               class="d-block seamless-link capitalize"
               to={`/users/${this.props.me.id}/settings`}
             >
-              {lang.t("settings")}
+              {t("settings")}
             </Link>
             <Link
               class="d-block seamless-link capitalize"
               to={"/logout"}
             >
-              {lang.t("logout")}
+              {t("logout")}
             </Link>
           </div>
         </div>

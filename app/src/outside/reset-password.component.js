@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
-import { lang, alert, storage, http, router } from "/src/core";
+import { alert, storage, http, router } from "/src/core";
 import { withRouter } from "react-router-dom";
+import { withTranslation } from 'react-i18next';
 
 class ResetPassword extends Component {
   constructor() {
@@ -17,7 +18,7 @@ class ResetPassword extends Component {
     const key = router.getParam("key");
     if (mail && password) {
       if (password != passwordConfirmation) {
-        alert.add(lang.t("passwords_dont_match"));
+        alert.add(this.props.t("passwords_dont_match"));
         return;
       }
       http
@@ -27,7 +28,7 @@ class ResetPassword extends Component {
             storage.set("apiKey", res.api_key);
             setTimeout(() => this.props.history.push("/"), 100);
           } else {
-            alert.add(lang.t(res.message));
+            alert.add(this.props.t(res.message));
           }
         })
         .catch(res => console.warn(res));
@@ -38,7 +39,7 @@ class ResetPassword extends Component {
     return (
       <div class="login">
         <div class="login-form">
-          <h2 class="title">{lang.t("reset_password_title")}</h2>
+          <h2 class="title">{this.props.t("reset_password_title")}</h2>
           <form>
             <div class="form-group">
               <input
@@ -46,7 +47,7 @@ class ResetPassword extends Component {
                 class="form-control"
                 required
                 id="password"
-                placeholder={lang.t("new_password_placeholder")}
+                placeholder={this.props.t("new_password_placeholder")}
               />
             </div>
             <div class="form-group">
@@ -55,7 +56,7 @@ class ResetPassword extends Component {
                 class="form-control"
                 required
                 id="password_confirmation"
-                placeholder={lang.t("confirm_password_placeholder")}
+                placeholder={this.props.t("confirm_password_placeholder")}
               />
             </div>
             <button
@@ -63,7 +64,7 @@ class ResetPassword extends Component {
               class="btn btn-light"
               onClick={e => this.sendNewPassword(e)}
             >
-              {lang.t("submit")}
+              {this.props.t("submit")}
             </button>
           </form>
         </div>
@@ -72,4 +73,4 @@ class ResetPassword extends Component {
   }
 }
 
-export default withRouter(ResetPassword);
+export default withTranslation()(withRouter(ResetPassword));

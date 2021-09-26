@@ -1,11 +1,13 @@
 import { h } from "preact";
-import { lang, router } from "/src/core";
+import { router } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { connectStoreon } from 'storeon/preact'
 import { withRouter, useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function Search() {
 
+  const { t } = useTranslation();
   let history = useHistory();
 
   function search(evt) {
@@ -42,7 +44,7 @@ function Search() {
           class="form-control"
           type="text"
           id="search"
-          placeholder={lang.t("search_in_group")}
+          placeholder={t("search_in_group")}
           value={decodeURIComponent(
             router.getParam("search").replace(/\+/g, " ")
           )}

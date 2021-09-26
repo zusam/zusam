@@ -1,8 +1,9 @@
 import { h, Component } from "preact";
 import { util } from "/src/core";
 import { FaIcon } from "/src/misc";
+import { withTranslation } from 'react-i18next';
 
-export default class FileGrid extends Component {
+class FileGrid extends Component {
   constructor(props) {
     super(props);
     this.toggleFile = this.toggleFile.bind(this);
@@ -141,7 +142,7 @@ export default class FileGrid extends Component {
               src={util.crop(file.id, 320, 180)}
              />
             <div class="video-not-ready">
-              {lang.t("video_not_ready")}
+              {this.props.t("video_not_ready")}
             </div>
           </a>
         );
@@ -233,3 +234,5 @@ export default class FileGrid extends Component {
     import("/src/lazy/nlg.js").then(nlg => nlg.default.start());
   }
 }
+
+export default withTranslation()(FileGrid);

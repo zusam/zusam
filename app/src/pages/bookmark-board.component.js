@@ -1,10 +1,11 @@
 import { h, Component } from "preact";
-import { util, http, lang, me } from "/src/core";
+import { util, http, me } from "/src/core";
 import { MessagePreview } from "/src/message";
 import store from "/src/store";
 import { Link } from "react-router-dom";
+import { withTranslation } from 'react-i18next';
 
-export default class BookmarkBoard extends Component {
+class BookmarkBoard extends Component {
 
   constructor(props) {
     super(props);
@@ -36,7 +37,7 @@ export default class BookmarkBoard extends Component {
     return (
       <div>
         <Link to={util.toApp("/bookmarks")} class="no-decoration">
-          <div class="group-name">{lang.t("bookmarks")}</div>
+          <div class="group-name">{this.props.t("bookmarks")}</div>
         </Link>
         <article id="group" class="justify-content-center d-flex">
           <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
@@ -56,3 +57,5 @@ export default class BookmarkBoard extends Component {
     );
   }
 }
+
+export default withTranslation()(BookmarkBoard);

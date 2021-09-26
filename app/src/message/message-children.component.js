@@ -1,8 +1,9 @@
 import { h, Component } from "preact";
-import { lang, router, util } from "/src/core";
+import { router, util } from "/src/core";
 import MessageChild from "./message-child.component.js";
+import { withTranslation } from 'react-i18next';
 
-export default class MessageChildren extends Component {
+class MessageChildren extends Component {
   constructor(props) {
     super(props);
     this.onNewChild = this.onNewChild.bind(this);
@@ -82,7 +83,7 @@ export default class MessageChildren extends Component {
               class="more-coms unselectable"
               onClick={() => this.displayPreviousChildren()}
             >
-              {lang.t("previous_coms")}
+              {this.props.t("previous_coms")}
             </a>
           </div>
         )}
@@ -114,7 +115,7 @@ export default class MessageChildren extends Component {
               class="more-coms unselectable"
               onClick={() => this.displayNextChildren()}
             >
-              {lang.t("next_coms")}
+              {this.props.t("next_coms")}
             </span>
           </div>
         )}
@@ -122,3 +123,5 @@ export default class MessageChildren extends Component {
     );
   }
 }
+
+export default withTranslation()(MessageChildren);

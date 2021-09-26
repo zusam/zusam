@@ -1,8 +1,9 @@
 import { h } from "preact";
-import { lang, me } from "/src/core";
+import { me } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Notification } from "/src/pages";
 import { useStoreon } from 'storeon/preact'
+import { useTranslation } from "react-i18next";
 
 export default function NotificationsDropdownNavbar() {
 
@@ -11,13 +12,14 @@ export default function NotificationsDropdownNavbar() {
   if (!notifications) {
     return null;
   }
+  const { t } = useTranslation();
 
   return (
     <div
       className={
         `menu dropdown${notifications.length ? " cursor-pointer" : ""}`
       }
-      title={lang.t('notifications')}
+      title={t('notifications')}
       tabindex="-1"
       onClick={e =>
         notifications.length &&
@@ -35,12 +37,12 @@ export default function NotificationsDropdownNavbar() {
       </div>
       <div class="dropdown-menu dropdown-right notifications-menu">
         <div class="notification-header">
-          <strong class="capitalize">{lang.t("notifications")}</strong>
+          <strong class="capitalize">{t("notifications")}</strong>
           <div
             class="action capitalize"
             onClick={() => me.removeAllNotifications()}
           >
-            {lang.t("mark_all_as_read")}
+            {t("mark_all_as_read")}
           </div>
         </div>
         {notifications?.length && (

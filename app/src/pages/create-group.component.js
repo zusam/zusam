@@ -1,7 +1,8 @@
 import { h, Component } from "preact";
-import { lang, http, router } from "/src/core";
+import { http, router } from "/src/core";
+import { withTranslation } from 'react-i18next';
 
-export default class CreateGroup extends Component {
+class CreateGroup extends Component {
   constructor() {
     super();
     this.postNewGroup = this.postNewGroup.bind(this);
@@ -36,13 +37,13 @@ export default class CreateGroup extends Component {
                   <div class="col-12 col-md-10">
                     <form id="create_group_form" class="mb-1">
                       <div class="form-group">
-                        <label for="name">{lang.t("name")}: </label>
+                        <label for="name">{this.props.t("name")}: </label>
                         <input
                           type="text"
                           name="name"
                           minlength="1"
                           maxlength="128"
-                          placeholder={lang.t("name_input")}
+                          placeholder={this.props.t("name_input")}
                           class="form-control"
                           required
                          />
@@ -51,7 +52,7 @@ export default class CreateGroup extends Component {
                         onClick={e => this.postNewGroup(e)}
                         class="btn btn-primary"
                       >
-                        {lang.t("create_the_group")}
+                        {this.props.t("create_the_group")}
                       </button>
                     </form>
                   </div>
@@ -64,3 +65,5 @@ export default class CreateGroup extends Component {
     );
   }
 }
+
+export default withTranslation()(CreateGroup);

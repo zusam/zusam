@@ -1,5 +1,5 @@
 import { h, Fragment, Component } from "preact";
-import { lang, http, router, util, me, cache } from "/src/core";
+import { http, router, util, me, cache } from "/src/core";
 import MessageChildren from "./message-children.component.js";
 import MessageHead from "./message-head.component.js";
 import MessageFooter from "./message-footer.component.js";
@@ -7,6 +7,7 @@ import MessageBody from "./message-body.component.js";
 import MessageBreadcrumbs from "./message-breadcrumbs.component.js";
 import Writer from "./writer.component.js";
 import { withRouter } from "react-router-dom";
+import { withTranslation } from 'react-i18next';
 
 class Message extends Component {
   constructor(props) {
@@ -92,7 +93,7 @@ class Message extends Component {
 
   deleteMessage(event) {
     event.preventDefault();
-    if (confirm(lang.t("ask_delete_message"))) {
+    if (confirm(this.props.t("ask_delete_message"))) {
       http.delete(`/api/messages/${this.props.id}`);
       if (this.props.isChild) {
         this.setState({isRemoved: true});
@@ -122,7 +123,7 @@ class Message extends Component {
       })
       .then(res => {
         if (!res) {
-          alert.add(lang.t("error"), "alert-danger");
+          alert.add(this.props.t("error"), "alert-danger");
           return;
         }
         this.props.history.push(`/groups/${this.state.message.group.id}`);
@@ -237,4 +238,4 @@ class Message extends Component {
   }
 }
 
-export default withRouter(Message);
+export default withTranslation()(withRouter(Message));

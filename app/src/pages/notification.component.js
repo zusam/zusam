@@ -1,6 +1,7 @@
 import { h, Component, Fragment } from "preact";
-import { http, lang, util } from "/src/core";
+import { http, util } from "/src/core";
 import { Link } from "react-router-dom";
+import { withTranslation } from 'react-i18next';
 
 class Notification extends Component {
   constructor(props) {
@@ -44,15 +45,15 @@ class Notification extends Component {
   getAction() {
     switch (this.props.type) {
       case "new_message":
-        return lang.t("has_posted_in");
+        return this.props.t("has_posted_in");
       case "new_comment":
-        return lang.t("has_commented_on");
+        return this.props.t("has_commented_on");
       case "user_joined_group":
-        return lang.t("has_joined");
+        return this.props.t("has_joined");
       case "user_left_group":
-        return lang.t("has_left");
+        return this.props.t("has_left");
       case "group_name_change":
-        return lang.t("changed_group_name");
+        return this.props.t("changed_group_name");
       default:
         return "";
     }
@@ -105,7 +106,7 @@ class Notification extends Component {
       case "new_comment":
         return (
           <span>
-            {`${lang.t("the_message_from")  } `}
+            {`${this.props.t("the_message_from")  } `}
             <strong>
               {this.props.fromMessage && this.props.fromMessage["author"]
                 ? this.props.fromMessage["author"]["name"]
@@ -130,7 +131,7 @@ class Notification extends Component {
         return (
           <span>
             <strong>{this.props.data["previousGroupName"]}</strong>
-            {` ${lang.t("to")} `}
+            {` ${this.props.t("to")} `}
             <strong>{this.props.data["newGroupName"]}</strong>
           </span>
         );
@@ -187,4 +188,4 @@ class Notification extends Component {
   }
 }
 
-export default Notification;
+export default withTranslation()(Notification);

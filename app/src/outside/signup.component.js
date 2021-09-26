@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
-import { lang, alert, storage, http, router } from "/src/core";
+import { alert, storage, http, router } from "/src/core";
 import { withRouter } from "react-router-dom";
+import { withTranslation } from 'react-i18next';
 
 class Signup extends Component {
   constructor() {
@@ -31,7 +32,7 @@ class Signup extends Component {
           storage.set("apiKey", res.api_key);
           setTimeout(() => this.props.history.push("/"), 100);
         } else {
-          alert.add(lang.t(res.message));
+          alert.add(this.props.t(res.message));
         }
       });
   }
@@ -41,7 +42,7 @@ class Signup extends Component {
       <div class="signup">
         <div class="signup-form">
           <img src="/src/assets/zusam_logo.svg" />
-          <div class="welcome lead">{lang.t("invitation_welcome")}</div>
+          <div class="welcome lead">{this.props.t("invitation_welcome")}</div>
           <form>
             <div class="form-group">
               <input
@@ -49,7 +50,7 @@ class Signup extends Component {
                 class="form-control"
                 required
                 id="login"
-                placeholder={lang.t("login_placeholder")}
+                placeholder={this.props.t("login_placeholder")}
               />
             </div>
             <div class="form-group">
@@ -58,7 +59,7 @@ class Signup extends Component {
                 class="form-control"
                 required
                 id="password"
-                placeholder={lang.t("password_placeholder")}
+                placeholder={this.props.t("password_placeholder")}
               />
             </div>
             <button
@@ -66,7 +67,7 @@ class Signup extends Component {
               class="btn btn-light"
               onClick={e => this.sendSignupForm(e)}
             >
-              {lang.t("signup")}
+              {this.props.t("signup")}
             </button>
           </form>
         </div>
@@ -75,4 +76,4 @@ class Signup extends Component {
   }
 }
 
-export default withRouter(Signup);
+export default withTranslation()(withRouter(Signup));

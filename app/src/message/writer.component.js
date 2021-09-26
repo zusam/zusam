@@ -1,9 +1,10 @@
 import { h, Component } from "preact";
-import { lang, alert, http, util, api, me } from "/src/core";
+import { alert, http, util, api, me } from "/src/core";
 import { FaIcon } from "/src/misc";
 import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
 import { withRouter } from "react-router-dom";
+import { withTranslation } from 'react-i18next';
 
 class Writer extends Component {
 
@@ -118,7 +119,7 @@ class Writer extends Component {
     http.put(`/api/messages/${this.props.messageId}`, msg).then(res => {
       this.setState({sending: false});
       if (!res) {
-        alert.add(lang.t("error_new_message"), "alert-danger");
+        alert.add(this.props.t("error_new_message"), "alert-danger");
         return;
       }
       window.dispatchEvent(new CustomEvent("editMessage", { detail: res }));
@@ -150,13 +151,13 @@ class Writer extends Component {
     }
     // don't post if there is nothing to post
     if (!msg.files.length && !msg.data.text && !msg.data.title) {
-      alert.add(lang.t("empty_message"), "alert-danger");
+      alert.add(this.props.t("empty_message"), "alert-danger");
       return;
     }
     http.post("/api/messages", msg).then(res => {
       if (!res) {
         this.setState({ sending: false });
-        alert.add(lang.t("error_new_message"), "alert-danger");
+        alert.add(this.props.t("error_new_message"), "alert-danger");
         return;
       }
       if (this.props.isChild) {
@@ -330,7 +331,7 @@ class Writer extends Component {
       },
       e => {
         console.warn(e);
-        alert.add(lang.t("error_upload"), "alert-danger");
+        alert.add(this.props.t("error_upload"), "alert-danger");
         this.removeFile(fileId);
       }
     );
@@ -353,7 +354,7 @@ class Writer extends Component {
             type="text"
             id="title"
             onKeyPress={e => this.onKeyPress(e)}
-            placeholder={lang.t("title_placeholder")}
+            placeholder={this.props.t("title_placeholder")}
            />
         )}
         <textarea
@@ -362,7 +363,7 @@ class Writer extends Component {
           rows="5"
           autocomplete="off"
           autofocus={this.props.focus}
-          placeholder={lang.t("text_placeholder")}
+          placeholder={this.props.t("text_placeholder")}
           maxlength="50000"
          />
         {this.state.preview && (
@@ -384,7 +385,7 @@ class Writer extends Component {
             <button
               class="option"
               onClick={() => this.inputImages()}
-              title={lang.t("upload_image")}
+              title={this.props.t("upload_image")}
             >
               <FaIcon family={"regular"} icon={"images"} />
             </button>
@@ -393,7 +394,7 @@ class Writer extends Component {
             <button
               class="option"
               onClick={() => this.inputVideo()}
-              title={lang.t("upload_video")}
+              title={this.props.t("upload_video")}
             >
               <FaIcon family={"solid"} icon={"film"} />
             </button>
@@ -402,7 +403,7 @@ class Writer extends Component {
             <button
               class="option"
               onClick={() => this.inputGenericFile("application/pdf")}
-              title={lang.t("upload_pdf")}
+              title={this.props.t("upload_pdf")}
             >
               <FaIcon family={"regular"} icon={"file-pdf"} />
             </button>
@@ -410,7 +411,7 @@ class Writer extends Component {
           <div class="actions">
             {this.props.cancel && (
               <button class="cancel" onClick={e => this.props.cancel(e)}>
-                {lang.t("cancel")}
+                {this.props.t("cancel")}
               </button>
             )}
             <button
@@ -419,7 +420,7 @@ class Writer extends Component {
               class="submit"
               onClick={e => this.sendMessage(e)}
             >
-              {lang.t("submit")}
+              {this.props.t("submit")}
             </button>
           </div>
         </div>
@@ -428,4 +429,4 @@ class Writer extends Component {
   }
 }
 
-export default withRouter(Writer);
+export default withTranslation()(withRouter(Writer));

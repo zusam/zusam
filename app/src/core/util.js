@@ -1,5 +1,5 @@
-import lang from "./lang.js";
 import storage from "./storage.js";
+import { useTranslation } from "react-i18next";
 
 // Stateless utilities
 // Should be agnostic of other components of zusam if possible
@@ -65,18 +65,19 @@ const util = {
   },
   // duration relative to event
   humanTime: timestamp => {
+    const { t } = useTranslation();
     if (!timestamp) {
       return null;
     }
     const duration = Math.abs(Math.round((Date.now() / 1000 - timestamp) / 60));
     if (duration < 1) {
-      return lang.t("just_now");
+      return t("just_now");
     }
     if (duration < 60) {
-      return lang.t("ago", { duration: `${duration  }mn` });
+      return t("ago", { duration: `${duration  }mn` });
     }
     if (duration < 60 * 24) {
-      return lang.t("ago", { duration: `${Math.floor(duration / 60)  }h` });
+      return t("ago", { duration: `${Math.floor(duration / 60)  }h` });
     }
     return util.humanFullDate(timestamp).split(" ")[0];
   },

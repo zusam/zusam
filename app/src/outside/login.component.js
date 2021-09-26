@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
-import { lang, alert, storage, http, me } from "/src/core";
+import { alert, storage, http, me } from "/src/core";
 import { withRouter } from "react-router-dom";
+import { withTranslation } from 'react-i18next';
 
 class Login extends Component {
   constructor() {
@@ -28,9 +29,9 @@ class Login extends Component {
     http.post("/api/password-reset-mail", { mail: login }).then(res => {
       this.setState({ sending: false });
       if (res && !res.message) {
-        alert.add(lang.t("password_reset_mail_sent"));
+        alert.add(this.props.t("password_reset_mail_sent"));
       } else {
-        alert.add(lang.t(res.message), "alert-danger");
+        alert.add(this.props.t(res.message), "alert-danger");
       }
     });
   }
@@ -51,9 +52,9 @@ class Login extends Component {
           });
         });
       } else if (res && res.message) {
-          alert.add(lang.t(res.message), "alert-danger");
+          alert.add(this.props.t(res.message), "alert-danger");
         } else {
-          alert.add(lang.t("error"), "alert-danger");
+          alert.add(this.props.t("error"), "alert-danger");
         }
     });
   }
@@ -75,7 +76,7 @@ class Login extends Component {
                   class="form-control"
                   required
                   id="login"
-                  placeholder={lang.t("login_placeholder")}
+                  placeholder={this.props.t("login_placeholder")}
                 />
               </div>
               <div class="form-group">
@@ -84,12 +85,12 @@ class Login extends Component {
                   class="form-control"
                   required
                   id="password"
-                  placeholder={lang.t("password_placeholder")}
+                  placeholder={this.props.t("password_placeholder")}
                 />
               </div>
               <div class="forgot-password">
                 <span onClick={e => this.showPasswordReset(e)}>
-                  {lang.t("forgot_password")}
+                  {this.props.t("forgot_password")}
                 </span>
               </div>
               <button
@@ -98,7 +99,7 @@ class Login extends Component {
                 onClick={e => this.sendLoginForm(e)}
                 disabled={this.state.sending}
               >
-                {lang.t("connect")}
+                {this.props.t("connect")}
               </button>
             </form>
           )}
@@ -110,7 +111,7 @@ class Login extends Component {
                   class="form-control"
                   required
                   id="login"
-                  placeholder={lang.t("login_placeholder")}
+                  placeholder={this.props.t("login_placeholder")}
                 />
               </div>
               <button
@@ -119,7 +120,7 @@ class Login extends Component {
                 onClick={e => this.sendPasswordReset(e)}
                 disabled={this.state.sending}
               >
-                {lang.t("submit")}
+                {this.props.t("submit")}
               </button>
             </form>
           )}
@@ -129,4 +130,4 @@ class Login extends Component {
   }
 }
 
-export default withRouter(Login);
+export default withTranslation()(withRouter(Login));

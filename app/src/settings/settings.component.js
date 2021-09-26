@@ -1,10 +1,11 @@
 import { h, Component } from "preact";
-import { http, lang } from "/src/core";
+import { http } from "/src/core";
 import UserSettings from "./user-settings.component.js";
 import GroupSettings from "./group-settings.component.js";
 import { Navbar } from "/src/navbar";
 import { Link } from "react-router-dom";
 import { connectStoreon } from 'storeon/preact'
+import { withTranslation } from 'react-i18next';
 
 class Settings extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class Settings extends Component {
                       class={`nav-link${this.state.entity["entityType"] == "user" ? " active" : ""}`}
                       to={`/users/${this.props.me.id}/settings`}
                     >
-                      {lang.t("account")}
+                      {this.props.t("account")}
                     </Link>
                   </li>
                   {this.props.me.groups?.length > 0 && (
@@ -49,7 +50,7 @@ class Settings extends Component {
                       <div
                         class={`nav-link${this.state.entity["entityType"] == "group" ? " active" : ""}`}
                       >
-                        {lang.t("groups")}
+                        {this.props.t("groups")}
                       </div>
                       <div class="dropdown-menu">
                         {this.props.me.groups?.map(e => (
@@ -79,4 +80,4 @@ class Settings extends Component {
   }
 }
 
-export default connectStoreon('me', Settings)
+export default withTranslation()(connectStoreon('me', Settings));

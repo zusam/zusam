@@ -1,8 +1,9 @@
 import { h, Component } from "preact";
-import { lang, router, util, http } from "/src/core";
+import { router, util, http } from "/src/core";
 import { MessageSearchResult } from "/src/message";
+import { withTranslation } from 'react-i18next';
 
-export default class GroupSearch extends Component {
+class GroupSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,7 +70,7 @@ export default class GroupSearch extends Component {
                 </p>
               )}
               {this.state.messages.length == 0 && this.state.loaded && (
-                <p>{lang.t("search_without_result")}</p>
+                <p>{this.props.t("search_without_result")}</p>
               )}
               {this.state.messages.map((msg, i) => {
                 return (
@@ -90,3 +91,5 @@ export default class GroupSearch extends Component {
     );
   }
 }
+
+export default withTranslation()(GroupSearch);

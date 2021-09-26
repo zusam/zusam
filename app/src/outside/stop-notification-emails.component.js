@@ -1,17 +1,18 @@
 import { h, Component } from "preact";
-import { lang, http } from "/src/core";
+import { http } from "/src/core";
+import { withTranslation } from 'react-i18next';
 
-export default class StopNotificationEmails extends Component {
+class StopNotificationEmails extends Component {
   constructor() {
     super();
     http
       .get(`/api${  window.location.pathname}`)
       .then(() => {
-        this.setState({ message: lang.t("notification_emails_stopped") });
+        this.setState({ message: this.props.t("notification_emails_stopped") });
       })
       .catch(err => {
         console.warn(err);
-        this.setState({ message: lang.t("error") });
+        this.setState({ message: this.props.t("error") });
       });
   }
 
@@ -19,3 +20,5 @@ export default class StopNotificationEmails extends Component {
     return <div>{this.state.message || ""}</div>;
   }
 }
+
+export default withTranslation()(StopNotificationEmails);

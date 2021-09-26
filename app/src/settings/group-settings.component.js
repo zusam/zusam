@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
-import { lang, alert, http, util, me } from "/src/core";
+import { alert, http, util, me } from "/src/core";
 import { withRouter } from "react-router-dom";
+import { withTranslation } from 'react-i18next';
 
 class GroupSettings extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class GroupSettings extends Component {
     http
       .post(`/api/groups/${this.state.id}/reset-invite-key`, {})
       .then(res => {
-        alert.add(lang.t("group_updated"));
+        alert.add(this.props.t("group_updated"));
         this.setState({ secretKey: res["inviteKey"] });
       });
   }
@@ -31,7 +32,7 @@ class GroupSettings extends Component {
       group.name = name;
     }
     http.put(`/api/groups/${  this.state.id}`, group).then(res => {
-      alert.add(lang.t("group_updated"));
+      alert.add(this.props.t("group_updated"));
       this.setState(prevState => Object.assign(prevState, res));
     });
   }
@@ -53,10 +54,10 @@ class GroupSettings extends Component {
   leave() {
     http.post(`/api/groups/${  this.state.id  }/leave`, {}).then(res => {
       if (!res || !res["entityType"]) {
-        alert.add(lang.t("error"), "alert-danger");
+        alert.add(this.props.t("error"), "alert-danger");
       } else {
         this.props.dispatch('me/fetch');
-        alert.add(lang.t("group_left"));
+        alert.add(this.props.t("group_left"));
         this.props.history.push("/");
       }
     });
@@ -73,13 +74,13 @@ class GroupSettings extends Component {
                   <div class="col-12 col-md-10">
                     <form id="settings_form" class="mb-1 border-bottom pb-1">
                       <div class="form-group">
-                        <label for="name">{lang.t("name")}: </label>
+                        <label for="name">{this.props.t("name")}: </label>
                         <input
                           type="text"
                           name="name"
                           minlength="1"
                           maxlength="128"
-                          placeholder={lang.t("name_input")}
+                          placeholder={this.props.t("name_input")}
                           value={this.state.name}
                           class="form-control"
                           required
@@ -89,13 +90,13 @@ class GroupSettings extends Component {
                         onClick={this.updateSettings}
                         class="btn btn-outline-secondary"
                       >
-                        {lang.t("save_changes")}
+                        {this.props.t("save_changes")}
                       </button>
                     </form>
                     <form class="mb-1 border-bottom pb-1">
                       <div class="form-group">
                         <label for="inviteKey">
-                          {lang.t("invitation_link")}:{" "}
+                          {this.props.t("invitation_link")}:{" "}
                         </label>
                         <input
                           type="text"
@@ -111,7 +112,7 @@ class GroupSettings extends Component {
                         class="btn btn-outline-secondary"
                         onClick={this.resetSecretKey}
                       >
-                        {lang.t("reset_invitation_link")}
+                        {this.props.t("reset_invitation_link")}
                       </button>
                     </form>
                     <form>
@@ -119,7 +120,7 @@ class GroupSettings extends Component {
                         onClick={e => this.leaveGroup(e)}
                         class="btn btn-outline-danger"
                       >
-                        {lang.t("quit_group")}
+                        {this.props.t("quit_group")}
                       </button>
                     </form>
                   </div>
@@ -129,7 +130,7 @@ class GroupSettings extends Component {
           </div>
         </div>
         <div class="user-list mb-3">
-          <h3>{lang.t("users")}</h3>
+          <h3>{this.props.t("users")}</h3>
           {this.props.users.map(
             user =>
               user && (
@@ -154,4 +155,4 @@ class GroupSettings extends Component {
   }
 }
 
-export default withRouter(GroupSettings);
+export default withTranslation()(withRouter(GroupSettings));

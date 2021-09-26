@@ -2379,7 +2379,7 @@ __metadata:
     parcel: ^2.0.0-rc.0
     preact: ^10.1
     prettier: ^2.0
-    react-i18next: ^11.8
+    react-i18next: ^11.12.0
     react-router: ^5.2
     react-router-dom: ^5.2
     sass: ^1.23
@@ -8758,7 +8758,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^11.8":
+"react-i18next@npm:^11.12.0":
   version: 11.12.0
   resolution: "react-i18next@npm:11.12.0"
   dependencies:

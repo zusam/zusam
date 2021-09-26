@@ -1,7 +1,8 @@
 import { h, Component } from "preact";
 import { lang, router, alert, http, util, storage, me } from "/src/core";
+import { withTranslation } from 'react-i18next';
 
-export default class UserSettings extends Component {
+class UserSettings extends Component {
   constructor(props) {
     super(props);
     this.destroyAccount = this.destroyAccount.bind(this);
@@ -36,7 +37,7 @@ export default class UserSettings extends Component {
                 .put(`/api/users/${this.state.id}`, { avatar: file["id"] })
                 .then(() => {
                   this.setState({ avatar: file });
-                  alert.add(lang.t("settings_updated"));
+                  alert.add(this.props.t("settings_updated"));
                 });
             });
           }
@@ -48,7 +49,7 @@ export default class UserSettings extends Component {
 
   destroyAccount(event) {
     event.preventDefault();
-    let confirmDeletion = confirm(lang.t("are_you_sure"));
+    let confirmDeletion = confirm(this.props.t("are_you_sure"));
     if (confirmDeletion) {
       http.delete(`/api/users/${this.state.id}`).then(() => {
         this.props.history.push("/logout");
@@ -123,58 +124,58 @@ export default class UserSettings extends Component {
                 <div class="col-12 col-md-10">
                   <form id="settings_form" class="mb-3">
                     <div class="form-group">
-                      <label for="name">{lang.t("name")}: </label>
+                      <label for="name">{this.props.t("name")}: </label>
                       <input
                         type="text"
                         name="name"
                         minlength="1"
                         maxlength="128"
-                        placeholder={lang.t("name_input")}
+                        placeholder={this.props.t("name_input")}
                         value={this.state.name}
                         class="form-control"
                        />
                     </div>
                     <div class="form-group">
-                      <label for="email">{lang.t("email")}: </label>
+                      <label for="email">{this.props.t("email")}: </label>
                       <input
                         type="email"
                         name="email"
-                        placeholder={lang.t("email_input")}
+                        placeholder={this.props.t("email_input")}
                         value={this.state.login}
                         class="form-control"
                        />
                     </div>
                     <div class="form-group">
-                      <label for="password">{lang.t("password")}: </label>
+                      <label for="password">{this.props.t("password")}: </label>
                       <input
                         type="password"
                         name="password"
                         autocomplete="off"
                         minlength="8"
                         maxlength="128"
-                        placeholder={lang.t("password_input")}
+                        placeholder={this.props.t("password_input")}
                         class="form-control"
                        />
                     </div>
                     <div class="form-group">
                       <label for="notification_emails">
-                        {lang.t("notification_emails")}:
+                        {this.props.t("notification_emails")}:
                       </label>
                       <select
                         name="notification_emails"
                         class="form-control"
                         value={this.state.data["notification_emails"]}
                       >
-                        <option value="none">{lang.t("none")}</option>
-                        <option value="hourly">{lang.t("hourly")}</option>
-                        <option value="daily">{lang.t("daily")}</option>
-                        <option value="weekly">{lang.t("weekly")}</option>
-                        <option value="monthly">{lang.t("monthly")}</option>
+                        <option value="none">{this.props.t("none")}</option>
+                        <option value="hourly">{this.props.t("hourly")}</option>
+                        <option value="daily">{this.props.t("daily")}</option>
+                        <option value="weekly">{this.props.t("weekly")}</option>
+                        <option value="monthly">{this.props.t("monthly")}</option>
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="default_group">
-                        {lang.t("default_group")}:
+                        {this.props.t("default_group")}:
                       </label>
                       <select
                         name="default_group"
@@ -182,13 +183,13 @@ export default class UserSettings extends Component {
                         value={this.state.data["default_group"]}
                       >
                         {me.groups?.map(e => (
-                          <option value={e.id}>{e.name}</option>
+                          <option key={e.id} value={e.id}>{e.name}</option>
                         ))}
                       </select>
                     </div>
                     <div class="form-group">
                       <label class="capitalize" for="lang">
-                        {lang.t("lang")}:
+                        {this.props.t("lang")}:
                       </label>
                       <select
                         name="lang"
@@ -196,7 +197,7 @@ export default class UserSettings extends Component {
                         value={lang.getCurrentLang()}
                       >
                         {Object.keys(lang.possibleLang).map(k => (
-                          <option value={k}>{lang.possibleLang[k]}</option>
+                          <option key={k} value={k}>{lang.possibleLang[k]}</option>
                         ))}
                       </select>
                     </div>
@@ -204,13 +205,13 @@ export default class UserSettings extends Component {
                       onClick={e => this.updateSettings(e)}
                       class="btn btn-primary"
                     >
-                      {lang.t("save_changes")}
+                      {this.props.t("save_changes")}
                     </button>
                   </form>
                   <form id="api_key_form">
                     <div class="form-group">
                       <label for="apiKey">
-                        {lang.t("api_key")}:{" "}
+                        {this.props.t("api_key")}:{" "}
                       </label>
                       <input
                         type="text"
@@ -224,19 +225,19 @@ export default class UserSettings extends Component {
                       class="btn btn-outline-secondary"
                       onClick={this.resetApiKey}
                     >
-                      {lang.t("reset_api_key")}
+                      {this.props.t("reset_api_key")}
                     </button>
                   </form>
                   <form id="destroy_form">
                     <label class="d-block" for="destroy_account">
-                      {lang.t("destroy_account_explain")}
+                      {this.props.t("destroy_account_explain")}
                     </label>
                     <button
                       onClick={e => this.destroyAccount(e)}
                       name="destroy_account"
                       class="btn btn-danger"
                     >
-                      {lang.t("destroy_account")}
+                      {this.props.t("destroy_account")}
                     </button>
                   </form>
                 </div>
@@ -251,3 +252,5 @@ export default class UserSettings extends Component {
     );
   }
 }
+
+export default withTranslation()(UserSettings);
