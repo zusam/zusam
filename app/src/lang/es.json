@@ -79,10 +79,8 @@
     "in": "en",
     "lang": "idioma",
     "reply": "responder",
-    "replies": {
-        "0": "{{count}} respuesta",
-        "2":"{{count}} respuestas"
-    },
+    "replies_one": "{{count}} respuesta",
+    "replies_other":"{{count}} respuestas",
     "publish_in_group": "publicar en el grupo",
     "search_in_group": "buscar en este grupo",
     "changed_group_name": "cambió el nombre del grupo",

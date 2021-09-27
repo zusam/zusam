@@ -12,7 +12,7 @@
     "@storeon/crosstab": "^1.0",
     "@storeon/localstorage": "^1.2",
     "bootstrap": "^5.1",
-    "i18next": "^20.6",
+    "i18next": "^21.1",
     "idb-keyval": "^3.2",
     "image-blob-reduce": "^3.0",
     "js-cookie": "^3.0",

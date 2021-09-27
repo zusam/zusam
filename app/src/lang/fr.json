@@ -79,10 +79,8 @@
     "in": "dans",
     "lang": "langue",
     "reply": "répondre",
-    "replies": {
-        "0": "{{count}} réponse",
-        "2":"{{count}} réponses"
-    },
+    "replies_one": "{{count}} réponse",
+    "replies_other": "{{count}} réponses",
     "publish_in_group": "promouvoir le message",
     "search_in_group": "rechercher dans le groupe",
     "changed_group_name": "a changé le nom du groupe",
