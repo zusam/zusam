@@ -88,11 +88,6 @@ class MessageChildren extends Component {
           </div>
         )}
         {this.props.childMessages.map((e, i) => {
-          // bypass empty messages
-          if (!e.files.length && e.data["text"] == "" && !e.children.length) {
-            return null;
-          }
-
           if (
             i < this.state.firstDisplayedChild ||
             i > this.state.lastDisplayedChild

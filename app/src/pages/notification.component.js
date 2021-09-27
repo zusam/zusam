@@ -1,36 +1,55 @@
 import { h, Component, Fragment } from "preact";
-import { http, util } from "/src/core";
+import { http, util, cache } from "/src/core";
 import { Link } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
 
 class Notification extends Component {
   constructor(props) {
     super(props);
-    this.getMiniature = this.getMiniature.bind(this);
-    this.setMiniatureOnError = this.setMiniatureOnError.bind(this);
-    this.getAction = this.getAction.bind(this);
-    this.getTarget = this.getTarget.bind(this);
-    this.getTitle = this.getTitle.bind(this);
     this.state = {
-      target: this.getTarget(),
-      action: this.getAction(),
-      title: this.getTitle(),
+      target: null,
+      action: null,
+      title: null,
+      notification: null,
+      group: null,
+      user: null,
+      message: null,
     };
   }
 
-  getMiniature() {
+  componentDidMount() {
+    cache.fetch(`/api/notifications/${this.props.id}`).then(n => {
+      Promise.all([
+        `/api/groups/${n.fromGroup.id}`,
+        `/api/users/${n.fromUser.id}`,
+        `/api/messages/${n.fromMessage.id}`,
+      ].map(url => cache.fetch(url).then(e => e))).then(res => {
+        this.setState({
+          target: this.getTarget(n, res[0], res[2]),
+          action: this.getAction(n),
+          title: this.getTitle(n, res[2]),
+          notification: n,
+          group: res[0],
+          user: res[1],
+          message: res[2],
+        });
+      });
+    });
+  }
+
+  getMiniature(notification, user) {
     let imgSrc = util.defaultAvatar;
     if (
-      this.props.fromUser &&
-      this.props.fromUser.avatar &&
-      this.props.type != "global_notification"
+      user &&
+      user.avatar &&
+      notification.type != "global_notification"
     ) {
-      imgSrc = util.crop(this.props.fromUser.avatar["id"], 80, 80);
+      imgSrc = util.crop(user.avatar["id"], 80, 80);
     }
     return (
       <img
         style={util.backgroundHash(
-          this.props.fromUser ? this.props.fromUser.id : ""
+          user ? user.id : ""
         )}
         src={imgSrc}
         onError={e => this.setMiniatureOnError(e)}
@@ -42,8 +61,8 @@ class Notification extends Component {
     event.currentTarget.src = util.defaultAvatar;
   }
 
-  getAction() {
-    switch (this.props.type) {
+  getAction(notification) {
+    switch (notification?.type) {
       case "new_message":
         return this.props.t("has_posted_in");
       case "new_comment":
@@ -59,16 +78,16 @@ class Notification extends Component {
     }
   }
 
-  getTitle() {
-    switch (this.props.type) {
+  getTitle(notification, message) {
+    switch (notification?.type) {
       case "new_message":
       case "new_comment":
-        if (this.props.fromMessage && this.props.fromMessage['data']) {
-          if (this.props.fromMessage['data']['title']) {
-            return this.props.fromMessage['data']['title'];
+        if (message && message['data']) {
+          if (message['data']['title']) {
+            return message['data']['title'];
           }
-          if (this.props.fromMessage['data']['text']) {
-            let url = util.getUrl(this.props.fromMessage['data']['text']);
+          if (message['data']['text']) {
+            let url = util.getUrl(message['data']['text']);
             if (url && url.length > 0) {
               url = url[0];
             }
@@ -78,7 +97,7 @@ class Notification extends Component {
               });
               return url;
             }
-            return this.props.fromMessage['data']['text'];
+            return message['data']['text'];
           }
         }
         return "";
@@ -87,13 +106,13 @@ class Notification extends Component {
     }
   }
 
-  getObject() {
-    switch (this.props.type) {
+  getObject(notification) {
+    switch (notification?.type) {
       case "new_message":
         return (
           <Fragment>
             <strong>
-              {this.props.fromGroup.name}
+              {this.state?.group.name}
             </strong>
             {this.state.title && (
               <Fragment>
@@ -108,8 +127,8 @@ class Notification extends Component {
           <span>
             {`${this.props.t("the_message_from")  } `}
             <strong>
-              {this.props.fromMessage && this.props.fromMessage["author"]
-                ? this.props.fromMessage["author"]["name"]
+              {this.state.message && this.state.message["author"]
+                ? this.state.message["author"]["name"]
                 : ""}
             </strong>
             {this.state.title && (
@@ -124,63 +143,66 @@ class Notification extends Component {
       case "user_left_group":
         return (
           <strong>
-            {this.props.fromGroup.name}
+            {this.state?.group.name}
           </strong>
         );
       case "group_name_change":
         return (
           <span>
-            <strong>{this.props.data["previousGroupName"]}</strong>
+            <strong>{this.state.notification.data["previousGroupName"]}</strong>
             {` ${this.props.t("to")} `}
-            <strong>{this.props.data["newGroupName"]}</strong>
+            <strong>{this.state.notification.data["newGroupName"]}</strong>
           </span>
         );
       case "global_notification":
-        return this.props.data["text"];
+        return this.state.notification.data["text"];
       default:
         return "";
     }
   }
 
-  getTarget() {
-    switch (this.props.type) {
+  getTarget(notification, group, message) {
+    switch (notification?.type) {
       case "user_joined_group":
       case "user_left_group":
       case "group_name_change":
-        return `/groups/${this.props.fromGroup.id}`;
+        return `/groups/${group.id}`;
       case "new_message":
-        return `/messages/${this.props.target}`;
+        return `/messages/${notification.target}`;
       case "new_comment":
         return (
-          `/messages/${this.props.fromMessage.id}/${this.props.target}`
+          `/messages/${message.id}/${notification.target}`
         );
       case "global_notification":
-        return this.props.target;
+        return notification.target;
       default:
         return "";
     }
   }
 
   render() {
+    if (!this.state?.notification) {
+      return null;
+    }
     return (
       <Link
         class="notification seamless-link unselectable"
         to={this.state.target}
         title={this.state.title}
       >
-        <div class="miniature unselectable">{this.getMiniature()}</div>
+        <div class="miniature unselectable">{this.getMiniature(this.state.notification, this.state.user)}</div>
         <div class="infos">
           <div class="description">
-            {this.props.type != "global_notification" && (
+            {this.state.notification.type != "global_notification" && (
               <Fragment>
-                <strong>{this.props.fromUser.name || "--"}</strong>
+                <strong>{this.state.user.name || "--"}</strong>
                 <span>{` ${this.state.action} `}</span>
               </Fragment>
             )}
-            {this.getObject()}
+            {this.getObject(this.state.notification)}
           </div>
           <div class="date">
-            {util.humanTime(this.props.createdAt)}
+            {util.humanTime(this.state.notification.createdAt)}
           </div>
         </div>
       </Link>

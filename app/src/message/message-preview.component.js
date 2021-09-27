@@ -24,60 +24,60 @@ export default class MessagePreview extends Component {
     super(props);
     this.state = {
       author: null,
+      preview: null,
+      id: null,
+      data: null,
+      lastActivityDate: null,
     };
   }
 
   componentDidMount() {
-    if (this.props.message && this.props.message.author) {
-      if (typeof(this.props.message.author) == "string") {
-        cache.fetch(`/api/users/${this.props.message.author}`).then(author => this.setState({author}));
-      } else {
-        setTimeout(() => this.setState({author: this.props.message.author}));
-      }
-    }
+    cache.fetch(`/api/messages/${this.props.id}/preview`).then(p => {
+      this.setState({...p});
+    });
   }
 
   render() {
-    if (!this.props.message) {
+    if (!this.state?.id) {
       return null;
     }
     return (
       <Link
-        to={`/messages/${this.props.message.id}`}
+        to={`/messages/${this.state.id}`}
         class="d-inline-block seamless-link message-preview unselectable"
-        title={this.props.message.data["title"]}
+        title={this.state?.data["title"]}
       >
         <div tabindex={this.props.tabindex} class="card material-shadow-with-hover">
           {getAvatar(this.state.author)}
-          {this.props.message.preview ? (
+          {this.state?.preview ? (
             <div
               class="card-miniature"
               style={
-                `background-image: url('${util.crop(util.getId(this.props.message.preview), 320, 180)}')`
+                `background-image: url('${util.crop(util.getId(this.state?.preview), 320, 180)}')`
               }
             />
           ) : (
-            <div class="text-preview">{this.props.message.data["text"]}</div>
+            <div class="text-preview">{this.state?.data["text"]}</div>
           )}
           <div class="card-body border-top d-flex justify-content-between">
             <span class="left-buffer" />
             <span
               class="title"
               title={
-                this.props.message.data["title"] ||
-                util.humanFullDate(this.props.message.lastActivityDate)
+                this.state?.data["title"] ||
+                util.humanFullDate(this.state?.lastActivityDate)
               }
             >
-              {this.props.message.data["title"] ||
-                util.humanTime(this.props.message.lastActivityDate)}
+              {this.state?.data["title"] ||
+                util.humanTime(this.state?.lastActivityDate)}
             </span>
             <span class="children">
-              {!!this.props.message.children && (
+              {!!this.state?.children && (
                 <span>
-                  {`${Array.isArray(this.props.message.children) ? this.props.message.children.length : this.props.message.children} `}
+                  {`${this.state?.children} `}
                   <FaIcon
                     family={
-                      me.isNew(this.props.message.id) ? "solid" : "regular"
+                      me.isNew(this.state?.id) ? "solid" : "regular"
                     }
                     icon={"comment"}
                   />

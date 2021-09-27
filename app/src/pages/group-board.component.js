@@ -115,8 +115,7 @@ export default class GroupBoard extends Component {
                         <MessagePreview
                           tabindex={i + 1}
                           key={msg.id}
-                          message={msg}
-                          groupId={this.props.id}
+                          id={msg.id}
                         />
                       );
                     })}

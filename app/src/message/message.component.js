@@ -27,6 +27,19 @@ class Message extends Component {
 
   componentDidMount() {
     cache.fetch(`/api/messages/${this.props.id}`).then(m => {
+      cache.fetch(`/api/users/${m.author.id}`).then(u => {
+        this.setState({author: u});
+      });
+      if (m?.parent?.id) {
+        cache.fetch(`/api/messages/${m.parent.id}`).then(p => {
+          this.setState({parent: p});
+        });
+      }
+      if (m?.files.length) {
+        Promise.all(m.files.map(f => cache.fetch(`/api/files/${f.id}`).then(f => f))).then(
+          files => this.setState({files})
+        );
+      }
       this.setState({message: m});
     });
 
@@ -139,12 +152,12 @@ class Message extends Component {
     return (
       <Writer
         cancel={this.state.edit ? this.cancelEdit : null}
-        files={this.state.edit ? this.state.message.files : []}
+        files={this.state.edit ? this.state.files : []}
         focus={focus || !!this.state.edit}
         group={this.state.message.group}
         messageId={this.state.edit ? this.props.id : null}
         parent={
-          this.state.edit ? this.state.message["parent"] : this.props.id
+          this.state.edit ? this.state?.parent.id : this.props.id
         }
         text={this.state.edit ? this.state.message.data["text"] : ""}
         title={this.state.edit ? this.state.message.data["title"] : ""}
@@ -180,20 +193,21 @@ class Message extends Component {
                 </div>
               )}
               <MessageHead
-                author={this.state.message["author"]}
-                message={this.state.message}
+                author={this.state?.author}
+                message={this.state?.message}
                 isPublic={this.props.isPublic}
                 isChild={this.props.isChild}
               />
               <div class="main">
                 <MessageBody
                   message={this.state.message}
+                  files={this.state?.files || []}
                   isPublic={this.props.isPublic}
                   isChild={this.props.isChild}
                 />
                 <MessageFooter
-                  author={this.state.message["author"]}
-                  message={this.state.message}
+                  author={this.state?.author}
+                  message={this.state?.message}
                   editMessage={this.editMessage}
                   deleteMessage={this.deleteMessage}
                   shareMessage={this.shareMessage}

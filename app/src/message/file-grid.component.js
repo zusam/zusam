@@ -211,7 +211,7 @@ class FileGrid extends Component {
     if (this.props.files && this.props.files.length > 3) {
       return (
         <div class="file-grid">
-          {this.state.files
+          {this.props.files
             .sort((a, b) => (a.fileIndex > b.fileIndex ? 1 : -1))
             .map(e => this.renderMiniatureFile(e))}
         </div>
@@ -219,7 +219,7 @@ class FileGrid extends Component {
     }
     return (
       <div class="d-flex justify-content-center flex-wrap">
-        {this.state.files
+        {this.props.files
           .sort((a, b) => (a.fileIndex > b.fileIndex ? 1 : -1))
           .map(e => this.renderBigFile(e))}
       </div>

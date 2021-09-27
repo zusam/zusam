@@ -88,8 +88,8 @@ export default class MessageBody extends Component {
             data={this.state.preview.data}
           />
         )}
-        {this.props.message.files && (
-          <FileGrid files={this.props.message.files} />
+        {this.props.files && (
+          <FileGrid files={this.props.files} />
         )}
       </div>
     );

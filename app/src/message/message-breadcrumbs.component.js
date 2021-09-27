@@ -4,18 +4,23 @@ import { Link, withRouter } from "react-router-dom";
 
 class MessageBreadcrumbs extends Component {
 
-  componentDidMount() {
-    cache.fetch(`/api/messages/${this.props.id}`).then(m => {
-      let stack = [];
-      let parent = m?.parent;
-      while (parent) {
-        stack.push(parent);
-        parent = parent?.parent;
+  buildStack(message, stack = []) {
+    cache.fetch(`/api/messages/${message.id}`).then(m => {
+      stack.push(m);
+      if (m?.parent) {
+        this.buildStack(m.parent, stack);
+      } else {
+        cache.fetch(`/api/groups/${m.group.id}`).then(g => {
+          stack.push(g);
+          stack = stack.reverse();
+          this.setState({stack});
+        });
       }
-      stack.push(m.group);
-      stack = stack.reverse();
-      this.setState({stack});
     });
+  }
+
+  componentDidMount() {
+    this.buildStack({id: this.props.id});
   }
 
   getTitle(message) {

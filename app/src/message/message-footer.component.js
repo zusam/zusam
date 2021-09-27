@@ -11,7 +11,7 @@ export default function MessageFooter() {
       <div class="infos">
         {!this.props.isPublic &&
             this.props.author &&
-            this.props.author.id == me?.me?.id && (
+            this.props.author.id == me.id && (
               <Fragment>
                 <a
                   class="action seamless-link font-size-90 capitalize d-none d-sm-block"
@@ -30,7 +30,7 @@ export default function MessageFooter() {
                 `/messages/${this.props.message.id}${this.props.message.children.length ? "" : "?focus=reply"}`
               }
             >
-              {this.props.message.children.length ? (
+              {this.props?.message?.children.length ? (
                 this.props.message.children.some(e => me.isNew(e.id)) ? (
                   <b>
                     {t("replies", {

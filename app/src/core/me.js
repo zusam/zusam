@@ -43,8 +43,13 @@ const me = {
         store.dispatch('update', {});
         return;
       }
-      store.dispatch('me/update', Object.assign({loaded: true}, r));
-      http.get(`/api/users/${store.get()?.me?.id}/notifications`).then(r => {
+      Promise.all(r.groups.map(g => http.get(`/api/groups/${g.id}`).then(group => group))).then(
+        groups => {
+          r.groups = groups;
+          store.dispatch('me/update', Object.assign({loaded: true}, r));
+        }
+      );
+      http.get(`/api/users/${r.id}/notifications`).then(r => {
         store.dispatch('notifications/update', r);
       });
       i18n.changeLanguage(r?.data?.lang);
