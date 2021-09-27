@@ -4,6 +4,7 @@ namespace App\Controller\Message;
 
 use App\Entity\Message;
 use App\Controller\ApiController;
+use App\Normalizer\ObjectNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -48,5 +49,38 @@ class Get extends ApiController
             $this->serialize($message, ['read_message']),
             Response::HTTP_OK
         );
+    }
+
+    /**
+     * @Route("/messages/{id}/preview", methods={"GET"})
+     * @OA\Response(
+     *  response=200,
+     *  description="Get a message",
+     *  @Model(type=App\Entity\Message::class, groups={"read_message"})
+     * )
+     * @OA\Tag(name="message")
+     * @Security(name="api_key")
+     */
+    public function preview(string $id): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $message = $this->em->getRepository(Message::class)->findOneById($id);
+        if (empty($message)) {
+            return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $message->getGroup());
+
+        $message_preview = [
+          "id" => $message->getId(),
+          "author" => $this->normalize($message->getAuthor(), ['read_message']),
+          "preview" => $this->normalize($message->getPreview(), ['read_message']),
+          "children" => count($message->getChildren()),
+          "lastActivityDate" => $message->getLastActivityDate(),
+          "data" => $message->getData(),
+        ];
+
+        return new JsonResponse($message_preview, JsonResponse::HTTP_OK);
     }
 }

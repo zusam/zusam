@@ -42,8 +42,6 @@ class Get extends ApiController
             return new JsonResponse(['error' => 'Not Found'], JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $file);
-
         return new Response(
             $this->serialize($file, ['read_file']),
             Response::HTTP_OK
