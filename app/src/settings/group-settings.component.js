@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { alert, http, util, me } from "/src/core";
+import { alert, http, util, me, cache } from "/src/core";
 import { withRouter } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
 
@@ -11,6 +11,12 @@ class GroupSettings extends Component {
     this.leave = this.leave.bind(this);
     this.resetSecretKey = this.resetSecretKey.bind(this);
     this.state = Object.assign({ hydratedUsers: [] }, props);
+  }
+
+  componentDidMount() {
+    Promise.all(this.props.users.map(u => cache.fetch(`/api/users/${u.id}`).then(u => u))).then(
+      users => this.setState({users})
+    );
   }
 
   resetSecretKey(event) {
@@ -131,7 +137,7 @@ class GroupSettings extends Component {
         </div>
         <div class="user-list mb-3">
           <h3>{this.props.t("users")}</h3>
-          {this.props.users.map(
+          {this.state.users.map(
             user =>
               user && (
                 <div class="user-card">
