@@ -1,6 +1,6 @@
 import util from "./util.js";
 import storage from "./storage.js";
-import http from "./http.js";
+import cache from "./cache.js";
 import store from "/src/store";
 
 const router = {
@@ -38,57 +38,15 @@ const router = {
     return store.get()?.backUrl;
   },
 
-  get entityType() {
-    console.err("don't use entityType");
-    return store.get()?.entityType;
-  },
-
   get search() {
     return location.search.slice(1);
   },
 
-  getBackUrl() {
-    return router.getEntity().then(entity => {
-      switch (router.route) {
-        case "groups":
-          if (router.action == "write") {
-            return `/${router.route}/${router.id}`;
-          }
-          if (location.search) {
-            return `/${router.route}/${router.id}`;
-          }
-          return "";
-        case "messages":
-          if (entity["parent"] && !entity["isInFront"]) {
-            return `/messages/${entity["parent"].id}`;
-          }
-          return `/groups/${util.getId(entity.group)}`;
-        case "users":
-          return "/";
-        default:
-          if (router.action) {
-            return "/";
-          }
-          return "";
-      }
-    });
-  },
-
   getEntity() {
-    const newState = router.getUrlComponents(util.toApp(location.pathname));
-    return storage.get("apiKey").then(apiKey => {
-      if (apiKey && newState.id && router.isEntity(newState?.route)) {
-        return http.get(`/api/${newState.route}/${newState.id}`).then(res => {
-          if (!res) {
-            console.warn("Unknown entity");
-            // TODO: what should we do here ?
-            return null;
-          }
-          return res;
-        });
-      }
-      return null;
-    });
+    if (router.isEntity(router.route)) {
+      return cache.fetch(`/api/${router.route}/${router.id}`);
+    }
+    return Promise.resolve(null);
   },
 
   get entity() {

@@ -148,7 +148,7 @@ class Search extends ApiController
                 if (!empty($link)) {
                     $link_data = $link->getData();
                     if (!empty($link_data)) {
-                        if (self::has_term($flattened_search_terms, implode(' ', $link_data["tags"]))) {
+                        if (isset($link_data["tags"]) && self::has_term($flattened_search_terms, implode(' ', $link_data["tags"]))) {
                             $score += 25;
                         }
                         if (isset($link_data["title"]) && self::has_term($flattened_search_terms, $link_data["title"])) {

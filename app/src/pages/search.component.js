@@ -15,7 +15,7 @@ function Search() {
     router.getEntity().then(entity => {
       let group_id = null;
       switch (entity.entityType) {
-        case "groups":
+        case "group":
           group_id = entity.id;
           break;
         case "message":
@@ -23,14 +23,12 @@ function Search() {
           break;
         default:
       }
-      console.log(group_id);
       // https://stackoverflow.com/a/37511463
       let searchTerms = document
         .getElementById("search")
         .value.normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .split(" ");
-      console.log("SEARCH", searchTerms);
       history.push(
         `/groups/${group_id}?search=${searchTerms.map(e => encodeURIComponent(e)).join("+")}`
       );
