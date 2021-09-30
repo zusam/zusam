@@ -289,7 +289,6 @@ class Writer extends Component {
         this.uploadFile(worker.target.id, () => this.removeWorker(workerId));
         break;
       case "application/pdf":
-        console.log(worker);
         this.uploadFile(worker.target.id, () => this.removeWorker(workerId));
         break;
       default:

@@ -8,6 +8,7 @@ import MessageBreadcrumbs from "./message-breadcrumbs.component.js";
 import Writer from "./writer.component.js";
 import { withRouter } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
+import { connectStoreon } from 'storeon/preact';
 
 class Message extends Component {
   constructor(props) {
@@ -252,4 +253,4 @@ class Message extends Component {
   }
 }
 
-export default withTranslation()(withRouter(Message));
+export default connectStoreon('me', withTranslation()(withRouter(Message)));
