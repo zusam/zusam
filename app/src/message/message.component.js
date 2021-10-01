@@ -53,11 +53,12 @@ class Message extends Component {
     setTimeout(() => {
       if (this.props.id == router.action) {
         const msgElement = document.getElementById(this.props.id);
-        msgElement.scrollIntoView({ block: "start", behavior: "smooth" });
-        setTimeout(() => msgElement.classList.remove("highlight"), 1000);
+        if (msgElement) {
+          msgElement.scrollIntoView({ block: "start", behavior: "smooth" });
+          setTimeout(() => msgElement.classList.remove("highlight"), 1000);
+        }
       }
     }, 1000);
-
   }
 
   onNewChild(event) {
@@ -169,7 +170,10 @@ class Message extends Component {
 
   render() {
     if (this.state?.isRemoved || !this.state?.message) {
-      return null;
+      // placeholder
+      return (
+        <div id={this.props.id} className="message" />
+      );
     }
     return (
       <Fragment>
