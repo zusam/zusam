@@ -148,7 +148,11 @@ class Search extends ApiController
                 if (!empty($link)) {
                     $link_data = $link->getData();
                     if (!empty($link_data)) {
+                        // TODO: remove the evaluation for "tags" since this has only an effect for links generated before zusam 0.5
                         if (isset($link_data["tags"]) && self::has_term($flattened_search_terms, implode(' ', $link_data["tags"]))) {
+                            $score += 25;
+                        }
+                        if (isset($link_data["keywords"]) && self::has_term($flattened_search_terms, implode(' ', $link_data["keywords"]))) {
                             $score += 25;
                         }
                         if (isset($link_data["title"]) && self::has_term($flattened_search_terms, $link_data["title"])) {

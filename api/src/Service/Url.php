@@ -13,116 +13,118 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class Url
 {
-    private $params;
-    private $em;
-    private $imageService;
-    private $security;
+  private $params;
+  private $em;
+  private $imageService;
+  private $security;
 
-    public function __construct(
-        EntityManagerInterface $em,
-        ImageService $imageService,
-        ParameterBagInterface $params,
-        Security $security
-    ) {
-        $this->params = $params;
-        $this->em = $em;
-        $this->imageService = $imageService;
-        $this->security = $security;
+  public function __construct(
+    EntityManagerInterface $em,
+    ImageService $imageService,
+    ParameterBagInterface $params,
+    Security $security
+  ) {
+    $this->params = $params;
+    $this->em = $em;
+    $this->imageService = $imageService;
+    $this->security = $security;
+  }
+
+  public function getPreview($url, $rescan = false): ?string
+  {
+    $link = $this->getLink($url);
+    if ($link) {
+      return $link->getPreview() ? '/files/'.$link->getPreview()->getContentUrl() : null;
     }
 
-    public function getPreview($url, $rescan = false): ?string
-    {
-        $link = $this->getLink($url);
-        if ($link) {
-            return $link->getPreview() ? '/files/'.$link->getPreview()->getContentUrl() : null;
-        }
+    return null;
+  }
 
-        return null;
+  public function getLink($url, $rescan = false): ?Link
+  {
+    $filesDir = realpath($this->params->get('dir.files'));
+    $link = $this->em->getRepository(Link::class)->findOneByUrl($url);
+    if (!empty($link) && !$rescan) {
+      return $link;
+    }
+    if (empty($link)) {
+      $link = new Link($url);
+      $link->setData(["loading" => true]);
     }
 
-    public function getLink($url, $rescan = false): ?Link
-    {
-        $filesDir = realpath($this->params->get('dir.files'));
-        $link = $this->em->getRepository(Link::class)->findOneByUrl($url);
-        if (!empty($link) && !$rescan) {
-            return $link;
-        }
-        if (empty($link)) {
-            $link = new Link($url);
-            $link->setData(["loading" => true]);
-        }
+    // immediatly persist the link to avoid race conditions
+    // and to force saving a link that could throw an unexpected exception
+    $this->em->persist($link);
+    $this->em->flush();
 
-        // immediatly persist the link to avoid race conditions
-        // and to force saving a link that could throw an unexpected exception
-        $this->em->persist($link);
-        $this->em->flush();
-
-        $data = Url::getData($url);
-        // enhance data by adding a preview if there is none for the video
-        if (empty($data['image']) && !empty($data['type']) && 'video' === $data['type']) {
-            $image = ImageService::extractImageFromVideo($data['url'], $this->params->get('binaries.ffmpeg'));
-            if (!empty($image) && file_exists($image)) {
-                $data['image'] = $filesDir.'/'.Uuid::uuidv4($data['url']);
-                rename($image, $data['image']);
-            }
-        }
-        $data["loading"] = false;
-        $link->setData($data);
-        $link->setUpdatedAt(time());
-        if (!empty($data['image'])) {
-            try {
-                $preview = new File();
-                $preview->setType('image/jpeg');
-                $preview->setContentUrl($preview->getId().'.jpg');
-                $this->imageService->createThumbnail($data['image'], $filesDir.'/'.$preview->getContentUrl(), 2048, 2048);
-                $preview->setSize(filesize($filesDir.'/'.$preview->getContentUrl()));
-                $link->setPreview($preview);
-                $this->em->persist($preview);
-            } catch (\Exception $e) {
-                // Something went wrong. What should we do ?
-                // TODO
-            }
-        }
-        $this->em->persist($link);
-        $this->em->flush();
-
-        return $link;
+    $data = Url::getData($url);
+    $data["loading"] = false;
+    $link->setData($data);
+    $link->setUpdatedAt(time());
+    if (!empty($data['image'])) {
+      try {
+        $preview = new File();
+        $preview->setType('image/jpeg');
+        $preview->setContentUrl($preview->getId().'.jpg');
+        $this->imageService->createThumbnail($data['image'], $filesDir.'/'.$preview->getContentUrl(), 2048, 2048);
+        $preview->setSize(filesize($filesDir.'/'.$preview->getContentUrl()));
+        $link->setPreview($preview);
+        $this->em->persist($preview);
+      } catch (\Exception $e) {
+        // Something went wrong. What should we do ?
+        // TODO
+      }
     }
+    $this->em->persist($link);
+    $this->em->flush();
 
-    public static function getData(string $url): array
-    {
-        try {
-            $info = Embed::create($url);
+    return $link;
+  }
 
-            return [
-                'tags' => $info->tags, //The page keywords (tags)
-                'feeds' => $info->feeds, //The RSS/Atom feeds
-                'title' => $info->title, //The page title
-                'description' => $info->description, //The page description
-                'url' => $info->url, //The canonical url
-                'type' => $info->type, //The page type (link, video, image, rich)
-                'content-type' => $info->getResponse()->getHeader('content-Type'), //The content type of the url
+  public static function getData(string $url): array
+  {
+    try {
+      $embed = new Embed();
+      $info = $embed->get($url);
 
-                'images' => $info->images, //List of all images found in the page
-                'image' => $info->image, //The image choosen as main image
-                'imageWidth' => $info->imageWidth, //The width of the main image
-                'imageHeight' => $info->imageHeight, //The height of the main image
+      return [
+        'title' => $info->title, //The page title
+        'description' => $info->description, //The page description
+        'url' => "" //The canonical url
+          .$info->url->getScheme()
+          .$info->url->getAuthority()
+          .$info->url->getPath()
+          .$info->url->getQuery()
+          .$info->url->getFragment(),
+        'keywords' => $info->keywords, //The page keywords (tags)
 
-                'code' => $info->code, //The code to embed the image, video, etc
-                'width' => $info->width, //The width of the embed code
-                'height' => $info->height, //The height of the embed code
-                'aspectRatio' => $info->aspectRatio, //The aspect ratio (width/height)
+        'image' => $info->image, //The image choosen as main image
 
-                'authorName' => $info->authorName, //The resource author
-                'authorUrl' => $info->authorUrl, //The author url
+        'code' => $info->code->html, //The code to embed the image, video, etc
 
-                'providerName' => $info->providerName, //The provider name of the page (Youtube, Twitter, Instagram, etc)
-                'providerUrl' => $info->providerUrl, //The provider url
-                'providerIcons' => $info->providerIcons, //All provider icons found in the page
-                'providerIcon' => $info->providerIcon, //The icon choosen as main icon
-            ];
-        } catch (\Exception $e) {
-            return [];
-        }
+        'authorName' => $info->authorName, //The resource author
+        'authorUrl' => $info->authorUrl, //The author url
+
+        'cms' => $info->cms, //The cms used
+        'language' => $info->language, //The language of the page
+        'languages' => $info->languages, //The alternative languages
+
+        'providerName' => $info->providerName, //The provider name of the page (Youtube, Twitter, Instagram, etc)
+        'providerUrl' => $info->providerUrl, //The provider url
+        'icon' => $info->icon, //The big icon of the site
+        'favicon' => $info->favicon, //The favicon of the site (an .ico file or a png with up to 32x32px)
+
+        'publishedTime' => $info->publishedTime, //The published time of the resource
+        'license' => $info->license, //The license url of the resource
+        'feeds' => $info->feeds, //The RSS/Atom feeds
+        'content-type' => $info->getResponse()->getHeader('content-Type'), //The content type of the url
+        'origin' => $url, //The original input url
+      ];
+    } catch (\Exception $e) {
+      return [
+        'origin' => $url, //The original input url
+        'exception' => $e->getMessage(),
+      ];
     }
+  }
 }

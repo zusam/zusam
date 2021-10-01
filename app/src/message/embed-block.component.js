@@ -1,65 +1,23 @@
 import { h, Component } from "preact";
 import { util } from "/src/core";
-import TwitchEmbed from "./embeds/twitch-embed.component.js";
 import BandCampEmbed from "./embeds/bandcamp-embed.component.js";
 import GenericEmbed from "./embeds/generic-embed.component.js";
 
 export default class EmbedBlock extends Component {
   getPreview() {
-    if (this.props.data["providerUrl"]) {
-      switch (
-        this.props.data["providerUrl"]
-          .toLowerCase()
-          .replace(/\/$/, "")
-          .replace(/^https?:\/\/(www\.)?/, "")
-      ) {
-        case "lichess.org":
-          let url = this.props.url;
-          if (url.match("/study/")) {
-            url = url.replace("/study/", "/study/embed/");
-          } else {
-            url = url.replace("lichess.org/", "lichess.org/embed/");
-          }
-          let id;
-          try {
-            id = url.split("/").slice(-1)[0];
-          } catch (e) {
-            id = "";
-          }
-          url = url.replace(id, id.slice(0, 8));
-          return (
-            <GenericEmbed
-              preview={util.crop(this.props.preview.id, 270, 270)}
-              url={url}
-              playBtnClass={"lichess"}
-            />
-          );
-        case "gamerdvr.com":
-          if (this.props.data["url"].match(/\/gamer\/\w+\/video\//)) {
+    if (this.props?.data?.exception) {
+      console.warn(this.props.data);
+    }
+    if (this.props.data["providerName"]) {
+      if ("peertube" == this.props.data["providerName"].toLowerCase()) {
+          // default embed code
+          if (this.props.data["code"]) {
             return (
-              <GenericEmbed
-                preview={util.crop(this.props.preview.id, 1024, 270)}
-                url={`${this.props.data["url"]  }/embed`}
-                playBtnClass={"gamerdvr"}
-              />
+              <div class="embed-container" dangerouslySetInnerHTML={{ __html: this.props.data["code"] }} />
             );
           }
-          break;
-        case "youtube.com":
-          if (this.props.data["type"] == "video" && this.props.data["code"]) {
-            return (
-              <GenericEmbed
-                preview={util.crop(this.props.preview.id, 1024, 270)}
-                url={
-                  `${this.props.data["code"].match(/https:\/\/[^"\s]+/)[0] 
-                  }&autoplay=1&controls=2&wmode=opaque`
-                }
-                playBtnClass={"youtube"}
-              />
-            );
-          }
-          break;
-        case "soundcloud.com":
+      }
+      if ("soundcloud" == this.props.data["providerName"].toLowerCase()) {
           if (this.props.data["code"]) {
             return (
               <GenericEmbed
@@ -72,75 +30,58 @@ export default class EmbedBlock extends Component {
               />
             );
           }
-          break;
-        case "arte.tv":
-          let segments = this.props.data['url'].split("/");
-          let videoId = "";
-          for (let i = 0; i < segments.length; i++) {
-            if (segments[i] == "videos") {
-              videoId = segments[i + 1];
-              break;
-            }
+      }
+      if ("bandcamp" == this.props.data["providerName"].toLowerCase()) {
+        if (this.props.data["code"]) {
+          let id = this.props.data["code"].match(/https:\/\/.*album=\d+/);
+          if (!id) {
+            id = this.props.data["code"].match(/https:\/\/.*track=\d+/);
           }
+          if (id) {
+            return (
+              <BandCampEmbed
+              preview={util.crop(this.props.preview.id, 1024, 270)}
+              url={id[0]}
+              />
+            );
+          }
+        }
+      }
+      if ("lichess.org" == this.props.data["providerName"].toLowerCase()) {
+        let url = this.props.url;
+        if (url.match("/study/")) {
+          url = url.replace("/study/", "/study/embed/");
+        } else {
+          url = url.replace("lichess.org/", "lichess.org/embed/");
+        }
+        let id;
+        try {
+          id = url.split("/").slice(-1)[0];
+        } catch (e) {
+          id = "";
+        }
+        url = url.replace(id, id.slice(0, 8));
+        return (
+          <GenericEmbed
+            preview={util.crop(this.props.preview.id, 270, 270)}
+            url={url}
+            playBtnClass={"lichess"}
+          />
+        );
+      }
+      if ("youtube" == this.props.data["providerName"].toLowerCase()) {
+        if (this.props.data["code"]) {
           return (
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 1024, 270)}
               url={
-                `https://www.arte.tv/player/v5/index.php?json_url=${
-                  encodeURIComponent(`https://api.arte.tv/api/player/v2/config/en/${videoId}`)
-                }&lang=en&autoplay=true&mute=0`
+                `${this.props.data["code"].match(/https:\/\/[^"\s]+/)[0] 
+                }&autoplay=1&controls=2&wmode=opaque`
               }
-              playBtnClass={"generic"}
+              playBtnClass={"youtube"}
             />
           );
-        case "twitch.tv":
-          let splits = this.props.data["url"].split('/');
-          if (splits.length > 4 && splits[4]) {
-            return (
-              <TwitchEmbed
-                preview={this.props.preview}
-                url={this.props.data["url"]}
-              />
-            );
-          }
-          break;
-        case "bandcamp.com":
-          if (this.props.data["code"]) {
-            let id = this.props.data["code"].match(/https:\/\/.*album=\d+/);
-            if (!id) {
-              id = this.props.data["code"].match(/https:\/\/.*track=\d+/);
-            }
-            if (id) {
-              return (
-                <BandCampEmbed
-                  preview={util.crop(this.props.preview.id, 1024, 270)}
-                  url={id[0]}
-                />
-              );
-            }
-          }
-          break;
-        case "imgur.com":
-          // skip default embed code if it's an imgur image
-          if (this.props.data["type"] == "photo") {
-            break;
-          }
-        case "vimeo.com":
-        case "dailymotion.com":
-        case "facebook.com":
-        default:
-      }
-    }
-    if (this.props.data["providerName"]) {
-      switch (this.props.data["providerName"].toLowerCase()) {
-        case "peertube":
-          // default embed code
-          if (this.props.data["code"]) {
-            return (
-              <div class="embed-container" dangerouslySetInnerHTML={{ __html: this.props.data["code"] }} />
-            );
-          }
-        default:
+        }
       }
     }
     if (/image/.test(this.props.data["content-type"])) {
