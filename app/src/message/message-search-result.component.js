@@ -39,7 +39,7 @@ export default class MessageSearchResult extends Component {
         let searchTerms = this.props.search.split(" ");
         for (let k = 0; k < searchTerms.length; k++) {
           words[j] = words[j].replace(
-            new RegExp(searchTerms[k], "gi"),
+            new RegExp(util.escapeRegex(searchTerms[k]), "gi"),
             "<b>$&</b>"
           );
         }
@@ -50,25 +50,20 @@ export default class MessageSearchResult extends Component {
   }
 
   displayMessageTitle() {
-    if (!this.props.message.data || !this.props.message.data["title"]) {
-      return { __html: util.humanTime(this.props.message.lastActivityDate) };
+    if (!this.props?.message?.data?.title) {
+      return { __html: util.humanTime(this.props?.message?.lastActivityDate) };
     }
     // escape html a little (just enough to avoid xss I hope)
-    let title = this.props.message.data["title"]
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .trim();
+    let title = this.props.message.data.title.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
 
     // make the search terms stand out
     let words = title.split(" ");
+    console.log(title);
+    let searchTerms = this.props.search.split(" ");
     for (let j = 0; j < words.length; j++) {
       if (!words[j].match(util.urlRegExp)) {
-        let searchTerms = this.props.search.split(" ");
         for (let k = 0; k < searchTerms.length; k++) {
-          words[j] = words[j].replace(
-            new RegExp(searchTerms[k], "gi"),
-            "<b>$&</b>"
-          );
+          words[j] = words[j].replace(new RegExp(util.escapeRegex(searchTerms[k]), "gi"), "<b>$&</b>");
         }
       }
     }
@@ -99,7 +94,7 @@ export default class MessageSearchResult extends Component {
               continue;
             }
             words[j] = words[j].replace(
-              new RegExp(searchTerms[k], "gi"),
+              new RegExp(util.escapeRegex(searchTerms[k]), "gi"),
               "<b>$&</b>"
             );
           }
@@ -129,7 +124,7 @@ export default class MessageSearchResult extends Component {
       }
       let searchTerms = this.props.search.split(" ");
       for (let i = 0; i < searchTerms.length; i++) {
-        url = url.replace(new RegExp(searchTerms[i], "gi"), "<b>$&</b>");
+        url = url.replace(new RegExp(util.escapeRegex(searchTerms[i]), "gi"), "<b>$&</b>");
       }
       let link = `<a href="${  match[0]  }" target="_blank">${  url  }</a>`;
       txt =

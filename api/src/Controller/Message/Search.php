@@ -33,7 +33,11 @@ class Search extends ApiController
             return false;
         }
         foreach ($terms as $term) {
-            if (mb_stripos($text, $term) !== false) {
+          if (
+            !empty($term)
+            && mb_strlen($term) > 2
+            && mb_stripos($text, $term, 0, 'UTF-8') !== false
+          ) {
                 return true;
             }
         }
@@ -83,12 +87,12 @@ class Search extends ApiController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $requestData = json_decode($request->getcontent(), true);
+        $requestData = json_decode($request->getContent(), true);
 
         if (empty($requestData['search'])) {
             return new JsonResponse(['error' => 'You must provide search terms'], Response::HTTP_BAD_REQUEST);
         }
-        $search_terms = explode(" ", urldecode($requestData['search']));
+        $search_terms = explode(" ", $requestData['search']);
 
         // get the asked group
         if (empty($requestData['group'])) {

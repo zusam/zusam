@@ -30,7 +30,7 @@ function Search() {
         .replace(/[\u0300-\u036f]/g, "")
         .split(" ");
       history.push(
-        `/groups/${group_id}?search=${searchTerms.map(e => encodeURIComponent(e)).join("+")}`
+        `/groups/${group_id}?search=${searchTerms.join("+")}`
       );
     });
   }
@@ -43,9 +43,7 @@ function Search() {
           type="text"
           id="search"
           placeholder={t("search_in_group")}
-          value={decodeURIComponent(
-            router.getParam("search").replace(/\+/g, " ")
-          )}
+          value={router.getParam("search")}
          />
         <div class="input-group-append">
           <button

@@ -20,6 +20,9 @@ const util = {
       string.length > size ? '...' : '',
       ...string.split('').slice(Math.floor(size/2)).slice(Math.floor(size/2) * -1)].join('')
   },
+  escapeRegex: string => {
+    return string.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+  },
   getSubpath: () => new URL(document.baseURI).pathname.replace(/\/$/, ""),
   // toApp transforms an api url into an "app" url that the user can naviate to
   toApp: url => {

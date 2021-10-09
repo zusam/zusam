@@ -59,7 +59,6 @@ export default class EmbedBlock extends Component {
           }
           url = new URL(url.href.replace(id, id.slice(0, 8)));
           if (id) {
-            console.log(id, url);
             return (
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 270, 270)}

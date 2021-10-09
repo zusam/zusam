@@ -35,8 +35,8 @@ class GroupSearch extends Component {
   }
 
   loadMessages() {
-    const search = router.getParam("search").replace(/\+/g, " ");
-    const hashtags = router.getParam("hashtags").replace(/\+/g, " ");
+    const search = router.getParam("search")
+    const hashtags = router.getParam("hashtags")
     this.setState({search, hashtags});
     http
       .post("/api/messages/search", {
