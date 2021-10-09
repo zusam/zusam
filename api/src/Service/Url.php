@@ -108,11 +108,19 @@ class Url
     return $uri;
   }
 
+  // some urls are exceptionally modified before being processed
+  public static function exceptionRedirect(string $url): string
+  {
+    // https://github.com/oscarotero/Embed/issues/458
+    $url = preg_replace("/^https?:\/\/youtube.com\/shorts\//", "https://youtube.com/watch?v=", $url);
+    return $url;
+  }
+
   public static function getData(string $url): array
   {
     try {
       $embed = new Embed();
-      $info = $embed->get($url);
+      $info = $embed->get(Url::exceptionRedirect($url));
 
       return [
         'title' => $info->title, //The page title
