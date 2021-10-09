@@ -48,26 +48,27 @@ export default class EmbedBlock extends Component {
         }
       }
       if ("lichess.org" == this.props.data["providerName"].toLowerCase()) {
-        let url = this.props.url;
-        if (url.match("/study/")) {
-          url = url.replace("/study/", "/study/embed/");
-        } else {
-          url = url.replace("lichess.org/", "lichess.org/embed/");
+        let url = this.props.data?.url || this.props.url;
+        if (util.isValidUrl(url) && !url.match(/embed/) && !url.match(/study/)) {
+          url = new URL(url.replace("lichess.org/", "lichess.org/embed/"));
+          let id;
+          try {
+            id = url.pathname.split("/").slice(-1)[0];
+          } catch (e) {
+            id = "";
+          }
+          url = new URL(url.href.replace(id, id.slice(0, 8)));
+          if (id) {
+            console.log(id, url);
+            return (
+              <GenericEmbed
+                preview={util.crop(this.props.preview.id, 270, 270)}
+                url={url}
+                playBtnClass={"lichess"}
+              />
+            );
+          }
         }
-        let id;
-        try {
-          id = url.split("/").slice(-1)[0];
-        } catch (e) {
-          id = "";
-        }
-        url = url.replace(id, id.slice(0, 8));
-        return (
-          <GenericEmbed
-            preview={util.crop(this.props.preview.id, 270, 270)}
-            url={url}
-            playBtnClass={"lichess"}
-          />
-        );
       }
       if ("youtube" == this.props.data["providerName"].toLowerCase()) {
         return (

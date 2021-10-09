@@ -159,7 +159,7 @@ class Message extends Component {
         group={this.state.message.group}
         messageId={this.state.edit ? this.props.id : null}
         parent={
-          this.state.edit ? this.state?.parent.id : this.props.id
+          this.state.edit ? this.state?.parent?.id : this.props.id
         }
         text={this.state.edit ? this.state.message.data["text"] : ""}
         title={this.state.edit ? this.state.message.data["title"] : ""}
