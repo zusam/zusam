@@ -81,6 +81,33 @@ class Url
     return $link;
   }
 
+  // taken from https://github.com/guzzle/psr7/blob/089edd38f5b8abba6cb01567c2a8aaa47cec4c72/src/Uri.php#L166
+  public static function composeComponents(?string $scheme, ?string $authority, string $path, ?string $query, ?string $fragment): string
+  {
+    $uri = '';
+
+    // weak type checks to also accept null until we can add scalar type hints
+    if ($scheme != '') {
+      $uri .= $scheme . ':';
+    }
+
+    if ($authority != ''|| $scheme === 'file') {
+      $uri .= '//' . $authority;
+    }
+
+    $uri .= $path;
+
+    if ($query != '') {
+      $uri .= '?' . $query;
+    }
+
+    if ($fragment != '') {
+      $uri .= '#' . $fragment;
+    }
+
+    return $uri;
+  }
+
   public static function getData(string $url): array
   {
     try {
@@ -90,17 +117,18 @@ class Url
       return [
         'title' => $info->title, //The page title
         'description' => $info->description, //The page description
-        'url' => "" //The canonical url
-          .$info->url->getScheme()
-          .$info->url->getAuthority()
-          .$info->url->getPath()
-          .$info->url->getQuery()
-          .$info->url->getFragment(),
+        'url' => Url::composeComponents( //The canonical url
+          $info->url->getScheme(),
+          $info->url->getAuthority(),
+          $info->url->getPath(),
+          $info->url->getQuery(),
+          $info->url->getFragment(),
+        ),
         'keywords' => $info->keywords, //The page keywords (tags)
 
         'image' => $info->image, //The image choosen as main image
 
-        'code' => $info->code->html, //The code to embed the image, video, etc
+        'code' => isset($info->code) ? $info->code->html : null, //The code to embed the image, video, etc
 
         'authorName' => $info->authorName, //The resource author
         'authorUrl' => $info->authorUrl, //The author url

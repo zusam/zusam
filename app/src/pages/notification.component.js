@@ -93,7 +93,7 @@ class Notification extends Component {
             }
             if (url) {
               http.get(`/api/links/by_url?url=${encodeURIComponent(url)}`).then(r => {
-                this.setState({title: r.data['title'] || r.data['description'] || r.data['url']});
+                this.setState({title: r?.data?.title || r?.data?.description || r?.data?.url});
               });
               return url;
             }
