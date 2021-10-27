@@ -83,6 +83,19 @@ export default class EmbedBlock extends Component {
           );
         }
       }
+      if ("invidious" == this.props.data["providerName"].toLowerCase()) {
+        if (this.props?.preview?.id) {
+          return (
+            <GenericEmbed
+              preview={util.crop(this.props.preview.id, 1024, 270)}
+              url={
+                `${this.props.data["url"].replace("watch?v=", "embed/")}`
+              }
+              playBtnClass={"youtube"}
+            />
+          );
+        }
+      }
     }
     if (/image/.test(this.props.data["content-type"])) {
       return (
