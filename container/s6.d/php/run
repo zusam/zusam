@@ -1,2 +1,2 @@
 #!/bin/sh
-exec php-fpm7 --allow-to-run-as-root
+exec php-fpm8 --allow-to-run-as-root

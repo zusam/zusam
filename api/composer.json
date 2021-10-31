@@ -3,7 +3,7 @@
     "type": "project",
     "license": "AGPL-3.0-or-later",
     "require": {
-        "php": "~7.4",
+        "php": ">=7.4, <9.0",
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-imagick": "*",

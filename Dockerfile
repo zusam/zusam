@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:3.14
 
 # add tini and s6 to manage processes
 RUN apk add --no-cache -U tini s6
@@ -25,33 +25,33 @@ RUN set -xe && apk add --no-cache \
     imagemagick \
     nginx \
     openssl \
-    php7 \
-    php7-common \
-    php7-ctype \
-    php7-curl \
-    php7-dom \
-    php7-fileinfo \
-    php7-fpm \
-    php7-iconv \
-    php7-intl \
-    php7-json \
-    php7-mbstring \
-    php7-opcache \
-    php7-openssl \
-    php7-pdo_sqlite \
-    php7-pecl-apcu \
-    php7-pecl-imagick \
-    php7-posix \
-    php7-session \
-    php7-simplexml \
-    php7-tokenizer \
-    php7-xml \
-    php7-xmlwriter
+    php8 \
+    php8-common \
+    php8-ctype \
+    php8-curl \
+    php8-dom \
+    php8-fileinfo \
+    php8-fpm \
+    php8-iconv \
+    php8-intl \
+    php8-json \
+    php8-mbstring \
+    php8-opcache \
+    php8-openssl \
+    php8-pdo_sqlite \
+    php8-pecl-apcu \
+    php8-pecl-imagick \
+    php8-posix \
+    php8-session \
+    php8-simplexml \
+    php8-tokenizer \
+    php8-xml \
+    php8-xmlwriter
 
 # copy files
 COPY container/s6.d /etc/s6.d
 COPY container/config /zusam/config
-COPY container/php7 /etc/php7
+COPY container/php8 /etc/php8
 COPY container/nginx /etc/nginx
 COPY container/run.sh /usr/local/bin/run.sh
 COPY public/api/index.php /zusam/public/api/index.php
@@ -61,8 +61,8 @@ COPY app/dist /zusam/public
 # handle build config
 RUN set -xe \
     && mkdir -p /run/nginx /zusam/data /var/tmp/nginx /var/lib/nginx \
-    && apk add --no-cache --virtual .build-deps tar ca-certificates wget php7-phar unzip composer \
-    && COMPOSER_ALLOW_SUPERUSER=1 composer install -d /zusam/api --no-dev --prefer-dist \
+    && apk add --no-cache --virtual .build-deps tar ca-certificates wget php8-phar unzip \
+    && COMPOSER_ALLOW_SUPERUSER=1 php8 /zusam/api/bin/composer install -d /zusam/api --no-dev --prefer-dist \
     && rm -rf /zusam/data/data.db \
     && apk del .build-deps \
     && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public /var/tmp/nginx
