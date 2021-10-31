@@ -113,14 +113,15 @@ class Message extends Component {
   deleteMessage(event) {
     event.preventDefault();
     if (confirm(this.props.t("ask_delete_message"))) {
-      http.delete(`/api/messages/${this.props.id}`);
-      if (this.props.isChild) {
-        this.setState({isRemoved: true});
-      } else {
-        this.props.history.push(`/groups/${this.state.message.group.id}`, {
-          data: {resetGroupDisplay: true}
-        });
-      }
+      http.delete(`/api/messages/${this.props.id}`).then(() => {
+        if (this.props.isChild) {
+          this.setState({isRemoved: true});
+        } else {
+          this.props.history.push(`/groups/${this.state.message.group.id}`, {
+            data: {resetGroupDisplay: true}
+          });
+        }
+      });
     }
   }
 
