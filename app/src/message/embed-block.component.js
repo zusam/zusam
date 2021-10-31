@@ -119,7 +119,8 @@ export default class EmbedBlock extends Component {
         </div>
       );
     }
-    if (/video/.test(this.props.data["content-type"])) {
+    // application/ogg: https://developer.mozilla.org/en-US/docs/Web/HTTP/Configuring_servers_for_Ogg_media
+    if (/video/.test(this.props.data["content-type"]) || this.props.data["content-type"] == "application/ogg") {
       return (
         <div class="container d-flex justify-content-center flex-wrap align-items-center">
           <video class="img-fluid" controls src={this.props.url} />
