@@ -110,7 +110,6 @@ class GetByUrl extends ApiController
     public function getLinkByGet(Request $request): Response
     {
         // No api token verification because this endpoint is used in public posts
-
         $url = $request->query->get('url') ?? '';
         if (!$url) {
             return new JsonResponse(['error' => 'Invalid url'], Response::HTTP_BAD_REQUEST);
@@ -123,13 +122,6 @@ class GetByUrl extends ApiController
     {
         $data = $this->getLinkData($url, $rescan, $onlyData);
         $response = new JsonResponse($data, Response::HTTP_OK);
-        $response->setCache([
-            'etag' => md5(json_encode($data)),
-            'max_age' => 0,
-            's_maxage' => 3600,
-            'public' => true,
-        ]);
-
         return $response;
     }
 

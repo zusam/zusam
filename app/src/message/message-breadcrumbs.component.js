@@ -1,16 +1,16 @@
 import { h, Component, Fragment } from "preact";
-import { cache, util } from "/src/core";
+import { http, util } from "/src/core";
 import { Link, withRouter } from "react-router-dom";
 
 class MessageBreadcrumbs extends Component {
 
   buildStack(message, stack = []) {
-    cache.fetch(`/api/messages/${message.id}`).then(m => {
+    http.get(`/api/messages/${message.id}`).then(m => {
       stack.push(m);
       if (m?.parent) {
         this.buildStack(m.parent, stack);
       } else {
-        cache.fetch(`/api/groups/${m.group.id}`).then(g => {
+        http.get(`/api/groups/${m.group.id}`).then(g => {
           stack.push(g);
           stack = stack.reverse();
           this.setState({stack});

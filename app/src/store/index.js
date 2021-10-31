@@ -3,7 +3,6 @@ import { createStoreon } from 'storeon';
 
 import { meStore } from './me.js';
 import { routerStore } from './router.js';
-import { entityStore } from './entity.js';
 
-const store = createStoreon([meStore, routerStore, entityStore]);
+const store = createStoreon([meStore, routerStore]);
 export default store;

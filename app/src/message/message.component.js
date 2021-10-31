@@ -1,5 +1,5 @@
 import { h, Fragment, Component } from "preact";
-import { http, router, util, me, cache } from "/src/core";
+import { http, router, util, me } from "/src/core";
 import MessageChildren from "./message-children.component.js";
 import MessageHead from "./message-head.component.js";
 import MessageFooter from "./message-footer.component.js";
@@ -29,16 +29,16 @@ class Message extends Component {
   }
 
   hydrateMessage(m) {
-    cache.fetch(`/api/users/${m.author.id}`).then(u => {
+    http.get(`/api/users/${m.author.id}`).then(u => {
       this.setState({author: u});
     });
     if (m?.parent?.id) {
-      cache.fetch(`/api/messages/${m.parent.id}`).then(p => {
+      http.get(`/api/messages/${m.parent.id}`).then(p => {
         this.setState({parent: p});
       });
     }
     if (m?.files.length) {
-      Promise.all(m.files.map(f => cache.fetch(`/api/files/${f.id}`).then(f => f))).then(
+      Promise.all(m.files.map(f => http.get(`/api/files/${f.id}`).then(f => f))).then(
         files => this.setState({files})
       );
     }
@@ -46,7 +46,7 @@ class Message extends Component {
   }
 
   loadMessage() {
-    cache.fetch(`/api/messages/${this.props.id}`).then(m => {
+    http.get(`/api/messages/${this.props.id}`).then(m => {
       this.hydrateMessage(m)
     });
   }

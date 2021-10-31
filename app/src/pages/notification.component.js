@@ -1,5 +1,5 @@
 import { h, Component, Fragment } from "preact";
-import { http, util, cache } from "/src/core";
+import { http, util } from "/src/core";
 import { Link } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
 
@@ -18,12 +18,12 @@ class Notification extends Component {
   }
 
   componentDidMount() {
-    cache.fetch(`/api/notifications/${this.props.id}`).then(n => {
+    http.get(`/api/notifications/${this.props.id}`).then(n => {
       Promise.all([
         `/api/groups/${n.fromGroup.id}`,
         `/api/users/${n.fromUser.id}`,
         `/api/messages/${n.fromMessage.id}`,
-      ].map(url => cache.fetch(url).then(e => e))).then(res => {
+      ].map(url => http.get(url).then(e => e))).then(res => {
         this.setState({
           target: this.getTarget(n, res[0], res[2]),
           action: this.getAction(n),

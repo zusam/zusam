@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { util, me, cache } from "/src/core";
+import { util, me, http } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
 
@@ -32,7 +32,7 @@ export default class MessagePreview extends Component {
   }
 
   componentDidMount() {
-    cache.fetch(`/api/messages/${this.props.id}/preview`).then(p => {
+    http.get(`/api/messages/${this.props.id}/preview`).then(p => {
       this.setState({...p});
     });
   }

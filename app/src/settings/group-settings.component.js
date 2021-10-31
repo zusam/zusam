@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { alert, http, util, me, cache } from "/src/core";
+import { alert, http, util, me } from "/src/core";
 import { withRouter } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
 
@@ -14,7 +14,7 @@ class GroupSettings extends Component {
   }
 
   componentDidMount() {
-    Promise.all(this.props.users.map(u => cache.fetch(`/api/users/${u.id}`).then(u => u))).then(
+    Promise.all(this.props.users.map(u => http.get(`/api/users/${u.id}`).then(u => u))).then(
       users => this.setState({users})
     );
   }

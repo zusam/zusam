@@ -1,6 +1,6 @@
 import util from "./util.js";
 import storage from "./storage.js";
-import cache from "./cache.js";
+import http from "./http.js";
 import store from "/src/store";
 
 const router = {
@@ -44,7 +44,7 @@ const router = {
 
   getEntity() {
     if (router.isEntity(router.route)) {
-      return cache.fetch(`/api/${router.route}/${router.id}`);
+      return http.get(`/api/${router.route}/${router.id}`);
     }
     return Promise.resolve(null);
   },
