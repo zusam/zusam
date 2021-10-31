@@ -49,7 +49,7 @@ export default class EmbedBlock extends Component {
       }
       if ("lichess.org" == this.props.data["providerName"].toLowerCase()) {
         let url = this.props.data?.url || this.props.url;
-        if (util.isValidUrl(url) && !url.match(/embed/) && !url.match(/study/)) {
+        if (util.isValidUrl(url) && !url.match(/embed/) && !url.match(/study/) && !url.match(/blog/)) {
           url = new URL(url.replace("lichess.org/", "lichess.org/embed/"));
           let id;
           try {
