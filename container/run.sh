@@ -7,7 +7,7 @@ set -xe
 rm -rf $(find /etc/s6.d -name 'event')
 
 crontab -r
-echo "* * * * * /zusam/api/bin/console zusam:cron > /dev/stdout" | crontab -
+echo "* * * * * php8 /zusam/api/bin/console zusam:cron > /dev/stdout" | crontab -
 
 DATABASE_URL="sqlite:///%kernel.project_dir%/../data/${DATABASE_NAME}"
 
