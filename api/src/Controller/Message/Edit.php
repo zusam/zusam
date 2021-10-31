@@ -76,11 +76,9 @@ class Edit extends ApiController
         if (!empty($requestData['lastActivityDate'])) {
             $message->setLastActivityDate($requestData['lastActivityDate']);
         }
-        if (!empty($requestData['files'])) {
-            $message->setFiles(new ArrayCollection(array_map(function ($fid) {
-                return $this->em->getRepository(File::class)->findOneById($fid);
-            }, $requestData['files'])));
-        }
+        $message->setFiles(new ArrayCollection(array_map(function ($fid) {
+            return $this->em->getRepository(File::class)->findOneById($fid);
+        }, $requestData['files'] ?? [])));
 
         // regen message miniature
         $message->setPreview($this->messageService->genPreview($message));

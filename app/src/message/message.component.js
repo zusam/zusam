@@ -22,28 +22,37 @@ class Message extends Component {
     this.onEditMessage = this.onEditMessage.bind(this);
     this.openPublicLink = this.openPublicLink.bind(this);
     this.onNewChild = this.onNewChild.bind(this);
+    this.loadMessage = this.loadMessage.bind(this);
+    this.hydrateMessage = this.hydrateMessage.bind(this);
     window.addEventListener("newChild", this.onNewChild);
     window.addEventListener("editMessage", this.onEditMessage);
   }
 
-  componentDidMount() {
-    cache.fetch(`/api/messages/${this.props.id}`).then(m => {
-      cache.fetch(`/api/users/${m.author.id}`).then(u => {
-        this.setState({author: u});
-      });
-      if (m?.parent?.id) {
-        cache.fetch(`/api/messages/${m.parent.id}`).then(p => {
-          this.setState({parent: p});
-        });
-      }
-      if (m?.files.length) {
-        Promise.all(m.files.map(f => cache.fetch(`/api/files/${f.id}`).then(f => f))).then(
-          files => this.setState({files})
-        );
-      }
-      this.setState({message: m});
+  hydrateMessage(m) {
+    cache.fetch(`/api/users/${m.author.id}`).then(u => {
+      this.setState({author: u});
     });
+    if (m?.parent?.id) {
+      cache.fetch(`/api/messages/${m.parent.id}`).then(p => {
+        this.setState({parent: p});
+      });
+    }
+    if (m?.files.length) {
+      Promise.all(m.files.map(f => cache.fetch(`/api/files/${f.id}`).then(f => f))).then(
+        files => this.setState({files})
+      );
+    }
+    this.setState({message: m});
+  }
 
+  loadMessage() {
+    cache.fetch(`/api/messages/${this.props.id}`).then(m => {
+      this.hydrateMessage(m)
+    });
+  }
+
+  componentDidMount() {
+    this.loadMessage();
     me.removeMatchingNotifications(this.props.id);
 
     if (!this.props.isChild) {
@@ -82,16 +91,11 @@ class Message extends Component {
 
   onEditMessage(event) {
     if (event.detail.id == this.props.id) {
-      this.props.key = +Date.now();
-      let msg = this.state.message;
-      msg.data = event.detail.data;
-      msg.files = event.detail.files;
       this.setState({
-        message: msg,
-        data: msg.data,
-        gotPreview: false
+        edit: false,
       });
-      setTimeout(() => this.setState({ edit: false }));
+      this.hydrateMessage(event.detail)
+      this.props.key = +Date.now();
     }
   }
 
