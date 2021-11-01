@@ -67,7 +67,7 @@ class Login extends Component {
     return (
       <div class="login">
         <div class="login-form">
-          <img src="/src/assets/zusam_logo.svg" />
+          <img src={new URL("/src/assets/zusam_logo.svg", import.meta.url)} />
           {!this.state.showResetPassword && (
             <form>
               <div class="form-group">

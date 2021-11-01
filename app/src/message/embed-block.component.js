@@ -48,7 +48,7 @@ export default class EmbedBlock extends Component {
         }
       }
       if ("lichess.org" == this.props.data["providerName"].toLowerCase()) {
-        let url = this.props.data?.url || this.props.url;
+        let url = this.props?.data?.url && typeof(this.props?.data.url) == "string" ? this.props.data?.url : this.props.url;
         if (util.isValidUrl(url) && !url.match(/embed/) && !url.match(/study/) && !url.match(/blog/)) {
           url = new URL(url.replace("lichess.org/", "lichess.org/embed/"));
           let id;
@@ -70,13 +70,13 @@ export default class EmbedBlock extends Component {
         }
       }
       if ("youtube" == this.props.data["providerName"].toLowerCase()) {
-        if (this.props?.preview?.id) {
+        let url = this.props?.data?.url && typeof(this.props?.data.url) == "string" ? this.props.data?.url : this.props.url;
+        if (this.props?.preview?.id && url) {
           return (
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 1024, 270)}
               url={
-                `${this.props.data["url"].match(/https:\/\/[^"\s]+/)[0] 
-                }&autoplay=1&controls=2&wmode=opaque`
+                `${url.replace("watch?v=", "embed/")}?autoplay=1&controls=2&wmode=opaque`
               }
               playBtnClass={"youtube"}
             />
@@ -84,12 +84,13 @@ export default class EmbedBlock extends Component {
         }
       }
       if ("invidious" == this.props.data["providerName"].toLowerCase()) {
-        if (this.props?.preview?.id) {
+        let url = this.props?.data?.url && typeof(this.props?.data.url) == "string" ? this.props.data?.url : this.props.url;
+        if (this.props?.preview?.id && url) {
           return (
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 1024, 270)}
               url={
-                `${this.props.data["url"].replace("watch?v=", "embed/")}`
+                `${url.replace("watch?v=", "embed/")}`
               }
               playBtnClass={"youtube"}
             />

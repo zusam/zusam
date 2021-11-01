@@ -41,7 +41,6 @@ class MessageBreadcrumbs extends Component {
   }
 
   getTitle(message) {
-    console.log(message);
     if (message) {
       if (message['data'] && message['data']['title']) {
         return message['data']['title'];
