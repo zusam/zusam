@@ -136,7 +136,7 @@ class Url
 
         'image' => $info->image, //The image choosen as main image
 
-        'code' => $info->code->html, //The code to embed the image, video, etc
+        'code' => $info->code ? $info->code->html : null, //The code to embed the image, video, etc
 
         'authorName' => $info->authorName, //The resource author
         'authorUrl' => $info->authorUrl, //The author url

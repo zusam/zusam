@@ -6,15 +6,32 @@ class MessageBreadcrumbs extends Component {
 
   buildStack(message, stack = []) {
     http.get(`/api/messages/${message.id}`).then(m => {
-      stack.push(m);
-      if (m?.parent) {
-        this.buildStack(m.parent, stack);
-      } else {
-        http.get(`/api/groups/${m.group.id}`).then(g => {
-          stack.push(g);
-          stack = stack.reverse();
-          this.setState({stack});
+      let previewUrl = util.getUrl(m.data["text"]);
+      if (previewUrl) {
+        http.get(`/api/links/by_url?url=${encodeURIComponent(previewUrl[0])}`).then(preview => {
+          m["preview"] = preview;
+          stack.push(m);
+          if (m?.parent) {
+            this.buildStack(m.parent, stack);
+          } else {
+            http.get(`/api/groups/${m.group.id}`).then(g => {
+              stack.push(g);
+              stack = stack.reverse();
+              this.setState({stack});
+            });
+          }
         });
+      } else {
+        stack.push(m);
+        if (m?.parent) {
+          this.buildStack(m.parent, stack);
+        } else {
+          http.get(`/api/groups/${m.group.id}`).then(g => {
+            stack.push(g);
+            stack = stack.reverse();
+            this.setState({stack});
+          });
+        }
       }
     });
   }
@@ -24,22 +41,26 @@ class MessageBreadcrumbs extends Component {
   }
 
   getTitle(message) {
-      if (message && message['data']) {
-        if (message['data']['title']) {
-          return message['data']['title'];
-        }
-        if (message['data']['text']) {
-          let url = util.getUrl(message['data']['text']);
-          if (url && url.length > 0) {
-            url = url[0];
-          }
-          if (url) {
-            return url;
-          }
-          return message['data']['text'];
-        }
+    console.log(message);
+    if (message) {
+      if (message['data'] && message['data']['title']) {
+        return message['data']['title'];
       }
-      return "";
+      if (message['preview'] && message['preview']['data']) {
+        return message['preview']['data']['title'];
+      }
+      if (message['data'] && message['data']['text']) {
+        let url = util.getUrl(message['data']['text']);
+        if (url && url.length > 0) {
+          url = url[0];
+        }
+        if (url) {
+          return url;
+        }
+        return message['data']['text'];
+      }
+    }
+    return "";
   }
 
   render() {

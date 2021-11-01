@@ -48,7 +48,7 @@ export default class MessageBody extends Component {
         let previewUrl = util.getUrl(this.props.message.data["text"]);
         if (previewUrl) {
           http
-            .get(`/api/links/by_url?url=${  encodeURIComponent(previewUrl[0])}`)
+            .get(`/api/links/by_url?url=${encodeURIComponent(previewUrl[0])}`)
             .then(r => {
               this.setState({
                 preview: r,
