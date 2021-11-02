@@ -151,10 +151,6 @@ class File
         }
 
         $symfonyFile = new SymfonyFile($file_path);
-        if (empty($symfonyFile)) {
-            return null; // TODO throw exception
-        }
-
         return $this->createFromSymfonyFile($symfonyFile, $copy);
     }
 }

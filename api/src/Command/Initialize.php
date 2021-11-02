@@ -19,7 +19,6 @@ class Initialize extends Command
 {
     private $em;
     private $encoder;
-    private $newMessage;
 
     public function __construct(
         EntityManagerInterface $em,

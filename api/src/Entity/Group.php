@@ -77,12 +77,6 @@ class Group
      */
     private $data;
 
-    /**
-     * @Groups("*")
-     * @OA\Property(type="string")
-     */
-    private $entityType;
-
     public function getEntityType(): string
     {
         return strtolower((new \ReflectionClass($this))->getShortName());

@@ -10,17 +10,11 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class Preview
 {
-    private $em;
-    private $params;
     private $urlService;
 
     public function __construct(
-        EntityManagerInterface $em,
-        ParameterBagInterface $params,
         UrlService $urlService
     ) {
-        $this->em = $em;
-        $this->params = $params;
         $this->urlService = $urlService;
     }
 

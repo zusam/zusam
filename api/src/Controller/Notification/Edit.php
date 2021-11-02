@@ -17,8 +17,6 @@ use OpenApi\Annotations as OA;
 
 class Edit extends ApiController
 {
-    private $create;
-
     public function __construct(
         EntityManagerInterface $em,
         SerializerInterface $serializer

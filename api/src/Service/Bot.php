@@ -37,7 +37,6 @@ class Bot
         FileService $fs,
         GroupService $gs,
         MessageService $ms,
-        ParameterBagInterface $params,
         UserService $us
     ) {
         $this->botDir = $botDir;

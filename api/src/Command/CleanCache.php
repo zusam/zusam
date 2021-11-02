@@ -11,17 +11,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanCache extends Command
 {
-    private $pdo;
     private $targetDir;
     private $logger;
 
     public function __construct(
-        string $dsn,
         string $targetDir,
         LoggerInterface $logger
     ) {
         parent::__construct();
-        $this->pdo = new \PDO($dsn, null, null);
         $this->logger = $logger;
 
         @mkdir($targetDir, 0777, true);

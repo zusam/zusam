@@ -16,7 +16,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class Cron extends Command
 {
-    private $em;
     private $logger;
     private $input;
     private $output;
@@ -24,22 +23,17 @@ class Cron extends Command
     private $system;
     private $tasks;
     private $kernel;
-    private $params;
 
     public function __construct(
         LoggerInterface $logger,
-        EntityManagerInterface $em,
         System $system,
         KernelInterface $kernel,
-        ParameterBagInterface $params
     ) {
         parent::__construct();
-        $this->em = $em;
         $this->logger = $logger;
         $this->running = false;
         $this->system = $system;
         $this->kernel = $kernel;
-        $this->params = $params;
         $this->tasks = [
             [
                 'name' => 'zusam:convert:video',

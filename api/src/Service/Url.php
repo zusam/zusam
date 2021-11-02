@@ -16,18 +16,15 @@ class Url
   private $params;
   private $em;
   private $imageService;
-  private $security;
 
   public function __construct(
     EntityManagerInterface $em,
     ImageService $imageService,
     ParameterBagInterface $params,
-    Security $security
   ) {
     $this->params = $params;
     $this->em = $em;
     $this->imageService = $imageService;
-    $this->security = $security;
   }
 
   public function getPreview($url, $rescan = false): ?string

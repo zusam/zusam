@@ -17,8 +17,6 @@ use OpenApi\Annotations as OA;
  */
 class Message
 {
-    private $linkByUrl;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="guid")
@@ -117,12 +115,6 @@ class Message
      * @OA\Property(type="boolean")
      */
     private $isInFront;
-
-    /**
-     * @Groups("*")
-     * @OA\Property(type="string")
-     */
-    private $entityType;
 
     public function getEntityType(): string
     {
