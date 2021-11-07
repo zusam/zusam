@@ -15,11 +15,10 @@ export const meStore = store => {
   })
 
   store.on('notification/remove', async (state, notification) => {
-    http.delete(`/api/notifications/${notification.id}`).then(r => {
-      return {
-        notifications: state.notifications.filter(n => n.id != notification.id)
-      };
-    });
+    await http.delete(`/api/notifications/${notification.id}`);
+    return {
+      notifications: state.notifications.filter(n => n.id != notification.id)
+    };
   })
 
   //store.on('bookmark/add', (state, id) => {

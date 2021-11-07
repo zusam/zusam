@@ -97,10 +97,5 @@ const router = {
     components.backUrl = "";
     return components;
   },
-
-  logout: () => {
-    storage.reset();
-    window.location.href = window.location.origin;
-  }
 };
 export default router;
