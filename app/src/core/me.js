@@ -121,7 +121,6 @@ const me = {
   },
 
   logout() {
-    console.log("me.logout");
     storage.reset();
     window.location.href = window.location.origin;
   }
