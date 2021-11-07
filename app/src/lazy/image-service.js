@@ -1,4 +1,5 @@
-const reduce = require("image-blob-reduce")();
+const reduceImport = require("image-blob-reduce");
+const reduce = reduceImport.default();
 const imageService = {
   handleImage: (source, callback) => {
     let fileSize = source.size;
