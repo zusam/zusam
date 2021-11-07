@@ -101,6 +101,8 @@ class App extends Component {
             <Login />
           )} />
 
+          <Route path="/logout" render={() => me.logout()} />
+
           <Route path="/:type/:id/settings" render={props => (
             <Settings
               type={props.match.params.type}

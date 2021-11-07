@@ -20,12 +20,8 @@ security:
       security: false
     main:
       lazy: true
-      login_throttling:
-        max_attempts: 5
-        interval: '15 minutes'
-      json_login:
-        check_path: /login
-        username_path: security.credentials.login
-        password_path: security.credentials.password
+      stateless: true
+      access_denied_handler: App\Security\AccessDeniedHandler
+      entry_point: App\Security\EntryPointService
       custom_authenticators:
         - App\Security\ApiKeyAuthenticator

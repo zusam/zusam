@@ -1,4 +1,5 @@
 import http from "./http.js";
+import storage from "./storage.js";
 import store from "/src/store";
 import i18n from "i18next";
 
@@ -113,6 +114,16 @@ const me = {
       return true;
     }
     return false;
+  },
+
+  reset() {
+    store.dispatch('@init');
+  },
+
+  logout() {
+    console.log("me.logout");
+    storage.reset();
+    window.location.href = window.location.origin;
   }
 }
 

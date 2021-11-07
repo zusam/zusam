@@ -1,4 +1,3 @@
-import storage from "./storage.js";
 import { useTranslation } from "react-i18next";
 
 // Stateless utilities
@@ -160,10 +159,6 @@ const util = {
     return (
       `background-color:${c1};background-image:linear-gradient(${deg}deg, ${c2} 15%, transparent 15% 30%, ${c2} 30% 45%, transparent 45% 60%, ${c2} 60% 75%, transparent 75% 90%, ${c2} 90%);`
     );
-  },
-  logout: () => {
-    storage.reset();
-    window.location.href = window.location.origin;
   },
   // Accepts a keydown event and checks if it's enter. Compatibility between browsers
   // We do it the permissive way
