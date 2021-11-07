@@ -102,7 +102,7 @@ const me = {
     let state = store.get();
     state.notifications
       .filter(n => me.matchNotification(n, id))
-      .map(n => store.dispatch('notification/remove', n))
+      .forEach(n => store.dispatch('notification/remove', n))
   },
 
   matchNotification(notif, id) {
