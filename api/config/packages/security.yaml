@@ -1,8 +1,11 @@
 security:
-  encoders:
-    App\Entity\User:
-      algorithm: auto
-      cost: 12
+  # you must use the authenticator manager for login throttling
+  # https://symfony.com/doc/current/security.html#limiting-login-attempts
+  enable_authenticator_manager: true
+  password_hashers:
+    # Use native password hasher, which auto-selects and migrates the best
+    # possible hashing algorithm (starting from Symfony 5.3 this is "bcrypt")
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
   providers:
     user_provider:
       entity:
@@ -16,10 +19,13 @@ security:
       pattern: ^/(public|images)/
       security: false
     main:
-      stateless: true
-      anonymous: ~
-      access_denied_handler: App\Security\AccessDeniedHandler
-      entry_point: App\Security\EntryPointService
-      guard:
-        authenticators:
-          - App\Security\TokenAuthenticator
+      lazy: true
+      login_throttling:
+        max_attempts: 5
+        interval: '15 minutes'
+      json_login:
+        check_path: /login
+        username_path: security.credentials.login
+        password_path: security.credentials.password
+      custom_authenticators:
+        - App\Security\ApiKeyAuthenticator

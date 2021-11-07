@@ -32,6 +32,7 @@
         "symfony/polyfill-ctype": "^1.13",
         "symfony/polyfill-uuid": "^1.18",
         "symfony/property-info": "^5.0",
+        "symfony/rate-limiter": "5.*",
         "symfony/security-bundle": "^5.0",
         "symfony/serializer": "^5.0",
         "symfony/swiftmailer-bundle": "^3.0",

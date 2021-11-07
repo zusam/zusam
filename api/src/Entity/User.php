@@ -6,17 +6,18 @@ use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Table(name="`user`")
  * @ORM\Entity()
  */
-class User implements UserInterface, \Serializable
+class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -110,6 +111,12 @@ class User implements UserInterface, \Serializable
      * @OA\Property(type="integer")
      */
     private $lastActivityDate;
+
+    /**
+     * @Groups("*")
+     * @OA\Property(type="string")
+     */
+    private $entityType;
 
     public function getEntityType(): string
     {

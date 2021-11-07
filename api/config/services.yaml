@@ -84,7 +84,6 @@ services:
 
     App\Command\CleanCache:
       arguments:
-        $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_cache)%'
         $logger: '@monolog.logger.zusam'
 

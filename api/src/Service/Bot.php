@@ -17,14 +17,13 @@ class Bot
 {
     private $botDir;
     private $domain;
-    private $em;
     private $env;
-    private $fileService;
-    private $groupService;
     private $lang;
     private $logger;
+    private $em;
+    private $fileService;
+    private $groupService;
     private $messageService;
-    private $params;
     private $userService;
 
     public function __construct(
@@ -41,12 +40,12 @@ class Bot
     ) {
         $this->botDir = $botDir;
         $this->domain = $domain;
-        $this->em = $em;
         $this->env = $env;
-        $this->fileService = $fs;
-        $this->groupService = $gs;
         $this->lang = $lang;
         $this->logger = $logger;
+        $this->em = $em;
+        $this->fileService = $fs;
+        $this->groupService = $gs;
         $this->messageService = $ms;
         $this->userService = $us;
     }
