@@ -72,11 +72,12 @@ export default class EmbedBlock extends Component {
       if ("youtube" == this.props.data["providerName"].toLowerCase()) {
         let url = this.props?.data?.url && typeof(this.props?.data.url) == "string" ? this.props.data?.url : this.props.url;
         if (this.props?.preview?.id && url) {
+          url = new URL(url);
           return (
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 1024, 270)}
               url={
-                `${url.replace("watch?v=", "embed/")}?autoplay=1&controls=2&wmode=opaque`
+                `${url.origin}/embed/${url.search.substring(1).split("&").filter(e => e.match(/^v=/))[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque`
               }
               playBtnClass={"youtube"}
             />
