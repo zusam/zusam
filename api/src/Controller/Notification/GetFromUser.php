@@ -54,6 +54,29 @@ class GetFromUser extends ApiController
     }
 
     /**
+     * @Route("/me/notifications", methods={"GET"})
+     * @OA\Response(
+     *  response=200,
+     *  description="Get all notifications from a user",
+     *  @OA\JsonContent(
+     *    type="array",
+     *    @OA\Items(ref=@Model(type=App\Entity\Notification::class, groups={"read_notification"}))
+     *  )
+     * )
+     * @OA\Tag(name="notification")
+     * @Security(name="api_key")
+     */
+    public function my_notifications(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        return new Response(
+            $this->serialize($this->getUser()->getNotifications(), ['read_notification']),
+            Response::HTTP_OK,
+        );
+    }
+
+    /**
      * @Route("/users/{id}/notifications/{limit}", methods={"GET"})
      * @OA\Response(
      *  response=200,
@@ -78,6 +101,31 @@ class GetFromUser extends ApiController
         $this->denyAccessUnlessGranted(new Expression('user == object'), $user);
 
         $notifications = $user->getNotifications($limit);
+
+        return new Response(
+            $this->serialize($notifications, ['read_notification']),
+            Response::HTTP_OK,
+        );
+    }
+
+    /**
+     * @Route("/me/notifications/{limit}", methods={"GET"})
+     * @OA\Response(
+     *  response=200,
+     *  description="Get all notifications from a user",
+     *  @OA\JsonContent(
+     *    type="array",
+     *    @OA\Items(ref=@Model(type=App\Entity\Notification::class, groups={"read_notification"}))
+     *  )
+     * )
+     * @OA\Tag(name="notification")
+     * @Security(name="api_key")
+     */
+    public function my_notifications_with_limit(int $limit): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $notifications = $this->getUser()->getNotifications($limit);
 
         return new Response(
             $this->serialize($notifications, ['read_notification']),

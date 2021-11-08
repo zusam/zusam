@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { util, me, http } from "/src/core";
+import { util, notifications, http } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
 
@@ -77,7 +77,7 @@ export default class MessagePreview extends Component {
                   {`${this.state?.children} `}
                   <FaIcon
                     family={
-                      me.isNew(this.state?.id) ? "solid" : "regular"
+                      notifications.isNew(this.state?.id) ? "solid" : "regular"
                     }
                     icon={"comment"}
                   />

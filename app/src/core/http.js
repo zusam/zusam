@@ -88,7 +88,10 @@ const http = {
         return fetch(url, fetchOptions)
           .then(res => {
             try {
-              return res.json();
+              if (method != "DELETE") {
+                return res.json();
+              }
+              return {};
             } catch (exception) {
               console.warn(exception.message);
               return Promise.reject(exception.message);

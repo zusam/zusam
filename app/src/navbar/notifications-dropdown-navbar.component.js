@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { me } from "/src/core";
+import { me, notifications as notifs } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Notification } from "/src/pages";
 import { useStoreon } from 'storeon/preact'
@@ -40,7 +40,7 @@ export default function NotificationsDropdownNavbar() {
           <strong class="capitalize">{t("notifications")}</strong>
           <div
             class="action capitalize"
-            onClick={() => me.removeAllNotifications()}
+            onClick={() => notifs.removeAllNotifications()}
           >
             {t("mark_all_as_read")}
           </div>

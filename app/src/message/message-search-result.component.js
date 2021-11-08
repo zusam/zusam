@@ -58,7 +58,6 @@ export default class MessageSearchResult extends Component {
 
     // make the search terms stand out
     let words = title.split(" ");
-    console.log(title);
     let searchTerms = this.props.search.split(" ");
     for (let j = 0; j < words.length; j++) {
       if (!words[j].match(util.urlRegExp)) {

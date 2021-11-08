@@ -1,24 +1,10 @@
-import { http } from "/src/core";
+//import { http } from "/src/core";
 
 export const meStore = store => {
-  store.on('@init', () => ({
-    me: {},
-    notifications: [],
-  }))
+  store.on('@init', () => ({me: {}}))
 
   store.on('me/update', (state, me) => {
     return {me};
-  })
-
-  store.on('notification/update', (state, notifications) => {
-    return {notifications};
-  })
-
-  store.on('notification/remove', async (state, notification) => {
-    await http.delete(`/api/notifications/${notification.id}`);
-    return {
-      notifications: state.notifications.filter(n => n.id != notification.id)
-    };
   })
 
   //store.on('bookmark/add', (state, id) => {

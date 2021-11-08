@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { router, util } from "/src/core";
+import { router, util, me } from "/src/core";
 import { Search } from "/src/pages";
 import { GroupsDropdownNavbar, NotificationsDropdownNavbar } from "/src/navbar";
 import { Link, withRouter } from "react-router-dom";
@@ -19,17 +19,17 @@ function Navbar() {
           <div class="rounded-circle avatar unselectable">
             <img
               class="rounded-circle"
-              style={util.backgroundHash(this.props.me.id)}
+              style={util.backgroundHash(me.id)}
               src={
-                this.props.me.avatar
-                  ? util.crop(this.props.me.avatar["id"], 80, 80)
+                me.avatar
+                  ? util.crop(me.avatar["id"], 80, 80)
                   : util.defaultAvatar
               }
               onError={e => (e.currentTarget.src = util.defaultAvatar)}
             />
           </div>
           <div class="dropdown-menu dropdown-right">
-            { this.props.me.data?.bookmarks?.length && (
+            { me.data?.bookmarks?.length && (
               <Link
                 class="d-block seamless-link capitalize"
                 to={"/bookmarks"}
@@ -39,7 +39,7 @@ function Navbar() {
             )}
             <Link
               class="d-block seamless-link capitalize"
-              to={`/users/${this.props.me.id}/settings`}
+              to={`/users/${me.id}/settings`}
             >
               {t("settings")}
             </Link>
@@ -57,7 +57,7 @@ function Navbar() {
         <Search />
       )}
       <div class="navbar-block">
-        <GroupsDropdownNavbar groups={this.props.me.groups} />
+        <GroupsDropdownNavbar groups={me.groups} />
       </div>
     </div>
   );

@@ -29,10 +29,6 @@ const me = {
     return store.get()?.me?.avatar;
   },
 
-  get notifications() {
-    return store.get()?.notifications || [];
-  },
-
   getGroupName(id) {
     let group = store.get()["groups"]?.find(g => g["id"] == id);
     return group ? group["name"] : "";
@@ -50,9 +46,6 @@ const me = {
           store.dispatch('me/update', Object.assign({loaded: true}, r));
         }
       );
-      http.get(`/api/users/${r.id}/notifications`).then(r => {
-        store.dispatch('notifications/update', r);
-      });
       i18n.changeLanguage(r?.data?.lang);
       return r;
     });
@@ -63,18 +56,6 @@ const me = {
       return new Promise(r => r(store.get()));
     }
     return me.update();
-  },
-
-  isNew(id) {
-    let state = store.get();
-    if (Array.isArray(state.notifications)) {
-      return state.notifications.some(
-        n =>
-          me.matchNotification(n, id) ||
-          (n.type == "new_comment" && n.fromMessage.id === id)
-      );
-    }
-    return false;
   },
 
   hasBookmark(id) {
@@ -91,29 +72,6 @@ const me = {
 
   addBookmark(id) {
     store.dispatch('bookmark/add', id);
-  },
-
-  removeAllNotifications() {
-    let state = store.get();
-    state.notifications
-      .map(n => store.dispatch('notification/remove', n))
-  },
-
-  removeMatchingNotifications(id) {
-    let state = store.get();
-    state.notifications
-      .filter(n => me.matchNotification(n, id))
-      .forEach(n => store.dispatch('notification/remove', n))
-  },
-
-  matchNotification(notif, id) {
-    if (notif.id === id) {
-      return true;
-    }
-    if (notif.target === id) {
-      return true;
-    }
-    return false;
   },
 
   reset() {

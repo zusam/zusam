@@ -1,5 +1,5 @@
 import { h, Fragment } from "preact";
-import { util, me } from "/src/core";
+import { util, me, notifications } from "/src/core";
 import { Link } from "react-router-dom";
 import { FaIcon } from "/src/misc";
 import { useTranslation } from "react-i18next";
@@ -31,7 +31,7 @@ export default function MessageFooter() {
               }
             >
               {this.props?.message?.children.length ? (
-                this.props.message.children.some(e => me.isNew(e.id)) ? (
+                this.props.message.children.some(e => notifications.isNew(e.id)) ? (
                   <b>
                     {t("replies", {
                       count: this.props.message.children.length

@@ -1,5 +1,5 @@
 import { h, Fragment, Component } from "preact";
-import { http, router, util, me } from "/src/core";
+import { http, router, util, me, notifications } from "/src/core";
 import MessageChildren from "./message-children.component.js";
 import MessageHead from "./message-head.component.js";
 import MessageFooter from "./message-footer.component.js";
@@ -53,7 +53,7 @@ class Message extends Component {
 
   componentDidMount() {
     this.loadMessage();
-    me.removeMatchingNotifications(this.props.id);
+    notifications.removeMatchingNotifications(this.props.id);
 
     if (!this.props.isChild) {
       setTimeout(() => window.scrollTo(0, 0));

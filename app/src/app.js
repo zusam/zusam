@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { http, storage, router, api, me, lang } from "/src/core";
+import { http, storage, router, api, me, lang, notifications } from "/src/core";
 import {
   Login,
   Public,
@@ -26,8 +26,9 @@ class App extends Component {
     // load api infos
     api.update();
 
-    // update me
+    // update data
     me.update();
+    notifications.update();
 
     // i18n dict management
     lang.init();
