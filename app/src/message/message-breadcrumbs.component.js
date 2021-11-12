@@ -1,6 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import { http, util } from "/src/core";
 import { Link, withRouter } from "react-router-dom";
+import { withTranslation } from 'react-i18next';
 
 class MessageBreadcrumbs extends Component {
 
@@ -21,17 +22,20 @@ class MessageBreadcrumbs extends Component {
             });
           }
         });
-      } else {
-        stack.push(m);
-        if (m?.parent) {
-          this.buildStack(m.parent, stack);
-        } else {
-          http.get(`/api/groups/${m.group.id}`).then(g => {
-            stack.push(g);
-            stack = stack.reverse();
-            this.setState({stack});
-          });
-        }
+      } else if (m?.author?.id) {
+        http.get(`/api/users/${m?.author?.id}`).then(author => {
+          m["author"] = author;
+          stack.push(m);
+          if (m?.parent) {
+            this.buildStack(m.parent, stack);
+          } else {
+            http.get(`/api/groups/${m.group.id}`).then(g => {
+              stack.push(g);
+              stack = stack.reverse();
+              this.setState({stack});
+            });
+          }
+        });
       }
     });
   }
@@ -59,7 +63,8 @@ class MessageBreadcrumbs extends Component {
         return message['data']['text'];
       }
     }
-    return "";
+    // When all else fails, just say who and when
+    return `${message?.author?.name}, ${util.humanTime(message.createdAt)}`;
   }
 
   render() {
@@ -93,4 +98,4 @@ class MessageBreadcrumbs extends Component {
   }
 }
 
-export default withRouter(MessageBreadcrumbs);
+export default withTranslation()(withRouter(MessageBreadcrumbs));
