@@ -29,15 +29,17 @@ class Message extends Component {
   }
 
   hydrateMessage(m) {
-    http.get(`/api/users/${m.author.id}`).then(u => {
-      this.setState({author: u});
-    });
+    if (m?.author?.id) {
+      http.get(`/api/users/${m.author.id}`).then(u => {
+        this.setState({author: u});
+      });
+    }
     if (m?.parent?.id) {
       http.get(`/api/messages/${m.parent.id}`).then(p => {
         this.setState({parent: p});
       });
     }
-    if (m?.files.length) {
+    if (m?.files?.length) {
       Promise.all(m.files.map(f => http.get(`/api/files/${f.id}`).then(f => f))).then(
         files => this.setState({files})
       );
@@ -46,9 +48,13 @@ class Message extends Component {
   }
 
   loadMessage() {
-    http.get(`/api/messages/${this.props.id}`).then(m => {
-      this.hydrateMessage(m)
-    });
+    if (this.props.message) {
+      this.hydrateMessage(this.props.message);
+    } else {
+      http.get(`/api/messages/${this.props.id}`).then(m => {
+        this.hydrateMessage(m)
+      });
+    }
   }
 
   componentDidMount() {
@@ -159,7 +165,7 @@ class Message extends Component {
     return (
       <Writer
         cancel={this.state.edit ? this.cancelEdit : null}
-        files={this.state.edit ? this.state.files : []}
+        files={this.state.edit ? this.state?.files : []}
         focus={focus || !!this.state.edit}
         group={this.state.message.group}
         messageId={this.state.edit ? this.props.id : null}
@@ -182,14 +188,14 @@ class Message extends Component {
     }
     return (
       <Fragment>
-        {!this.props.isChild && (
+        {!this.props.isChild && !this.props.isPublic && (
           <MessageBreadcrumbs id={this.props.id} />
         )}
         <div id={this.props.id} className={this.getComponentClass()}>
           {this.state.edit && this.displayWriter(this.props.isChild)}
           {!this.state.edit && (
             <Fragment>
-              {this.props.isChild && this.state.edit && (
+              {this.props.isChild && !this.props.isPublic && this.state.edit && (
                 <div class="message-head d-none d-md-block">
                   <img
                     class="rounded-circle w-3 material-shadow avatar"
@@ -231,7 +237,7 @@ class Message extends Component {
           )}
         </div>
         {this.props.postMessageComponent}
-        {!this.props.isChild && (
+        {!this.props.isChild && !this.props.isPublic && (
           <MessageChildren
             childMessages={this.state.message.children}
             isPublic={this.props.isPublic}

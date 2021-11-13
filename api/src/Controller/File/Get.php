@@ -35,7 +35,8 @@ class Get extends ApiController
      */
     public function index(string $id): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        // This controller is public to allow display of public messages
+        //$this->denyAccessUnlessGranted('ROLE_USER');
 
         $file = $this->em->getRepository(File::class)->findOneById($id);
         if (empty($file)) {

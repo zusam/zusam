@@ -6,7 +6,9 @@ import { Navbar } from "/src/navbar";
 export default function MessageParent() {
   return (
     <main>
-      <Navbar />
+      {!this.props.isPublic && (
+        <Navbar />
+      )}
       <div class="content">
         <article class="mb-3 justify-content-center d-flex">
           <div class="container pb-3">
@@ -14,6 +16,7 @@ export default function MessageParent() {
               focus={!!router.getParam("focus", router.search)}
               isPublic={this.props.isPublic}
               isChild={false}
+              message={this.props?.message}
               id={this.props.id}
              />
           </div>

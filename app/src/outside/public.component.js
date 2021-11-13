@@ -11,7 +11,7 @@ export default class Public extends Component {
   componentDidMount() {
     if (this.props.token) {
       http
-        .get(`/api/public/${  this.props.token}`)
+        .get(`/api/public/${this.props.token}`)
         .then(res => this.setState({ message: res }));
     }
   }
@@ -27,6 +27,7 @@ export default class Public extends Component {
             isPublic={true}
             key={this.state.message.id}
             message={this.state.message}
+            id={this.state.message.id}
           />
         </div>
       </article>
