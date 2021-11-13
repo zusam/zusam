@@ -28,6 +28,7 @@ export default class MessagePreview extends Component {
       id: null,
       data: null,
       lastActivityDate: null,
+      children: [],
     };
   }
 
@@ -38,38 +39,38 @@ export default class MessagePreview extends Component {
   }
 
   render() {
-    if (!this.state?.id) {
+    if (!this.props?.id) {
       return null;
     }
     return (
       <Link
         to={`/messages/${this.state.id}`}
         class="d-inline-block seamless-link message-preview unselectable"
-        title={this.state?.data["title"]}
+        title={this.state?.data?.title}
       >
-        <div tabindex={this.props.tabindex} class="card material-shadow-with-hover">
-          {getAvatar(this.state.author)}
-          {this.state?.preview ? (
-            <div
-              class="card-miniature"
-              style={
-                `background-image: url('${util.crop(util.getId(this.state?.preview), 320, 180)}')`
-              }
-            />
-          ) : (
-            <div class="text-preview">{this.state?.data["text"]}</div>
-          )}
+        <div tabindex={this.props?.tabindex} class="card material-shadow-with-hover">
+          {getAvatar(this.state?.author)}
+          <div class="card-miniature-loading">
+            {this.state?.preview ? (
+              <div
+                class="card-miniature"
+                style={
+                  `background-image: url('${util.crop(util.getId(this.state?.preview), 320, 180)}')`
+                }
+              />
+            ) : (
+              <div class="text-preview">{this.state?.data?.text}</div>
+            )}
+          </div>
           <div class="card-body border-top d-flex justify-content-between">
             <span class="left-buffer" />
             <span
               class="title"
               title={
-                this.state?.data["title"] ||
-                util.humanFullDate(this.state?.lastActivityDate)
+                this.state?.data?.title || util.humanFullDate(this.state?.lastActivityDate)
               }
             >
-              {this.state?.data["title"] ||
-                util.humanTime(this.state?.lastActivityDate)}
+              {this.state?.data?.title || util.humanTime(this.state?.lastActivityDate)}
             </span>
             <span class="children">
               {!!this.state?.children && (

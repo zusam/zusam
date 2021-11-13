@@ -27,6 +27,14 @@
       margin: 1rem 0;
     }
 
+    .card-miniature-loading {
+      background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+      background-size: auto;
+      border-radius: 5px;
+      background-size: 200% 100%;
+      animation: 1s shine linear infinite;
+    }
+
     .card-miniature {
       width: 100%;
       height: 180px;
@@ -452,5 +460,12 @@
     &:hover {
       color: #111;
     }
+  }
+}
+
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
   }
 }
