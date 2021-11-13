@@ -10,7 +10,6 @@ class GroupSearch extends Component {
       groupId: props.id,
       loaded: false,
       messages: [],
-      totalMessages: 0,
       search: "",
       hashtags: "",
     };
@@ -26,18 +25,23 @@ class GroupSearch extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener("routerStateChange", this.loadMessages);
+    window.removeEventListener("groupSearch", this.loadMessages);
   }
 
   componentDidMount() {
     this.loadMessages();
-    window.addEventListener("routerStateChange", this.loadMessages);
+    window.addEventListener("groupSearch", this.loadMessages);
   }
 
   loadMessages() {
     const search = router.getParam("search")
     const hashtags = router.getParam("hashtags")
-    this.setState({search, hashtags});
+    this.setState({
+      search,
+      hashtags,
+      loaded: false,
+      messages: [],
+    });
     http
       .post("/api/messages/search", {
         group: this.state.groupId,
@@ -49,7 +53,6 @@ class GroupSearch extends Component {
           this.setState({
             search,
             messages: res["messages"],
-            totalMessages: res["totalItems"],
             loaded: true
           });
         }

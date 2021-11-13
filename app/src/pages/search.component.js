@@ -32,6 +32,7 @@ function Search() {
       history.push(
         `/groups/${group_id}?search=${searchTerms.join("+")}`
       );
+      window.dispatchEvent(new CustomEvent("groupSearch"));
     });
   }
 
@@ -43,7 +44,7 @@ function Search() {
           type="text"
           id="search"
           placeholder={t("search_in_group")}
-          value={router.getParam("search")}
+          value={router.getParam("search").replace("+", " ")}
          />
         <div class="input-group-append">
           <button

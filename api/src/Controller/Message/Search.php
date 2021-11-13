@@ -92,7 +92,7 @@ class Search extends ApiController
         if (empty($requestData['search'])) {
             return new JsonResponse(['error' => 'You must provide search terms'], Response::HTTP_BAD_REQUEST);
         }
-        $search_terms = explode(" ", $requestData['search']);
+        $search_terms = explode("+", $requestData['search']);
 
         // get the asked group
         if (empty($requestData['group'])) {
