@@ -74,12 +74,13 @@ export default class EmbedBlock extends Component {
         if (this.props?.preview?.id && url) {
           url = new URL(url);
           let video_id;
-          if (url.host == "youtube.com") {
+          if (url.host == "www.youtube.com" || url.host == "m.youtube.com") {
             video_id = url.search.substring(1).split("&").filter(e => e.match(/^v=/))[0].split("=")[1];
           }
           if (url.host == "youtu.be") {
-            video_id = url.pathname.substring(1);
+            video_id = url.pathname.slice(1);
           }
+          console.log(url, video_id);
           return (
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 1024, 270)}
