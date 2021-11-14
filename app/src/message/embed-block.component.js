@@ -80,7 +80,6 @@ export default class EmbedBlock extends Component {
           if (url.host == "youtu.be") {
             video_id = url.pathname.slice(1);
           }
-          console.log(url, video_id);
           return (
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 1024, 270)}

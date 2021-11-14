@@ -14,15 +14,25 @@ class Settings extends Component {
   }
 
   componentDidMount() {
-    http.get(`/api/${this.props.type}/${this.props.id}`).then(
-      res => {
-        this.setState({entity: res});
-      }
-    );
+    if (this.props.type == "groups") {
+      http.get(`/api/${this.props.type}/${this.props.id}`).then(
+        res => {
+          this.setState({entity: res});
+        }
+      );
+    }
+    if (this.props.type == "users") {
+      // we use the /me endpoint to avoid service-workers cache
+      http.get(`/api/me`).then(
+        res => {
+          this.setState({entity: res});
+        }
+      );
+    }
   }
 
   render() {
-    if (!this.state.entity || !this.props.me.id) {
+    if (!this.state?.entity || !this.props?.me.id) {
       return;
     }
     return (
