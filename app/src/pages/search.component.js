@@ -44,7 +44,7 @@ function Search() {
           type="text"
           id="search"
           placeholder={t("search_in_group")}
-          value={router.getParam("search").replace("+", " ")}
+          value={router.getParam("search").replace(/\+/g, " ")}
          />
         <div class="input-group-append">
           <button
