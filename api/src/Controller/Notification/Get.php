@@ -3,15 +3,17 @@
 namespace App\Controller\Notification;
 
 use App\Controller\ApiController;
+use App\Entity\Link;
+use App\Entity\Message;
 use App\Entity\Notification;
-use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class Get extends ApiController
 {
@@ -40,10 +42,36 @@ class Get extends ApiController
         if (empty($notification)) {
             return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
         }
+        $notification_data = $this->normalize($notification, ['read_notification']);
+        $title = "";
+        if (in_array($notification->getType(), [Notification::NEW_COMMENT, Notification::NEW_MESSAGE])) {
+          $message = $notification->getFromMessage();
+          if ($message) {
+            $data = $message->getData();
+            if (!empty($data["title"])) {
+              $title = $data["title"];
+            }
 
-        return new Response(
-            $this->serialize($notification, ['read_notification']),
-            Response::HTTP_OK,
-        );
+            if (empty($title)) {
+              $urls = $message->getUrls();
+              if (count($urls) > 0) {
+                $link = $this->em->getRepository(Link::class)->findOneByUrl($urls[0]);
+                if (!empty($link)) {
+                  $title = $link->getData()["title"] ?? $link->getData()["description"] ?? $link->getData()["url"];
+                }
+              }
+            }
+
+            if (empty($title) && !empty($data["text"])) {
+              $title = $data["text"];
+            }
+
+            $notification_data["author"] = $this->normalize($message->getAuthor(), ['read_message']);
+          }
+        }
+
+        $notification_data["title"] = $title;
+
+        return new Response(json_encode($notification_data), Response::HTTP_OK);
     }
 }

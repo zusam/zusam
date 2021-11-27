@@ -13,7 +13,6 @@ class Notification extends Component {
       notification: null,
       group: null,
       user: null,
-      message: null,
     };
   }
 
@@ -22,16 +21,14 @@ class Notification extends Component {
       Promise.all([
         `/api/groups/${n.fromGroup.id}`,
         `/api/users/${n.fromUser.id}`,
-        `/api/messages/${n.fromMessage.id}`,
       ].map(url => http.get(url).then(e => e))).then(res => {
         this.setState({
-          target: this.getTarget(n, res[0], res[2]),
+          target: this.getTarget(n, res[0], n.fromMessage.id),
           action: this.getAction(n),
-          title: this.getTitle(n, res[2]),
+          title: n["title"],
           notification: n,
           group: res[0],
           user: res[1],
-          message: res[2],
         });
       });
     });
@@ -78,34 +75,6 @@ class Notification extends Component {
     }
   }
 
-  getTitle(notification, message) {
-    switch (notification?.type) {
-      case "new_message":
-      case "new_comment":
-        if (message && message['data']) {
-          if (message['data']['title']) {
-            return message['data']['title'];
-          }
-          if (message['data']['text']) {
-            let url = util.getUrl(message['data']['text']);
-            if (url && url.length > 0) {
-              url = url[0];
-            }
-            if (url) {
-              http.get(`/api/links/by_url?url=${encodeURIComponent(url)}`).then(r => {
-                this.setState({title: r?.data?.title || r?.data?.description || r?.data?.url});
-              });
-              return url;
-            }
-            return message['data']['text'];
-          }
-        }
-        return "";
-      default:
-        return "";
-    }
-  }
-
   getObject(notification) {
     switch (notification?.type) {
       case "new_message":
@@ -126,11 +95,7 @@ class Notification extends Component {
         return (
           <span>
             {`${this.props.t("the_message_from")  } `}
-            <strong>
-              {this.state.message && this.state.message["author"]
-                ? this.state.message["author"]["name"]
-                : ""}
-            </strong>
+            <strong>{notification?.author}</strong>
             {this.state.title && (
               <Fragment>
                 <br />
@@ -161,7 +126,7 @@ class Notification extends Component {
     }
   }
 
-  getTarget(notification, group, message) {
+  getTarget(notification, group, message_id) {
     switch (notification?.type) {
       case "user_joined_group":
       case "user_left_group":
@@ -171,7 +136,7 @@ class Notification extends Component {
         return `/messages/${notification.target}`;
       case "new_comment":
         return (
-          `/messages/${message.id}/${notification.target}`
+          `/messages/${message_id}/${notification.target}`
         );
       case "global_notification":
         return notification.target;
