@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import { h, Component, Fragment } from "preact";
 import { util, notifications, http } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
@@ -29,12 +29,13 @@ export default class MessagePreview extends Component {
       data: null,
       lastActivityDate: null,
       children: [],
+      loaded: false,
     };
   }
 
   componentDidMount() {
     http.get(`/api/messages/${this.props.id}/preview`).then(p => {
-      this.setState({...p});
+      this.setState({...p, loaded: true});
     });
   }
 
@@ -51,15 +52,19 @@ export default class MessagePreview extends Component {
         <div tabindex={this.props?.tabindex} class="card material-shadow-with-hover">
           {getAvatar(this.state?.author)}
           <div class="card-miniature-loading">
-            {this.state?.preview ? (
-              <div
-                class="card-miniature"
-                style={
-                  `background-image: url('${util.crop(util.getId(this.state?.preview), 320, 180)}')`
-                }
-              />
-            ) : (
-              <div class="text-preview">{this.state?.data?.text}</div>
+            {this.state.loaded && (
+              <Fragment>
+                {this.state?.preview ? (
+                  <div
+                    class="card-miniature"
+                    style={
+                      `background-image: url('${util.crop(util.getId(this.state?.preview), 320, 180)}')`
+                    }
+                  />
+                ) : (
+                  <div class="text-preview">{this.state?.data?.text}</div>
+                )}
+              </Fragment>
             )}
           </div>
           <div class="card-body border-top d-flex justify-content-between">
@@ -73,7 +78,7 @@ export default class MessagePreview extends Component {
               {this.state?.data?.title || util.humanTime(this.state?.lastActivityDate)}
             </span>
             <span class="children">
-              {!!this.state?.children && (
+              {!!this.state?.children?.length > 0 && (
                 <span>
                   {`${this.state?.children} `}
                   <FaIcon

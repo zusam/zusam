@@ -9,25 +9,23 @@ export default function MessageFooter() {
   return (
     <div class="message-footer">
       <div class="infos">
-        {!this.props.isPublic &&
-            this.props.author &&
-            this.props.author.id == me.id && (
-              <Fragment>
-                <a
-                  class="action seamless-link font-size-90 capitalize d-none d-sm-block"
-                  onClick={e => this.props.editMessage(e)}
-                >
-                  {t("edit")}
-                </a>
-                <div class="dot d-none d-sm-block">&bull;</div>
-              </Fragment>
-            )}
-        {!this.props.isPublic && this.props.isChild && (
+        {!this.props?.isPublic && this.props?.author && this.props?.author?.id === me.id && (
+          <Fragment>
+            <a
+              class="action seamless-link font-size-90 capitalize d-none d-sm-block"
+              onClick={e => this.props.editMessage(e)}
+            >
+              {t("edit")}
+            </a>
+            <div class="dot d-none d-sm-block">&bull;</div>
+          </Fragment>
+        )}
+        {!this.props?.isPublic && this.props?.isChild && (
           <Fragment>
             <Link
               class="action seamless-link font-size-90 capitalize"
               to={
-                `/messages/${this.props.message.id}${this.props.message.children.length ? "" : "?focus=reply"}`
+                `/messages/${this.props?.message.id}${this.props?.message?.children.length ? "" : "?focus=reply"}`
               }
             >
               {this.props?.message?.children.length ? (
@@ -51,21 +49,21 @@ export default function MessageFooter() {
         )}
         <div
           class="date font-size-90"
-          title={util.humanFullDate(this.props.message.createdAt)}
+          title={util.humanFullDate(this.props?.message.createdAt)}
         >
-          {util.humanTime(this.props.message.createdAt)}
+          {util.humanTime(this.props?.message.createdAt)}
         </div>
         <Fragment>
           <div class="dot">&bull;</div>
           <div class="font-size-90">
             {
-              this.props.author && this.props.author.name ? this.props.author.name : "--"
+              this.props?.author && this.props?.author?.name ? this.props.author.name : "--"
             }
           </div>
         </Fragment>
       </div>
       <div>
-        {!this.props.isPublic && (
+        {!this.props?.isPublic && (
           <div
             class="options dropdown"
             onClick={e =>
@@ -76,13 +74,13 @@ export default function MessageFooter() {
               <FaIcon family="solid" icon="ellipsis-h" />
             </div>
             <div class="dropdown-menu dropdown-options">
-              {this.props.author && this.props.author.id == me.id && (
-                <Link
+              {this.props?.author && this.props?.author?.id === me.id && (
+                <a
                   class="seamless-link capitalize"
                   onClick={e => this.props.deleteMessage(e)}
                 >
                   {t("delete")}
-                </Link>
+                </a>
               )}
               {
                 <a
@@ -100,9 +98,9 @@ export default function MessageFooter() {
                   {t("share_message")}
                 </a>
               )}
-              {!this.props.message.isInFront &&
-                  this.props.author &&
-                  this.props.author.id == me.id && (
+              {!this.props?.message?.isInFront &&
+                  this.props?.author &&
+                  this.props?.author.id == me.id && (
                     <a
                       class="seamless-link capitalize"
                       onClick={e => this.props.publishInGroup(e)}
@@ -110,23 +108,23 @@ export default function MessageFooter() {
                       {t("publish_in_group")}
                     </a>
                   )}
-              {!me.hasBookmark(this.props.message.id) && (
+              {!me.hasBookmark(this.props?.message.id) && (
                 <a
                   class="seamless-link capitalize"
-                  onClick={() => me.addBookmark(this.props.message.id)}
+                  onClick={() => me.addBookmark(this.props?.message.id)}
                 >
                   {t("add_bookmark")}
                 </a>
               )}
-              {me.hasBookmark(this.props.message.id) && (
+              {me.hasBookmark(this.props?.message.id) && (
                 <a
                   class="seamless-link capitalize"
-                  onClick={() => me.removeBookmark(this.props.message.id)}
+                  onClick={() => me.removeBookmark(this.props?.message.id)}
                 >
                   {t("remove_bookmark")}
                 </a>
               )}
-              {this.props.author && this.props.author.id == me.id && (
+              {this.props?.author?.id == me.id && (
                 <a
                   class="seamless-link capitalize"
                   onClick={e => this.props.editMessage(e)}
