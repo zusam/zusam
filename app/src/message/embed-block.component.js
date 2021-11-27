@@ -70,7 +70,7 @@ export default class EmbedBlock extends Component {
         }
       }
       if ("youtube" == this.props.data["providerName"].toLowerCase()) {
-        let url = this.props?.data?.url && typeof(this.props?.data.url) == "string" ? this.props.data?.url : this.props.url;
+        let url = this.props.url;
         if (this.props?.preview?.id && url) {
           url = new URL(url);
           let video_id;
@@ -84,7 +84,7 @@ export default class EmbedBlock extends Component {
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 1024, 270)}
               url={
-                `${url.origin}/embed/${video_id}?autoplay=1&controls=2&wmode=opaque`
+                `https://youtube.com/embed/${video_id}?autoplay=1&controls=2&wmode=opaque`
               }
               playBtnClass={"youtube"}
             />
