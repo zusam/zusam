@@ -28,7 +28,7 @@ export default class MessagePreview extends Component {
       id: null,
       data: null,
       lastActivityDate: null,
-      children: [],
+      children: 0,
       loaded: false,
     };
   }
@@ -78,7 +78,7 @@ export default class MessagePreview extends Component {
               {this.state?.data?.title || util.humanTime(this.state?.lastActivityDate)}
             </span>
             <span class="children">
-              {!!this.state?.children?.length > 0 && (
+              {this.state?.children > 0 && (
                 <span>
                   {`${this.state?.children} `}
                   <FaIcon
