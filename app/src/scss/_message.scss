@@ -30,7 +30,8 @@
     .card-miniature-loading {
       background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
       background-size: auto;
-      border-radius: 5px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
       background-size: 200% 100%;
       animation: 1s shine linear infinite;
       height: 180px;
