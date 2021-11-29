@@ -65,6 +65,7 @@ class Settings extends Component {
                       <div class="dropdown-menu">
                         {this.props.me.groups?.map(e => (
                           <Link
+                            key={`/groups/${e.id}/settings`}
                             class="seamless-link"
                             to={`/groups/${e.id}/settings`}
                           >

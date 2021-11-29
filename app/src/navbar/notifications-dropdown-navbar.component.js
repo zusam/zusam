@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { me, notifications as notifs } from "/src/core";
+import { notifications as notifs } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Notification } from "/src/pages";
 import { useStoreon } from 'storeon/preact'

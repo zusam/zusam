@@ -3,7 +3,6 @@ import { alert, http, util, api, me } from "/src/core";
 import { FaIcon } from "/src/misc";
 import EmbedBlock from "./embed-block.component.js";
 import FileGrid from "./file-grid.component.js";
-import { withRouter } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
 
 class Writer extends Component {
@@ -428,4 +427,4 @@ class Writer extends Component {
   }
 }
 
-export default withTranslation()(withRouter(Writer));
+export default withTranslation()(Writer);

@@ -6,7 +6,6 @@ import MessageFooter from "./message-footer.component.js";
 import MessageBody from "./message-body.component.js";
 import MessageBreadcrumbs from "./message-breadcrumbs.component.js";
 import Writer from "./writer.component.js";
-import { withRouter } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
 import { connectStoreon } from 'storeon/preact';
 
@@ -48,11 +47,15 @@ class Message extends Component {
   }
 
   loadMessage() {
-    if (this.props.message) {
+    if (this.props?.message) {
       this.hydrateMessage(this.props.message);
+    } else if (this.props?.token) {
+      http.get(`/api/public/${this.props.token}`).then(m => {
+        this.hydrateMessage(m);
+      });
     } else {
       http.get(`/api/messages/${this.props.id}`).then(m => {
-        this.hydrateMessage(m)
+        this.hydrateMessage(m);
       });
     }
   }
@@ -181,21 +184,21 @@ class Message extends Component {
 
   render() {
     if (this.state?.isRemoved || !this.state?.message) {
-      // placeholder
+      // placeholder (to be able to target it)
       return (
         <div id={this.props.id} className="message" />
       );
     }
     return (
       <Fragment>
-        {!this.props.isChild && !this.props.isPublic && (
+        {!this.props?.isChild && !this.props?.isPublic && (
           <MessageBreadcrumbs id={this.props.id} />
         )}
         <div id={this.props.id} className={this.getComponentClass()}>
-          {this.state.edit && this.displayWriter(this.props.isChild)}
-          {!this.state.edit && (
+          {this.state?.edit && this.displayWriter(this.props?.isChild)}
+          {!this.state?.edit && (
             <Fragment>
-              {this.props.isChild && !this.props.isPublic && this.state.edit && (
+              {this.props.isChild && !this.props.isPublic && this.state?.edit && (
                 <div class="message-head d-none d-md-block">
                   <img
                     class="rounded-circle w-3 material-shadow avatar"
@@ -211,15 +214,15 @@ class Message extends Component {
               <MessageHead
                 author={this.state?.author}
                 message={this.state?.message}
-                isPublic={this.props.isPublic}
-                isChild={this.props.isChild}
+                isPublic={this.props?.isPublic}
+                isChild={this.props?.isChild}
               />
               <div class="main">
                 <MessageBody
-                  message={this.state.message}
+                  message={this.state?.message}
                   files={this.state?.files || []}
-                  isPublic={this.props.isPublic}
-                  isChild={this.props.isChild}
+                  isPublic={this.props?.isPublic}
+                  isChild={this.props?.isChild}
                 />
                 <MessageFooter
                   author={this.state?.author}
@@ -229,31 +232,31 @@ class Message extends Component {
                   shareMessage={this.shareMessage}
                   publishInGroup={this.publishInGroup}
                   openPublicLink={this.openPublicLink}
-                  isPublic={this.props.isPublic}
-                  isChild={this.props.isChild}
+                  isPublic={this.props?.isPublic}
+                  isChild={this.props?.isChild}
                 />
               </div>
             </Fragment>
           )}
         </div>
-        {this.props.postMessageComponent}
-        {!this.props.isChild && !this.props.isPublic && (
+        {this.props?.postMessageComponent}
+        {!this.props?.isChild && !this.props?.isPublic && (
           <MessageChildren
-            childMessages={this.state.message.children}
-            isPublic={this.props.isPublic}
+            childMessages={this.state.message?.children}
+            isPublic={this.props?.isPublic}
             key={this.props.id}
             id={this.props.id}
           />
         )}
-        {!this.state.edit && !this.props.isPublic && !this.props.isChild && (
+        {!this.state?.edit && !this.props?.isPublic && !this.props?.isChild && (
           <div class="message child mt-2">
-            {me.id && (
+            {me?.id && (
               <div class="message-head d-none d-md-block">
                 <img
                   class="rounded-circle w-3 material-shadow avatar"
                   style={util.backgroundHash(me.id)}
                   src={
-                    me.avatar
+                    me?.avatar
                       ? util.crop(me.avatar["id"], 100, 100)
                       : util.defaultAvatar
                   }
@@ -268,4 +271,4 @@ class Message extends Component {
   }
 }
 
-export default connectStoreon('me', withTranslation()(withRouter(Message)));
+export default connectStoreon('me', withTranslation()(Message));

@@ -1,6 +1,5 @@
 import { h, Component } from "preact";
 import { alert, http, util, me } from "/src/core";
-import { withRouter } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
 
 class GroupSettings extends Component {
@@ -161,4 +160,4 @@ class GroupSettings extends Component {
   }
 }
 
-export default withTranslation()(withRouter(GroupSettings));
+export default withTranslation()(GroupSettings);

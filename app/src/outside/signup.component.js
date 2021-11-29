@@ -1,6 +1,5 @@
 import { h, Component } from "preact";
 import { alert, storage, http, router } from "/src/core";
-import { withRouter } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
 
 class Signup extends Component {
@@ -76,4 +75,4 @@ class Signup extends Component {
   }
 }
 
-export default withTranslation()(withRouter(Signup));
+export default withTranslation()(Signup);

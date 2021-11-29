@@ -71,54 +71,59 @@ class Share extends Component {
       return;
     }
     return (
-      <article class="mt-2">
-        <div class="container">
-          {this.state.parent && this.props.me && this.props.me.groups.length > 1 && (
-            <div class="mb-1">
-              <label class="px-1" for="group_share_choice">
-                {this.props.t("group_share_choice")}
-              </label>
-              <select
-                value={this.state.group}
-                class="form-control"
-                name="group_share_choice"
-                onChange={e => this.groupSelect(e)}
-                required
-              >
-                {this.props.me.groups.map(e => (
-                  <option value={e["id"]}>{e.name}</option>
-                ))}
-              </select>
+      <main>
+        <Navbar />
+        <div class="content">
+          <article class="mt-2">
+            <div class="container">
+              {this.state.parent && this.props.me && this.props.me.groups.length > 1 && (
+                <div class="mb-1">
+                  <label class="px-1" for="group_share_choice">
+                    {this.props.t("group_share_choice")}
+                  </label>
+                  <select
+                    value={this.state.group}
+                    class="form-control"
+                    name="group_share_choice"
+                    onChange={e => this.groupSelect(e)}
+                    required
+                  >
+                    {this.props.me.groups.map(e => (
+                      <option key={e["id"]} value={e["id"]}>{e.name}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {this.state.parent && (
+                <div class="form-group">
+                  <label for="apiKey">
+                    {this.props.t("parent_message")}:{" "}
+                  </label>
+                  <input
+                    type="text"
+                    name="parent_message"
+                    value={this.state.parent}
+                    class="form-control font-size-80"
+                    readonly="readonly"
+                   />
+                </div>
+              )}
+              <Writer
+                focus={true}
+                group={this.state.group}
+                title={this.state.title}
+                parent={this.state.parent}
+                text={
+                  this.state.text || this.state.url
+                    ? `${this.state.text  }\n${  this.state.url}`
+                    : ""
+                }
+                files={this.state.files}
+              />
             </div>
-          )}
-          {this.state.parent && (
-            <div class="form-group">
-              <label for="apiKey">
-                {this.props.t("parent_message")}:{" "}
-              </label>
-              <input
-                type="text"
-                name="parent_message"
-                value={this.state.parent}
-                class="form-control font-size-80"
-                readonly="readonly"
-               />
-            </div>
-          )}
-          <Writer
-            focus={true}
-            group={this.state.group}
-            title={this.state.title}
-            parent={this.state.parent}
-            text={
-              this.state.text || this.state.url
-                ? `${this.state.text  }\n${  this.state.url}`
-                : ""
-            }
-            files={this.state.files}
-          />
+          </article>
         </div>
-      </article>
+      </main>
     );
   }
 }

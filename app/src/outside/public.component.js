@@ -1,36 +1,28 @@
-import { h, Component } from "preact";
-import { http } from "/src/core";
-import { MessageParent } from "/src/message";
+import { h } from "preact";
+import { Message } from "/src/message";
+import { useParams } from "react-router-dom";
 
-export default class Public extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+export default function Public() {
+  let params = useParams();
 
-  componentDidMount() {
-    if (this.props.token) {
-      http
-        .get(`/api/public/${this.props.token}`)
-        .then(res => this.setState({ message: res }));
-    }
-  }
-
-  render() {
-    if (!this.state.message) {
-      return;
-    }
-    return (
-      <article class="justify-content-center d-flex mt-2">
-        <div class="container">
-          <MessageParent
-            isPublic={true}
-            key={this.state.message.id}
-            message={this.state.message}
-            id={this.state.message.id}
-          />
-        </div>
-      </article>
-    );
-  }
+  return (
+    <article class="justify-content-center d-flex mt-2">
+      <div class="container">
+        <main>
+          <div class="content">
+            <article class="mb-3 justify-content-center d-flex">
+              <div class="container pb-3">
+                <Message
+                  focus={false}
+                  isPublic={true}
+                  isChild={false}
+                  token={params.token}
+                 />
+              </div>
+            </article>
+          </div>
+        </main>
+      </div>
+    </article>
+  );
 }

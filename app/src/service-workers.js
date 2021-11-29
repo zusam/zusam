@@ -8,7 +8,7 @@ const cache_store = createStore(CACHE_NAME, CACHE_NAME);
 const cached_routes = [
   {
     route: new RegExp("/api/users/[^/]+/?$"),
-    duration: 1000 * 60 * 5, // 5mn
+    duration: 1000 * 60 * 1, // 1mn
   },
   {
     route: new RegExp("/api/notifications/[^/]+/?$"),

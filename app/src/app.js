@@ -1,5 +1,5 @@
-import { h, Component } from "preact";
-import { http, storage, router, api, me, lang, notifications } from "/src/core";
+import { h } from "preact";
+import { api, me, lang, notifications } from "/src/core";
 import {
   Login,
   Public,
@@ -7,184 +7,99 @@ import {
   Signup,
   StopNotificationEmails
 } from "/src/outside";
-import { MessageParent } from "/src/message";
-import { Home, CreateGroup, GroupBoard, Share, BookmarkBoard } from "/src/pages";
-import { Settings } from "/src/settings";
-import { Navbar, GroupSearch } from "/src/navbar";
-import Writer from "/src/message/writer.component.js";
+import { MessageParent, GroupWriter } from "/src/message";
+import { CreateGroup, GroupBoard, Share, BookmarkBoard } from "/src/pages";
+import { SettingsWrapper } from "/src/settings";
+import { GroupSearchWrapper } from "/src/navbar";
 import {
-  BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
-  withRouter,
+  useNavigate,
+  useLocation,
 } from "react-router-dom";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+function App() {
 
-    // load api infos
-    api.update();
-
-    // update data
-    me.update();
-    notifications.update();
-
-    // i18n dict management
-    lang.init();
-    window.addEventListener("fetchedNewDict", () => {
-      setTimeout(() => this.setState({lang: "up"}), 10);
-    });
-
-    // manage dropdowns
-    window.addEventListener("click", e => {
-      if (!e.target.closest(".dropdown")) {
-        // close dropdowns if we are clicking on something else
-        document
-          .querySelectorAll(".dropdown")
-          .forEach(n => n.classList.remove("active"));
-      } else {
-        // close dropdowns that are not clicked on
-        document
-          .querySelectorAll(".dropdown")
-          .forEach(n => {
-            if(n != e.target.closest(".dropdown")) {
-              n.classList.remove("active")
-            }
-          });
+  // update data at initial load
+  api.update();
+  notifications.update();
+  let navigate = useNavigate();
+  let location = useLocation();
+  me.fetch().then(user => {
+    if (user) {
+      if (location.pathname == "/") {
+        let redirect = "/create-group";
+        if (user.data?.default_group) {
+          redirect = `/groups/${user?.data["default_group"]}`;
+        } else if (user?.groups[0]) {
+          redirect = `/groups/${user?.groups[0].id}`;
+        }
+        navigate(redirect);
       }
-    });
+    } else if (location.pathname == "/" || location.pathname == "") {
+      navigate("/login");
+    } else if (location.pathname == "/logout") {
+      me.logout();
+    }
+  });
 
-    // check if user is connected
-    storage.get("apiKey").then(apiKey => {
-      if (router.route == "invitation") {
-          if (apiKey) {
-            http.post(`/api/groups/invitation/${router.id}`, {}).then(() => {
-              this.props.history.push("/");
-            });
-          } else {
-            this.props.history.push(`/signup?inviteKey=${router.id}`);
-          }
-      } else if (!router.isOutside() && !apiKey) {
-        // redirect to login if we don't have an apiKey
-        this.props.history.push("/login");
-      }
-    });
-  }
+  // i18n dict management
+  lang.init();
+  window.addEventListener("fetchedNewDict", () => {
+    // lang is loaded (force refresh)
+    // setTimeout(() => this.setState({lang: "up"}), 10);
+  });
 
-  render() {
+  //// manage dropdowns
+  //window.addEventListener("click", e => {
+  //  if (!e.target.closest(".dropdown")) {
+  //    // close dropdowns if we are clicking on something else
+  //      document.querySelectorAll(".dropdown").forEach(n => n.classList.remove("active"));
+  //  } else {
+  //    // close dropdowns that are not clicked on
+  //    document
+  //      .querySelectorAll(".dropdown")
+  //      .forEach(n => {
+  //        if(n != e.target.closest(".dropdown")) {
+  //          n.classList.remove("active")
+  //        }
+  //      });
+  //  }
+  //});
 
-    return (
-      <Router>
-        <Switch>
+  // check if user is connected
+  // storage.get("apiKey").then(apiKey => {
+  //   if (router.route == "invitation") {
+  //     if (apiKey) {
+  //       http.post(`/api/groups/invitation/${router.id}`, {}).then(() => {
+  //         this.props.history.push("/");
+  //       });
+  //     } else {
+  //       this.props.history.push(`/signup?inviteKey=${router.id}`);
+  //     }
+  //   } else if (!router.isOutside() && !apiKey) {
+  //     // redirect to login if we don't have an apiKey
+  //     this.props.history.push("/login");
+  //   }
+  // });
 
-          <Route path="/" exact={true} render={() => (
-              <Home />
-          )} />
-
-          <Route path="/signup" render={() => (
-            <Signup />
-          )} />
-
-          <Route path="/stop-notification-emails" render={() => (
-            <StopNotificationEmails />
-          )} />
-
-          <Route path="/public/:token" render={props => (
-            <Public token={props.match.params.token} key={props.match.params.token} />
-          )} />
-
-          <Route path="/reset-password" render={() => (
-            <ResetPassword />
-          )} />
-
-          <Route path="/login" render={() => (
-            <Login />
-          )} />
-
-          <Route path="/logout" render={() => me.logout()} />
-
-          <Route path="/:type/:id/settings" render={props => (
-            <Settings
-              type={props.match.params.type}
-              id={props.match.params.id}
-              key={props.match.params.id}
-            />
-          )} />
-
-          <Route path="/create-group" render={() => (
-            <main>
-              <Navbar />
-              <div class="content">
-                <CreateGroup />;
-              </div>
-            </main>
-          )} />
-
-          <Route path="/share" render={() => (
-            <main>
-              <Navbar />
-              <div class="content">
-                <Share />;
-              </div>
-            </main>
-          )} />
-
-          <Route path="/messages/:id" render={props => (
-            <MessageParent key={props.match.params.id} id={props.match.params.id} isPublic={false} />
-          )} />
-
-          <Route path="/bookmarks" render={() => (
-            <main>
-              <Navbar />
-              <div class="content">
-                <div>
-                  <BookmarkBoard />
-                </div>
-              </div>
-            </main>
-          )} />
-
-          <Route path="/groups/:id/write" render={props => (
-            <main>
-              <Navbar />
-              <div class="content">
-                <article class="mb-3">
-                  <div class="container pb-3">
-                    <Writer focus={true} group={props.match.params.id} />
-                  </div>
-                </article>
-              </div>
-            </main>
-          )} />
-
-          <Route path="/groups/:id" render={props => {
-
-            if (
-              router.getParam("search", props.location.search.substring(1))
-              || router.getParam("hashtags", props.location.search.substring(1))
-            ) {
-              return (
-                <main>
-                  <Navbar />
-                  <div class="content">
-                    <article class="mb-3">
-                      <div class="container pb-3">
-                        <GroupSearch key={props.match.params.id} id={props.match.params.id} />
-                      </div>
-                    </article>
-                  </div>
-                </main>
-              );
-            }
-
-            return <GroupBoard key={props.match.params.id} id={props.match.params.id} />
-          }} />
-
-        </Switch>
-      </Router>
-    );
-  }
+  return (
+    <Routes>
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/stop-notification-emails" element={<StopNotificationEmails />} />
+      <Route path="/public/:token" element={<Public />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/:type/:id/settings" element={<SettingsWrapper />} />
+      <Route path="/create-group" element={<CreateGroup />} />
+      <Route path="/share" element={<Share />} />
+      <Route path="/messages/:id" element={<MessageParent />} />
+      <Route path="/bookmarks" element={<BookmarkBoard />} />
+      <Route path="/groups/:id/write" element={<GroupWriter />} />
+      <Route path="/groups/:id" element={<GroupBoard />} />
+      <Route path="/groups/:id/search" element={<GroupSearchWrapper />} />
+    </Routes>
+  );
 }
 
-export default withRouter(App);
+export default App;

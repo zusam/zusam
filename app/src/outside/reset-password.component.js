@@ -1,6 +1,5 @@
 import { h, Component } from "preact";
 import { alert, storage, http, router } from "/src/core";
-import { withRouter } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
 
 class ResetPassword extends Component {
@@ -73,4 +72,4 @@ class ResetPassword extends Component {
   }
 }
 
-export default withTranslation()(withRouter(ResetPassword));
+export default withTranslation()(ResetPassword);

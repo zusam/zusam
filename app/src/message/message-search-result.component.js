@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { http, util, me, notifications } from "/src/core";
+import { http, util, notifications } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
 

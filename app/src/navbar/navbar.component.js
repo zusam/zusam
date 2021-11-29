@@ -2,7 +2,7 @@ import { h } from "preact";
 import { router, util, me } from "/src/core";
 import { Search } from "/src/pages";
 import { GroupsDropdownNavbar, NotificationsDropdownNavbar } from "/src/navbar";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connectStoreon } from 'storeon/preact';
 import { useTranslation } from "react-i18next";
 
@@ -63,4 +63,4 @@ function Navbar() {
   );
 }
 
-export default connectStoreon('me', withRouter(Navbar));
+export default connectStoreon('me', Navbar);

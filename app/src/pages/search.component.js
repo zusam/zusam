@@ -2,13 +2,13 @@ import { h } from "preact";
 import { router } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { connectStoreon } from 'storeon/preact'
-import { withRouter, useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 function Search() {
 
   const { t } = useTranslation();
-  let history = useHistory();
+  //let history = useHistory();
 
   function search(evt) {
     evt.preventDefault();
@@ -29,9 +29,9 @@ function Search() {
         .value.normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .split(" ");
-      history.push(
-        `/groups/${group_id}?search=${searchTerms.join("+")}`
-      );
+      //history.push(
+      //  `/groups/${group_id}?search=${searchTerms.join("+")}`
+      //);
       window.dispatchEvent(new CustomEvent("groupSearch"));
     });
   }
@@ -59,4 +59,4 @@ function Search() {
   );
 }
 
-export default withRouter(connectStoreon('entity', Search));
+export default connectStoreon('entity', Search);

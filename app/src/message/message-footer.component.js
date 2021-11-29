@@ -20,7 +20,7 @@ export default function MessageFooter() {
             <div class="dot d-none d-sm-block">&bull;</div>
           </Fragment>
         )}
-        {!this.props?.isPublic && this.props?.isChild && (
+        {!this.props?.isPublic && this.props?.isChild && this.props?.message && (
           <Fragment>
             <Link
               class="action seamless-link font-size-90 capitalize"

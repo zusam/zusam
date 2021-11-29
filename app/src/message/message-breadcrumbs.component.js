@@ -1,6 +1,6 @@
 import { h, Component, Fragment } from "preact";
 import { http, util } from "/src/core";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
 
 class MessageBreadcrumbs extends Component {
@@ -98,4 +98,4 @@ class MessageBreadcrumbs extends Component {
   }
 }
 
-export default withTranslation()(withRouter(MessageBreadcrumbs));
+export default withTranslation()(MessageBreadcrumbs);
