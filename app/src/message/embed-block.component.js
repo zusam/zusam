@@ -31,7 +31,7 @@ export default class EmbedBlock extends Component {
             );
           }
       }
-      if ("bandcamp" == this.props.data["providerName"].toLowerCase()) {
+      if (this.props.data["providerUrl"] == "https://bandcamp.com") {
         if (this.props.data["code"]) {
           let id = this.props.data["code"].match(/https:\/\/.*album=\d+/);
           if (!id) {
