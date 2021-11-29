@@ -74,17 +74,42 @@ export default class EmbedBlock extends Component {
         if (this.props?.preview?.id && url) {
           url = new URL(url);
           let video_id;
+          let playlist_id;
           if (url.host == "www.youtube.com" || url.host == "m.youtube.com") {
-            video_id = url.search.substring(1).split("&").filter(e => e.match(/^v=/))[0].split("=")[1];
+            video_id = url.search.substring(1).split("&").filter(e => e.match(/^v=/));
+            playlist_id = url.search.substring(1).split("&").filter(e => e.match(/^list=/));
           }
           if (url.host == "youtu.be") {
-            video_id = url.pathname.slice(1);
+            video_id = [`v=${url.pathname.slice(1)}`];
+            playlist_id = [];
+          }
+          if (playlist_id.length && video_id.length) {
+            return (
+              <GenericEmbed
+                preview={util.crop(this.props.preview.id, 1024, 270)}
+                url={
+                  `https://youtube.com/embed/${video_id[0].split('=')[1]}?autoplay=1&controls=2&wmode=opaque&list=${playlist_id[0].split('=')[1]}`
+                }
+                playBtnClass={"youtube"}
+              />
+            );
+          }
+          if (playlist_id.length) {
+            return (
+              <GenericEmbed
+                preview={util.crop(this.props.preview.id, 1024, 270)}
+                url={
+                  `https://youtube.com/embed/?listType=playlist&list=${playlist_id[0].split('=')[1]}?autoplay=1&controls=2&wmode=opaque`
+                }
+                playBtnClass={"youtube"}
+              />
+            );
           }
           return (
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 1024, 270)}
               url={
-                `https://youtube.com/embed/${video_id}?autoplay=1&controls=2&wmode=opaque`
+                `https://youtube.com/embed/${video_id[0].split('=')[1]}?autoplay=1&controls=2&wmode=opaque`
               }
               playBtnClass={"youtube"}
             />
