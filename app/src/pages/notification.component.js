@@ -11,43 +11,31 @@ class Notification extends Component {
       action: null,
       title: null,
       notification: null,
-      group: null,
-      user: null,
     };
   }
 
   componentDidMount() {
     http.get(`/api/notifications/${this.props.id}`).then(n => {
-      Promise.all([
-        `/api/groups/${n.fromGroup.id}`,
-        `/api/users/${n.fromUser.id}`,
-      ].map(url => http.get(url).then(e => e))).then(res => {
-        this.setState({
-          target: this.getTarget(n, res[0], n.fromMessage.id),
-          action: this.getAction(n),
-          title: n["title"],
-          notification: n,
-          group: res[0],
-          user: res[1],
-        });
+      this.setState({
+        target: this.getTarget(n, n.fromMessage.id),
+        action: this.getAction(n),
+        title: n["title"],
+        notification: n,
       });
     });
   }
 
-  getMiniature(notification, user) {
+  getMiniature(notification) {
     let imgSrc = util.defaultAvatar;
     if (
-      user &&
-      user.avatar &&
-      notification.type != "global_notification"
+      notification?.miniature
+      && notification.type != "global_notification"
     ) {
-      imgSrc = util.crop(user.avatar["id"], 80, 80);
+      imgSrc = util.crop(notification?.miniature?.id, 80, 80);
     }
     return (
       <img
-        style={util.backgroundHash(
-          user ? user.id : ""
-        )}
+        style={util.backgroundHash(notification?.author?.id)}
         src={imgSrc}
         onError={e => this.setMiniatureOnError(e)}
       />
@@ -81,7 +69,7 @@ class Notification extends Component {
         return (
           <Fragment>
             <strong>
-              {this.state?.group.name}
+              {this.state?.notification?.fromGroup.name}
             </strong>
             {this.state.title && (
               <Fragment>
@@ -108,7 +96,7 @@ class Notification extends Component {
       case "user_left_group":
         return (
           <strong>
-            {this.state?.group.name}
+            {this.state?.notification?.fromGroup.name}
           </strong>
         );
       case "group_name_change":
@@ -126,12 +114,12 @@ class Notification extends Component {
     }
   }
 
-  getTarget(notification, group, message_id) {
+  getTarget(notification, message_id) {
     switch (notification?.type) {
       case "user_joined_group":
       case "user_left_group":
       case "group_name_change":
-        return `/groups/${group.id}`;
+        return `/groups/${notification.fromGroup.id}`;
       case "new_message":
         return `/messages/${notification.target}`;
       case "new_comment":
@@ -155,12 +143,12 @@ class Notification extends Component {
         to={this.state.target}
         title={this.state.title}
       >
-        <div class="miniature unselectable">{this.getMiniature(this.state.notification, this.state.user)}</div>
+        <div class="miniature unselectable">{this.getMiniature(this.state.notification)}</div>
         <div class="infos">
           <div class="description">
             {this.state.notification.type != "global_notification" && (
               <Fragment>
-                <strong>{this.state.user.name || "--"}</strong>
+                <strong>{this.state.notification?.author?.name || "--"}</strong>
                 <span>{` ${this.state.action} `}</span>
               </Fragment>
             )}

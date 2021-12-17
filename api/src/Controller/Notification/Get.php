@@ -43,6 +43,9 @@ class Get extends ApiController
             return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
         }
         $notification_data = $this->normalize($notification, ['read_notification']);
+        $notification_data["fromGroup"] = $this->normalize($notification->getFromGroup(), ['read_notification']);
+
+        // Process notification's title
         $title = "";
         if (in_array($notification->getType(), [Notification::NEW_COMMENT, Notification::NEW_MESSAGE])) {
           $message = $notification->getFromMessage();
@@ -69,8 +72,14 @@ class Get extends ApiController
             $notification_data["author"] = $this->normalize($message->getAuthor(), ['read_message']);
           }
         }
-
         $notification_data["title"] = $title;
+
+        // Process notification's miniature
+        if (
+          $notification_data["type"] != Notification::GLOBAL_NOTIFICATION
+        ) {
+          $notification_data["miniature"] = $this->normalize($notification->getFromUser()->getAvatar(), ['read_message']);
+        }
 
         return new Response(json_encode($notification_data), Response::HTTP_OK);
     }
