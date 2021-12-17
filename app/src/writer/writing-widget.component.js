@@ -11,6 +11,16 @@ export default function WritingWidget(props) {
   const { t, i18n } = useTranslation();
   const writerForm = useRef(null);
 
+  const cleanForm = () => {
+    setPreview(null);
+    setLink(null);
+  }
+
+  const sendMessage = writerForm => {
+    props.sendMessage(writerForm);
+    cleanForm();
+  }
+
   const genPreview = (t) => {
     t.style.height = "1px";
     t.style.height = `${25 + t.scrollHeight}px`;
@@ -33,7 +43,7 @@ export default function WritingWidget(props) {
 
   const onKeyPress = (event, doGenPreview = false) => {
     if (event.ctrlKey && util.is_it_enter(event)) {
-      props.sendMessage();
+      sendMessage(writerForm);
       return;
     }
     if (![" ", "Enter", "v"].includes(event.key)) {
@@ -124,7 +134,7 @@ export default function WritingWidget(props) {
             disabled={!props.group}
             type="submit"
             class="submit"
-            onClick={() => props.sendMessage(writerForm)}
+            onClick={() => sendMessage(writerForm)}
           >
             {t("submit")}
           </button>

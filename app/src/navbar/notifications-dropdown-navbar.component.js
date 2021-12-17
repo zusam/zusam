@@ -12,7 +12,7 @@ export default function NotificationsDropdownNavbar() {
   if (!notifications) {
     return null;
   }
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <div
