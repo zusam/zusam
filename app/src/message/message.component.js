@@ -5,7 +5,7 @@ import MessageHead from "./message-head.component.js";
 import MessageFooter from "./message-footer.component.js";
 import MessageBody from "./message-body.component.js";
 import MessageBreadcrumbs from "./message-breadcrumbs.component.js";
-import Writer from "./writer.component.js";
+import { Writer } from "/src/writer";
 import { withTranslation } from 'react-i18next';
 import { connectStoreon } from 'storeon/preact';
 

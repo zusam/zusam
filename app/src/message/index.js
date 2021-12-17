@@ -1,6 +1,3 @@
-import _EmbedBlock from "./embed-block.component.js";
-import _FileGrid from "./file-grid.component.js";
-import _GroupWriter from "./group-writer.component.js";
 import _Message from "./message.component.js";
 import _MessageBody from "./message-body.component.js";
 import _MessageBreadcrumbs from "./message-breadcrumbs.component.js";
@@ -12,11 +9,7 @@ import _MessageList from "./message-list.component.js";
 import _MessageParent from "./message-parent.component.js";
 import _MessagePreview from "./message-preview.component.js";
 import _MessageSearchResult from "./message-search-result.component.js";
-import _Writer from "./writer.component.js";
 
-export const EmbedBlock = _EmbedBlock;
-export const FileGrid = _FileGrid;
-export const GroupWriter = _GroupWriter;
 export const Message = _Message;
 export const MessageBody = _MessageBody;
 export const MessageBreadcrumbs = _MessageBreadcrumbs;
@@ -28,4 +21,3 @@ export const MessageList = _MessageList;
 export const MessageParent = _MessageParent;
 export const MessagePreview = _MessagePreview;
 export const MessageSearchResult = _MessageSearchResult;
-export const Writer = _Writer;

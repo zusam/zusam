@@ -34,7 +34,7 @@
         }
     }
 
-    #title {
+    .title-input {
         width: 100%;
         padding: 10px;
         display: inline;
@@ -42,7 +42,7 @@
         border-bottom: 1px solid #eee;
     }
 
-    #text {
+    .text-input {
         resize: none;
         min-height: 10rem;
         max-height: 40rem;

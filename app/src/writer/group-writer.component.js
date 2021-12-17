@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { Writer } from "/src/message";
+import { Writer } from "/src/writer";
 import { Navbar } from "/src/navbar";
 import { useParams } from "react-router-dom";
 

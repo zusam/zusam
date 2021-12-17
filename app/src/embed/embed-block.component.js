@@ -1,7 +1,7 @@
 import { h, Component } from "preact";
 import { util } from "/src/core";
-import BandCampEmbed from "./embeds/bandcamp-embed.component.js";
-import GenericEmbed from "./embeds/generic-embed.component.js";
+import BandCampEmbed from "./bandcamp-embed.component.js";
+import GenericEmbed from "./generic-embed.component.js";
 
 export default class EmbedBlock extends Component {
   getPreview() {

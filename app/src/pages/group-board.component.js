@@ -20,7 +20,7 @@ export default function GroupBoard() {
             </div>
           <Link
             class="write-button material-shadow seamless-link"
-            to={`/groups/${this.props.id}/write`}
+            to={`/groups/${params.id}/write`}
           >
             <FaIcon family={"solid"} icon={"pencil-alt"} />
           </Link>

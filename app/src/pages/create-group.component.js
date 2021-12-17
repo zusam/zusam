@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
-import { http, router } from "/src/core";
+import { http, util } from "/src/core";
 import { withTranslation } from 'react-i18next';
+import { Navbar } from "/src/navbar";
 
 class CreateGroup extends Component {
   constructor() {
@@ -10,8 +11,7 @@ class CreateGroup extends Component {
 
   postNewGroup(event) {
     event.preventDefault();
-    const name = document.querySelector("#create_group_form input[name='name']")
-      .value;
+    const name = document.querySelector("#create_group_form input[name='name']").value;
     let group = {};
     if (name) {
       group.name = name;
@@ -21,7 +21,7 @@ class CreateGroup extends Component {
     group.createdAt = Math.floor(Date.now() / 1000);
     http.post("/api/groups", group).then(res => {
       http.post(`/api/groups/invitation/${  res.secretKey}`, {}).then(res => {
-        window.location = router.toApp(`/groups/${res.id}`);
+        window.location = util.toApp(`/groups/${res.id}`);
       });
     });
   }

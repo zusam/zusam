@@ -7,7 +7,8 @@ import {
   Signup,
   StopNotificationEmails
 } from "/src/outside";
-import { MessageParent, GroupWriter } from "/src/message";
+import { MessageParent } from "/src/message";
+import { GroupWriter } from "/src/writer";
 import { CreateGroup, GroupBoard, Share, BookmarkBoard } from "/src/pages";
 import { SettingsWrapper } from "/src/settings";
 import { GroupSearchWrapper } from "/src/navbar";
@@ -94,6 +95,7 @@ function App() {
       <Route path="/create-group" element={<CreateGroup />} />
       <Route path="/share" element={<Share />} />
       <Route path="/messages/:id" element={<MessageParent />} />
+      <Route path="/messages/:id/:child_id" element={<MessageParent />} />
       <Route path="/bookmarks" element={<BookmarkBoard />} />
       <Route path="/groups/:id/write" element={<GroupWriter />} />
       <Route path="/groups/:id" element={<GroupBoard />} />

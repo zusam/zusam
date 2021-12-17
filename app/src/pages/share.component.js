@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
 import { me, router, http } from "/src/core";
-import Writer from "/src/message/writer.component.js";
+import { Writer } from "/src/writer";
 import { connectStoreon } from "storeon/preact";
 import { withTranslation } from 'react-i18next';
 

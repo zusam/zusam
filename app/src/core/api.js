@@ -1,13 +1,16 @@
 import http from "./http.js";
+import store from "/src/store";
 
 const api = {
-  info: {},
+  get info() {
+    return store.get()?.api;
+  },
   update: () =>
     http.get("/api/info", true).then(r => {
       if (!r) {
         return;
       }
-      api.info = Object.assign({}, r);
+      store.dispatch('api/update', Object.assign({}, r));
       setTimeout(dispatchEvent(new CustomEvent("apiStateChange")));
       return r;
     }),
