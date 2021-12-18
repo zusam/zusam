@@ -4,40 +4,40 @@ import { Link } from "react-router-dom";
 import { FaIcon } from "/src/misc";
 import { useTranslation } from "react-i18next";
 
-export default function MessageFooter() {
+export default function MessageFooter(props) {
   const { t } = useTranslation();
   return (
     <div class="message-footer">
       <div class="infos">
-        {!this.props?.isPublic && this.props?.author && this.props?.author?.id === me.id && (
+        {!props?.isPublic && props?.author && props?.author?.id === me.id && (
           <Fragment>
             <a
               class="action seamless-link font-size-90 capitalize d-none d-sm-block"
-              onClick={e => this.props.editMessage(e)}
+              onClick={e => props.editMessage(e)}
             >
               {t("edit")}
             </a>
             <div class="dot d-none d-sm-block">&bull;</div>
           </Fragment>
         )}
-        {!this.props?.isPublic && this.props?.isChild && this.props?.message && (
+        {!props?.isPublic && props?.isChild && props?.message && (
           <Fragment>
             <Link
               class="action seamless-link font-size-90 capitalize"
               to={
-                `/messages/${this.props?.message.id}${this.props?.message?.children.length ? "" : "?focus=reply"}`
+                `/messages/${props?.message.id}${props?.message?.children.length ? "" : "?focus=reply"}`
               }
             >
-              {this.props?.message?.children.length ? (
-                this.props.message.children.some(e => notifications.isNew(e.id)) ? (
+              {props?.message?.children.length ? (
+                props.message.children.some(e => notifications.isNew(e.id)) ? (
                   <b>
                     {t("replies", {
-                      count: this.props.message.children.length
+                      count: props.message.children.length
                     })}
                   </b>
                 ) : (
                   t("replies", {
-                    count: this.props.message.children.length
+                    count: props.message.children.length
                   })
                 )
               ) : (
@@ -49,21 +49,21 @@ export default function MessageFooter() {
         )}
         <div
           class="date font-size-90"
-          title={util.humanFullDate(this.props?.message.createdAt)}
+          title={util.humanFullDate(props?.message.createdAt)}
         >
-          {util.humanTime(this.props?.message.createdAt)}
+          {util.humanTime(props?.message.createdAt)}
         </div>
         <Fragment>
           <div class="dot">&bull;</div>
           <div class="font-size-90">
             {
-              this.props?.author && this.props?.author?.name ? this.props.author.name : "--"
+              props?.author && props?.author?.name ? props.author.name : "--"
             }
           </div>
         </Fragment>
       </div>
       <div>
-        {!this.props?.isPublic && (
+        {!props?.isPublic && (
           <div
             class="options dropdown"
             onClick={e =>
@@ -74,10 +74,10 @@ export default function MessageFooter() {
               <FaIcon family="solid" icon="ellipsis-h" />
             </div>
             <div class="dropdown-menu dropdown-options">
-              {this.props?.author && this.props?.author?.id === me.id && (
+              {props?.author && props?.author?.id === me.id && (
                 <a
                   class="seamless-link capitalize"
-                  onClick={e => this.props.deleteMessage(e)}
+                  onClick={e => props.deleteMessage(e)}
                 >
                   {t("delete")}
                 </a>
@@ -85,7 +85,7 @@ export default function MessageFooter() {
               {
                 <a
                   class="seamless-link capitalize"
-                  onClick={e => this.props.openPublicLink(e)}
+                  onClick={e => props.openPublicLink(e)}
                 >
                   {t("public_link")}
                 </a>
@@ -93,41 +93,41 @@ export default function MessageFooter() {
               {me.groups?.length > 1 && (
                 <a
                   class="seamless-link capitalize"
-                  onClick={e => this.props.shareMessage(e)}
+                  onClick={e => props.shareMessage(e)}
                 >
                   {t("share_message")}
                 </a>
               )}
-              {!this.props?.message?.isInFront &&
-                  this.props?.author &&
-                  this.props?.author.id == me.id && (
+              {!props?.message?.isInFront &&
+                  props?.author &&
+                  props?.author.id == me.id && (
                     <a
                       class="seamless-link capitalize"
-                      onClick={e => this.props.publishInGroup(e)}
+                      onClick={e => props.publishInGroup(e)}
                     >
                       {t("publish_in_group")}
                     </a>
                   )}
-              {!me.hasBookmark(this.props?.message.id) && (
+              {!me.hasBookmark(props?.message.id) && (
                 <a
                   class="seamless-link capitalize"
-                  onClick={() => me.addBookmark(this.props?.message.id)}
+                  onClick={() => me.addBookmark(props?.message.id)}
                 >
                   {t("add_bookmark")}
                 </a>
               )}
-              {me.hasBookmark(this.props?.message.id) && (
+              {me.hasBookmark(props?.message.id) && (
                 <a
                   class="seamless-link capitalize"
-                  onClick={() => me.removeBookmark(this.props?.message.id)}
+                  onClick={() => me.removeBookmark(props?.message.id)}
                 >
                   {t("remove_bookmark")}
                 </a>
               )}
-              {this.props?.author?.id == me.id && (
+              {props?.author?.id == me.id && (
                 <a
                   class="seamless-link capitalize"
-                  onClick={e => this.props.editMessage(e)}
+                  onClick={e => props.editMessage(e)}
                 >
                   {t("edit")}
                 </a>

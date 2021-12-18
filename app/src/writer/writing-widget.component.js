@@ -71,6 +71,7 @@ export default function WritingWidget(props) {
           class="title-input"
           onKeyPress={e => onKeyPress(e)}
           placeholder={t("title_placeholder")}
+          value={props.title}
          />
       )}
       <textarea
@@ -81,6 +82,7 @@ export default function WritingWidget(props) {
         autofocus={props.focus}
         placeholder={t("text_placeholder")}
         maxlength="50000"
+        value={props.text}
        />
       {!!preview && (
         <EmbedBlock inWriter={true} {...preview} />

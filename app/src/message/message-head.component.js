@@ -1,32 +1,32 @@
 import { h } from "preact";
 import { util } from "/src/core";
 
-export default function MessageHead() {
+export default function MessageHead(props) {
   return (
     <div class="message-head d-flex">
-      {!this.props.isPublic && (
+      {!props.isPublic && (
         <div>
           <img
             className={
               `rounded-circle material-shadow avatar${ 
-                this.props.author && this.props.author.name ? "" : " removed-user"}`
+                props.author && props.author.name ? "" : " removed-user"}`
             }
             style={util.backgroundHash(
-              this.props.author && this.props.author.name ? this.props.author && this.props.author.id : ""
+              props.author && props.author.name ? props.author && props.author.id : ""
             )}
             src={
-              this.props.author && this.props.author.avatar
-                ? util.crop(this.props.author.avatar.id, 100, 100)
+              props.author && props.author.avatar
+                ? util.crop(props.author.avatar.id, 100, 100)
                 : util.defaultAvatar
             }
-            title={this.props.author && this.props.author.name ? this.props.author.name : ""}
+            title={props.author && props.author.name ? props.author.name : ""}
           />
         </div>
       )}
-      {!this.props.isChild && !this.props.isPublic && (
+      {!props.isChild && !props.isPublic && (
         <div class="infos">
           <span class="capitalize author">
-            {this.props.author && this.props.author.name ? this.props.author.name : ""}
+            {props.author && props.author.name ? props.author.name : ""}
           </span>
         </div>
       )}

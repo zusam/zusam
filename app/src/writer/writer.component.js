@@ -9,9 +9,15 @@ export default function Writer(props) {
 
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState(props?.files || []);
   const [sending, setSending] = useState(false);
   const writerId = util.genId();
+
+  const setForm = (writerForm, files = [], title = "", text = "") => {
+    setFiles(files);
+    Array.from(writerForm.current.getElementsByClassName('title-input')).map(e => e.value = title);
+    Array.from(writerForm.current.getElementsByClassName('text-input')).map(e => e.value = text);
+  }
 
   const updateFile = (id, file) => {
     setFiles(files.map(f => f.id === id ? Object.assign(f, file) : f));
@@ -56,15 +62,9 @@ export default function Writer(props) {
     );
   };
 
-  const cleanForm = writerForm => {
-    setFiles([]);
-    Array.from(writerForm.current.getElementsByClassName('title-input')).map(e => e.value = "");
-    Array.from(writerForm.current.getElementsByClassName('text-input')).map(e => e.value = "");
-  }
-
   const putMessage = (msg, writerForm) => {
     http.put(`/api/messages/${props.messageId}`, msg).then(res => {
-      cleanForm(writerForm);
+      setForm(writerForm, [], "", "");
       setSending(false);
       if (!res) {
         alert.add(t("error_new_message"), "alert-danger");
@@ -103,7 +103,7 @@ export default function Writer(props) {
       } else {
         navigate(`/messages/${res.id}`);
       }
-      cleanForm(writerForm);
+      setForm(writerForm, [], "", "");
     });
     setSending(true);
   }
@@ -171,6 +171,8 @@ export default function Writer(props) {
       toggleFile={toggleFile}
       group={props.group}
       isChild={props.isChild}
+      text={props.text}
+      title={props.title}
     />
   );
 }

@@ -1,11 +1,11 @@
 import { h } from "preact";
 import Message from "./message.component.js";
 
-export default function MessageChild() {
+export default function MessageChild(props) {
   return (
     <Message
-      id={this.props.id}
-      isPublic={this.props.isPublic}
+      id={props.id}
+      isPublic={props.isPublic}
       isChild={true}
      />
   );
