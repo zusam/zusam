@@ -10,6 +10,7 @@ import { withTranslation } from 'react-i18next';
 import { connectStoreon } from 'storeon/preact';
 
 class Message extends Component {
+
   constructor(props) {
     super(props);
     this.getComponentClass = this.getComponentClass.bind(this);
@@ -126,9 +127,8 @@ class Message extends Component {
         if (this.props.isChild) {
           this.setState({isRemoved: true});
         } else {
-          this.props.history.push(`/groups/${this.state.message.group.id}`, {
-            data: {resetGroupDisplay: true}
-          });
+          // dirty hack before converting this component to a function
+          window.location.href = `/groups/${this.state.message.group.id}`;
         }
       });
     }
