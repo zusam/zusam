@@ -3,11 +3,13 @@ import { http, util, api } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { EmbedBlock, FileGrid } from "/src/embed";
 import { useTranslation } from 'react-i18next';
-import { useState, useRef } from 'preact/hooks';
+import { useState, useRef, useEffect } from 'preact/hooks';
 
 export default function WritingWidget(props) {
   const [preview, setPreview] = useState(null);
   const [link, setLink] = useState("");
+  const [text, setText] = useState(props.text || "");
+  const [title, setTitle] = useState(props.title || "");
   const { t, i18n } = useTranslation();
   const writerForm = useRef(null);
 
@@ -71,7 +73,8 @@ export default function WritingWidget(props) {
           class="title-input"
           onKeyPress={e => onKeyPress(e)}
           placeholder={t("title_placeholder")}
-          value={props.title}
+          value={title}
+          onChange={e => setTitle(e.target.value)}
          />
       )}
       <textarea
@@ -82,7 +85,8 @@ export default function WritingWidget(props) {
         autofocus={props.focus}
         placeholder={t("text_placeholder")}
         maxlength="50000"
-        value={props.text}
+        value={text}
+        onChange={e => setText(e.target.value)}
        />
       {!!preview && (
         <EmbedBlock inWriter={true} {...preview} />
