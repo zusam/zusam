@@ -16,10 +16,15 @@ export default function WritingWidget(props) {
   const cleanForm = () => {
     setPreview(null);
     setLink(null);
+    setText("");
+    setTitle("");
   }
 
   const sendMessage = writerForm => {
-    props.sendMessage(writerForm);
+    props.sendMessage(writerForm, {
+      "title": title,
+      "text": text,
+    });
     cleanForm();
   }
 

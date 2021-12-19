@@ -108,12 +108,12 @@ export default function Writer(props) {
     setSending(true);
   }
 
-  const sendMessage = writerForm => {
+  const sendMessage = (writerForm, data) => {
     let msg = {
       files: files.filter(e => !e?.removed).filter(e => e?.status == "ready").map(e => e?.id).filter(e => !!e),
       data: {
-        title: Array.from(writerForm.current.getElementsByClassName('title-input'))[0]?.value || "",
-        text: Array.from(writerForm.current.getElementsByClassName('text-input'))[0]?.value || "",
+        title: data?.title,
+        text: data?.text,
       }
     };
     if (props.messageId) {
