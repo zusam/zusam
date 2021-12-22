@@ -34,7 +34,7 @@ class GroupSearch extends Component {
   }
 
   loadMessages() {
-    const search = router.getParam("search")
+    const search = router.getParam("q")
     const hashtags = router.getParam("hashtags")
     this.setState({
       search,
