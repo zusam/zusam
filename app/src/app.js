@@ -53,24 +53,24 @@ function App() {
       // lang is loaded (force refresh)
       // setTimeout(() => this.setState({lang: "up"}), 10);
     });
-  }, []);
 
-  //// manage dropdowns
-  //window.addEventListener("click", e => {
-  //  if (!e.target.closest(".dropdown")) {
-  //    // close dropdowns if we are clicking on something else
-  //      document.querySelectorAll(".dropdown").forEach(n => n.classList.remove("active"));
-  //  } else {
-  //    // close dropdowns that are not clicked on
-  //    document
-  //      .querySelectorAll(".dropdown")
-  //      .forEach(n => {
-  //        if(n != e.target.closest(".dropdown")) {
-  //          n.classList.remove("active")
-  //        }
-  //      });
-  //  }
-  //});
+    // manage dropdowns
+    window.addEventListener("click", e => {
+      if (!e.target.closest(".dropdown")) {
+        // close dropdowns if we are clicking on something else
+          document.querySelectorAll(".dropdown").forEach(n => n.classList.remove("active"));
+      } else {
+        // close dropdowns that are not clicked on
+        document
+          .querySelectorAll(".dropdown")
+          .forEach(n => {
+            if(n != e.target.closest(".dropdown")) {
+              n.classList.remove("active")
+            }
+          });
+      }
+    });
+  }, []);
 
   // check if user is connected
   // storage.get("apiKey").then(apiKey => {
