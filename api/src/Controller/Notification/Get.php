@@ -48,8 +48,12 @@ class Get extends ApiController
         // Process notification's title
         $title = "";
         if (in_array($notification->getType(), [Notification::NEW_COMMENT, Notification::NEW_MESSAGE])) {
+
+          $notification_data["author"] = $this->normalize($notification->getFromUser(), ['read_message']);
+
           $message = $notification->getFromMessage();
           if ($message) {
+            $notification_data["target_author"] = $this->normalize($message->getAuthor(), ['read_message']);
             $data = $message->getData();
             if (!empty($data["title"])) {
               $title = $data["title"];
@@ -68,8 +72,6 @@ class Get extends ApiController
             if (empty($title) && !empty($data["text"])) {
               $title = $data["text"];
             }
-
-            $notification_data["author"] = $this->normalize($message->getAuthor(), ['read_message']);
           }
         }
         $notification_data["title"] = $title;

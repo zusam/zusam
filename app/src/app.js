@@ -18,38 +18,42 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
+import { useEffect } from "preact/hooks";
 
 function App() {
 
-  // update data at initial load
-  api.update();
-  notifications.update();
-  let navigate = useNavigate();
-  let location = useLocation();
-  me.fetch().then(user => {
-    if (user) {
-      if (location.pathname == "/") {
-        let redirect = "/create-group";
-        if (user.data?.default_group) {
-          redirect = `/groups/${user?.data["default_group"]}`;
-        } else if (user?.groups[0]) {
-          redirect = `/groups/${user?.groups[0].id}`;
-        }
-        navigate(redirect);
-      }
-    } else if (location.pathname == "/" || location.pathname == "") {
-      navigate("/login");
-    } else if (location.pathname == "/logout") {
-      me.logout();
-    }
-  });
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // i18n dict management
-  lang.init();
-  window.addEventListener("fetchedNewDict", () => {
-    // lang is loaded (force refresh)
-    // setTimeout(() => this.setState({lang: "up"}), 10);
-  });
+  // initial load
+  useEffect(() => {
+    api.update();
+    notifications.update();
+    me.fetch().then(user => {
+      if (user) {
+        if (location.pathname == "/") {
+          let redirect = "/create-group";
+          if (user.data?.default_group) {
+            redirect = `/groups/${user?.data["default_group"]}`;
+          } else if (user?.groups[0]) {
+            redirect = `/groups/${user?.groups[0].id}`;
+          }
+          navigate(redirect);
+        }
+      } else if (location.pathname == "/" || location.pathname == "") {
+        navigate("/login");
+      } else if (location.pathname == "/logout") {
+        me.logout();
+      }
+    });
+
+    // i18n dict management
+    lang.init();
+    window.addEventListener("fetchedNewDict", () => {
+      // lang is loaded (force refresh)
+      // setTimeout(() => this.setState({lang: "up"}), 10);
+    });
+  }, []);
 
   //// manage dropdowns
   //window.addEventListener("click", e => {

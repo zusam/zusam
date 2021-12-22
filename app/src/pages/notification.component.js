@@ -83,7 +83,7 @@ class Notification extends Component {
         return (
           <span>
             {`${this.props.t("the_message_from")  } `}
-            <strong>{notification?.author?.name}</strong>
+            <strong>{notification?.target_author?.name}</strong>
             {this.state.title && (
               <Fragment>
                 <br />
