@@ -1,132 +1,129 @@
-import { h, Component } from "preact";
+import { h } from "preact";
 import { alert, storage, http, me } from "/src/core";
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'preact/hooks';
+import { useNavigate } from "react-router-dom";
 
-class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      showAlert: false,
-      error: ""
-    };
-    this.sendLoginForm = this.sendLoginForm.bind(this);
-    this.sendPasswordReset = this.sendPasswordReset.bind(this);
-    this.showPasswordReset = this.showPasswordReset.bind(this);
+export default function Login() {
+
+  const [error, setError] = useState("");
+  const [sending, setSending] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [showResetPassword, setResetPassword] = useState(false);
+  const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
     // reroute if already logged in
-    storage.get("apiKey").then(apiKey => apiKey && this.props.history.push("/"));
-  }
-
-  componentDidMount() {
+    storage.get("apiKey").then(apiKey => apiKey && navigate("/"));
     storage.reset();
-  }
+  }, []);
 
-  sendPasswordReset(e) {
+  const sendPasswordReset = e => {
     e.preventDefault();
     let login = document.getElementById("login").value || "";
     login.toLowerCase();
-    this.setState({ sending: true });
+    setSending(true);
     http.post("/api/password-reset-mail", { mail: login }).then(res => {
-      this.setState({ sending: false });
+      setSending(false);
       if (res && !res.message) {
-        alert.add(this.props.t("password_reset_mail_sent"));
+        alert.add(t("password_reset_mail_sent"));
       } else {
-        alert.add(this.props.t(res.message), "alert-danger");
+        alert.add(t(res.message), "alert-danger");
       }
     });
-  }
+  };
 
-  sendLoginForm(e) {
+  const sendLoginForm = e => {
     e.preventDefault();
-    this.setState({ showAlert: false, sending: true });
+    setShowAlert(false);
+    setSending(true);
     let login = document.getElementById("login").value || "";
     login.toLowerCase();
     const password = document.getElementById("password").value;
     http.post("/api/login", { login, password }).then(res => {
-      this.setState({ sending: false });
+      setSending(false);
       if (res && res.api_key) {
         storage.set("apiKey", res.api_key).then(() => {
-          console.log('login');
-          me.update().then(() => {
-            setTimeout(() => this.props.history.push("/"), 100);
+          me.update().then(user => {
+            let redirect = "/create-group";
+            if (user.data?.default_group) {
+              redirect = `/groups/${user?.data["default_group"]}`;
+            } else if (user?.groups[0]) {
+              redirect = `/groups/${user?.groups[0].id}`;
+            }
+            navigate(redirect);
           });
         });
       } else if (res && res.message) {
-          alert.add(this.props.t(res.message), "alert-danger");
+          alert.add(t(res.message), "alert-danger");
         } else {
-          alert.add(this.props.t("error"), "alert-danger");
+          alert.add(t("error"), "alert-danger");
         }
     });
-  }
+  };
 
-  showPasswordReset() {
-    this.setState({ showResetPassword: true });
-  }
-
-  render() {
-    return (
-      <div class="login">
-        <div class="login-form">
-          <img src={new URL("/src/assets/zusam_logo.svg", import.meta.url)} />
-          {!this.state.showResetPassword && (
-            <form>
-              <div class="form-group">
-                <input
-                  type="email"
-                  class="form-control"
-                  required
-                  id="login"
-                  placeholder={this.props.t("login_placeholder")}
-                />
-              </div>
-              <div class="form-group">
-                <input
-                  type="password"
-                  class="form-control"
-                  required
-                  id="password"
-                  placeholder={this.props.t("password_placeholder")}
-                />
-              </div>
-              <div class="forgot-password">
-                <span onClick={e => this.showPasswordReset(e)}>
-                  {this.props.t("forgot_password")}
-                </span>
-              </div>
-              <button
-                type="submit"
-                class="btn btn-light"
-                onClick={e => this.sendLoginForm(e)}
-                disabled={this.state.sending}
-              >
-                {this.props.t("connect")}
-              </button>
-            </form>
-          )}
-          {!!this.state.showResetPassword && (
-            <form>
-              <div class="form-group">
-                <input
-                  type="email"
-                  class="form-control"
-                  required
-                  id="login"
-                  placeholder={this.props.t("login_placeholder")}
-                />
-              </div>
-              <button
-                type="submit"
-                class="btn btn-light"
-                onClick={e => this.sendPasswordReset(e)}
-                disabled={this.state.sending}
-              >
-                {this.props.t("submit")}
-              </button>
-            </form>
-          )}
-        </div>
+  return (
+    <div class="login">
+      <div class="login-form">
+        <img src={new URL("/src/assets/zusam_logo.svg", import.meta.url)} />
+        {!showResetPassword && (
+          <form>
+            <div class="form-group">
+              <input
+                type="email"
+                class="form-control"
+                required
+                id="login"
+                placeholder={t("login_placeholder")}
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="password"
+                class="form-control"
+                required
+                id="password"
+                placeholder={t("password_placeholder")}
+              />
+            </div>
+            <div class="forgot-password">
+              <span onClick={() => setShowResetPassword(true)}>
+                {t("forgot_password")}
+              </span>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-light"
+              onClick={e => sendLoginForm(e)}
+              disabled={sending}
+            >
+              {t("connect")}
+            </button>
+          </form>
+        )}
+        {!!showResetPassword && (
+          <form>
+            <div class="form-group">
+              <input
+                type="email"
+                class="form-control"
+                required
+                id="login"
+                placeholder={t("login_placeholder")}
+              />
+            </div>
+            <button
+              type="submit"
+              class="btn btn-light"
+              onClick={e => sendPasswordReset(e)}
+              disabled={sending}
+            >
+              {t("submit")}
+            </button>
+          </form>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default withTranslation()(Login);
