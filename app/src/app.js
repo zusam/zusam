@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { api, me, lang, notifications } from "/src/core";
+import { api, me, i18n, notifications } from "/src/core";
 import {
   Login,
   Public,
@@ -13,6 +13,7 @@ import { CreateGroup, GroupBoard, Share, BookmarkBoard } from "/src/pages";
 import { SettingsWrapper } from "/src/settings";
 import { GroupSearchWrapper } from "/src/navbar";
 import {
+  Navigate,
   Routes,
   Route,
   useNavigate,
@@ -29,30 +30,6 @@ function App() {
   useEffect(() => {
     api.update();
     notifications.update();
-    me.fetch().then(user => {
-      if (user) {
-        if (location.pathname == "/") {
-          let redirect = "/create-group";
-          if (user.data?.default_group) {
-            redirect = `/groups/${user?.data["default_group"]}`;
-          } else if (user?.groups[0]) {
-            redirect = `/groups/${user?.groups[0].id}`;
-          }
-          navigate(redirect);
-        }
-      } else if (location.pathname == "/" || location.pathname == "") {
-        navigate("/login");
-      } else if (location.pathname == "/logout") {
-        me.logout();
-      }
-    });
-
-    // i18n dict management
-    lang.init();
-    window.addEventListener("fetchedNewDict", () => {
-      // lang is loaded (force refresh)
-      // setTimeout(() => this.setState({lang: "up"}), 10);
-    });
 
     // manage dropdowns
     window.addEventListener("click", e => {
@@ -72,6 +49,22 @@ function App() {
     });
   }, []);
 
+  let redirect = "/login";
+  if (location.pathname == "/") {
+    me.fetch().then(user => {
+      if (!user) {
+        navigate("/login");
+      } else {
+        redirect = "/create-group";
+        if (user.data?.default_group) {
+          redirect = `/groups/${user?.data["default_group"]}`;
+        } else if (user?.groups[0]) {
+          redirect = `/groups/${user?.groups[0].id}`;
+        }
+      }
+    });
+  }
+
   // check if user is connected
   // storage.get("apiKey").then(apiKey => {
   //   if (router.route == "invitation") {
@@ -90,11 +83,13 @@ function App() {
 
   return (
     <Routes>
+      <Route path="/" element={<Navigate replace to={redirect} />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/stop-notification-emails" element={<StopNotificationEmails />} />
       <Route path="/public/:token" element={<Public />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/logout" element={<Navigate replace to="/login" />} />
       <Route path="/:type/:id/settings" element={<SettingsWrapper />} />
       <Route path="/create-group" element={<CreateGroup />} />
       <Route path="/share" element={<Share />} />

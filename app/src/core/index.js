@@ -1,7 +1,7 @@
 import _alert from "./alert.js";
 import _api from "./api.js";
 import _http from "./http.js";
-import _lang from "./lang.js";
+import { lang as _lang, i18n as _i18n } from "./lang.js";
 import _me from "./me.js";
 import _notifications from "./notifications.js";
 import _router from "./router.js";
@@ -12,6 +12,7 @@ export const alert = _alert;
 export const api = _api;
 export const http = _http;
 export const lang = _lang;
+export const i18n = _i18n;
 export const me = _me;
 export const notifications = _notifications;
 export const router = _router;

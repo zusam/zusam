@@ -80,7 +80,6 @@ const me = {
 
   logout() {
     storage.reset();
-    window.location.href = window.location.origin;
   }
 }
 

@@ -2,6 +2,7 @@ import { h, Component, Fragment } from "preact";
 import { util, notifications, http } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
+import { HumanTime } from "/src/pages";
 
 function getAvatar(user) {
   return (
@@ -75,7 +76,7 @@ export default class MessagePreview extends Component {
                 this.state?.data?.title || util.humanFullDate(this.state?.lastActivityDate)
               }
             >
-              {this.state?.data?.title || util.humanTime(this.state?.lastActivityDate)}
+              {this.state?.data?.title || (<HumanTime timestamp={this.state?.lastActivityDate} />)}
             </span>
             <span class="children">
               {this.state?.children > 0 && (

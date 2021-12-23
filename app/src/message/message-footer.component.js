@@ -3,6 +3,7 @@ import { util, me, notifications } from "/src/core";
 import { Link } from "react-router-dom";
 import { FaIcon } from "/src/misc";
 import { useTranslation } from "react-i18next";
+import { HumanTime } from "/src/pages";
 
 export default function MessageFooter(props) {
   const { t } = useTranslation();
@@ -51,7 +52,7 @@ export default function MessageFooter(props) {
           class="date font-size-90"
           title={util.humanFullDate(props?.message.createdAt)}
         >
-          {util.humanTime(props?.message.createdAt)}
+          <HumanTime timestamp={props?.message.createdAt} />
         </div>
         <Fragment>
           <div class="dot">&bull;</div>
