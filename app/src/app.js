@@ -50,8 +50,8 @@ function App() {
   }, []);
 
   let redirect = "/login";
-  if (location.pathname == "/") {
-    me.fetch().then(user => {
+  me.fetch().then(user => {
+    if (location.pathname == "/") {
       if (!user) {
         navigate("/login");
       } else {
@@ -62,8 +62,8 @@ function App() {
           redirect = `/groups/${user?.groups[0].id}`;
         }
       }
-    });
-  }
+    }
+  });
 
   // check if user is connected
   // storage.get("apiKey").then(apiKey => {
