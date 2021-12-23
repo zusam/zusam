@@ -46,8 +46,8 @@ self.addEventListener("fetch", (evt) => {
       evt.waitUntil(() => {
         get(evt.request.url, cache_store)
           .then(r => {
-            if (r && Object.protoype.hasOwnProperty.call(r, "lastUsed") && r.lastUsed != null) {
-              const timeout = r.lastUsed + cached_routes.find(r => evt.request.url.match(r.route))["duration"];
+            if (r && Object.protoype.hasOwnProperty.call(r, "updatedAt") && r.updatedAt != null) {
+              const timeout = r.updatedAt + cached_routes.find(r => evt.request.url.match(r.route))["duration"];
               // update the cache only if the timeout is reached
               if (timeout < Date.now()) {
                 update(evt.request);
@@ -60,12 +60,13 @@ self.addEventListener("fetch", (evt) => {
   }
 });
 
-// Add response to cache and store the lastUsed timestamp at the same time
+// Add response to cache and store the lastUsedAt/updatedAt timestamp at the same time
 function addToCache(cache, request, response) {
   return set(
     request.url,
     {
-      lastUsed: Date.now()
+      lastUsedAt: Date.now(),
+      updatedAt: Date.now(),
     },
     cache_store
   ).then(() => cache.put(request, response));
@@ -92,11 +93,11 @@ function fromCache(request) {
   return caches.open(CACHE_NAME).then(cache => {
     return cache.match(request).then(matching => {
       if (matching) {
-        // reset lastUsed
+        // reset lastUsedAt
         return set(
           request.url,
           {
-            lastUsed: Date.now()
+            lastUsedAt: Date.now()
           },
           cache_store
         ).then(() => matching);
