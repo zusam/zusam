@@ -85,7 +85,7 @@ class MessageBreadcrumbs extends Component {
                       key={e.id}
                       to={`/${e.entityType}s/${e.id}`}
                       class="no-decoration"
-                    >{util.limitLength((e.entityType == "message" ? this.getTitle(e) : e?.name) || e.id, 40)}</Link>
+                    >{util.limitLength((e.entityType == "message" ? this.getTitle(e) : e?.name) || e.id, 30)}</Link>
                   </li>
                 </Fragment>
               ))}
