@@ -49,12 +49,10 @@ function App() {
     });
   }, []);
 
-  let redirect = "/login";
   me.fetch().then(user => {
     if (location.pathname == "/") {
-      if (!user) {
-        navigate("/login");
-      } else {
+      let redirect = "/login";
+      if (user) {
         redirect = "/create-group";
         if (user.data?.default_group) {
           redirect = `/groups/${user?.data["default_group"]}`;
@@ -62,6 +60,7 @@ function App() {
           redirect = `/groups/${user?.groups[0].id}`;
         }
       }
+      navigate(redirect);
     }
   });
 
@@ -83,7 +82,6 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Navigate replace to={redirect} />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/stop-notification-emails" element={<StopNotificationEmails />} />
       <Route path="/public/:token" element={<Public />} />
