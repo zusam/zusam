@@ -7,10 +7,11 @@ import { useState, useEffect } from "preact/hooks";
 
 export default function Writer(props) {
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [files, setFiles] = useState(props?.files || []);
   const [sending, setSending] = useState(false);
+  const [workers, setWorkers] = useState(0);
   const writerId = util.genId();
 
   const setForm = (writerForm, files = [], title = "", text = "") => {
@@ -36,15 +37,17 @@ export default function Writer(props) {
       throw "error";
     }
 
-    formData.append("fileIndex", files.findIndex(f => f.id == file.id));
+    formData.append("fileIndex", file.fileIndex);
     formData.append("file", file.inputFile);
 
     file['status'] = 'uploading';
+    setWorkers(workers+1);
     updateFile(fileId, file);
 
     http.sendFile(
       formData,
       file => {
+        setWorkers(workers-1);
         file['status'] = 'ready';
         updateFile(fileId, file);
       },
@@ -57,6 +60,7 @@ export default function Writer(props) {
       e => {
         console.warn(e);
         alert.add(t("error_upload"), "alert-danger");
+        setWorkers(workers-1);
         removeFile(fileId);
       }
     );
@@ -140,12 +144,14 @@ export default function Writer(props) {
       input.multiple = "multiple";
     }
     input.addEventListener("change", event => {
+      let fileIndex = files.reduce((a, f) => Math.max(a, f?.fileIndex || 0), 0) + 1;
       let list = Array.from(event.target.files).map(e => ({
         inputFile: e,
         type: mimetype,
         id: util.genId(),
         progress: 0,
         status: 'initial',
+        fileIndex: ++fileIndex,
       }));
       setFiles([...list, ...files]);
     });
@@ -154,7 +160,7 @@ export default function Writer(props) {
 
   useEffect(() => {
     files.forEach(e => {
-      if (e.status == "initial" && !!e.inputFile) {
+      if (e.status == "initial" && !!e.inputFile && workers < 3) {
         setTimeout(() => uploadFile(e.id), 100);
       }
     });

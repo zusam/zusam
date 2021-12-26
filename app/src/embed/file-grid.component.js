@@ -43,7 +43,7 @@ class FileGrid extends Component {
             </div>
           </a>
         );
-      case "initial":
+      case "uploading":
         return (
           <a class="rounded">
             <div

@@ -10,7 +10,7 @@ export default function WritingWidget(props) {
   const [link, setLink] = useState("");
   const [text, setText] = useState(props.text || "");
   const [title, setTitle] = useState(props.title || "");
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const writerForm = useRef(null);
 
   const cleanForm = () => {
@@ -37,7 +37,7 @@ export default function WritingWidget(props) {
       let links = text.match(/(https?:\/\/[^\s]+)/gi);
       if (links && links[0] != link) {
         http
-          .get(`/api/links/by_url?url=${  encodeURIComponent(links[0])}`)
+          .get(`/api/links/by_url?url=${encodeURIComponent(links[0])}`)
           .then(r => {
             if (r && t.value.indexOf(links[0]) >= 0) {
               setLink(links[0]);
