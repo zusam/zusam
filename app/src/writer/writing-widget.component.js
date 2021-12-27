@@ -3,7 +3,7 @@ import { http, util, api } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { EmbedBlock, FileGrid } from "/src/embed";
 import { useTranslation } from 'react-i18next';
-import { useState, useRef, useEffect } from 'preact/hooks';
+import { useState, useRef } from 'preact/hooks';
 
 export default function WritingWidget(props) {
   const [preview, setPreview] = useState(null);
@@ -98,10 +98,6 @@ export default function WritingWidget(props) {
       )}
       {!!props.files.length && (
         <FileGrid
-          key={props.files.reduce(
-            (a, c) => a + c.id + c.fileIndex + c.error,
-            ""
-          )}
           files={props.files}
           toggleFile={props.toggleFile}
           inWriter={true}

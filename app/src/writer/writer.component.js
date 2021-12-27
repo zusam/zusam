@@ -128,10 +128,13 @@ export default function Writer(props) {
   };
 
   // toggle state (removed or not) of a file
-  const toggleFile = (fileIndex) => {
-    let f = files.find(f => f.fileIndex == fileIndex);
-    f.removed = !f.removed;
-    setFiles(files);
+  const toggleFile = id => {
+    setFiles(files.map(f => {
+      if (f.id == id) {
+        f.removed = !f.removed;
+      }
+      return f;
+    }));
   }
 
   const inputFile = (mimetype, multiple = false) => {
@@ -160,7 +163,7 @@ export default function Writer(props) {
 
   useEffect(() => {
     files.forEach(e => {
-      if (e.status == "initial" && !!e.inputFile && workers < 3) {
+      if (e.status == "initial" && !!e.inputFile && workers < 2) {
         setTimeout(() => uploadFile(e.id), 100);
       }
     });

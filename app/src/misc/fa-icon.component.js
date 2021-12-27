@@ -32,7 +32,7 @@ function FaIcon() {
     return (
       <svg
         style={this.props.rotation ? `transform: rotate(${this.props.rotation})` : null}
-        className={`fa-icon ${this.props.family} ${this.props.icon} ${this.props.rotation}`}
+        className={`fa-icon ${this.props.family} ${this.props.icon}`}
         viewBox={`0 0 ${icon[0]} ${icon[1]}`}
       >
         <path fill="currentColor" d={icon[4]} />
