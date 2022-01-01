@@ -10,7 +10,7 @@ import {
 import { MessageParent } from "/src/message";
 import { GroupWriter } from "/src/writer";
 import { CreateGroup, GroupBoard, Share, BookmarkBoard } from "/src/pages";
-import { SettingsWrapper } from "/src/settings";
+import { Settings } from "/src/settings";
 import { GroupSearchWrapper } from "/src/navbar";
 import {
   Navigate,
@@ -88,7 +88,7 @@ function App() {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/login" element={<Login />} />
       <Route path="/logout" element={<Navigate replace to="/login" />} />
-      <Route path="/:type/:id/settings" element={<SettingsWrapper />} />
+      <Route path="/:type/:id/settings" element={<Settings />} />
       <Route path="/create-group" element={<CreateGroup />} />
       <Route path="/share" element={<Share />} />
       <Route path="/messages/:id" element={<MessageParent />} />
