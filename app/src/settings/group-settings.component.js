@@ -3,21 +3,28 @@ import { alert, http, util, me, router } from "/src/core";
 import { useStoreon } from "storeon/preact";
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function GroupSettings(props) {
 
+  const params = useParams();
   const { t } = useTranslation();
   const { me } = useStoreon('me');
   const navigate = useNavigate();
-  const [secretKey, setSecretKey] = useState(props.group?.secretKey || "");
+  const [secretKey, setSecretKey] = useState("");
   const [users, setUsers] = useState([]);
-  const [group, setGroup] = useState(props.group || {});
+  const [group, setGroup] = useState({});
   const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
-    Promise.all(group.users.map(u => http.get(`/api/users/${u.id}`).then(u => u))).then(
-      users => setUsers(users)
+    http.get(`/api/groups/${params.id}`).then(
+      group => {
+        setGroup(group);
+        setSecretKey(group.secretKey);
+        Promise.all(group.users.map(u => http.get(`/api/users/${u.id}`).then(u => u))).then(
+          users => setUsers(users)
+        );
+      }
     );
     setAlertMessage(t(router.getParam("alert")));
   }, []);

@@ -13,29 +13,7 @@ export default function Settings(props) {
   const params = useParams();
   const { t } = useTranslation();
   const { me } = useStoreon('me');
-  const [entity, setEntity] = useState(null);
 
-  useEffect(() => {
-    if (params.type == "groups") {
-      http.get(`/api/${params.type}/${params.id}`).then(
-        res => {
-          setEntity(res);
-        }
-      );
-    }
-    if (params.type == "users") {
-      // we use the /me endpoint to avoid service-workers cache
-      http.get(`/api/me`).then(
-        res => {
-          setEntity(res);
-        }
-      );
-    }
-  }, []);
-
-  if (!entity || !me.id) {
-    return;
-  }
   return (
     <main>
       <Navbar />
@@ -46,7 +24,7 @@ export default function Settings(props) {
               <ul class="nav nav-tabs">
                 <li class="nav-item">
                   <Link
-                    class={`nav-link${entity["entityType"] == "user" ? " active" : ""}`}
+                    class={`nav-link${params.type == "users" ? " active" : ""}`}
                     to={`/users/${me.id}/settings`}
                   >
                     {t("account")}
@@ -59,7 +37,7 @@ export default function Settings(props) {
                     onClick={e => e.currentTarget.classList.toggle("active")}
                   >
                     <div
-                      class={`nav-link${entity["entityType"] == "group" ? " active" : ""}`}
+                      class={`nav-link${params.type == "groups" ? " active" : ""}`}
                     >
                       {t("groups")}
                     </div>
@@ -77,11 +55,11 @@ export default function Settings(props) {
                   </li>
                 )}
               </ul>
-              {entity["entityType"] === "user" && (
-                <UserSettings {...entity} />
+              {params.type === "users" && (
+                <UserSettings id={params.id} key={params.id} />
               )}
-              {entity["entityType"] === "group" && (
-                <GroupSettings group={entity} />
+              {params.type === "groups" && (
+                <GroupSettings id={params.id} key={params.id} />
               )}
             </div>
           </div>
