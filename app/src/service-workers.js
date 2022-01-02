@@ -1,7 +1,7 @@
 import { createStore, set, get } from "idb-keyval";
 
 // update at the same time as the version in cache.js
-const CACHE_VERSION = "0.5-a";
+const CACHE_VERSION = "@VERSION@";
 const CACHE_NAME = `zusam-${CACHE_VERSION}`;
 
 const cache_store = createStore(CACHE_NAME, CACHE_NAME);

@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import { StoreContext } from 'storeon/preact';
 import store from "/src/store";
+import { storage, util } from "/src/core";
 
 function Index() {
   return (
@@ -26,24 +27,30 @@ render(<Index />, document.body);
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    if (location.search.includes("service-workers=unregister")) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        for (let registration of registrations) {
-          registration.unregister();
-        }
-      });
-      console.log("Service workers unregistered");
-    }
-    navigator.serviceWorker.register(new URL('service-workers.js', import.meta.url), {type: 'module'}).then(
-      (registration) => {
-        console.log(
-          "ServiceWorker registration successful with scope: ",
-          registration.scope
-        );
-      },
-      (err) => {
-        console.warn("ServiceWorker registration failed: ", err);
+    storage.get("version").then(version => {
+      if (
+        location.search.includes("service-workers=unregister")
+        || util.getVersion() != version
+      ) {
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          for (let registration of registrations) {
+            registration.unregister();
+          }
+        });
+        console.log("Service workers unregistered");
+        storage.set("version", util.getVersion());
       }
-    );
+      navigator.serviceWorker.register(new URL('service-workers.js', import.meta.url), {type: 'module'}).then(
+        (registration) => {
+          console.log(
+            "ServiceWorker registration successful with scope: ",
+            registration.scope
+          );
+        },
+        (err) => {
+          console.warn("ServiceWorker registration failed: ", err);
+        }
+      );
+    });
   });
 }
