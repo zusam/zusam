@@ -1088,16 +1088,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.10.3",
+            "version": "2.10.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "7b242753466508e1dd10f67c1baee95785f845c1"
+                "reference": "cccb2e2fdfed2969afb3d65c5ea82bafdefbe1a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/7b242753466508e1dd10f67c1baee95785f845c1",
-                "reference": "7b242753466508e1dd10f67c1baee95785f845c1",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/cccb2e2fdfed2969afb3d65c5ea82bafdefbe1a7",
+                "reference": "cccb2e2fdfed2969afb3d65c5ea82bafdefbe1a7",
                 "shasum": ""
             },
             "require": {
@@ -1129,10 +1129,10 @@
                 "phpbench/phpbench": "^0.16.10 || ^1.0",
                 "phpstan/phpstan": "1.2.0",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.4",
-                "squizlabs/php_codesniffer": "3.6.1",
+                "squizlabs/php_codesniffer": "3.6.2",
                 "symfony/cache": "^4.4 || ^5.2",
                 "symfony/yaml": "^3.4 || ^4.0 || ^5.0 || ^6.0",
-                "vimeo/psalm": "4.13.1"
+                "vimeo/psalm": "4.15.0"
             },
             "suggest": {
                 "symfony/cache": "Provides cache support for Setup Tool with doctrine/cache 2.0",
@@ -1181,9 +1181,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.10.3"
+                "source": "https://github.com/doctrine/orm/tree/2.10.4"
             },
-            "time": "2021-12-03T12:27:05+00:00"
+            "time": "2021-12-20T21:23:47+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -2052,16 +2052,16 @@
         },
         {
             "name": "nelmio/api-doc-bundle",
-            "version": "v4.7.0",
+            "version": "v4.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "7de49bb4a8efa15ee5a98aac6237902925bdf56b"
+                "reference": "cc6731ae772b48304d7ac43c80f646da3a1feee8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/7de49bb4a8efa15ee5a98aac6237902925bdf56b",
-                "reference": "7de49bb4a8efa15ee5a98aac6237902925bdf56b",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/cc6731ae772b48304d7ac43c80f646da3a1feee8",
+                "reference": "cc6731ae772b48304d7ac43c80f646da3a1feee8",
                 "shasum": ""
             },
             "require": {
@@ -2072,15 +2072,15 @@
                 "psr/cache": "^1.0|^2.0|^3.0",
                 "psr/container": "^1.0|^2.0",
                 "psr/log": "^1.0|^2.0|^3.0",
-                "symfony/config": "^4.4|^5.0",
-                "symfony/console": "^4.4|^5.0",
-                "symfony/dependency-injection": "^4.4|^5.0",
-                "symfony/framework-bundle": "^4.4|^5.0",
-                "symfony/http-foundation": "^4.4|^5.0",
-                "symfony/http-kernel": "^4.4|^5.0",
-                "symfony/options-resolver": "^4.4|^5.0",
-                "symfony/property-info": "^4.4|^5.0",
-                "symfony/routing": "^4.4|^5.0",
+                "symfony/config": "^4.4|^5.0|^6.0",
+                "symfony/console": "^4.4|^5.0|^6.0",
+                "symfony/dependency-injection": "^4.4|^5.0|^6.0",
+                "symfony/framework-bundle": "^4.4|^5.0|^6.0",
+                "symfony/http-foundation": "^4.4|^5.0|^6.0",
+                "symfony/http-kernel": "^4.4|^5.0|^6.0",
+                "symfony/options-resolver": "^4.4|^5.0|^6.0",
+                "symfony/property-info": "^4.4|^5.0|^6.0",
+                "symfony/routing": "^4.4|^5.0|^6.0",
                 "zircote/swagger-php": "^3.2|^4.0"
             },
             "conflict": {
@@ -2091,20 +2091,20 @@
                 "composer/package-versions-deprecated": "1.11.99.1",
                 "friendsofsymfony/rest-bundle": "^2.8|^3.0",
                 "jms/serializer": "^1.14|^3.0",
-                "jms/serializer-bundle": "^2.3|^3.0",
-                "sensio/framework-extra-bundle": "^4.4|^5.0|^6.0",
-                "symfony/asset": "^4.4|^5.0",
-                "symfony/browser-kit": "^4.4|^5.0",
-                "symfony/cache": "^4.4|^5.0",
-                "symfony/dom-crawler": "^4.4|^5.0",
-                "symfony/form": "^4.4|^5.0",
+                "jms/serializer-bundle": "^2.3|^3.0|^4.0",
+                "sensio/framework-extra-bundle": "^4.4|^5.2|^6.0",
+                "symfony/asset": "^4.4|^5.2|^6.0",
+                "symfony/browser-kit": "^4.4|^5.2|^6.0",
+                "symfony/cache": "^4.4|^5.2|^6.0",
+                "symfony/dom-crawler": "^4.4|^5.2|^6.0",
+                "symfony/form": "^4.4|^5.2|^6.0",
                 "symfony/phpunit-bridge": "^5.2",
-                "symfony/property-access": "^4.4|^5.0",
-                "symfony/serializer": "^4.4|^5.0",
-                "symfony/stopwatch": "^4.4|^5.0",
-                "symfony/templating": "^4.4|^5.0",
-                "symfony/twig-bundle": "^4.4|^5.0",
-                "symfony/validator": "^4.4|^5.0",
+                "symfony/property-access": "^4.4|^5.2|^6.0",
+                "symfony/serializer": "^4.4|^5.2|^6.0",
+                "symfony/stopwatch": "^4.4|^5.2|^6.0",
+                "symfony/templating": "^4.4|^5.2|^6.0",
+                "symfony/twig-bundle": "^4.4|^5.2|^6.0",
+                "symfony/validator": "^4.4|^5.2|^6.0",
                 "willdurand/hateoas-bundle": "^1.0|^2.0"
             },
             "suggest": {
@@ -2157,9 +2157,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nelmio/NelmioApiDocBundle/issues",
-                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v4.7.0"
+                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v4.8.1"
             },
-            "time": "2021-12-12T00:32:51+00:00"
+            "time": "2021-12-23T14:15:40+00:00"
         },
         {
             "name": "nelmio/cors-bundle",
@@ -7907,16 +7907,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.0.4",
+            "version": "4.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "c24704d90fbd296f889744d8da92c67653baef14"
+                "reference": "31210d89e8c4df86e01a428bdbd2943fc8fc09b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/c24704d90fbd296f889744d8da92c67653baef14",
-                "reference": "c24704d90fbd296f889744d8da92c67653baef14",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/31210d89e8c4df86e01a428bdbd2943fc8fc09b2",
+                "reference": "31210d89e8c4df86e01a428bdbd2943fc8fc09b2",
                 "shasum": ""
             },
             "require": {
@@ -7976,9 +7976,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.0.4"
+                "source": "https://github.com/zircote/swagger-php/tree/4.0.5"
             },
-            "time": "2021-12-10T03:33:50+00:00"
+            "time": "2021-12-20T01:09:47+00:00"
         }
     ],
     "packages-dev": [
@@ -9542,5 +9542,5 @@
         "ext-xml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }

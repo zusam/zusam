@@ -75,7 +75,7 @@ export default class EmbedBlock extends Component {
           url = new URL(url);
           let video_id;
           let playlist_id;
-          if (url.host == "www.youtube.com" || url.host == "m.youtube.com") {
+          if (url.host == "www.youtube.com" || url.host == "m.youtube.com" || url.host == "youtube.com") {
             video_id = url.search.substring(1).split("&").filter(e => e.match(/^v=/));
             playlist_id = url.search.substring(1).split("&").filter(e => e.match(/^list=/));
           }
