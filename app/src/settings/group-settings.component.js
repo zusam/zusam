@@ -1,30 +1,31 @@
 import { h } from "preact";
-import { alert, http, util, me } from "/src/core";
+import { alert, http, util, me, router } from "/src/core";
 import { useStoreon } from "storeon/preact";
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function GroupSettings(props) {
 
   const { t } = useTranslation();
-  const { dispatch, me } = useStoreon('me');
+  const { me } = useStoreon('me');
   const navigate = useNavigate();
-  const location = useLocation();
-  const [secretKey, setSecretKey] = useState(null);
+  const [secretKey, setSecretKey] = useState(props.group?.secretKey || "");
   const [users, setUsers] = useState([]);
   const [group, setGroup] = useState(props.group || {});
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
-    Promise.all(props.users.map(u => http.get(`/api/users/${u.id}`).then(u => u))).then(
+    Promise.all(group.users.map(u => http.get(`/api/users/${u.id}`).then(u => u))).then(
       users => setUsers(users)
     );
+    setAlertMessage(t(router.getParam("alert")));
   }, []);
 
   const resetSecretKey = (event) => {
     event.preventDefault();
     http
-      .post(`/api/groups/${props.id}/reset-invite-key`, {})
+      .post(`/api/groups/${props.group.id}/reset-invite-key`, {})
       .then(res => {
         alert.add(t("group_updated"));
         setSecretKey(res["inviteKey"]);
@@ -33,21 +34,21 @@ export default function GroupSettings(props) {
 
   const updateSettings = (event) => {
     event.preventDefault();
-    const name = document.querySelector("#settings_form input[name='name']")
-      .value;
-    let group = {};
+    const name = document.querySelector("#settings_form input[name='name']").value;
     if (name) {
       group.name = name;
     }
-    http.put(`/api/groups/${props.id}`, group).then(res => {
-      alert.add(t("group_updated"));
-      //this.setState(prevState => Object.assign(prevState, res));
+    setGroup(Object.assign({}, group));
+    http.put(`/api/groups/${props.group.id}`, group).then(res => {
+      setGroup(res);
+      setAlertMessage(t("group_updated"));
+      navigate(`${location.pathname}?alert=group_updated`);
     });
   };
 
   const leaveGroup = (event) => {
     event.preventDefault();
-    if (me.data?.default_group == props.id) {
+    if (me.data?.default_group == props.group.id) {
       let user = {};
       user.data = { default_group: me.groups[0].id };
       http.put(`/api/users/${me.id}`, user).then(() => {
@@ -60,7 +61,7 @@ export default function GroupSettings(props) {
   };
 
   const leave = () => {
-    http.post(`/api/groups/${props.id}/leave`, {}).then(res => {
+    http.post(`/api/groups/${props.group.id}/leave`, {}).then(res => {
       if (!res || !res["entityType"]) {
         alert.add(t("error"), "alert-danger");
       } else {
@@ -109,7 +110,7 @@ export default function GroupSettings(props) {
                         type="text"
                         name="inviteKey"
                         value={
-                          `${location.protocol}//${location.host}/invitation/${secretKey}`
+                          `${window.location.protocol}//${window.location.host}/invitation/${secretKey}`
                         }
                         class="form-control font-size-80"
                         readonly="readonly"
@@ -157,6 +158,9 @@ export default function GroupSettings(props) {
             )
         )}
       </div>
+      {alertMessage && (
+        <div class="global-alert alert alert-success">{alertMessage}</div>
+      )}
     </div>
   );
 }

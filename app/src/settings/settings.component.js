@@ -81,7 +81,7 @@ export default function Settings(props) {
                 <UserSettings {...entity} />
               )}
               {entity["entityType"] === "group" && (
-                <GroupSettings {...entity} />
+                <GroupSettings group={entity} />
               )}
             </div>
           </div>
