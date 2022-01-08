@@ -30,9 +30,10 @@ const http = {
       })
       .catch(error => alert.add(error, "alert-danger"));
   },
-  get: (url, nocache = false) => {
+  get: (url, nocache = false, delay = 0) => {
     return storage
       .get("apiKey")
+      .then(x => new Promise(resolve => setTimeout(() => resolve(x), delay)))
       .then(apiKey => {
         url = util.toApp(url);
         if (!url) {
@@ -54,15 +55,16 @@ const http = {
       })
       .catch(error => alert.add(error, "alert-danger"));
   },
-  post: (url, data, contentType = "application/json") =>
-    http.request(url, data, "POST", contentType),
-  put: (url, data, contentType = "application/json") =>
-    http.request(url, data, "PUT", contentType),
-  delete: (url, data, contentType = "application/json") =>
-    http.request(url, null, "DELETE", contentType),
-  request: (url, data, method, contentType = "application/json") => {
+  post: (url, data, delay = 0, contentType = "application/json") =>
+    http.request(url, data, "POST", 0, contentType),
+  put: (url, data, delay = 0, contentType = "application/json") =>
+    http.request(url, data, "PUT", 0, contentType),
+  delete: (url, data, delay = 0, contentType = "application/json") =>
+    http.request(url, null, "DELETE", 0, contentType),
+  request: (url, data, method, delay = 0, contentType = "application/json") => {
     return storage
       .get("apiKey")
+      .then(x => new Promise(resolve => setTimeout(() => resolve(x), delay)))
       .then(apiKey => {
         url = util.toApp(url);
         if (!url) {

@@ -12,7 +12,7 @@ export default function NotificationsDropdownNavbar() {
   if (!notifications) {
     return null;
   }
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div
@@ -32,7 +32,7 @@ export default function NotificationsDropdownNavbar() {
           icon={"bell"}
         />
         {!!notifications.length && (
-          <span class="badge-count">{Math.min(notifications.length, 99) + (notifications.length > 99 ? "+" : "")}</span>
+          <span class="badge-count">{Math.min(notifications.length, notifs.LIMIT) + (notifications.length > notifs.LIMIT ? "+" : "")}</span>
         )}
       </div>
       <div class="dropdown-menu dropdown-right notifications-menu">
@@ -46,7 +46,7 @@ export default function NotificationsDropdownNavbar() {
           </div>
         </div>
         {notifications?.length && (
-          notifications.sort((a, b) => b.createdAt - a.createdAt).slice(0,99).map(e => <Notification key={e.id} {...e} />)
+          notifications.sort((a, b) => b.createdAt - a.createdAt).slice(0,notifs.LIMIT).map(e => <Notification key={e.id} {...e} />)
         )}
       </div>
     </div>

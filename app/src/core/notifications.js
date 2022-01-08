@@ -3,12 +3,14 @@ import store from "/src/store";
 
 const notifications = {
 
+  LIMIT: 20,
+
   get() {
     return store.get()?.notifications || [];
   },
 
   update() {
-    return http.get(`/api/me/notifications/100`).then(r => {
+    return http.get(`/api/me/notifications/${notifications.LIMIT + 1}`).then(r => {
       store.dispatch('notifications/update', r);
     });
   },

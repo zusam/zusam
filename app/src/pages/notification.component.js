@@ -15,7 +15,7 @@ class Notification extends Component {
   }
 
   componentDidMount() {
-    http.get(`/api/notifications/${this.props.id}`).then(n => {
+    http.get(`/api/notifications/${this.props.id}`, false, 100).then(n => {
       this.setState({
         target: this.getTarget(n, n.fromMessage.id),
         action: this.getAction(n),
