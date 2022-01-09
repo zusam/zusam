@@ -79,6 +79,9 @@ export default class EmbedBlock extends Component {
             if(url.pathname.match(/shorts/)) {
               video_id = [`v=${url.pathname.split("/").slice(-1)[0]}`];
               playlist_id = [];
+            } else if(url.pathname.match(/embed/)) {
+              video_id = [`v=${url.pathname.split("/").slice(-1)[0]}`];
+              playlist_id = [];
             } else {
               video_id = url.search.substring(1).split("&").filter(e => e.match(/^v=/));
               playlist_id = url.search.substring(1).split("&").filter(e => e.match(/^list=/));
