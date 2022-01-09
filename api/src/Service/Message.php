@@ -4,7 +4,8 @@ namespace App\Service;
 
 use App\Entity\File as FileEntity;
 use App\Entity\Message as MessageEntity;
-use App\Entity\Notification;
+use App\Entity\Notification as NotificationEntity;
+use App\Service\Notification as NotificationService;
 use App\Service\Url as UrlService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,13 +14,16 @@ class Message
 {
     private $em;
     private $urlService;
+    private $notificationService;
 
     public function __construct(
         EntityManagerInterface $em,
-        UrlService $urlService
+        UrlService $urlService,
+        NotificationService $notificationService,
     ) {
         $this->em = $em;
         $this->urlService = $urlService;
+        $this->notificationService = $notificationService;
     }
 
     public function create($data, $author, $group)
@@ -54,24 +58,26 @@ class Message
         $message->setPreview($this->genPreview($message, false));
         $this->em->persist($message);
 
-        // Update tasks
         $parent = $message->getParent();
         foreach ($group->getUsers() as $user) {
-            if ($user->getId() != $author->getId()) {
-                $notif = new Notification();
-                $notif->setTarget($message->getId());
-                $notif->setOwner($user);
-                $notif->setFromUser($author);
-                $notif->setFromGroup($group);
-                if (!empty($parent)) {
-                    $notif->setFromMessage($parent);
-                    $notif->setType(Notification::NEW_COMMENT);
-                } else {
-                    $notif->setFromMessage($message);
-                    $notif->setType(Notification::NEW_MESSAGE);
-                }
-                $this->em->persist($notif);
+          if ($user->getId() != $author->getId()) {
+            if (!empty($parent)) {
+              $fromMessage = $parent;
+              $type = NotificationEntity::NEW_COMMENT;
+            } else {
+              $fromMessage = $message;
+              $type = NotificationEntity::NEW_MESSAGE;
             }
+
+            $notificationService->create(
+              $type,
+              $message->getId(),
+              $user,
+              $author,
+              $group,
+              $fromMessage
+            );
+          }
         }
 
         $author->setLastActivityDate(time());

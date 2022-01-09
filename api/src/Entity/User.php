@@ -76,7 +76,7 @@ class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInt
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
-     * @Groups("*")
+     * @Groups({"read_me", "read_user", "write_user", "read_message_preview"})
      * @OA\Property(type="App\Entity\File")
      */
     private $avatar;

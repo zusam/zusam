@@ -74,7 +74,7 @@ class Get extends ApiController
 
         $message_preview = [
           "id" => $message->getId(),
-          "author" => $this->normalize($message->getAuthor(), ['read_message']),
+          "author" => $this->normalize($message->getAuthor(), ['read_message_preview']),
           "preview" => $this->normalize($message->getPreview(), ['read_message']),
           "children" => count($message->getChildren()),
           "lastActivityDate" => $message->getLastActivityDate(),

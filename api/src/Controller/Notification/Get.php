@@ -6,6 +6,7 @@ use App\Controller\ApiController;
 use App\Entity\Link;
 use App\Entity\Message;
 use App\Entity\Notification;
+use App\Service\Notification as NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -17,11 +18,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class Get extends ApiController
 {
+    private $notificationService;
+
     public function __construct(
         EntityManagerInterface $em,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        NotificationService $notificationService,
     ) {
         parent::__construct($em, $serializer);
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -42,47 +47,32 @@ class Get extends ApiController
         if (empty($notification)) {
             return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
         }
-        $notification_data = $this->normalize($notification, ['read_notification']);
-        $notification_data["fromGroup"] = $this->normalize($notification->getFromGroup(), ['read_notification']);
+        $notification_data_output = $this->normalize($notification, ['read_notification']);
+        $notification_data_output["fromGroup"] = $this->normalize($notification->getFromGroup(), ['read_notification']);
 
-        // Process notification's title
-        $title = "";
-        if (in_array($notification->getType(), [Notification::NEW_COMMENT, Notification::NEW_MESSAGE])) {
+        if (
+          in_array($notification->getType(), [Notification::NEW_COMMENT, Notification::NEW_MESSAGE])
+          && empty($title)
+        ) {
+          $notification_data_output["author"] = $this->normalize($notification->getFromUser(), ['read_message']);
 
-          $notification_data["author"] = $this->normalize($notification->getFromUser(), ['read_message']);
-
-          $message = $notification->getFromMessage();
-          if ($message) {
-            $notification_data["target_author"] = $this->normalize($message->getAuthor(), ['read_message']);
-            $data = $message->getData();
-            if (!empty($data["title"])) {
-              $title = $data["title"];
-            }
-
-            if (empty($title)) {
-              $urls = $message->getUrls();
-              if (count($urls) > 0) {
-                $link = $this->em->getRepository(Link::class)->findOneByUrl($urls[0]);
-                if (!empty($link)) {
-                  $title = $link->getData()["title"] ?? $link->getData()["description"] ?? $link->getData()["url"];
-                }
-              }
-            }
-
-            if (empty($title) && !empty($data["text"])) {
-              $title = $data["text"];
-            }
+          $title = $notification->getData()["title"] ?? "";
+          if (empty($title)) {
+            $this->notificationService->setDataTitle($notification);
+            $this->em->persist($notification);
+            $this->em->flush();
+            $title = $notification->getData()["title"] ?? "";
           }
         }
-        $notification_data["title"] = $title;
 
         // Process notification's miniature
         if (
-          $notification_data["type"] != Notification::GLOBAL_NOTIFICATION
+          $notification_data_output["type"] != Notification::GLOBAL_NOTIFICATION
+          && empty($notification->getMiniature())
         ) {
-          $notification_data["miniature"] = $this->normalize($notification->getFromUser()->getAvatar(), ['read_message']);
+          $notification_data_output["miniature"] = $this->normalize($notification->getFromUser()->getAvatar(), ['read_message']);
         }
 
-        return new Response(json_encode($notification_data), Response::HTTP_OK);
+        return new Response(json_encode($notification_data_output), Response::HTTP_OK);
     }
 }

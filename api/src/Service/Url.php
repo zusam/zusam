@@ -54,28 +54,7 @@ class Url
     $this->em->persist($link);
     $this->em->flush();
 
-    $data = Url::getData($url);
-    $data["loading"] = false;
-    $link->setData($data);
-    $link->setUpdatedAt(time());
-    if (!empty($data['image'])) {
-      try {
-        $preview = new File();
-        $preview->setType('image/jpeg');
-        $preview->setContentUrl($preview->getId().'.jpg');
-        $this->imageService->createThumbnail($data['image'], $filesDir.'/'.$preview->getContentUrl(), 2048, 2048);
-        $preview->setSize(filesize($filesDir.'/'.$preview->getContentUrl()));
-        $link->setPreview($preview);
-        $this->em->persist($preview);
-      } catch (\Exception $e) {
-        // Something went wrong. What should we do ?
-        // TODO
-      }
-    }
-    $this->em->persist($link);
-    $this->em->flush();
-
-    return $link;
+    return $linkService->hydrateLink($link);
   }
 
   // taken from https://github.com/guzzle/psr7/blob/089edd38f5b8abba6cb01567c2a8aaa47cec4c72/src/Uri.php#L166
