@@ -1,13 +1,14 @@
 import { h } from "preact";
 import { router } from "/src/core";
 import { FaIcon } from "/src/misc";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export default function Search() {
 
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
 
   function search(evt) {
     evt.preventDefault();
@@ -43,7 +44,7 @@ export default function Search() {
           type="text"
           id="search"
           placeholder={t("search_in_group")}
-          value={router.getParam("search").replace(/\+/g, " ")}
+          value={router.getParam("q").replace(/\+/g, " ")}
          />
         <div class="input-group-append">
           <button
