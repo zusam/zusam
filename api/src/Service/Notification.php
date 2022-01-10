@@ -76,7 +76,7 @@ class Notification
 
     public function create($type, $target, $owner, $fromUser = null, $fromGroup = null, $fromMessage = null)
     {
-      $notif = new Notification();
+      $notif = new NotificationEntity();
       $notif->setTarget($target->getId());
       $notif->setOwner($owner);
       $notif->setFromUser($fromUser);

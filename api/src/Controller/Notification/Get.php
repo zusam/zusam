@@ -52,7 +52,6 @@ class Get extends ApiController
 
     if (
       in_array($notification->getType(), [Notification::NEW_COMMENT, Notification::NEW_MESSAGE])
-      && empty($title)
     ) {
       $notification_data_output["author"] = $this->normalize($notification->getFromUser(), ['read_message']);
 
@@ -66,8 +65,8 @@ class Get extends ApiController
       ) {
         $notification_data_output["miniature"] = $this->normalize($notification->getFromUser()->getAvatar(), ['read_message']);
       }
-
-      return new Response(json_encode($notification_data_output), Response::HTTP_OK);
     }
+
+    return new Response(json_encode($notification_data_output), Response::HTTP_OK);
   }
 }

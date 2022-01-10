@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\File;
 use App\Entity\Link;
 use App\Service\Image as ImageService;
+use App\Service\Link as LinkService;
 use Doctrine\ORM\EntityManagerInterface;
 use Embed\Embed;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -16,15 +17,18 @@ class Url
   private $params;
   private $em;
   private $imageService;
+  private $linkService;
 
   public function __construct(
     EntityManagerInterface $em,
     ImageService $imageService,
     ParameterBagInterface $params,
+    LinkService $linkService,
   ) {
     $this->params = $params;
     $this->em = $em;
     $this->imageService = $imageService;
+    $this->linkService = $linkService;
   }
 
   public function getPreview($url, $rescan = false): ?string
@@ -54,7 +58,7 @@ class Url
     $this->em->persist($link);
     $this->em->flush();
 
-    return $linkService->hydrateLink($link);
+    return $this->linkService->hydrateLink($link);
   }
 
   // taken from https://github.com/guzzle/psr7/blob/089edd38f5b8abba6cb01567c2a8aaa47cec4c72/src/Uri.php#L166
