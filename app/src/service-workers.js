@@ -12,7 +12,11 @@ const cached_routes = [
   },
   {
     route: new RegExp("/api/groups/[^/]+/?$"),
-    duration: 1000 * 60 * 1, // 1mn
+    duration: 1000 * 60 * 2, // 2mn
+  },
+  {
+    route: new RegExp("/api/messages/[^/]+/preview?$"),
+    duration: 1000 * 60 * 60 * 24, // 24h
   },
   {
     route: new RegExp("/api/notifications/[^/]+/?$"),
