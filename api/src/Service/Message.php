@@ -69,7 +69,7 @@ class Message
               $type = NotificationEntity::NEW_MESSAGE;
             }
 
-            $notificationService->create(
+            $this->notificationService->create(
               $type,
               $message->getId(),
               $user,
