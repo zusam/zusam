@@ -19,7 +19,7 @@ class Notification extends Component {
       this.setState({
         target: this.getTarget(n, n.fromMessage.id),
         action: this.getAction(n),
-        title: n["title"],
+        title: n.title,
         notification: n,
       });
     });
@@ -83,7 +83,7 @@ class Notification extends Component {
         return (
           <span>
             {`${this.props.t("the_message_from")  } `}
-            <strong>{notification?.target_author?.name}</strong>
+            <strong>{notification?.parentAuthorName}</strong>
             {this.state.title && (
               <Fragment>
                 <br />

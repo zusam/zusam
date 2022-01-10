@@ -15,7 +15,7 @@ const cached_routes = [
     duration: 1000 * 60 * 2, // 2mn
   },
   {
-    route: new RegExp("/api/messages/[^/]+/preview?$"),
+    route: new RegExp("/api/messages/[^/]+/preview/?$"),
     duration: 1000 * 60 * 60 * 24, // 24h
   },
   {

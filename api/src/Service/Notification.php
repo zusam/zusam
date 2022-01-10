@@ -23,18 +23,18 @@ class Notification
         $this->linkService = $linkService;
     }
 
-    public function setDataTitle($notification): void
+    public function getTitle($notification): string
     {
       try {
         $notif_data = $notification->getData();
         $message = $notification->getFromMessage();
         if (empty($message)) {
-          return;
+          return "";
         }
         $data = $message->getData();
         $urls = $message->getUrls();
       } catch (\Exception $e) {
-        return;
+        return "";
       }
       $title = "";
       if (!empty($data["title"])) {
@@ -55,8 +55,23 @@ class Notification
       if (empty($title) && !empty($data["text"])) {
         $title = $data["text"];
       }
-      $notif_data["title"] = $title;
-      $notification->setData($notif_data);
+
+      return $title;
+    }
+
+    public function getParentAuthorName($notification): string
+    {
+      try {
+        $message = $notification->getFromMessage();
+        if (empty($message)) {
+          return "";
+        }
+        $author = $message->getAuthor();
+      } catch (\Exception $e) {
+        return "";
+      }
+
+      return $author->getName();
     }
 
     public function create($type, $target, $owner, $fromUser = null, $fromGroup = null, $fromMessage = null)
@@ -68,7 +83,6 @@ class Notification
       $notif->setFromGroup($fromGroup);
       $notif->setType($type);
       $notif->setFromMessage($fromMessage);
-      $notif->setDataTitle();
       $this->em->persist($notif);
       return $notif;
     }
