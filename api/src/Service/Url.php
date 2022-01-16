@@ -16,18 +16,15 @@ class Url
 {
   private $params;
   private $em;
-  private $imageService;
   private $linkService;
 
   public function __construct(
     EntityManagerInterface $em,
-    ImageService $imageService,
     ParameterBagInterface $params,
     LinkService $linkService,
   ) {
     $this->params = $params;
     $this->em = $em;
-    $this->imageService = $imageService;
     $this->linkService = $linkService;
   }
 
