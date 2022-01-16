@@ -4,6 +4,8 @@ namespace App\Service;
 
 use App\Entity\User;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class Mailer
 {
@@ -12,33 +14,33 @@ class Mailer
     private $env;
     private $lang;
     private $logger;
-    private $swift;
+    private $symfonyMailer;
     private $twig;
 
     public function __construct(
-        \Swift_Mailer $swift,
         \Twig\Environment $twig,
-        $domain,
-        $lang,
-        $allow_email,
+        string $domain,
+        string $lang,
+        string $allow_email,
         string $env,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        MailerInterface $symfonyMailer,
     ) {
         $this->allow_email = $allow_email;
         $this->domain = $domain;
         $this->env = $env;
         $this->lang = $lang;
         $this->logger = $logger;
-        $this->swift = $swift;
+        $this->symfonyMailer = $symfonyMailer;
         $this->twig = $twig;
     }
 
-    private function sendMail(\Swift_Message $email)
+    private function sendMail($email)
     {
         $failures = [];
         if ('prod' == $this->env && $this->allow_email == 'true') {
             try {
-                $ret = $this->swift->send($email, $failures);
+                $ret = $this->symfonyMailer->send($email, $failures);
                 if (!$ret) {
                     $this->logger->error("Could not send email to " . array_key_first($email->getTo()));
                     return $failures;
@@ -68,7 +70,7 @@ class Mailer
             'sub' => Token::SUB_STOP_EMAIL_NOTIFICATIONS,
         ], $user->getSecretKey());
 
-        $email = (new \Swift_Message('Zusam Notification Email'))
+        $email = (new Email('Zusam Notification Email'))
             ->setFrom('noreply@'.$this->domain)
             ->setTo($user->getLogin())
             ->setBody(
@@ -102,7 +104,7 @@ class Mailer
             'sub' => Token::SUB_RESET_PASSWORD,
         ], $user->getPassword());
 
-        $email = (new \Swift_Message('Zusam Password Reset'))
+        $email = (new Email('Zusam Password Reset'))
             ->setFrom('noreply@'.$this->domain)
             ->setTo($user->getLogin())
             ->setBody(

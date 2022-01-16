@@ -4,19 +4,19 @@ namespace App\Service;
 
 use App\Entity\User as UserEntity;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class User
 {
     private $em;
-    private $encoder;
+    private $hasher;
 
     public function __construct(
         EntityManagerInterface $em,
-        UserPasswordEncoderInterface $encoder
+        UserPasswordHasherInterface $hasher
     ) {
         $this->em = $em;
-        $this->encoder = $encoder;
+        $this->hasher = $hasher;
     }
 
     public function getByLogin($login)
@@ -47,7 +47,7 @@ class User
         if ($password == "") {
             $user->setPassword("");
         } else {
-            $user->setPassword($this->encoder->encodePassword($user, $password));
+            $user->setPassword($this->hasher->encodePassword($user, $password));
         }
         $user->setName(explode('@', $login)[0]);
         $this->em->persist($user);

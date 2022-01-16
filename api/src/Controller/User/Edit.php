@@ -11,7 +11,7 @@ use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -19,15 +19,15 @@ use OpenApi\Annotations as OA;
 
 class Edit extends ApiController
 {
-    private $encoder;
+    private $hasher;
 
     public function __construct(
         EntityManagerInterface $em,
-        UserPasswordEncoderInterface $encoder,
+        UserPasswordHasherInterface $hasher,
         SerializerInterface $serializer
     ) {
         parent::__construct($em, $serializer);
-        $this->encoder = $encoder;
+        $this->hasher = $hasher;
     }
 
     /**
@@ -151,7 +151,7 @@ class Edit extends ApiController
 
         $requestData = json_decode($request->getcontent(), true);
         if (!empty($requestData['password'])) {
-            $user->setPassword($this->encoder->encodePassword($user, $requestData['password']));
+            $user->setPassword($this->hasher->encodePassword($user, $requestData['password']));
         }
         if (!empty($requestData['name'])) {
             $user->setName($requestData['name']);

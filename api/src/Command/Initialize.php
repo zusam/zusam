@@ -13,20 +13,20 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class Initialize extends Command
 {
     private $em;
-    private $encoder;
+    private $hasher;
 
     public function __construct(
         EntityManagerInterface $em,
-        UserPasswordEncoderInterface $encoder
+        UserPasswordHasherInterface $hasher
     ) {
         parent::__construct();
         $this->em = $em;
-        $this->encoder = $encoder;
+        $this->hasher = $hasher;
     }
 
     protected function configure()
@@ -68,7 +68,7 @@ class Initialize extends Command
             $user = new User();
             $user->setLogin($input->getArgument('user'));
             $user->setName(explode('@', $input->getArgument('user'))[0]);
-            $user->setPassword($this->encoder->encodePassword($user, $input->getArgument('password')));
+            $user->setPassword($this->hasher->encodePassword($user, $input->getArgument('password')));
             if ($input->getOption('seed')) {
                 $reflection = new \ReflectionClass($user);
                 $id = $reflection->getProperty('id');

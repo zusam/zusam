@@ -150,13 +150,9 @@ services:
 
     App\Service\Mailer:
       arguments:
-        $swift: '@mailer'
         $twig: '@twig'
         $domain: '%env(resolve:DOMAIN)%'
         $lang: '%env(resolve:LANG)%'
         $allow_email: '%env(resolve:ALLOW_EMAIL)%'
         $env: '%kernel.environment%'
         $logger: '@monolog.logger.zusam'
-
-    App\Service\Namer:
-      public: true
