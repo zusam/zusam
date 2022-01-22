@@ -30,9 +30,9 @@ Zusam is composed of a PHP server and a single-page-application.
 The backend uses [Symfony](https://symfony.com) and [Sqlite](https://sqlite.org), the frontend is made with [Preact](https://preactjs.com) and [ParcelJS](https://parceljs.org).
 
 Requirements:
-- PHP 7.2+ (with iconv, mbstring, curl, xml, sqlite3 and imagick extensions)
+- PHP 8.0+ (with iconv, mbstring, curl, xml, sqlite3 and imagick extensions)
 - Ffmpeg 3+
-- Yarn or NPM (only to compile the webapp)
+- Yarn or NPM (only to compile the webapp, it is distributed already built)
 
 Installation guides:
 - [Debian stretch with nginx](documentation/debian-stretch-nginx.md)
