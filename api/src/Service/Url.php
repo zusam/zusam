@@ -20,8 +20,8 @@ class Url
 
   public function __construct(
     EntityManagerInterface $em,
-    ParameterBagInterface $params,
     LinkService $linkService,
+    ParameterBagInterface $params,
   ) {
     $this->params = $params;
     $this->em = $em;
