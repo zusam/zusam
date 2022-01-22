@@ -42,10 +42,9 @@ class Edit extends ApiController
      * @Security(name="api_key")
      */
     public function post_bookmark(
-      string $id,
-      #[CurrentUser] User $user
-    ): Response
-    {
+        string $id,
+        #[CurrentUser] User $user
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $data = $user->getData();
@@ -76,10 +75,9 @@ class Edit extends ApiController
      * @Security(name="api_key")
      */
     public function delete_bookmark(
-      string $id,
-      #[CurrentUser] User $user
-    ): Response
-    {
+        string $id,
+        #[CurrentUser] User $user
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $data = $user->getData();
@@ -144,11 +142,10 @@ class Edit extends ApiController
      * @Security(name="api_key")
      */
     public function index(
-      string $id,
-      Request $request,
-      #[CurrentUser] User $currentUser
-    ): Response
-    {
+        string $id,
+        Request $request,
+        #[CurrentUser] User $currentUser
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $user = $this->em->getRepository(User::class)->findOneById($id);
@@ -205,10 +202,9 @@ class Edit extends ApiController
      * @Security(name="api_key")
      */
     public function resetApiKey(
-      string $id,
-      #[CurrentUser] User $currentUser
-    ): Response
-    {
+        string $id,
+        #[CurrentUser] User $currentUser
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $user = $this->em->getRepository(User::class)->findOneById($id);

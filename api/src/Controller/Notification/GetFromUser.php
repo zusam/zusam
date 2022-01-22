@@ -68,9 +68,8 @@ class GetFromUser extends ApiController
      * @Security(name="api_key")
      */
     public function my_notifications(
-      #[CurrentUser] User $currentUser
-    ): Response
-    {
+        #[CurrentUser] User $currentUser
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         return new Response(
@@ -125,10 +124,9 @@ class GetFromUser extends ApiController
      * @Security(name="api_key")
      */
     public function my_notifications_with_limit(
-      int $limit,
-      #[CurrentUser] User $currentUser
-    ): Response
-    {
+        int $limit,
+        #[CurrentUser] User $currentUser
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $notifications = $currentUser->getNotifications($limit);

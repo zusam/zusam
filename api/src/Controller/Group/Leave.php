@@ -37,10 +37,9 @@ class Leave extends ApiController
      * @Security(name="api_key")
      */
     public function index(
-      string $id,
-      #[CurrentUser] User $currentUser
-    ): Response
-    {
+        string $id,
+        #[CurrentUser] User $currentUser
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $group = $this->em->getRepository(Group::class)->findOneById($id);

@@ -60,24 +60,24 @@ class Message
 
         $parent = $message->getParent();
         foreach ($group->getUsers() as $user) {
-          if ($user->getId() != $author->getId()) {
-            if (!empty($parent)) {
-              $fromMessage = $parent;
-              $type = NotificationEntity::NEW_COMMENT;
-            } else {
-              $fromMessage = $message;
-              $type = NotificationEntity::NEW_MESSAGE;
-            }
+            if ($user->getId() != $author->getId()) {
+                if (!empty($parent)) {
+                    $fromMessage = $parent;
+                    $type = NotificationEntity::NEW_COMMENT;
+                } else {
+                    $fromMessage = $message;
+                    $type = NotificationEntity::NEW_MESSAGE;
+                }
 
-            $this->notificationService->create(
-              $type,
-              $message->getId(),
-              $user,
-              $author,
-              $group,
-              $fromMessage
-            );
-          }
+                $this->notificationService->create(
+                    $type,
+                    $message->getId(),
+                    $user,
+                    $author,
+                    $group,
+                    $fromMessage
+                );
+            }
         }
 
         $author->setLastActivityDate(time());

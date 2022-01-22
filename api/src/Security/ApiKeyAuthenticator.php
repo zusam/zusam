@@ -18,41 +18,41 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 // https://symfony.com/index.php/doc/current/security/custom_authenticator.html
 class ApiKeyAuthenticator extends AbstractAuthenticator
 {
-  /**
-   * Called on every request to decide if this authenticator should be
-   * used for the request. Returning false will cause this authenticator
-   * to be skipped.
-   */
-  public function supports(Request $request): ?bool
-  {
-    return $request->headers->has('X-AUTH-TOKEN');
-  }
-
-  /**
-   * Called on every request. Return whatever credentials you want to
-   * be passed to getUser() as $credentials.
-   */
-  public function authenticate(Request $request): Passport
-  {
-    $apiToken = $request->headers->get('X-AUTH-TOKEN');
-    if (null === $apiToken) {
-      // The token header was empty, authentication fails with HTTP Status
-      // Code 401 "Unauthorized"
-      throw new CustomUserMessageAuthenticationException('No API token provided');
+    /**
+     * Called on every request to decide if this authenticator should be
+     * used for the request. Returning false will cause this authenticator
+     * to be skipped.
+     */
+    public function supports(Request $request): ?bool
+    {
+        return $request->headers->has('X-AUTH-TOKEN');
     }
 
-    return new SelfValidatingPassport(new UserBadge($apiToken));
-  }
+    /**
+     * Called on every request. Return whatever credentials you want to
+     * be passed to getUser() as $credentials.
+     */
+    public function authenticate(Request $request): Passport
+    {
+        $apiToken = $request->headers->get('X-AUTH-TOKEN');
+        if (null === $apiToken) {
+            // The token header was empty, authentication fails with HTTP Status
+            // Code 401 "Unauthorized"
+            throw new CustomUserMessageAuthenticationException('No API token provided');
+        }
 
-  public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
-  {
-    // on success, let the request continue
-    return null;
-  }
+        return new SelfValidatingPassport(new UserBadge($apiToken));
+    }
 
-  public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
-  {
-    $data = [
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    {
+        // on success, let the request continue
+        return null;
+    }
+
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    {
+        $data = [
       // you may want to customize or obfuscate the message first
       'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
 
@@ -60,6 +60,6 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
       // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
     ];
 
-    return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
-  }
+        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+    }
 }

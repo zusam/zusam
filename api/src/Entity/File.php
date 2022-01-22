@@ -20,8 +20,8 @@ class File
      *      - raw: file was just uploaded and not modified
      *      - ready: file is in its final form before beeing used.
      */
-    const STATUS_RAW = 'raw';
-    const STATUS_READY = 'ready';
+    public const STATUS_RAW = 'raw';
+    public const STATUS_READY = 'ready';
 
     /**
      * @ORM\Id

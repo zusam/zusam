@@ -58,11 +58,10 @@ class Edit extends ApiController
      * @Security(name="api_key")
      */
     public function index(
-      string $id,
-      Request $request,
-      #[CurrentUser] User $currentUser
-    ): Response
-    {
+        string $id,
+        Request $request,
+        #[CurrentUser] User $currentUser
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $message = $this->em->getRepository(Message::class)->findOneById($id);

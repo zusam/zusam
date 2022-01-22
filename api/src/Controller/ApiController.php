@@ -57,10 +57,10 @@ abstract class ApiController extends AbstractController
      */
     public function normalize($object, array $groups = [])
     {
-      return $this->serializer->normalize(
-        $object,
-        'json',
-        [
+        return $this->serializer->normalize(
+            $object,
+            'json',
+            [
             ObjectNormalizer::MAX_TREE_DEPTH_HANDLER => function ($object, $format = null, array $context = []) {
                 return \method_exists($object, 'getId') ? ['id' => $object->getId()] : "";
             },
@@ -75,6 +75,6 @@ abstract class ApiController extends AbstractController
             'currentUser' => $this->getUser() ? $this->getUser()->getUserIdentifier() : null,
             'groups' => $groups,
         ]
-      );
+        );
     }
 }

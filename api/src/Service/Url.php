@@ -14,100 +14,100 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class Url
 {
-  private $params;
-  private $em;
-  private $linkService;
+    private $params;
+    private $em;
+    private $linkService;
 
-  public function __construct(
-    EntityManagerInterface $em,
-    LinkService $linkService,
-    ParameterBagInterface $params,
-  ) {
-    $this->params = $params;
-    $this->em = $em;
-    $this->linkService = $linkService;
-  }
-
-  public function getPreview($url, $rescan = false): ?string
-  {
-    $link = $this->getLink($url);
-    if ($link) {
-      return $link->getPreview() ? '/files/'.$link->getPreview()->getContentUrl() : null;
+    public function __construct(
+        EntityManagerInterface $em,
+        LinkService $linkService,
+        ParameterBagInterface $params,
+    ) {
+        $this->params = $params;
+        $this->em = $em;
+        $this->linkService = $linkService;
     }
 
-    return null;
-  }
+    public function getPreview($url, $rescan = false): ?string
+    {
+        $link = $this->getLink($url);
+        if ($link) {
+            return $link->getPreview() ? '/files/'.$link->getPreview()->getContentUrl() : null;
+        }
 
-  public function getLink($url, $rescan = false): ?Link
-  {
-    $filesDir = realpath($this->params->get('dir.files'));
-    $link = $this->em->getRepository(Link::class)->findOneByUrl($url);
-    if (!empty($link) && !$rescan) {
-      return $link;
-    }
-    if (empty($link)) {
-      $link = new Link($url);
-      $link->setData(["loading" => true]);
+        return null;
     }
 
-    // immediatly persist the link to avoid race conditions
-    // and to force saving a link that could throw an unexpected exception
-    $this->em->persist($link);
-    $this->em->flush();
+    public function getLink($url, $rescan = false): ?Link
+    {
+        $filesDir = realpath($this->params->get('dir.files'));
+        $link = $this->em->getRepository(Link::class)->findOneByUrl($url);
+        if (!empty($link) && !$rescan) {
+            return $link;
+        }
+        if (empty($link)) {
+            $link = new Link($url);
+            $link->setData(["loading" => true]);
+        }
 
-    return $this->linkService->hydrateLink($link);
-  }
+        // immediatly persist the link to avoid race conditions
+        // and to force saving a link that could throw an unexpected exception
+        $this->em->persist($link);
+        $this->em->flush();
 
-  // taken from https://github.com/guzzle/psr7/blob/089edd38f5b8abba6cb01567c2a8aaa47cec4c72/src/Uri.php#L166
-  public static function composeComponents(?string $scheme, ?string $authority, string $path, ?string $query, ?string $fragment): string
-  {
-    $uri = '';
-
-    // weak type checks to also accept null until we can add scalar type hints
-    if ($scheme != '') {
-      $uri .= $scheme . ':';
+        return $this->linkService->hydrateLink($link);
     }
 
-    if ($authority != ''|| $scheme === 'file') {
-      $uri .= '//' . $authority;
+    // taken from https://github.com/guzzle/psr7/blob/089edd38f5b8abba6cb01567c2a8aaa47cec4c72/src/Uri.php#L166
+    public static function composeComponents(?string $scheme, ?string $authority, string $path, ?string $query, ?string $fragment): string
+    {
+        $uri = '';
+
+        // weak type checks to also accept null until we can add scalar type hints
+        if ($scheme != '') {
+            $uri .= $scheme . ':';
+        }
+
+        if ($authority != ''|| $scheme === 'file') {
+            $uri .= '//' . $authority;
+        }
+
+        $uri .= $path;
+
+        if ($query != '') {
+            $uri .= '?' . $query;
+        }
+
+        if ($fragment != '') {
+            $uri .= '#' . $fragment;
+        }
+
+        return $uri;
     }
 
-    $uri .= $path;
-
-    if ($query != '') {
-      $uri .= '?' . $query;
+    // some urls are exceptionally modified before being processed
+    public static function exceptionRedirect(string $url): string
+    {
+        // https://github.com/oscarotero/Embed/issues/458
+        $url = preg_replace("/^https?:\/\/youtube.com\/shorts\//", "https://youtube.com/watch?v=", $url);
+        return $url;
     }
 
-    if ($fragment != '') {
-      $uri .= '#' . $fragment;
-    }
+    public static function getData(string $url): array
+    {
+        try {
+            $embed = new Embed();
+            $info = $embed->get(Url::exceptionRedirect($url));
 
-    return $uri;
-  }
-
-  // some urls are exceptionally modified before being processed
-  public static function exceptionRedirect(string $url): string
-  {
-    // https://github.com/oscarotero/Embed/issues/458
-    $url = preg_replace("/^https?:\/\/youtube.com\/shorts\//", "https://youtube.com/watch?v=", $url);
-    return $url;
-  }
-
-  public static function getData(string $url): array
-  {
-    try {
-      $embed = new Embed();
-      $info = $embed->get(Url::exceptionRedirect($url));
-
-      return [
+            return [
         'title' => $info->title, //The page title
         'description' => $info->description, //The page description
         'url' => Url::composeComponents( //The canonical url
           $info->url->getScheme(),
-          $info->url->getAuthority(),
-          $info->url->getPath(),
-          $info->url->getQuery(),
-          $info->url->getFragment(),
+            $info->url->getAuthority(),
+            $info->url->getPath(),
+            $info->url->getQuery(),
+            $info->url->getFragment(),
         ),
         'keywords' => $info->keywords, //The page keywords (tags)
 
@@ -133,11 +133,11 @@ class Url
         'content-type' => $info->getResponse()->getHeader('content-Type'), //The content type of the url
         'origin' => $url, //The original input url
       ];
-    } catch (\Exception $e) {
-      return [
+        } catch (\Exception $e) {
+            return [
         'origin' => $url, //The original input url
         'exception' => $e->getMessage(),
       ];
+        }
     }
-  }
 }

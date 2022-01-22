@@ -34,10 +34,9 @@ class Delete extends ApiController
      * @Security(name="api_key")
      */
     public function index(
-      string $id,
-      #[CurrentUser] User $currentUser
-    ): Response
-    {
+        string $id,
+        #[CurrentUser] User $currentUser
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $user = $this->em->getRepository(User::class)->findOneById($id);

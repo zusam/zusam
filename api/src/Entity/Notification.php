@@ -16,12 +16,12 @@ use OpenApi\Annotations as OA;
 class Notification
 {
     // notification types
-    const NEW_MESSAGE = 'new_message';
-    const NEW_COMMENT = 'new_comment';
-    const USER_JOINED_GROUP = 'user_joined_group';
-    const USER_LEFT_GROUP = 'user_left_group';
-    const GLOBAL_NOTIFICATION = 'global_notification';
-    const GROUP_NAME_CHANGE = 'group_name_change';
+    public const NEW_MESSAGE = 'new_message';
+    public const NEW_COMMENT = 'new_comment';
+    public const USER_JOINED_GROUP = 'user_joined_group';
+    public const USER_LEFT_GROUP = 'user_left_group';
+    public const GLOBAL_NOTIFICATION = 'global_notification';
+    public const GROUP_NAME_CHANGE = 'group_name_change';
 
     /**
      * @ORM\Id
