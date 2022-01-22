@@ -137,16 +137,11 @@ services:
     App\Command\ActivateBot:
       arguments:
         $botDir: '%env(resolve:dir_bots)%'
-        $logger: '@monolog.logger.zusam'
         $allow_bots: '%env(resolve:ALLOW_BOTS)%'
 
     App\Service\Bot:
       arguments:
         $botDir: '%env(resolve:dir_bots)%'
-        $domain: '%env(resolve:DOMAIN)%'
-        $env: '%kernel.environment%'
-        $lang: '%env(resolve:LANG)%'
-        $logger: '@monolog.logger.zusam'
 
     App\Service\Mailer:
       arguments:
