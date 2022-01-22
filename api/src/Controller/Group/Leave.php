@@ -5,15 +5,17 @@ namespace App\Controller\Group;
 use App\Controller\ApiController;
 use App\Entity\Group;
 use App\Entity\Notification;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
-use OpenApi\Annotations as OA;
 
 class Leave extends ApiController
 {
@@ -34,7 +36,10 @@ class Leave extends ApiController
      * @OA\Tag(name="group")
      * @Security(name="api_key")
      */
-    public function index(string $id): Response
+    public function index(
+      string $id,
+      #[CurrentUser] User $currentUser
+    ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -45,27 +50,27 @@ class Leave extends ApiController
 
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
-        $group->removeUser($this->getUser());
-        $this->getUser()->removeGroup($group);
+        $group->removeUser($currentUser);
+        $currentUser->removeGroup($group);
 
         // delete all notifications related to this group
-        foreach ($this->getUser()->getNotifications() as $notif) {
+        foreach ($currentUser->getNotifications() as $notif) {
             if ($notif->getFromGroup() == $group) {
                 $this->em->remove($notif);
             }
         }
 
-        $this->getUser()->setLastActivityDate(time());
-        $this->em->persist($this->getUser());
+        $currentUser->setLastActivityDate(time());
+        $this->em->persist($currentUser);
         $this->em->persist($group);
 
         // Notify users of the group
         foreach ($group->getUsers() as $u) {
-            if ($u->getId() != $this->getUser()->getId()) {
+            if ($u->getId() != $currentUser->getId()) {
                 $notif = new Notification();
                 $notif->setTarget($group->getId());
                 $notif->setOwner($u);
-                $notif->setFromUser($this->getUser());
+                $notif->setFromUser($currentUser);
                 $notif->setFromGroup($group);
                 $notif->setType(Notification::USER_LEFT_GROUP);
                 $this->em->persist($notif);

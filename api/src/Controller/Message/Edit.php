@@ -5,6 +5,7 @@ namespace App\Controller\Message;
 use App\Controller\ApiController;
 use App\Entity\File;
 use App\Entity\Message;
+use App\Entity\User;
 use App\Service\Message as MessageService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class Edit extends ApiController
@@ -55,7 +57,11 @@ class Edit extends ApiController
      * @OA\Tag(name="message")
      * @Security(name="api_key")
      */
-    public function index(string $id, Request $request): Response
+    public function index(
+      string $id,
+      Request $request,
+      #[CurrentUser] User $currentUser
+    ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -83,8 +89,8 @@ class Edit extends ApiController
         // regen message miniature
         $message->setPreview($this->messageService->genPreview($message));
 
-        $this->getUser()->setLastActivityDate(time());
-        $this->em->persist($this->getUser());
+        $currentUser->setLastActivityDate(time());
+        $this->em->persist($currentUser);
 
         $this->em->persist($message);
         $this->em->flush();

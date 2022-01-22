@@ -3,19 +3,20 @@
 namespace App\Controller\User;
 
 use App\Controller\ApiController;
-use App\Entity\User;
 use App\Entity\File;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class Edit extends ApiController
 {
@@ -40,11 +41,13 @@ class Edit extends ApiController
      * @OA\Tag(name="user")
      * @Security(name="api_key")
      */
-    public function post_bookmark(string $id): Response
+    public function post_bookmark(
+      string $id,
+      #[CurrentUser] User $user
+    ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $user = $this->getUser();
         $data = $user->getData();
         if (!isset($data['bookmarks'])) {
             $data['bookmarks'] = [];
@@ -72,11 +75,13 @@ class Edit extends ApiController
      * @OA\Tag(name="user")
      * @Security(name="api_key")
      */
-    public function delete_bookmark(string $id): Response
+    public function delete_bookmark(
+      string $id,
+      #[CurrentUser] User $user
+    ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $user = $this->getUser();
         $data = $user->getData();
         $data['bookmarks'] = array_values(
             array_filter(
@@ -138,7 +143,11 @@ class Edit extends ApiController
      * @OA\Tag(name="user")
      * @Security(name="api_key")
      */
-    public function index(string $id, Request $request): Response
+    public function index(
+      string $id,
+      Request $request,
+      #[CurrentUser] User $currentUser
+    ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -174,8 +183,8 @@ class Edit extends ApiController
             }
             $user->setAvatar($file);
         }
-        $this->getUser()->setLastActivityDate(time());
-        $this->em->persist($this->getUser());
+        $currentUser->setLastActivityDate(time());
+        $this->em->persist($currentUser);
         $this->em->persist($user);
         $this->em->flush();
 
@@ -195,7 +204,10 @@ class Edit extends ApiController
      * @OA\Tag(name="user")
      * @Security(name="api_key")
      */
-    public function resetApiKey(string $id): Response
+    public function resetApiKey(
+      string $id,
+      #[CurrentUser] User $currentUser
+    ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -208,8 +220,8 @@ class Edit extends ApiController
 
         $user->resetSecretKey();
 
-        $this->getUser()->setLastActivityDate(time());
-        $this->em->persist($this->getUser());
+        $currentUser->setLastActivityDate(time());
+        $this->em->persist($currentUser);
         $this->em->persist($user);
         $this->em->flush();
 

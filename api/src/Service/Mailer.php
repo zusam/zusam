@@ -70,10 +70,11 @@ class Mailer
             'sub' => Token::SUB_STOP_EMAIL_NOTIFICATIONS,
         ], $user->getSecretKey());
 
-        $email = (new Email('Zusam Notification Email'))
-            ->setFrom('noreply@'.$this->domain)
-            ->setTo($user->getLogin())
-            ->setBody(
+        $email = (new Email())
+            ->subject('Zusam Notification Email')
+            ->from('noreply@'.$this->domain)
+            ->to($user->getLogin())
+            ->text(
                 $this->twig->render(
                     "notification-email.$lang.txt.twig",
                     [
@@ -104,10 +105,11 @@ class Mailer
             'sub' => Token::SUB_RESET_PASSWORD,
         ], $user->getPassword());
 
-        $email = (new Email('Zusam Password Reset'))
-            ->setFrom('noreply@'.$this->domain)
-            ->setTo($user->getLogin())
-            ->setBody(
+        $email = (new Email())
+            ->subject('Zusam Password Reset')
+            ->from('noreply@'.$this->domain)
+            ->to($user->getLogin())
+            ->text(
                 $this->twig->render(
                     "password-reset-mail.$lang.txt.twig",
                     [

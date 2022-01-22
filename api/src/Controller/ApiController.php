@@ -44,7 +44,7 @@ abstract class ApiController extends AbstractController
                 AbstractObjectNormalizer::ALLOW_EXTRA_ATTRIBUTES => true, // symfony default
                 ObjectNormalizer::ENABLE_MAX_TREE_DEPTH => true,
                 ObjectNormalizer::TREE_DEPTH_LIMIT => 1,
-                'currentUser' => $this->getUser() ? $this->getUser()->getId() : null,
+                'currentUser' => $this->getUser() ? $this->getUser()->getUserIdentifier() : null,
                 'groups' => $groups,
             ]
         );
@@ -72,7 +72,7 @@ abstract class ApiController extends AbstractController
             AbstractObjectNormalizer::ALLOW_EXTRA_ATTRIBUTES => true, // symfony default
             ObjectNormalizer::ENABLE_MAX_TREE_DEPTH => true,
             ObjectNormalizer::TREE_DEPTH_LIMIT => 1,
-            'currentUser' => $this->getUser() ? $this->getUser()->getId() : null,
+            'currentUser' => $this->getUser() ? $this->getUser()->getUserIdentifier() : null,
             'groups' => $groups,
         ]
       );

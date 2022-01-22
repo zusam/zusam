@@ -5,16 +5,18 @@ namespace App\Controller\Group;
 use App\Controller\ApiController;
 use App\Entity\Group;
 use App\Entity\Notification;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
-use OpenApi\Annotations as OA;
 
 class Edit extends ApiController
 {
@@ -44,7 +46,11 @@ class Edit extends ApiController
      * @OA\Tag(name="group")
      * @Security(name="api_key")
      */
-    public function index(string $id, Request $request): Response
+    public function index(
+      string $id,
+      Request $request,
+      #[CurrentUser] User $currentUser
+    ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -64,7 +70,7 @@ class Edit extends ApiController
 
             if ($newName != $previousName) {
                 // create associated notifications
-                $author = $this->getUser();
+                $author = $currentUser;
                 foreach ($group->getUsers() as $user) {
                     if ($user->getId() != $author->getId()) {
                         $notif = new Notification();
@@ -83,8 +89,8 @@ class Edit extends ApiController
             }
         }
 
-        $this->getUser()->setLastActivityDate(time());
-        $this->em->persist($this->getUser());
+        $currentUser->setLastActivityDate(time());
+        $this->em->persist($currentUser);
 
         $this->em->persist($group);
         $this->em->flush();

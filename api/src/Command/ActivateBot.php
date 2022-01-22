@@ -18,35 +18,22 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class ActivateBot extends Command
 {
-    private $em;
-    private $logger;
-    private $input;
     private $output;
     private $system;
-    private $kernel;
     private $botDir;
     private $allow_bots;
-    private $botService;
     private $params;
 
     public function __construct(
         $botDir,
-        LoggerInterface $logger,
         $allow_bots,
-        EntityManagerInterface $em,
         SystemService $systemService,
-        KernelInterface $kernel,
-        BotService $botService,
         ParameterBagInterface $params
     ) {
         parent::__construct();
-        $this->em = $em;
-        $this->logger = $logger;
         $this->botDir = $botDir;
         $this->system = $systemService;
-        $this->kernel = $kernel;
         $this->allow_bots = $allow_bots;
-        $this->botService = $botService;
         $this->params = $params;
     }
 
@@ -60,7 +47,6 @@ class ActivateBot extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->input = $input;
         $this->output = $output;
 
         if ($this->allow_bots != "true") {

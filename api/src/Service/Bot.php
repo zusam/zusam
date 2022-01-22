@@ -16,10 +16,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class Bot
 {
     private $botDir;
-    private $domain;
-    private $env;
-    private $lang;
-    private $logger;
     private $em;
     private $fileService;
     private $groupService;
@@ -28,10 +24,6 @@ class Bot
 
     public function __construct(
         $botDir,
-        $domain,
-        string $env,
-        $lang,
-        LoggerInterface $logger,
         EntityManagerInterface $em,
         FileService $fs,
         GroupService $gs,
@@ -39,10 +31,6 @@ class Bot
         UserService $us
     ) {
         $this->botDir = $botDir;
-        $this->domain = $domain;
-        $this->env = $env;
-        $this->lang = $lang;
-        $this->logger = $logger;
         $this->em = $em;
         $this->fileService = $fs;
         $this->groupService = $gs;

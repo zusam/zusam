@@ -268,26 +268,15 @@ class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInt
     }
 
     // necessary for UserInterface
-    public function getUsername()
+    public function getUserIdentifier(): string
     {
-        return $this->login;
-    }
-
-    // necessary for UserInterface
-    public function getSalt()
-    {
-        return null;
+        return $this->id;
     }
 
     // necessary for UserInterface
     public function getRoles(): array
     {
         return ['ROLE_USER'];
-    }
-
-    public function getUserIdentifier(): string
-    {
-        return $this->login;
     }
 
     // necessary for UserInterface

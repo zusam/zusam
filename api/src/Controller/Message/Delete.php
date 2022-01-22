@@ -3,17 +3,19 @@
 namespace App\Controller\Message;
 
 use App\Controller\ApiController;
-use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Message;
 use App\Entity\Notification;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class Delete extends ApiController
 {
@@ -33,7 +35,10 @@ class Delete extends ApiController
      * @OA\Tag(name="message")
      * @Security(name="api_key")
      */
-    public function index(string $id): Response
+    public function index(
+      string $id,
+      #[CurrentUser] User $currentUser
+    ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -49,8 +54,8 @@ class Delete extends ApiController
             $this->em->remove($n);
         }
 
-        $this->getUser()->setLastActivityDate(time());
-        $this->em->persist($this->getUser());
+        $currentUser->setLastActivityDate(time());
+        $this->em->persist($currentUser);
 
         $this->em->remove($message);
         $this->em->flush();

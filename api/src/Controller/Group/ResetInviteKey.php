@@ -4,15 +4,17 @@ namespace App\Controller\Group;
 
 use App\Controller\ApiController;
 use App\Entity\Group;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
-use OpenApi\Annotations as OA;
 
 class ResetInviteKey extends ApiController
 {
@@ -35,7 +37,10 @@ class ResetInviteKey extends ApiController
      * @OA\Tag(name="group")
      * @Security(name="api_key")
      */
-    public function index(string $id): Response
+    public function index(
+      string $id,
+      #[CurrentUser] User $currentUser
+    ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -48,8 +53,8 @@ class ResetInviteKey extends ApiController
 
         $group->resetSecretKey();
 
-        $this->getUser()->setLastActivityDate(time());
-        $this->em->persist($this->getUser());
+        $currentUser->setLastActivityDate(time());
+        $this->em->persist($currentUser);
         $this->em->persist($group);
         $this->em->flush();
 
