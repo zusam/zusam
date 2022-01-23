@@ -77,6 +77,12 @@
         "symfony/polyfill-php56": "*"
     },
     "scripts": {
+        "lint": [
+          "php8 -d memory_limit=-1 ./vendor/bin/php-cs-fixer fix src/ --verbose"
+        ],
+        "analyze": [
+          "php8 -d memory_limit=-1 ./vendor/bin/phpstan analyse src/ -l 5"
+        ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install --symlink --relative %BUNDLES_DIR%": "symfony-cmd",
