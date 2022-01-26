@@ -7,16 +7,19 @@ const CACHE_NAME = `zusam-${CACHE_VERSION}`;
 const cache_store = createStore(CACHE_NAME, CACHE_NAME);
 const cached_routes = [
   {
+    // Can lead to update issues. It's here for speed optimization (with a low timeout)
     route: new RegExp("/api/users/[^/]+/?$"),
     duration: 1000 * 60 * 1, // 1mn
   },
   {
+    // Can lead to update issues. It's here for speed optimization (with a low timeout)
     route: new RegExp("/api/groups/[^/]+/?$"),
     duration: 1000 * 60 * 2, // 2mn
   },
   {
+    // Can lead to update issues. It's here for speed optimization (with a low timeout)
     route: new RegExp("/api/messages/[^/]+/preview/?$"),
-    duration: 1000 * 60 * 60 * 24, // 24h
+    duration: 1000 * 60 * 5, // 5mn
   },
   {
     route: new RegExp("/api/notifications/[^/]+/?$"),
