@@ -22,7 +22,7 @@ export default function BigFile(props) {
             controls="true"
             src={url}
             id={props.file.id}
-           />
+          />
         );
       }
       return (
@@ -30,7 +30,7 @@ export default function BigFile(props) {
           <img
             class="img-fluid video-raw"
             src={util.crop(props.file.id, 320, 180)}
-           />
+          />
           <div class="video-not-ready">
             {this.props.t("video_not_ready")}
           </div>

@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { api, me, i18n, notifications } from "/src/core";
+import { http, api, me, notifications, router } from "/src/core";
 import {
   Login,
   Public,
@@ -35,14 +35,14 @@ function App() {
     window.addEventListener("click", e => {
       if (!e.target.closest(".dropdown")) {
         // close dropdowns if we are clicking on something else
-          document.querySelectorAll(".dropdown").forEach(n => n.classList.remove("active"));
+        document.querySelectorAll(".dropdown").forEach(n => n.classList.remove("active"));
       } else {
         // close dropdowns that are not clicked on
         document
           .querySelectorAll(".dropdown")
           .forEach(n => {
             if(n != e.target.closest(".dropdown")) {
-              n.classList.remove("active")
+              n.classList.remove("active");
             }
           });
       }
@@ -62,23 +62,13 @@ function App() {
       }
       navigate(redirect);
     }
-  });
 
-  // check if user is connected
-  // storage.get("apiKey").then(apiKey => {
-  //   if (router.route == "invitation") {
-  //     if (apiKey) {
-  //       http.post(`/api/groups/invitation/${router.id}`, {}).then(() => {
-  //         this.props.history.push("/");
-  //       });
-  //     } else {
-  //       this.props.history.push(`/signup?inviteKey=${router.id}`);
-  //     }
-  //   } else if (!router.isOutside() && !apiKey) {
-  //     // redirect to login if we don't have an apiKey
-  //     this.props.history.push("/login");
-  //   }
-  // });
+    if (location.pathname.match(/invitation/)) {
+      http.post(`/api/groups/invitation/${router.id}`, {}).then(() => {
+        navigate("/");
+      });
+    }
+  });
 
   return (
     <Routes>

@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
 import { http, util } from "/src/core";
-import { withTranslation } from 'react-i18next';
+import { withTranslation } from "react-i18next";
 import { Navbar } from "/src/navbar";
 
 class CreateGroup extends Component {
@@ -49,7 +49,7 @@ class CreateGroup extends Component {
                               placeholder={this.props.t("name_input")}
                               class="form-control"
                               required
-                             />
+                            />
                           </div>
                           <button
                             onClick={e => this.postNewGroup(e)}

@@ -6,8 +6,8 @@ import MessageFooter from "./message-footer.component.js";
 import MessageBody from "./message-body.component.js";
 import MessageBreadcrumbs from "./message-breadcrumbs.component.js";
 import { Writer } from "/src/writer";
-import { withTranslation } from 'react-i18next';
-import { connectStoreon } from 'storeon/preact';
+import { withTranslation } from "react-i18next";
+import { connectStoreon } from "storeon/preact";
 
 class Message extends Component {
 
@@ -104,7 +104,7 @@ class Message extends Component {
       this.setState({
         edit: false,
       });
-      this.hydrateMessage(event.detail)
+      this.hydrateMessage(event.detail);
       this.props.key = +Date.now();
     }
   }
@@ -271,4 +271,4 @@ class Message extends Component {
   }
 }
 
-export default connectStoreon('me', withTranslation()(Message));
+export default connectStoreon("me", withTranslation()(Message));

@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
 import { alert, storage, http, router } from "/src/core";
-import { withTranslation } from 'react-i18next';
+import { withTranslation } from "react-i18next";
 
 class ResetPassword extends Component {
   constructor() {

@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { alert, http, util, me, router } from "/src/core";
+import { alert, http, util, router } from "/src/core";
 import { useStoreon } from "storeon/preact";
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,7 @@ export default function GroupSettings(props) {
 
   const params = useParams();
   const { t } = useTranslation();
-  const { me } = useStoreon('me');
+  const { me, dispatch } = useStoreon("me");
   const navigate = useNavigate();
   const [secretKey, setSecretKey] = useState("");
   const [users, setUsers] = useState([]);
@@ -59,7 +59,7 @@ export default function GroupSettings(props) {
       let user = {};
       user.data = { default_group: me.groups[0].id };
       http.put(`/api/users/${me.id}`, user).then(() => {
-        dispatch('me/fetch');
+        dispatch("me/fetch");
         leave();
       });
     } else {
@@ -72,7 +72,7 @@ export default function GroupSettings(props) {
       if (!res || !res["entityType"]) {
         alert.add(t("error"), "alert-danger");
       } else {
-        dispatch('me/fetch');
+        dispatch("me/fetch");
         alert.add(t("group_left"));
         navigate("/");
       }
@@ -99,7 +99,7 @@ export default function GroupSettings(props) {
                         value={group.name}
                         class="form-control"
                         required
-                       />
+                      />
                     </div>
                     <button
                       onClick={updateSettings}
@@ -121,7 +121,7 @@ export default function GroupSettings(props) {
                         }
                         class="form-control font-size-80"
                         readonly="readonly"
-                       />
+                      />
                     </div>
                     <button
                       class="btn btn-outline-secondary"

@@ -14,10 +14,10 @@ const http = {
           if (e.target.status > 199 && e.target.status < 300) {
             loadFn(JSON.parse(e.target.response));
           } else if (errorFn) {
-              errorFn(e.target.statusText);
-            } else {
-              console.error(e.target.statusText);
-            }
+            errorFn(e.target.statusText);
+          } else {
+            console.error(e.target.statusText);
+          }
         });
         if (progressFn) {
           xhr.upload.onprogress = e =>
@@ -56,11 +56,11 @@ const http = {
       .catch(error => alert.add(error, "alert-danger"));
   },
   post: (url, data, delay = 0, contentType = "application/json") =>
-    http.request(url, data, "POST", 0, contentType),
+    http.request(url, data, "POST", delay, contentType),
   put: (url, data, delay = 0, contentType = "application/json") =>
-    http.request(url, data, "PUT", 0, contentType),
+    http.request(url, data, "PUT", delay, contentType),
   delete: (url, data, delay = 0, contentType = "application/json") =>
-    http.request(url, null, "DELETE", 0, contentType),
+    http.request(url, null, "DELETE", delay, contentType),
   request: (url, data, method, delay = 0, contentType = "application/json") => {
     return storage
       .get("apiKey")

@@ -11,7 +11,7 @@ const notifications = {
 
   update() {
     return http.get(`/api/me/notifications/${notifications.LIMIT + 1}`).then(r => {
-      store.dispatch('notifications/update', r);
+      store.dispatch("notifications/update", r);
     });
   },
 
@@ -30,7 +30,7 @@ const notifications = {
   removeAllNotifications() {
     let state = store.get();
     if (Array.isArray(state["notifications"])) {
-      state.notifications.forEach(n => store.dispatch('notifications/remove', n))
+      state.notifications.forEach(n => store.dispatch("notifications/remove", n));
     }
   },
 
@@ -39,7 +39,7 @@ const notifications = {
     if (Array.isArray(state["notifications"])) {
       state.notifications
         .filter(n => notifications.matchNotification(n, id))
-        .forEach(n => store.dispatch('notifications/remove', n));
+        .forEach(n => store.dispatch("notifications/remove", n));
     }
   },
 
@@ -52,6 +52,6 @@ const notifications = {
     }
     return false;
   },
-}
+};
 
 export default notifications;

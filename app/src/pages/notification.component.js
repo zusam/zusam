@@ -1,7 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import { http, util } from "/src/core";
 import { Link } from "react-router-dom";
-import { withTranslation } from 'react-i18next';
+import { withTranslation } from "react-i18next";
 
 class Notification extends Component {
   constructor(props) {
@@ -48,88 +48,88 @@ class Notification extends Component {
 
   getAction(notification) {
     switch (notification?.type) {
-      case "new_message":
-        return this.props.t("has_posted_in");
-      case "new_comment":
-        return this.props.t("has_commented_on");
-      case "user_joined_group":
-        return this.props.t("has_joined");
-      case "user_left_group":
-        return this.props.t("has_left");
-      case "group_name_change":
-        return this.props.t("changed_group_name");
-      default:
-        return "";
+    case "new_message":
+      return this.props.t("has_posted_in");
+    case "new_comment":
+      return this.props.t("has_commented_on");
+    case "user_joined_group":
+      return this.props.t("has_joined");
+    case "user_left_group":
+      return this.props.t("has_left");
+    case "group_name_change":
+      return this.props.t("changed_group_name");
+    default:
+      return "";
     }
   }
 
   getObject(notification) {
     switch (notification?.type) {
-      case "new_message":
-        return (
-          <Fragment>
-            <strong>
-              {this.state?.notification?.fromGroup.name}
-            </strong>
-            {this.state.title && (
-              <Fragment>
-                <br />
-                <small><em>{util.limitStrSize(this.state.title, 52)}</em></small>
-              </Fragment>
-            )}
-          </Fragment>
-        );
-      case "new_comment":
-        return (
-          <span>
-            {`${this.props.t("the_message_from")  } `}
-            <strong>{notification?.parentAuthorName}</strong>
-            {this.state.title && (
-              <Fragment>
-                <br />
-                <small><em>{util.limitStrSize(this.state.title, 52)}</em></small>
-              </Fragment>
-            )}
-          </span>
-        );
-      case "user_joined_group":
-      case "user_left_group":
-        return (
+    case "new_message":
+      return (
+        <Fragment>
           <strong>
             {this.state?.notification?.fromGroup.name}
           </strong>
-        );
-      case "group_name_change":
-        return (
-          <span>
-            <strong>{this.state.notification.data["previousGroupName"]}</strong>
-            {` ${this.props.t("to")} `}
-            <strong>{this.state.notification.data["newGroupName"]}</strong>
-          </span>
-        );
-      case "global_notification":
-        return this.state.notification.data["text"];
-      default:
-        return "";
+          {this.state.title && (
+            <Fragment>
+              <br />
+              <small><em>{util.limitStrSize(this.state.title, 52)}</em></small>
+            </Fragment>
+          )}
+        </Fragment>
+      );
+    case "new_comment":
+      return (
+        <span>
+          {`${this.props.t("the_message_from")  } `}
+          <strong>{notification?.parentAuthorName}</strong>
+          {this.state.title && (
+            <Fragment>
+              <br />
+              <small><em>{util.limitStrSize(this.state.title, 52)}</em></small>
+            </Fragment>
+          )}
+        </span>
+      );
+    case "user_joined_group":
+    case "user_left_group":
+      return (
+        <strong>
+          {this.state?.notification?.fromGroup.name}
+        </strong>
+      );
+    case "group_name_change":
+      return (
+        <span>
+          <strong>{this.state.notification.data["previousGroupName"]}</strong>
+          {` ${this.props.t("to")} `}
+          <strong>{this.state.notification.data["newGroupName"]}</strong>
+        </span>
+      );
+    case "global_notification":
+      return this.state.notification.data["text"];
+    default:
+      return "";
     }
   }
 
   getTarget(notification, message_id) {
     switch (notification?.type) {
-      case "user_joined_group":
-      case "user_left_group":
-      case "group_name_change":
-        return `/groups/${notification.fromGroup.id}`;
-      case "new_message":
-        return `/messages/${notification.target}`;
-      case "new_comment":
-        return (
-          `/messages/${message_id}/${notification.target}`
-        );
-      case "global_notification":
-        return notification.target;
-      default:
-        return "";
+    case "user_joined_group":
+    case "user_left_group":
+    case "group_name_change":
+      return `/groups/${notification.fromGroup.id}`;
+    case "new_message":
+      return `/messages/${notification.target}`;
+    case "new_comment":
+      return (
+        `/messages/${message_id}/${notification.target}`
+      );
+    case "global_notification":
+      return notification.target;
+    default:
+      return "";
     }
   }
 

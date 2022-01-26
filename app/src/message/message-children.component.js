@@ -1,7 +1,7 @@
 import { h, Component } from "preact";
 import { router, util } from "/src/core";
 import MessageChild from "./message-child.component.js";
-import { withTranslation } from 'react-i18next';
+import { withTranslation } from "react-i18next";
 
 class MessageChildren extends Component {
   constructor(props) {

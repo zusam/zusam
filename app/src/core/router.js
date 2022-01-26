@@ -1,7 +1,6 @@
 import util from "./util.js";
 import http from "./http.js";
 import store from "/src/store";
-import { useNavigate } from "react-router-dom";
 
 const router = {
 
@@ -63,7 +62,7 @@ const router = {
   },
 
   getSegments: () =>
-      router
+    router
       .removeSubpath(window.location.pathname)
       .slice(1)
       .split("?")[0]

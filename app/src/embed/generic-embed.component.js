@@ -9,7 +9,7 @@ export default class GenericEmbed extends Component {
             allowfullscreen
             class="embed-responsive-item"
             src={this.props.url}
-           />
+          />
         </div>
       );
     }

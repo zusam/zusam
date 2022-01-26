@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { alert, http, util, me } from "/src/core";
-import { useTranslation } from 'react-i18next';
-import { WritingWidget } from '/src/writer';
+import { useTranslation } from "react-i18next";
+import { WritingWidget } from "/src/writer";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "preact/hooks";
 
@@ -16,9 +16,9 @@ export default function Writer(props) {
 
   const setForm = (writerForm, files = [], title = "", text = "") => {
     setFiles(files);
-    Array.from(writerForm.current.getElementsByClassName('title-input')).map(e => e.value = title);
-    Array.from(writerForm.current.getElementsByClassName('text-input')).map(e => e.value = text);
-  }
+    Array.from(writerForm.current.getElementsByClassName("title-input")).map(e => e.value = title);
+    Array.from(writerForm.current.getElementsByClassName("text-input")).map(e => e.value = text);
+  };
 
   const updateFile = (id, file) => {
     setFiles(files.map(f => f.id === id ? Object.assign(f, file) : f));
@@ -40,7 +40,7 @@ export default function Writer(props) {
     formData.append("fileIndex", file.fileIndex);
     formData.append("file", file.inputFile);
 
-    file['status'] = 'uploading';
+    file["status"] = "uploading";
     setWorkers(workers+1);
     updateFile(fileId, file);
 
@@ -48,14 +48,14 @@ export default function Writer(props) {
       formData,
       file => {
         setWorkers(workers-1);
-        file['status'] = 'ready';
+        file["status"] = "ready";
         updateFile(fileId, file);
       },
       e => {
         updateFile(
           fileId,
           {progress: Math.floor((e.loaded / e.total) * 100)}
-        )
+        );
       },
       e => {
         console.warn(e);
@@ -77,7 +77,7 @@ export default function Writer(props) {
       window.dispatchEvent(new CustomEvent("editMessage", { detail: res }));
     });
     setSending(true);
-  }
+  };
 
   const postMessage = (msg, writerForm) => {
     msg = Object.assign(msg, {
@@ -110,7 +110,7 @@ export default function Writer(props) {
       setForm(writerForm, [], "", "");
     });
     setSending(true);
-  }
+  };
 
   const sendMessage = (writerForm, data) => {
     let msg = {
@@ -135,7 +135,7 @@ export default function Writer(props) {
       }
       return f;
     }));
-  }
+  };
 
   const addFiles = (mimetype, input_files) => {
     let fileIndex = files.reduce((a, f) => Math.max(a, f?.fileIndex || 0), 0) + 1;
@@ -144,11 +144,11 @@ export default function Writer(props) {
       type: mimetype,
       id: util.genId(),
       progress: 0,
-      status: 'initial',
+      status: "initial",
       fileIndex: ++fileIndex,
     }));
     setFiles([...list, ...files]);
-  }
+  };
 
   const inputFile = (mimetype, multiple = false) => {
     const input = document.createElement("input");

@@ -106,8 +106,8 @@ function fromCache(request) {
           cache_store
         ).then(() => matching);
       }
-        // if nothing matches, return response from network
-        return fromNetwork(request, true);
+      // if nothing matches, return response from network
+      return fromNetwork(request, true);
     });
   });
 }

@@ -2,24 +2,23 @@ import { h } from "preact";
 import { notifications as notifs } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Notification } from "/src/pages";
-import { useStoreon } from 'storeon/preact'
+import { useStoreon } from "storeon/preact";
 import { useTranslation } from "react-i18next";
 
 export default function NotificationsDropdownNavbar() {
 
-  // TODO remove dispatch
-  const { dispatch, notifications } = useStoreon('notifications');
+  const { t } = useTranslation();
+  const { notifications } = useStoreon("notifications");
   if (!notifications) {
     return null;
   }
-  const { t } = useTranslation();
 
   return (
     <div
       className={
         `menu dropdown${notifications.length ? " cursor-pointer" : ""}`
       }
-      title={t('notifications')}
+      title={t("notifications")}
       tabindex="-1"
       onClick={e =>
         notifications.length &&

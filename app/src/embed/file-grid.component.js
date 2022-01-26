@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { BigFile, MiniFile } from '/src/embed';
+import { BigFile, MiniFile } from "/src/embed";
 import { useEffect } from "preact/hooks";
 
 export default function FileGrid(props) {
@@ -14,7 +14,7 @@ export default function FileGrid(props) {
     if (typeof props.toggleFile == "function") {
       props.toggleFile(evt.target.closest(".file-embed").id);
     }
-  }
+  };
 
   if (!props.files || props.files.length === 0) {
     return null;

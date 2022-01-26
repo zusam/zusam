@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
 import { http } from "/src/core";
-import { withTranslation } from 'react-i18next';
+import { withTranslation } from "react-i18next";
 
 class StopNotificationEmails extends Component {
   constructor() {

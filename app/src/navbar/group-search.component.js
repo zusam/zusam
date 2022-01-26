@@ -1,7 +1,7 @@
 import { h, Component } from "preact";
 import { router, util, http } from "/src/core";
 import { MessageSearchResult } from "/src/message";
-import { withTranslation } from 'react-i18next';
+import { withTranslation } from "react-i18next";
 
 class GroupSearch extends Component {
   constructor(props) {
@@ -34,8 +34,8 @@ class GroupSearch extends Component {
   }
 
   loadMessages() {
-    const search = router.getParam("q")
-    const hashtags = router.getParam("hashtags")
+    const search = router.getParam("q");
+    const hashtags = router.getParam("hashtags");
     this.setState({
       search,
       hashtags,

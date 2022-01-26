@@ -1,17 +1,15 @@
 import { h } from "preact";
 import { alert, storage, http, me } from "/src/core";
-import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'preact/hooks';
+import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "preact/hooks";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
 
-  const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [showResetPassword, setResetPassword] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     // reroute if already logged in
@@ -36,7 +34,6 @@ export default function Login() {
 
   const sendLoginForm = e => {
     e.preventDefault();
-    setShowAlert(false);
     setSending(true);
     let login = document.getElementById("login").value || "";
     login.toLowerCase();
@@ -56,10 +53,10 @@ export default function Login() {
           });
         });
       } else if (res && res.message) {
-          alert.add(t(res.message), "alert-danger");
-        } else {
-          alert.add(t("error"), "alert-danger");
-        }
+        alert.add(t(res.message), "alert-danger");
+      } else {
+        alert.add(t("error"), "alert-danger");
+      }
     });
   };
 

@@ -10,26 +10,26 @@ export default class EmbedBlock extends Component {
     }
     if (this.props.data["providerName"]) {
       if ("peertube" == this.props.data["providerName"].toLowerCase()) {
-          // default embed code
-          if (this.props.data["code"]) {
-            return (
-              <div class="embed-container" dangerouslySetInnerHTML={{ __html: this.props.data["code"] }} />
-            );
-          }
+        // default embed code
+        if (this.props.data["code"]) {
+          return (
+            <div class="embed-container" dangerouslySetInnerHTML={{ __html: this.props.data["code"] }} />
+          );
+        }
       }
       if ("soundcloud" == this.props.data["providerName"].toLowerCase()) {
-          if (this.props.data["code"]) {
-            return (
-              <GenericEmbed
-                preview={util.crop(this.props.preview.id, 1024, 270)}
-                url={
-                  `${this.props.data["code"].match(/https:\/\/[^"\s]+/)[0] 
-                  }&auto_play=true`
-                }
-                playBtnClass={"soundcloud"}
-              />
-            );
-          }
+        if (this.props.data["code"]) {
+          return (
+            <GenericEmbed
+              preview={util.crop(this.props.preview.id, 1024, 270)}
+              url={
+                `${this.props.data["code"].match(/https:\/\/[^"\s]+/)[0] 
+                }&auto_play=true`
+              }
+              playBtnClass={"soundcloud"}
+            />
+          );
+        }
       }
       if (this.props.data["providerUrl"] == "https://bandcamp.com") {
         if (this.props.data["code"]) {
@@ -40,8 +40,8 @@ export default class EmbedBlock extends Component {
           if (id) {
             return (
               <BandCampEmbed
-              preview={util.crop(this.props.preview.id, 1024, 270)}
-              url={id[0]}
+                preview={util.crop(this.props.preview.id, 1024, 270)}
+                url={id[0]}
               />
             );
           }
@@ -96,7 +96,7 @@ export default class EmbedBlock extends Component {
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 1024, 270)}
                 url={
-                  `https://youtube.com/embed/${video_id[0].split('=')[1]}?autoplay=1&controls=2&wmode=opaque&list=${playlist_id[0].split('=')[1]}`
+                  `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque&list=${playlist_id[0].split("=")[1]}`
                 }
                 playBtnClass={"youtube"}
               />
@@ -107,7 +107,7 @@ export default class EmbedBlock extends Component {
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 1024, 270)}
                 url={
-                  `https://youtube.com/embed/?listType=playlist&list=${playlist_id[0].split('=')[1]}?autoplay=1&controls=2&wmode=opaque`
+                  `https://youtube.com/embed/?listType=playlist&list=${playlist_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque`
                 }
                 playBtnClass={"youtube"}
               />
@@ -117,7 +117,7 @@ export default class EmbedBlock extends Component {
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 1024, 270)}
               url={
-                `https://youtube.com/embed/${video_id[0].split('=')[1]}?autoplay=1&controls=2&wmode=opaque`
+                `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque`
               }
               playBtnClass={"youtube"}
             />

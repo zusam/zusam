@@ -1,8 +1,9 @@
 import { h, Component } from "preact";
 import { me, router, http } from "/src/core";
 import { Writer } from "/src/writer";
+import { Navbar } from "/src/navbar";
 import { connectStoreon } from "storeon/preact";
-import { withTranslation } from 'react-i18next';
+import { withTranslation } from "react-i18next";
 
 class Share extends Component {
   constructor() {
@@ -36,8 +37,8 @@ class Share extends Component {
           this.setState({ group: user.data["default_group"] });
           router.backUrl = `/groups/${user.data["default_group"]}`;
         } else if (user.groups.length == 1) {
-            this.setState({ group: user.groups[0]["id"] });
-            router.backUrl = `/groups/${user.groups[0]}`;
+          this.setState({ group: user.groups[0]["id"] });
+          router.backUrl = `/groups/${user.groups[0]}`;
         }
         if (this.state.currentUrl.searchParams.get("message")) {
           http
@@ -58,7 +59,7 @@ class Share extends Component {
         }
         unbind();
       }
-    }
+    };
   }
 
   groupSelect(e) {
@@ -105,7 +106,7 @@ class Share extends Component {
                     value={this.state.parent}
                     class="form-control font-size-80"
                     readonly="readonly"
-                   />
+                  />
                 </div>
               )}
               <Writer
@@ -128,4 +129,4 @@ class Share extends Component {
   }
 }
 
-export default withTranslation()(connectStoreon('me', Share));
+export default withTranslation()(connectStoreon("me", Share));

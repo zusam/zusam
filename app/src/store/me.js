@@ -1,11 +1,11 @@
 //import { http } from "/src/core";
 
 export const meStore = store => {
-  store.on('@init', () => ({me: {}}))
+  store.on("@init", () => ({me: {}}));
 
-  store.on('me/update', (state, me) => {
+  store.on("me/update", (state, me) => {
     return {me};
-  })
+  });
 
   //store.on('bookmark/add', (state, id) => {
   //  if (!me.hasBookmark(id)) {
@@ -22,4 +22,4 @@ export const meStore = store => {
   //    });
   //  }
   //})
-}
+};

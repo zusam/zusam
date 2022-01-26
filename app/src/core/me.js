@@ -37,13 +37,13 @@ const me = {
   update() {
     return http.get("/api/me", true).then(r => {
       if (!r || !r?.id) {
-        store.dispatch('update', {});
+        store.dispatch("update", {});
         return;
       }
       Promise.all(r.groups.map(g => http.get(`/api/groups/${g.id}`).then(group => group))).then(
         groups => {
           r.groups = groups;
-          store.dispatch('me/update', Object.assign({loaded: true}, r));
+          store.dispatch("me/update", Object.assign({loaded: true}, r));
         }
       );
       i18n.changeLanguage(r?.data?.lang);
@@ -67,20 +67,20 @@ const me = {
   },
 
   removeBookmark(id) {
-    store.dispatch('bookmark/remove', id);
+    store.dispatch("bookmark/remove", id);
   },
 
   addBookmark(id) {
-    store.dispatch('bookmark/add', id);
+    store.dispatch("bookmark/add", id);
   },
 
   reset() {
-    store.dispatch('@init');
+    store.dispatch("@init");
   },
 
   logout() {
     storage.reset();
   }
-}
+};
 
 export default me;

@@ -146,7 +146,7 @@ export default class MessageSearchResult extends Component {
           class="card-miniature"
           style={
             `background-image: url('${ 
-            util.crop(this.state.preview, 100, 100) 
+              util.crop(this.state.preview, 100, 100) 
             }')`
           }
         />
@@ -191,7 +191,7 @@ export default class MessageSearchResult extends Component {
               <div
                 class="title"
                 dangerouslySetInnerHTML={this.displayAuthorName()}
-               />
+              />
               <div class="dot">&bull;</div>
               <div
                 class="title"
@@ -200,14 +200,14 @@ export default class MessageSearchResult extends Component {
                   util.humanFullDate(this.state.message.lastActivityDate)
                 }
                 dangerouslySetInnerHTML={this.displayMessageTitle()}
-               />
+              />
             </div>
             <div class="text">
               {this.state.text.trim() && (
                 <p
                   class="card-text"
                   dangerouslySetInnerHTML={this.displayMessageText()}
-                 />
+                />
               )}
             </div>
             <div class="children">

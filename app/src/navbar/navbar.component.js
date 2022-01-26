@@ -3,7 +3,7 @@ import { router, util, me } from "/src/core";
 import { Search } from "/src/pages";
 import { GroupsDropdownNavbar, NotificationsDropdownNavbar } from "/src/navbar";
 import { Link } from "react-router-dom";
-import { connectStoreon } from 'storeon/preact';
+import { connectStoreon } from "storeon/preact";
 import { useTranslation } from "react-i18next";
 
 function Navbar() {
@@ -34,7 +34,7 @@ function Navbar() {
                 class="d-block seamless-link capitalize"
                 to={"/bookmarks"}
               >
-                {t('bookmarks')}
+                {t("bookmarks")}
               </Link>
             )}
             <Link
@@ -63,4 +63,4 @@ function Navbar() {
   );
 }
 
-export default connectStoreon('me', Navbar);
+export default connectStoreon("me", Navbar);

@@ -7,6 +7,6 @@ export default function MessageChild(props) {
       id={props.id}
       isPublic={props.isPublic}
       isChild={true}
-     />
+    />
   );
 }

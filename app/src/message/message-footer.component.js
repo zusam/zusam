@@ -68,7 +68,7 @@ export default function MessageFooter(props) {
           <div
             class="options dropdown"
             onClick={e =>
-                e?.target?.closest(".dropdown")?.classList.toggle("active")
+              e?.target?.closest(".dropdown")?.classList.toggle("active")
             }
           >
             <div class="none-if-follows-empty">
@@ -102,13 +102,13 @@ export default function MessageFooter(props) {
               {!props?.message?.isInFront &&
                   props?.author &&
                   props?.author.id == me.id && (
-                    <a
-                      class="seamless-link capitalize"
-                      onClick={e => props.publishInGroup(e)}
-                    >
-                      {t("publish_in_group")}
-                    </a>
-                  )}
+                <a
+                  class="seamless-link capitalize"
+                  onClick={e => props.publishInGroup(e)}
+                >
+                  {t("publish_in_group")}
+                </a>
+              )}
               {!me.hasBookmark(props?.message.id) && (
                 <a
                   class="seamless-link capitalize"

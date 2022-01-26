@@ -1,18 +1,16 @@
 import { h } from "preact";
-import { http } from "/src/core";
 import UserSettings from "./user-settings.component.js";
 import GroupSettings from "./group-settings.component.js";
 import { Navbar } from "/src/navbar";
 import { Link, useParams } from "react-router-dom";
 import { useStoreon } from "storeon/preact";
-import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 
-export default function Settings(props) {
+export default function Settings() {
 
   const params = useParams();
   const { t } = useTranslation();
-  const { me } = useStoreon('me');
+  const { me } = useStoreon("me");
 
   return (
     <main>

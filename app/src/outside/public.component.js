@@ -17,7 +17,7 @@ export default function Public() {
                   isPublic={true}
                   isChild={false}
                   token={params.token}
-                 />
+                />
               </div>
             </article>
           </div>

@@ -1,7 +1,7 @@
 import { h, Component, Fragment } from "preact";
 import { http, util } from "/src/core";
 import { Link } from "react-router-dom";
-import { withTranslation } from 'react-i18next';
+import { withTranslation } from "react-i18next";
 
 class MessageBreadcrumbs extends Component {
 
@@ -46,21 +46,21 @@ class MessageBreadcrumbs extends Component {
 
   getTitle(message) {
     if (message) {
-      if (message['data'] && message['data']['title']) {
-        return message['data']['title'];
+      if (message["data"] && message["data"]["title"]) {
+        return message["data"]["title"];
       }
-      if (message['preview'] && message['preview']['data']) {
-        return message['preview']['data']['title'];
+      if (message["preview"] && message["preview"]["data"]) {
+        return message["preview"]["data"]["title"];
       }
-      if (message['data'] && message['data']['text']) {
-        let url = util.getUrl(message['data']['text']);
+      if (message["data"] && message["data"]["text"]) {
+        let url = util.getUrl(message["data"]["text"]);
         if (url && url.length > 0) {
           url = url[0];
         }
         if (url) {
           return url;
         }
-        return message['data']['text'];
+        return message["data"]["text"];
       }
     }
     // When all else fails, just say who and when

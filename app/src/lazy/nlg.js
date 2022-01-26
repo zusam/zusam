@@ -54,18 +54,18 @@ let nlg = {
     let url = e.dataset.src || e.src || e.href;
     let media;
     switch (true) {
-      case /\.(webm|mp4)$/.test(url):
-        media = document.createElement("video");
-        media.setAttribute("controls", true);
-        break;
-      case /\.(pdf)$/.test(url):
-        media = document.createElement("iframe");
-        break;
-      case /\.(jpg|jpeg|png|bmp|webp|gif|svg)$/.test(url):
-      default:
-        // default displays also thumbnails that do not have an extension
-        // TODO: this is a dirty trick
-        media = document.createElement("img");
+    case /\.(webm|mp4)$/.test(url):
+      media = document.createElement("video");
+      media.setAttribute("controls", true);
+      break;
+    case /\.(pdf)$/.test(url):
+      media = document.createElement("iframe");
+      break;
+    case /\.(jpg|jpeg|png|bmp|webp|gif|svg)$/.test(url):
+    default:
+      // default displays also thumbnails that do not have an extension
+      // TODO: this is a dirty trick
+      media = document.createElement("img");
     }
     media.classList.add("nlg-media");
     if (side) {
@@ -123,7 +123,7 @@ let nlg = {
         downloadBtn.id = "nlg-download";
         downloadBtn.href = e.dataset.origin;
         downloadBtn.target = "_blank";
-        downloadBtn.innerHTML = `&#8615;`;
+        downloadBtn.innerHTML = "&#8615;";
         downloadBtn.download = (new URL(e.dataset.origin)).pathname.split("/").slice(-1);
         document.body.appendChild(downloadBtn);
       }
@@ -177,7 +177,7 @@ let nlg = {
         window.addEventListener("keydown", nlg.keyPressLeft);
         modal.appendChild(prev);
       }
-      modal.style.cssText = `opacity: 1;`;
+      modal.style.cssText = "opacity: 1;";
       setTimeout(nlg.center, 1);
     };
     media.addEventListener("load", mediaIsLoadedFn);

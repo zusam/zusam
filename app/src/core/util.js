@@ -14,12 +14,12 @@ const util = {
   },
   limitLength: (string, size = 20) => {
     return [
-      ...string.split('').slice(0, Math.floor(size/2)),
-      string.length > size ? '...' : '',
-      ...string.split('').slice(Math.floor(size/2)).slice(Math.floor(size/2) * -1)].join('')
+      ...string.split("").slice(0, Math.floor(size/2)),
+      string.length > size ? "..." : "",
+      ...string.split("").slice(Math.floor(size/2)).slice(Math.floor(size/2) * -1)].join("");
   },
   escapeRegex: string => {
-    return string.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+    return string.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
   },
   getSubpath: () => new URL(document.baseURI).pathname.replace(/\/$/, ""),
   // toApp transforms an api url into an "app" url that the user can naviate to
@@ -37,7 +37,7 @@ const util = {
   // TODO improve using ideas from ai/nanoid
   genId: seed => `z${seed || ""}-${Date.now().toString().slice(-5)}${Math.random().toString().slice(-5)}`,
   // transform an id into int for the API (TODO: revisit this on 0.5)
-  id2Int: id => parseInt(id.replace(/[^\d]/g,''), 10),
+  id2Int: id => parseInt(id.replace(/[^\d]/g,""), 10),
   urlRegExp: /(\([^()]*)?https?:\/\/[^[\]\n\r ]*[-A-Za-z0-9+&@#/%=~_()|]/i,
   getUrl: txt => {
     if (!txt) {
@@ -84,17 +84,17 @@ const util = {
   // get the id of an object from an url
   getId: e => {
     switch (typeof e) {
-      case "object":
-        return e ? e.id : null;
-      case "string":
-        return e
-          .split("/")
-          .pop()
-          .replace(/\?.*$/, "")
-          .replace(/\.\w+$/, "");
-      default:
-        console.error(e);
-        throw "Could not extract id !";
+    case "object":
+      return e ? e.id : null;
+    case "string":
+      return e
+        .split("/")
+        .pop()
+        .replace(/\?.*$/, "")
+        .replace(/\.\w+$/, "");
+    default:
+      console.error(e);
+      throw "Could not extract id !";
     }
   },
   // get the url to a thubmnail

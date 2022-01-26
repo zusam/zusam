@@ -1,9 +1,9 @@
 import { h, render } from "preact";
-import App from './app.js';
+import App from "./app.js";
 import {
   BrowserRouter as Router,
 } from "react-router-dom";
-import { StoreContext } from 'storeon/preact';
+import { StoreContext } from "storeon/preact";
 import store from "/src/store";
 import { storage, util } from "/src/core";
 
@@ -40,7 +40,7 @@ if ("serviceWorker" in navigator) {
         console.log("Service workers unregistered");
         storage.set("version", util.getVersion());
       }
-      navigator.serviceWorker.register(new URL('service-workers.js', import.meta.url), {type: 'module'}).then(
+      navigator.serviceWorker.register(new URL("service-workers.js", import.meta.url), {type: "module"}).then(
         (registration) => {
           console.log(
             "ServiceWorker registration successful with scope: ",

@@ -1,11 +1,11 @@
 import { h } from "preact";
 import { MessagePreview } from "/src/message";
 import { Navbar } from "/src/navbar";
-import { useStoreon } from 'storeon/preact'
+import { useStoreon } from "storeon/preact";
 
 export default function BookmarkBoard() {
 
-  const { me } = useStoreon('me')
+  const { me } = useStoreon("me");
 
   if (!Array.isArray(me?.data?.bookmarks) || me?.data?.bookmarks.length < 1) {
     return;

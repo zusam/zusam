@@ -5,10 +5,10 @@ import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 
-export default function UserSettings(props) {
+export default function UserSettings() {
 
   const { t } = useTranslation();
-  const { me } = useStoreon('me');
+  const { me } = useStoreon("me");
   const navigate = useNavigate();
   const location = useLocation();
   const [apiKey, setApiKey] = useState(null);
@@ -133,7 +133,7 @@ export default function UserSettings(props) {
                       placeholder={t("name_input")}
                       value={me.name}
                       class="form-control"
-                     />
+                    />
                   </div>
                   <div class="form-group">
                     <label for="email">{t("email")}: </label>
@@ -143,7 +143,7 @@ export default function UserSettings(props) {
                       placeholder={t("email_input")}
                       value={me.login}
                       class="form-control"
-                     />
+                    />
                   </div>
                   <div class="form-group">
                     <label for="password">{t("password")}: </label>
@@ -155,7 +155,7 @@ export default function UserSettings(props) {
                       maxlength="128"
                       placeholder={t("password_input")}
                       class="form-control"
-                     />
+                    />
                   </div>
                   <div class="form-group">
                     <label for="notification_emails">
@@ -219,7 +219,7 @@ export default function UserSettings(props) {
                       value={apiKey}
                       class="form-control font-size-80"
                       readonly="readonly"
-                     />
+                    />
                   </div>
                   <button
                     class="btn btn-outline-secondary"

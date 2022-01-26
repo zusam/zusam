@@ -74,11 +74,11 @@ export default class MessageBody extends Component {
         {this.props.message.data &&
           this.props.message.data.text &&
           this.props.message.data.text.trim() && (
-            <p
-              class="card-text"
-              dangerouslySetInnerHTML={this.displayMessageText()}
-             />
-          )}
+          <p
+            class="card-text"
+            dangerouslySetInnerHTML={this.displayMessageText()}
+          />
+        )}
         {this.state.preview && (!this.props.message.data || !this.props.message.data["no_embed"]) && (
           <EmbedBlock
             key={this.state.preview.url}

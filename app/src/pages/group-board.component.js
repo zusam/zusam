@@ -11,13 +11,13 @@ export default function GroupBoard() {
       <Navbar />
       <div class="content">
         <div>
-            <div>
-              <article id="group" class="justify-content-center d-flex">
-                <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
-                  <MessageList key={params.id} id={params.id} />
-                </div>
-              </article>
-            </div>
+          <div>
+            <article id="group" class="justify-content-center d-flex">
+              <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
+                <MessageList key={params.id} id={params.id} />
+              </div>
+            </article>
+          </div>
           <Link
             class="write-button material-shadow seamless-link"
             to={`/groups/${params.id}/write`}
