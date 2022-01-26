@@ -137,6 +137,19 @@ export default function Writer(props) {
     }));
   }
 
+  const addFiles = (mimetype, input_files) => {
+    let fileIndex = files.reduce((a, f) => Math.max(a, f?.fileIndex || 0), 0) + 1;
+    let list = Array.from(input_files).map(e => ({
+      inputFile: e,
+      type: mimetype,
+      id: util.genId(),
+      progress: 0,
+      status: 'initial',
+      fileIndex: ++fileIndex,
+    }));
+    setFiles([...list, ...files]);
+  }
+
   const inputFile = (mimetype, multiple = false) => {
     const input = document.createElement("input");
     document.body.appendChild(input);
@@ -147,16 +160,7 @@ export default function Writer(props) {
       input.multiple = "multiple";
     }
     input.addEventListener("change", event => {
-      let fileIndex = files.reduce((a, f) => Math.max(a, f?.fileIndex || 0), 0) + 1;
-      let list = Array.from(event.target.files).map(e => ({
-        inputFile: e,
-        type: mimetype,
-        id: util.genId(),
-        progress: 0,
-        status: 'initial',
-        fileIndex: ++fileIndex,
-      }));
-      setFiles([...list, ...files]);
+      addFiles(mimetype, event.target.files);
     });
     input.click();
   };
@@ -178,6 +182,7 @@ export default function Writer(props) {
       cancel={props.cancel}
       files={files}
       toggleFile={toggleFile}
+      addFiles={addFiles}
       group={props.group}
       isChild={props.isChild}
       text={props.text}

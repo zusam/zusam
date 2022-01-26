@@ -61,6 +61,10 @@ export default function WritingWidget(props) {
     }
   };
 
+  const onPaste = (event) => {
+    props.addFiles("image/jpeg", event.clipboardData.files);
+  };
+
   if (props.sending) {
     return (
       <div class="message-placeholder">
@@ -84,6 +88,7 @@ export default function WritingWidget(props) {
       )}
       <textarea
         onKeyPress={e => onKeyPress(e, true)}
+        onPaste={e => onPaste(e)}
         class="text-input"
         rows="5"
         autocomplete="off"
