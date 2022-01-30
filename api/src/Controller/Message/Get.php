@@ -44,10 +44,21 @@ class Get extends ApiController
         }
 
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $message->getGroup());
+        $message_norm = $this->normalize($message, ['read_message']);
+        $message_norm["preview"] = $this->normalize($message->getPreview(), ['read_message']);
+        $message_norm["author"] = $this->normalize($message->getAuthor(), ['read_message_preview']);
 
-        return new Response(
-            $this->serialize($message, ['read_message']),
-            Response::HTTP_OK
+        $lineage = [];
+        $parent = $message->getParent();
+        while (!empty($parent)) {
+          $lineage[] = $parent->getId();
+          $parent = $parent->getParent();
+        }
+        $message_norm["lineage"] = $lineage;
+
+        return new JsonResponse(
+            $message_norm,
+            JsonResponse::HTTP_OK
         );
     }
 

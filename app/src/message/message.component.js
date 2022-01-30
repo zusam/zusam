@@ -192,7 +192,7 @@ class Message extends Component {
     return (
       <Fragment>
         {!this.props?.isChild && !this.props?.isPublic && (
-          <MessageBreadcrumbs id={this.props.id} />
+          <MessageBreadcrumbs key={this.state.message?.id} message={this.state.message} />
         )}
         <div id={this.props.id} className={this.getComponentClass()}>
           {this.state?.edit && this.displayWriter(this.props?.isChild)}
