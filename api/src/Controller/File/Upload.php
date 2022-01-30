@@ -71,7 +71,7 @@ class Upload extends ApiController
 
         $file = $this->fileService->createFromSymfonyFile($uploadedFile);
 
-        if ($request->request->get('fileIndex')) {
+        if (!empty($request->request->get('fileIndex'))) {
             $file->setFileIndex($request->request->get('fileIndex'));
         }
 
