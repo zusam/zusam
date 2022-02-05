@@ -7,6 +7,7 @@ export default function MessageBreadcrumbs(props) {
 
   const stack = [props.message.id, ...props.message.lineage].reverse();
   const [breadcrumbs, setBreadcrumbs] = useState([]);
+  const [group, setGroup] = useState(null);
 
   const getTitle = (message, previewLink) => {
     if (message) {
@@ -51,6 +52,9 @@ export default function MessageBreadcrumbs(props) {
 
   useEffect(() => {
     loadBreadcrumbs(stack);
+    http.get(`/api/groups/${props.message.group.id}`).then(group => {
+      setGroup(group);
+    });
   }, []);
 
   if (stack.length > 0) {
@@ -60,6 +64,15 @@ export default function MessageBreadcrumbs(props) {
       <div class="message-breadcrumbs">
         <nav style="--bs-breadcrumb-divider: '>';">
           <ol class="breadcrumb">
+            {group && (
+              <li class="breadcrumb-item">
+                <Link
+                  key={group.id}
+                  to={`/groups/${group.id}`}
+                  class="no-decoration"
+                >{util.limitLength(group.name || group.id.slice(0, 8), 30)}</Link>
+              </li>
+            )}
             {stack_truncated.map((e, i) => (
               <Fragment key={e}>
                 <Fragment>
