@@ -36,14 +36,14 @@ class Cron extends Command
         $this->kernel = $kernel;
         $this->tasks = [
             [
+                'name' => 'zusam:convert:images',
+                'period' => 60, // 1 mn
+                'type' => 'light',
+            ],
+            [
                 'name' => 'zusam:convert:video',
                 'period' => 60 * 60, // 1 hour
                 'type' => 'heavy',
-            ],
-            [
-                'name' => 'zusam:convert:images',
-                'period' => 60 * 60, // 1 hour
-                'type' => 'light',
             ],
             [
                 'name' => 'zusam:notification:emails',

@@ -82,36 +82,15 @@ class File
             $file->setStatus(FileEntity::STATUS_READY);
         }
 
-        // immediately process the file if it's an image
+        // don't convert an already small jpeg
         if (
-            'image/' == substr($file->getType(), 0, 6)
+            'image/jpeg' == $file->getType()
             && FileEntity::STATUS_READY != $file->getStatus()
         ) {
             list($width, $height) = getimagesize($this->params->get('dir.files').'/'.$file->getContentUrl());
-            // This is a special check for long format images that should not be limited in height
-            // example: https://imgs.xkcd.com/comics/earth_temperature_timeline.png
-            if ($height / $width > 10) {
-                $newContentUrl = pathinfo($file->getContentUrl(), PATHINFO_FILENAME).'.jpg';
-                $this->imageService->createThumbnail(
-                    $this->params->get('dir.files').'/'.$file->getContentUrl(),
-                    $this->params->get('dir.files').'/'.$newContentUrl,
-                    2048,
-                    999999
-                );
-                $file->setContentUrl($newContentUrl);
-            } else {
-                if ($width > 2048 || $height > 2048 || 'image/jpeg' !== $file->getType()) {
-                    $newContentUrl = pathinfo($file->getContentUrl(), PATHINFO_FILENAME).'.jpg';
-                    $this->imageService->createThumbnail(
-                        $this->params->get('dir.files').'/'.$file->getContentUrl(),
-                        $this->params->get('dir.files').'/'.$newContentUrl,
-                        2048,
-                        2048
-                    );
-                    $file->setContentUrl($newContentUrl);
-                }
+            if ($width <= 2048 && $height <= 2048) {
+              $file->setStatus(FileEntity::STATUS_READY);
             }
-            $file->setStatus(FileEntity::STATUS_READY);
         }
 
         return $file;

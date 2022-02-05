@@ -11,7 +11,6 @@ export default function Writer(props) {
   const navigate = useNavigate();
   const [files, setFiles] = useState(props?.files || []);
   const [sending, setSending] = useState(false);
-  const [workers, setWorkers] = useState(0);
   const writerId = util.genId();
 
   const setForm = (writerForm, files = [], title = "", text = "") => {
@@ -40,27 +39,22 @@ export default function Writer(props) {
     formData.append("fileIndex", file.fileIndex);
     formData.append("file", file.inputFile);
 
-    file["status"] = "uploading";
-    setWorkers(workers+1);
-    updateFile(fileId, file);
+    updateFile(fileId, Object.assign(file, {status: "uploading"}));
 
     http.sendFile(
       formData,
       file => {
-        setWorkers(workers-1);
-        file["status"] = "ready";
-        updateFile(fileId, file);
+        updateFile(fileId, Object.assign({status: "ready"}, file));
       },
       e => {
         updateFile(
           fileId,
-          {progress: Math.floor((e.loaded / e.total) * 100)}
+          {status: "uploading", progress: Math.floor((e.loaded / e.total) * 100)}
         );
       },
       e => {
         console.warn(e);
         alert.add(t("error_upload"), "alert-danger");
-        setWorkers(workers-1);
         removeFile(fileId);
       }
     );
@@ -114,7 +108,7 @@ export default function Writer(props) {
 
   const sendMessage = (writerForm, data) => {
     let msg = {
-      files: files.filter(e => !e?.removed).filter(e => e?.status == "ready").map(e => e?.id).filter(e => !!e),
+      files: files.filter(e => !e?.removed).filter(e => ["ready", "raw"].includes(e?.status)).map(e => e?.id).filter(e => !!e),
       data: {
         title: data?.title,
         text: data?.text,
@@ -166,11 +160,14 @@ export default function Writer(props) {
   };
 
   useEffect(() => {
-    files.forEach(e => {
-      if (e.status == "initial" && !!e.inputFile && workers < 2) {
-        setTimeout(() => uploadFile(e.id), 100);
+    if (files.filter(e => e.status === "uploading").length < 2) {
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].status == "initial" && !!files[i].inputFile) {
+          uploadFile(files[i].id);
+          break;
+        }
       }
-    });
+    }
   });
 
   return (

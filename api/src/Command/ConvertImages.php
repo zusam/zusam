@@ -55,14 +55,32 @@ class ConvertImages extends Command
         $i = 0;
         while ($rawFile = $c->fetch()) {
             ++$i;
+            $inputFile = $this->targetDir.'/'.$rawFile['content_url'];
             $outputFile = $this->targetDir.'/'.$rawFile['id'];
             $output->writeln(['Converting '.$rawFile['content_url']]);
-            $this->imageService->createThumbnail(
-                $this->targetDir.'/'.$rawFile['content_url'],
-                $outputFile.'.converted',
-                2048,
-                2048
-            );
+
+            list($width, $height) = getimagesize($inputFile);
+            // This is a special check for long format images that should not be limited in height
+            // example: https://imgs.xkcd.com/comics/earth_temperature_timeline.png
+            if ($height / $width > 10) {
+                $newContentUrl = pathinfo($file->getContentUrl(), PATHINFO_FILENAME).'.jpg';
+                $this->imageService->createThumbnail(
+                    $inputFile,
+                    $outputFile.'.converted',
+                    2048,
+                    999999
+                );
+            } else {
+                if ($width > 2048 || $height > 2048 || 'image/jpeg' !== $file->getType()) {
+                    $this->imageService->createThumbnail(
+                        $inputFile,
+                        $outputFile.'.converted',
+                        2048,
+                        2048
+                    );
+                }
+            }
+
             rename($outputFile.'.converted', $outputFile.'.jpg');
             $q = $this->pdo->prepare("UPDATE file SET content_url = '".$rawFile['id'].".jpg', status = '".File::STATUS_READY."', type = 'image/jpeg' WHERE id = '".$rawFile['id']."';");
             $q->execute();
