@@ -157,7 +157,7 @@ class Edit extends ApiController
 
         $requestData = json_decode($request->getcontent(), true);
         if (!empty($requestData['password'])) {
-            $user->setPassword($this->hasher->encodePassword($user, $requestData['password']));
+            $user->setPassword($this->hasher->hashPassword($user, $requestData['password']));
         }
         if (!empty($requestData['name'])) {
             $user->setName($requestData['name']);

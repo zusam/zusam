@@ -36,7 +36,8 @@ class Upload extends ApiController
      *    type="object",
      *    @OA\Property(
      *      property="fileIndex",
-     *      type="integer"
+     *      type="integer",
+     *      required="false"
      *    ),
      *    @OA\Property(
      *      property="file",

@@ -10,7 +10,7 @@ $grid-breakpoints: (
 );
 
 // import bootstrap
-@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "bootstrap/scss/bootstrap";
 
 // pass in a map to define number of columns for each breakpoint
 @mixin cols-per-breakpoint($params:()) {
