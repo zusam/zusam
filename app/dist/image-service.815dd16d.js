@@ -1,2 +1,0 @@
-("undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:"undefined"!=typeof window?window:"undefined"!=typeof global?global:{}).parcelRequiredc87.register("7GElY",(function(e,n){var l,f,o,d;l=e.exports,f="default",o=function(){return i},Object.defineProperty(l,f,{get:o,set:d,enumerable:!0,configurable:!0});var i={handleImage:(e,n)=>{n(e)}}}));
-//# sourceMappingURL=image-service.815dd16d.js.map
