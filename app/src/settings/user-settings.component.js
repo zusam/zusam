@@ -29,23 +29,17 @@ export default function UserSettings() {
     input.type = "file";
     input.accept = "image/*";
     input.addEventListener("change", event => {
-      import("/src/lazy/image-service.js").then(imageService => {
-        imageService.default.handleImage(
-          event.target.files[0],
-          blob => {
-            const formData = new FormData();
-            formData.append("file", blob);
-            http.post("/api/files", formData, false).then(file => {
-              http
-                .put(`/api/users/${me.id}`, { avatar: file["id"] })
-                .then(() => {
-                  setAlertMessage(t("settings_updated"));
-                  navigate(`${location.pathname}?alert=settings_updated`);
-                });
-            });
-          }
-        );
-      });
+      const formData = new FormData();
+      formData.append("file", event.target.files[0]);
+      http.sendFile(
+        formData,
+        file => {
+          http.put(`/api/users/${me.id}`, { avatar: file["id"] }).then(() => {
+            setAlertMessage(t("settings_updated"));
+            navigate(`${location.pathname}?alert=settings_updated`);
+          });
+        }
+      );
     });
     input.click();
   };
@@ -87,7 +81,7 @@ export default function UserSettings() {
     if (password) {
       user.password = password;
     }
-    user.data = {
+    user["data"] = {
       notification_emails,
       default_group,
       lang
