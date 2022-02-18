@@ -12,6 +12,7 @@
         "ext-xml": "*",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.0",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.4",
         "embed/embed": "^4.3",
         "firebase/php-jwt": "^5.0",
