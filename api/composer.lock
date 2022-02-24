@@ -1886,12 +1886,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\Promise\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\Promise\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2090,12 +2090,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Laminas\\Code\\": "src/"
-                },
                 "files": [
                     "polyfill/ReflectionEnumPolyfill.php"
-                ]
+                ],
+                "psr-4": {
+                    "Laminas\\Code\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -7964,16 +7964,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.2.8",
+            "version": "4.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "aa691c9ee5d08a8f796da8f1872c215900f8580f"
+                "reference": "867cfdcf31fec8bf44b2d7107a2f51b4bab00601"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/aa691c9ee5d08a8f796da8f1872c215900f8580f",
-                "reference": "aa691c9ee5d08a8f796da8f1872c215900f8580f",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/867cfdcf31fec8bf44b2d7107a2f51b4bab00601",
+                "reference": "867cfdcf31fec8bf44b2d7107a2f51b4bab00601",
                 "shasum": ""
             },
             "require": {
@@ -8033,9 +8033,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.2.8"
+                "source": "https://github.com/zircote/swagger-php/tree/4.2.9"
             },
-            "time": "2022-02-12T01:37:11+00:00"
+            "time": "2022-02-20T21:16:53+00:00"
         }
     ],
     "packages-dev": [

@@ -1,2 +1,0 @@
-("undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:"undefined"!=typeof window?window:"undefined"!=typeof global?global:{}).parcelRequiredc87.register("bIXtj",(function(e,n){var f,l,o,t;f=e.exports,l="default",o=function(){return d},Object.defineProperty(f,l,{get:o,set:t,enumerable:!0,configurable:!0});var d={handleImage:(e,n)=>{n(e)}}}));
-//# sourceMappingURL=image-service.0b3f2eda.js.map
