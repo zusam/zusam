@@ -1,5 +1,5 @@
 import { h, Fragment } from "preact";
-import { util, me, notifications } from "/src/core";
+import { util, me, bookmarks, notifications } from "/src/core";
 import { Link } from "react-router-dom";
 import { FaIcon } from "/src/misc";
 import { useTranslation } from "react-i18next";
@@ -109,18 +109,18 @@ export default function MessageFooter(props) {
                   {t("publish_in_group")}
                 </a>
               )}
-              {!me.hasBookmark(props?.message.id) && (
+              {!bookmarks.hasBookmark(props?.message.id) && (
                 <a
                   class="seamless-link capitalize"
-                  onClick={() => me.addBookmark(props?.message.id)}
+                  onClick={() => bookmarks.addBookmark(props?.message.id)}
                 >
                   {t("add_bookmark")}
                 </a>
               )}
-              {me.hasBookmark(props?.message.id) && (
+              {bookmarks.hasBookmark(props?.message.id) && (
                 <a
                   class="seamless-link capitalize"
-                  onClick={() => me.removeBookmark(props?.message.id)}
+                  onClick={() => bookmarks.removeMatchingBookmarks(props?.message.id)}
                 >
                   {t("remove_bookmark")}
                 </a>

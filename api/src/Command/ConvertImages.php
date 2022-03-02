@@ -63,7 +63,6 @@ class ConvertImages extends Command
             // This is a special check for long format images that should not be limited in height
             // example: https://imgs.xkcd.com/comics/earth_temperature_timeline.png
             if ($height / $width > 10) {
-                $newContentUrl = pathinfo($file->getContentUrl(), PATHINFO_FILENAME).'.jpg';
                 $this->imageService->createThumbnail(
                     $inputFile,
                     $outputFile.'.converted',
@@ -71,7 +70,7 @@ class ConvertImages extends Command
                     999999
                 );
             } else {
-                if ($width > 2048 || $height > 2048 || 'image/jpeg' !== $file->getType()) {
+                if ($width > 2048 || $height > 2048 || 'image/jpeg' !== $rawFile['type']) {
                     $this->imageService->createThumbnail(
                         $inputFile,
                         $outputFile.'.converted',

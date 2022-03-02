@@ -3,11 +3,15 @@ import { router, util, me } from "/src/core";
 import { Search } from "/src/pages";
 import { GroupsDropdownNavbar, NotificationsDropdownNavbar } from "/src/navbar";
 import { Link } from "react-router-dom";
-import { connectStoreon } from "storeon/preact";
+import { useStoreon } from "storeon/preact";
 import { useTranslation } from "react-i18next";
 
-function Navbar() {
+export default function Navbar() {
+
   const { t } = useTranslation();
+  const { bookmarks } = useStoreon("bookmarks");
+  const { me } = useStoreon("me");
+
   return (
     <div class="main-nav nav align-items-center z-index-100">
       <div class="navbar-block">
@@ -29,7 +33,7 @@ function Navbar() {
             />
           </div>
           <div class="dropdown-menu dropdown-right">
-            { me.data?.bookmarks?.length && (
+            { bookmarks?.length > 0 && (
               <Link
                 class="d-block seamless-link capitalize"
                 to={"/bookmarks"}
@@ -62,5 +66,3 @@ function Navbar() {
     </div>
   );
 }
-
-export default connectStoreon("me", Navbar);

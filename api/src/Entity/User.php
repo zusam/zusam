@@ -20,95 +20,101 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInterface
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="guid")
-     * @Groups("*")
      * @Assert\NotBlank()
+     * @Groups("*")
      * @OA\Property(type="guid")
+     * @ORM\Column(type="guid")
+     * @ORM\Id
      */
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\Type("integer")
      * @Assert\NotNull()
+     * @Assert\Type("integer")
      * @OA\Property(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="string", unique=true)
-     * @Groups({"read_me", "write_user"})
      * @Assert\NotBlank()
+     * @Groups({"read_me", "write_user"})
      * @OA\Property(type="string")
+     * @ORM\Column(type="string", unique=true)
      */
     private $login;
 
     /**
-     * @ORM\Column(type="string")
-     * @Groups({"write_user"})
      * @Assert\NotBlank()
+     * @Groups({"write_user"})
      * @OA\Property(type="string")
+     * @ORM\Column(type="string")
      */
     private $password;
 
     /**
-     * @ORM\Column(type="guid", unique=true)
      * @Assert\NotBlank()
      * @OA\Property(type="guid")
+     * @ORM\Column(type="guid", unique=true)
      */
     private $secretKey;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
-     * @ORM\JoinTable(name="users_groups")
      * @Groups({"read_me"})
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Group"))
+     * @ORM\JoinTable(name="users_groups")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
      */
     private $groups;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="author")
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="author")
      */
     private $messages;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\File")
-     * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Bookmark"))
+     * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="user")
+     */
+    private $bookmarks;
+
+    /**
      * @Groups({"read_me", "read_user", "write_user", "read_message_preview"})
      * @OA\Property(type="App\Entity\File")
+     * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="App\Entity\File")
      */
     private $avatar;
 
     /**
-     * @ORM\Column(type="string")
-     * @Groups("*")
      * @Assert\NotBlank()
+     * @Groups("*")
      * @OA\Property(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
-     * @Groups({"read_me", "read_user", "write_user"})
      * @Assert\NotBlank()
+     * @Groups({"read_me", "read_user", "write_user"})
      * @OA\Property(type="object")
+     * @ORM\Column(type="json", nullable=true)
      */
     private $data;
 
     /**
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Notification"))
      * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="owner")
      * @ORM\OrderBy({"createdAt" = "DESC"})
-     * @OA\Property(type="array", @OA\Items(type="App\Entity\Notification"))
      */
     private $notifications;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read_me"})
      * @Assert\Type("integer")
+     * @Groups({"read_me"})
      * @OA\Property(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $lastActivityDate;
 
@@ -128,6 +134,7 @@ class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInt
         $this->id = Uuid::uuidv4();
         $this->groups = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
         $this->createdAt = time();
         $this->secretKey = Uuid::uuidv4();
         $this->data = [];
@@ -206,6 +213,25 @@ class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInt
     public function removeMessage(Message $message): void
     {
         $this->messages->removeElement($message);
+    }
+
+    public function getBookmarks(int $limit = 0): Collection
+    {
+        if (0 === $limit) {
+            return $this->bookmarks;
+        } else {
+            return new ArrayCollection($this->bookmarks->slice(0, $limit));
+        }
+    }
+
+    public function addBookmark(Bookmark $bookmark): void
+    {
+        $this->bookmarks[] = $bookmark;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): void
+    {
+        $this->bookmarks->removeElement($bookmark);
     }
 
     public function getAvatar(): ?File

@@ -117,6 +117,12 @@ class Message
     private $isInFront;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="message")
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Bookmark"))
+     */
+    private $bookmarks;
+
+    /**
      * @Groups("*")
      * @OA\Property(type="string")
      */
@@ -291,5 +297,20 @@ class Message
     public function setIsInFront(bool $isInFront): void
     {
         $this->isInFront = $isInFront;
+    }
+
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
+    }
+
+    public function addBookmark(Bookmark $bookmark): void
+    {
+        $this->bookmarks[] = $bookmark;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): void
+    {
+        $this->bookmarks->removeElement($bookmark);
     }
 }

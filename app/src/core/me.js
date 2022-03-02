@@ -58,22 +58,6 @@ const me = {
     return me.update();
   },
 
-  hasBookmark(id) {
-    let state = store.get()?.me;
-    if (Array.isArray(state?.data?.bookmarks)) {
-      return state.data.bookmarks.some(bid => bid === id);
-    }
-    return false;
-  },
-
-  removeBookmark(id) {
-    store.dispatch("bookmark/remove", id);
-  },
-
-  addBookmark(id) {
-    store.dispatch("bookmark/add", id);
-  },
-
   reset() {
     store.dispatch("@init");
   },

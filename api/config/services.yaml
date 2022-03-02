@@ -58,6 +58,11 @@ services:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $logger: '@monolog.logger.zusam'
 
+    App\Command\Migration:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+        $logger: '@monolog.logger.zusam'
+
     App\Command\PreparePreviews:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'

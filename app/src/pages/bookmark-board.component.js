@@ -6,8 +6,12 @@ import { useStoreon } from "storeon/preact";
 export default function BookmarkBoard() {
 
   const { me } = useStoreon("me");
+  const { bookmarks } = useStoreon("bookmarks");
+  if (!bookmarks) {
+    return null;
+  }
 
-  if (!Array.isArray(me?.data?.bookmarks) || me?.data?.bookmarks.length < 1) {
+  if (!Array.isArray(bookmarks) || bookmarks.length < 1) {
     return;
   }
 
@@ -17,12 +21,12 @@ export default function BookmarkBoard() {
       <div class="content">
         <article id="group" class="justify-content-center d-flex">
           <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
-            {me.data?.bookmarks.map((id, i) => {
+            {bookmarks.map((b, i) => {
               return (
                 <MessagePreview
                   tabindex={i + 1}
-                  key={id}
-                  id={id}
+                  key={b.message.id}
+                  id={b.message.id}
                 />
               );
             })}
