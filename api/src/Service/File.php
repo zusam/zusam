@@ -89,7 +89,7 @@ class File
         ) {
             list($width, $height) = getimagesize($this->params->get('dir.files').'/'.$file->getContentUrl());
             if ($width <= 2048 && $height <= 2048) {
-              $file->setStatus(FileEntity::STATUS_READY);
+                $file->setStatus(FileEntity::STATUS_READY);
             }
         }
 

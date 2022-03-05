@@ -202,12 +202,12 @@ class Notification
         $this->target = $target;
     }
 
-    public function getRead(): boolean
+    public function getRead(): bool
     {
         return $this->read;
     }
 
-    public function setRead(boolean $read): void
+    public function setRead(bool $read): void
     {
         $this->read = $read;
     }

@@ -18,39 +18,39 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class Get extends ApiController
 {
-  private $bookmarkService;
+    private $bookmarkService;
 
-  public function __construct(
-    EntityManagerInterface $em,
-    SerializerInterface $serializer,
-    BookmarkService $bookmarkService,
-  ) {
-    parent::__construct($em, $serializer);
-    $this->bookmarkService = $bookmarkService;
-  }
-
-  /**
-   * @Route("/bookmarks/{id}", methods={"GET"})
-   * @OA\Response(
-   *  response=200,
-   *  description="Get a bookmark",
-   *  @Model(type=App\Entity\Bookmark::class, groups={"read_bookmark"})
-   * )
-   * @OA\Tag(name="bookmark")
-   * @Security(name="api_key")
-   */
-  public function index(string $id): Response
-  {
-    $this->denyAccessUnlessGranted('ROLE_USER');
-
-    $bookmark = $this->em->getRepository(Bookmark::class)->findOneById($id);
-    if (empty($bookmark)) {
-      return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
+    public function __construct(
+        EntityManagerInterface $em,
+        SerializerInterface $serializer,
+        BookmarkService $bookmarkService,
+    ) {
+        parent::__construct($em, $serializer);
+        $this->bookmarkService = $bookmarkService;
     }
 
-    return new Response(
-        $this->serialize($bookmark, ['read_bookmark']),
-        Response::HTTP_OK,
-    );
-  }
+    /**
+     * @Route("/bookmarks/{id}", methods={"GET"})
+     * @OA\Response(
+     *  response=200,
+     *  description="Get a bookmark",
+     *  @Model(type=App\Entity\Bookmark::class, groups={"read_bookmark"})
+     * )
+     * @OA\Tag(name="bookmark")
+     * @Security(name="api_key")
+     */
+    public function index(string $id): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $bookmark = $this->em->getRepository(Bookmark::class)->findOneById($id);
+        if (empty($bookmark)) {
+            return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return new Response(
+            $this->serialize($bookmark, ['read_bookmark']),
+            Response::HTTP_OK,
+        );
+    }
 }

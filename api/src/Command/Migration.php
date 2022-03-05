@@ -52,39 +52,39 @@ class Migration extends Command
             }
             $data = json_decode($i['data'], true);
             if (!empty($data['bookmarks'])) {
-              $users[] = $i["id"];
+                $users[] = $i["id"];
             }
         }
-        foreach($users as $user_id) {
-          $userEntity = $this->em->getRepository(UserEntity::class)->findOneById($user_id);
-          $data = $userEntity->getData();
-          if (!empty($data['bookmarks'])) {
-            if ($input->getOption('verbose') || $input->getOption('dry-run')) {
-              $output->writeln("user " . $user_id . " has " . count($data["bookmarks"]) . " bookmarks.");
-            }
-            foreach($data["bookmarks"] as $message_id) {
-              $messageEntity = $this->em->getRepository(MessageEntity::class)->findOneById($message_id);
-              if (!empty($messageEntity)) {
-                $bookmark = $this->bookmarkService->create($userEntity, $messageEntity);
+        foreach ($users as $user_id) {
+            $userEntity = $this->em->getRepository(UserEntity::class)->findOneById($user_id);
+            $data = $userEntity->getData();
+            if (!empty($data['bookmarks'])) {
+                if ($input->getOption('verbose') || $input->getOption('dry-run')) {
+                    $output->writeln("user " . $user_id . " has " . count($data["bookmarks"]) . " bookmarks.");
+                }
+                foreach ($data["bookmarks"] as $message_id) {
+                    $messageEntity = $this->em->getRepository(MessageEntity::class)->findOneById($message_id);
+                    if (!empty($messageEntity)) {
+                        $bookmark = $this->bookmarkService->create($userEntity, $messageEntity);
+                        if (!$input->getOption('dry-run')) {
+                            $this->em->persist($bookmark);
+                            $this->em->flush();
+                        }
+                        if ($input->getOption('verbose') || $input->getOption('dry-run')) {
+                            $output->writeln("Added " . $message_id . " to the user's bookmarks.");
+                        }
+                    }
+                }
+                unset($data["bookmarks"]);
+                $userEntity->setData($data);
                 if (!$input->getOption('dry-run')) {
-                  $this->em->persist($bookmark);
-                  $this->em->flush();
+                    $this->em->persist($userEntity);
+                    $this->em->flush();
                 }
                 if ($input->getOption('verbose') || $input->getOption('dry-run')) {
-                  $output->writeln("Added " . $message_id . " to the user's bookmarks.");
+                    $output->writeln("Removed old bookmarks from the user's data.");
                 }
-              }
             }
-            unset($data["bookmarks"]);
-            $userEntity->setData($data);
-            if (!$input->getOption('dry-run')) {
-              $this->em->persist($userEntity);
-              $this->em->flush();
-            }
-            if ($input->getOption('verbose') || $input->getOption('dry-run')) {
-              $output->writeln("Removed old bookmarks from the user's data.");
-            }
-          }
         }
         return 0;
     }

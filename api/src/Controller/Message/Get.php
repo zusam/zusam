@@ -51,8 +51,8 @@ class Get extends ApiController
         $lineage = [];
         $parent = $message->getParent();
         while (!empty($parent)) {
-          $lineage[] = $parent->getId();
-          $parent = $parent->getParent();
+            $lineage[] = $parent->getId();
+            $parent = $parent->getParent();
         }
         $message_norm["lineage"] = $lineage;
 
