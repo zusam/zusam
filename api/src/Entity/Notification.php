@@ -79,6 +79,13 @@ class Notification
     private $target;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"read_notification"})
+     * @OA\Property(type="boolean")
+     */
+    private $read;
+
+    /**
      * @ORM\Column(type="json", nullable=true)
      * @Groups({"read_notification"})
      * @Assert\NotBlank()
@@ -126,6 +133,7 @@ class Notification
         $this->id = Uuid::uuidv4();
         $this->createdAt = time();
         $this->secretKey = Uuid::uuidv4();
+        $this->read = false;
         $this->data = [];
     }
 
@@ -192,6 +200,16 @@ class Notification
     public function setTarget(string $target): void
     {
         $this->target = $target;
+    }
+
+    public function getRead(): boolean
+    {
+        return $this->read;
+    }
+
+    public function setRead(boolean $read): void
+    {
+        $this->read = $read;
     }
 
     public function getData(): ?array

@@ -57,6 +57,9 @@ class Edit extends ApiController
         if (!empty($requestData['data'])) {
             $notification->setData($requestData['data']);
         }
+        if (!empty($requestData['read'])) {
+            $notification->setRead($requestData['read']);
+        }
         $currentUser->setLastActivityDate(time());
         $this->em->persist($currentUser);
         $this->em->persist($notification);
