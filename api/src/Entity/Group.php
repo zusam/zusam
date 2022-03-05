@@ -64,6 +64,12 @@ class Group
     private $messages;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="group")
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Tag"))
+     */
+    private $tags;
+
+    /**
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"read_group", "read_me"})
      * @Assert\Type("integer")
@@ -169,6 +175,21 @@ class Group
     public function removeMessage(Message $message): void
     {
         $this->messages->removeElement($message);
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): void
+    {
+        $this->tags[] = $tag;
+    }
+
+    public function removeTag(Tag $tag): void
+    {
+        $this->tags->removeElement($tag);
     }
 
     public function getLastActivityDate(): int

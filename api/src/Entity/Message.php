@@ -6,70 +6,70 @@ use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="`message`")
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class Message
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="guid")
      * @Assert\NotBlank()
      * @Groups("*")
      * @OA\Property(type="guid")
+     * @ORM\Column(type="guid")
+     * @ORM\Id
      */
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\Type("integer")
      * @Assert\NotNull()
+     * @Assert\Type("integer")
      * @Groups({"read_message"})
      * @OA\Property(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
      * @Assert\NotBlank()
      * @Groups({"read_message", "read_notification"})
      * @OA\Property(type="object")
+     * @ORM\Column(type="json", nullable=true)
      */
     private $data;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
      * @Groups("*")
      * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
      */
     private $author;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="messages")
      * @Groups({"read_message"})
      * @OA\Property(type="App\Entity\Group")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="messages")
      */
     private $group;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Message", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @Groups({"read_message"})
      * @OA\Property(type="App\Entity\Message")
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Message", inversedBy="children")
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="parent")
      * @Groups({"read_message"})
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="parent")
      */
     private $children;
 
@@ -85,34 +85,41 @@ class Message
     private $files;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\Type("integer")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", mappedBy="messages")
+     * @Groups({"read_message", "write_message"})
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Tag"))
+     */
+    private $tags;
+
+    /**
      * @Assert\NotNull()
+     * @Assert\Type("integer")
      * @Groups({"read_message"})
      * @OA\Property(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $lastActivityDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\File")
-     * @ORM\JoinColumn(name="preview_id", referencedColumnName="id")
      * @Groups({"read_message"})
      * @OA\Property(type="App\Entity\File")
+     * @ORM\JoinColumn(name="preview_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\File")
      */
     private $preview;
 
     /**
-     * @ORM\Column(type="guid", unique=true)
      * @Assert\NotBlank()
      * @OA\Property(type="guid")
+     * @ORM\Column(type="guid", unique=true)
      */
     private $secretKey;
 
     /**
-     * @ORM\Column(type="boolean")
      * @Assert\NotNull()
      * @Groups({"read_message"})
      * @OA\Property(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $isInFront;
 
@@ -138,6 +145,7 @@ class Message
         $this->id = Uuid::uuidv4();
         $this->children = new ArrayCollection();
         $this->files = new ArrayCollection();
+        $this->tags = new ArrayCollection();
         $this->createdAt = time();
         $this->lastActivityDate = time();
         $this->secretKey = Uuid::uuidv4();
@@ -231,6 +239,26 @@ class Message
     public function removeFile(File $file): void
     {
         $this->files->removeElement($file);
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function setTags(Collection $tags): void
+    {
+        $this->tags = $tags;
+    }
+
+    public function addTag(Tag $tag): void
+    {
+        $this->tags[] = $tag;
+    }
+
+    public function removeTag(Tag $tag): void
+    {
+        $this->tags->removeElement($tag);
     }
 
     public function getLastActivityDate(): int
