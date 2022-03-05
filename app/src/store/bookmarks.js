@@ -14,9 +14,9 @@ export const bookmarksStore = store => {
     };
   });
 
-  store.on('bookmark/add', (state, message_id) => {
-    http.post(`/api/bookmarks`, {message:message_id}).then(bookmark => {
+  store.on("bookmark/add", (state, message_id) => {
+    http.post("/api/bookmarks", {message:message_id}).then(bookmark => {
       store.dispatch("bookmarks/update", [...state.bookmarks, bookmark]);
     });
-  })
+  });
 };

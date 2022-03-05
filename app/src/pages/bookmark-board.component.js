@@ -5,7 +5,6 @@ import { useStoreon } from "storeon/preact";
 
 export default function BookmarkBoard() {
 
-  const { me } = useStoreon("me");
   const { bookmarks } = useStoreon("bookmarks");
   if (!bookmarks) {
     return null;

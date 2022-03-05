@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { router, util, me } from "/src/core";
+import { router, util } from "/src/core";
 import { Search } from "/src/pages";
 import { GroupsDropdownNavbar, NotificationsDropdownNavbar } from "/src/navbar";
 import { Link } from "react-router-dom";
