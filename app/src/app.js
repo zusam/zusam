@@ -3,7 +3,7 @@ import { http, api, me, notifications, bookmarks, router } from "/src/core";
 import {
   Login,
   Public,
-  ResetPassword,
+  PasswordReset,
   Signup,
   StopNotificationEmails
 } from "/src/outside";
@@ -76,7 +76,7 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/stop-notification-emails" element={<StopNotificationEmails />} />
       <Route path="/public/:token" element={<Public />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/password-reset" element={<PasswordReset />} />
       <Route path="/login" element={<Login />} />
       <Route path="/logout" element={<Navigate replace to="/login" />} />
       <Route path="/:type/:id/settings" element={<Settings />} />

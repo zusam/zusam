@@ -5,10 +5,11 @@ yarn-error.log
 .parcel-cache/
 
 # YARN
+# https://yarnpkg.com/getting-started/qa/#which-files-should-be-gitignored
+.pnp.*
 .yarn/*
 !.yarn/patches
-.yarn/plugins
-!.yarn/releases
+#!.yarn/plugins # slow to parse for nvim-telescope
+#!.yarn/releases # slow to parse for nvim-telescope
 !.yarn/sdks
 !.yarn/versions
-.pnp.*
