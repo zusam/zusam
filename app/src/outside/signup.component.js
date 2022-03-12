@@ -1,21 +1,19 @@
-import { h, Component } from "preact";
+import { h } from "preact";
 import { alert, storage, http, router } from "/src/core";
-import { withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "preact/hooks";
 
-class Signup extends Component {
-  constructor() {
-    super();
-    this.state = {
-      showAlert: false,
-      error: "",
-      inviteKey: router.getParam("inviteKey")
-    };
-    this.sendSignupForm = this.sendSignupForm.bind(this);
-  }
+export default function Signup() {
 
-  sendSignupForm(e) {
+  const [showAlert, setShowAlert] = useState(false);
+  const [error, setError] = useState(false);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const sendSignupForm = e => {
     e.preventDefault();
-    this.setState({ showAlert: false });
+    setShowAlert(false);
     let login = document.getElementById("login").value || "";
     login.toLowerCase();
     const password = document.getElementById("password").value;
@@ -24,55 +22,51 @@ class Signup extends Component {
       .post("/api/signup", {
         login,
         password,
-        invite_key: this.state.inviteKey
+        invite_key: router.getParam("inviteKey")
       })
       .then(res => {
         if (res && !res.message) {
           storage.set("apiKey", res.api_key);
-          setTimeout(() => this.props.history.push("/"), 100);
+          setTimeout(() => navigate("/"), 100);
         } else {
-          alert.add(this.props.t(res.message));
+          alert.add(t(res.message));
         }
       });
-  }
+  };
 
-  render() {
-    return (
-      <div class="signup">
-        <div class="signup-form">
-          <img src="/src/assets/zusam_logo.svg" />
-          <div class="welcome lead">{this.props.t("invitation_welcome")}</div>
-          <form>
-            <div class="form-group">
-              <input
-                type="email"
-                class="form-control"
-                required
-                id="login"
-                placeholder={this.props.t("login_placeholder")}
-              />
-            </div>
-            <div class="form-group">
-              <input
-                type="password"
-                class="form-control"
-                required
-                id="password"
-                placeholder={this.props.t("password_placeholder")}
-              />
-            </div>
-            <button
-              type="submit"
-              class="btn btn-light"
-              onClick={e => this.sendSignupForm(e)}
-            >
-              {this.props.t("signup")}
-            </button>
-          </form>
-        </div>
+  return (
+    <div class="signup">
+      <div class="signup-form">
+        <img src={new URL("/src/assets/zusam_logo.svg", import.meta.url)} />
+        <div class="welcome lead">{t("invitation_welcome")}</div>
+        <form>
+          <div class="form-group">
+            <input
+              type="email"
+              class="form-control"
+              required
+              id="login"
+              placeholder={t("login_placeholder")}
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              class="form-control"
+              required
+              id="password"
+              placeholder={t("password_placeholder")}
+            />
+          </div>
+          <button
+            type="submit"
+            class="btn btn-light"
+            onClick={e => sendSignupForm(e)}
+          >
+            {t("signup")}
+          </button>
+        </form>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default withTranslation()(Signup);

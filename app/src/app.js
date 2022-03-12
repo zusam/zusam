@@ -51,6 +51,7 @@ function App() {
   }, []);
 
   me.fetch().then(user => {
+
     if (location.pathname == "/") {
       let redirect = "/login";
       if (user) {
@@ -65,10 +66,15 @@ function App() {
     }
 
     if (location.pathname.match(/invitation/)) {
-      http.post(`/api/groups/invitation/${router.id}`, {}).then(() => {
-        navigate("/");
-      });
+      if (user) {
+        http.post(`/api/groups/invitation/${router.id}`, {}).then(() => {
+          navigate("/");
+        });
+      } else {
+        navigate(`/signup?inviteKey=${router.id}`);
+      }
     }
+
   });
 
   return (
