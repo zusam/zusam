@@ -38,7 +38,7 @@ export default function Login() {
     let login = document.getElementById("login").value || "";
     login.toLowerCase();
     const password = document.getElementById("password").value;
-    http.post("/api/login", { login, password }).then(res => {
+    http.post("/api/login", {login, password}).then(res => {
       setSending(false);
       if (res && res.api_key) {
         storage.set("apiKey", res.api_key).then(() => {

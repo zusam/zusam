@@ -51,7 +51,6 @@ function App() {
   }, []);
 
   me.fetch().then(user => {
-
     if (location.pathname == "/") {
       let redirect = "/login";
       if (user) {
@@ -65,7 +64,7 @@ function App() {
       navigate(redirect);
     }
 
-    if (location.pathname.match(/invitation/)) {
+    if (location.pathname.match(/^\/invitation/)) {
       if (user) {
         http.post(`/api/groups/invitation/${router.id}`, {}).then(() => {
           navigate("/");
@@ -75,25 +74,28 @@ function App() {
       }
     }
 
+    if (!router.isOutside() && !user) {
+      navigate("/login");
+    }
   });
 
   return (
     <Routes>
+      <Route path="/password-reset" element={<PasswordReset />} />
+      <Route path="/public/:token" element={<Public />} />
+      <Route path="/share" element={<Share />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/stop-notification-emails" element={<StopNotificationEmails />} />
-      <Route path="/public/:token" element={<Public />} />
-      <Route path="/password-reset" element={<PasswordReset />} />
       <Route path="/login" element={<Login />} />
       <Route path="/logout" element={<Navigate replace to="/login" />} />
       <Route path="/:type/:id/settings" element={<Settings />} />
-      <Route path="/create-group" element={<CreateGroup />} />
-      <Route path="/share" element={<Share />} />
-      <Route path="/messages/:id" element={<MessageParent />} />
-      <Route path="/messages/:id/:child_id" element={<MessageParent />} />
       <Route path="/bookmarks" element={<BookmarkBoard />} />
-      <Route path="/groups/:id/write" element={<GroupWriter />} />
+      <Route path="/create-group" element={<CreateGroup />} />
       <Route path="/groups/:id" element={<GroupBoard />} />
       <Route path="/groups/:id/search" element={<GroupSearchWrapper />} />
+      <Route path="/groups/:id/write" element={<GroupWriter />} />
+      <Route path="/messages/:id" element={<MessageParent />} />
+      <Route path="/messages/:id/:child_id" element={<MessageParent />} />
     </Routes>
   );
 }

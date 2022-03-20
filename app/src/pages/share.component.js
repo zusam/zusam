@@ -1,132 +1,106 @@
-import { h, Component } from "preact";
-import { me, router, http } from "/src/core";
+import { h } from "preact";
+import { me as meService, router, http } from "/src/core";
 import { Writer } from "/src/writer";
 import { Navbar } from "/src/navbar";
-import { connectStoreon } from "storeon/preact";
-import { withTranslation } from "react-i18next";
+import { useStoreon } from "storeon/preact";
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "preact/hooks";
 
-class Share extends Component {
-  constructor() {
-    super();
-    let currentUrl = new URL(window.location);
-    this.state = {
-      loaded: false,
-      group: null,
-      currentUrl,
-      title: currentUrl.searchParams.get("title") || "",
-      text: currentUrl.searchParams.get("text") || "",
-      url: currentUrl.searchParams.get("url") || "",
-      parent: currentUrl.searchParams.get("parent") || "",
-      files: null
-    };
-    this.groupSelect = this.groupSelect.bind(this);
-  }
+export default function Share() {
 
-  componentDidMount() {
-    // we want to load the component with informations fetched about the user
-    // BUT ONLY ONCE
-    const unbind = me.on("@changed", () => loadState());
-    let loadState = () => {
-      if (this.state.loaded == true) {
-        unbind();
-        return;
-      }
-      let user = me.get();
-      if (user.loaded == true) {
+  const params = useParams();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { me } = useStoreon("me");
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
+  const [loaded, setLoaded] = useState(false);
+  const [title, setTitle] = useState(searchParams.get("title") || "");
+  const [text, setText] = useState(searchParams.get("text") || "");
+  const [url, setUrl] = useState(searchParams.get("url") || "");
+  const [parent, setParent] = useState(searchParams.get("parent") || "");
+  const [files, setFiles] = useState([]);
+  const [group, setGroup] = useState("");
+
+  useEffect(() => {
+    setTimeout(() => {
+      meService.fetch().then(user => {
         if (user.data["default_group"]) {
-          this.setState({ group: user.data["default_group"] });
-          router.backUrl = `/groups/${user.data["default_group"]}`;
+          setGroup(user.data["default_group"])
         } else if (user.groups.length == 1) {
-          this.setState({ group: user.groups[0]["id"] });
-          router.backUrl = `/groups/${user.groups[0]}`;
+          setGroup(user.groups[0]["id"])
         }
-        if (this.state.currentUrl.searchParams.get("message")) {
-          http
-            .get(
-              `/api/messages/${  this.state.currentUrl.searchParams.get("message")}`
-            )
+        if (searchParams.get("message")) {
+          http.get(`/api/messages/${searchParams.get("message")}`)
             .then(m => {
-              this.setState({
-                loaded: true,
-                title: (m && m.data.title) || "",
-                text: (m && m.data.text) || "",
-                url: "",
-                files: (m && m.files) || null
-              });
+              setTitle(m && m.data.title || "");
+              setText(m && m.data.text || "");
+              setUrl("");
+              setFiles(m && m.files || []);
+              setLoaded(true);
             });
         } else {
-          this.setState({ loaded: true });
+          setLoaded(true);
         }
-        unbind();
-      }
-    };
+      });
+    }, 100);
+  }, []);
+
+  if (!loaded) {
+    return;
   }
 
-  groupSelect(e) {
-    this.setState({ group: e.target.value });
-    router.backUrl = `/groups/${e.target.value}`;
-  }
-
-  render() {
-    if (!this.props.me["loaded"]) {
-      return;
-    }
-    return (
-      <main>
-        <Navbar />
-        <div class="content">
-          <article class="mt-2">
-            <div class="container">
-              {this.state.parent && this.props.me && this.props.me.groups.length > 1 && (
-                <div class="mb-1">
-                  <label class="px-1" for="group_share_choice">
-                    {this.props.t("group_share_choice")}
-                  </label>
-                  <select
-                    value={this.state.group}
-                    class="form-control"
-                    name="group_share_choice"
-                    onChange={e => this.groupSelect(e)}
-                    required
-                  >
-                    {this.props.me.groups.map(e => (
-                      <option key={e["id"]} value={e["id"]}>{e.name}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-              {this.state.parent && (
-                <div class="form-group">
-                  <label for="apiKey">
-                    {this.props.t("parent_message")}:{" "}
-                  </label>
-                  <input
-                    type="text"
-                    name="parent_message"
-                    value={this.state.parent}
-                    class="form-control font-size-80"
-                    readonly="readonly"
-                  />
-                </div>
-              )}
-              <Writer
-                focus={true}
-                group={this.state.group}
-                title={this.state.title}
-                parent={this.state.parent}
-                text={
-                  this.state.text || this.state.url
-                    ? `${this.state.text  }\n${  this.state.url}`
-                    : ""
-                }
-                files={this.state.files}
-              />
-            </div>
-          </article>
-        </div>
-      </main>
-    );
-  }
+  return (
+    <main>
+      <Navbar />
+      <div class="content">
+        <article class="mt-2">
+          <div class="container">
+            {!!parent && me?.groups?.length > 1 && (
+              <div class="mb-1">
+                <label class="px-1" for="group_share_choice">
+                  {t("group_share_choice")}
+                </label>
+                <select
+                  value={group}
+                  class="form-control"
+                  name="group_share_choice"
+                  onChange={e => setGroup(e.target.value)}
+                  required
+                >
+                  {me.groups.map(e => (
+                    <option key={e["id"]} value={e["id"]}>{e.name}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            {!!parent && (
+              <div class="form-group">
+                <label for="apiKey">
+                  {t("parent_message")}:{" "}
+                </label>
+                <input
+                  type="text"
+                  name="parent_message"
+                  value={parent}
+                  class="form-control font-size-80"
+                  readonly="readonly"
+                />
+              </div>
+            )}
+            <Writer
+              focus={true}
+              group={group}
+              title={title}
+              parent={parent}
+              text={text || url ? `${text}\n${url}` : ""}
+              files={files}
+            />
+          </div>
+        </article>
+      </div>
+    </main>
+  );
 }
-
-export default withTranslation()(connectStoreon("me", Share));
