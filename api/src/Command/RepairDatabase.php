@@ -83,36 +83,6 @@ class RepairDatabase extends Command
         if ($input->getOption('verbose')) {
             $output->writeln(['Adding missing secret_key']);
         }
-
-        // Add a secret_key to all files, links and messages missing it
-        // TODO: Remove this for the v1.0 (This is here for those coming from the 0.2)
-        $c = $this->pdo->query("SELECT id FROM file WHERE secret_key = '' OR secret_key IS NULL;");
-        while ($i = $c->fetch()) {
-            if ($input->getOption('verbose') || $input->getOption('only-list')) {
-                $output->writeln([$i['id']]);
-            }
-            if (!$input->getOption('only-list')) {
-                $this->pdo->query("UPDATE file SET secret_key = '".Uuid::uuidv4()."' WHERE id = '".$i['id']."';");
-            }
-        }
-        $c = $this->pdo->query("SELECT id FROM message WHERE secret_key = '' OR secret_key IS NULL;");
-        while ($i = $c->fetch()) {
-            if ($input->getOption('verbose') || $input->getOption('only-list')) {
-                $output->writeln([$i['id']]);
-            }
-            if (!$input->getOption('only-list')) {
-                $this->pdo->query("UPDATE message SET secret_key = '".Uuid::uuidv4()."' WHERE id = '".$i['id']."';");
-            }
-        }
-        $c = $this->pdo->query("SELECT id FROM link WHERE secret_key = '' OR secret_key IS NULL;");
-        while ($i = $c->fetch()) {
-            if ($input->getOption('verbose') || $input->getOption('only-list')) {
-                $output->writeln([$i['id']]);
-            }
-            if (!$input->getOption('only-list')) {
-                $this->pdo->query("UPDATE link SET secret_key = '".Uuid::uuidv4()."' WHERE id = '".$i['id']."';");
-            }
-        }
         return 0;
     }
 }
