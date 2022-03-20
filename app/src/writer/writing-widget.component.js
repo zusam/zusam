@@ -30,7 +30,10 @@ export default function WritingWidget(props) {
     cleanForm();
   };
 
-  const genPreview = (t) => {
+  const genPreview = t => {
+    if (!t) {
+      return;
+    }
     t.style.height = "1px";
     t.style.height = `${25 + t.scrollHeight}px`;
     // waiting for the dom to be updated
@@ -68,7 +71,7 @@ export default function WritingWidget(props) {
   };
 
   useEffect(() => {
-    genPreview(document.getElementById(props.id).querySelector(".text-input"));
+    genPreview(document?.getElementById(props.id)?.querySelector(".text-input"));
   }, []);
 
   if (props.sending) {
