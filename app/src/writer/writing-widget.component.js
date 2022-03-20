@@ -3,7 +3,7 @@ import { http, util, api } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { EmbedBlock, FileGrid } from "/src/embed";
 import { useTranslation } from "react-i18next";
-import { useState, useRef } from "preact/hooks";
+import { useState, useRef, useEffect } from "preact/hooks";
 
 export default function WritingWidget(props) {
   const [preview, setPreview] = useState(null);
@@ -66,6 +66,10 @@ export default function WritingWidget(props) {
   const onPaste = (event) => {
     props.addFiles("image/jpeg", event.clipboardData.files);
   };
+
+  useEffect(() => {
+    genPreview(document.getElementById(props.id).querySelector(".text-input"));
+  }, []);
 
   if (props.sending) {
     return (
