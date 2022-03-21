@@ -24,8 +24,8 @@ export default function WritingWidget(props) {
     props.sendMessage(writerForm, {
       // we get the raw value here because onChange() does not capture all possible inputs
       // and then the values of text/title could not be up to date
-      title: document.getElementById(props.id).querySelector(".title-input").value,
-      text: document.getElementById(props.id).querySelector(".text-input").value,
+      title: writerForm?.current?.querySelector(".title-input")?.value,
+      text: writerForm?.current?.querySelector(".text-input")?.value,
     });
     cleanForm();
   };
