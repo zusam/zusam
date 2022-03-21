@@ -107,7 +107,7 @@ export default class EmbedBlock extends Component {
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 1024, 270)}
                 url={
-                  `https://youtube.com/embed/?listType=playlist&list=${playlist_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque`
+                  `https://youtube.com/embed/videoseries?list=${playlist_id[0].split("=")[1]}&autoplay=1&controls=2&wmode=opaque`
                 }
                 playBtnClass={"youtube"}
               />
