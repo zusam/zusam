@@ -3,6 +3,7 @@ node_modules/
 .cache
 yarn-error.log
 .parcel-cache/
+dist/
 
 # YARN
 # https://yarnpkg.com/getting-started/qa/#which-files-should-be-gitignored
