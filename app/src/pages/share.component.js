@@ -58,19 +58,19 @@ export default function Share() {
       <div class="content">
         <article class="mt-2">
           <div class="container">
-            {!!parent && me?.groups?.length > 1 && (
+            {!parent && me?.groups?.length > 1 && (
               <div class="mb-1">
                 <label class="px-1" for="group_share_choice">
                   {t("group_share_choice")}
                 </label>
                 <select
                   value={group}
-                  class="form-control"
+                  class="form-select"
                   name="group_share_choice"
                   onChange={e => setGroup(e.target.value)}
                   required
                 >
-                  {me.groups.map(e => (
+                  {me?.groups.map(e => (
                     <option key={e["id"]} value={e["id"]}>{e.name}</option>
                   ))}
                 </select>
