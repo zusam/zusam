@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
 import { util } from "/src/core";
 import BandCampEmbed from "./bandcamp-embed.component.js";
+import InstagramEmbed from "./instagram-embed.component.js";
 import GenericEmbed from "./generic-embed.component.js";
 
 export default class EmbedBlock extends Component {
@@ -30,6 +31,16 @@ export default class EmbedBlock extends Component {
             />
           );
         }
+      }
+      if ("instagram" == this.props.data["providerName"].toLowerCase()) {
+        return (
+          <InstagramEmbed
+            url={this.props.data["url"]}
+            preview={util.crop(this.props.preview.id, 1024, 1024)}
+            title={this.props.data["title"]}
+            description={this.props.data["description"]}
+          />
+        );
       }
       if (this.props.data["providerUrl"] == "https://bandcamp.com") {
         if (this.props.data["code"]) {

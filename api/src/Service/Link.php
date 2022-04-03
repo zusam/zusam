@@ -44,7 +44,7 @@ class Link
                 $this->em->persist($preview);
             } catch (\Exception $e) {
                 // Something went wrong. What should we do ?
-        // TODO
+                // TODO
             }
         }
         $this->em->persist($link);
