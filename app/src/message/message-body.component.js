@@ -1,19 +1,19 @@
-import { h, Component } from "preact";
+import { h } from "preact";
 import { http, util } from "/src/core";
 import { EmbedBlock, FileGrid } from "/src/embed";
+import { useEffect, useState } from "preact/hooks";
 
-export default class MessageBody extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { preview: null };
-  }
+export default function MessageBody(props) {
 
-  displayMessageText() {
-    if (!this.props.message.data) {
+  const [preview, setPreview] = useState(null);
+  const [gotPreview, setGotPreview] = useState(false);
+
+  const displayMessageText = () => {
+    if (!props.message.data) {
       return "";
     }
     // escape html a little (just enough to avoid xss I hope)
-    let txt = this.props.message.data["text"]
+    let txt = props.message.data["text"]
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .trim();
@@ -35,62 +35,52 @@ export default class MessageBody extends Component {
     // replace line returns
     txt = txt.replace(/\n/g, "<br/>");
     return { __html: txt };
-  }
+  };
 
-  componentDidMount() {
-    this.componentWillUpdate();
-  }
-
-  componentWillUpdate() {
-    if (!this.state.gotPreview && this.props.message) {
-      if (this.props.message.data) {
-        let previewUrl = util.getUrl(this.props.message.data["text"]);
+  useEffect(() => {
+    if (!preview && props.message) {
+      if (props.message.data) {
+        let previewUrl = util.getUrl(props.message.data["text"]);
         if (previewUrl) {
           http
             .get(`/api/links/by_url?url=${encodeURIComponent(previewUrl[0])}`)
             .then(r => {
-              this.setState({
-                preview: r,
-                gotPreview: true
-              });
+              setGotPreview(true);
+              setPreview(r);
             });
         } else {
-          this.setState({
-            gotPreview: true
-          });
+          setGotPreview(true);
         }
       }
     }
-  }
+  });
 
-  render() {
-    return (
-      <div class="message-body">
-        {this.props.message.data && this.props.message.data.title && (
-          <div class="title">
-            <span>{this.props.message.data.title}</span>
-          </div>
-        )}
-        {this.props.message.data &&
-          this.props.message.data.text &&
-          this.props.message.data.text.trim() && (
-          <p
-            class="card-text"
-            dangerouslySetInnerHTML={this.displayMessageText()}
-          />
-        )}
-        {this.state.preview && (!this.props.message.data || !this.props.message.data["no_embed"]) && (
-          <EmbedBlock
-            key={this.state.preview.url}
-            url={this.state.preview.url}
-            preview={this.state.preview.preview}
-            data={this.state.preview.data}
-          />
-        )}
-        {this.props.files && (
-          <FileGrid files={this.props.files} />
-        )}
-      </div>
-    );
-  }
+  return (
+    <div class="message-body">
+      {props.message.data && props.message.data.title && (
+        <div class="title">
+          <span>{props.message.data.title}</span>
+        </div>
+      )}
+      {props.message.data &&
+        props.message.data.text &&
+        props.message.data.text.trim() && (
+        <p
+          class="card-text"
+          dangerouslySetInnerHTML={displayMessageText()}
+        />
+      )}
+      {preview && (!props.message.data || !props.message.data["no_embed"]) && (
+        <EmbedBlock
+          key={preview.url}
+          url={preview.url}
+          preview={preview.preview}
+          data={preview.data}
+        />
+      )}
+      {props.files && (
+        <FileGrid files={props.files} />
+      )}
+    </div>
+  );
 }

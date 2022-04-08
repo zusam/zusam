@@ -1,42 +1,38 @@
-import { h, Component } from "preact";
+import { h } from "preact";
 import { http, util, notifications } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "preact/hooks";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-export default class MessageSearchResult extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      message: props.message,
-      title: props.message.data["title"] || "",
-      text: props.message.data["text"] || "",
-      preview: props.message["preview"] || null
-    };
-    this.getMiniature = this.getMiniature.bind(this);
-    this.getLink = this.getLink.bind(this);
-    this.displayMessageTitle = this.displayMessageTitle.bind(this);
-    this.displayMessageText = this.displayMessageText.bind(this);
-  }
+export default function MessageSearchResult(props) {
 
-  componentDidMount() {
-    if (this.props.message.author) {
-      http
-        .get(`/api/users/${  this.props.message.author}`)
-        .then(author => author && this.setState({ author }));
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { t } = useTranslation();
+  const [message, setMessage] = useState(props.message);
+  const [title, setTitle] = useState(props.message.data["title"] || "");
+  const [text, setText] = useState(props.message.data["text"] || "");
+  const [preview, setPreview] = useState(props.message["preview"] || null);
+
+  useEffect(() => {
+    if (props.message.author) {
+      http.get(`/api/users/${props.message.author}`).then(author => author && setAuthor(author));
     }
-  }
+  }, []);
 
-  displayAuthorName() {
-    if (!this.state.author) {
+  const displayAuthorName = () => {
+    if (!author) {
       return { __html: "--" };
     }
-    let authorName = this.state.author.name;
+    let authorName = author.name;
 
     // make the search terms stand out
     let words = authorName.split(" ");
     for (let j = 0; j < words.length; j++) {
       if (!words[j].match(util.urlRegExp)) {
-        let searchTerms = this.props.search.split(" ");
+        let searchTerms = props.search.split(" ");
         for (let k = 0; k < searchTerms.length; k++) {
           words[j] = words[j].replace(
             new RegExp(util.escapeRegex(searchTerms[k]), "gi"),
@@ -47,18 +43,18 @@ export default class MessageSearchResult extends Component {
     }
     authorName = words.join(" ");
     return { __html: authorName };
-  }
+  };
 
-  displayMessageTitle() {
-    if (!this.props?.message?.data?.title) {
-      return { __html: util.humanTime(this.props?.message?.lastActivityDate) };
+  const displayMessageTitle = () => {
+    if (!props?.message?.data?.title) {
+      return { __html: util.humanTime(props?.message?.lastActivityDate) };
     }
     // escape html a little (just enough to avoid xss I hope)
-    let title = this.props.message.data.title.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
+    let title = props.message.data.title.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
 
     // make the search terms stand out
     let words = title.split(" ");
-    let searchTerms = this.props.search.split(" ");
+    let searchTerms = props.search.split(" ");
     for (let j = 0; j < words.length; j++) {
       if (!words[j].match(util.urlRegExp)) {
         for (let k = 0; k < searchTerms.length; k++) {
@@ -68,15 +64,15 @@ export default class MessageSearchResult extends Component {
     }
     title = words.join(" ");
     return { __html: title };
-  }
+  };
 
-  displayMessageText() {
-    if (!this.props.message.data || !this.props.message.data["text"]) {
+  const displayMessageText = () => {
+    if (!props.message.data || !props.message.data["text"]) {
       return "";
     }
 
     // escape html a little (just enough to avoid xss I hope)
-    let txt = this.props.message.data["text"]
+    let txt = props.message.data["text"]
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .trim();
@@ -87,7 +83,7 @@ export default class MessageSearchResult extends Component {
       let words = lines[i].split(" ");
       for (let j = 0; j < words.length; j++) {
         if (!words[j].match(util.urlRegExp)) {
-          let searchTerms = this.props.search.split(" ");
+          let searchTerms = props.search.split(" ");
           for (let k = 0; k < searchTerms.length; k++) {
             if (!searchTerms[k]) {
               continue;
@@ -97,7 +93,7 @@ export default class MessageSearchResult extends Component {
               "<b>$&</b>"
             );
           }
-          let hashtags = this.props.hashtags.split(" ");
+          let hashtags = props.hashtags.split(" ");
           for (let k = 0; k < hashtags.length; k++) {
             if (!hashtags[k]) {
               continue;
@@ -121,7 +117,7 @@ export default class MessageSearchResult extends Component {
       if (url.length >= 50) {
         url = `${url.slice(0, 25)  }...${  url.slice(-24)}`;
       }
-      let searchTerms = this.props.search.split(" ");
+      let searchTerms = props.search.split(" ");
       for (let i = 0; i < searchTerms.length; i++) {
         url = url.replace(new RegExp(util.escapeRegex(searchTerms[i]), "gi"), "<b>$&</b>");
       }
@@ -137,16 +133,16 @@ export default class MessageSearchResult extends Component {
     txt = txt.replace(/\n/g, "<br/>");
 
     return { __html: txt };
-  }
+  };
 
-  getMiniature() {
-    if (this.state.preview) {
+  const getMiniature = () => {
+    if (preview) {
       return (
         <div
           class="card-miniature"
           style={
             `background-image: url('${ 
-              util.crop(this.state.preview, 100, 100) 
+              util.crop(preview, 100, 100) 
             }')`
           }
         />
@@ -154,11 +150,11 @@ export default class MessageSearchResult extends Component {
     }
     let avatar = util.defaultAvatar;
     if (
-      this.state.author &&
-      this.state.author.avatar &&
-      this.state.author.avatar.id
+      author &&
+      author.avatar &&
+      author.avatar.id
     ) {
-      avatar = util.crop(this.state.author.avatar["id"], 100, 100);
+      avatar = util.crop(author.avatar["id"], 100, 100);
     }
     return (
       <div
@@ -166,66 +162,64 @@ export default class MessageSearchResult extends Component {
         style={`background-image: url('${  avatar  }')`}
       />
     );
-  }
+  };
 
-  getLink() {
-    if (this.state.message.parent && this.state.message.children == 0) {
+  const getLink = () => {
+    if (message.parent && message.children == 0) {
       return (
-        `/messages/${  this.state.message.parent  }/${  this.state.message.id}`
+        `/messages/${message.parent}/${message.id}`
       );
     }
-    return `/messages/${  this.state.message.id}`;
-  }
+    return `/messages/${message.id}`;
+  };
 
-  render() {
-    return (
-      <Link
-        class="d-inline-block seamless-link message-preview unselectable"
-        to={this.getLink()}
-        title={this.state.title}
-      >
-        <div tabindex={this.props.tabindex} class="card material-shadow-with-hover">
-          <div class="card-body border-top">
-            {this.getMiniature()}
-            <div class="infos">
-              <div
-                class="title"
-                dangerouslySetInnerHTML={this.displayAuthorName()}
+  return (
+    <Link
+      class="d-inline-block seamless-link message-preview unselectable"
+      to={getLink()}
+      title={title}
+    >
+      <div tabindex={props.tabindex} class="card material-shadow-with-hover">
+        <div class="card-body border-top">
+          {getMiniature()}
+          <div class="infos">
+            <div
+              class="title"
+              dangerouslySetInnerHTML={displayAuthorName()}
+            />
+            <div class="dot">&bull;</div>
+            <div
+              class="title"
+              title={
+                title ||
+                util.humanFullDate(message.lastActivityDate)
+              }
+              dangerouslySetInnerHTML={displayMessageTitle()}
+            />
+          </div>
+          <div class="text">
+            {text.trim() && (
+              <p
+                class="card-text"
+                dangerouslySetInnerHTML={displayMessageText()}
               />
-              <div class="dot">&bull;</div>
-              <div
-                class="title"
-                title={
-                  this.state.title ||
-                  util.humanFullDate(this.state.message.lastActivityDate)
-                }
-                dangerouslySetInnerHTML={this.displayMessageTitle()}
-              />
-            </div>
-            <div class="text">
-              {this.state.text.trim() && (
-                <p
-                  class="card-text"
-                  dangerouslySetInnerHTML={this.displayMessageText()}
+            )}
+          </div>
+          <div class="children">
+            {!!message.children && (
+              <span>
+                {`${message.children  } `}
+                <FaIcon
+                  family={
+                    notifications.isNew(message.id) ? "solid" : "regular"
+                  }
+                  icon={"comment"}
                 />
-              )}
-            </div>
-            <div class="children">
-              {!!this.state.message.children && (
-                <span>
-                  {`${this.state.message.children  } `}
-                  <FaIcon
-                    family={
-                      notifications.isNew(this.state.message.id) ? "solid" : "regular"
-                    }
-                    icon={"comment"}
-                  />
-                </span>
-              )}
-            </div>
+              </span>
+            )}
           </div>
         </div>
-      </Link>
-    );
-  }
+      </div>
+    </Link>
+  );
 }

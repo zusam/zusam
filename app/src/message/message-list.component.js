@@ -1,116 +1,98 @@
 import { h, Component, Fragment } from "preact";
 import { http } from "/src/core";
 import { MessagePreview } from "/src/message";
+import { useEffect, useState } from "preact/hooks";
 
-export default class MessageList extends Component {
-  constructor(props) {
-    super(props);
-    let loaded = 1 + Math.floor((window.screen.width * window.screen.height) / (320 * 215));
-    this.state = {
-      loaded,
-      messages: [],
-      scrollTop: 0,
-      totalMessages: 0,
-      pageYOffset: 0,
-      page: 0
-    };
-    this.scroll_cooldown = Date.now();
-    this.onScroll = this.onScroll.bind(this);
-    this.loadMessages = this.loadMessages.bind(this);
-    this.onNewParent = this.onNewParent.bind(this);
-    window.addEventListener("newParent", this.onNewParent);
-  }
+export default function MessageList(props) {
 
-  onNewParent() {
-    this.loadMessages(0);
-  }
+  const [loaded, setLoaded] = useState(1 + Math.floor((window.screen.width * window.screen.height) / (320 * 215)));
+  const [messages, setMessages] = useState([]);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [totalMessages, setTotalMessages] = useState(0);
+  const [pageYOffset, setPageYOffset] = useState(0);
+  const [page, setPage] = useState(0);
+  const [group, setGroup] = useState(null);
 
-  componentDidMount() {
-    this.loadMessages(0);
-    window.addEventListener("scroll", this.onScroll);
-  }
+  const onNewParent = () => {
+    loadMessages(0);
+  };
 
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.onScroll);
-  }
-
-  loadMessages(page) {
-    http
-      .get(`/api/groups/${this.props.id}`)
-      .then(res => {
-        this.setState({
-          group: res
-        });
-      });
+  const loadMessages = page => {
+    http.get(`/api/groups/${props.id}`).then(res => {
+      setGroup(res);
+    });
 
     http
-      .get(`/api/groups/${this.props.id}/page/${page}`)
+      .get(`/api/groups/${props.id}/page/${page}`)
       .then(res => {
         if (res && Array.isArray(res["messages"])) {
-          let new_loaded = Math.max(this.state.loaded, page * 30);
-          let msgList = this.state.messages;
+          let new_loaded = Math.max(loaded, page * 30);
+          let msgList = messages;
           // don't add already added messages
           res["messages"].map(
             m => !msgList.find(msg => msg.id == m.id) && msgList.push(m)
           );
-          this.setState({
-            messages: msgList,
-            totalMessages: res["totalItems"],
-            page,
-            loaded: new_loaded
-          });
+          setMessages(msgList);
+          setTotalMessages(res["totalItems"]);
+          setPage(page);
+          setLoaded(new_loaded);
           if ((page + 1) * 30 < new_loaded) {
-            setTimeout(() => this.loadMessages(page + 1));
+            setTimeout(() => loadMessages(page + 1));
           }
         }
       });
-  }
+  };
 
-  onScroll() {
+  const onScroll = () => {
     // prevent loading messages if we are in a post
     if (
-      window.getComputedStyle(document.getElementById("group").parentNode)
-        .display == "none"
+      window.getComputedStyle(document.getElementById("group").parentNode).display == "none"
     ) {
       return;
     }
     // don't load if on cooldown
-    if (this.scroll_cooldown + 100 < Date.now()) {
-      this.scroll_cooldown = Date.now();
-      this.setState({ pageYOffset: window.pageYOffset });
+    if (scroll_cooldown + 100 < Date.now()) {
+      scroll_cooldown = Date.now();
+      setPageYOffset(window.pageYOffset);
       // don't load if unecessary
       if (
-        Array.isArray(this.state.messages) &&
-        document.body.scrollHeight - window.screen.height - 500 <
-          window.pageYOffset &&
-        this.state.loaded < this.state.totalMessages
+        Array.isArray(messages) &&
+        document.body.scrollHeight - window.screen.height - 500 < window.pageYOffset && loaded < totalMessages
       ) {
-        this.setState(prevState => ({ loaded: prevState.loaded + 10 }));
-        if (this.state.loaded + 30 > this.state.messages.length) {
-          this.loadMessages(this.state.page + 1);
+        setLoaded(loaded + 10);
+        if (loaded + 30 > messages.length) {
+          loadMessages(page + 1);
           // update page count right away
-          this.setState(prevState => ({ page: prevState.page + 1 }));
+          setPage(page + 1)
         }
       }
     }
-  }
+  };
 
-  render() {
-    if (!this.props.id) {
-      return;
-    }
-    return (
-      <Fragment>
-        {Array.isArray(this.state.messages) && this.state.messages.slice(0, this.state.loaded).map((msg, i) => {
-          return (
-            <MessagePreview
-              tabindex={i + 1}
-              key={msg.id}
-              id={msg.id}
-            />
-          );
-        })}
-      </Fragment>
-    );
+  useEffect(() => {
+    loadMessages(0);
+    window.addEventListener("newParent", onNewParent);
+    window.addEventListener("scroll", onScroll);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  if (!props.id) {
+    return;
   }
+  return (
+    <Fragment>
+      {Array.isArray(messages) && messages.slice(0, loaded).map((msg, i) => {
+        return (
+          <MessagePreview
+            tabindex={i + 1}
+            key={msg.id}
+            id={msg.id}
+          />
+        );
+      })}
+    </Fragment>
+  );
 }

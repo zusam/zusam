@@ -1,8 +1,9 @@
-import { h, Component, Fragment } from "preact";
+import { h, Fragment } from "preact";
 import { util, notifications, http } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
 import { HumanTime } from "/src/pages";
+import { useEffect, useState } from "preact/hooks";
 
 function getAvatar(user) {
   return (
@@ -20,80 +21,80 @@ function getAvatar(user) {
   );
 }
 
-export default class MessagePreview extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      author: null,
-      preview: null,
-      id: null,
-      data: null,
-      lastActivityDate: null,
-      children: 0,
-      loaded: false,
-    };
-  }
+export default function MessagePreview(props) {
 
-  componentDidMount() {
-    http.get(`/api/messages/${this.props.id}/preview`).then(p => {
-      this.setState({...p, loaded: true});
+  const [author, setAuthor] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [id, setId] = useState(null);
+  const [data, setData] = useState(null);
+  const [lastActivityDate, setLastActivityDate] = useState(null);
+  const [children, setChildren] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    http.get(`/api/messages/${props.id}/preview`).then(p => {
+      setAuthor(p?.author);
+      setPreview(p?.preview);
+      setId(p?.id);
+      setChildren(p?.children);
+      setLoaded(true);
+      setLastActivityDate(p?.lastActivityDate);
+      setData(p?.data);
     });
-  }
+  }, []);
 
-  render() {
-    if (!this.props?.id) {
-      return null;
-    }
-    return (
-      <Link
-        to={`/messages/${this.state.id}`}
-        class="d-inline-block seamless-link message-preview unselectable"
-        title={this.state?.data?.title}
-      >
-        <div tabindex={this.props?.tabindex} class="card material-shadow-with-hover">
-          {getAvatar(this.state?.author)}
-          <div class="card-miniature-loading">
-            {this.state.loaded && (
-              <Fragment>
-                {this.state?.preview ? (
-                  <div
-                    class="card-miniature"
-                    style={
-                      `background-image: url('${util.crop(util.getId(this.state?.preview), 320, 180)}')`
-                    }
-                  />
-                ) : (
-                  <div class="text-preview">{this.state?.data?.text}</div>
-                )}
-              </Fragment>
-            )}
-          </div>
-          <div class="card-body border-top d-flex justify-content-between">
-            <span class="left-buffer" />
-            <span
-              class="title"
-              title={
-                this.state?.data?.title || util.humanFullDate(this.state?.lastActivityDate)
-              }
-            >
-              {this.state?.data?.title || (<HumanTime timestamp={this.state?.lastActivityDate} />)}
-            </span>
-            <span class="children">
-              {this.state?.children > 0 && (
-                <span>
-                  {`${this.state?.children} `}
-                  <FaIcon
-                    family={
-                      notifications.isNew(this.state?.id) ? "solid" : "regular"
-                    }
-                    icon={"comment"}
-                  />
-                </span>
-              )}
-            </span>
-          </div>
-        </div>
-      </Link>
-    );
+  if (!props?.id) {
+    return null;
   }
+  return (
+    <Link
+      to={`/messages/${id}`}
+      class="d-inline-block seamless-link message-preview unselectable"
+      title={data?.title}
+    >
+      <div tabindex={props?.tabindex} class="card material-shadow-with-hover">
+        {getAvatar(author)}
+        <div class="card-miniature-loading">
+          {loaded && (
+            <Fragment>
+              {preview ? (
+                <div
+                  class="card-miniature"
+                  style={
+                    `background-image: url('${util.crop(util.getId(preview), 320, 180)}')`
+                  }
+                />
+              ) : (
+                <div class="text-preview">{data?.text}</div>
+              )}
+            </Fragment>
+          )}
+        </div>
+        <div class="card-body border-top d-flex justify-content-between">
+          <span class="left-buffer" />
+          <span
+            class="title"
+            title={
+              data?.title || util.humanFullDate(lastActivityDate)
+            }
+          >
+            {data?.title || (<HumanTime timestamp={lastActivityDate} />)}
+          </span>
+          <span class="children">
+            {children > 0 && (
+              <span>
+                {`${children} `}
+                <FaIcon
+                  family={
+                    notifications.isNew(id) ? "solid" : "regular"
+                  }
+                  icon={"comment"}
+                />
+              </span>
+            )}
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
 }

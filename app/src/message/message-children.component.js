@@ -1,122 +1,101 @@
-import { h, Component } from "preact";
+import { h } from "preact";
 import { router, util } from "/src/core";
 import MessageChild from "./message-child.component.js";
-import { withTranslation } from "react-i18next";
+import { useEffect, useState } from "preact/hooks";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-class MessageChildren extends Component {
-  constructor(props) {
-    super(props);
-    this.onNewChild = this.onNewChild.bind(this);
-    this.loadMessage = this.loadMessage.bind(this);
-    this.displayPreviousChildren = this.displayPreviousChildren.bind(this);
-    this.displayNextChildren = this.displayNextChildren.bind(this);
-    this.state = { firstDisplayedChild: 0, lastDisplayedChild: 0 };
-    window.addEventListener("newChild", this.onNewChild);
-  }
+export default function MessageChildren(props) {
 
-  onNewChild(event) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { t } = useTranslation();
+  const [firstDisplayedChild, setFirstDisplayedChild] = useState(0);
+  const [lastDisplayedChild, setLastDisplayedChild] = useState(0);
+
+  const onNewChild = event => {
     const newMsg = event.detail;
-    if (newMsg.parent && util.getId(newMsg.parent) == this.props.id) {
-      this.setState(prevState => ({
-        lastDisplayedChild: prevState.lastDisplayedChild + 1
-      }));
+    if (newMsg.parent && util.getId(newMsg.parent) == props.id) {
+      setLastDisplayedChild(lastDisplayedChild + 1)
     }
-  }
+  };
 
-  loadMessage() {
+  const displayPreviousChildren = () => {
+    setFirstDisplayedChild(Math.max(0, firstDisplayedChild - 10));
+  };
+
+  const displayNextChildren = () => {
+    setLastDisplayedChild(Math.min(props.childMessages.length, lastDisplayedChild + 10));
+  };
+
+  useEffect(() => {
+    window.addEventListener("newChild", onNewChild);
     let firstDisplayedChild = 0;
     let lastDisplayedChild = 0;
-    if (this.props.childMessages.length) {
+    if (props.childMessages.length) {
       let msgIndex = router.action
-        ? this.props.childMessages.findIndex(e => e && e.id === router.action)
+        ? props.childMessages.findIndex(e => e && e.id === router.action)
         : -1;
       if (msgIndex != -1) {
         firstDisplayedChild = Math.max(0, msgIndex - 1);
         lastDisplayedChild = Math.min(
-          this.props.childMessages.length,
+          props.childMessages.length,
           msgIndex + 1
         );
       } else {
-        firstDisplayedChild =
-          this.props.childMessages && this.props.childMessages.length - 5; // display the last 5 children
-        lastDisplayedChild =
-          this.props.childMessages && this.props.childMessages.length;
+        firstDisplayedChild = props.childMessages && props.childMessages.length - 5; // display the last 5 children
+        lastDisplayedChild = props.childMessages && props.childMessages.length;
       }
     }
-    this.setState({
-      firstDisplayedChild,
-      lastDisplayedChild
-    });
-  }
+    setFirstDisplayedChild(firstDisplayedChild)
+    setLastDisplayedChild(lastDisplayedChild)
+  }, []);
 
-  displayPreviousChildren() {
-    this.setState(prevState => ({
-      firstDisplayedChild: Math.max(0, prevState.firstDisplayedChild - 10)
-    }));
+  if (
+    lastDisplayedChild - firstDisplayedChild < 1 ||
+    !props.childMessages
+  ) {
+    return null;
   }
+  return (
+    <div class="children">
+      {firstDisplayedChild > 0 && (
+        <div class="d-flex">
+          <a
+            class="more-coms unselectable"
+            onClick={() => displayPreviousChildren()}
+          >
+            {t("previous_coms")}
+          </a>
+        </div>
+      )}
+      {props.childMessages.map((e, i) => {
+        if (
+          i < firstDisplayedChild ||
+          i > lastDisplayedChild
+        ) {
+          return null;
+        }
 
-  displayNextChildren() {
-    this.setState(prevState => ({
-      lastDisplayedChild: Math.min(
-        this.props.childMessages.length,
-        prevState.lastDisplayedChild + 10
-      )
-    }));
-  }
-
-  componentDidMount() {
-    this.loadMessage();
-  }
-
-  render() {
-    if (
-      this.state.lastDisplayedChild - this.state.firstDisplayedChild < 1 ||
-      !this.props.childMessages
-    ) {
-      return null;
-    }
-    return (
-      <div class="children">
-        {this.state.firstDisplayedChild > 0 && (
-          <div class="d-flex">
-            <a
-              class="more-coms unselectable"
-              onClick={() => this.displayPreviousChildren()}
-            >
-              {this.props.t("previous_coms")}
-            </a>
-          </div>
-        )}
-        {this.props.childMessages.map((e, i) => {
-          if (
-            i < this.state.firstDisplayedChild ||
-            i > this.state.lastDisplayedChild
-          ) {
-            return null;
-          }
-
-          return (
-            <MessageChild
-              id={e.id}
-              key={e.id}
-              isPublic={this.props.isPublic}
-            />
-          );
-        })}
-        {this.state.lastDisplayedChild + 1 <
-          this.props.childMessages.length && (
-          <div class="d-flex">
-            <span
-              class="more-coms unselectable"
-              onClick={() => this.displayNextChildren()}
-            >
-              {this.props.t("next_coms")}
-            </span>
-          </div>
-        )}
-      </div>
-    );
-  }
+        return (
+          <MessageChild
+            id={e.id}
+            key={e.id}
+            isPublic={props.isPublic}
+          />
+        );
+      })}
+      {lastDisplayedChild + 1 <
+        props.childMessages.length && (
+        <div class="d-flex">
+          <span
+            class="more-coms unselectable"
+            onClick={() => displayNextChildren()}
+          >
+            {t("next_coms")}
+          </span>
+        </div>
+      )}
+    </div>
+  );
 }
-
-export default withTranslation()(MessageChildren);
