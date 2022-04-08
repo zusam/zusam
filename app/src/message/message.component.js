@@ -123,7 +123,6 @@ export default function Message(props) {
         if (props.isChild) {
           setIsRemove(true);
         } else {
-          // dirty hack before converting this component to a function
           navigate(`/groups/${message.group.id}`);
         }
       });
@@ -132,7 +131,7 @@ export default function Message(props) {
 
   const shareMessage = event => {
     event.preventDefault();
-    navigate.push(`/share?message=${props.id}`);
+    navigate(`/share?message=${props.id}`);
   };
 
   const editMessage = event => {
@@ -151,7 +150,7 @@ export default function Message(props) {
           alert.add(t("error"), "alert-danger");
           return;
         }
-        navigate.push(`/groups/${message.group.id}`);
+        navigate(`/groups/${message.group.id}`);
       });
   };
 
