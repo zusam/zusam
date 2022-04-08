@@ -58,7 +58,7 @@ export default function Message(props) {
     }
     if (m?.files?.length) {
       Promise.all(m.files.map(f => http.get(`/api/files/${f.id}`).then(f => f))).then(
-        setFiles(files)
+        files => setFiles(files)
       );
     }
     setMessage(m);
