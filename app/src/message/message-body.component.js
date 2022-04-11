@@ -6,7 +6,6 @@ import { useEffect, useState } from "preact/hooks";
 export default function MessageBody(props) {
 
   const [preview, setPreview] = useState(null);
-  const [gotPreview, setGotPreview] = useState(false);
 
   const displayMessageText = () => {
     if (!props.message.data) {
@@ -44,12 +43,7 @@ export default function MessageBody(props) {
         if (previewUrl) {
           http
             .get(`/api/links/by_url?url=${encodeURIComponent(previewUrl[0])}`)
-            .then(r => {
-              setGotPreview(true);
-              setPreview(r);
-            });
-        } else {
-          setGotPreview(true);
+            .then(r => setPreview(r));
         }
       }
     }

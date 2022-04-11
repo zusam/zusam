@@ -2,18 +2,14 @@ import { h } from "preact";
 import { alert, storage, http, router } from "/src/core";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "preact/hooks";
 
 export default function Signup() {
 
-  const [showAlert, setShowAlert] = useState(false);
-  const [error, setError] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const sendSignupForm = e => {
     e.preventDefault();
-    setShowAlert(false);
     let login = document.getElementById("login").value || "";
     login.toLowerCase();
     const password = document.getElementById("password").value;

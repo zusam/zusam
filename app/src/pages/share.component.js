@@ -1,17 +1,15 @@
 import { h } from "preact";
-import { me as meService, router, http } from "/src/core";
+import { me as meService, http } from "/src/core";
 import { Writer } from "/src/writer";
 import { Navbar } from "/src/navbar";
 import { useStoreon } from "storeon/preact";
-import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "preact/hooks";
 
 export default function Share() {
 
-  const params = useParams();
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { me } = useStoreon("me");
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -20,7 +18,7 @@ export default function Share() {
   const [title, setTitle] = useState(searchParams.get("title") || "");
   const [text, setText] = useState(searchParams.get("text") || "");
   const [url, setUrl] = useState(searchParams.get("url") || "");
-  const [parent, setParent] = useState(searchParams.get("parent") || "");
+  const parent = searchParams.get("parent") || "";
   const [files, setFiles] = useState([]);
   const [group, setGroup] = useState("");
 
@@ -28,9 +26,9 @@ export default function Share() {
     setTimeout(() => {
       meService.fetch().then(user => {
         if (user.data["default_group"]) {
-          setGroup(user.data["default_group"])
+          setGroup(user.data["default_group"]);
         } else if (user.groups.length == 1) {
-          setGroup(user.groups[0]["id"])
+          setGroup(user.groups[0]["id"]);
         }
         if (searchParams.get("message")) {
           http.get(`/api/messages/${searchParams.get("message")}`)

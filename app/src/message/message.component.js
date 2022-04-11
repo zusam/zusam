@@ -1,5 +1,5 @@
 import { h, Fragment } from "preact";
-import { http, router, util, me, notifications } from "/src/core";
+import { http, router, util, notifications } from "/src/core";
 import MessageChildren from "./message-children.component.js";
 import MessageHead from "./message-head.component.js";
 import MessageFooter from "./message-footer.component.js";
@@ -7,14 +7,13 @@ import MessageBody from "./message-body.component.js";
 import MessageBreadcrumbs from "./message-breadcrumbs.component.js";
 import { Writer } from "/src/writer";
 import { useEffect, useState } from "preact/hooks";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useStoreon } from "storeon/preact";
 
 export default function Message(props) {
 
   const navigate = useNavigate();
-  const location = useLocation();
   const { t } = useTranslation();
   const { me } = useStoreon("me");
   const [author, setAuthor] = useState(null);
@@ -62,7 +61,7 @@ export default function Message(props) {
       );
     }
     setMessage(m);
-  }
+  };
 
   const loadMessage = () => {
     if (props?.message) {
@@ -121,7 +120,7 @@ export default function Message(props) {
     if (confirm(t("ask_delete_message"))) {
       http.delete(`/api/messages/${props.id}`).then(() => {
         if (props.isChild) {
-          setIsRemove(true);
+          setIsRemoved(true);
         } else {
           navigate(`/groups/${message.group.id}`);
         }

@@ -1,31 +1,29 @@
-import { h, Component } from "preact";
+import { h } from "preact";
 
-export default class InstagramEmbed extends Component {
-  render() {
-    return (
-      <a
-        class="preview-card seamless-link d-inline-block"
-        target="_blank"
-        rel="noreferrer"
-        href={this.props.url}
-      >
-        <div class="card" style="max-width: 480px">
-          {this.props.preview && (
-            <img
-              class="card-img-top"
-              src={this.props.preview}
-            />
+export default function InstagramEmbed(props) {
+  return (
+    <a
+      class="preview-card seamless-link d-inline-block"
+      target="_blank"
+      rel="noreferrer"
+      href={props.url}
+    >
+      <div class="card" style="max-width: 480px">
+        {props.preview && (
+          <img
+            class="card-img-top"
+            src={props.preview}
+          />
+        )}
+        <div class="card-body p-1">
+          <h5>{props.title}</h5>
+          {props.description && (
+            <p>
+              <small>{props.description.slice(0, 1000)}</small>
+            </p>
           )}
-          <div class="card-body p-1">
-            <h5>{this.props.title}</h5>
-            {this.props.description && (
-              <p>
-                <small>{this.props.description.slice(0, 1000)}</small>
-              </p>
-            )}
-          </div>
         </div>
-      </a>
-    );
-  }
+      </div>
+    </a>
+  );
 }

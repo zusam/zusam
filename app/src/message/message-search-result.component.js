@@ -1,20 +1,15 @@
 import { h } from "preact";
 import { http, util, notifications } from "/src/core";
 import { FaIcon } from "/src/misc";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "preact/hooks";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 export default function MessageSearchResult(props) {
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { t } = useTranslation();
-  const [message, setMessage] = useState(props.message);
-  const [title, setTitle] = useState(props.message.data["title"] || "");
-  const [text, setText] = useState(props.message.data["text"] || "");
-  const [preview, setPreview] = useState(props.message["preview"] || null);
+  const title = props.data["title"] || "";
+  const text = props.data["text"] || "";
+  const preview = props.data["preview"] || null;
+  const [author, setAuthor] = useState(props.message.author || null);
 
   useEffect(() => {
     if (props.message.author) {
@@ -165,17 +160,17 @@ export default function MessageSearchResult(props) {
   };
 
   const getLink = () => {
-    if (message.parent && message.children == 0) {
+    if (props.message.parent && props.message.children == 0) {
       return (
-        `/messages/${message.parent}/${message.id}`
+        `/s/${props.message.parent}/${props.message.id}`
       );
     }
-    return `/messages/${message.id}`;
+    return `/s/${props.message.id}`;
   };
 
   return (
     <Link
-      class="d-inline-block seamless-link message-preview unselectable"
+      class="d-inline-block seamless-link -preview unselectable"
       to={getLink()}
       title={title}
     >
@@ -192,7 +187,7 @@ export default function MessageSearchResult(props) {
               class="title"
               title={
                 title ||
-                util.humanFullDate(message.lastActivityDate)
+                util.humanFullDate(props.message.lastActivityDate)
               }
               dangerouslySetInnerHTML={displayMessageTitle()}
             />
@@ -206,12 +201,12 @@ export default function MessageSearchResult(props) {
             )}
           </div>
           <div class="children">
-            {!!message.children && (
+            {!!props.message.children && (
               <span>
-                {`${message.children  } `}
+                {`${props.message.children} `}
                 <FaIcon
                   family={
-                    notifications.isNew(message.id) ? "solid" : "regular"
+                    notifications.isNew(props.message.id) ? "solid" : "regular"
                   }
                   icon={"comment"}
                 />

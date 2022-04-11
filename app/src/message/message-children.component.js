@@ -2,13 +2,10 @@ import { h } from "preact";
 import { router, util } from "/src/core";
 import MessageChild from "./message-child.component.js";
 import { useEffect, useState } from "preact/hooks";
-import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export default function MessageChildren(props) {
 
-  const navigate = useNavigate();
-  const location = useLocation();
   const { t } = useTranslation();
   const [firstDisplayedChild, setFirstDisplayedChild] = useState(0);
   const [lastDisplayedChild, setLastDisplayedChild] = useState(0);
@@ -16,7 +13,7 @@ export default function MessageChildren(props) {
   const onNewChild = event => {
     const newMsg = event.detail;
     if (newMsg.parent && util.getId(newMsg.parent) == props.id) {
-      setLastDisplayedChild(lastDisplayedChild + 1)
+      setLastDisplayedChild(lastDisplayedChild + 1);
     }
   };
 
@@ -47,8 +44,8 @@ export default function MessageChildren(props) {
         lastDisplayedChild = props.childMessages && props.childMessages.length;
       }
     }
-    setFirstDisplayedChild(firstDisplayedChild)
-    setLastDisplayedChild(lastDisplayedChild)
+    setFirstDisplayedChild(firstDisplayedChild);
+    setLastDisplayedChild(lastDisplayedChild);
   }, []);
 
   if (
