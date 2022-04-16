@@ -6,19 +6,16 @@ import { Link } from "react-router-dom";
 
 export default function MessageSearchResult(props) {
 
-  const title = props.data["title"] || "";
-  const text = props.data["text"] || "";
-  const preview = props.data["preview"] || null;
-  const [author, setAuthor] = useState(props.message.author || null);
+  const [author, setAuthor] = useState(props?.message?.author || null);
 
   useEffect(() => {
-    if (props.message.author) {
+    if (props?.message?.author) {
       http.get(`/api/users/${props.message.author}`).then(author => author && setAuthor(author));
     }
   }, []);
 
   const displayAuthorName = () => {
-    if (!author) {
+    if (!author?.name) {
       return { __html: "--" };
     }
     let authorName = author.name;
@@ -45,11 +42,11 @@ export default function MessageSearchResult(props) {
       return { __html: util.humanTime(props?.message?.lastActivityDate) };
     }
     // escape html a little (just enough to avoid xss I hope)
-    let title = props.message.data.title.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
+    let title = props?.message?.data?.title.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
 
     // make the search terms stand out
     let words = title.split(" ");
-    let searchTerms = props.search.split(" ");
+    let searchTerms = props?.search.split(" ") || [];
     for (let j = 0; j < words.length; j++) {
       if (!words[j].match(util.urlRegExp)) {
         for (let k = 0; k < searchTerms.length; k++) {
@@ -62,15 +59,12 @@ export default function MessageSearchResult(props) {
   };
 
   const displayMessageText = () => {
-    if (!props.message.data || !props.message.data["text"]) {
+    if (!props?.message?.data?.text) {
       return "";
     }
 
     // escape html a little (just enough to avoid xss I hope)
-    let txt = props.message.data["text"]
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .trim();
+    let txt = props?.message?.data?.text.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
 
     // make the search terms stand out for not url words
     let lines = txt.split("\n");
@@ -88,7 +82,7 @@ export default function MessageSearchResult(props) {
               "<b>$&</b>"
             );
           }
-          let hashtags = props.hashtags.split(" ");
+          let hashtags = props?.hashtags.split(" ") || [];
           for (let k = 0; k < hashtags.length; k++) {
             if (!hashtags[k]) {
               continue;
@@ -112,7 +106,7 @@ export default function MessageSearchResult(props) {
       if (url.length >= 50) {
         url = `${url.slice(0, 25)  }...${  url.slice(-24)}`;
       }
-      let searchTerms = props.search.split(" ");
+      let searchTerms = props?.search.split(" ") || [];
       for (let i = 0; i < searchTerms.length; i++) {
         url = url.replace(new RegExp(util.escapeRegex(searchTerms[i]), "gi"), "<b>$&</b>");
       }
@@ -131,30 +125,24 @@ export default function MessageSearchResult(props) {
   };
 
   const getMiniature = () => {
-    if (preview) {
+    if (props?.preview) {
       return (
         <div
           class="card-miniature"
           style={
-            `background-image: url('${ 
-              util.crop(preview, 100, 100) 
-            }')`
+            `background-image: url('${util.crop(props?.preview, 100, 100)}')`
           }
         />
       );
     }
     let avatar = util.defaultAvatar;
-    if (
-      author &&
-      author.avatar &&
-      author.avatar.id
-    ) {
+    if (author?.avatar?.id) {
       avatar = util.crop(author.avatar["id"], 100, 100);
     }
     return (
       <div
         class="card-miniature"
-        style={`background-image: url('${  avatar  }')`}
+        style={`background-image: url('${avatar}')`}
       />
     );
   };
@@ -170,9 +158,9 @@ export default function MessageSearchResult(props) {
 
   return (
     <Link
-      class="d-inline-block seamless-link -preview unselectable"
+      class="d-inline-block seamless-link message-preview unselectable"
       to={getLink()}
-      title={title}
+      title={props?.title}
     >
       <div tabindex={props.tabindex} class="card material-shadow-with-hover">
         <div class="card-body border-top">
@@ -185,15 +173,12 @@ export default function MessageSearchResult(props) {
             <div class="dot">&bull;</div>
             <div
               class="title"
-              title={
-                title ||
-                util.humanFullDate(props.message.lastActivityDate)
-              }
+              title={props?.title || util.humanFullDate(props.message.lastActivityDate)}
               dangerouslySetInnerHTML={displayMessageTitle()}
             />
           </div>
           <div class="text">
-            {text.trim() && (
+            {props?.message?.data?.text.trim() && (
               <p
                 class="card-text"
                 dangerouslySetInnerHTML={displayMessageText()}

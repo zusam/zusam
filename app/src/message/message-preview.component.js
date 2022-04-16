@@ -5,22 +5,6 @@ import { Link } from "react-router-dom";
 import { HumanTime } from "/src/pages";
 import { useEffect, useState } from "preact/hooks";
 
-function getAvatar(user) {
-  return (
-    <img
-      title={user ? user.name : "--"}
-      className={`avatar material-shadow${user ? "" : " removed-user"}`}
-      style={util.backgroundHash(user ? user.id : "")}
-      src={
-        user?.avatar
-          ? util.crop(user.avatar["id"], 100, 100)
-          : util.defaultAvatar
-      }
-      onError={e => (e.currentTarget.src = util.defaultAvatar)}
-    />
-  );
-}
-
 export default function MessagePreview(props) {
 
   const [author, setAuthor] = useState(null);
@@ -30,6 +14,22 @@ export default function MessagePreview(props) {
   const [lastActivityDate, setLastActivityDate] = useState(null);
   const [children, setChildren] = useState(0);
   const [loaded, setLoaded] = useState(false);
+
+  const getAvatar = user => {
+    return (
+      <img
+        title={user ? user.name : "--"}
+        className={`avatar material-shadow${user ? "" : " removed-user"}`}
+        style={util.backgroundHash(user ? user.id : "")}
+        src={
+          user?.avatar
+            ? util.crop(user.avatar["id"], 100, 100)
+            : util.defaultAvatar
+        }
+        onError={e => (e.currentTarget.src = util.defaultAvatar)}
+      />
+    );
+  };
 
   useEffect(() => {
     http.get(`/api/messages/${props.id}/preview`).then(p => {
@@ -43,7 +43,7 @@ export default function MessagePreview(props) {
     });
   }, []);
 
-  if (!props?.id) {
+  if (!props?.id || !data) {
     return null;
   }
   return (
