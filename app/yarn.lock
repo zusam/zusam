@@ -3082,7 +3082,7 @@ __metadata:
     eslint-plugin-jest: ^26.1.4
     eslint-plugin-react: ^7.29.4
     eslint-plugin-react-hooks: ^4.4.0
-    i18next: ^21.6.15
+    i18next: ^21.6.16
     idb-keyval: ^6.1.0
     image-blob-reduce: ^4.1.0
     jest: ^27.5.1
@@ -3091,7 +3091,7 @@ __metadata:
     parcel: ^2.4.1
     preact: ^10.7.1
     prettier: ^2.6.2
-    react-i18next: ^11.16.5
+    react-i18next: ^11.16.6
     react-router: ^6.3.0
     react-router-dom: ^6.3.0
     sass: ^1.50.0
@@ -5560,12 +5560,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^21.6.15":
-  version: 21.6.15
-  resolution: "i18next@npm:21.6.15"
+"i18next@npm:^21.6.16":
+  version: 21.6.16
+  resolution: "i18next@npm:21.6.16"
   dependencies:
     "@babel/runtime": ^7.17.2
-  checksum: b3d445c296b3d3ba9318273dde9fb27cb12d2d6dcd8a8a2de1318934ac4a5852e90afe0c6868f3c173d55242efc3d2f062f6c07f8e3cdfc2004a1a62132133d0
+  checksum: f210130fd835ebd90bfdc6a497d3c1d992261174e030e995a03d070b099acba680e495a376eb9255bb8eb68b4e518fe8ea96ec71507e194fd043aecb3397c9a2
   languageName: node
   linkType: hard
 
@@ -7906,9 +7906,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^11.16.5":
-  version: 11.16.5
-  resolution: "react-i18next@npm:11.16.5"
+"react-i18next@npm:^11.16.6":
+  version: 11.16.6
+  resolution: "react-i18next@npm:11.16.6"
   dependencies:
     "@babel/runtime": ^7.14.5
     html-escaper: ^2.0.2
@@ -7921,7 +7921,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 3934f9c1dd3eace157858f06d8813ced22c396201853ea5400059da7b9227dca91b67103a6829fb7ba8bb24179ba321ed327b8a8847b31ae3b18b4abcad5d87c
+  checksum: ed9701036b4e0f446db0381d27162c82418e2244117f6a52b91c7603c6b5e9cb68434a7f625b4cf7287a7650b999916473dcbdf6ab7fc5dedbeaddc2fd03fc3c
   languageName: node
   linkType: hard
 
