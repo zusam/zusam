@@ -130,6 +130,14 @@ class Message
     private $bookmarks;
 
     /**
+     * @Assert\NotNull()
+     * @Groups({"*"})
+     * @OA\Property(type="string")
+     * @ORM\Column(type="string")
+     */
+    private $type;
+
+    /**
      * @Groups("*")
      * @OA\Property(type="string")
      */
@@ -340,5 +348,15 @@ class Message
     public function removeBookmark(Bookmark $bookmark): void
     {
         $this->bookmarks->removeElement($bookmark);
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 }
