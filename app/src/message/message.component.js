@@ -27,7 +27,7 @@ export default function Message(props) {
   const setMessageRef = message => {
     messageRef.current = message;
     setMessage(message);
-  }
+  };
 
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
@@ -92,10 +92,11 @@ export default function Message(props) {
     const newMsg = event.detail;
     if (newMsg?.parent && util.getId(newMsg?.parent) == props.id) {
       newMsg.author = me;
+      let newChildren = messageRef?.current?.children ? [...messageRef.current.children, newMsg] : [newMsg];
       let newRef = Object.assign(
         messageRef.current,
         {
-          children: [...messageRef.current?.children, newMsg]
+          children: newChildren
         },
       );
       setMessageRef(newRef);
