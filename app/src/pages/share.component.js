@@ -30,14 +30,25 @@ export default function Share() {
         } else if (user.groups.length == 1) {
           setGroup(user.groups[0]["id"]);
         }
-        if (searchParams.get("message")) {
+        if(searchParams.get("message")) {
           http.get(`/api/messages/${searchParams.get("message")}`)
             .then(m => {
-              setTitle(m && m.data.title || "");
-              setText(m && m.data.text || "");
-              setUrl("");
-              setFiles(m && m.files || []);
-              setLoaded(true);
+              if (m?.files?.length) {
+                Promise.all(m.files.map(f => http.get(`/api/files/${f.id}`).then(f => f))).then(
+                  files => {
+                    setFiles(files);
+                    setTitle(m?.data?.title || "");
+                    setText(m?.data?.text || "");
+                    setUrl("");
+                    setLoaded(true);
+                  }
+                );
+              } else {
+                setTitle(m?.data?.title || "");
+                setText(m?.data?.text || "");
+                setUrl("");
+                setLoaded(true);
+              }
             });
         } else {
           setLoaded(true);

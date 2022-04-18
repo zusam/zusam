@@ -199,7 +199,6 @@ export default function Message(props) {
     );
   }
 
-  console.log("render", message);
   return (
     <Fragment>
       {!props?.isChild && !props?.isPublic && (
