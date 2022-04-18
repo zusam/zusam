@@ -6,7 +6,7 @@ import MessageFooter from "./message-footer.component.js";
 import MessageBody from "./message-body.component.js";
 import MessageBreadcrumbs from "./message-breadcrumbs.component.js";
 import { Writer } from "/src/writer";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useState, useRef, useReducer } from "preact/hooks";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useStoreon } from "storeon/preact";
@@ -19,9 +19,17 @@ export default function Message(props) {
   const [author, setAuthor] = useState(null);
   const [parent, setParent] = useState(null);
   const [files, setFiles] = useState(null);
-  const [message, setMessage] = useState(null);
   const [isRemoved, setIsRemoved] = useState(false);
   const [edit, setEdit] = useState(false);
+
+  const [message, setMessage] = useState(null);
+  const messageRef = useRef(message);
+  const setMessageRef = message => {
+    messageRef.current = message;
+    setMessage(message);
+  }
+
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   useEffect(() => {
     window.addEventListener("newChild", onNewChild);
@@ -45,6 +53,7 @@ export default function Message(props) {
   }, []);
 
   const hydrateMessage = m => {
+    setMessageRef(m);
     if (m?.author?.id) {
       http.get(`/api/users/${m.author.id}`).then(u => {
         setAuthor(u);
@@ -60,7 +69,6 @@ export default function Message(props) {
         files => setFiles(files)
       );
     }
-    setMessage(m);
   };
 
   const loadMessage = () => {
@@ -78,12 +86,20 @@ export default function Message(props) {
   };
 
   const onNewChild = event => {
+    if (!messageRef.current?.id) {
+      return;
+    }
     const newMsg = event.detail;
-    let msg = message;
-    if (newMsg.parent && util.getId(newMsg.parent) == msg.id) {
-      newMsg.author = me.get();
-      msg.children = [...msg.children, newMsg];
-      setMessage(msg);
+    if (newMsg?.parent && util.getId(newMsg?.parent) == props.id) {
+      newMsg.author = me;
+      let newRef = Object.assign(
+        messageRef.current,
+        {
+          children: [...messageRef.current?.children, newMsg]
+        },
+      );
+      setMessageRef(newRef);
+      forceUpdate();
     }
   };
 
@@ -182,6 +198,8 @@ export default function Message(props) {
       <div id={props.id} className="message" />
     );
   }
+
+  console.log("render", message);
   return (
     <Fragment>
       {!props?.isChild && !props?.isPublic && (
@@ -236,7 +254,6 @@ export default function Message(props) {
       {!props?.isChild && !props?.isPublic && (
         <MessageChildren
           childMessages={message?.children}
-          isPublic={props?.isPublic}
           key={props.id}
           id={props.id}
         />

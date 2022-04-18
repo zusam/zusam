@@ -13,7 +13,11 @@ export default function MessageChildren(props) {
   const onNewChild = event => {
     const newMsg = event.detail;
     if (newMsg.parent && util.getId(newMsg.parent) == props.id) {
-      setLastDisplayedChild(lastDisplayedChild + 1);
+      // a big number to display all children until the new one. This is not elegant...
+      // The issue is that we can't simply increment lastDisplayedChild as it is not defined here
+      // Another issue is that a user could load a comment in the middle of the list and create a new one...
+      // The real answer is to make a paginated list but that is for another time
+      setLastDisplayedChild(1024);
     }
   };
 
@@ -78,7 +82,6 @@ export default function MessageChildren(props) {
           <MessageChild
             id={e.id}
             key={e.id}
-            isPublic={props.isPublic}
           />
         );
       })}
