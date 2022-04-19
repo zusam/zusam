@@ -28,9 +28,7 @@ export default function Search() {
         .value.normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .split(" ");
-      navigate(
-        `/groups/${group_id}/search?q=${searchTerms.join("+")}`
-      );
+      navigate(`/groups/${group_id}/search?q=${searchTerms.join("+")}`);
       window.dispatchEvent(new CustomEvent("groupSearch"));
     });
   }

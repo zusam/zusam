@@ -150,10 +150,10 @@ export default function MessageSearchResult(props) {
   const getLink = () => {
     if (props.message.parent && props.message.children == 0) {
       return (
-        `/s/${props.message.parent}/${props.message.id}`
+        `/messages/${props.message.parent}/${props.message.id}`
       );
     }
-    return `/s/${props.message.id}`;
+    return `/messages/${props.message.id}`;
   };
 
   return (
