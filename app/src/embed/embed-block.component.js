@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { util } from "/src/core";
+import { util, router } from "/src/core";
 import BandCampEmbed from "./bandcamp-embed.component.js";
 import InstagramEmbed from "./instagram-embed.component.js";
 import GenericEmbed from "./generic-embed.component.js";
@@ -102,12 +102,13 @@ export default class EmbedBlock extends Component {
             video_id = [`v=${url.pathname.slice(1)}`];
             playlist_id = [];
           }
+          let timecode = router.getParam("t", url.search.substring(1));
           if (playlist_id.length && video_id.length) {
             return (
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 1024, 270)}
                 url={
-                  `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque&list=${playlist_id[0].split("=")[1]}`
+                  `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque&list=${playlist_id[0].split("=")[1]}${timecode ? "&start=" + timecode : ""}`
                 }
                 playBtnClass={"youtube"}
               />
@@ -118,7 +119,7 @@ export default class EmbedBlock extends Component {
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 1024, 270)}
                 url={
-                  `https://youtube.com/embed/videoseries?list=${playlist_id[0].split("=")[1]}&autoplay=1&controls=2&wmode=opaque`
+                  `https://youtube.com/embed/videoseries?list=${playlist_id[0].split("=")[1]}&autoplay=1&controls=2&wmode=opaque${timecode ? "&start=" + timecode : ""}`
                 }
                 playBtnClass={"youtube"}
               />
@@ -128,7 +129,7 @@ export default class EmbedBlock extends Component {
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 1024, 270)}
               url={
-                `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque`
+                `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque${timecode ? "&start=" + timecode : ""}`
               }
               playBtnClass={"youtube"}
             />
