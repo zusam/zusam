@@ -22,7 +22,7 @@
     "js-cookie": "^3.0.1",
     "node-sass": "^7.0.1",
     "preact": "^10.7.1",
-    "react-i18next": "^11.16.6",
+    "react-i18next": "^11.16.7",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "storeon": "^3.1.5"
@@ -51,7 +51,7 @@
     "jest": "^27.5.1",
     "parcel": "^2.4.1",
     "prettier": "^2.6.2",
-    "sass": "^1.50.0",
+    "sass": "^1.50.1",
     "size-limit": "^7.0.8"
   },
   "alias": {
