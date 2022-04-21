@@ -1,9 +1,11 @@
 import { h } from "preact";
 import { util } from "/src/core";
 import { FaIcon } from "/src/misc";
+import { useTranslation } from "react-i18next";
 
 export default function BigFile(props) {
 
+  const { t } = useTranslation();
   const filePath = props.file.contentUrl ? `/files/${props.file.contentUrl}` : null;
   let url = filePath;
 
@@ -32,7 +34,7 @@ export default function BigFile(props) {
             src={util.crop(props.file.id, 320, 180)}
           />
           <div class="video-not-ready">
-            {this.props.t("video_not_ready")}
+            {t("video_not_ready")}
           </div>
         </a>
       );
@@ -40,9 +42,9 @@ export default function BigFile(props) {
     if (/pdf/.test(props.file.type)) {
       return (
         <a
-          data-nlg={!this.props.inWriter}
+          data-nlg={!props.inWriter}
           data-origin={util.toApp(filePath)}
-          href={!this.props.inWriter ? util.toApp(url) : undefined}
+          href={!props.inWriter ? util.toApp(url) : undefined}
           className={`file-embed pdf-outline image${props.file.removed ? " removed" : ""}`}
           id={props.file.id}
         >
@@ -51,7 +53,7 @@ export default function BigFile(props) {
             class="remove-button"
             style={props.file.removed ? "color:red" : ""}
             fileIndex={props.file.fileIndex}
-            onClick={e => this.toggleFile(e)}
+            onClick={e => props.toggleFile(e)}
           >
             <FaIcon family={"solid"} icon={"times"} />
           </div>
@@ -61,9 +63,9 @@ export default function BigFile(props) {
     if (/image/.test(props.file.type)) {
       return (
         <a
-          data-nlg={!this.props.inWriter}
+          data-nlg={!props.inWriter}
           data-origin={util.toApp(filePath)}
-          href={!this.props.inWriter ? util.toApp(url) : undefined}
+          href={!props.inWriter ? util.toApp(url) : undefined}
           className={`file-embed image${props.file.removed ? " removed" : ""}`}
           id={props.file.id}
         >
@@ -72,7 +74,7 @@ export default function BigFile(props) {
             class="remove-button"
             style={props.file.removed ? "color:red" : ""}
             fileIndex={props.file.fileIndex}
-            onClick={e => this.toggleFile(e)}
+            onClick={e => props.toggleFile(e)}
           >
             <FaIcon family={"solid"} icon={"times"} />
           </div>

@@ -108,7 +108,7 @@ export default class EmbedBlock extends Component {
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 1024, 270)}
                 url={
-                  `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque&list=${playlist_id[0].split("=")[1]}${timecode ? "&start=" + timecode : ""}`
+                  `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque&list=${playlist_id[0].split("=")[1]}${timecode ? `&start=${timecode}` : ""}`
                 }
                 playBtnClass={"youtube"}
               />
@@ -119,7 +119,7 @@ export default class EmbedBlock extends Component {
               <GenericEmbed
                 preview={util.crop(this.props.preview.id, 1024, 270)}
                 url={
-                  `https://youtube.com/embed/videoseries?list=${playlist_id[0].split("=")[1]}&autoplay=1&controls=2&wmode=opaque${timecode ? "&start=" + timecode : ""}`
+                  `https://youtube.com/embed/videoseries?list=${playlist_id[0].split("=")[1]}&autoplay=1&controls=2&wmode=opaque${timecode ? `&start=${timecode}` : ""}`
                 }
                 playBtnClass={"youtube"}
               />
@@ -129,7 +129,7 @@ export default class EmbedBlock extends Component {
             <GenericEmbed
               preview={util.crop(this.props.preview.id, 1024, 270)}
               url={
-                `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque${timecode ? "&start=" + timecode : ""}`
+                `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque${timecode ? `&start=${timecode}` : ""}`
               }
               playBtnClass={"youtube"}
             />

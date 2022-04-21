@@ -24,7 +24,7 @@ export default function FileGrid(props) {
       <div class="file-grid">
         {props.files
           .sort((a, b) => (a.fileIndex > b.fileIndex ? 1 : -1))
-          .map(e => <MiniFile key={e.id} toggleFile={toggleFile} file={e} />)}
+          .map(e => <MiniFile key={e.id} toggleFile={toggleFile} file={e} inWriter={props.inWriter} />)}
       </div>
     );
   }
@@ -32,7 +32,7 @@ export default function FileGrid(props) {
     <div class="d-flex justify-content-center flex-wrap">
       {props.files
         .sort((a, b) => (a.fileIndex > b.fileIndex ? 1 : -1))
-        .map(e => <BigFile key={e.id} toggleFile={toggleFile} file={e} />)}
+        .map(e => <BigFile key={e.id} toggleFile={toggleFile} file={e} inWriter={props.inWriter} />)}
     </div>
   );
 }
