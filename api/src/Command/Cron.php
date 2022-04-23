@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\Bot as BotService;
 use App\Service\System;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;

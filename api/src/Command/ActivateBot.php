@@ -23,18 +23,21 @@ class ActivateBot extends Command
     private $botDir;
     private $allow_bots;
     private $params;
+    private $botService;
 
     public function __construct(
         $botDir,
         $allow_bots,
         SystemService $systemService,
-        ParameterBagInterface $params
+        ParameterBagInterface $params,
+        BotService $botService,
     ) {
         parent::__construct();
         $this->botDir = $botDir;
         $this->system = $systemService;
         $this->allow_bots = $allow_bots;
         $this->params = $params;
+        $this->botService = $botService;
     }
 
     protected function configure()
