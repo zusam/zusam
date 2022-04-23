@@ -33,6 +33,22 @@ class CleanGroups extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
+
+        if ($input->getOption('verbose')) {
+            $output->writeln(['Cleaning users_groups relations']);
+        }
+
+        // Remove all users_groups relation with non existing users
+        $c = $this->pdo->query('SELECT ug.user_id as id FROM users_groups ug LEFT JOIN user u ON ug.user_id = u.id WHERE u.id IS NULL;');
+        while ($i = $c->fetch()) {
+            if ($input->getOption('verbose') || $input->getOption('only-list')) {
+                $output->writeln([$i['id']]);
+            }
+            if (!$input->getOption('only-list')) {
+                $this->pdo->query("DELETE FROM users_groups WHERE user_id = '".$i['id']."';");
+            }
+        }
+
         $c = $this->pdo->query('SELECT g.id FROM `group` g LEFT JOIN users_groups ug ON ug.group_id = g.id WHERE ug.group_id IS NULL;');
         if ($c === false) {
             return 0;

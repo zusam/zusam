@@ -98,11 +98,6 @@ class Cron extends Command
                 'period' => 1440 * 30 * 60, // 30 days
                 'type' => 'light',
             ],
-            [
-                'name' => 'zusam:repair-database',
-                'period' => 1440 * 60 * 60, // 60 days
-                'type' => 'heavy',
-            ],
         ];
     }
 

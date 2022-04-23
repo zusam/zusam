@@ -34,6 +34,32 @@ class CleanMessages extends Command
     {
         $this->logger->info($this->getName());
 
+        if ($input->getOption('verbose')) {
+            $output->writeln(['Nullifying false author_id properties in messages']);
+        }
+
+        // Remove all author_id referring to non existing users
+        $c = $this->pdo->query('SELECT m.id as id FROM message m LEFT JOIN user u ON m.author_id = u.id WHERE u.id IS NULL AND m.author_id IS NOT NULL;');
+        while ($i = $c->fetch()) {
+            if ($input->getOption('verbose') || $input->getOption('only-list')) {
+                $output->writeln([$i['id']]);
+            }
+            if (!$input->getOption('only-list')) {
+                $this->pdo->query("UPDATE message SET author_id = NULL WHERE id = '".$i['id']."';");
+            }
+        }
+
+        // Remove all group_id referring to non existing groups
+        $c = $this->pdo->query('SELECT m.id as id FROM message m LEFT JOIN `group` g ON m.group_id = g.id WHERE g.id IS NULL AND m.group_id IS NOT NULL;');
+        while ($i = $c->fetch()) {
+            if ($input->getOption('verbose') || $input->getOption('only-list')) {
+                $output->writeln([$i['id']]);
+            }
+            if (!$input->getOption('only-list')) {
+                $this->pdo->query("UPDATE message SET group_id = NULL WHERE id = '".$i['id']."';");
+            }
+        }
+
         // remove messages without parent and not in front (hidden messages)
         $c = $this->pdo->query('SELECT m.id from message m LEFT JOIN message p ON p.id = m.parent_id WHERE p.id IS NULL AND (m.is_in_front != 1 OR m.is_in_front IS NULL);');
         if ($c !== false) {
