@@ -16,11 +16,13 @@ You can see the latest release [here](https://github.com/zusam/zusam/releases).
 2. Select the next version you want to update to. It will be called `$version` for the rest of the procedure.
 3. Go to your zusam directory
 4. `curl -Ls https://github.com/zusam/zusam/archive/$version.tar.gz | tar xz --strip 1`
-5. If `api/migrations/$version.sql` exists, apply it: `sqlite3 data/data.db < api/migrations/$version.sql`
-6. Apply latest composer changes: `php bin/composer install`
-7. Copy the webapp to the public directory: `cp app/dist/* public/`
+5. Run database migrations with `php bin/console doctrine:migration:migrate`
+6. Run application migrations with `php bin/console zusam:migration`
+7. Apply latest composer changes: `php bin/composer install`
+8. Copy the webapp to the public directory: `cp app/dist/* public/`
 
 ## If you are using docker
 
-1. Follow the installation instructions as you would to install it.  
-2. If `api/migration/$version.sql` exists, apply it: `sqlite3 data/data.db < api/migrations/$version.sql`.  
+1. Follow the installation instructions as you would to install it.
+2. Run database migrations with `php bin/console doctrine:migration:migrate`
+3. Run application migrations with `php bin/console zusam:migration`

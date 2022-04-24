@@ -12,7 +12,7 @@ Photos are reduced to a maximum of 2048x2048 pixels and converted to `jpeg`. All
 Videos are compressed to mp4 with `ffmpeg` using the `libx264` library. They are scaled down to 720p (maximum height of 720 pixels) and the audio is converted to `aac`.
 
 ## How is the preview of a link calculated ?
-Link previews are calculated using [Oscatero's embed library](https://github.com/oscarotero/embed). You can visualize informations that Zusam is getting out of a link [here](https://oscarotero.com/embed3/demo/).
+Link previews are calculated using [Oscatero's embed library](https://github.com/oscarotero/embed). You can visualize informations that Zusam is getting out of a link [here](https://oscarotero.com/embed/demo/).
 
 ## How to make a photo album ?
 A photo album is just a different view of the files that is triggered when you add 4 or more files to a message.

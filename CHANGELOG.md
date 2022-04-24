@@ -2,6 +2,39 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [0.5] - 2022-04-24
+
+### Log
+- Allow pasting image file from clipboard
+- Add a 'read' attribute to notifications (not used for now)
+- Add PrepareNotifications command
+- Add Tag entity (not used for now)
+- Add a 'type' attribute to message entities (not used for now)
+- Add bookmark entity
+- Add breadcrumbs navigation when displaying messages
+- Add loading background animation for messages
+- Use i18next for the translation
+- Use react router v6 as routing system
+- Better embed instagram posts
+- Correctly embed application/ogg links
+- Embed invidious links
+- Fix lichess blog urls embed
+- Fix links not being recognized as sometimes ending with a dot
+- Fix youtube shorts embeds
+- Limit notification list to 20 items
+- Remove RepairDatabase command
+- Remove image in-browser reduction
+- Upgrade container to alpine 3.15
+- Upgrade to Symfony 6
+- Upgrade to bootstrap 5.1
+- Upgrade to parcel v2
+- Upgrade to yarn berry
+
+### Remarks
+Feature release.  
+This update has a database structure change. Please see the corresponding migration file.  
+The data migration procedure was changed for this update. Don't forget to backup your data before applying it.
+
 ## [0.4.5] - 2021-06-25
 
 ### Log
