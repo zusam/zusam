@@ -3,7 +3,7 @@ Install on Debian buster
 
 First we're going to install the necessary packages:
 ```
-sudo apt install -y nginx unzip ffmpeg php7.3 php7.3-fpm php7.3-xml php7.3-curl php7.3-mbstring php7.3-sqlite3 php-imagick php7.3-intl curl
+sudo apt install -y nginx unzip ffmpeg php8.1 php8.1-fpm php8.1-xml php8.1-curl php8.1-mbstring php8.1-sqlite3 php-imagick php8.1-intl curl
 ```
 
 Download the latest release (here in `/srv/zusam`):
@@ -47,7 +47,7 @@ server {
         try_files $uri /api/index.php$is_args$args;
     }
     location ~ ^/api/index\.php(/|$) {
-        fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi.conf;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
@@ -61,8 +61,8 @@ server {
 ```
 Reload nginx configuration with `sudo nginx -s reload`.
 
-Set `upload_max_filesize` and `post_max_size` to `2048M` in `/etc/php/7.3/fpm/php.ini`.  
-And then restart the service with `sudo systemctl restart php7.3-fpm`.
+Set `upload_max_filesize` and `post_max_size` to `2048M` in `/etc/php/8.1/fpm/php.ini`.  
+And then restart the service with `sudo systemctl restart php8.1-fpm`.
 
 Initialiaze the database (replace values with yours):
 ```

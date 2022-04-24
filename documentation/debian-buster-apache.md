@@ -3,7 +3,7 @@ Install on Debian buster with apache
 
 First we're going to install the necessary packages:
 ```
-sudo apt install -y apache2 libapache2-mod-php unzip ffmpeg php7.3 php7.3-fpm php7.3-xml php7.3-curl php7.3-mbstring php7.3-sqlite3 php-imagick php7.3-intl
+sudo apt install -y apache2 libapache2-mod-php unzip ffmpeg php8.1 php8.1-fpm php8.1-xml php8.1-curl php8.1-mbstring php8.1-sqlite3 php-imagick php8.1-intl
 ```
 
 Download the latest release (here in `/srv/zusam`):
@@ -27,7 +27,7 @@ php bin/composer install
 Replace `/etc/apache2/sites-available/000-default.conf` with the following:
 ```
 <VirtualHost *:80>
-        Include conf-available/php7.3-fpm.conf
+        Include conf-available/php8.1-fpm.conf
 
         DocumentRoot /srv/zusam/public
         <Directory /srv/zusam/public>
@@ -46,8 +46,8 @@ Replace `/etc/apache2/sites-available/000-default.conf` with the following:
 
 Restart apache with `sudo systemctl restart apache2`.
 
-Set `upload_max_filesize` and `post_max_size` to `2048M` in `/etc/php/7.3/fpm/php.ini`.  
-And then restart the service with `sudo systemctl restart php7.3-fpm`.
+Set `upload_max_filesize` and `post_max_size` to `2048M` in `/etc/php/8.1/fpm/php.ini`.  
+And then restart the service with `sudo systemctl restart php8.1-fpm`.
 
 Initialiaze the database (replace values with yours):
 ```

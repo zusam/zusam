@@ -32,7 +32,6 @@ The backend uses [Symfony](https://symfony.com) and [Sqlite](https://sqlite.org)
 Requirements:
 - PHP 8.0+ (with iconv, mbstring, curl, xml, sqlite3 and imagick extensions)
 - Ffmpeg 3+
-- Yarn or NPM (only to compile the webapp, it is distributed already built)
 
 Installation guides:
 - [Debian stretch with nginx](documentation/debian-stretch-nginx.md)
