@@ -31,6 +31,7 @@ class Message
         $message = new MessageEntity();
         $message->setAuthor($author);
         $message->setGroup($group);
+        $message->setType("standard");
 
         if (!empty($data['createdAt'])) {
             $message->setCreatedAt($data['createdAt']);

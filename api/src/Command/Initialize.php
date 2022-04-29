@@ -6,6 +6,7 @@ use App\Entity\Group;
 use App\Entity\Message;
 use App\Entity\User;
 use App\Service\Uuid;
+use App\Service\Message as MessageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -19,14 +20,17 @@ class Initialize extends Command
 {
     private $em;
     private $hasher;
+    private $messageService;
 
     public function __construct(
         EntityManagerInterface $em,
+        MessageService $ms,
         UserPasswordHasherInterface $hasher
     ) {
         parent::__construct();
         $this->em = $em;
         $this->hasher = $hasher;
+        $this->messageService = $ms;
     }
 
     protected function configure()
@@ -68,7 +72,7 @@ class Initialize extends Command
             $user = new User();
             $user->setLogin($input->getArgument('user'));
             $user->setName(explode('@', $input->getArgument('user'))[0]);
-            $user->setPassword($this->hasher->encodePassword($user, $input->getArgument('password')));
+            $user->setPassword($this->hasher->hashPassword($user, $input->getArgument('password')));
             if ($input->getOption('seed')) {
                 $reflection = new \ReflectionClass($user);
                 $id = $reflection->getProperty('id');
@@ -95,16 +99,21 @@ class Initialize extends Command
             $user->addGroup($group);
 
             $message_1 = new Message();
-            $message_1->setAuthor($user);
-            $message_1->setGroup($group);
-            $message_1->setIsInFront(true);
-            $message_1->setData([
-                'title' => 'Welcome on Zusam !',
-                'text' => '
-                    This is a simple message.
-                    Try to post something yourself by using the new message button on the group page or by leaving a comment here.
-                ',
-            ]);
+            $message_1 = $this->messageService->create(
+                [
+                    "data" => [
+                      'title' => 'Welcome on Zusam !',
+                      'text' => '
+                          This is a simple message.
+                          Try to post something yourself by using the new message button on the group page or by leaving a comment here.
+                      ',
+                    ],
+                    "files" => [],
+                    "parent" => "",
+                ],
+                $user,
+                $group
+            );
             if ($input->getOption('seed')) {
                 $reflection = new \ReflectionClass($message_1);
                 $id = $reflection->getProperty('id');

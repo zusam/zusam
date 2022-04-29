@@ -46,7 +46,8 @@ RUN set -xe && apk add --no-cache \
     php8-simplexml \
     php8-tokenizer \
     php8-xml \
-    php8-xmlwriter
+    php8-xmlwriter \
+    ln -sf /usr/bin/php8 /usr/bin/php
 
 # copy files
 COPY container/s6.d /etc/s6.d
