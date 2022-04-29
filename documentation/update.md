@@ -15,7 +15,7 @@ You can see the latest release [here](https://github.com/zusam/zusam/releases).
 1. Backup the data directory
 2. Select the next version you want to update to. It will be called `$version` for the rest of the procedure.
 3. Go to your zusam directory
-4. `curl -Ls https://github.com/zusam/zusam/archive/$version.tar.gz | tar xz --strip 1`
+4. `curl -Ls https://github.com/zusam/zusam/archive/refs/tags/$version.tar.gz | tar xz --strip 1`
 5. Run database migrations with `php bin/console doctrine:migration:migrate`
 6. Run application migrations with `php bin/console zusam:migration`
 7. Apply latest composer changes: `php bin/composer install`

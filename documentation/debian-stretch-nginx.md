@@ -18,7 +18,13 @@ Download the latest release (here in `/srv/zusam`):
 ```
 mkdir -p /srv/zusam && cd /srv/zusam
 version="$(curl -Ls -o /dev/null -w '%{url_effective}' https://github.com/zusam/zusam/releases/latest | rev | cut -d'/' -f1 | rev)"
-curl -Ls https://github.com/zusam/zusam/archive/$version.tar.gz | tar xz --strip 1
+curl -Ls https://github.com/zusam/zusam/archive/refs/tags/$version.tar.gz | tar xz --strip 1
+```
+
+You can also instead download the latest version from the master branch but beware that it might be less tested:
+```
+mkdir -p /srv/zusam && cd /srv/zusam
+curl -Ls https://github.com/zusam/zusam/archive/refs/heads/master.tar.gz | tar xz --strip 1
 ```
 
 Let's copy the webapp in the public directory (you don't need to do this if you only want the api server running):
