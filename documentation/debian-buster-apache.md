@@ -58,10 +58,8 @@ Replace `/etc/apache2/sites-available/000-default.conf` with the following:
 </VirtualHost>
 ```
 
-Restart apache with `sudo systemctl restart apache2`.
-
-Set `upload_max_filesize` and `post_max_size` to `2048M` in `/etc/php/8.1/fpm/php.ini`.  
-And then restart the service with `sudo systemctl restart php8.1-fpm`.
+Set `upload_max_filesize` and `post_max_size` to `2048M` in `/etc/php/8.1/apache2/php.ini`.  
+And then restart apache with `sudo systemctl restart apache2`.
 
 Initialiaze the database (replace values with yours):
 ```
