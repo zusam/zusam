@@ -20,8 +20,8 @@ final class Version20220305090649 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP INDEX IDX_DA62921DA76ED395');
-        $this->addSql('DROP INDEX IDX_DA62921D537A1329');
+        $this->addSql('DROP INDEX IF EXISTS IDX_DA62921DA76ED395');
+        $this->addSql('DROP INDEX IF EXISTS IDX_DA62921D537A1329');
         $this->addSql('CREATE TEMPORARY TABLE __temp__bookmark AS SELECT id, user_id, message_id, created_at FROM bookmark');
         $this->addSql('DROP TABLE bookmark');
         $this->addSql('CREATE TABLE bookmark (id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -32,9 +32,9 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('DROP TABLE __temp__bookmark');
         $this->addSql('CREATE INDEX IDX_DA62921DA76ED395 ON bookmark (user_id)');
         $this->addSql('CREATE INDEX IDX_DA62921D537A1329 ON bookmark (message_id)');
-        $this->addSql('DROP INDEX UNIQ_36AC99F1CDE46FDB');
-        $this->addSql('DROP INDEX UNIQ_36AC99F1F47645AE');
-        $this->addSql('DROP INDEX UNIQ_36AC99F17F4741F5');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_36AC99F1CDE46FDB');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_36AC99F1F47645AE');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_36AC99F17F4741F5');
         $this->addSql('CREATE TEMPORARY TABLE __temp__link AS SELECT id, preview_id, created_at, updated_at, data, url, secret_key FROM link');
         $this->addSql('DROP TABLE link');
         $this->addSql('CREATE TABLE link (id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -47,11 +47,11 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_36AC99F1CDE46FDB ON link (preview_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_36AC99F1F47645AE ON link (url)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_36AC99F17F4741F5 ON link (secret_key)');
-        $this->addSql('DROP INDEX UNIQ_B6BD307F7F4741F5');
-        $this->addSql('DROP INDEX IDX_B6BD307FF675F31B');
-        $this->addSql('DROP INDEX IDX_B6BD307FFE54D947');
-        $this->addSql('DROP INDEX IDX_B6BD307F727ACA70');
-        $this->addSql('DROP INDEX IDX_B6BD307FCDE46FDB');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_B6BD307F7F4741F5');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B6BD307FF675F31B');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B6BD307FFE54D947');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B6BD307F727ACA70');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B6BD307FCDE46FDB');
         $this->addSql('CREATE TEMPORARY TABLE __temp__message AS SELECT id, author_id, group_id, parent_id, preview_id, created_at, data, last_activity_date, secret_key, is_in_front FROM message');
         $this->addSql('DROP TABLE message');
         $this->addSql('CREATE TABLE message (id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -69,8 +69,8 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_B6BD307FFE54D947 ON message (group_id)');
         $this->addSql('CREATE INDEX IDX_B6BD307F727ACA70 ON message (parent_id)');
         $this->addSql('CREATE INDEX IDX_B6BD307FCDE46FDB ON message (preview_id)');
-        $this->addSql('DROP INDEX IDX_B3376222537A1329');
-        $this->addSql('DROP INDEX IDX_B337622293CB796C');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B3376222537A1329');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B337622293CB796C');
         $this->addSql('CREATE TEMPORARY TABLE __temp__messages_files AS SELECT message_id, file_id FROM messages_files');
         $this->addSql('DROP TABLE messages_files');
         $this->addSql('CREATE TABLE messages_files (message_id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -80,12 +80,12 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('DROP TABLE __temp__messages_files');
         $this->addSql('CREATE INDEX IDX_B3376222537A1329 ON messages_files (message_id)');
         $this->addSql('CREATE INDEX IDX_B337622293CB796C ON messages_files (file_id)');
-        $this->addSql('DROP INDEX UNIQ_BF5476CA7F4741F5');
-        $this->addSql('DROP INDEX IDX_BF5476CA7E3C61F9');
-        $this->addSql('DROP INDEX IDX_BF5476CA903C60DB');
-        $this->addSql('DROP INDEX IDX_BF5476CA2130303A');
-        $this->addSql('DROP INDEX IDX_BF5476CAB8BB39DD');
-        $this->addSql('DROP INDEX IDX_BF5476CA78DED52E');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_BF5476CA7F4741F5');
+        $this->addSql('DROP INDEX IF EXISTS IDX_BF5476CA7E3C61F9');
+        $this->addSql('DROP INDEX IF EXISTS IDX_BF5476CA903C60DB');
+        $this->addSql('DROP INDEX IF EXISTS IDX_BF5476CA2130303A');
+        $this->addSql('DROP INDEX IF EXISTS IDX_BF5476CAB8BB39DD');
+        $this->addSql('DROP INDEX IF EXISTS IDX_BF5476CA78DED52E');
         $this->addSql('CREATE TEMPORARY TABLE __temp__notification AS SELECT id, owner_id, miniature_id, from_user_id, from_group_id, from_message_id, created_at, type, secret_key, target, data FROM notification');
         $this->addSql('DROP TABLE notification');
         $this->addSql('CREATE TABLE notification (id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -105,7 +105,7 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_BF5476CA2130303A ON notification (from_user_id)');
         $this->addSql('CREATE INDEX IDX_BF5476CAB8BB39DD ON notification (from_group_id)');
         $this->addSql('CREATE INDEX IDX_BF5476CA78DED52E ON notification (from_message_id)');
-        $this->addSql('DROP INDEX IDX_389B783FE54D947');
+        $this->addSql('DROP INDEX IF EXISTS IDX_389B783FE54D947');
         $this->addSql('CREATE TEMPORARY TABLE __temp__tag AS SELECT id, group_id, created_at, name FROM tag');
         $this->addSql('DROP TABLE tag');
         $this->addSql('CREATE TABLE tag (id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -114,8 +114,8 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('INSERT INTO tag (id, group_id, created_at, name) SELECT id, group_id, created_at, name FROM __temp__tag');
         $this->addSql('DROP TABLE __temp__tag');
         $this->addSql('CREATE INDEX IDX_389B783FE54D947 ON tag (group_id)');
-        $this->addSql('DROP INDEX IDX_B194828F537A1329');
-        $this->addSql('DROP INDEX IDX_B194828FBAD26311');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B194828F537A1329');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B194828FBAD26311');
         $this->addSql('CREATE TEMPORARY TABLE __temp__tags_messages AS SELECT tag_id, message_id FROM tags_messages');
         $this->addSql('DROP TABLE tags_messages');
         $this->addSql('CREATE TABLE tags_messages (tag_id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -125,9 +125,9 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('DROP TABLE __temp__tags_messages');
         $this->addSql('CREATE INDEX IDX_B194828F537A1329 ON tags_messages (message_id)');
         $this->addSql('CREATE INDEX IDX_B194828FBAD26311 ON tags_messages (tag_id)');
-        $this->addSql('DROP INDEX UNIQ_8D93D649AA08CB10');
-        $this->addSql('DROP INDEX UNIQ_8D93D6497F4741F5');
-        $this->addSql('DROP INDEX UNIQ_8D93D64986383B10');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_8D93D649AA08CB10');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_8D93D6497F4741F5');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_8D93D64986383B10');
         $this->addSql('CREATE TEMPORARY TABLE __temp__user AS SELECT id, avatar_id, created_at, secret_key, name, login, password, data, last_activity_date FROM user');
         $this->addSql('DROP TABLE user');
         $this->addSql('CREATE TABLE user (id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -140,8 +140,8 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649AA08CB10 ON user (login)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D6497F4741F5 ON user (secret_key)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D64986383B10 ON user (avatar_id)');
-        $this->addSql('DROP INDEX IDX_FF8AB7E0FE54D947');
-        $this->addSql('DROP INDEX IDX_FF8AB7E0A76ED395');
+        $this->addSql('DROP INDEX IF EXISTS IDX_FF8AB7E0FE54D947');
+        $this->addSql('DROP INDEX IF EXISTS IDX_FF8AB7E0A76ED395');
         $this->addSql('CREATE TEMPORARY TABLE __temp__users_groups AS SELECT user_id, group_id FROM users_groups');
         $this->addSql('DROP TABLE users_groups');
         $this->addSql('CREATE TABLE users_groups (user_id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -156,8 +156,8 @@ final class Version20220305090649 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP INDEX IDX_DA62921DA76ED395');
-        $this->addSql('DROP INDEX IDX_DA62921D537A1329');
+        $this->addSql('DROP INDEX IF EXISTS IDX_DA62921DA76ED395');
+        $this->addSql('DROP INDEX IF EXISTS IDX_DA62921D537A1329');
         $this->addSql('CREATE TEMPORARY TABLE __temp__bookmark AS SELECT id, user_id, message_id, created_at FROM "bookmark"');
         $this->addSql('DROP TABLE "bookmark"');
         $this->addSql('CREATE TABLE "bookmark" (id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -168,9 +168,9 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('DROP TABLE __temp__bookmark');
         $this->addSql('CREATE INDEX IDX_DA62921DA76ED395 ON "bookmark" (user_id)');
         $this->addSql('CREATE INDEX IDX_DA62921D537A1329 ON "bookmark" (message_id)');
-        $this->addSql('DROP INDEX UNIQ_36AC99F1F47645AE');
-        $this->addSql('DROP INDEX UNIQ_36AC99F17F4741F5');
-        $this->addSql('DROP INDEX UNIQ_36AC99F1CDE46FDB');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_36AC99F1F47645AE');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_36AC99F17F4741F5');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_36AC99F1CDE46FDB');
         $this->addSql('CREATE TEMPORARY TABLE __temp__link AS SELECT id, preview_id, created_at, updated_at, data, url, secret_key FROM "link"');
         $this->addSql('DROP TABLE "link"');
         $this->addSql('CREATE TABLE "link" (id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -183,11 +183,11 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_36AC99F1F47645AE ON "link" (url)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_36AC99F17F4741F5 ON "link" (secret_key)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_36AC99F1CDE46FDB ON "link" (preview_id)');
-        $this->addSql('DROP INDEX UNIQ_B6BD307F7F4741F5');
-        $this->addSql('DROP INDEX IDX_B6BD307FF675F31B');
-        $this->addSql('DROP INDEX IDX_B6BD307FFE54D947');
-        $this->addSql('DROP INDEX IDX_B6BD307F727ACA70');
-        $this->addSql('DROP INDEX IDX_B6BD307FCDE46FDB');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_B6BD307F7F4741F5');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B6BD307FF675F31B');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B6BD307FFE54D947');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B6BD307F727ACA70');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B6BD307FCDE46FDB');
         $this->addSql('CREATE TEMPORARY TABLE __temp__message AS SELECT id, author_id, group_id, parent_id, preview_id, created_at, data, last_activity_date, secret_key, is_in_front FROM "message"');
         $this->addSql('DROP TABLE "message"');
         $this->addSql('CREATE TABLE "message" (id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -205,8 +205,8 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_B6BD307FFE54D947 ON "message" (group_id)');
         $this->addSql('CREATE INDEX IDX_B6BD307F727ACA70 ON "message" (parent_id)');
         $this->addSql('CREATE INDEX IDX_B6BD307FCDE46FDB ON "message" (preview_id)');
-        $this->addSql('DROP INDEX IDX_B3376222537A1329');
-        $this->addSql('DROP INDEX IDX_B337622293CB796C');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B3376222537A1329');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B337622293CB796C');
         $this->addSql('CREATE TEMPORARY TABLE __temp__messages_files AS SELECT message_id, file_id FROM messages_files');
         $this->addSql('DROP TABLE messages_files');
         $this->addSql('CREATE TABLE messages_files (message_id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -216,12 +216,12 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('DROP TABLE __temp__messages_files');
         $this->addSql('CREATE INDEX IDX_B3376222537A1329 ON messages_files (message_id)');
         $this->addSql('CREATE INDEX IDX_B337622293CB796C ON messages_files (file_id)');
-        $this->addSql('DROP INDEX UNIQ_BF5476CA7F4741F5');
-        $this->addSql('DROP INDEX IDX_BF5476CA7E3C61F9');
-        $this->addSql('DROP INDEX IDX_BF5476CA903C60DB');
-        $this->addSql('DROP INDEX IDX_BF5476CA2130303A');
-        $this->addSql('DROP INDEX IDX_BF5476CAB8BB39DD');
-        $this->addSql('DROP INDEX IDX_BF5476CA78DED52E');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_BF5476CA7F4741F5');
+        $this->addSql('DROP INDEX IF EXISTS IDX_BF5476CA7E3C61F9');
+        $this->addSql('DROP INDEX IF EXISTS IDX_BF5476CA903C60DB');
+        $this->addSql('DROP INDEX IF EXISTS IDX_BF5476CA2130303A');
+        $this->addSql('DROP INDEX IF EXISTS IDX_BF5476CAB8BB39DD');
+        $this->addSql('DROP INDEX IF EXISTS IDX_BF5476CA78DED52E');
         $this->addSql('CREATE TEMPORARY TABLE __temp__notification AS SELECT id, owner_id, miniature_id, from_user_id, from_group_id, from_message_id, created_at, type, secret_key, target, data FROM "notification"');
         $this->addSql('DROP TABLE "notification"');
         $this->addSql('CREATE TABLE "notification" (id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -241,7 +241,7 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_BF5476CA2130303A ON "notification" (from_user_id)');
         $this->addSql('CREATE INDEX IDX_BF5476CAB8BB39DD ON "notification" (from_group_id)');
         $this->addSql('CREATE INDEX IDX_BF5476CA78DED52E ON "notification" (from_message_id)');
-        $this->addSql('DROP INDEX IDX_389B783FE54D947');
+        $this->addSql('DROP INDEX IF EXISTS IDX_389B783FE54D947');
         $this->addSql('CREATE TEMPORARY TABLE __temp__tag AS SELECT id, group_id, created_at, name FROM "tag"');
         $this->addSql('DROP TABLE "tag"');
         $this->addSql('CREATE TABLE "tag" (id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -250,8 +250,8 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('INSERT INTO "tag" (id, group_id, created_at, name) SELECT id, group_id, created_at, name FROM __temp__tag');
         $this->addSql('DROP TABLE __temp__tag');
         $this->addSql('CREATE INDEX IDX_389B783FE54D947 ON "tag" (group_id)');
-        $this->addSql('DROP INDEX IDX_B194828FBAD26311');
-        $this->addSql('DROP INDEX IDX_B194828F537A1329');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B194828FBAD26311');
+        $this->addSql('DROP INDEX IF EXISTS IDX_B194828F537A1329');
         $this->addSql('CREATE TEMPORARY TABLE __temp__tags_messages AS SELECT tag_id, message_id FROM tags_messages');
         $this->addSql('DROP TABLE tags_messages');
         $this->addSql('CREATE TABLE tags_messages (tag_id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -261,9 +261,9 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('DROP TABLE __temp__tags_messages');
         $this->addSql('CREATE INDEX IDX_B194828FBAD26311 ON tags_messages (tag_id)');
         $this->addSql('CREATE INDEX IDX_B194828F537A1329 ON tags_messages (message_id)');
-        $this->addSql('DROP INDEX UNIQ_8D93D649AA08CB10');
-        $this->addSql('DROP INDEX UNIQ_8D93D6497F4741F5');
-        $this->addSql('DROP INDEX UNIQ_8D93D64986383B10');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_8D93D649AA08CB10');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_8D93D6497F4741F5');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_8D93D64986383B10');
         $this->addSql('CREATE TEMPORARY TABLE __temp__user AS SELECT id, avatar_id, created_at, login, password, secret_key, name, data, last_activity_date FROM "user"');
         $this->addSql('DROP TABLE "user"');
         $this->addSql('CREATE TABLE "user" (id CHAR(36) NOT NULL --(DC2Type:guid)
@@ -276,8 +276,8 @@ final class Version20220305090649 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649AA08CB10 ON "user" (login)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D6497F4741F5 ON "user" (secret_key)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D64986383B10 ON "user" (avatar_id)');
-        $this->addSql('DROP INDEX IDX_FF8AB7E0A76ED395');
-        $this->addSql('DROP INDEX IDX_FF8AB7E0FE54D947');
+        $this->addSql('DROP INDEX IF EXISTS IDX_FF8AB7E0A76ED395');
+        $this->addSql('DROP INDEX IF EXISTS IDX_FF8AB7E0FE54D947');
         $this->addSql('CREATE TEMPORARY TABLE __temp__users_groups AS SELECT user_id, group_id FROM users_groups');
         $this->addSql('DROP TABLE users_groups');
         $this->addSql('CREATE TABLE users_groups (user_id CHAR(36) NOT NULL --(DC2Type:guid)

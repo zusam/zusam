@@ -28,6 +28,6 @@ final class Version20220218055437 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('DROP INDEX UNIQ_8D93D649AA08CB10');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_8D93D649AA08CB10');
     }
 }
