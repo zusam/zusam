@@ -1,7 +1,15 @@
 Install on Debian buster with apache
 ====================================
 
-First we're going to install the necessary packages:
+First, we'll need to add the sury repository to get up-to-date versions of php:
+```
+sudo apt install ca-certificates apt-transport-https
+curl -Ls https://packages.sury.org/php/apt.gpg -o- | sudo apt-key add -
+echo "deb https://packages.sury.org/php/ $(lsb_release -s -c) main" | sudo tee /etc/apt/sources.list.d/php.list
+sudo apt update
+```
+
+We're going to use php8.1 here but Zusam is compatible with 8.0+
 ```
 sudo apt install -y apache2 libapache2-mod-php unzip ffmpeg php8.1 php8.1-fpm php8.1-xml php8.1-curl php8.1-mbstring php8.1-sqlite3 php-imagick php8.1-intl
 ```
