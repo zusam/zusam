@@ -34,7 +34,6 @@ Requirements:
 - Ffmpeg 3+
 
 Installation guides:
-- [Debian stretch with nginx](documentation/debian-stretch-nginx.md)
 - [Debian buster with nginx](documentation/debian-buster-nginx.md)
 - [Debian buster with apache](documentation/debian-buster-apache.md)
 - [Docker](documentation/docker.md)
