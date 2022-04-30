@@ -125,7 +125,7 @@ class File
 
     public function createFromPath($file_path, $copy = false): ?FileEntity
     {
-        if (!is_file($file_path) && !is_readable($file_path)) {
+        if (!is_file($file_path) || !is_readable($file_path)) {
             return null; // TODO throw exception
         }
 
