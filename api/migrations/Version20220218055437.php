@@ -23,7 +23,7 @@ final class Version20220218055437 extends AbstractMigration
         $this->addSql('DELETE FROM user WHERE rowid NOT IN (
           SELECT MAX(rowid) FROM user GROUP BY login ORDER BY last_activity_date, created_at
         )');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649AA08CB10 ON user (login)');
+        $this->addSql('CREATE UNIQUE INDEX IF NOT EXISTS UNIQ_8D93D649AA08CB10 ON user (login)');
     }
 
     public function down(Schema $schema): void

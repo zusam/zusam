@@ -20,12 +20,12 @@ final class Version20220302172143 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE "bookmark" (id CHAR(36) NOT NULL --(DC2Type:guid)
+        $this->addSql('CREATE TABLE IF NOT EXISTS "bookmark" (id CHAR(36) NOT NULL --(DC2Type:guid)
         , user_id CHAR(36) DEFAULT NULL --(DC2Type:guid)
         , message_id CHAR(36) DEFAULT NULL --(DC2Type:guid)
         , created_at INTEGER NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE INDEX IDX_DA62921DA76ED395 ON "bookmark" (user_id)');
-        $this->addSql('CREATE INDEX IDX_DA62921D537A1329 ON "bookmark" (message_id)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS IDX_DA62921DA76ED395 ON "bookmark" (user_id)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS IDX_DA62921D537A1329 ON "bookmark" (message_id)');
         $this->addSql('CREATE TEMPORARY TABLE __temp__file AS SELECT id, created_at, type, status, content_url, size, file_index, secret_key FROM file');
         $this->addSql('DROP TABLE file');
         $this->addSql('CREATE TABLE file (id CHAR(36) NOT NULL --(DC2Type:guid)

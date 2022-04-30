@@ -20,15 +20,15 @@ final class Version20220305085740 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE "tag" (id CHAR(36) NOT NULL --(DC2Type:guid)
+        $this->addSql('CREATE TABLE IF NOT EXISTS "tag" (id CHAR(36) NOT NULL --(DC2Type:guid)
         , group_id CHAR(36) DEFAULT NULL --(DC2Type:guid)
         , created_at INTEGER NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE INDEX IDX_389B783FE54D947 ON "tag" (group_id)');
-        $this->addSql('CREATE TABLE tags_messages (tag_id CHAR(36) NOT NULL --(DC2Type:guid)
+        $this->addSql('CREATE INDEX IF NOT EXISTS IDX_389B783FE54D947 ON "tag" (group_id)');
+        $this->addSql('CREATE TABLE IF NOT EXISTS tags_messages (tag_id CHAR(36) NOT NULL --(DC2Type:guid)
         , message_id CHAR(36) NOT NULL --(DC2Type:guid)
         , PRIMARY KEY(tag_id, message_id))');
-        $this->addSql('CREATE INDEX IDX_B194828FBAD26311 ON tags_messages (tag_id)');
-        $this->addSql('CREATE INDEX IDX_B194828F537A1329 ON tags_messages (message_id)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS IDX_B194828FBAD26311 ON tags_messages (tag_id)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS IDX_B194828F537A1329 ON tags_messages (message_id)');
         $this->addSql('DROP INDEX IDX_DA62921D537A1329');
         $this->addSql('DROP INDEX IDX_DA62921DA76ED395');
         $this->addSql('CREATE TEMPORARY TABLE __temp__bookmark AS SELECT id, user_id, message_id, created_at FROM bookmark');
