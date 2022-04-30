@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="`user`")
  * @ORM\Entity()
  */
-class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @Assert\NotBlank()
@@ -308,24 +308,5 @@ class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInt
     // necessary for UserInterface
     public function eraseCredentials()
     {
-    }
-
-    /** @see \Serializable::serialize() */
-    public function serialize()
-    {
-        return serialize([
-            $this->id,
-            $this->login,
-            $this->password,
-        ]);
-    }
-
-    /** @see \Serializable::unserialize() */
-    public function unserialize($serialized)
-    {
-        list(
-            $this->id,
-            $this->login,
-            $this->password) = unserialize($serialized, ['allowed_classes' => false]);
     }
 }
