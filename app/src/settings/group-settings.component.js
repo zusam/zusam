@@ -5,7 +5,7 @@ import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function GroupSettings(props) {
+export default function GroupSettings() {
 
   const params = useParams();
   const { t } = useTranslation();
@@ -32,7 +32,7 @@ export default function GroupSettings(props) {
   const resetSecretKey = (event) => {
     event.preventDefault();
     http
-      .post(`/api/groups/${props.group.id}/reset-invite-key`, {})
+      .post(`/api/groups/${group.id}/reset-invite-key`, {})
       .then(res => {
         alert.add(t("group_updated"));
         setSecretKey(res["inviteKey"]);
@@ -46,7 +46,7 @@ export default function GroupSettings(props) {
       group.name = name;
     }
     setGroup(Object.assign({}, group));
-    http.put(`/api/groups/${props.group.id}`, group).then(res => {
+    http.put(`/api/groups/${group.id}`, group).then(res => {
       setGroup(res);
       setAlertMessage(t("group_updated"));
       navigate(`${location.pathname}?alert=group_updated`);
@@ -55,7 +55,7 @@ export default function GroupSettings(props) {
 
   const leaveGroup = (event) => {
     event.preventDefault();
-    if (me.data?.default_group == props.group.id) {
+    if (me.data?.default_group == group.id) {
       let user = {};
       user.data = { default_group: me.groups[0].id };
       http.put(`/api/users/${me.id}`, user).then(() => {
@@ -68,7 +68,7 @@ export default function GroupSettings(props) {
   };
 
   const leave = () => {
-    http.post(`/api/groups/${props.group.id}/leave`, {}).then(res => {
+    http.post(`/api/groups/${group.id}/leave`, {}).then(res => {
       if (!res || !res["entityType"]) {
         alert.add(t("error"), "alert-danger");
       } else {
