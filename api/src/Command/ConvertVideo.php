@@ -50,32 +50,48 @@ class ConvertVideo extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info($this->getName());
-        $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'video%';");
-        while ($rawFile = $c->fetch()) {
-            $outputFile = $this->targetDir.'/'.$rawFile['id'];
-            $output->writeln(['Converting '.$rawFile['content_url']]);
-            $threads = '';
-            if (!$input->getOption('all-cores')) {
-                $threads = '-threads 1 ';
-            }
-            exec(
-                'nice -n 19 ' // give the process a low priority
-                .$this->binaryFfmpeg
-                .' -loglevel 0 -y -i '.$this->targetDir.'/'.$rawFile['content_url']
-                .' -c:v libx264 -filter:v scale=-2:720 -crf 22 '.$threads.'-preset slower -c:a aac -vbr 3 -y -f mp4 '
-                .$outputFile.'.converted'
-            );
-            if (file_exists($outputFile.'.converted')) {
-                rename($outputFile.'.converted', $outputFile.'.mp4');
-                $q = $this->pdo->prepare("UPDATE file SET content_url = '".$rawFile['id'].".mp4', status = '".File::STATUS_READY."', type = 'video/mp4' WHERE id = '".$rawFile['id']."';");
-                $q->execute();
-            } else {
-                $output->writeln([
-                    '<error>zusam:convert-video '.$rawFile['id'].' failed.</error>',
-                ]);
-            }
-
+        if (!is_executable($this->binaryFfmpeg)) {
+            $error = 'ffmpeg located at '.$this->binaryFfmpeg.' is not executable.';
+            $this->logger->error($error);
+            $output->writeln(['<error>'.$error.'</error>']);
             return 0;
+        }
+        $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'video%' LIMIT 10;");
+        $rows = $c->fetchAll();
+        if (count($rows) < 1) {
+            $output->writeln(['<info>No video to convert.</info>']);
+            return 0;
+        }
+        $rawFile = $rows[0];
+        $outputFile = $this->targetDir.'/'.$rawFile['id'];
+        if (is_readable($this->targetDir.'/'.$rawFile['content_url'])) {
+            $output->writeln(['<info>Converting '.$this->targetDir.'/'.$rawFile['content_url'].'</info>']);
+        } else {
+            $error = 'Video file '.$this->targetDir.'/'.$rawFile['content_url'].' is not readable.';
+            $this->logger->error($error);
+            $output->writeln(['<error>'.$error.'</error>']);
+            return 0;
+        }
+        $threads = '';
+        if (!$input->getOption('all-cores')) {
+            $threads = '-threads 1 ';
+        }
+        $commandOutput = [];
+        exec(
+            $this->binaryFfmpeg
+            .' -loglevel 0 -y -i '.$this->targetDir.'/'.$rawFile['content_url']
+            .' -c:v libx264 -filter:v scale=-2:720 -crf 22 '.$threads.'-preset slower -c:a aac -vbr 3 -y -f mp4 '
+            .$outputFile.'.converted',
+            $commandOutput
+        );
+        if (is_readable($outputFile.'.converted')) {
+            rename($outputFile.'.converted', $outputFile.'.mp4');
+            $q = $this->pdo->prepare("UPDATE file SET content_url = '".$rawFile['id'].".mp4', status = '".File::STATUS_READY."', type = 'video/mp4' WHERE id = '".$rawFile['id']."';");
+            $q->execute();
+        } else {
+            $error = 'zusam:convert:video '.$rawFile['id'].' failed.';
+            $this->logger->error($error);
+            $output->writeln(['<error>'.$error.'</error>']);
         }
         return 0;
     }

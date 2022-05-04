@@ -52,12 +52,21 @@ class ConvertImages extends Command
     {
         $this->logger->info($this->getName());
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'image%';");
+        $rows = $c->fetchAll();
         $i = 0;
-        while ($rawFile = $c->fetch()) {
+        foreach ($rows as $rawFile) {
             ++$i;
             $inputFile = $this->targetDir.'/'.$rawFile['content_url'];
             $outputFile = $this->targetDir.'/'.$rawFile['id'];
-            $output->writeln(['Converting '.$rawFile['content_url']]);
+
+            if (is_readable($inputFile)) {
+                $output->writeln(['<info>Converting '.$inputFile.'</info>']);
+            } else {
+                $error = 'Image file '.$inputFile.' is not readable.';
+                $this->logger->error($error);
+                $output->writeln(['<error>'.$error.'</error>']);
+                return 0;
+            }
 
             list($width, $height) = getimagesize($inputFile);
             // This is a special check for long format images that should not be limited in height
@@ -80,11 +89,17 @@ class ConvertImages extends Command
                 }
             }
 
-            rename($outputFile.'.converted', $outputFile.'.jpg');
-            $q = $this->pdo->prepare("UPDATE file SET content_url = '".$rawFile['id'].".jpg', status = '".File::STATUS_READY."', type = 'image/jpeg' WHERE id = '".$rawFile['id']."';");
-            $q->execute();
-            if (!empty($input->getOption('max-convert')) && intval($input->getOption('max-convert')) < $i) {
-                return 0;
+            if (is_writable($outputFile.'.converted')) {
+                rename($outputFile.'.converted', $outputFile.'.jpg');
+                $q = $this->pdo->prepare("UPDATE file SET content_url = '".$rawFile['id'].".jpg', status = '".File::STATUS_READY."', type = 'image/jpeg' WHERE id = '".$rawFile['id']."';");
+                $q->execute();
+                if (!empty($input->getOption('max-convert')) && intval($input->getOption('max-convert')) < $i) {
+                    return 0;
+                }
+            } else {
+                $error = 'zusam:convert:images '.$rawFile['id'].' failed.';
+                $this->logger->error($error);
+                $output->writeln(['<error>'.$error.'</error>']);
             }
         }
         return 0;
