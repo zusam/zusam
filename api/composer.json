@@ -82,7 +82,7 @@
           "php8 -d memory_limit=-1 ./vendor/bin/php-cs-fixer fix src/ --verbose"
         ],
         "analyze": [
-          "php8 -d memory_limit=-1 ./vendor/bin/phpstan analyse src/ -l 5"
+          "php8 -d memory_limit=-1 ./vendor/bin/phpstan analyse src/ -l 3"
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
