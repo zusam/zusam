@@ -26,6 +26,22 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const toggleDropdowns = e => {
+    if (!e.target.closest(".dropdown")) {
+      // close dropdowns if we are clicking on something else
+      document.querySelectorAll(".dropdown").forEach(n => n.classList.remove("active"));
+    } else {
+      // close dropdowns that are not clicked on
+      document
+        .querySelectorAll(".dropdown")
+        .forEach(n => {
+          if(n != e.target.closest(".dropdown")) {
+            n.classList.remove("active");
+          }
+        });
+    }
+  };
+
   // initial load
   useEffect(() => {
     api.update();
@@ -33,22 +49,11 @@ function App() {
     bookmarks.update();
 
     // manage dropdowns
-    window.addEventListener("click", e => {
-      if (!e.target.closest(".dropdown")) {
-        // close dropdowns if we are clicking on something else
-        document.querySelectorAll(".dropdown").forEach(n => n.classList.remove("active"));
-      } else {
-        // close dropdowns that are not clicked on
-        document
-          .querySelectorAll(".dropdown")
-          .forEach(n => {
-            if(n != e.target.closest(".dropdown")) {
-              n.classList.remove("active");
-            }
-          });
-      }
-    });
-  }, []);
+    window.addEventListener("click", e => toggleDropdowns(e));
+    return () => {
+      window.removeEventListener("click", e => toggleDropdowns(e));
+    };
+  });
 
   me.fetch().then(user => {
     if (location.pathname == "/") {
