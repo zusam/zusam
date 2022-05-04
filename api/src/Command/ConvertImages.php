@@ -60,11 +60,9 @@ class ConvertImages extends Command
             $outputFile = $this->targetDir.'/'.$rawFile['id'];
 
             if (is_readable($inputFile)) {
-                $output->writeln(['<info>Converting '.$inputFile.'</info>']);
+                $this->logger->notice('Converting '.$inputFile);
             } else {
-                $error = 'Image file '.$inputFile.' is not readable.';
-                $this->logger->error($error);
-                $output->writeln(['<error>'.$error.'</error>']);
+                $this->logger->error('Image file '.$inputFile.' is not readable.');
                 return 0;
             }
 
@@ -79,7 +77,7 @@ class ConvertImages extends Command
                     999999
                 );
             } else {
-                if ($width > 2048 || $height > 2048 || 'image/jpeg' !== $rawFile['type']) {
+                if ($width > 2048 || $height > 2048 || empty($rawFile['type']) || 'image/jpeg' !== $rawFile['type']) {
                     $this->imageService->createThumbnail(
                         $inputFile,
                         $outputFile.'.converted',
@@ -97,9 +95,7 @@ class ConvertImages extends Command
                     return 0;
                 }
             } else {
-                $error = 'zusam:convert:images '.$rawFile['id'].' failed.';
-                $this->logger->error($error);
-                $output->writeln(['<error>'.$error.'</error>']);
+                $this->logger->error('zusam:convert:images '.$rawFile['id'].' failed.');
             }
         }
         return 0;

@@ -24,17 +24,20 @@ class Cron extends Command
     private $system;
     private $tasks;
     private $kernel;
+    private $params;
 
     public function __construct(
         LoggerInterface $logger,
         System $system,
         KernelInterface $kernel,
+        ParameterBagInterface $params,
     ) {
         parent::__construct();
         $this->logger = $logger;
         $this->running = false;
         $this->system = $system;
         $this->kernel = $kernel;
+        $this->params = $params;
         $this->tasks = [
             [
                 'name' => 'zusam:convert:images',
@@ -125,9 +128,7 @@ class Cron extends Command
 
         // don't run if on a POST or an upload files request. Don't run twice in the same process
         if (!empty($_POST) || !empty($_FILES) || defined('TASK_RUNNING') || $this->running) {
-            if ($this->output) {
-                $this->output->writeln(['<info>Task already running</info>']);
-            }
+            $this->logger->info('Task already running');
             return false;
         }
 
@@ -141,32 +142,25 @@ class Cron extends Command
 
         // if a task is running and it's not older than 4h, do nothing
         if ($task_running && isset($last_task_timestamp) && $last_task_timestamp > time() - 60 * 60 * 4) {
-            if (isset($this->input) && $this->input->getOption('verbose')) {
-                $this->output->writeln([
-                    '<info>'.$last_task_name.' is already running since '.(time() - $last_task_timestamp).'s</info>',
-                ]);
-            }
+            $this->logger->notice($last_task_name.' is already running since '.(time() - $last_task_timestamp).'s');
             return false;
         }
 
         // if a task is running but it's old, it's probably a lockup.
         // continue but log it
         if (isset($last_task_timestamp) && $last_task_timestamp < time() - 60 * 60 * 4) {
-            if (isset($this->input) && $this->input->getOption('verbose')) {
-                $this->output->writeln([
-                    '<info>Ignoring the lock</info>',
-                ]);
-            }
-            $this->logger->notice('Old task lock detected');
+            $this->logger->notice('Removing old task lock');
         }
 
         $this->system->set('task_running', true);
 
         // get idle hours
-        if (isset($_SERVER['IDLE_HOURS'])) {
-            $idle_hours = explode('-', $_SERVER['IDLE_HOURS']);
+        if (isset($this->params->get['IDLE_HOURS'])) {
+            $idle_hours = explode('-', $this->params->get['IDLE_HOURS']);
+            $idle_hours[0] = intval($idle_hours[0]);
+            $idle_hours[1] = intval($idle_hours[1]);
         } else {
-            $idle_hours = [INF, -INF];
+            $idle_hours = [0, 24];
         }
 
         foreach ($this->tasks as $task) {
@@ -179,15 +173,12 @@ class Cron extends Command
                     || (new \DateTime())->format('H') > $idle_hours[1]
                 )
             ) {
+                $this->logger->notice((new \DateTime())->format('H'));
                 continue;
             }
             $lastExecution = $this->system->get($task['name']);
             if (empty($lastExecution) || $lastExecution < time() - $task['period']) {
-                if (isset($this->input) && $this->input->getOption('verbose')) {
-                    $this->output->writeln([
-                        '<info>Running '.$task['name'].'</info>',
-                    ]);
-                }
+                $this->logger->notice(['Running '.$task['name']]);
                 $this->system->set('last_task_timestamp', time());
                 $this->system->set('last_task_name', $task['name']);
                 $this->system->set($task['name'], time());
@@ -209,16 +200,11 @@ class Cron extends Command
             $command = (new Application($this->kernel))->find($id);
             $returnCode = $command->run(new ArrayInput($options), $this->output ?? new NullOutput());
         } catch (\Exception $e) {
-            if (null != $this->output) {
-                $this->output->writeln(['<error>'.$e->getMessage().'</error>']);
-            }
             $this->logger->error($id . ' ' . $e->getMessage());
-        }
-        if (isset($returnCode) && 0 != $returnCode) {
-            if (null != $this->output) {
-                $this->output->writeln("<error>$id failed, return code: $returnCode</error>");
+        } finally {
+            if (isset($returnCode) && 0 != $returnCode) {
+                $this->logger->error("$id failed, return code: $returnCode");
             }
-            $this->logger->error("$id failed, return code: $returnCode");
         }
     }
 }

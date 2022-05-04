@@ -51,25 +51,21 @@ class ConvertVideo extends Command
     {
         $this->logger->info($this->getName());
         if (!is_executable($this->binaryFfmpeg)) {
-            $error = 'ffmpeg located at '.$this->binaryFfmpeg.' is not executable.';
-            $this->logger->error($error);
-            $output->writeln(['<error>'.$error.'</error>']);
+            $this->logger->error('ffmpeg located at '.$this->binaryFfmpeg.' is not executable.');
             return 0;
         }
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'video%' LIMIT 10;");
         $rows = $c->fetchAll();
         if (count($rows) < 1) {
-            $output->writeln(['<info>No video to convert.</info>']);
+            $this->logger->info("No video to convert.");
             return 0;
         }
         $rawFile = $rows[0];
         $outputFile = $this->targetDir.'/'.$rawFile['id'];
         if (is_readable($this->targetDir.'/'.$rawFile['content_url'])) {
-            $output->writeln(['<info>Converting '.$this->targetDir.'/'.$rawFile['content_url'].'</info>']);
+            $this->logger->notice('Converting '.$this->targetDir.'/'.$rawFile['content_url']);
         } else {
-            $error = 'Video file '.$this->targetDir.'/'.$rawFile['content_url'].' is not readable.';
-            $this->logger->error($error);
-            $output->writeln(['<error>'.$error.'</error>']);
+            $this->logger->error('Video file '.$this->targetDir.'/'.$rawFile['content_url'].' is not readable.');
             return 0;
         }
         $threads = '';
@@ -89,9 +85,7 @@ class ConvertVideo extends Command
             $q = $this->pdo->prepare("UPDATE file SET content_url = '".$rawFile['id'].".mp4', status = '".File::STATUS_READY."', type = 'video/mp4' WHERE id = '".$rawFile['id']."';");
             $q->execute();
         } else {
-            $error = 'zusam:convert:video '.$rawFile['id'].' failed.';
-            $this->logger->error($error);
-            $output->writeln(['<error>'.$error.'</error>']);
+            $this->logger->error('zusam:convert:video '.$rawFile['id'].' failed.');
         }
         return 0;
     }
