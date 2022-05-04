@@ -178,7 +178,7 @@ class Cron extends Command
             }
             $lastExecution = $this->system->get($task['name']);
             if (empty($lastExecution) || $lastExecution < time() - $task['period']) {
-                $this->logger->notice(['Running '.$task['name']]);
+                $this->logger->notice('Running '.$task['name']);
                 $this->system->set('last_task_timestamp', time());
                 $this->system->set('last_task_name', $task['name']);
                 $this->system->set($task['name'], time());
