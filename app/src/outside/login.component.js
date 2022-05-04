@@ -66,7 +66,7 @@ export default function Login() {
         <img src={new URL("/src/assets/zusam_logo.svg", import.meta.url)} />
         {!showResetPassword && (
           <form>
-            <div class="form-group">
+            <div class="form-group mb-3">
               <input
                 type="email"
                 class="form-control"
@@ -101,7 +101,7 @@ export default function Login() {
         )}
         {!!showResetPassword && (
           <form>
-            <div class="form-group">
+            <div class="form-group mb-3">
               <input
                 type="email"
                 class="form-control"
