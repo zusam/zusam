@@ -11,6 +11,7 @@ parameters:
   allow.upload.audio: '%env(resolve:ALLOW_AUDIO_UPLOAD)%'
   idle_hours: '%env(resolve:IDLE_HOURS)%'
   video_conversion_threads: '%env(resolve:VIDEO_CONVERSION_THREADS)%'
+  max_task_lock_duration: '%env(resolve:MAX_TASK_LOCK_DURATION)%'
   allow.bots: '%env(resolve:ALLOW_BOTS)%'
   allow.email: '%env(resolve:ALLOW_EMAIL)%'
   database_url: '%env(resolve:DATABASE_URL)%'

@@ -140,15 +140,15 @@ class Cron extends Command
         $last_task_timestamp = $this->system->get('last_task_timestamp');
         $last_task_name = $this->system->get('last_task_name');
 
-        // if a task is running and it's not older than 4h, do nothing
-        if ($task_running && isset($last_task_timestamp) && $last_task_timestamp > time() - 60 * 60 * 4) {
+        // if a task is running and it's not older than MAX_TASK_LOCK_DURATION, do nothing
+        if ($task_running && isset($last_task_timestamp) && $last_task_timestamp > time() - intval($this->params->get('max_task_lock_duration'))) {
             $this->logger->notice($last_task_name.' is already running since '.(time() - $last_task_timestamp).'s');
             return false;
         }
 
         // if a task is running but it's old, it's probably a lockup.
         // continue but log it
-        if (isset($last_task_timestamp) && $last_task_timestamp < time() - 60 * 60 * 4) {
+        if (isset($last_task_timestamp) && $last_task_timestamp < time() - intval($this->params->get('max_task_lock_duration'))) {
             $this->logger->notice('Removing old task lock');
         }
 
