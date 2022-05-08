@@ -24,6 +24,7 @@ class ActivateBot extends Command
     private $allow_bots;
     private $params;
     private $botService;
+    private $logger;
 
     public function __construct(
         $botDir,
@@ -31,8 +32,10 @@ class ActivateBot extends Command
         SystemService $systemService,
         ParameterBagInterface $params,
         BotService $botService,
+        LoggerInterface $logger,
     ) {
         parent::__construct();
+        $this->logger = $logger;
         $this->botDir = $botDir;
         $this->system = $systemService;
         $this->allow_bots = $allow_bots;
@@ -78,7 +81,11 @@ class ActivateBot extends Command
         $this->system->set("bot::" . $bot_id, time());
         $action_file = $this->botDir . "/" . $bot_id . "/action.php";
         if (file_exists($action_file) && is_readable($action_file)) {
-            include($action_file);
+            try {
+                include($action_file);
+            } catch (\Exception $e) {
+                $this->logger->error($bot_id.": ".$e->getMessage());
+            }
         } else {
             $this->output->writeln([
                 $action_file,
