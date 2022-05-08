@@ -21,6 +21,16 @@ parameters:
   dir.files: '%env(resolve:dir_files)%'
   dir.cache: '%env(resolve:dir_cache)%'
   dir.bots: '%env(resolve:dir_bots)%'
+  cron.convert.images: '%env(resolve:CRON_CONVERT_IMAGES)%'
+  cron.convert.video: '%env(resolve:CRON_CONVERT_VIDEO)%'
+  cron.notification.emails: '%env(resolve:CRON_NOTIFICATION_EMAILS)%'
+  cron.compress.gifs: '%env(resolve:CRON_COMPRESS_GIFS)%'
+  cron.bot.activate: '%env(resolve:CRON_BOT_ACTIVATE)%'
+  cron.clean.cache: '%env(resolve:CRON_CLEAN_CACHE)%'
+  cron.clean.notifications: '%env(resolve:CRON_CLEAN_NOTIFICATIONS)%'
+  cron.clean.files: '%env(resolve:CRON_CLEAN_FILES)%'
+  cron.clean.messages: '%env(resolve:CRON_CLEAN_MESSAGES)%'
+  cron.clean.groups: '%env(resolve:CRON_CLEAN_GROUPS)%'
 
 services:
     # default configuration for services in *this* file

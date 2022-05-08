@@ -41,17 +41,17 @@ class Cron extends Command
         $this->tasks = [
             [
                 'name' => 'zusam:convert:images',
-                'period' => 60, // 1 mn
+                'period' => intval($this->params->get('cron.convert.images')),
                 'type' => 'light',
             ],
             [
                 'name' => 'zusam:convert:video',
-                'period' => 60 * 60, // 1 hour
+                'period' => intval($this->params->get('cron.convert.video')),
                 'type' => 'heavy',
             ],
             [
                 'name' => 'zusam:notification:emails',
-                'period' => 60 * 60, // 1 hour
+                'period' => intval($this->params->get('cron.notification.emails')),
                 'type' => 'light',
                 'options' => [
                     '--log-send' => true,
@@ -59,7 +59,7 @@ class Cron extends Command
             ],
             [
                 'name' => 'zusam:compress:gifs',
-                'period' => 60 * 60, // 1 hour
+                'period' => intval($this->params->get('cron.compress.gifs')),
                 'type' => 'heavy',
                 'options' => [
                     '--max-compressions' => 5,
@@ -67,7 +67,7 @@ class Cron extends Command
             ],
             [
                 'name' => 'zusam:bot:activate',
-                'period' => 60 * 60, // 1 hour
+                'period' => intval($this->params->get('cron.bot.activate')),
                 'type' => 'light',
                 'options' => [
                     'bot_id' => 'all'
@@ -75,7 +75,7 @@ class Cron extends Command
             ],
             [
                 'name' => 'zusam:clean:cache',
-                'period' => 1440 * 60, // 1 day
+                'period' => intval($this->params->get('cron.clean.cache')),
                 'type' => 'light',
                 'options' => [
                     'max-cache-size' => 512,
@@ -83,22 +83,22 @@ class Cron extends Command
             ],
             [
                 'name' => 'zusam:clean:notifications',
-                'period' => 1440 * 7 * 60, // 7 days
+                'period' => intval($this->params->get('cron.clean.notifications')),
                 'type' => 'light',
             ],
             [
                 'name' => 'zusam:clean:files',
-                'period' => 1440 * 7 * 60, // 7 days
+                'period' => intval($this->params->get('cron.clean.files')),
                 'type' => 'light',
             ],
             [
                 'name' => 'zusam:clean:messages',
-                'period' => 1440 * 7 * 60, // 7 days
+                'period' => intval($this->params->get('cron.clean.messages')),
                 'type' => 'light',
             ],
             [
                 'name' => 'zusam:clean:groups',
-                'period' => 1440 * 30 * 60, // 30 days
+                'period' => intval($this->params->get('cron.clean.groups')),
                 'type' => 'light',
             ],
         ];
