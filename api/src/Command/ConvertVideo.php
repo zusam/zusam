@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ConvertVideo extends Command
 {
@@ -15,17 +16,20 @@ class ConvertVideo extends Command
     private $targetDir;
     private $binaryFfmpeg;
     private $logger;
+    private $params;
 
     public function __construct(
         string $dsn,
         string $targetDir,
         string $binaryFfmpeg,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ParameterBagInterface $params,
     ) {
         parent::__construct();
         $this->binaryFfmpeg = $binaryFfmpeg;
         $this->logger = $logger;
         $this->pdo = new \PDO($dsn, null, null);
+        $this->params = $params;
 
         @mkdir($targetDir, 0777, true);
         $this->targetDir = realpath($targetDir);
@@ -43,7 +47,7 @@ class ConvertVideo extends Command
     {
         $this->setName('zusam:convert:video')
             ->setDescription('Converts a raw video file.')
-            ->addOption('all-cores', null, InputOption::VALUE_NONE, 'Use all available cores instead of just one.')
+            ->addOption('threads', null, InputOption::VALUE_NONE, 'Number of threads to use for video conversion')
             ->setHelp('This command search for a raw video file in the database and converts it.');
     }
 
@@ -68,18 +72,18 @@ class ConvertVideo extends Command
             $this->logger->error('Video file '.$this->targetDir.'/'.$rawFile['content_url'].' is not readable.');
             return 0;
         }
-        $threads = '';
-        if (!$input->getOption('all-cores')) {
-            $threads = '-threads 1 ';
+        $threads = 1;
+        if ($input->getOption('threads')) {
+            $threads = max(0, intval($input->getOption('threads')));
+        } else {
+            $threads = max(0, intval($this->params->get('video_conversion_threads')));
         }
-        $commandOutput = [];
-        exec(
-            $this->binaryFfmpeg
-            .' -loglevel 0 -y -i '.$this->targetDir.'/'.$rawFile['content_url']
-            .' -c:v libx264 -filter:v scale=-2:720 -crf 22 '.$threads.'-preset slower -c:a aac -vbr 3 -y -f mp4 '
-            .$outputFile.'.converted',
-            $commandOutput
-        );
+        $command = $this->binaryFfmpeg
+          .' -loglevel 0 -y -i '.$this->targetDir.'/'.$rawFile['content_url']
+          .' -c:v libx264 -filter:v scale=-2:720 -crf 22 -threads '.$threads.' -preset slower -c:a aac -vbr 3 -y -f mp4 '
+          .$outputFile.'.converted';
+        $this->logger->info($command);
+        exec($command);
         if (is_readable($outputFile.'.converted')) {
             rename($outputFile.'.converted', $outputFile.'.mp4');
             $q = $this->pdo->prepare("UPDATE file SET content_url = '".$rawFile['id'].".mp4', status = '".File::STATUS_READY."', type = 'video/mp4' WHERE id = '".$rawFile['id']."';");
