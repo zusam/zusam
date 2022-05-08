@@ -173,7 +173,6 @@ class Cron extends Command
                     || (new \DateTime())->format('H') > $idle_hours[1]
                 )
             ) {
-                $this->logger->notice((new \DateTime())->format('H'));
                 continue;
             }
             $lastExecution = $this->system->get($task['name']);
