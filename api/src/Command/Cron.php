@@ -155,8 +155,8 @@ class Cron extends Command
         $this->system->set('task_running', true);
 
         // get idle hours
-        if (isset($this->params->get['IDLE_HOURS'])) {
-            $idle_hours = explode('-', $this->params->get['IDLE_HOURS']);
+        if (null !== $this->params->get('idle_hours')) {
+            $idle_hours = explode('-', $this->params->get('idle_hours'));
             $idle_hours[0] = intval($idle_hours[0]);
             $idle_hours[1] = intval($idle_hours[1]);
         } else {
