@@ -102,7 +102,7 @@ class Initialize extends Command
             $message_1 = $this->messageService->create(
                 [
                     "data" => [
-                      'title' => 'Welcome on Zusam !',
+                      'title' => 'Welcome to Zusam !',
                       'text' => '
                           This is a simple message.
                           Try to post something yourself by using the new message button on the group page or by leaving a comment here.
