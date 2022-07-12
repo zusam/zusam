@@ -25,3 +25,6 @@ security:
       entry_point: App\Security\EntryPointService
       custom_authenticators:
         - App\Security\ApiKeyAuthenticator
+      login_throttling:
+        max_attempts: 10
+        interval: '60 minutes'

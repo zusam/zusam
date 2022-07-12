@@ -14,6 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\TooManyLoginAttemptsAuthenticationException;
+use Symfony\Component\Security\Core\Security as SymfonySecurity;
+use Symfony\Component\HttpFoundation\RateLimiter\RequestRateLimiterInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 
 class Security extends AbstractController
 {
@@ -21,9 +25,11 @@ class Security extends AbstractController
     private $mailer;
     private $passwordHasher;
     private $logger;
+    private $limiter;
 
     public function __construct(
         LoggerInterface $logger,
+        RequestRateLimiterInterface $limiter,
         EntityManagerInterface $em,
         Mailer $mailer,
         UserPasswordHasherInterface $passwordHasher
@@ -32,6 +38,7 @@ class Security extends AbstractController
         $this->em = $em;
         $this->mailer = $mailer;
         $this->passwordHasher = $passwordHasher;
+        $this->limiter = $limiter;
     }
 
     /**
@@ -55,6 +62,13 @@ class Security extends AbstractController
 
         if (empty($user)) {
             return $this->json(['message' => 'Invalid login/password'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        // Throttle login attempts
+        $request->attributes->set(SymfonySecurity::LAST_USERNAME, $user->getUserIdentifier());
+        $limit = $this->limiter->consume($request);
+        if (!$limit->isAccepted()) {
+            throw new TooManyLoginAttemptsAuthenticationException(ceil(($limit->getRetryAfter()->getTimestamp() - time()) / 60));
         }
 
         if (!$this->passwordHasher->isPasswordValid($user, $password)) {

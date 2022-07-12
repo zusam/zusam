@@ -12,7 +12,7 @@ class EntryPointService implements AuthenticationEntryPointInterface
     public function start(Request $request, AuthenticationException $authException = null)
     {
         return new Response(
-            '{"message":"You must use an api key"}',
+            '{"message":"unauthorized"}',
             Response::HTTP_UNAUTHORIZED,
             ['Content-type' => 'application/json']
         );

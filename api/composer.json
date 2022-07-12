@@ -35,7 +35,7 @@
         "symfony/polyfill-ctype": "^1.13",
         "symfony/polyfill-uuid": "^1.18",
         "symfony/property-info": "^6.0",
-        "symfony/rate-limiter": "^6.0",
+        "symfony/rate-limiter": "6.*",
         "symfony/security-bundle": "^6.0",
         "symfony/serializer": "^6.0",
         "symfony/twig-bundle": "^6.0",
