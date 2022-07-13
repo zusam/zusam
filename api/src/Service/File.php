@@ -54,13 +54,11 @@ class File
     public function initialConversion($file): FileEntity
     {
 
-        // don't convert video if it's an mp4 and under 10Mo
-        // TODO: the issue is that these mp4 could have libmp3lame audio instead of aac
-        // this will cause audio playback issues on iOS.
+        // don't convert video if it's in a playable format and size
         if (
-            'video/mp4' == $file->getType()
+            in_array($file->getType(), explode(",", $this->params->get('video_format_not_converted')))
             && FileEntity::STATUS_READY != $file->getStatus()
-            && $file->getSize() < 10 * 1024 * 1024
+            && $file->getSize() < intval($this->params->get('video_size_not_converted')) * 1024 * 1024
         ) {
             $file->setStatus(FileEntity::STATUS_READY);
         }
