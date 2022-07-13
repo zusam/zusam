@@ -152,7 +152,7 @@ export default function WritingWidget(props) {
             </button>
           )}
           <button
-            disabled={!props.group}
+            disabled={!props.group || props.uploading}
             type="submit"
             class="submit"
             onClick={() => sendMessage(writerForm)}

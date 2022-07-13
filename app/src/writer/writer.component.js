@@ -11,6 +11,7 @@ export default function Writer(props) {
   const navigate = useNavigate();
   const [files, setFiles] = useState(props?.files || []);
   const [sending, setSending] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const writerId = util.genId();
 
   const setForm = (writerForm, files = [], title = "", text = "") => {
@@ -40,10 +41,12 @@ export default function Writer(props) {
     formData.append("file", file.inputFile);
 
     updateFile(fileId, Object.assign(file, {status: "uploading"}));
+    setUploading(true);
 
     http.sendFile(
       formData,
       file => {
+        setUploading(false);
         updateFile(fileId, Object.assign({status: "ready"}, file));
       },
       e => {
@@ -53,6 +56,7 @@ export default function Writer(props) {
         );
       },
       e => {
+        setUploading(false);
         console.warn(e);
         alert.add(t("error_upload"), "alert-danger");
         removeFile(fileId);
@@ -174,6 +178,7 @@ export default function Writer(props) {
     <WritingWidget
       id={writerId}
       sending={sending}
+      uploading={uploading}
       inputFile={inputFile}
       sendMessage={sendMessage}
       cancel={props.cancel}
