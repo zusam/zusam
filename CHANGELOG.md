@@ -2,6 +2,18 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [0.5.1] - 2022-07-16
+
+### Log
+- Disable submit button if upload is in progress
+- Add parameters to the configuration file to 
+- Throttle login attempts
+- Add a lot of configuration parameters (check to [.env file](https://github.com/zusam/zusam/blob/master/api/.env))
+- Switch default .env to "prod" instead of "dev"
+
+### Remarks
+Mostly bugfix release.
+
 ## [0.5] - 2022-04-24
 
 ### Log
