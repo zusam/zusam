@@ -14,7 +14,9 @@ mkdir -p ~/zusam && cd ~/zusam
 curl -Ls https://github.com/zusam/zusam/archive/refs/heads/master.tar.gz | tar xz --strip 1
 ```
 
-Build the container:
+You can either build the container or use the one provided [on the dockerhub](https://hub.docker.com/r/zusam/zusam).
+
+To build the container:
 ```
 sudo docker build -t zusam .
 ```
