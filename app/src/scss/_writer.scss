@@ -97,6 +97,10 @@
                 background-color: #f7a71b;
                 color: white;
                 border: none;
+
+                &:disabled {
+                  background-color: #ffca6e;
+                }
             }
         }
     }
