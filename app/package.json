@@ -1,15 +1,15 @@
 {
   "name": "Zusam",
   "license": "AGPL-3.0-or-later",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "scripts": {
     "build": "parcel build --public-url './' src/index.html",
     "clean": "rm -rf dist/*",
     "lang": "cp -r src/lang dist/",
     "postbuild": "node ./build-tools/set_version_in_files.js dist/index.html dist/service-workers.js",
-    "prebuild": "yarn lang",
-    "prelang": "yarn clean",
-    "analyze": "yarn eslint -c .eslintrc.json src/"
+    "prebuild": "npm run lang",
+    "prelang": "npm run clean",
+    "analyze": "npm run eslint -c .eslintrc.json src/"
   },
   "dependencies": {
     "@parcel/core": "^2.5.0",
