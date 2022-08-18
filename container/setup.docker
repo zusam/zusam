@@ -1,0 +1,7 @@
+RUN set -xe \\
+    && mkdir -p /run/nginx /zusam/data /var/tmp/nginx /var/lib/nginx \\
+    && apk add --no-cache --virtual .build-deps tar ca-certificates wget php8-phar unzip \\
+    && COMPOSER_ALLOW_SUPERUSER=1 php8 /zusam/api/bin/composer install -d /zusam/api --no-dev --prefer-dist \\
+    && rm -rf /zusam/data/data.db \\
+    && apk del .build-deps \\
+    && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public /var/tmp/nginx

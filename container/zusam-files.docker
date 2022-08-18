@@ -1,0 +1,8 @@
+COPY container/s6.d /etc/s6.d
+COPY container/config /zusam/config
+COPY container/php8 /etc/php8
+COPY container/nginx /etc/nginx
+COPY container/run.sh /usr/local/bin/run.sh
+COPY public/api/index.php /zusam/public/api/index.php
+COPY api /zusam/api
+COPY app/dist /zusam/public

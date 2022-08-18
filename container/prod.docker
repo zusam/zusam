@@ -1,0 +1,12 @@
+#include "base.docker"
+#include "env.docker"
+
+WORKDIR /zusam
+
+#include "packages.docker"
+#include "zusam-files.docker"
+#include "setup.docker"
+
+EXPOSE 8080
+VOLUME /zusam/data
+CMD ["run.sh"]

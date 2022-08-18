@@ -1,0 +1,28 @@
+RUN set -xe && apk add --no-cache \\
+    ffmpeg \\
+    imagemagick \\
+    nginx \\
+    openssl \\
+    php8 \\
+    php8-common \\
+    php8-ctype \\
+    php8-curl \\
+    php8-dom \\
+    php8-fileinfo \\
+    php8-fpm \\
+    php8-iconv \\
+    php8-intl \\
+    php8-json \\
+    php8-mbstring \\
+    php8-opcache \\
+    php8-openssl \\
+    php8-pdo_sqlite \\
+    php8-pecl-apcu \\
+    php8-pecl-imagick \\
+    php8-posix \\
+    php8-session \\
+    php8-simplexml \\
+    php8-tokenizer \\
+    php8-xml \\
+    php8-xmlwriter \\
+    && ln -sf /usr/bin/php8 /usr/bin/php
