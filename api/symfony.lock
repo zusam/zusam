@@ -163,9 +163,6 @@
     "oscarotero/html-parser": {
         "version": "v0.1.6"
     },
-    "php-cs-fixer/diff": {
-        "version": "v1.3.0"
-    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },

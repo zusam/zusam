@@ -68,7 +68,7 @@ class Security extends AbstractController
         $request->attributes->set(SymfonySecurity::LAST_USERNAME, $user->getUserIdentifier());
         $limit = $this->limiter->consume($request);
         if (!$limit->isAccepted()) {
-            throw new TooManyLoginAttemptsAuthenticationException(ceil(($limit->getRetryAfter()->getTimestamp() - time()) / 60));
+            throw new TooManyLoginAttemptsAuthenticationException(intval(ceil(($limit->getRetryAfter()->getTimestamp() - time()) / 60)));
         }
 
         if (!$this->passwordHasher->isPasswordValid($user, $password)) {
