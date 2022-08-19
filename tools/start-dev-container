@@ -18,9 +18,7 @@ else
   cmd="bash"
 fi
 
-if ! "$pgrm" images | grep zusam-dev >/dev/null; then
-  make dev
-fi
+make dev
 "$pgrm" run --rm -it -v "$initial_path":/zusam:z --name "zusam-dev" "zusam-dev" "$cmd"
 
 cd "$initial_path"
