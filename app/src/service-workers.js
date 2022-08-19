@@ -21,13 +21,13 @@ const cached_routes = [
 ];
 
 self.addEventListener("fetch", (event) => {
-  event.respondWith(handleRequest(event));
+  event.respondWith(handleRequest(event.request));
 });
 
 const handleRequest = async request => {
   // cache-update routes: retrieve from cache and update in background
-  if (event.request.method == "GET" && cached_routes.some(r => event.request.url.match(r.route))) {
-    return cacheFirst({request: event.request});
+  if (request.method == "GET" && cached_routes.some(r => request.url.match(r.route))) {
+    return cacheFirst({request: request});
   }
   return fetch(request);
 };
