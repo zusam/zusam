@@ -67,7 +67,7 @@ services:
     App\Controller\Security:
       arguments:
         $logger: '@monolog.logger.zusam'
-        $limiter: '@security.login_throttling.main.limiter'
+        $limiter: '@security.login_throttling.login.limiter'
 
     App\Command\Cron:
       arguments:
