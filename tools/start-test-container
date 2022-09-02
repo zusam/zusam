@@ -13,7 +13,7 @@ cdroot
 pgrm="$(container_pgrm)"
 
 make prod
-"$pgrm" run --rm -it -v "$initial_path":/zusam:z --name "zusam-test" -p 8080:8080 \
+"$pgrm" run --rm -it --name "zusam-test" -p 8080:8080 \
   -v "$initial_path"/data:/zusam/data:z \
   -v "$initial_path"/public:/zusam/public:z \
   -v "$initial_path"/api:/zusam/api:z \
