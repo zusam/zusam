@@ -2,15 +2,14 @@
 
 set -xe
 
+pgrm="$(command -v podman || command -v docker)"
 initial_path="$(pwd)"
 
 cd "$(dirname "$0")"
 
 . ./cdroot
-. ./container_pgrm
 
 cdroot
-pgrm="$(container_pgrm)"
 
 if [ -n "$1" ]; then
   cmd="$*"
