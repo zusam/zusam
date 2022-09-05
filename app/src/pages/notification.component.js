@@ -62,7 +62,7 @@ export default function Notification(props) {
           {title && (
             <Fragment>
               <br />
-              <small><em>{util.limitStrSize(title, 52)}</em></small>
+              <small><em>{util.limitStrSize(title, 50)}</em></small>
             </Fragment>
           )}
         </Fragment>
@@ -75,7 +75,7 @@ export default function Notification(props) {
           {title && (
             <Fragment>
               <br />
-              <small><em>{util.limitStrSize(title, 52)}</em></small>
+              <small><em>{util.limitStrSize(title, 50)}</em></small>
             </Fragment>
           )}
         </span>

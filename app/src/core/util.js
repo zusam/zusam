@@ -164,7 +164,6 @@ const util = {
     return e.keyCode == 13 || e.keyCode == 10 || e.key == "Enter" || e.key == "↵" || e.code == "Enter";
   },
   getVersion: () => (document.querySelector("meta[name='zusam:version']") || {}).content || "unknown",
-  getWidth: () => window.innerWidth,
   getWidthBreakpoint: () => {
     if (window.innerWidth > 1800)
       return 1800;
@@ -178,6 +177,5 @@ const util = {
       return 576;
     return window.innerWidth;
   },
-  getHeight: () => window.innerHeight,
 };
 export default util;

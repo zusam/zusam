@@ -9,7 +9,7 @@
     "postbuild": "node ./build-tools/set_version_in_files.js dist/index.html dist/service-workers.js",
     "prebuild": "npm run lang",
     "prelang": "npm run clean",
-    "analyze": "npm run eslint -c .eslintrc.json src/"
+    "analyze": "./node_modules/.bin/eslint -c .eslintrc.json src/"
   },
   "dependencies": {
     "@parcel/core": "^2.5.0",

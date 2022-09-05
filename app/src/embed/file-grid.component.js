@@ -1,12 +1,12 @@
 import { h } from "preact";
 import { BigFile, MiniFile } from "/src/embed";
 import { useEffect } from "preact/hooks";
-import GLightbox from 'glightbox';
+import GLightbox from "glightbox";
 
 export default function FileGrid(props) {
 
   useEffect(() => {
-    const lightbox = GLightbox({
+    GLightbox({
       autoplayVideos: false,
       draggable: true,
       loop: false,
