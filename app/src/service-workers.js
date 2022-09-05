@@ -27,7 +27,7 @@ self.addEventListener("fetch", (event) => {
 const handleRequest = async request => {
   // cache-update routes: retrieve from cache and update in background
   if (request.method == "GET" && cached_routes.some(r => request.url.match(r.route))) {
-    return cacheFirst({request: request});
+    return cacheFirst({ request });
   }
   return fetch(request);
 };
