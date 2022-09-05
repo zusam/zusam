@@ -31,11 +31,20 @@ class Notification
             if (empty($message)) {
                 return "";
             }
+
+            while (!$message->getIsInFront()) {
+              $message = $message->getParent();
+              if (empty($message)) {
+                  return "";
+              }
+            }
+
             $data = $message->getData();
             $urls = $message->getUrls();
         } catch (\Exception $e) {
             return "";
         }
+
         $title = "";
         if (!empty($data["title"])) {
             $title = $data["title"];
