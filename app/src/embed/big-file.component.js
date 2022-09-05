@@ -11,7 +11,7 @@ export default function BigFile(props) {
 
   if (/image/.test(props.file.type) && props.file.type != "image/gif") {
     // no limit in height for long format images
-    url = util.thumbnail(props.file.id, 1366, 999999);
+    url = util.thumbnail(props.file.id, 1366);
   }
 
   if (props.file.contentUrl) {
@@ -42,11 +42,12 @@ export default function BigFile(props) {
     if (/pdf/.test(props.file.type)) {
       return (
         <a
-          data-nlg={!props.inWriter}
           data-origin={util.toApp(filePath)}
           href={!props.inWriter ? util.toApp(url) : undefined}
-          className={`file-embed pdf-outline image${props.file.removed ? " removed" : ""}`}
+          className={`glightbox file-embed pdf-outline image${props.file.removed ? " removed" : ""}`}
           id={props.file.id}
+          data-width="calc(90vw - 10px)"
+          data-height="100vh"
         >
           <img class="img-fluid" src={util.thumbnail(props.file.id, 210*2, 497*2)} />
           <div
@@ -63,10 +64,11 @@ export default function BigFile(props) {
     if (/image/.test(props.file.type)) {
       return (
         <a
-          data-nlg={!props.inWriter}
           data-origin={util.toApp(filePath)}
+          data-type="image"
+          data-width="1366px"
           href={!props.inWriter ? util.toApp(url) : undefined}
-          className={`file-embed image${props.file.removed ? " removed" : ""}`}
+          className={`glightbox file-embed image${props.file.removed ? " removed" : ""}`}
           id={props.file.id}
         >
           <img class="img-fluid" src={url} />

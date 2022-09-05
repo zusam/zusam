@@ -16,6 +16,7 @@
     "@storeon/crosstab": "^1.0.2",
     "@storeon/localstorage": "^1.4.0",
     "bootstrap": "^5.1.3",
+    "glightbox": "^3.2.0",
     "i18next": "^21.6.16",
     "idb-keyval": "^6.1.0",
     "image-blob-reduce": "^4.1.0",
@@ -40,7 +41,7 @@
     "@parcel/transformer-image": "^2.5.0",
     "@parcel/transformer-sass": "^2.5.0",
     "@parcel/transformer-webmanifest": "^2.5.0",
-    "@size-limit/preset-app": "^7.0.8",
+    "@size-limit/preset-app": "^8.0.1",
     "babel-plugin-module-resolver": "^4.1.0",
     "eslint": "^8.13.0",
     "eslint-config-preact": "^1.3.0",
@@ -48,11 +49,10 @@
     "eslint-plugin-jest": "^26.1.4",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
-    "jest": "^27.5.1",
     "parcel": "^2.5.0",
     "prettier": "^2.6.2",
     "sass": "^1.50.1",
-    "size-limit": "^7.0.8"
+    "size-limit": "^8.0.1"
   },
   "alias": {
     "react": "preact/compat",

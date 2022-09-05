@@ -12,6 +12,9 @@ $grid-breakpoints: (
 // import bootstrap
 @import "bootstrap/scss/bootstrap";
 
+// import glightbox
+@import "npm:glightbox/dist/css/glightbox.css";
+
 // pass in a map to define number of columns for each breakpoint
 @mixin cols-per-breakpoint($params:()) {
     $gutter: 6px;

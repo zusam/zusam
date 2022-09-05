@@ -9,7 +9,7 @@ export default function MiniFile(props) {
 
   if (/image/.test(props.file.type) && props.file.type != "image/gif") {
     // no limit in height for long format images
-    url = util.thumbnail(props.file.id, 1366, 999999);
+    url = util.thumbnail(props.file.id, 1366);
   }
 
   switch (props.file.status) {
@@ -43,10 +43,9 @@ export default function MiniFile(props) {
     if (/pdf/.test(props.file.type) || /video/.test(props.file.type) || props.file.type == "image/gif") {
       return (
         <a
-          data-nlg={!props.inWriter}
           data-origin={util.toApp(filePath)}
           href={!props.inWriter ? util.toApp(url) : undefined}
-          className={`file-embed rounded image${props.file.removed ? " removed" : ""}`}
+          className={`glightbox file-embed rounded image${props.file.removed ? " removed" : ""}`}
           id={props.file.id}
         >
           <div
@@ -69,11 +68,11 @@ export default function MiniFile(props) {
     if (/image/.test(props.file.type) && props.file.type != "image/gif") {
       return (
         <a
-          data-nlg={!props.inWriter}
           data-origin={util.toApp(filePath)}
-          data-src={util.thumbnail(props.file.id, 1366, 768)}
-          href={!props.inWriter ? util.toApp(url) : undefined}
-          class="file-embed rounded"
+          data-type="image"
+          data-width="1366px"
+          href={!props.inWriter ? util.thumbnail(props.file.id, 1366) : undefined}
+          class="glightbox file-embed rounded"
           id={props.file.id}
         >
           <div

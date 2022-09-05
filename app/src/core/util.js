@@ -98,7 +98,7 @@ const util = {
     }
   },
   // get the url to a thubmnail
-  thumbnail: (id, width, height) =>
+  thumbnail: (id, width, height = 99999) =>
     typeof(id) == "string" && !id.startsWith("z")
       ? util.toApp(`/api/images/thumbnail/${width}/${height}/${id}`)
       : null,
@@ -164,5 +164,20 @@ const util = {
     return e.keyCode == 13 || e.keyCode == 10 || e.key == "Enter" || e.key == "↵" || e.code == "Enter";
   },
   getVersion: () => (document.querySelector("meta[name='zusam:version']") || {}).content || "unknown",
+  getWidth: () => window.innerWidth,
+  getWidthBreakpoint: () => {
+    if (window.innerWidth > 1800)
+      return 1800;
+    if (window.innerWidth > 1400)
+      return 1400;
+    if (window.innerWidth > 992)
+      return 992;
+    if (window.innerWidth > 768)
+      return 768;
+    if (window.innerWidth > 576)
+      return 576;
+    return window.innerWidth;
+  },
+  getHeight: () => window.innerHeight,
 };
 export default util;

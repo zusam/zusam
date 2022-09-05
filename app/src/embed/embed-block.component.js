@@ -154,22 +154,27 @@ export default class EmbedBlock extends Component {
     if (/image/.test(this.props.data["content-type"])) {
       return (
         <div class="container d-flex justify-content-center flex-wrap align-items-center">
-          <img
-            data-nlg={!this.props.inWriter}
+          <a
             href={util.toApp(this.props.url)}
-            class="img-fluid cursor-pointer"
-            data-origin={this.props.url}
-            data-src={
-              this.props.preview && !/gif/.test(this.props.data["content-type"])
-                ? util.thumbnail(this.props.preview.id, 1366, 768)
-                : this.props.url
-            }
-            src={
-              this.props.preview && !/gif/.test(this.props.data["content-type"])
-                ? util.thumbnail(this.props.preview.id, 1366, 99999)
-                : this.props.url
-            }
-          />
+            class="glightbox"
+            data-type="image"
+          >
+            <img
+              href={util.toApp(this.props.url)}
+              class="img-fluid cursor-pointer"
+              data-origin={this.props.url}
+              data-src={
+                this.props.preview && !/gif/.test(this.props.data["content-type"])
+                  ? util.thumbnail(this.props.preview.id, 1366)
+                  : this.props.url
+              }
+              src={
+                this.props.preview && !/gif/.test(this.props.data["content-type"])
+                  ? util.thumbnail(this.props.preview.id, 2048)
+                  : this.props.url
+              }
+            />
+          </a>
         </div>
       );
     }
