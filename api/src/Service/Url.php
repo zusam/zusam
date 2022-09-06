@@ -131,7 +131,7 @@ class Url
         'title' => $info->title, //The page title
         'description' => $info->description, //The page description
         'url' => Url::composeComponents( //The canonical url
-          $info->url->getScheme(),
+            $info->url->getScheme(),
             $info->url->getAuthority(),
             $info->url->getPath(),
             $info->url->getQuery(),

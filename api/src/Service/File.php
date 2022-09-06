@@ -53,7 +53,6 @@ class File
 
     public function initialConversion($file): FileEntity
     {
-
         // don't convert video if it's in a playable format and size
         if (
             in_array($file->getType(), explode(",", $this->params->get('video_format_not_converted')))

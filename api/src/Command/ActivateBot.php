@@ -82,7 +82,7 @@ class ActivateBot extends Command
         $action_file = $this->botDir . "/" . $bot_id . "/action.php";
         if (file_exists($action_file) && is_readable($action_file)) {
             try {
-                set_error_handler(function($errno, $errstr, $errfile, $errline) {
+                set_error_handler(function ($errno, $errstr, $errfile, $errline) {
                     throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
                 });
                 include($action_file);

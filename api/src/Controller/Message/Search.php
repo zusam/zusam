@@ -34,10 +34,10 @@ class Search extends ApiController
         }
         foreach ($terms as $term) {
             if (
-            !empty($term)
-            && mb_strlen($term) > 2
-            && mb_stripos($text, $term, 0, 'UTF-8') !== false
-          ) {
+                !empty($term)
+                && mb_strlen($term) > 2
+                && mb_stripos($text, $term, 0, 'UTF-8') !== false
+            ) {
                 return true;
             }
         }

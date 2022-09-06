@@ -81,7 +81,7 @@ class Mailer
                 ),
                 'text/plain'
             )
-            ;
+        ;
 
         return $this->sendMail($email);
     }
@@ -118,7 +118,7 @@ class Mailer
                 ),
                 'text/plain'
             )
-            ;
+        ;
 
         return $this->sendMail($email);
     }

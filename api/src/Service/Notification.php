@@ -33,10 +33,10 @@ class Notification
             }
 
             while (!$message->getIsInFront()) {
-              $message = $message->getParent();
-              if (empty($message)) {
-                  return "";
-              }
+                $message = $message->getParent();
+                if (empty($message)) {
+                    return "";
+                }
             }
 
             $data = $message->getData();

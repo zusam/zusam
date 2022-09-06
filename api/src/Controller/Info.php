@@ -22,8 +22,7 @@ class Info extends ApiController
      */
     public function index(): Response
     {
-
-    // check if ghostscript is found
+        // check if ghostscript is found
         $has_ghostscript = false;
         if (is_executable(realpath($this->getParameter('binaries.ghostscript')))) {
             $has_ghostscript = true;
