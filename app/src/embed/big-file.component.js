@@ -9,11 +9,6 @@ export default function BigFile(props) {
   const filePath = props.file.contentUrl ? `/files/${props.file.contentUrl}` : null;
   let url = filePath;
 
-  if (/image/.test(props.file.type) && props.file.type != "image/gif") {
-    // no limit in height for long format images
-    url = util.thumbnail(props.file.id, 1366);
-  }
-
   if (props.file.contentUrl) {
     if (/video/.test(props.file.type)) {
       if (props.file.status == "ready") {
@@ -62,16 +57,40 @@ export default function BigFile(props) {
       );
     }
     if (/image/.test(props.file.type)) {
+
+      if (props.file.type == "image/gif") {
+        return (
+          <a
+            data-origin={util.toApp(filePath)}
+            href={!props.inWriter ? util.toApp(filePath) : undefined}
+            className={`glightbox file-embed image${props.file.removed ? " removed" : ""}`}
+            id={props.file.id}
+            data-type="image"
+          >
+            <img class="img-fluid" src={util.toApp(filePath)} />
+            <div
+              class="remove-button"
+              style={props.file.removed ? "color:red" : ""}
+              fileIndex={props.file.fileIndex}
+              onClick={e => props.toggleFile(e)}
+            >
+              <FaIcon family={"solid"} icon={"times"} />
+            </div>
+          </a>
+        );
+      }
+
       return (
         <a
           data-origin={util.toApp(filePath)}
           data-type="image"
-          data-width="1366px"
-          href={!props.inWriter ? util.toApp(url) : undefined}
+          data-srcset={`${util.thumbnail(props.file.id, 720)} 720w, ${util.thumbnail(props.file.id, 1366)} 1366w, ${util.thumbnail(props.file.id, 2048)} 2048w`}
+          data-sizes="(max-width: 992px) 720px, (max-width: 1400px) 1366px, 2048px"
+          href={!props.inWriter ? util.toApp(filePath) : undefined}
           className={`glightbox file-embed image${props.file.removed ? " removed" : ""}`}
           id={props.file.id}
         >
-          <img class="img-fluid" src={url} />
+          <img class="img-fluid" src={util.thumbnail(props.file.id, 720)} />
           <div
             class="remove-button"
             style={props.file.removed ? "color:red" : ""}

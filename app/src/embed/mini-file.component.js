@@ -7,11 +7,6 @@ export default function MiniFile(props) {
   const filePath = props.file.contentUrl ? `/files/${props.file.contentUrl}` : null;
   let url = filePath;
 
-  if (/image/.test(props.file.type) && props.file.type != "image/gif") {
-    // no limit in height for long format images
-    url = util.thumbnail(props.file.id, 1366);
-  }
-
   switch (props.file.status) {
   case "raw":
     return (
@@ -40,13 +35,15 @@ export default function MiniFile(props) {
     );
   case "ready":
   default:
-    if (/pdf/.test(props.file.type) || /video/.test(props.file.type) || props.file.type == "image/gif") {
+    if (/pdf/.test(props.file.type) || /video/.test(props.file.type)) {
       return (
         <a
           data-origin={util.toApp(filePath)}
           href={!props.inWriter ? util.toApp(url) : undefined}
           className={`glightbox file-embed rounded image${props.file.removed ? " removed" : ""}`}
           id={props.file.id}
+          data-width="calc(90vw - 10px)"
+          data-height="100vh"
         >
           <div
             className={`miniature${props.file.removed ? " removed" : ""}`}
@@ -65,13 +62,40 @@ export default function MiniFile(props) {
         </a>
       );
     }
-    if (/image/.test(props.file.type) && props.file.type != "image/gif") {
+    if (props.file.type == "image/gif") {
+      return (
+        <a
+          data-origin={util.toApp(filePath)}
+          href={!props.inWriter ? util.toApp(filePath) : undefined}
+          class="glightbox file-embed rounded"
+          id={props.file.id}
+          data-type="image"
+        >
+          <div
+            className={`miniature${props.file.removed ? " removed" : ""}`}
+            style={
+              `background-image:url('${util.crop(props.file.id, 160, 160)}')`
+            }
+          />
+          <div
+            class="remove-button"
+            style={props.file.removed ? "color:red" : ""}
+            fileIndex={props.file.fileIndex}
+            onClick={e => props.toggleFile(e)}
+          >
+            <FaIcon family={"solid"} icon={"times"} />
+          </div>
+        </a>
+      );
+    }
+    if (/image/.test(props.file.type)) {
       return (
         <a
           data-origin={util.toApp(filePath)}
           data-type="image"
-          data-width="1366px"
-          href={!props.inWriter ? util.thumbnail(props.file.id, 1366) : undefined}
+          data-srcset={`${util.thumbnail(props.file.id, 720)} 720w, ${util.thumbnail(props.file.id, 1366)} 1366w, ${util.thumbnail(props.file.id, 2048)} 2048w`}
+          data-sizes="(max-width: 992px) 720px, (max-width: 1400px) 1366px, 2048px"
+          href={!props.inWriter ? util.toApp(filePath) : undefined}
           class="glightbox file-embed rounded"
           id={props.file.id}
         >
