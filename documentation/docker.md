@@ -18,7 +18,7 @@ You can either build the container or use the one provided [on the dockerhub](ht
 
 To build the container:
 ```
-sudo docker build -t zusam .
+make prod
 ```
 
 Start the container giving the path to the data directory as volume:
