@@ -11,6 +11,6 @@ prod:
 	cpp -o Dockerfile container/dockerfile/prod.docker
 	$(container_pgrm) build -t zusam -f Dockerfile .
 
-.PHONY: clean
+.PHONY: clean dev prod nothing
 clean:
 	rm -f Dockerfile
