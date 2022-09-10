@@ -3,8 +3,9 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 import en from "/src/lang/en.json";
-import fr from "/src/lang/fr.json";
 import es from "/src/lang/es.json";
+import fr from "/src/lang/fr.json";
+import nl from "/src/lang/nl.json";
 import sk from "/src/lang/sk.json";
 
 const lang = {
@@ -12,7 +13,8 @@ const lang = {
     en: "English",
     es: "Español",
     fr: "Français",
-    sk: "Slovenský"
+    nl: "Nederlands",
+    sk: "Slovenský",
   }, // possible dicts names to load
   getDefaultLang: () =>
     (document.querySelector("meta[name='zusam:default-lang']") || {}).content ||
@@ -33,6 +35,9 @@ i18n.use(initReactI18next).init({
     },
     es: {
       translation: es
+    },
+    nl: {
+      translation: nl
     },
   },
   lng: lang.getCurrentLang(), // if you're using a language detector, do not define the lng option
