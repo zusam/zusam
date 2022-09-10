@@ -7,7 +7,12 @@ initial_path="$(pwd)"
 
 cd "$(dirname "$0")"
 
-. ./cdroot
+cdroot() {
+  if ! [ -e ".git" ] && [ "$(pwd)" != "/" ]; then
+    cd ..
+    cdroot
+  fi
+}
 
 cdroot
 

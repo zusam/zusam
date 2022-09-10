@@ -1,8 +1,0 @@
-#!/bin/sh
-
-cdroot() {
-  if ! [ -e ".git" ] && [ "$(pwd)" != "/" ]; then
-    cd ..
-    cdroot
-  fi
-}
