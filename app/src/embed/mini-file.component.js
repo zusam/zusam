@@ -95,6 +95,7 @@ export default function MiniFile(props) {
       return (
         <a
           ref={innerRef}
+          draggable={props.inWriter ? "true" : "false"}
           data-origin={util.toApp(filePath)}
           href={!props.inWriter ? util.toApp(url) : undefined}
           className={`glightbox file-embed rounded image${props.file.removed ? " removed" : ""}`}
@@ -123,6 +124,7 @@ export default function MiniFile(props) {
       return (
         <a
           ref={innerRef}
+          draggable={props.inWriter ? "true" : "false"}
           data-origin={util.toApp(filePath)}
           href={!props.inWriter ? util.toApp(filePath) : undefined}
           class="glightbox file-embed rounded"
@@ -150,6 +152,7 @@ export default function MiniFile(props) {
       return (
         <a
           ref={innerRef}
+          draggable={props.inWriter ? "true" : "false"}
           data-origin={util.toApp(filePath)}
           data-type="image"
           data-srcset={`${util.thumbnail(props.file.id, 720)} 720w, ${util.thumbnail(props.file.id, 1366)} 1366w, ${util.thumbnail(props.file.id, 2048)} 2048w`}
