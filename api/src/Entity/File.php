@@ -76,6 +76,7 @@ class File
     private $size;
 
     /**
+     * This should not be used anymore, deprecated
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"read_message", "read_file"})
      * @OA\Property(type="integer")

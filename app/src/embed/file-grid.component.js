@@ -31,16 +31,30 @@ export default function FileGrid(props) {
     return (
       <div class="file-grid">
         {props.files
-          .sort((a, b) => (a.fileIndex > b.fileIndex ? 1 : -1))
-          .map(e => <MiniFile key={e.id} toggleFile={toggleFile} file={e} inWriter={props.inWriter} />)}
+          .map(e => (
+            <MiniFile
+              key={e.id}
+              invertFiles={props.invertFiles}
+              toggleFile={toggleFile}
+              file={e}
+              inWriter={props.inWriter}
+            />
+          ))}
       </div>
     );
   }
   return (
     <div class="d-flex justify-content-center flex-wrap">
       {props.files
-        .sort((a, b) => (a.fileIndex > b.fileIndex ? 1 : -1))
-        .map(e => <BigFile key={e.id} toggleFile={toggleFile} file={e} inWriter={props.inWriter} />)}
+        .map(e => (
+          <BigFile
+            key={e.id}
+            toggleFile={toggleFile}
+            invertFiles={props.invertFiles}
+            file={e}
+            inWriter={props.inWriter}
+          />
+        ))}
     </div>
   );
 }

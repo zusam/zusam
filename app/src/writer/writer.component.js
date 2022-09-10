@@ -5,6 +5,12 @@ import { WritingWidget } from "/src/writer";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "preact/hooks";
 
+// trick from https://stackoverflow.com/a/53837442
+function useForceUpdate(){
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => value + 1); // update state to force render
+}
+
 export default function Writer(props) {
 
   const { t } = useTranslation();
@@ -12,6 +18,7 @@ export default function Writer(props) {
   const [files, setFiles] = useState(props?.files || []);
   const [sending, setSending] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const forceUpdate = useForceUpdate();
   const writerId = util.genId();
 
   const setForm = (writerForm, files = [], title = "", text = "") => {
@@ -23,6 +30,14 @@ export default function Writer(props) {
   const updateFile = (id, file) => {
     setFiles(files.map(f => f.id === id ? Object.assign(f, file) : f));
   };
+
+  const invertFiles = (id_a, id_b) => {
+    const index_a = files.findIndex(e => e.id === id_a)
+    const index_b = files.findIndex(e => e.id === id_b);
+    [files[index_a], files[index_b]] = [files[index_b], files[index_a]];
+    setFiles(files);
+    forceUpdate();
+  }
 
   const removeFile = id => {
     setFiles(files.filter(f => f.id != id));
@@ -184,6 +199,7 @@ export default function Writer(props) {
       cancel={props.cancel}
       files={files}
       toggleFile={toggleFile}
+      invertFiles={invertFiles}
       addFiles={addFiles}
       group={props.group}
       isChild={props.isChild}

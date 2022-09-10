@@ -1,4 +1,5 @@
 import { h } from "preact";
+import { useRef, useEffect } from 'preact/hooks';
 import { util } from "/src/core";
 import { FaIcon } from "/src/misc";
 
@@ -6,6 +7,61 @@ export default function MiniFile(props) {
 
   const filePath = props.file.contentUrl ? `/files/${props.file.contentUrl}` : null;
   let url = filePath;
+  const innerRef = useRef(null);
+
+  const fileDragStart = e => {
+    e.target.style.opacity = '0.4';
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('id', props.file.id);
+  };
+
+  const fileDragEnd = e => {
+    e.target.style.opacity = '1';
+    document.querySelectorAll('.drag-over').forEach(e => e.classList.remove('drag-over'))
+  };
+
+  const fileDragEnter = e => {
+    innerRef.current.classList.add('drag-over');
+  }
+
+  const fileDragLeave = e => {
+    innerRef.current.classList.remove('drag-over');
+  }
+
+  const fileDragOver = e => {
+    if (e.preventDefault) {
+      e.preventDefault();
+    }
+    e.dataTransfer.dropEffect = 'move';
+    return false;
+  }
+
+  const fileDrop = e => {
+    // stops the browser from redirecting.
+    e.preventDefault();
+    e.stopPropagation();
+    props.invertFiles(e.dataTransfer.getData('id'), props.file.id);
+    return false;
+  }
+
+  useEffect(() => {
+    if (props.inWriter) {
+      innerRef.current.addEventListener("dragstart", fileDragStart);
+      innerRef.current.addEventListener("dragend", fileDragEnd);
+      innerRef.current.addEventListener("dragover", fileDragOver);
+      innerRef.current.addEventListener("dragenter", fileDragEnter);
+      innerRef.current.addEventListener("dragleave", fileDragLeave);
+      innerRef.current.addEventListener("drop", fileDrop);
+      return () => {
+        innerRef.current.removeEventListener("dragstart", fileDragStart);
+        innerRef.current.removeEventListener("dragend", fileDragEnd);
+        innerRef.current.removeEventListener("dragover", fileDragOver);
+        innerRef.current.removeEventListener("dragenter", fileDragEnter);
+        innerRef.current.removeEventListener("dragleave", fileDragLeave);
+        innerRef.current.removeEventListener("drop", fileDrop);
+      };
+    }
+  }, []);
 
   switch (props.file.status) {
   case "raw":
@@ -38,6 +94,7 @@ export default function MiniFile(props) {
     if (/pdf/.test(props.file.type) || /video/.test(props.file.type)) {
       return (
         <a
+          ref={innerRef}
           data-origin={util.toApp(filePath)}
           href={!props.inWriter ? util.toApp(url) : undefined}
           className={`glightbox file-embed rounded image${props.file.removed ? " removed" : ""}`}
@@ -65,6 +122,7 @@ export default function MiniFile(props) {
     if (props.file.type == "image/gif") {
       return (
         <a
+          ref={innerRef}
           data-origin={util.toApp(filePath)}
           href={!props.inWriter ? util.toApp(filePath) : undefined}
           class="glightbox file-embed rounded"
@@ -91,6 +149,7 @@ export default function MiniFile(props) {
     if (/image/.test(props.file.type)) {
       return (
         <a
+          ref={innerRef}
           data-origin={util.toApp(filePath)}
           data-type="image"
           data-srcset={`${util.thumbnail(props.file.id, 720)} 720w, ${util.thumbnail(props.file.id, 1366)} 1366w, ${util.thumbnail(props.file.id, 2048)} 2048w`}
@@ -98,6 +157,7 @@ export default function MiniFile(props) {
           href={!props.inWriter ? util.toApp(filePath) : undefined}
           class="glightbox file-embed rounded"
           id={props.file.id}
+          index={props.file.fileIndex}
         >
           <div
             className={`miniature${props.file.removed ? " removed" : ""}`}
