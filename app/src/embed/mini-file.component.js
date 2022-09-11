@@ -2,12 +2,15 @@ import { h } from "preact";
 import { useRef, useEffect } from 'preact/hooks';
 import { util } from "/src/core";
 import { FaIcon } from "/src/misc";
+import { polyfill } from "mobile-drag-drop";
 
 export default function MiniFile(props) {
 
   const filePath = props.file.contentUrl ? `/files/${props.file.contentUrl}` : null;
   let url = filePath;
   const innerRef = useRef(null);
+  console.log(props.inWriter);
+  polyfill();
 
   const fileDragStart = e => {
     e.target.style.opacity = '0.4';
@@ -98,7 +101,7 @@ export default function MiniFile(props) {
       return (
         <a
           ref={innerRef}
-          draggable={props.inWriter ? "true" : "false"}
+          draggable={!!props.inWriter}
           data-origin={util.toApp(filePath)}
           href={!props.inWriter ? util.toApp(url) : undefined}
           className={`${!props.inWriter ? "glightbox ": ""}file-embed rounded image${props.file.removed ? " removed" : ""}`}
@@ -127,7 +130,7 @@ export default function MiniFile(props) {
       return (
         <a
           ref={innerRef}
-          draggable={props.inWriter ? "true" : "false"}
+          draggable={!!props.inWriter}
           data-origin={util.toApp(filePath)}
           href={!props.inWriter ? util.toApp(filePath) : undefined}
           class={`${!props.inWriter ? "glightbox ": ""}file-embed rounded`}
@@ -155,7 +158,7 @@ export default function MiniFile(props) {
       return (
         <a
           ref={innerRef}
-          draggable={props.inWriter ? "true" : "false"}
+          draggable={!!props.inWriter}
           data-origin={util.toApp(filePath)}
           data-type="image"
           data-srcset={`${util.thumbnail(props.file.id, 720)} 720w, ${util.thumbnail(props.file.id, 1366)} 1366w, ${util.thumbnail(props.file.id, 2048)} 2048w`}

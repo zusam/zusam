@@ -14,6 +14,7 @@ export default function BigFile(props) {
       if (props.file.status == "ready") {
         return (
           <video
+            draggable="false"
             poster={util.thumbnail(props.file.id, 1280, 720)}
             class="file-embed img-fluid contained-height video"
             controls="true"
@@ -38,6 +39,7 @@ export default function BigFile(props) {
       return (
         <a
           data-origin={util.toApp(filePath)}
+          draggable="false"
           href={!props.inWriter ? util.toApp(url) : undefined}
           className={`glightbox file-embed pdf-outline image${props.file.removed ? " removed" : ""}`}
           id={props.file.id}
@@ -62,6 +64,7 @@ export default function BigFile(props) {
         return (
           <a
             data-origin={util.toApp(filePath)}
+            draggable="false"
             href={!props.inWriter ? util.toApp(filePath) : undefined}
             className={`glightbox file-embed image${props.file.removed ? " removed" : ""}`}
             id={props.file.id}
@@ -83,6 +86,7 @@ export default function BigFile(props) {
       return (
         <a
           data-origin={util.toApp(filePath)}
+          draggable="false"
           data-type="image"
           data-srcset={`${util.thumbnail(props.file.id, 720)} 720w, ${util.thumbnail(props.file.id, 1366)} 1366w, ${util.thumbnail(props.file.id, 2048)} 2048w`}
           data-sizes="(max-width: 992px) 720px, (max-width: 1400px) 1366px, 2048px"
