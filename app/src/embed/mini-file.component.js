@@ -13,10 +13,12 @@ export default function MiniFile(props) {
     e.target.style.opacity = '0.4';
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('id', props.file.id);
+    document.querySelectorAll('.remove-button').forEach(e => e.style.display = 'none')
   };
 
   const fileDragEnd = e => {
     e.target.style.opacity = '1';
+    document.querySelectorAll('.remove-button').forEach(e => e.style.display = 'block')
     document.querySelectorAll('.drag-over').forEach(e => e.classList.remove('drag-over'))
   };
 
