@@ -21,25 +21,26 @@ export default function MiniFile(props) {
   };
 
   const fileDragEnter = e => {
+    e.preventDefault();
     innerRef.current.classList.add('drag-over');
+    return false;
   }
 
   const fileDragLeave = e => {
+    e.preventDefault();
     innerRef.current.classList.remove('drag-over');
+    return false;
   }
 
+  // necessary to declare a drop target
   const fileDragOver = e => {
-    if (e.preventDefault) {
-      e.preventDefault();
-    }
-    e.dataTransfer.dropEffect = 'move';
+    e.preventDefault();
     return false;
   }
 
   const fileDrop = e => {
     // stops the browser from redirecting.
     e.preventDefault();
-    e.stopPropagation();
     props.invertFiles(e.dataTransfer.getData('id'), props.file.id);
     return false;
   }
@@ -98,7 +99,7 @@ export default function MiniFile(props) {
           draggable={props.inWriter ? "true" : "false"}
           data-origin={util.toApp(filePath)}
           href={!props.inWriter ? util.toApp(url) : undefined}
-          className={`glightbox file-embed rounded image${props.file.removed ? " removed" : ""}`}
+          className={`${!props.inWriter ? "glightbox ": ""}file-embed rounded image${props.file.removed ? " removed" : ""}`}
           id={props.file.id}
           data-width="calc(90vw - 10px)"
           data-height="100vh"
@@ -127,7 +128,7 @@ export default function MiniFile(props) {
           draggable={props.inWriter ? "true" : "false"}
           data-origin={util.toApp(filePath)}
           href={!props.inWriter ? util.toApp(filePath) : undefined}
-          class="glightbox file-embed rounded"
+          class={`${!props.inWriter ? "glightbox ": ""}file-embed rounded`}
           id={props.file.id}
           data-type="image"
         >
@@ -158,7 +159,7 @@ export default function MiniFile(props) {
           data-srcset={`${util.thumbnail(props.file.id, 720)} 720w, ${util.thumbnail(props.file.id, 1366)} 1366w, ${util.thumbnail(props.file.id, 2048)} 2048w`}
           data-sizes="(max-width: 992px) 720px, (max-width: 1400px) 1366px, 2048px"
           href={!props.inWriter ? util.toApp(filePath) : undefined}
-          class="glightbox file-embed rounded"
+          class={`${!props.inWriter ? "glightbox ": ""}file-embed rounded`}
           id={props.file.id}
           index={props.file.fileIndex}
         >
