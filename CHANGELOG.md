@@ -2,21 +2,41 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [0.5.2] - 2022-09-12
+
+### Log
+
+- Make files reordering possible via drag'n drop
+- Add dutch to the webapp languages (thanks [Matthias](https://github.com/matthiaz))
+- Update container to alpine 3.16
+- Add some dev scripts
+- Replace nlg by glightbox
+- Add a route only for login throttling
+- Replace yarn by npm for the webapp
+- Rework container image creation process
+
+### Remarks
+
+Minor feature release.
+
 ## [0.5.1] - 2022-07-16
 
 ### Log
+
 - Disable submit button if upload is in progress
-- Add parameters to the configuration file to 
+- Add parameters to the configuration file
 - Throttle login attempts
 - Add a lot of configuration parameters (check to [.env file](https://github.com/zusam/zusam/blob/master/api/.env))
 - Switch default .env to "prod" instead of "dev"
 
 ### Remarks
+
 Mostly bugfix release.
 
 ## [0.5] - 2022-04-24
 
 ### Log
+
 - Allow pasting image file from clipboard
 - Add a 'read' attribute to notifications (not used for now)
 - Add PrepareNotifications command
@@ -43,6 +63,7 @@ Mostly bugfix release.
 - Upgrade to yarn berry
 
 ### Remarks
+
 Feature release.  
 This update has a database structure change. Please see the corresponding migration file.  
 The data migration procedure was changed for this update. Don't forget to backup your data before applying it.
@@ -50,6 +71,7 @@ The data migration procedure was changed for this update. Don't forget to backup
 ## [0.4.5] - 2021-06-25
 
 ### Log
+
 - Add bot feature
 - Add UserStatistics command
 - Add GroupStatistics command
@@ -65,11 +87,13 @@ The data migration procedure was changed for this update. Don't forget to backup
 - Fix subpath issues on create-group
 
 ### Remarks
+
 Minor feature release.  
 
 ## [0.4.4] - 2021-03-03
 
 ### Log
+
 - Add pdf upload support
 - Replace the "view original" button by a download button in the media view
 - Add confirmation effect on bookmark addition/removal
@@ -79,11 +103,13 @@ Minor feature release.
 - Fix issues when installing on a subpath
 
 ### Remarks
+
 Minor feature release.  
 
 ## [0.4.3] - 2021-01-17
 
 ### Log
+
 - Fix lichess embeds
 - Avoid multiple calls to the endpoint for the same search
 - Fix public link not taking subpath into account
@@ -98,9 +124,12 @@ Minor feature release.
 - Update API dependencies (fix youtube embeds)
 
 ### Remarks
+
 Minor fix release.  
-You can fix the existing youtube embeds (if some are missing) with the PreparePreviews command.  
-```
+You can fix the existing youtube embeds (if some are missing)
+with the PreparePreviews command.  
+
+```shell
 php bin/console zusam:prepare-previews --force --filter=youtube.com
 php bin/console zusam:prepare-previews --force --filter=youtu.be
 ```
@@ -108,6 +137,7 @@ php bin/console zusam:prepare-previews --force --filter=youtu.be
 ## [0.4.2] - 2020-09-06
 
 ### Log
+
 - Add auto-generated API documentation at /api/doc
 - The webapp now correctly handles api upload capabilities
 - Enable reset of the user's own API key
@@ -119,16 +149,19 @@ php bin/console zusam:prepare-previews --force --filter=youtu.be
 - Various fixes
 
 ### Remarks
+
 Minor feature release.  
 This release fixes support for emails login with a '+' in them. If you have user like that, they will not be able to log in anymore.  
 You can fix this by running the following on the database:
-```
+
+```sql
 UPDATE user SET login = replace(login, ' ', '+');
 ```
 
 ## [0.4.1] - 2020-04-21
 
 ### Log
+
 - Rework the cache by offloading it to service workers.
 - Add ALLOW_* parameters to the API to only allow certain types of uploads
 - Embed lichess.org
@@ -141,11 +174,13 @@ UPDATE user SET login = replace(login, ' ', '+');
 - Various tiny fixes
 
 ### Remarks
+
 Mostly bugfix release.
 
 ## [0.4] - 2020-02-16
 
 ### Log
+
 - Rework backend to remove dependency to api-platform
 - Rework container to be compatible with podman
 - Start writing tests and prepare test environment
@@ -167,12 +202,15 @@ Mostly bugfix release.
 - Use prettier on the webapp
 
 ### Remarks
+
 Feature release.  
-This update has a database structure change. Please see the corresponding migration file.  
+This update has a database structure change.
+Please see the corresponding migration file.  
 
 ## [0.3.2] - 2019-08-24
 
 ### Log
+
 - Add installation guide for debian buster with apache
 - Add some necessary directories to git: data/cache and data/files
 - Fix dev scripts when used in a git worktree directory
@@ -180,11 +218,13 @@ This update has a database structure change. Please see the corresponding migrat
 - Use fixed height images in the lightbox (nlg.js)
 
 ### Remarks
+
 Bugfix release.
 
 ## [0.3.1] - 2019-08-01
 
 ### Log
+
 - Add documentation for debian buster
 - Add user list in group-settings
 - Allow long format images
@@ -198,11 +238,13 @@ Bugfix release.
 - Update dependencies and dockerfile packages
 
 ### Remarks
+
 Mostly bugfix release.
 
 ## [0.3] - 2019-07-24
 
 ### Log
+
 - Update to symfony 4.3
 - Switch security password encoder to 'auto'
 - Regenerate message preview on edition
@@ -218,8 +260,10 @@ Mostly bugfix release.
 - .env is now the default config and .env.local symlinks to data/config
 
 ### Remarks
+
 Feature release.  
-This update has a database structure change. Please see the corresponding migration file.  
+This update has a database structure change.
+Please see the corresponding migration file.  
 
 Cron tasks will now execute after each API call. This means that if your Zusam instance is visited sufficiently often, you don't need to call it from the system cron anymore.  
 The first time RepairDatabase will be executed, it could take some time (and cause some API calls to timeout). To avoid this, you can execute it yourself during the upgrade (after having applied the SQL migration) with `php api/bin/console zusam:repair-database`.
@@ -232,6 +276,7 @@ These changes were made to be compliant with the symfony specifications:
 ## [0.2] - 2019-05-06
 
 ### Log
+
 - Add slovak translation
 - Add opt-in notification emails
 - Fix video loading in albums
@@ -241,13 +286,16 @@ These changes were made to be compliant with the symfony specifications:
 - Declare the webapp as a PWA with a share-intent
 
 ### Remarks
+
 Feature release.  
 :warning: Support for PHP 7.1 was dropped.  
-This update has a database structure change. Please see the corresponding migration file.  
+This update has a database structure change.
+Please see the corresponding migration file.  
 
 ## [0.1.1] - 2019-03-29
 
 ### Log
+
 - Fix styling issues in chrome
 - Fix s6 lockups in docker
 - Fix lightbox on image urls
@@ -255,7 +303,9 @@ This update has a database structure change. Please see the corresponding migrat
 - Add spanish translation
 
 ### Remarks
+
 Mostly bugfix release.
 
 ## [0.1] - 2019-03-21
+
 This is the first release of Zusam that is meant to be used broadly.
