@@ -69,3 +69,8 @@ Zusam is free and open-source software licensed
 under [AGPLv3](https://www.gnu.org/licenses/agpl.html).  
 You can open issues for bugs you've found or features you think are missing.
 You can also submit pull requests to this repository.
+
+Zusam is being translated using [Weblate](https://hosted.weblate.org/projects/zusam/core/):  
+<a href="https://hosted.weblate.org/engage/zusam/">
+<img src="https://hosted.weblate.org/widgets/zusam/-/287x66-grey.png" alt="Translation status" />
+</a>
