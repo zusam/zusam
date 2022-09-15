@@ -9,7 +9,6 @@ export default function MiniFile(props) {
   const filePath = props.file.contentUrl ? `/files/${props.file.contentUrl}` : null;
   let url = filePath;
   const innerRef = useRef(null);
-  console.log(props.inWriter);
   polyfill();
 
   const fileDragStart = e => {
@@ -51,7 +50,7 @@ export default function MiniFile(props) {
   }
 
   useEffect(() => {
-    if (props.inWriter) {
+    if (props.inWriter && props.file.status == "ready") {
       innerRef.current.addEventListener("dragstart", fileDragStart);
       innerRef.current.addEventListener("dragend", fileDragEnd);
       innerRef.current.addEventListener("dragover", fileDragOver);
