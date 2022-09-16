@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class Token
 {
@@ -18,7 +19,7 @@ class Token
     public static function decode(string $jwt, string $key): array
     {
         try {
-            return (array) JWT::decode($jwt, $key, ['HS256']);
+            return (array) JWT::decode($jwt, new Key($key, 'HS256'));
         } catch (\Exception $e) {
             return [];
         }
