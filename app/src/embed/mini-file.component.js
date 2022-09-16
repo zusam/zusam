@@ -1,15 +1,49 @@
 import { h } from "preact";
-import { useRef, useEffect } from 'preact/hooks';
+import { useState, useRef, useEffect } from 'preact/hooks';
 import { util } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { polyfill } from "mobile-drag-drop";
+import GLightbox from "glightbox";
 
 export default function MiniFile(props) {
+
+  const [lightbox, setLightbox] = useState(null);
 
   const filePath = props.file.contentUrl ? `/files/${props.file.contentUrl}` : null;
   let url = filePath;
   const innerRef = useRef(null);
   polyfill();
+
+  useEffect(() => {
+    setLightbox(GLightbox({
+      autoplayVideos: false,
+      draggable: true,
+      loop: false,
+      touchNavigation: true,
+      zoomable: true,
+      elements: [],
+    }));
+  }, []);
+
+  const openLightbox = evt => {
+    if (!props.inWriter) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      lightbox.open();
+      if (lightbox != null && Array.from(document.getElementsByClassName('glightbox')).length > 0) {
+        const elements = Array.from(document.getElementsByClassName('glightbox')).map(e => ({
+          href: e.href,
+          width: e.dataset.width,
+          height: e.dataset.height,
+          type: e.dataset.type,
+          srcset: e.dataset.srcset,
+          sizes: e.dataset.sizes,
+        }));
+        lightbox.setElements(elements);
+        lightbox.open(null, elements.findIndex(e => e.href === evt.target.closest('.glightbox').href));
+      }
+    }
+  };
 
   const fileDragStart = e => {
     e.target.style.opacity = '0.4';
@@ -108,6 +142,7 @@ export default function MiniFile(props) {
           id={props.file.id}
           data-width="calc(90vw - 10px)"
           data-height="100vh"
+          onClick={e => openLightbox(e)}
         >
           <div
             className={`miniature${props.file.removed ? " removed" : ""}`}
@@ -136,6 +171,7 @@ export default function MiniFile(props) {
           class={`${!props.inWriter ? "glightbox ": ""}file-embed rounded`}
           id={props.file.id}
           data-type="image"
+          onClick={e => openLightbox(e)}
         >
           <div
             className={`miniature${props.file.removed ? " removed" : ""}`}
@@ -167,6 +203,7 @@ export default function MiniFile(props) {
           class={`${!props.inWriter ? "glightbox ": ""}file-embed rounded`}
           id={props.file.id}
           index={props.file.fileIndex}
+          onClick={e => openLightbox(e)}
         >
           <div
             className={`miniature${props.file.removed ? " removed" : ""}`}

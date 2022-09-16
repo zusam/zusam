@@ -1,20 +1,8 @@
 import { h } from "preact";
 import { BigFile, MiniFile } from "/src/embed";
-import { useEffect } from "preact/hooks";
-import GLightbox from "glightbox";
+import { useEffect, useState } from "preact/hooks";
 
 export default function FileGrid(props) {
-
-  useEffect(() => {
-    GLightbox({
-      autoplayVideos: false,
-      draggable: true,
-      loop: false,
-      selector: ".glightbox",
-      touchNavigation: true,
-      zoomable: true,
-    });
-  });
 
   const toggleFile = (evt) => {
     evt.stopPropagation();
