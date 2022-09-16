@@ -3,7 +3,7 @@ import { alert, http, util, me } from "/src/core";
 import { useTranslation } from "react-i18next";
 import { WritingWidget } from "/src/writer";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "preact/hooks";
+import { useState, useEffect, useRef } from "preact/hooks";
 
 // trick from https://stackoverflow.com/a/53837442
 function useForceUpdate(){
@@ -21,6 +21,11 @@ export default function Writer(props) {
   const forceUpdate = useForceUpdate();
   const writerId = util.genId();
 
+  // This allows to have the latest state of files in callbacks
+  // https://stackoverflow.com/a/60643670
+  const currentFiles = useRef();
+  currentFiles.current = files;
+
   const setForm = (writerForm, files = [], title = "", text = "") => {
     setFiles(files);
     Array.from(writerForm.current.getElementsByClassName("title-input")).map(e => e.value = title);
@@ -28,7 +33,7 @@ export default function Writer(props) {
   };
 
   const updateFile = (id, file) => {
-    setFiles(files.map(f => f.id === id ? Object.assign(f, file) : f));
+    setFiles(currentFiles.current.map(f => f.id === id ? Object.assign(f, file) : f));
   };
 
   const invertFiles = (id_a, id_b) => {
@@ -52,7 +57,6 @@ export default function Writer(props) {
       throw "error";
     }
 
-    formData.append("fileIndex", file.fileIndex);
     formData.append("file", file.inputFile);
 
     updateFile(fileId, Object.assign(file, {status: "uploading"}));
@@ -151,16 +155,14 @@ export default function Writer(props) {
   };
 
   const addFiles = (mimetype, input_files) => {
-    let fileIndex = files.reduce((a, f) => Math.max(a, f?.fileIndex || 0), 0) + 1;
     let list = Array.from(input_files).map(e => ({
       inputFile: e,
       type: mimetype,
       id: util.genId(),
       progress: 0,
       status: "initial",
-      fileIndex: ++fileIndex,
     }));
-    setFiles([...list, ...files]);
+    setFiles([...files, ...list]);
   };
 
   const inputFile = (mimetype, multiple = false) => {
@@ -187,7 +189,7 @@ export default function Writer(props) {
         }
       }
     }
-  });
+  }, [files]);
 
   return (
     <WritingWidget

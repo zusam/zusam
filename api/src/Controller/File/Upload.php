@@ -35,11 +35,6 @@ class Upload extends ApiController
      *  @OA\Schema(
      *    type="object",
      *    @OA\Property(
-     *      property="fileIndex",
-     *      type="integer",
-     *      required="false"
-     *    ),
-     *    @OA\Property(
      *      property="file",
      *      type="binary"
      *    )
@@ -71,10 +66,6 @@ class Upload extends ApiController
         }
 
         $file = $this->fileService->createFromSymfonyFile($uploadedFile);
-
-        if (!empty($request->request->get('fileIndex'))) {
-            $file->setFileIndex($request->request->get('fileIndex'));
-        }
 
         $this->em->persist($file);
         $this->em->flush();

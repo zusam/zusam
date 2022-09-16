@@ -78,6 +78,7 @@ export default function MiniFile(props) {
       </a>
     );
   case "uploading":
+  case "initial":
     return (
       <a class="file-embed rounded" id={props.file.id}>
         <div
