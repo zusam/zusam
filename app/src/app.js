@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { http, api, me, notifications, bookmarks, router } from "/src/core";
+import { http, api, me, notifications, bookmarks_utils, router } from "/src/core";
 import {
   Login,
   Public,
@@ -46,7 +46,7 @@ function App() {
   useEffect(() => {
     api.update();
     notifications.update();
-    bookmarks.update();
+    bookmarks_utils.update();
 
     // manage dropdowns
     window.addEventListener("click", e => toggleDropdowns(e));
