@@ -1,6 +1,5 @@
 import { h } from "preact";
 import { BigFile, MiniFile } from "/src/embed";
-import { useEffect, useState } from "preact/hooks";
 
 export default function FileGrid(props) {
 

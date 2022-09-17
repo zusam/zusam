@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { useState, useRef, useEffect } from 'preact/hooks';
+import { useState, useRef, useEffect } from "preact/hooks";
 import { util } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { polyfill } from "mobile-drag-drop";
@@ -30,8 +30,8 @@ export default function MiniFile(props) {
       evt.preventDefault();
       evt.stopPropagation();
       lightbox.open();
-      if (lightbox != null && Array.from(document.getElementsByClassName('glightbox')).length > 0) {
-        const elements = Array.from(document.getElementsByClassName('glightbox')).map(e => ({
+      if (lightbox != null && Array.from(document.getElementsByClassName("glightbox")).length > 0) {
+        const elements = Array.from(document.getElementsByClassName("glightbox")).map(e => ({
           href: e.href,
           width: e.dataset.width,
           height: e.dataset.height,
@@ -40,48 +40,48 @@ export default function MiniFile(props) {
           sizes: e.dataset.sizes,
         }));
         lightbox.setElements(elements);
-        lightbox.open(null, elements.findIndex(e => e.href === evt.target.closest('.glightbox').href));
+        lightbox.open(null, elements.findIndex(e => e.href === evt.target.closest(".glightbox").href));
       }
     }
   };
 
   const fileDragStart = e => {
-    e.target.style.opacity = '0.4';
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('id', props.file.id);
-    document.querySelectorAll('.remove-button').forEach(e => e.style.display = 'none')
+    e.target.style.opacity = "0.4";
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("id", props.file.id);
+    document.querySelectorAll(".remove-button").forEach(e => e.style.display = "none");
   };
 
   const fileDragEnd = e => {
-    e.target.style.opacity = '1';
-    document.querySelectorAll('.remove-button').forEach(e => e.style.display = 'block')
-    document.querySelectorAll('.drag-over').forEach(e => e.classList.remove('drag-over'))
+    e.target.style.opacity = "1";
+    document.querySelectorAll(".remove-button").forEach(e => e.style.display = "block");
+    document.querySelectorAll(".drag-over").forEach(e => e.classList.remove("drag-over"));
   };
 
   const fileDragEnter = e => {
     e.preventDefault();
-    innerRef.current.classList.add('drag-over');
+    innerRef.current.classList.add("drag-over");
     return false;
-  }
+  };
 
   const fileDragLeave = e => {
     e.preventDefault();
-    innerRef.current.classList.remove('drag-over');
+    innerRef.current.classList.remove("drag-over");
     return false;
-  }
+  };
 
   // necessary to declare a drop target
   const fileDragOver = e => {
     e.preventDefault();
     return false;
-  }
+  };
 
   const fileDrop = e => {
     // stops the browser from redirecting.
     e.preventDefault();
-    props.invertFiles(e.dataTransfer.getData('id'), props.file.id);
+    props.invertFiles(e.dataTransfer.getData("id"), props.file.id);
     return false;
-  }
+  };
 
   useEffect(() => {
     if (props.inWriter && props.file.status == "ready") {
@@ -117,7 +117,7 @@ export default function MiniFile(props) {
       <a class="file-embed rounded" id={props.file.id}>
         <div
           class="miniature video-raw"
-          style={`background-image:url('${util.crop(props.file.id, 160, 160)}')`}
+          style={`background-image:url("${util.crop(props.file.id, 160, 160)}")`}
         />
         <div class="spinner orange-spinner">
           <div /><div /><div /><div /><div />
@@ -147,7 +147,7 @@ export default function MiniFile(props) {
           <div
             className={`miniature${props.file.removed ? " removed" : ""}`}
             style={
-              `background-image:url('${util.crop(props.file.id, 160, 160)}')`
+              `background-image:url("${util.crop(props.file.id, 160, 160)}")`
             }
           />
           <div
@@ -176,7 +176,7 @@ export default function MiniFile(props) {
           <div
             className={`miniature${props.file.removed ? " removed" : ""}`}
             style={
-              `background-image:url('${util.crop(props.file.id, 160, 160)}')`
+              `background-image:url("${util.crop(props.file.id, 160, 160)}")`
             }
           />
           <div
@@ -208,7 +208,7 @@ export default function MiniFile(props) {
           <div
             className={`miniature${props.file.removed ? " removed" : ""}`}
             style={
-              `background-image:url('${util.crop(props.file.id, 160, 160)}')`
+              `background-image:url("${util.crop(props.file.id, 160, 160)}")`
             }
           />
           <div

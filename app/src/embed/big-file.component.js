@@ -2,7 +2,7 @@ import { h } from "preact";
 import { util } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { useTranslation } from "react-i18next";
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect } from "preact/hooks";
 import GLightbox from "glightbox";
 
 export default function BigFile(props) {
@@ -29,8 +29,8 @@ export default function BigFile(props) {
       evt.preventDefault();
       evt.stopPropagation();
       lightbox.open();
-      if (lightbox != null && Array.from(document.getElementsByClassName('glightbox')).length > 0) {
-        const elements = Array.from(document.getElementsByClassName('glightbox')).map(e => ({
+      if (lightbox != null && Array.from(document.getElementsByClassName("glightbox")).length > 0) {
+        const elements = Array.from(document.getElementsByClassName("glightbox")).map(e => ({
           href: e.href,
           width: e.dataset.width,
           height: e.dataset.height,
@@ -39,7 +39,7 @@ export default function BigFile(props) {
           sizes: e.dataset.sizes,
         }));
         lightbox.setElements(elements);
-        lightbox.open(null, elements.findIndex(e => e.href === evt.target.closest('.glightbox').href));
+        lightbox.open(null, elements.findIndex(e => e.href === evt.target.closest(".glightbox").href));
       }
     }
   };

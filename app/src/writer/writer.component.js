@@ -37,12 +37,12 @@ export default function Writer(props) {
   };
 
   const invertFiles = (id_a, id_b) => {
-    const index_a = files.findIndex(e => e.id === id_a)
+    const index_a = files.findIndex(e => e.id === id_a);
     const index_b = files.findIndex(e => e.id === id_b);
     [files[index_a], files[index_b]] = [files[index_b], files[index_a]];
     setFiles(files);
     forceUpdate();
-  }
+  };
 
   const removeFile = id => {
     setFiles(files.filter(f => f.id != id));
