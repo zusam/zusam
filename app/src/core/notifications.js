@@ -30,7 +30,11 @@ const notifications = {
   removeAllNotifications() {
     let state = store.get();
     if (Array.isArray(state["notifications"])) {
-      state.notifications.forEach(n => store.dispatch("notifications/remove", n));
+      state.notifications.forEach(n => {
+        http.delete(`/api/notifications/${n.id}`).then(() => {
+          store.dispatch("notifications/remove", n)
+        });
+      });
     }
   },
 
