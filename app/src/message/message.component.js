@@ -35,7 +35,7 @@ export default function Message(props) {
     window.addEventListener("newChild", onNewChild);
     window.addEventListener("editMessage", onEditMessage);
     loadMessage();
-    notifications.removeMatchingNotifications(props.id);
+    notifications.markAsRead(props.id);
 
     if (!props.isChild) {
       setTimeout(() => window.scrollTo(0, 0));

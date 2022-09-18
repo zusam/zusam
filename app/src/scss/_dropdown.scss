@@ -22,7 +22,7 @@
         background-color: #fff;
         border: 1px solid #7773;
         text-align: left;
-        max-height: calc(90vh - 50px);
+        max-height: calc(90vh - 47px);
         overflow-y: auto;
         max-width: 25rem;
         overflow-x: hidden;
@@ -32,7 +32,7 @@
         & > a {
             display: flex;
             cursor: pointer;
-            padding: 5px 10px;
+            padding: 5px 10px 5px 5px;
             white-space: nowrap;
             &:hover {
                 background-color: #eee;

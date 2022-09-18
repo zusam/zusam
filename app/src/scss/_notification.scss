@@ -27,15 +27,27 @@
 .notification {
     font-size: 90%;
     border-bottom: 1px solid #ddd;
+    position: relative;
+
+    .unread-dot {
+      background: #f7a71b;
+      width: 10px;
+      height: 10px;
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      border-radius: 100%;
+    }
 
     .miniature {
         display: inline-block;
-        margin: 0 12px 0 4px;
+        margin: 4px 10px 0 0;
         vertical-align: top;
 
         img {
             height: 60px;
             width: 60px;
+            border-radius: 100%;
         }
     }
 

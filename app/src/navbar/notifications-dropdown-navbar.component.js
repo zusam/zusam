@@ -4,11 +4,19 @@ import { FaIcon } from "/src/misc";
 import { Notification } from "/src/pages";
 import { useStoreon } from "storeon/preact";
 import { useTranslation } from "react-i18next";
+import { useState } from "preact/hooks";
+
+// trick from https://stackoverflow.com/a/53837442
+function useForceUpdate() {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => value + 1); // update state to force render
+}
 
 export default function NotificationsDropdownNavbar() {
 
   const { t } = useTranslation();
   const { notifications } = useStoreon("notifications");
+  const forceUpdate = useForceUpdate();
   if (!notifications) {
     return null;
   }
@@ -30,8 +38,8 @@ export default function NotificationsDropdownNavbar() {
           family={notifications.length ? "solid" : "regular"}
           icon={"bell"}
         />
-        {!!notifications.length && (
-          <span class="badge-count">{Math.min(notifications.length, notifs.LIMIT) + (notifications.length > notifs.LIMIT ? "+" : "")}</span>
+        {!!notifications.filter(n => !n.read).length && (
+          <div class="unread-badge" />
         )}
       </div>
       <div class="dropdown-menu dropdown-right notifications-menu">
@@ -39,7 +47,10 @@ export default function NotificationsDropdownNavbar() {
           <strong class="capitalize">{t("notifications")}</strong>
           <div
             class="action capitalize"
-            onClick={() => notifs.removeAllNotifications()}
+            onClick={() => {
+              notifs.markAllNotificationsAsRead();
+              forceUpdate();
+            }}
           >
             {t("mark_all_as_read")}
           </div>

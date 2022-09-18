@@ -123,7 +123,7 @@ export default function Notification(props) {
 
   const onClick = (event, target) => {
     event.preventDefault();
-    notifications.removeMatchingNotifications(props.id).then(() => {
+    notifications.markAsRead(props.id).then(() => {
       navigate(target);
     });
   };
@@ -161,6 +161,9 @@ export default function Notification(props) {
         <div class="date">
           {util.humanTime(notification.createdAt)}
         </div>
+        { !notification.read && (
+          <div class="unread-dot" />
+        )}
       </div>
     </a>
   );

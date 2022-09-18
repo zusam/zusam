@@ -6,10 +6,6 @@ const CACHE_NAME = `zusam-${CACHE_VERSION}`;
 
 const cached_routes = [
   {
-    // This may be an issue when notifications will become 'readable'
-    route: new RegExp("/api/notifications/[^/]+/?$"),
-  },
-  {
     route: new RegExp("/api/images/crop/"),
   },
   {
