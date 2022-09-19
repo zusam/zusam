@@ -3,6 +3,7 @@ import { http, util, notifications } from "/src/core";
 import { useEffect, useState } from "preact/hooks";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { FaIcon } from "/src/misc";
 
 export default function Notification(props) {
 
@@ -164,6 +165,26 @@ export default function Notification(props) {
         { !notification.read && (
           <div class="unread-dot" />
         )}
+      </div>
+      <div
+        class="options dropdown"
+        onClick={e => {
+          e.stopPropagation();
+          e.preventDefault();
+          e?.target?.closest(".dropdown")?.classList.toggle("active");
+        }}
+      >
+        <div class="none-if-follows-empty">
+          <FaIcon family="solid" icon="ellipsis-h" />
+        </div>
+        <div class="dropdown-menu dropdown-options">
+            <a
+              class="seamless-link capitalize"
+              onClick={e => notifications.removeMatchingNotifications(notification.id)}
+            >
+              {t("delete")}
+            </a>
+        </div>
       </div>
     </a>
   );
