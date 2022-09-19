@@ -49,7 +49,7 @@
     "group_updated": "Le groupe a été mis à jour !",
     "group_left": "Vous avez quitté le groupe !",
     "multiple_photos_upload": "Une erreur s'est produite. Essayez de télécharger les images une par une (cela peut se produire dans certains navigateurs).",
-    "error_new_message": "Une erreur s'est produite lors de l'envoi de votre message",
+    "error_new_message": "Une erreur s’est produite lors de l’envoi de votre message.",
     "error_upload": "Une erreur s'est produite pendant le téléversement",
     "cancel_write": "Voulez-vous annuler l'écriture d'un nouveau message ?",
     "empty_message": "Le message est vide et ne peut être envoyé !",
