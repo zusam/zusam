@@ -178,12 +178,12 @@ export default function Notification(props) {
           <FaIcon family="solid" icon="ellipsis-h" />
         </div>
         <div class="dropdown-menu dropdown-options">
-            <a
-              class="seamless-link capitalize"
-              onClick={e => notifications.removeMatchingNotifications(notification.id)}
-            >
-              {t("delete")}
-            </a>
+          <a
+            class="seamless-link capitalize"
+            onClick={() => notifications.removeMatchingNotifications(notification.id)}
+          >
+            {t("delete")}
+          </a>
         </div>
       </div>
     </a>
