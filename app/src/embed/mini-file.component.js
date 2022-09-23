@@ -29,7 +29,6 @@ export default function MiniFile(props) {
     if (!props.inWriter) {
       evt.preventDefault();
       evt.stopPropagation();
-      lightbox.open();
       if (lightbox != null && Array.from(document.getElementsByClassName("glightbox")).length > 0) {
         const elements = Array.from(document.getElementsByClassName("glightbox")).map(e => ({
           href: e.href,
