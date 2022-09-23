@@ -30,14 +30,25 @@ export default function MiniFile(props) {
       evt.preventDefault();
       evt.stopPropagation();
       if (lightbox != null && Array.from(document.getElementsByClassName("glightbox")).length > 0) {
-        const elements = Array.from(document.getElementsByClassName("glightbox")).map(e => ({
-          href: e.href,
-          width: e.dataset.width,
-          height: e.dataset.height,
-          type: e.dataset.type,
-          srcset: e.dataset.srcset,
-          sizes: e.dataset.sizes,
-        }));
+        const elements = Array.from(document.getElementsByClassName("glightbox")).map(e => {
+          const r = {href: e.href};
+          if (e?.dataset?.width) {
+            r.width = e?.dataset?.width;
+          }
+          if (e?.dataset?.height) {
+            r.height = e?.dataset?.height;
+          }
+          if (e?.dataset?.type) {
+            r.type = e?.dataset?.type;
+          }
+          if (e?.dataset?.srcset) {
+            r.srcset = e?.dataset?.srcset;
+          }
+          if (e?.dataset?.sizes) {
+            r.sizes = e?.dataset?.sizes;
+          }
+          return r;
+        });
         lightbox.setElements(elements);
         lightbox.open(null, elements.findIndex(e => e.href === evt.target.closest(".glightbox").href));
       }
