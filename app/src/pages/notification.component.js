@@ -162,6 +162,7 @@ export default function Notification(props) {
         <div class="date">
           {util.humanTime(notification.createdAt)}
         </div>
+      </div>
       <div
         class="options dropdown"
         onClick={e => {
@@ -182,7 +183,6 @@ export default function Notification(props) {
           </a>
         </div>
       </div>
-    </div>
-  </a>
+    </a>
   );
 }
