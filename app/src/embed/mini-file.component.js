@@ -12,7 +12,31 @@ export default function MiniFile(props) {
   const filePath = props.file.contentUrl ? `/files/${props.file.contentUrl}` : null;
   let url = filePath;
   const innerRef = useRef(null);
-  polyfill();
+  polyfill({
+    tryFindDraggableTarget: e => {
+      if (!props.inWriter) {
+        return undefined;
+      }
+      const cp = e.composedPath();
+      for (const o of cp) {
+        let el = o;
+        do {
+          if (el.draggable === false) {
+            continue;
+          }
+          if (el.draggable === true) {
+            return el;
+          }
+          if (
+            el.getAttribute
+            && el.getAttribute("draggable") === "true"
+          ) {
+            return el;
+          }
+        } while((el = el.parentNode) && el !== document.body);
+      }
+    },
+  });
 
   useEffect(() => {
     setLightbox(GLightbox({
