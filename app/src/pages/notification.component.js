@@ -143,7 +143,7 @@ export default function Notification(props) {
   }
   return (
     <a
-      class="notification seamless-link unselectable"
+      class={`notification seamless-link unselectable ${!notification.read ? "unread" : ""}`}
       href={target}
       title={title}
       onClick={e => onClick(e, target)}
@@ -162,10 +162,6 @@ export default function Notification(props) {
         <div class="date">
           {util.humanTime(notification.createdAt)}
         </div>
-        { !notification.read && (
-          <div class="unread-dot" />
-        )}
-      </div>
       <div
         class="options dropdown"
         onClick={e => {
@@ -186,6 +182,7 @@ export default function Notification(props) {
           </a>
         </div>
       </div>
-    </a>
+    </div>
+  </a>
   );
 }

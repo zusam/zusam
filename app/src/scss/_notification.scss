@@ -23,17 +23,15 @@
 
 .notification {
     font-size: 90%;
-    border-bottom: 1px solid #ddd;
     position: relative;
+    padding-bottom: 7px !important;
 
-    .unread-dot {
-      background: #f7a71b;
-      width: 10px;
-      height: 10px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      border-radius: 100%;
+    &.unread {
+      background-color: #f7a71b38;
+
+      &:hover {
+        background-color: #f7a71b6b !important;
+      }
     }
 
     .miniature {
