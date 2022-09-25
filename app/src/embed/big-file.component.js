@@ -96,7 +96,6 @@ export default function BigFile(props) {
           <div
             class="remove-button"
             style={props.file.removed ? "color:red" : ""}
-            fileIndex={props.file.fileIndex}
             onClick={e => props.toggleFile(e)}
           >
             <FaIcon family={"solid"} icon={"times"} />
@@ -121,7 +120,6 @@ export default function BigFile(props) {
             <div
               class="remove-button"
               style={props.file.removed ? "color:red" : ""}
-              fileIndex={props.file.fileIndex}
               onClick={e => props.toggleFile(e)}
             >
               <FaIcon family={"solid"} icon={"times"} />
@@ -146,7 +144,6 @@ export default function BigFile(props) {
           <div
             class="remove-button"
             style={props.file.removed ? "color:red" : ""}
-            fileIndex={props.file.fileIndex}
             onClick={e => props.toggleFile(e)}
           >
             <FaIcon family={"solid"} icon={"times"} />

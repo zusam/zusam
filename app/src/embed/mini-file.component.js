@@ -145,6 +145,10 @@ export default function MiniFile(props) {
         </div>
       </a>
     );
+  case "loading":
+    return (
+      <a class="file-embed rounded loading" id={props.file.id}></a>
+    );
   case "uploading":
   case "initial":
     return (
@@ -172,7 +176,7 @@ export default function MiniFile(props) {
           draggable={!!props.inWriter}
           data-origin={util.toApp(filePath)}
           href={!props.inWriter ? util.toApp(url) : undefined}
-          className={`${!props.inWriter ? "glightbox ": ""}file-embed rounded image${props.file.removed ? " removed" : ""}`}
+          className={`${!props.inWriter ? "glightbox ": ""}file-embed rounded ${props.file.removed ? " removed" : ""}`}
           id={props.file.id}
           data-width="calc(90vw - 10px)"
           data-height="100vh"
@@ -187,7 +191,6 @@ export default function MiniFile(props) {
           <div
             class="remove-button"
             style={props.file.removed ? "color:red" : ""}
-            fileIndex={props.file.fileIndex}
             onClick={e => props.toggleFile(e)}
           >
             <FaIcon family={"solid"} icon={"times"} />
@@ -216,7 +219,6 @@ export default function MiniFile(props) {
           <div
             class="remove-button"
             style={props.file.removed ? "color:red" : ""}
-            fileIndex={props.file.fileIndex}
             onClick={e => props.toggleFile(e)}
           >
             <FaIcon family={"solid"} icon={"times"} />
@@ -236,7 +238,6 @@ export default function MiniFile(props) {
           href={!props.inWriter ? util.toApp(filePath) : undefined}
           class={`${!props.inWriter ? "glightbox ": ""}file-embed rounded`}
           id={props.file.id}
-          index={props.file.fileIndex}
           onClick={e => openLightbox(e)}
         >
           <div
@@ -248,7 +249,6 @@ export default function MiniFile(props) {
           <div
             class="remove-button"
             style={props.file.removed ? "color:red" : ""}
-            fileIndex={props.file.fileIndex}
             onClick={e => props.toggleFile(e)}
           >
             <FaIcon family={"solid"} icon={"times"} />

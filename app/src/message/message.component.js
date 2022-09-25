@@ -64,22 +64,28 @@ export default function Message(props) {
         setParent(p);
       });
     }
-    if (m?.files?.length) {
-      Promise.all(m.files.map(f => http.get(`/api/files/${f.id}`).then(f => f))).then(
-        files => setFiles(files)
-      );
-    }
+    // delay loading of files a little bit
+    setTimeout(() => {
+      if (m?.files?.length) {
+        Promise.all(m.files.map(f => http.get(`/api/files/${f.id}`).then(f => f))).then(
+          files => setFiles(files)
+        );
+      }
+    }, 100);
   };
 
   const loadMessage = () => {
     if (props?.message) {
+      setFiles(props.message?.files.map(f => ({id: f.id, status: "loading"})));
       hydrateMessage(props.message);
     } else if (props?.token) {
       http.get(`/api/public/${props.token}`).then(m => {
+        setFiles(m?.files.map(f => ({id: f.id, status: "loading"})));
         hydrateMessage(m);
       });
     } else {
       http.get(`/api/messages/${props.id}`).then(m => {
+        setFiles(m?.files.map(f => ({id: f.id, status: "loading"})));
         hydrateMessage(m);
       });
     }
