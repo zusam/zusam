@@ -2,6 +2,27 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [0.5.3] - 2022-09-28
+
+### Log
+
+- Update French translation from [Weblate](https://hosted.weblate.org/projects/zusam/core/)
+- Rework notifications to mark them as read instead of removing them
+- Don't remove notifications older than 1 year anymore
+- Add easter egg to go to a random message within a group: /groups/:id/random
+- Display loading animation for files
+- Fix bookmark handling
+- Fix a lot of glightbox display issues
+- Fix drag'n drop polyfill activating outside of writer
+- Fix marking notifications as read
+- Fix multi-queues file upload
+- Fix embed for some youtube URLs
+- Fix refresh of user-settings component
+
+### Remarks
+
+Mostly bugfix release.
+
 ## [0.5.2] - 2022-09-12
 
 ### Log
@@ -25,7 +46,7 @@ Minor feature release.
 
 - Disable submit button if upload is in progress
 - Add parameters to the configuration file
-- Throttle login attempts
+- Throttle login attempts (vulnerability issue found by [Mephue](https://twitter.com/mephue))
 - Add a lot of configuration parameters (check to [.env file](https://github.com/zusam/zusam/blob/master/api/.env))
 - Switch default .env to "prod" instead of "dev"
 
