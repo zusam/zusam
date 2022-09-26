@@ -155,7 +155,7 @@ export default function BigFile(props) {
 
   if (props.file.status == "loading") {
     return (
-      <div class="file-embed file-placeholder" id={props.file.id}></div>
+      <div class="file-embed file-placeholder" id={props.file.id}/>
     );
   }
   return (

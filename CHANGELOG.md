@@ -9,6 +9,7 @@ To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/maste
 - Update French translation from [Weblate](https://hosted.weblate.org/projects/zusam/core/)
 - Rework notifications to mark them as read instead of removing them
 - Don't remove notifications older than 1 year anymore
+- Don't let service workers handle external URLs
 - Add easter egg to go to a random message within a group: /groups/:id/random
 - Display loading animation for files
 - Fix bookmark handling

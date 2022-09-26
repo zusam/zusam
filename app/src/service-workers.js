@@ -17,7 +17,11 @@ const cached_routes = [
 ];
 
 self.addEventListener("fetch", (event) => {
-  event.respondWith(handleRequest(event.request));
+  if (new URL(event.request.url).host === location.host) {
+    event.respondWith(handleRequest(event.request));
+  } else {
+    return false;
+  }
 });
 
 const handleRequest = async request => {
