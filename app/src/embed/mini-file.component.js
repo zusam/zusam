@@ -147,7 +147,9 @@ export default function MiniFile(props) {
     );
   case "loading":
     return (
-      <a class="file-embed rounded loading" id={props.file.id}></a>
+      <a class="file-embed rounded" id={props.file.id}>
+        <div class="miniature"></div>
+      </a>
     );
   case "uploading":
   case "initial":

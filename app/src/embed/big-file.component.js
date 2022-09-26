@@ -152,6 +152,12 @@ export default function BigFile(props) {
       );
     }
   }
+
+  if (props.file.status == "loading") {
+    return (
+      <div class="file-embed file-placeholder" id={props.file.id}></div>
+    );
+  }
   return (
     <div class="file-embed file-placeholder" id={props.file.id}>
       {props.file["error"] ? (
