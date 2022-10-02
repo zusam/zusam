@@ -2,7 +2,7 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
-## [0.5.3] - 2022-09-28
+## [0.5.3] - 2022-10-02
 
 ### Log
 
