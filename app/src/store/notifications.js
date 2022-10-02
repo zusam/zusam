@@ -10,4 +10,10 @@ export const notificationsStore = store => {
       notifications: state.notifications.filter(n => n.id != notification.id)
     };
   });
+
+  store.on("notifications/read", (state, notification) => {
+    return {
+      notifications: state.notifications.map(n => n.id === notification.id ? Object.assign(n, {read: true}) : n)
+    };
+  });
 };

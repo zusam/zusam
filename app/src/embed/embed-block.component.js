@@ -1,30 +1,74 @@
-import { h, Component } from "preact";
+import { h } from "preact";
 import { util, router } from "/src/core";
+import { useState, useEffect } from "preact/hooks";
 import BandCampEmbed from "./bandcamp-embed.component.js";
 import InstagramEmbed from "./instagram-embed.component.js";
 import GenericEmbed from "./generic-embed.component.js";
+import GLightbox from "glightbox";
 
-export default class EmbedBlock extends Component {
-  getPreview() {
-    if (this.props?.data?.exception) {
-      console.warn(this.props.data);
+export default function EmbedBlock(props) {
+
+  const [lightbox, setLightbox] = useState(null);
+
+  useEffect(() => {
+    setLightbox(GLightbox({
+      autoplayVideos: false,
+      draggable: true,
+      loop: false,
+      touchNavigation: true,
+      zoomable: true,
+      elements: [],
+    }));
+  }, []);
+
+  const openLightbox = evt => {
+    evt.preventDefault();
+    evt.stopPropagation();
+    if (lightbox != null && Array.from(document.getElementsByClassName("glightbox")).length > 0) {
+      const elements = Array.from(document.getElementsByClassName("glightbox")).map(e => {
+        const r = {href: e.href};
+        if (e?.dataset?.width) {
+          r.width = e?.dataset?.width;
+        }
+        if (e?.dataset?.height) {
+          r.height = e?.dataset?.height;
+        }
+        if (e?.dataset?.type) {
+          r.type = e?.dataset?.type;
+        }
+        if (e?.dataset?.srcset) {
+          r.srcset = e?.dataset?.srcset;
+        }
+        if (e?.dataset?.sizes) {
+          r.sizes = e?.dataset?.sizes;
+        }
+        return r;
+      });
+      lightbox.setElements(elements);
+      lightbox.open(null, elements.findIndex(e => e.href === evt.target.closest(".glightbox").href));
     }
-    if (this.props.data["providerName"]) {
-      if ("peertube" == this.props.data["providerName"].toLowerCase()) {
+  };
+
+  const getPreview = () => {
+    if (props?.data?.exception) {
+      console.warn(props.data);
+    }
+    if (props.data["providerName"]) {
+      if ("peertube" == props.data["providerName"].toLowerCase()) {
         // default embed code
-        if (this.props.data["code"]) {
+        if (props.data["code"]) {
           return (
-            <div class="embed-container" dangerouslySetInnerHTML={{ __html: this.props.data["code"] }} />
+            <div class="embed-container" dangerouslySetInnerHTML={{ __html: props.data["code"] }} />
           );
         }
       }
-      if ("soundcloud" == this.props.data["providerName"].toLowerCase()) {
-        if (this.props.data["code"]) {
+      if ("soundcloud" == props.data["providerName"].toLowerCase()) {
+        if (props.data["code"]) {
           return (
             <GenericEmbed
-              preview={util.crop(this.props.preview.id, 1024, 270)}
+              preview={util.crop(props.preview.id, 1024, 270)}
               url={
-                `${this.props.data["code"].match(/https:\/\/[^"\s]+/)[0] 
+                `${props.data["code"].match(/https:\/\/[^"\s]+/)[0] 
                 }&auto_play=true`
               }
               playBtnClass={"soundcloud"}
@@ -32,34 +76,34 @@ export default class EmbedBlock extends Component {
           );
         }
       }
-      if ("instagram" == this.props.data["providerName"].toLowerCase()) {
+      if ("instagram" == props.data["providerName"].toLowerCase()) {
         return (
           <InstagramEmbed
-            url={this.props.data["url"]}
-            preview={util.crop(this.props.preview.id, 1024, 1024)}
-            title={this.props.data["title"]}
-            description={this.props.data["description"]}
+            url={props.data["url"]}
+            preview={util.crop(props.preview.id, 1024, 1024)}
+            title={props.data["title"]}
+            description={props.data["description"]}
           />
         );
       }
-      if (this.props.data["providerUrl"] == "https://bandcamp.com") {
-        if (this.props.data["code"]) {
-          let id = this.props.data["code"].match(/https:\/\/.*album=\d+/);
+      if (props.data["providerUrl"] == "https://bandcamp.com") {
+        if (props.data["code"]) {
+          let id = props.data["code"].match(/https:\/\/.*album=\d+/);
           if (!id) {
-            id = this.props.data["code"].match(/https:\/\/.*track=\d+/);
+            id = props.data["code"].match(/https:\/\/.*track=\d+/);
           }
           if (id) {
             return (
               <BandCampEmbed
-                preview={util.crop(this.props.preview.id, 1024, 270)}
+                preview={util.crop(props.preview.id, 1024, 270)}
                 url={id[0]}
               />
             );
           }
         }
       }
-      if ("lichess.org" == this.props.data["providerName"].toLowerCase()) {
-        let url = this.props?.data?.url && typeof(this.props?.data.url) == "string" ? this.props.data?.url : this.props.url;
+      if ("lichess.org" == props.data["providerName"].toLowerCase()) {
+        let url = props?.data?.url && typeof(props?.data.url) == "string" ? props.data?.url : props.url;
         if (util.isValidUrl(url) && !url.match(/embed/) && !url.match(/study/) && !url.match(/blog/)) {
           url = new URL(url.replace("lichess.org/", "lichess.org/embed/"));
           let id;
@@ -72,7 +116,7 @@ export default class EmbedBlock extends Component {
           if (id) {
             return (
               <GenericEmbed
-                preview={util.crop(this.props.preview.id, 270, 270)}
+                preview={util.crop(props.preview.id, 270, 270)}
                 url={url}
                 playBtnClass={"lichess"}
               />
@@ -80,13 +124,18 @@ export default class EmbedBlock extends Component {
           }
         }
       }
-      if ("youtube" == this.props.data["providerName"].toLowerCase()) {
-        let url = this.props.url;
-        if (this.props?.preview?.id && url) {
+      if ("youtube" == props.data["providerName"].toLowerCase()) {
+        let url = props.url;
+        if (props?.preview?.id && url) {
           url = new URL(url);
           let video_id;
           let playlist_id;
-          if (url.host == "www.youtube.com" || url.host == "m.youtube.com" || url.host == "youtube.com" || url.host == "music.youtube.com") {
+          if (
+            url.host == "www.youtube.com"
+            || url.host == "m.youtube.com"
+            || url.host == "youtube.com"
+            || url.host == "music.youtube.com"
+          ) {
             if(url.pathname.match(/shorts/)) {
               video_id = [`v=${url.pathname.split("/").slice(-1)[0]}`];
               playlist_id = [];
@@ -106,7 +155,7 @@ export default class EmbedBlock extends Component {
           if (playlist_id.length && video_id.length) {
             return (
               <GenericEmbed
-                preview={util.crop(this.props.preview.id, 1024, 270)}
+                preview={util.crop(props.preview.id, 1024, 270)}
                 url={
                   `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque&list=${playlist_id[0].split("=")[1]}${timecode ? `&start=${timecode}` : ""}`
                 }
@@ -117,7 +166,7 @@ export default class EmbedBlock extends Component {
           if (playlist_id.length) {
             return (
               <GenericEmbed
-                preview={util.crop(this.props.preview.id, 1024, 270)}
+                preview={util.crop(props.preview.id, 1024, 270)}
                 url={
                   `https://youtube.com/embed/videoseries?list=${playlist_id[0].split("=")[1]}&autoplay=1&controls=2&wmode=opaque${timecode ? `&start=${timecode}` : ""}`
                 }
@@ -127,7 +176,7 @@ export default class EmbedBlock extends Component {
           }
           return (
             <GenericEmbed
-              preview={util.crop(this.props.preview.id, 1024, 270)}
+              preview={util.crop(props.preview.id, 1024, 270)}
               url={
                 `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque${timecode ? `&start=${timecode}` : ""}`
               }
@@ -136,12 +185,12 @@ export default class EmbedBlock extends Component {
           );
         }
       }
-      if ("invidious" == this.props.data["providerName"].toLowerCase()) {
-        let url = this.props?.data?.url && typeof(this.props?.data.url) == "string" ? this.props.data?.url : this.props.url;
-        if (this.props?.preview?.id && url) {
+      if ("invidious" == props.data["providerName"].toLowerCase()) {
+        let url = props?.data?.url && typeof(props?.data.url) == "string" ? props.data?.url : props.url;
+        if (props?.preview?.id && url) {
           return (
             <GenericEmbed
-              preview={util.crop(this.props.preview.id, 1024, 270)}
+              preview={util.crop(props.preview.id, 1024, 270)}
               url={
                 `${url.replace("watch?v=", "embed/")}`
               }
@@ -151,73 +200,81 @@ export default class EmbedBlock extends Component {
         }
       }
     }
-    if (/image/.test(this.props.data["content-type"])) {
+    if (props.data["content-type"] == "image/gif") {
+      return (
+        <div class="container d-flex justify-content-center flex-wrap align-items-center">
+          <img
+            href={util.toApp(props.url)}
+            class="img-fluid"
+            data-origin={props.url}
+            data-src={props.url}
+            src={props.url}
+          />
+        </div>
+      );
+    }
+    if (/image/.test(props.data["content-type"])) {
       return (
         <div class="container d-flex justify-content-center flex-wrap align-items-center">
           <a
-            href={util.toApp(this.props.url)}
+            href={util.toApp(props.url)}
             class="glightbox"
             data-type="image"
+            data-srcset={`${util.thumbnail(props.preview.id, 720)} 720w, ${util.thumbnail(props.preview.id, 1366)} 1366w, ${util.thumbnail(props.preview.id, 2048)} 2048w`}
+            data-sizes="(max-width: 992px) 720px, (max-width: 1400px) 1366px, 2048px"
+            onClick={e => openLightbox(e)}
           >
             <img
-              href={util.toApp(this.props.url)}
+              href={util.toApp(props.url)}
               class="img-fluid cursor-pointer"
-              data-origin={this.props.url}
-              data-src={
-                this.props.preview && !/gif/.test(this.props.data["content-type"])
-                  ? util.thumbnail(this.props.preview.id, 1366)
-                  : this.props.url
-              }
-              src={
-                this.props.preview && !/gif/.test(this.props.data["content-type"])
-                  ? util.thumbnail(this.props.preview.id, 2048)
-                  : this.props.url
-              }
+              data-origin={props.url}
+              data-src={util.thumbnail(props.preview.id, 1366)}
+              src={util.thumbnail(props.preview.id, 2048)}
             />
           </a>
         </div>
       );
     }
     // application/ogg: https://developer.mozilla.org/en-US/docs/Web/HTTP/Configuring_servers_for_Ogg_media
-    if (/video/.test(this.props.data["content-type"]) || this.props.data["content-type"] == "application/ogg") {
+    if (/video/.test(props.data["content-type"]) || props.data["content-type"] == "application/ogg") {
       return (
         <div class="container d-flex justify-content-center flex-wrap align-items-center">
-          <video class="img-fluid" controls src={this.props.url} />
+          <video class="img-fluid" controls src={props.url} />
         </div>
       );
     }
-    if (/audio/.test(this.props.data["content-type"])) {
+    if (/audio/.test(props.data["content-type"])) {
       return (
         <div class="container d-flex justify-content-center flex-wrap align-items-center">
           <audio class="w-100" controls>
-            <source src={this.props.url} />
+            <source src={props.url} />
           </audio>
         </div>
       );
     }
     if (
-      this.props.data["title"] &&
-      (this.props.preview || this.props.data["description"])
+      props.data["title"] &&
+      (props.preview || props.data["description"])
     ) {
       return (
         <a
           class="preview-card seamless-link d-inline-block"
           target="_blank"
           rel="noreferrer"
-          href={util.toApp(this.props.url)}
+          href={util.toApp(props.url)}
         >
           <div class="card" style="max-width: 480px">
-            {this.props.preview && (
+            {props.preview && (
               <img
                 class="card-img-top"
-                src={util.crop(this.props.preview.id, 320, 180)}
+                src={util.crop(props.preview.id, 320, 180)}
               />
             )}
             <div class="card-body p-1">
-              <h5>{this.props.data["title"]}</h5>
-              {this.props.data["description"] && (
+              <h5>{props.data["title"]}</h5>
+              {props.data["description"] && (
                 <p>
-                  <small>{this.props.data["description"].slice(0, 500)}</small>
+                  <small>{props.data["description"].slice(0, 500)}</small>
                 </p>
               )}
             </div>
@@ -226,16 +283,14 @@ export default class EmbedBlock extends Component {
       );
     }
     return null;
-  }
+  };
 
-  render() {
-    if (!this.props.url || !this.props.data) {
-      return null;
-    }
-    let preview = this.getPreview();
-    if (preview) {
-      return <p class="text-center card-text">{preview}</p>;
-    }
+  if (!props.url || !props.data) {
     return null;
   }
+  let preview = getPreview();
+  if (preview) {
+    return <p class="text-center card-text">{preview}</p>;
+  }
+  return null;
 }

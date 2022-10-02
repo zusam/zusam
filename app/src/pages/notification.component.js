@@ -3,6 +3,7 @@ import { http, util, notifications } from "/src/core";
 import { useEffect, useState } from "preact/hooks";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { FaIcon } from "/src/misc";
 
 export default function Notification(props) {
 
@@ -123,7 +124,7 @@ export default function Notification(props) {
 
   const onClick = (event, target) => {
     event.preventDefault();
-    notifications.removeMatchingNotifications(props.id).then(() => {
+    notifications.markAsRead(props.id).then(() => {
       navigate(target);
     });
   };
@@ -142,7 +143,7 @@ export default function Notification(props) {
   }
   return (
     <a
-      class="notification seamless-link unselectable"
+      class={`notification seamless-link unselectable ${!notification.read ? "unread" : ""}`}
       href={target}
       title={title}
       onClick={e => onClick(e, target)}
@@ -160,6 +161,26 @@ export default function Notification(props) {
         </div>
         <div class="date">
           {util.humanTime(notification.createdAt)}
+        </div>
+      </div>
+      <div
+        class="options dropdown"
+        onClick={e => {
+          e.stopPropagation();
+          e.preventDefault();
+          e?.target?.closest(".dropdown")?.classList.toggle("active");
+        }}
+      >
+        <div class="none-if-follows-empty">
+          <FaIcon family="solid" icon="ellipsis-h" />
+        </div>
+        <div class="dropdown-menu dropdown-options">
+          <a
+            class="seamless-link capitalize"
+            onClick={() => notifications.removeMatchingNotifications(notification.id)}
+          >
+            {t("delete")}
+          </a>
         </div>
       </div>
     </a>

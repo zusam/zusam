@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { http, api, me, notifications, bookmarks, router } from "/src/core";
+import { http, api, me, notifications, bookmarks_utils, router } from "/src/core";
 import {
   Login,
   Public,
@@ -9,7 +9,7 @@ import {
 } from "/src/outside";
 import { MessageParent } from "/src/message";
 import { GroupWriter } from "/src/writer";
-import { CreateGroup, GroupBoard, Share, BookmarkBoard } from "/src/pages";
+import { CreateGroup, GroupBoard, Share, BookmarkBoard, RandomMessage } from "/src/pages";
 import { Settings } from "/src/settings";
 import { GroupSearchWrapper } from "/src/navbar";
 import {
@@ -46,7 +46,7 @@ function App() {
   useEffect(() => {
     api.update();
     notifications.update();
-    bookmarks.update();
+    bookmarks_utils.update();
 
     // manage dropdowns
     window.addEventListener("click", e => toggleDropdowns(e));
@@ -97,6 +97,7 @@ function App() {
       <Route path="/bookmarks" element={<BookmarkBoard />} />
       <Route path="/create-group" element={<CreateGroup />} />
       <Route path="/groups/:id" element={<GroupBoard />} />
+      <Route path="/groups/:id/random" element={<RandomMessage />} />
       <Route path="/groups/:id/search" element={<GroupSearchWrapper />} />
       <Route path="/groups/:id/write" element={<GroupWriter />} />
       <Route path="/messages/:id" element={<MessageParent />} />

@@ -1,12 +1,17 @@
 import { h, Fragment } from "preact";
-import { util, me, bookmarks, notifications } from "/src/core";
+import { util, me, notifications, alert } from "/src/core";
 import { Link } from "react-router-dom";
 import { FaIcon } from "/src/misc";
 import { useTranslation } from "react-i18next";
 import { HumanTime } from "/src/pages";
+import { useStoreon } from "storeon/preact";
+import store from "/src/store";
 
 export default function MessageFooter(props) {
+
   const { t } = useTranslation();
+  const { bookmarks } = useStoreon("bookmarks");
+
   return (
     <div class="message-footer">
       <div class="infos">
@@ -109,18 +114,24 @@ export default function MessageFooter(props) {
                   {t("publish_in_group")}
                 </a>
               )}
-              {!bookmarks.hasBookmark(props?.message.id) && (
+              {!bookmarks.some(b => b.message.id === props?.message.id) && (
                 <a
                   class="seamless-link capitalize"
-                  onClick={() => bookmarks.addBookmark(props?.message.id)}
+                  onClick={() => {
+                    alert.add(t("bookmark_added"));
+                    store.dispatch("bookmark/add", props.message.id);
+                  }}
                 >
                   {t("add_bookmark")}
                 </a>
               )}
-              {bookmarks.hasBookmark(props?.message.id) && (
+              {bookmarks.some(b => b.message.id === props?.message.id) && (
                 <a
                   class="seamless-link capitalize"
-                  onClick={() => bookmarks.removeMatchingBookmarks(props?.message.id)}
+                  onClick={() => {
+                    alert.add(t("bookmark_removed"));
+                    store.dispatch("bookmark/remove", bookmarks.find(b => b.message.id === props.message.id));
+                  }}
                 >
                   {t("remove_bookmark")}
                 </a>

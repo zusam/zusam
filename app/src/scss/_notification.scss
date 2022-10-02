@@ -1,5 +1,6 @@
 .notifications-menu {
     left: -48px !important;
+    width: 100vw;
 }
 
 .notification-header {
@@ -20,22 +21,29 @@
     }
 }
 
-.notifications-menu {
-    width: 100vw;
-}
-
 .notification {
     font-size: 90%;
-    border-bottom: 1px solid #ddd;
+    position: relative;
+    padding-bottom: 7px !important;
+    padding-left: 5px !important;
+
+    &.unread {
+      background-color: #f7a71b38;
+
+      &:hover {
+        background-color: #f7a71b6b !important;
+      }
+    }
 
     .miniature {
         display: inline-block;
-        margin: 0 12px 0 4px;
+        margin: 4px 10px 0 0;
         vertical-align: top;
 
         img {
             height: 60px;
             width: 60px;
+            border-radius: 100%;
         }
     }
 
@@ -50,5 +58,19 @@
         .date {
             font-size: 90%;
         }
+    }
+
+    .options {
+      bottom: 1px;
+      position: absolute;
+      right: 10px;
+    }
+
+    .dropdown .dropdown-menu.dropdown-options {
+      bottom: 5px;
+      top: initial;
+      right: -2px;
+      left: initial;
+      position: absolute;
     }
 }

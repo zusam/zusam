@@ -18,7 +18,7 @@ const notifications = {
   isNew(id) {
     let state = store.get();
     if (Array.isArray(state["notifications"])) {
-      return state.notifications.some(
+      return state.notifications.filter(n => !n.read).some(
         n =>
           notifications.matchNotification(n, id) ||
           (n.type == "new_comment" && n.fromMessage.id === id)
@@ -30,7 +30,22 @@ const notifications = {
   removeAllNotifications() {
     let state = store.get();
     if (Array.isArray(state["notifications"])) {
-      state.notifications.forEach(n => store.dispatch("notifications/remove", n));
+      state.notifications.forEach(n => {
+        http.delete(`/api/notifications/${n.id}`).then(() => {
+          store.dispatch("notifications/remove", n);
+        });
+      });
+    }
+  },
+
+  markAllNotificationsAsRead() {
+    let state = store.get();
+    if (Array.isArray(state["notifications"])) {
+      state.notifications.forEach(n => {
+        http.put(`/api/notifications/${n.id}`, {read: true}).then(() => {
+          store.dispatch("notifications/read", n);
+        });
+      });
     }
   },
 
@@ -41,6 +56,18 @@ const notifications = {
         .map(n => {
           http.delete(`/api/notifications/${n.id}`).then(() => {
             store.dispatch("notifications/remove", n);
+          });
+        })
+    );
+  },
+
+  markAsRead(id) {
+    return Promise.all(
+      store.get().notifications
+        .filter(n => notifications.matchNotification(n, id))
+        .map(n => {
+          http.put(`/api/notifications/${n.id}`, {read: true}).then(() => {
+            store.dispatch("notifications/read", n);
           });
         })
     );

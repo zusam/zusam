@@ -23,19 +23,3 @@ function MainRouter() {
 }
 
 render(<Index />, document.body);
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register(new URL("service-workers.js", import.meta.url), {type: "module"}).then(
-      (registration) => {
-        console.log(
-          "ServiceWorker registration successful with scope: ",
-          registration.scope
-        );
-      },
-      (err) => {
-        console.warn("ServiceWorker registration failed: ", err);
-      }
-    );
-  });
-}

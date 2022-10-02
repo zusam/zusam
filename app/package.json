@@ -1,12 +1,12 @@
 {
   "name": "Zusam",
   "license": "AGPL-3.0-or-later",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "scripts": {
     "build": "parcel build --public-url './' src/index.html",
     "clean": "rm -rf dist/*",
     "lang": "cp -r src/lang dist/",
-    "postbuild": "node ./build-tools/set_version_in_files.js dist/index.html dist/service-workers.js",
+    "postbuild": "node ./build-tools/set_version_in_files.js dist/index.html",
     "prebuild": "npm run lang",
     "prelang": "npm run clean",
     "analyze": "./node_modules/.bin/eslint -c .eslintrc.json src/"

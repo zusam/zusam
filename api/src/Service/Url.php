@@ -90,7 +90,8 @@ class Url
     public static function exceptionRedirect(string $url): string
     {
         // https://github.com/oscarotero/Embed/issues/458
-        $url = preg_replace("/^https?:\/\/youtube.com\/shorts\//", "https://youtube.com/watch?v=", $url);
+        $url = preg_replace("/^https?:\/\/(www.)?youtube.com\/shorts\//", "https://youtube.com/watch?v=", $url);
+        $url = preg_replace("/^https?:\/\/(www.)?youtube.com\/embed\//", "https://youtube.com/watch?v=", $url);
         return $url;
     }
 

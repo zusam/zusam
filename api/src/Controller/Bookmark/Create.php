@@ -37,7 +37,7 @@ class Create extends ApiController
      *  @OA\Schema(
      *    type="object",
      *    @OA\Property(
-     *      property="message",
+     *      property="message_id",
      *      type="string"
      *    ),
      *  )
@@ -63,7 +63,7 @@ class Create extends ApiController
             );
         }
 
-        $messageEntity = $this->em->getRepository(Message::class)->findOneById($requestData['message']);
+        $messageEntity = $this->em->getRepository(Message::class)->findOneById($requestData['message_id']);
 
         $bookmark = $this->bookmarkService->create($currentUser, $messageEntity);
         $this->em->persist($bookmark);

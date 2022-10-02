@@ -4,6 +4,7 @@ namespace App\Controller\Group;
 
 use App\Controller\ApiController;
 use App\Entity\Group;
+use App\Entity\Message;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,6 +47,35 @@ class Get extends ApiController
 
         return new Response(
             $this->serialize($group, ['read_group']),
+            Response::HTTP_OK
+        );
+    }
+
+    /**
+     * @Route("/groups/{id}/random", methods={"GET"})
+     * @OA\Response(
+     *  response=200,
+     *  description="Get a random message from the group",
+     *  @Model(type=App\Entity\Message::class, groups={"read_message"})
+     * )
+     * @OA\Tag(name="group")
+     * @Security(name="api_key")
+     */
+    public function random_message(string $id): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $group = $this->em->getRepository(Group::class)->findOneById($id);
+        if (empty($group)) {
+            return new JsonResponse(['error' => 'Not Found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
+
+        $messages = $this->em->getRepository(Message::class)->findByGroup($id);
+
+        return new Response(
+            $this->serialize($messages[random_int(0, count($messages))], ['read_message']),
             Response::HTTP_OK
         );
     }

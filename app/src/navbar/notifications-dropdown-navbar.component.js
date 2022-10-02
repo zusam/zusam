@@ -30,8 +30,8 @@ export default function NotificationsDropdownNavbar() {
           family={notifications.length ? "solid" : "regular"}
           icon={"bell"}
         />
-        {!!notifications.length && (
-          <span class="badge-count">{Math.min(notifications.length, notifs.LIMIT) + (notifications.length > notifs.LIMIT ? "+" : "")}</span>
+        {!!notifications.filter(n => !n.read).length && (
+          <div class="unread-badge" />
         )}
       </div>
       <div class="dropdown-menu dropdown-right notifications-menu">
@@ -39,13 +39,15 @@ export default function NotificationsDropdownNavbar() {
           <strong class="capitalize">{t("notifications")}</strong>
           <div
             class="action capitalize"
-            onClick={() => notifs.removeAllNotifications()}
+            onClick={() => {
+              notifs.markAllNotificationsAsRead();
+            }}
           >
             {t("mark_all_as_read")}
           </div>
         </div>
         {notifications?.length && (
-          notifications.sort((a, b) => b.createdAt - a.createdAt).slice(0,notifs.LIMIT).map(e => <Notification key={e.id} {...e} />)
+          notifications.sort((a, b) => b.createdAt - a.createdAt).slice(0,notifs.LIMIT).map(e => <Notification key={e.id + e.read} {...e} />)
         )}
       </div>
     </div>
