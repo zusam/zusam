@@ -30,5 +30,8 @@
     "logout": "ⴼⴼⵖ",
     "settings": "ⵜⵉⵙⵖⴰⵍ",
     "edit": "ⵙⴳⴳⴷ",
-    "lang": "ⵜⵓⵜⵍⴰⵢⵜ"
+    "lang": "ⵜⵓⵜⵍⴰⵢⵜ",
+    "ask_delete_message": "ⵉⵙ ⵜⵃⵇⵇⵉⴷ ⴰⴷ ⵜⴽⴽⵙⴷ ⵜⴰⴱⵔⴰⵜ ⴰⴷ?",
+    "Invalid login/password": "ⵉⵜⵜⴰⵡⵣⴳⵍ ⵓⴽⵛⴰⵎ ⴷ/ⵏⵉⵖ ⵉⵏⵉⴳⵍ ⵏ ⵡⴰⴷⴰⴼ",
+    "forgot_password": "ⵉⵙ ⵜⴻⵜⵜⵓⴷ ⵉⵏⵉⴳⵍ ⵏ ⵡⴰⴷⴰⴼ ⵏⵏⴽ?"
 }
