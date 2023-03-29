@@ -1,7 +1,7 @@
 import { h, Fragment } from "preact";
 import { http, util, notifications } from "/src/core";
 import { useEffect, useState } from "preact/hooks";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FaIcon } from "/src/misc";
 
@@ -142,11 +142,11 @@ export default function Notification(props) {
     return null;
   }
   return (
-    <a
+    <Link
+      key={props.id}
       class={`notification seamless-link unselectable ${!notification.read ? "unread" : ""}`}
-      href={target}
+      to={target}
       title={title}
-      onClick={e => onClick(e, target)}
     >
       <div class="miniature unselectable">{getMiniature(notification)}</div>
       <div class="infos">
@@ -183,6 +183,6 @@ export default function Notification(props) {
           </a>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
