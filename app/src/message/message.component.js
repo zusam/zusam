@@ -76,16 +76,22 @@ export default function Message(props) {
 
   const loadMessage = () => {
     if (props?.message) {
-      setFiles(props.message?.files.map(f => ({id: f.id, status: "loading"})));
+      if (props?.files?.length) {
+        setFiles(props?.message?.files.map(f => ({id: f.id, status: "loading"})));
+      }
       hydrateMessage(props.message);
     } else if (props?.token) {
       http.get(`/api/public/${props.token}`).then(m => {
-        setFiles(m?.files.map(f => ({id: f.id, status: "loading"})));
+        if (m?.files?.length) {
+          setFiles(m?.files.map(f => ({id: f.id, status: "loading"})));
+        }
         hydrateMessage(m);
       });
     } else {
       http.get(`/api/messages/${props.id}`).then(m => {
-        setFiles(m?.files.map(f => ({id: f.id, status: "loading"})));
+        if (m?.files?.length) {
+          setFiles(m?.files.map(f => ({id: f.id, status: "loading"})));
+        }
         hydrateMessage(m);
       });
     }
