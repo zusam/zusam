@@ -1,1 +1,13 @@
-{}
+{
+    "next_coms": "Következő hozzászólások",
+    "ago": "{{duration}} ezelött",
+    "groups": "Csoportok",
+    "new_password_placeholder": "új jelszó",
+    "connect": "Kapcsolat",
+    "submit": "Küldés",
+    "title_placeholder": "Üzenet címe (nem kötelező)",
+    "login_placeholder": "email",
+    "previous_coms": "Korábbi hozzászólások",
+    "password_placeholder": "jelszó",
+    "confirm_password_placeholder": "jelszó megerősítése"
+}
