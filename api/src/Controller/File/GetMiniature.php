@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 
 class GetMiniature extends ApiController
 {
@@ -28,6 +29,7 @@ class GetMiniature extends ApiController
      * @OA\Tag(name="file")
      * @Security(name="api_key")
      */
+    #[Cache(public: true, maxage: 31536000)]
     public function index(
         string $id,
         int $width,
