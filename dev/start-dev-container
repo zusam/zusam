@@ -2,7 +2,6 @@
 
 set -xe
 
-pgrm="$(command -v podman || command -v docker)"
 initial_path="$(pwd)"
 
 cd "$(dirname "$0")"
@@ -16,13 +15,7 @@ cdroot() {
 
 cdroot
 
-if [ -n "$1" ]; then
-  cmd="$*"
-else
-  cmd="bash"
-fi
-
 make dev
-"$pgrm" run --rm -it -v "$initial_path":/zusam:z --name "zusam-dev" "zusam-dev" "$cmd"
+docker run --rm -it -e UID="$(id -u)" -e GID="$(id -g)" -v "$initial_path":/zusam:z --name "zusam-dev" "zusam-dev"
 
 cd "$initial_path"

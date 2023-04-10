@@ -3,26 +3,27 @@ RUN set -xe && apk add --no-cache \\
     imagemagick \\
     nginx \\
     openssl \\
-    php8 \\
-    php8-common \\
-    php8-ctype \\
-    php8-curl \\
-    php8-dom \\
-    php8-fileinfo \\
-    php8-fpm \\
-    php8-iconv \\
-    php8-intl \\
-    php8-json \\
-    php8-mbstring \\
-    php8-opcache \\
-    php8-openssl \\
-    php8-pdo_sqlite \\
-    php8-pecl-apcu \\
-    php8-pecl-imagick \\
-    php8-posix \\
-    php8-session \\
-    php8-simplexml \\
-    php8-tokenizer \\
-    php8-xml \\
-    php8-xmlwriter \\
-    && ln -sf /usr/bin/php8 /usr/bin/php
+    php81 \\
+    php81-common \\
+    php81-ctype \\
+    php81-curl \\
+    php81-dom \\
+    php81-fileinfo \\
+    php81-fpm \\
+    php81-iconv \\
+    php81-intl \\
+    php81-json \\
+    php81-mbstring \\
+    php81-opcache \\
+    php81-openssl \\
+    php81-pdo_sqlite \\
+    php81-pecl-apcu \\
+    php81-pecl-imagick \\
+    php81-posix \\
+    php81-session \\
+    php81-simplexml \\
+    php81-tokenizer \\
+    php81-xml \\
+    php81-xmlwriter \\
+    su-exec \\
+    && ln -sf /usr/bin/php81 /usr/bin/php
