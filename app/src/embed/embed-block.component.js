@@ -174,15 +174,17 @@ export default function EmbedBlock(props) {
               />
             );
           }
-          return (
-            <GenericEmbed
-              preview={util.crop(props.preview.id, 1024, 270)}
-              url={
-                `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque${timecode ? `&start=${timecode}` : ""}`
-              }
-              playBtnClass={"youtube"}
-            />
-          );
+          if (video_id.length) {
+            return (
+              <GenericEmbed
+                preview={util.crop(props.preview.id, 1024, 270)}
+                url={
+                  `https://youtube.com/embed/${video_id[0].split("=")[1]}?autoplay=1&controls=2&wmode=opaque${timecode ? `&start=${timecode}` : ""}`
+                }
+                playBtnClass={"youtube"}
+              />
+            );
+          }
         }
       }
       if ("invidious" == props.data["providerName"].toLowerCase()) {
