@@ -6,14 +6,14 @@ use App\Controller\ApiController;
 use App\Entity\Group;
 use App\Service\Preview as PreviewService;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
-use OpenApi\Annotations as OA;
 
 class GetPage extends ApiController
 {
@@ -81,42 +81,10 @@ class GetPage extends ApiController
         );
         $totalItems = $query->getResult();
 
-        $page = [];
-        foreach ($messages as $message) {
-            // eventually generate a preview if there is none
-            if (!$message->getPreview()) {
-                $preview = $this->previewService->genPreview($message);
-                if ($preview) {
-                    $message->setPreview($preview);
-                    $this->em->persist($message);
-                    $this->em->flush();
-                }
-            }
-            $previewId = $message->getPreview() ? $message->getPreview()->getId() : '';
-            $authorId = $message->getAuthor() ? $message->getAuthor()->getId() : '';
-            $page[] = [
-                'id' => $message->getId(),
-                'entityType' => $message->getEntityType(),
-                'data' => $message->getData(),
-                'author' => $authorId,
-                'preview' => $previewId,
-                'children' => count($message->getChildren()),
-                'lastActivityDate' => $message->getLastActivityDate(),
-            ];
-        }
-
         $data = [
-            'messages' => $page,
+            'messages' => $this->normalize($messages, ['preview_message']),
             'totalItems' => $totalItems[0]['totalItems'],
         ];
-        $response = new JsonResponse($data, JsonResponse::HTTP_OK);
-        $response->setCache([
-            'etag' => md5(json_encode($data)),
-            'max_age' => 0,
-            's_maxage' => 3600,
-            'public' => true,
-        ]);
-
-        return $response;
+        return new JsonResponse($data, JsonResponse::HTTP_OK);
     }
 }

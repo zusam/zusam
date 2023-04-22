@@ -4,14 +4,15 @@ namespace App\Controller\User;
 
 use App\Controller\ApiController;
 use App\Entity\User;
-use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\Cache;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class Get extends ApiController
 {
@@ -32,6 +33,7 @@ class Get extends ApiController
      * @OA\Tag(name="user")
      * @Security(name="api_key")
      */
+    #[Cache(public: true, maxage: 86400)]
     public function index(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

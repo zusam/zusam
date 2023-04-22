@@ -83,14 +83,8 @@ class Get extends ApiController
 
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $message->getGroup());
 
-        $message_preview = [
-          "id" => $message->getId(),
-          "author" => $this->normalize($message->getAuthor(), ['read_message_preview']),
-          "preview" => $this->normalize($message->getPreview(), ['read_message']),
-          "children" => count($message->getChildren()),
-          "lastActivityDate" => $message->getLastActivityDate(),
-          "data" => $message->getData(),
-        ];
+        $message_preview = $this->normalize($message, ['read_message_preview']);
+        $message_preview["children"] = count($message->getChildren());
 
         return new JsonResponse($message_preview, JsonResponse::HTTP_OK);
     }

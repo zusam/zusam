@@ -37,7 +37,7 @@ class Message
 
     /**
      * @Assert\NotBlank()
-     * @Groups({"read_message", "read_notification"})
+     * @Groups({"read_message", "read_notification", "read_message_preview"})
      * @OA\Property(type="object")
      * @ORM\Column(type="json", nullable=true)
      */
@@ -95,14 +95,14 @@ class Message
     /**
      * @Assert\NotNull()
      * @Assert\Type("integer")
-     * @Groups({"read_message"})
+     * @Groups({"read_message", "read_message_preview"})
      * @OA\Property(type="integer")
      * @ORM\Column(type="integer")
      */
     private $lastActivityDate;
 
     /**
-     * @Groups({"read_message"})
+     * @Groups({"read_message", "read_message_preview"})
      * @OA\Property(type="App\Entity\File")
      * @ORM\JoinColumn(name="preview_id", referencedColumnName="id")
      * @ORM\ManyToOne(targetEntity="App\Entity\File")

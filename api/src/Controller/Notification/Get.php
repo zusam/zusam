@@ -13,6 +13,7 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -48,19 +49,6 @@ class Get extends ApiController
             return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
         }
         $notification_data_output = $this->normalize($notification, ['read_notification']);
-        $notification_data_output["fromGroup"] = $this->normalize($notification->getFromGroup(), ['read_notification']);
-
-        if (in_array(
-            $notification->getType(),
-            [
-              Notification::NEW_COMMENT,
-              Notification::NEW_MESSAGE,
-              Notification::USER_JOINED_GROUP,
-              Notification::USER_LEFT_GROUP
-            ]
-        )) {
-            $notification_data_output["author"] = $this->normalize($notification->getFromUser(), ['read_message']);
-        }
 
         if (in_array(
             $notification->getType(),
@@ -77,9 +65,9 @@ class Get extends ApiController
         if ($notification_data_output["type"] != Notification::GLOBAL_NOTIFICATION
           && empty($notification->getMiniature())
         ) {
-            $notification_data_output["miniature"] = $this->normalize($notification->getFromUser()->getAvatar(), ['read_message']);
+            $notification_data_output["miniature"] = $this->normalize($notification->getFromUser()->getAvatar(), ['read_notification']);
         }
 
-        return new Response(json_encode($notification_data_output), Response::HTTP_OK);
+        return new JsonResponse($notification_data_output, Response::HTTP_OK);
     }
 }

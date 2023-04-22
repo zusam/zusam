@@ -33,7 +33,11 @@ export default function MessagePreview(props) {
 
   useEffect(() => {
     http.get(`/api/messages/${props.id}/preview`).then(p => {
-      setAuthor(p?.author);
+      if (p?.author?.id) {
+        http.get(`/api/users/${p.author.id}`).then(u => {
+          setAuthor(u);
+        });
+      }
       setPreview(p?.preview);
       setId(p?.id);
       setChildren(p?.children);
@@ -60,10 +64,9 @@ export default function MessagePreview(props) {
               {preview ? (
                 <div
                   class="card-miniature"
-                  style={
-                    `background-image: url('${util.crop(util.getId(preview), 320, 180)}')`
-                  }
-                />
+                >
+                  <img width="320" height="180" src={util.crop(util.getId(preview), 320, 180)} />
+                </div>
               ) : (
                 <div class="text-preview">{data?.text}</div>
               )}

@@ -12,6 +12,7 @@ export default function Notification(props) {
   const [target, setTarget] = useState(null);
   const [action, setAction] = useState(null);
   const [title, setTitle] = useState(null);
+  const [author, setAuthor] = useState(null);
   const [notification, setNotification] = useState(null);
 
   const getMiniature = (notification) => {
@@ -24,7 +25,7 @@ export default function Notification(props) {
     }
     return (
       <img
-        style={util.backgroundHash(notification?.author?.id)}
+        style={util.backgroundHash(notification?.fromUser?.id)}
         src={imgSrc}
         onError={e => setMiniatureOnError(e)}
       />
@@ -134,6 +135,11 @@ export default function Notification(props) {
       setTarget(getTarget(n, n.fromMessage?.id));
       setAction(getAction(n));
       setTitle(n.title);
+      if (n?.fromUser?.id) {
+        http.get(`/api/users/${n.fromUser.id}`).then(u => {
+          setAuthor(u);
+        });
+      }
       setNotification(n);
     });
   }, []);
@@ -153,7 +159,7 @@ export default function Notification(props) {
         <div class="description">
           {notification.type != "global_notification" && (
             <Fragment>
-              <strong>{notification?.author?.name || "--"}</strong>
+              <strong>{author?.name || "--"}</strong>
               <span>{` ${action} `}</span>
             </Fragment>
           )}
