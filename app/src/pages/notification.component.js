@@ -132,15 +132,17 @@ export default function Notification(props) {
 
   useEffect(() => {
     http.get(`/api/notifications/${props.id}`, false, 100).then(n => {
-      setTarget(getTarget(n, n.fromMessage?.id));
-      setAction(getAction(n));
-      setTitle(n.title);
-      if (n?.fromUser?.id) {
-        http.get(`/api/users/${n.fromUser.id}`).then(u => {
-          setAuthor(u);
-        });
+      if (n) {
+        setTarget(getTarget(n, n.fromMessage?.id));
+        setAction(getAction(n));
+        setTitle(n.title);
+        if (n?.fromUser?.id) {
+          http.get(`/api/users/${n.fromUser.id}`).then(u => {
+            setAuthor(u);
+          });
+        }
+        setNotification(n);
       }
-      setNotification(n);
     });
   }, []);
 
