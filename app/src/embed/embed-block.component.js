@@ -2,7 +2,6 @@ import { h } from "preact";
 import { util, router } from "/src/core";
 import { useState, useEffect } from "preact/hooks";
 import BandCampEmbed from "./bandcamp-embed.component.js";
-import InstagramEmbed from "./instagram-embed.component.js";
 import GenericEmbed from "./generic-embed.component.js";
 import GLightbox from "glightbox";
 
@@ -76,17 +75,7 @@ export default function EmbedBlock(props) {
           );
         }
       }
-      if ("instagram" == props.data["providerName"].toLowerCase()) {
-        return (
-          <InstagramEmbed
-            url={props.data["url"]}
-            preview={util.crop(props.preview.id, 1024, 1024)}
-            title={props.data["title"]}
-            description={props.data["description"]}
-          />
-        );
-      }
-      if (props.data["providerUrl"] == "https://bandcamp.com") {
+      if ("bandcamp" == props.data["providerName"].toLowerCase()) {
         if (props.data["code"]) {
           let id = props.data["code"].match(/https:\/\/.*album=\d+/);
           if (!id) {
@@ -185,20 +174,6 @@ export default function EmbedBlock(props) {
               />
             );
           }
-        }
-      }
-      if ("invidious" == props.data["providerName"].toLowerCase()) {
-        let url = props?.data?.url && typeof(props?.data.url) == "string" ? props.data?.url : props.url;
-        if (props?.preview?.id && url) {
-          return (
-            <GenericEmbed
-              preview={util.crop(props.preview.id, 1024, 270)}
-              url={
-                `${url.replace("watch?v=", "embed/")}`
-              }
-              playBtnClass={"youtube"}
-            />
-          );
         }
       }
     }
