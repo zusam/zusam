@@ -60,11 +60,12 @@ export default function GroupSearch(props) {
             <p>{t("search_without_result")}</p>
           )}
           {messages.map((msg, i) => {
+            console.log(msg);
             return (
               <MessageSearchResult
                 tabindex={i + 1}
                 key={msg.id}
-                message={msg}
+                id={msg.id}
                 groupId={groupId}
                 search={search}
                 hashtags={hashtags}

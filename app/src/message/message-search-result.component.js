@@ -6,12 +6,28 @@ import { Link } from "react-router-dom";
 
 export default function MessageSearchResult(props) {
 
-  const [author, setAuthor] = useState(props?.message?.author || null);
+  const [author, setAuthor] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [data, setData] = useState(null);
+  const [lastActivityDate, setLastActivityDate] = useState(null);
+  const [parent, setParent] = useState(0);
+  const [children, setChildren] = useState(0);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    if (props?.message?.author) {
-      http.get(`/api/users/${props.message.author}`).then(author => author && setAuthor(author));
-    }
+    http.get(`/api/messages/${props.id}/preview`).then(p => {
+      if (p?.author?.id) {
+        http.get(`/api/users/${p.author.id}`).then(u => {
+          setAuthor(u);
+        });
+      }
+      setPreview(p?.preview);
+      setChildren(p?.children);
+      setLoaded(true);
+      setLastActivityDate(p?.lastActivityDate);
+      setData(p?.data);
+      setParent(p?.parent);
+    });
   }, []);
 
   const displayAuthorName = () => {
@@ -38,11 +54,11 @@ export default function MessageSearchResult(props) {
   };
 
   const displayMessageTitle = () => {
-    if (!props?.message?.data?.title) {
-      return { __html: util.humanTime(props?.message?.lastActivityDate) };
+    if (!data?.title) {
+      return { __html: util.humanTime(lastActivityDate) };
     }
     // escape html a little (just enough to avoid xss I hope)
-    let title = props?.message?.data?.title.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
+    let title = data?.title.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
 
     // make the search terms stand out
     let words = title.split(" ");
@@ -59,12 +75,12 @@ export default function MessageSearchResult(props) {
   };
 
   const displayMessageText = () => {
-    if (!props?.message?.data?.text) {
+    if (!data?.text) {
       return "";
     }
 
     // escape html a little (just enough to avoid xss I hope)
-    let txt = props?.message?.data?.text.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
+    let txt = data?.text.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
 
     // make the search terms stand out for not url words
     let lines = txt.split("\n");
@@ -125,12 +141,12 @@ export default function MessageSearchResult(props) {
   };
 
   const getMiniature = () => {
-    if (props?.preview) {
+    if (preview) {
       return (
         <div
           class="card-miniature"
           style={
-            `background-image: url('${util.crop(props?.preview, 100, 100)}')`
+            `background-image: url('${util.crop(preview.id, 100, 100)}')`
           }
         />
       );
@@ -148,19 +164,19 @@ export default function MessageSearchResult(props) {
   };
 
   const getLink = () => {
-    if (props.message.parent && props.message.children == 0) {
+    if (parent && children == 0) {
       return (
-        `/messages/${props.message.parent}/${props.message.id}`
+        `/messages/${parent.id}/${props.id}`
       );
     }
-    return `/messages/${props.message.id}`;
+    return `/messages/${props.id}`;
   };
 
   return (
     <Link
       class="d-inline-block seamless-link message-preview unselectable"
       to={getLink()}
-      title={props?.title}
+      title={data?.title}
     >
       <div tabindex={props.tabindex} class="card material-shadow-with-hover">
         <div class="card-body border-top">
@@ -173,12 +189,12 @@ export default function MessageSearchResult(props) {
             <div class="dot">&bull;</div>
             <div
               class="title"
-              title={props?.title || util.humanFullDate(props.message.lastActivityDate)}
+              title={data?.title || util.humanFullDate(lastActivityDate)}
               dangerouslySetInnerHTML={displayMessageTitle()}
             />
           </div>
           <div class="text">
-            {props?.message?.data?.text.trim() && (
+            {data?.text.trim() && (
               <p
                 class="card-text"
                 dangerouslySetInnerHTML={displayMessageText()}
@@ -186,12 +202,12 @@ export default function MessageSearchResult(props) {
             )}
           </div>
           <div class="children">
-            {!!props.message.children && (
+            {!!children && (
               <span>
-                {`${props.message.children} `}
+                {`${children} `}
                 <FaIcon
                   family={
-                    notifications.isNew(props.message.id) ? "solid" : "regular"
+                    notifications.isNew(props.id) ? "solid" : "regular"
                   }
                   icon={"comment"}
                 />

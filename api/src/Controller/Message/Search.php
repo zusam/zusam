@@ -104,124 +104,56 @@ class Search extends ApiController
         }
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
-        $query = $this->em->createQuery(
-            "SELECT m FROM App\Entity\Message m"
-            ." WHERE m.group = '".$group->getId()."'"
-        );
-        $messages = $query->iterate();
+        // Create search query
 
-        // flatten the search terms before starting the search
-        $flattened_search_terms = array_map(function ($e) {
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('m')
+           ->from('App\Entity\Message', 'm')
+           ->leftJoin('m.author', 'a')
+           ->where('m.group = :groupId')
+           ->andWhere('m.createdAt > :minTimestamp')
+           ->setMaxResults(20);
+
+        $parameters = [
+            'groupId' => $group->getId(),
+            'minTimestamp' => time() - 3600 * 24 * 30 * 600, // only look for messages in the last 6 months
+        ];
+
+        // flatten the search terms (and de-duplicate them) before starting the search
+        // also remove less than 3 letter terms
+        $flattened_search_terms = array_filter(array_unique(array_map(function ($e) {
             return StringUtils::remove_accents($e);
-        }, $search_terms);
-
-        $totalItems = 0;
-        $results = [];
-        $i = 0;
-        foreach ($messages as $row) {
-            $message = $row[0];
-            $i++;
-            $data = $message->getData();
-            $score = 0;
-
-            if (isset($data['text']) && self::has_term($flattened_search_terms, $data['text'])) {
-                $score += 100;
-            }
-
-            if (isset($data['title']) && self::has_term($flattened_search_terms, $data['title'])) {
-                $score += 150;
-            }
-
-            try {
-                if (
-                    ! is_null($message->getAuthor())
-                    && ! is_null($message->getAuthor()->getId())
-                    && self::has_term($flattened_search_terms, $message->getAuthor()->getName())
-                ) {
-                    $score += 50;
-                }
-            } catch (\Doctrine\ORM\EntityNotFoundException $e) {
-                // Just continue without adding anything to the score
-                // This try/catch is necessary because doctrine uses proxy classes
-                // https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/advanced-configuration.html#proxy-objects
-            }
-
-            $message_links = $message->getUrls();
-            if (!empty($message_links)) {
-                $link = $this->em->getRepository(Link::class)->findOneByUrl($message_links[0]);
-                if (!empty($link)) {
-                    $link_data = $link->getData();
-                    if (!empty($link_data)) {
-                        // TODO: remove the evaluation for "tags" since this has only an effect for links generated before zusam 0.5
-                        if (isset($link_data["tags"]) && self::has_term($flattened_search_terms, implode(' ', $link_data["tags"]))) {
-                            $score += 25;
-                        }
-                        if (isset($link_data["keywords"]) && self::has_term($flattened_search_terms, implode(' ', $link_data["keywords"]))) {
-                            $score += 25;
-                        }
-                        if (isset($link_data["title"]) && self::has_term($flattened_search_terms, $link_data["title"])) {
-                            $score += 30;
-                        }
-                        if (isset($link_data['description']) && self::has_term($flattened_search_terms, $link_data["description"])) {
-                            $score += 20;
-                        }
-                    }
-                    // detach from Doctrine, so that it can be Garbage-Collected immediately
-                    $this->em->detach($link);
-                }
-            }
-
-            if ($score > 0) {
-                $totalItems++;
-                $previewId = $message->getPreview() ? $message->getPreview()->getId() : '';
-                $authorId = $message->getAuthor() ? $message->getAuthor()->getId() : '';
-                $parentId = $message->getParent() ? $message->getParent()->getId() : '';
-                // check if the parent exists
-                if (null == $this->em->getRepository(Message::class)->findOneById($parentId)) {
-                    $parentId = '';
-                }
-                $results[] = [
-                    'id' => $message->getId(),
-                    'entityType' => $message->getEntityType(),
-                    'data' => $message->getData(),
-                    'author' => $authorId,
-                    'preview' => $previewId,
-                    'parent' => $parentId,
-                    'children' => count($message->getChildren()),
-                    'lastActivityDate' => $message->getLastActivityDate(),
-                    'score' => $score,
-                ];
-            }
-
-            // detach from Doctrine, so that it can be Garbage-Collected immediately
-            $this->em->detach($row[0]);
-        }
-
-        usort($results, function ($a, $b) {
-            if ($a['score'] < $b['score']) {
-                return 1;
-            }
-            if ($a['score'] > $b['score']) {
-                return -1;
-            }
-            return $a['lastActivityDate'] < $b['lastActivityDate'];
+        }, $search_terms)), function ($term) {
+            return mb_strlen($term);
         });
 
-        // limit returned results
-        $results = array_slice($results, 0, 100);
+        // Add a select expression to count the number of search terms that each message contains
+        $selectExpression = '';
+        foreach ($flattened_search_terms as $key => $term) {
+            // $selectExpression .= "CASE WHEN JSON_EXTRACT(m.data, '$.text') LIKE :term{$key} THEN 2 ELSE 0 END + ";
+            // $selectExpression .= "CASE WHEN JSON_EXTRACT(m.data, '$.title') LIKE :term{$key} THEN 4 ELSE 0 END + ";
+            $selectExpression .= "CASE WHEN m.data LIKE :term{$key} THEN 2 ELSE 0 END + ";
+            $selectExpression .= "CASE WHEN a.name LIKE :term{$key} THEN 1 ELSE 0 END + ";
+            $parameters["term{$key}"] = '%'.$term.'%';
+        }
+        $selectExpression = rtrim($selectExpression, ' + ');
+
+        // Calculate the total number of matches for each message
+        $qb->addSelect('(' . $selectExpression . ') as HIDDEN score')->andWhere('score > 0') ;
+
+        // Sort the results by the total number of matches for each message
+        $qb->orderBy('score', 'DESC');
+
+        $qb->setParameters($parameters);
+
+        $messages = $qb->getQuery()->getResult();
 
         $data = [
-            'messages' => $results,
-            'totalItems' => $totalItems,
+            'messages' => $this->normalize($messages),
+            'totalItems' => count($messages),
             'searchterms' => $search_terms,
         ];
         $response = new JsonResponse($data, JsonResponse::HTTP_OK);
-        $response->setCache([
-            'etag' => md5(json_encode($data)),
-            'max_age' => 0,
-            's_maxage' => 3600,
-            'public' => true,
-        ]);
 
         return $response;
     }
