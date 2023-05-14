@@ -56,7 +56,7 @@ class Message
             }, $data['files'])));
         }
 
-        $message->setPreview($this->genPreview($message, false));
+        $message->setPreview($this->genPreview($message, $message->getIsInFront()));
         $this->em->persist($message);
 
         $parent = $message->getParent();

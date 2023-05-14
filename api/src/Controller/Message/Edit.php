@@ -87,14 +87,16 @@ class Edit extends ApiController
         }, $requestData['files'] ?? [])));
 
         // Set file order
-        foreach ($requestData['files'] as $key => $fid) {
-            $file = $this->em->getRepository(File::class)->findOneById($fid);
-            $file->setFileIndex($key);
-            $this->em->persist($file);
+        if (!empty($requestData['files'])) {
+            foreach ($requestData['files'] as $key => $fid) {
+                $file = $this->em->getRepository(File::class)->findOneById($fid);
+                $file->setFileIndex($key);
+                $this->em->persist($file);
+            }
         }
 
         // regen message miniature
-        $message->setPreview($this->messageService->genPreview($message));
+        $message->setPreview($this->messageService->genPreview($message, true));
 
         $currentUser->setLastActivityDate(time());
         $this->em->persist($currentUser);
