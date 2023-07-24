@@ -16,14 +16,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class Delete extends ApiController
 {
     public function __construct(
         EntityManagerInterface $em,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        TagAwareCacheInterface $cache,
     ) {
         parent::__construct($em, $serializer);
+        $this->cache = $cache;
     }
 
     /**
@@ -57,6 +60,10 @@ class Delete extends ApiController
         $this->em->persist($currentUser);
 
         $this->em->remove($message);
+
+        // Clear cache for the group
+        $this->cache->invalidateTags(['group_'.$message->getGroup()->getId()]);
+
         $this->em->flush();
 
         return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);

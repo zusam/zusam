@@ -27,7 +27,7 @@ class Create extends ApiController
     public function __construct(
         EntityManagerInterface $em,
         SerializerInterface $serializer,
-        MessageService $messageService
+        MessageService $messageService,
     ) {
         parent::__construct($em, $serializer);
         $this->messageService = $messageService;

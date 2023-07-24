@@ -9,6 +9,7 @@ use App\Service\Notification as NotificationService;
 use App\Service\Url as UrlService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class Message
 {
@@ -20,10 +21,12 @@ class Message
         EntityManagerInterface $em,
         UrlService $urlService,
         NotificationService $notificationService,
+        TagAwareCacheInterface $cache,
     ) {
         $this->em = $em;
         $this->urlService = $urlService;
         $this->notificationService = $notificationService;
+        $this->cache = $cache;
     }
 
     public function create($data, $author, $group)
@@ -90,6 +93,9 @@ class Message
             $parent->setLastActivityDate(time());
             $this->em->persist($parent);
         }
+
+        // Clear cache for the group
+        $this->cache->invalidateTags(['group_'.$group->getId()]);
 
         $this->em->flush();
 
