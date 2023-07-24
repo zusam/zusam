@@ -19,7 +19,6 @@
         "guzzlehttp/guzzle": "^7.0",
         "nelmio/api-doc-bundle": "^4.0",
         "nelmio/cors-bundle": "^2.0",
-        "sensio/framework-extra-bundle": "^6.2",
         "symfony/asset": "^6.2",
         "symfony/console": "^6.2",
         "symfony/dotenv": "^6.2",
