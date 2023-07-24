@@ -20,6 +20,7 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 class GetPage extends ApiController
 {
     private $previewService;
+    private $cache;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -71,12 +72,10 @@ class GetPage extends ApiController
         $groupId = $group->getId();
         $cacheKey = 'group_'.$groupId.'_page_'.$n;
 
-        // Attempt to fetch the data from cache
         $data = $this->cache->get($cacheKey, function (ItemInterface $item) use ($groupId, $n) {
-            $item->expiresAfter(3600);
+            $item->expiresAfter(3600*24*7);
             $item->tag('group_'.$groupId);
 
-            // Data not in cache, fetching it
             $query = $this->em->createQuery(
                 "SELECT m.id FROM App\Entity\Message m"
                 ." WHERE m.group = '".$groupId."'"

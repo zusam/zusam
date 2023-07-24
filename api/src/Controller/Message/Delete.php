@@ -20,6 +20,8 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class Delete extends ApiController
 {
+    private $cache;
+
     public function __construct(
         EntityManagerInterface $em,
         SerializerInterface $serializer,

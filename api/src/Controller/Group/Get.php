@@ -14,14 +14,20 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class Get extends ApiController
 {
+    private $cache;
+
     public function __construct(
         EntityManagerInterface $em,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        TagAwareCacheInterface $cache,
     ) {
         parent::__construct($em, $serializer);
+        $this->cache = $cache;
     }
 
     /**
@@ -45,8 +51,17 @@ class Get extends ApiController
 
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
+        $cacheKey = 'group_'.$group->getId().'_info';
+
+        $data = $this->cache->get($cacheKey, function (ItemInterface $item) use ($group) {
+            $item->expiresAfter(3600*24*7);
+            $item->tag('group_'.$group->getId());
+
+            return $this->serialize($group, ['read_group']);
+        });
+
         return new Response(
-            $this->serialize($group, ['read_group']),
+            $data,
             Response::HTTP_OK
         );
     }
