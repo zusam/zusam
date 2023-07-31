@@ -95,5 +95,6 @@
     "video_not_ready": "Video is not ready yet.",
     "bookmark_added": "Message added to bookmarks !",
     "bookmark_removed": "Message removed from bookmarks !",
-    "parent_message": "Parent message"
+    "parent_message": "Parent message",
+    "audio_not_ready": "Audio is not ready yet."
 }
