@@ -11,7 +11,7 @@
     "password_placeholder": "Passwort",
     "title_placeholder": "Titel deiner Nachricht (optional)",
     "text_placeholder": "Schreibe deine Nachricht hier",
-    "upload_video": "Videos hinzufügen",
+    "upload_video": "Video hinzufügen",
     "login_placeholder": "E-Mail",
     "new_password_placeholder": "Neues Passwort",
     "upload_music": "Musik hinzufügen",
@@ -95,5 +95,7 @@
     "add_bookmark": "Nachricht zu den Lesezeichnen hinzufügen",
     "api_key": "API-Schlüssel",
     "bookmark_removed": "Nachricht aus den Lesezeichen entfernt!",
-    "parent_message": "Quellenachricht"
+    "parent_message": "Quellenachricht",
+    "audio_not_ready": "Audio ist noch nicht fertig.",
+    "upload_audio": "Audio hinzufügen."
 }
