@@ -12,7 +12,7 @@
     "title_placeholder": "Titre de votre message (optionnel)",
     "text_placeholder": "Écrivez votre message ici",
     "upload_image": "Ajouter des photos",
-    "upload_video": "Ajouter des vidéos",
+    "upload_video": "Ajouter une vidéo",
     "upload_music": "Ajouter des musiques",
     "upload_pdf": "Ajouter un pdf",
     "add_date": "Préciser une date",
@@ -95,5 +95,7 @@
     "video_not_ready": "La vidéo n'est pas encore prête.",
     "bookmark_added": "Message ajouté aux marque-pages !",
     "bookmark_removed": "Message supprimé des marque-pages !",
-    "parent_message": "Message parent"
+    "parent_message": "Message parent",
+    "audio_not_ready": "Le fichier audio n'est pas prêt.",
+    "upload_audio": "Ajouter un fichier audio."
 }
