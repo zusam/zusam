@@ -95,5 +95,7 @@
     "video_not_ready": "El vídeo aún no está listo.",
     "bookmark_added": "Mensaje agregado a marcadores !",
     "bookmark_removed": "Mensaje eliminado de los marcadores !",
-    "parent_message": "Mensaje para padres"
+    "parent_message": "Mensaje para padres",
+    "audio_not_ready": "El audio aún no está listo.",
+    "upload_audio": "Añadir un archivo de audio."
 }
