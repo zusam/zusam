@@ -95,5 +95,7 @@
     "api_key": "API 키",
     "bookmark_added": "북마크에 메시지가 추가되었습니다!",
     "bookmark_removed": "북마크에서 메시지가 제거되었습니다!",
-    "add_bookmark": "북마크 메시지"
+    "add_bookmark": "북마크 메시지",
+    "audio_not_ready": "오디오가 아직 준비되지 않았습니다.",
+    "upload_audio": "오디오 파일을 추가합니다."
 }
