@@ -3,7 +3,7 @@
   "license": "AGPL-3.0-or-later",
   "version": "0.5.4",
   "scripts": {
-    "build": "parcel build src/index.html",
+    "build": "parcel build --public-url='@SUBPATH@' src/index.html",
     "clean": "rm -rf dist/*",
     "lang": "cp -r src/lang dist/",
     "postbuild": "node ./build-tools/set_version_in_files.js dist/index.html",
