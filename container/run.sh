@@ -44,7 +44,8 @@ fi
 if [ -n "${SUBPATH}" ]; then
   ln -sfn /etc/nginx/nginx-subpath.conf /etc/nginx/nginx.conf
   sed -i -e "s|@SUBPATH@|${SUBPATH}|g" /etc/nginx/nginx.conf
-  sed -i -e "s|@SUBPATH@|${SUBPATH}|g" /zusam/public/index.html
+  sed -i -e "s|href=\"|href=\"${SUBPATH}|g" /zusam/public/index.html
+  sed -i -e "s|src=\"|src=\"${SUBPATH}|g" /zusam/public/index.html
 else
   ln -sfn /etc/nginx/nginx-root.conf /etc/nginx/nginx.conf
 fi

@@ -9,7 +9,6 @@ import {
 import { StoreContext } from "storeon/preact";
 import store from "/src/store";
 
-console.log(`/${document.baseURI.split('/')[3]}`)
 const router = createBrowserRouter(
   [
     { path: "*", Component: App },
