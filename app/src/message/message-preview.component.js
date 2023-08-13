@@ -31,6 +31,15 @@ export default function MessagePreview(props) {
     );
   };
 
+  const setDefaultMiniature = e => {
+    e.currentTarget.src = util.defaultAvatar;
+    e.currentTarget.style.height = "180px";
+    e.currentTarget.style.width = "auto";
+    e.currentTarget.style.position = "absolute";
+    e.currentTarget.style.left = "50%";
+    e.currentTarget.style.transform = "translate(-50%, 0%)";
+  }
+
   useEffect(() => {
     http.get(`/api/messages/${props.id}/preview`).then(p => {
       if (p?.author?.id) {
@@ -66,7 +75,7 @@ export default function MessagePreview(props) {
                 <div
                   class="card-miniature"
                 >
-                  <img width="320" height="180" src={util.crop(util.getId(preview), 320, 180)} />
+                  <img width="320" height="180" src={util.crop(util.getId(preview), 320, 180)} onError={e => setDefaultMiniature(e)} />
                 </div>
               ) : (
                 <div class="text-preview">{data?.text}</div>

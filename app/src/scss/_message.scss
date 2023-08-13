@@ -42,7 +42,7 @@
       height: 180px;
       background-size: cover;
       background-position: center;
-      background-color: grey;
+      background-color: #ccc;
       border-top-left-radius: 4px;
       border-top-right-radius: 4px;
       overflow: hidden;
@@ -256,10 +256,6 @@
   background-color: lightgrey;
 }
 
-.file-placeholder {
-  background-color: grey;
-}
-
 .message {
   .video-raw {
     filter: blur(2px) grayscale(100%) brightness(80%);
@@ -278,6 +274,8 @@
     $gutter: 3px;
     margin: $gutter;
     position: relative;
+    height: 100%;
+
     @include cols-per-breakpoint(
       (
         xs: 2,
