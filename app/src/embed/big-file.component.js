@@ -69,7 +69,7 @@ export default function BigFile(props) {
         );
       }
       return (
-        <a class="file-embed image video-uploaded" id={props.file.id}>
+        <a class="file-embed file-loading image video-uploaded" id={props.file.id}>
           <img
             class="img-fluid video-raw"
             src={util.crop(props.file.id, 320, 180)}
