@@ -118,7 +118,11 @@ export default function MiniFile(props) {
   };
 
   useEffect(() => {
-    if (props.inWriter && props.file.status == "ready") {
+    if (
+      props.inWriter
+      && props.file.status == "ready"
+      && innerRef && innerRef.current
+    ) {
       innerRef.current.addEventListener("dragstart", fileDragStart);
       innerRef.current.addEventListener("dragend", fileDragEnd);
       innerRef.current.addEventListener("dragover", fileDragOver);
@@ -139,7 +143,7 @@ export default function MiniFile(props) {
   switch (props.file.status) {
   case "raw":
     return (
-      <a class="file-embed rounded" id={props.file.id}>
+      <a class="file-embed file-loading rounded" id={props.file.id}>
         <div class="miniature">
           <FaIcon family={"regular"} icon={"check-circle"} />
         </div>
@@ -147,14 +151,14 @@ export default function MiniFile(props) {
     );
   case "loading":
     return (
-      <a class="file-embed rounded" id={props.file.id}>
+      <a class="file-embed file-loading rounded" id={props.file.id}>
         <div class="miniature"/>
       </a>
     );
   case "uploading":
   case "initial":
     return (
-      <a class="file-embed rounded" id={props.file.id}>
+      <a class="file-embed file-loading rounded" id={props.file.id}>
         <div
           class="miniature video-raw"
           style={`background-image:url("${util.crop(props.file.id, 160, 160)}")`}
