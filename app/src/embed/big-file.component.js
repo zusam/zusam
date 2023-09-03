@@ -80,6 +80,25 @@ export default function BigFile(props) {
         </a>
       );
     }
+    if (/audio/.test(props.file.type)) {
+      if (props.file.status == "ready") {
+        return (
+          <audio
+            controls="true"
+            class="file-embed audio"
+            src={util.toApp(url)}
+            id={props.file.id}
+          />
+        );
+      }
+      return (
+        <a class="file-embed file-loading image video-uploaded" id={props.file.id}>
+          <div class="audio-not-ready">
+            {t("audio_not_ready")}
+          </div>
+        </a>
+      );
+    }
     if (/pdf/.test(props.file.type)) {
       return (
         <a

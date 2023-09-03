@@ -13,6 +13,8 @@ parameters:
   video_conversion_threads: '%env(resolve:VIDEO_CONVERSION_THREADS)%'
   video_format_not_converted: '%env(resolve:VIDEO_FORMAT_NOT_CONVERTED)%'
   video_size_not_converted: '%env(resolve:VIDEO_SIZE_NOT_CONVERTED)%'
+  audio_conversion_threads: '%env(resolve:AUDIO_CONVERSION_THREADS)%'
+  audio_format_not_converted: '%env(resolve:AUDIO_FORMAT_NOT_CONVERTED)%'
   max_task_lock_duration: '%env(resolve:MAX_TASK_LOCK_DURATION)%'
   allow.bots: '%env(resolve:ALLOW_BOTS)%'
   allow.email: '%env(resolve:ALLOW_EMAIL)%'
@@ -24,6 +26,7 @@ parameters:
   dir.cache: '%env(resolve:dir_cache)%'
   dir.bots: '%env(resolve:dir_bots)%'
   cron.convert.images: '%env(resolve:CRON_CONVERT_IMAGES)%'
+  cron.convert.audio: '%env(resolve:CRON_CONVERT_AUDIO)%'
   cron.convert.video: '%env(resolve:CRON_CONVERT_VIDEO)%'
   cron.notification.emails: '%env(resolve:CRON_NOTIFICATION_EMAILS)%'
   cron.compress.gifs: '%env(resolve:CRON_COMPRESS_GIFS)%'
@@ -84,6 +87,13 @@ services:
         $logger: '@monolog.logger.zusam'
 
     App\Command\ConvertVideo:
+      arguments:
+        $dsn: '%env(resolve:DATABASE_URL)%'
+        $targetDir: '%env(resolve:dir_files)%'
+        $binaryFfmpeg: '%env(resolve:FFMPEG_PATH)%'
+        $logger: '@monolog.logger.zusam'
+
+    App\Command\ConvertAudio:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_files)%'

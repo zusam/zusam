@@ -286,6 +286,15 @@
       )
     );
 
+    .audio-miniature > .fa-icon{
+      position: absolute;
+      font-size: 100px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #999;
+    }
+
     .miniature {
       background-color: transparent;
       width: 100%;
@@ -319,6 +328,18 @@
   text-shadow: 0 0 1px black;
   font-weight: bold;
   line-height: 2rem;
+}
+
+.audio-not-ready {
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: 0 0 1px black;
+  font-weight: bold;
+  line-height: 2rem;
+  text-decoration: none;
+  padding: 1rem;
+  background: #0b0b0b55;
+  border-radius: 4px;
 }
 
 .message-head {

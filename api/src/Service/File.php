@@ -62,6 +62,14 @@ class File
             $file->setStatus(FileEntity::STATUS_READY);
         }
 
+        // don't convert audio if it's in a playable format
+        if (
+            in_array($file->getType(), explode(",", $this->params->get('audio_format_not_converted')))
+            && FileEntity::STATUS_READY != $file->getStatus()
+        ) {
+            $file->setStatus(FileEntity::STATUS_READY);
+        }
+
         // don't convert a gif
         // TODO: handle gif correctly, AKA convert them to mp4
         if (

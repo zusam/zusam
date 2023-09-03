@@ -46,6 +46,7 @@ class Info extends ApiController
             'image' => $this->getParameter('allow.upload.image') == 'true' && $has_imagick,
             'video' => $this->getParameter('allow.upload.video') == 'true' && $has_ffmpeg,
             'pdf' => $this->getParameter('allow.upload.pdf') == 'true' && $has_ghostscript,
+            'audio' => $this->getParameter('allow.upload.audio') == 'true' && $has_ffmpeg,
           ],
           'default_lang' => $this->getParameter('lang'),
           'allow_email' => $this->getParameter('allow.email') == 'true',

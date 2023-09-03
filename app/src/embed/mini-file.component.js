@@ -200,6 +200,34 @@ export default function MiniFile(props) {
         </a>
       );
     }
+    if (/audio/.test(props.file.type)) {
+      return (
+        <a
+          ref={innerRef}
+          draggable={!!props.inWriter}
+          data-origin={util.toApp(filePath)}
+          href={!props.inWriter ? util.toApp(url) : undefined}
+          className={`${!props.inWriter ? "glightbox ": ""}file-embed rounded ${props.file.removed ? " removed" : ""}`}
+          id={props.file.id}
+          data-width="calc(90vw - 10px)"
+          data-height="100vh"
+          onClick={e => openLightbox(e)}
+        >
+          <div
+            className={`miniature audio-miniature${props.file.removed ? " removed" : ""}`}
+          >
+            <FaIcon family={"solid"} icon={"headphones-alt"} />
+          </div>
+          <div
+            class="remove-button"
+            style={props.file.removed ? "color:red" : ""}
+            onClick={e => props.toggleFile(e)}
+          >
+            <FaIcon family={"solid"} icon={"times"} />
+          </div>
+        </a>
+      );
+    }
     if (props.file.type == "image/gif") {
       return (
         <a

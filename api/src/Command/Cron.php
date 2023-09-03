@@ -45,6 +45,11 @@ class Cron extends Command
                 'type' => 'light',
             ],
             [
+                'name' => 'zusam:convert:audio',
+                'period' => intval($this->params->get('cron.convert.audio')),
+                'type' => 'light',
+            ],
+            [
                 'name' => 'zusam:convert:video',
                 'period' => intval($this->params->get('cron.convert.video')),
                 'type' => 'heavy',

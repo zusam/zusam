@@ -146,6 +146,15 @@ export default function WritingWidget(props) {
             <FaIcon family={"regular"} icon={"file-pdf"} />
           </button>
         )}
+        {api?.info?.upload?.audio && (
+          <button
+            class="option"
+            onClick={() => props.inputFile("audio/*")}
+            title={t("upload_audio")}
+          >
+            <FaIcon family={"solid"} icon={"headphones-alt"} />
+          </button>
+        )}
         <div class="actions">
           {!!props.cancel && (
             <button class="cancel" onClick={e => props.cancel(e)}>
