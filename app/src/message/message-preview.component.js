@@ -47,7 +47,6 @@ export default function MessagePreview(props) {
           setAuthor(u);
         });
       }
-      console.log(p);
       setPreview(p?.preview);
       setId(p?.id);
       setChildren(p?.children);
