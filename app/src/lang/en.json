@@ -12,7 +12,7 @@
     "title_placeholder": "Title of your message (optional)",
     "text_placeholder": "Write your message here",
     "upload_image": "Add photos",
-    "upload_video": "Add videos",
+    "upload_video": "Add a video",
     "upload_music": "Add musics",
     "upload_pdf": "Add pdf",
     "add_date": "Add a date",
@@ -95,5 +95,7 @@
     "video_not_ready": "Video is not ready yet.",
     "bookmark_added": "Message added to bookmarks !",
     "bookmark_removed": "Message removed from bookmarks !",
-    "parent_message": "Parent message"
+    "parent_message": "Parent message",
+    "audio_not_ready": "Audio is not ready yet.",
+    "upload_audio": "Add an audio file."
 }
