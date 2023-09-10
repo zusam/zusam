@@ -95,5 +95,7 @@
     "replies_one": "{{count}} válasz",
     "publish_in_group": "közzététel a csoportban",
     "to": "hoz",
-    "remove_bookmark": "Üzenet könyvjelzőjének törlése"
+    "remove_bookmark": "Üzenet könyvjelzőjének törlése",
+    "upload_audio": "",
+    "audio_not_ready": ""
 }
