@@ -95,5 +95,7 @@
     "reset_api_key": "ⵙⵏⴼⵍ ⵜⴰⵙⴰⵔⵓⵜ ⵏ API (ⵔⴰⴷ ⵉⵜⵜⵡⴰⴽⴽⵙ ⵓⵎⵢⴰⵡⴰⴹ ⵏⵏⴽ)",
     "video_not_ready": "ⵉⵙⵓⵍ ⵓⵔ ⵉⵡⵊⵉⴷ ⵓⴼⵉⴷⵢⵓ.",
     "bookmark_added": "ⵜⵓⴷⴼ ⵜⴱⵔⴰⵜ ⵖⵔ ⵜⵙⵏⴰ ⵏ ⵜⵎⵉⵜⴰⵔ !",
-    "bookmark_removed": "ⵜⴻⵜⵜⵡⴰⴽⴽⵙ ⵜⴱⵔⴰⵜ ⵙⴳ ⵜⵙⵏⴰ ⵏ ⵜⵎⵉⵜⴰⵔ !"
+    "bookmark_removed": "ⵜⴻⵜⵜⵡⴰⴽⴽⵙ ⵜⴱⵔⴰⵜ ⵙⴳ ⵜⵙⵏⴰ ⵏ ⵜⵎⵉⵜⴰⵔ !",
+    "upload_audio": "",
+    "audio_not_ready": ""
 }
