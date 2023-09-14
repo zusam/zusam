@@ -48,7 +48,7 @@
     "settings_updated": "Sus ajustes fueron actualizados",
     "group_updated": "El grupo ha sido actualizado!",
     "group_left": "¡Has dejado el grupo!",
-    "multiple_photos_upload": "Se ha producido un error. Intenta subir las imágenes una a una (esto puede ocurrir en algunos navegadores).",
+    "multiple_photos_upload": "Se ha producido un error. Intenta subir las imágenes una a una (esto puede ocurrir en algunos navegadores)",
     "error_new_message": "Se ha producido un error al enviar su mensaje.",
     "error_upload": "Se ha producido un error durante la carga",
     "cancel_write": "¿Quieres cancelar este nuevo mensaje?",
