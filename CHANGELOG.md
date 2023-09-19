@@ -2,6 +2,32 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [0.5.4] - 2023-09-19
+
+### Log
+- Reworked translation files names
+- Added Korean, Hungarian, German, Tamazight and Chinese translations
+- Fix SUBPATH feature
+- Correctly handle ctrl+clic on notifications
+- Rework container to be rootless
+- Add default miniature image when the main errors out
+- Use Symfony's cache to all things related to groups
+- Remove caching from nginx to simplify and only rely on the browser
+- Add some safeguards to loading messages
+- Fix avatars when using dark reader
+- Fix message preview generation
+- Fix some cases of undefined variables
+- Fix some youtube search links embeds
+- Improve speed of group GetPage controller
+- Improve speed of some API endpoints
+- Improve the "requires javascript" message
+- Remove FrameworkExtraBundle
+- Remove insta embed; fix bandcamp embed
+
+### Remarks
+
+Mostly bugfix release.
+
 ## [0.5.3] - 2022-10-02
 
 ### Log
