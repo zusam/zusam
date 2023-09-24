@@ -3,8 +3,6 @@
 namespace App\Controller\Notification;
 
 use App\Controller\ApiController;
-use App\Entity\Link;
-use App\Entity\Message;
 use App\Entity\Notification;
 use App\Service\Notification as NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,7 +11,6 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -32,12 +29,16 @@ class Get extends ApiController
 
     /**
      * @Route("/notifications/{id}", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get a notification",
+     *
      *  @Model(type=App\Entity\Notification::class, groups={"read_notification"})
      * )
+     *
      * @OA\Tag(name="notification")
+     *
      * @Security(name="api_key")
      */
     public function index(string $id): Response
@@ -54,18 +55,18 @@ class Get extends ApiController
             $notification->getType(),
             [
               Notification::NEW_COMMENT,
-              Notification::NEW_MESSAGE
+              Notification::NEW_MESSAGE,
             ]
         )) {
-            $notification_data_output["parentAuthorName"] = $this->notificationService->getParentAuthorName($notification);
-            $notification_data_output["title"] = $this->notificationService->getTitle($notification);
+            $notification_data_output['parentAuthorName'] = $this->notificationService->getParentAuthorName($notification);
+            $notification_data_output['title'] = $this->notificationService->getTitle($notification);
         }
 
         // Process notification's miniature
-        if ($notification_data_output["type"] != Notification::GLOBAL_NOTIFICATION
+        if (Notification::GLOBAL_NOTIFICATION != $notification_data_output['type']
           && empty($notification->getMiniature())
         ) {
-            $notification_data_output["miniature"] = $this->normalize($notification->getFromUser()->getAvatar(), ['read_notification']);
+            $notification_data_output['miniature'] = $this->normalize($notification->getFromUser()->getAvatar(), ['read_notification']);
         }
 
         return new JsonResponse($notification_data_output, Response::HTTP_OK);

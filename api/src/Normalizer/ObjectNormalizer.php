@@ -2,15 +2,18 @@
 
 namespace App\Normalizer;
 
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer as SymfonyObjectNormalizer;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
+use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorResolverInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
 /**
- * Changes to Symfony's ObjectNormalizer :
+ * Changes to Symfony's ObjectNormalizer :.
  *
  * Adds a MAX_TREE_DEPTH limitation
  * The usual objectNormalizer has a MAX_DEPTH limitation that can be used but it's
@@ -27,8 +30,12 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
  * Returns null for properties that are API entities without id
  * I made this choice to be more resilient
  */
-class ObjectNormalizer extends SymfonyObjectNormalizer
+class ObjectNormalizer extends AbstractObjectNormalizer
 {
+    protected $propertyAccessor;
+
+    private readonly \Closure $objectClassResolver;
+
     /**
      * How deep the resulting normalized tree can be.
      * The default value is 1.
@@ -61,15 +68,21 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
     private $discriminatorCache = [];
 
     public function __construct(
+        array $defaultContext = [],
+        callable $objectClassResolver = null,
+        ClassDiscriminatorResolverInterface $classDiscriminatorResolver = null,
         ClassMetadataFactoryInterface $classMetadataFactory = null,
         NameConverterInterface $nameConverter = null,
         PropertyAccessorInterface $propertyAccessor = null,
         PropertyTypeExtractorInterface $propertyTypeExtractor = null,
-        ClassDiscriminatorResolverInterface $classDiscriminatorResolver = null,
-        callable $objectClassResolver = null,
-        array $defaultContext = []
     ) {
-        parent::__construct($classMetadataFactory, $nameConverter, $propertyAccessor, $propertyTypeExtractor, $classDiscriminatorResolver, $objectClassResolver, $defaultContext);
+        if (!class_exists(PropertyAccess::class)) {
+            throw new LogicException('The ObjectNormalizer class requires the "PropertyAccess" component. Install "symfony/property-access" to use it.');
+        }
+
+        parent::__construct($classMetadataFactory, $nameConverter, $propertyTypeExtractor, $classDiscriminatorResolver, $objectClassResolver, $defaultContext);
+        $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
+        $this->objectClassResolver = ($objectClassResolver ?? static fn ($class) => \is_object($class) ? $class::class : $class)(...);
         $this->defaultContext[self::TREE_DEPTH_LIMIT] = 1;
     }
 
@@ -110,11 +123,7 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
      * If a max tree depth handler is set, it will be called. Otherwise, a
      * {@class MaxTreeDepthException} will be thrown.
      *
-     * @param object      $object
-     * @param string|null $format
-     * @param array       $context
-     *
-     * @return mixed
+     * @param object $object
      *
      * @throws MaxTreeDepthException
      */
@@ -127,9 +136,6 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
         throw new MaxTreeDepthException(sprintf('Max tree depth has been reached when serializing the object of class "%s" (configured limit: %d)', \get_class($object), $this->defaultContext[self::TREE_DEPTH_LIMIT]));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function normalize($object, $format = null, array $context = [])
     {
         if ($this->isMaxTreeDepth($object, $context)) {
@@ -148,12 +154,9 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
             }
         }
 
-        return parent::normalize($object, $format, $context);
+        return $this->normalize($object, $format, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getAllowedAttributes(object|string $classOrObject, array $context, bool $attributesAsString = false): array|bool
     {
         $allowExtraAttributes = $context[self::ALLOW_EXTRA_ATTRIBUTES] ?? $this->defaultContext[self::ALLOW_EXTRA_ATTRIBUTES];
@@ -190,10 +193,7 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
         return $allowedAttributes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getAttributeValue(object $object, string $attribute, ?string $format = null, array $context = []): mixed
+    protected function getAttributeValue(object $object, string $attribute, string $format = null, array $context = []): mixed
     {
         $cacheKey = \get_class($object);
         if (!\array_key_exists($cacheKey, $this->discriminatorCache)) {
@@ -222,11 +222,87 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
                 ) {
                     return null;
                 }
+
                 return $attributeValue;
             } catch (\Exception $e) {
                 // TODO: log exception
                 return null;
             }
+        }
+    }
+
+    protected function extractAttributes(object $object, string $format = null, array $context = []): array
+    {
+        if (\stdClass::class === $object::class) {
+            return array_keys((array) $object);
+        }
+
+        // If not using groups, detect manually
+        $attributes = [];
+
+        // methods
+        $class = ($this->objectClassResolver)($object);
+        $reflClass = new \ReflectionClass($class);
+
+        foreach ($reflClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $reflMethod) {
+            if (
+                0 !== $reflMethod->getNumberOfRequiredParameters()
+                || $reflMethod->isStatic()
+                || $reflMethod->isConstructor()
+                || $reflMethod->isDestructor()
+            ) {
+                continue;
+            }
+
+            $name = $reflMethod->name;
+            $attributeName = null;
+
+            if (str_starts_with($name, 'get') || str_starts_with($name, 'has') || str_starts_with($name, 'can')) {
+                // getters, hassers and canners
+                $attributeName = substr($name, 3);
+
+                if (!$reflClass->hasProperty($attributeName)) {
+                    $attributeName = lcfirst($attributeName);
+                }
+            } elseif (str_starts_with($name, 'is')) {
+                // issers
+                $attributeName = substr($name, 2);
+
+                if (!$reflClass->hasProperty($attributeName)) {
+                    $attributeName = lcfirst($attributeName);
+                }
+            }
+
+            if (null !== $attributeName && $this->isAllowedAttribute($object, $attributeName, $format, $context)) {
+                $attributes[$attributeName] = true;
+            }
+        }
+
+        // properties
+        foreach ($reflClass->getProperties() as $reflProperty) {
+            if (!$reflProperty->isPublic()) {
+                continue;
+            }
+
+            if ($reflProperty->isStatic() || !$this->isAllowedAttribute($object, $reflProperty->name, $format, $context)) {
+                continue;
+            }
+
+            $attributes[$reflProperty->name] = true;
+        }
+
+        return array_keys($attributes);
+    }
+
+    /**
+     * @return void
+     */
+    protected function setAttributeValue(object $object, string $attribute, mixed $value, string $format = null, array $context = [])
+    {
+        try {
+            $this->propertyAccessor->setValue($object, $attribute, $value);
+        } catch (NoSuchPropertyException) {
+            // Properties not found are ignored
         }
     }
 }

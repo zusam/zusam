@@ -6,85 +6,107 @@ use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Table(name="`group`")
+ *
  * @ORM\Entity
  */
 class Group
 {
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="guid")
+     *
      * @Groups("*")
+     *
      * @Assert\NotBlank()
+     *
      * @OA\Property(type="guid")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", unique=true)
+     *
      * @Groups({"read_group"})
+     *
      * @Assert\NotBlank()
+     *
      * @OA\Property(type="string")
      */
     private $secretKey;
 
     /**
      * @ORM\Column(type="integer")
+     *
      * @Assert\Type("integer")
+     *
      * @Assert\NotNull()
+     *
      * @OA\Property(type="integer")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string")
+     *
      * @Groups("*")
+     *
      * @Assert\NotBlank()
+     *
      * @OA\Property(type="string")
      */
     private $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="groups")
+     *
      * @Groups({"read_group", "write_group"})
+     *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
      */
     private $users;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="group")
+     *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
      */
     private $messages;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="group")
+     *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Tag"))
      */
     private $tags;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     *
      * @Groups({"read_group", "read_me"})
+     *
      * @Assert\Type("integer")
+     *
      * @OA\Property(type="integer")
      */
     private $lastActivityDate;
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     *
      * @OA\Property(type="object")
      */
     private $data;
 
     /**
      * @Groups("*")
+     *
      * @OA\Property(type="string")
      */
     private $entityType;

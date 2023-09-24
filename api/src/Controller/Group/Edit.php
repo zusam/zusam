@@ -34,21 +34,28 @@ class Edit extends ApiController
 
     /**
      * @Route("/groups/{id}", methods={"PUT"})
+     *
      * @OA\RequestBody(
+     *
      *  @OA\Schema(
      *    type="object",
+     *
      *    @OA\Property(
      *      property="name",
      *      type="string"
      *    ),
      *  )
      * )
+     *
      * @OA\Response(
      *  response=200,
      *  description="Modify a group",
+     *
      *  @Model(type=App\Entity\Group::class, groups={"read_group"})
      * )
+     *
      * @OA\Tag(name="group")
+     *
      * @Security(name="api_key")
      */
     public function index(
@@ -83,8 +90,8 @@ class Edit extends ApiController
                         $notif->setFromUser($author);
                         $notif->setFromGroup($group);
                         $notif->setData([
-                            "previousGroupName" => $previousName,
-                            "newGroupName" => $newName
+                            'previousGroupName' => $previousName,
+                            'newGroupName' => $newName,
                         ]);
                         $notif->setType(Notification::GROUP_NAME_CHANGE);
                         $this->em->persist($notif);
@@ -99,7 +106,7 @@ class Edit extends ApiController
         $this->em->persist($group);
 
         // Clear cache for the group
-        $this->cache->invalidateTags(['group_'.$message->getGroup()->getId()]);
+        $this->cache->invalidateTags(['group_'.$group()->getId()]);
 
         $this->em->flush();
 

@@ -13,9 +13,10 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class Message
 {
+    private $cache;
     private $em;
-    private $urlService;
     private $notificationService;
+    private $urlService;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -23,10 +24,10 @@ class Message
         NotificationService $notificationService,
         TagAwareCacheInterface $cache,
     ) {
-        $this->em = $em;
-        $this->urlService = $urlService;
-        $this->notificationService = $notificationService;
         $this->cache = $cache;
+        $this->em = $em;
+        $this->notificationService = $notificationService;
+        $this->urlService = $urlService;
     }
 
     public function create($data, $author, $group)
@@ -34,7 +35,7 @@ class Message
         $message = new MessageEntity();
         $message->setAuthor($author);
         $message->setGroup($group);
-        $message->setType("standard");
+        $message->setType('standard');
 
         if (!empty($data['createdAt'])) {
             $message->setCreatedAt($data['createdAt']);

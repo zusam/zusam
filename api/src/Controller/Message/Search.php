@@ -2,21 +2,20 @@
 
 namespace App\Controller\Message;
 
+use App\Controller\ApiController;
 use App\Entity\Group;
 use App\Entity\Link;
 use App\Entity\Message;
 use App\Service\StringUtils;
-use App\Controller\ApiController;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
-use OpenApi\Annotations as OA;
 
 class Search extends ApiController
 {
@@ -36,35 +35,44 @@ class Search extends ApiController
             if (
                 !empty($term)
                 && mb_strlen($term) > 2
-                && mb_stripos($text, $term, 0, 'UTF-8') !== false
+                && false !== mb_stripos($text, $term, 0, 'UTF-8')
             ) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
      * @Route("/messages/search", methods={"POST"})
+     *
      * @OA\Parameter(
      *  name="data",
      *  in="body",
+     *
      *  @OA\Schema(
      *    type="object",
+     *
      *    @OA\Property(property="search", type="string"),
      *    @OA\Property(property="group", type="string")
      *  )
      * )
+     *
      * @OA\Response(
      *  response=200,
      *  description="Search for a message",
+     *
      *  @OA\JsonContent(
      *    type="object",
+     *
      *    @OA\Property(
      *      property="messages",
      *      type="array",
+     *
      *      @OA\Items(
      *        type="object",
+     *
      *        @OA\Property(property="id", type="string"),
      *        @OA\Property(property="entityType", type="string"),
      *        @OA\Property(property="data", type="object"),
@@ -80,7 +88,9 @@ class Search extends ApiController
      *    @OA\Property(property="searchTerms", type="string")
      *  )
      * )
+     *
      * @OA\Tag(name="message")
+     *
      * @Security(name="api_key")
      */
     public function index(Request $request): Response
@@ -92,7 +102,7 @@ class Search extends ApiController
         if (empty($requestData['search'])) {
             return new JsonResponse(['error' => 'You must provide search terms'], Response::HTTP_BAD_REQUEST);
         }
-        $search_terms = explode("+", $requestData['search']);
+        $search_terms = explode('+', $requestData['search']);
 
         // get the asked group
         if (empty($requestData['group'])) {
@@ -120,7 +130,7 @@ class Search extends ApiController
         $i = 0;
         foreach ($messages as $row) {
             $message = $row[0];
-            $i++;
+            ++$i;
             $data = $message->getData();
             $score = 0;
 
@@ -134,8 +144,8 @@ class Search extends ApiController
 
             try {
                 if (
-                    ! is_null($message->getAuthor())
-                    && ! is_null($message->getAuthor()->getId())
+                    !is_null($message->getAuthor())
+                    && !is_null($message->getAuthor()->getId())
                     && self::has_term($flattened_search_terms, $message->getAuthor()->getName())
                 ) {
                     $score += 50;
@@ -153,16 +163,16 @@ class Search extends ApiController
                     $link_data = $link->getData();
                     if (!empty($link_data)) {
                         // TODO: remove the evaluation for "tags" since this has only an effect for links generated before zusam 0.5
-                        if (isset($link_data["tags"]) && self::has_term($flattened_search_terms, implode(' ', $link_data["tags"]))) {
+                        if (isset($link_data['tags']) && self::has_term($flattened_search_terms, implode(' ', $link_data['tags']))) {
                             $score += 25;
                         }
-                        if (isset($link_data["keywords"]) && self::has_term($flattened_search_terms, implode(' ', $link_data["keywords"]))) {
+                        if (isset($link_data['keywords']) && self::has_term($flattened_search_terms, implode(' ', $link_data['keywords']))) {
                             $score += 25;
                         }
-                        if (isset($link_data["title"]) && self::has_term($flattened_search_terms, $link_data["title"])) {
+                        if (isset($link_data['title']) && self::has_term($flattened_search_terms, $link_data['title'])) {
                             $score += 30;
                         }
-                        if (isset($link_data['description']) && self::has_term($flattened_search_terms, $link_data["description"])) {
+                        if (isset($link_data['description']) && self::has_term($flattened_search_terms, $link_data['description'])) {
                             $score += 20;
                         }
                     }
@@ -172,7 +182,7 @@ class Search extends ApiController
             }
 
             if ($score > 0) {
-                $totalItems++;
+                ++$totalItems;
                 $previewId = $message->getPreview() ? $message->getPreview()->getId() : '';
                 $authorId = $message->getAuthor() ? $message->getAuthor()->getId() : '';
                 $parentId = $message->getParent() ? $message->getParent()->getId() : '';
@@ -204,6 +214,7 @@ class Search extends ApiController
             if ($a['score'] > $b['score']) {
                 return -1;
             }
+
             return $a['lastActivityDate'] < $b['lastActivityDate'];
         });
 

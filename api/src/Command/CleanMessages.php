@@ -62,7 +62,7 @@ class CleanMessages extends Command
 
         // remove messages without parent and not in front (hidden messages)
         $c = $this->pdo->query('SELECT m.id from message m LEFT JOIN message p ON p.id = m.parent_id WHERE p.id IS NULL AND (m.is_in_front != 1 OR m.is_in_front IS NULL);');
-        if ($c !== false) {
+        if (false !== $c) {
             while ($i = $c->fetch()) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
                     echo $i['id']."\n";
@@ -75,7 +75,7 @@ class CleanMessages extends Command
 
         // remove messages without groups
         $c = $this->pdo->query('SELECT m.id from `message` m LEFT JOIN `group` g ON g.id = m.group_id WHERE g.id IS NULL;');
-        if ($c !== false) {
+        if (false !== $c) {
             while ($i = $c->fetch()) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
                     echo $i['id']."\n";
@@ -95,7 +95,7 @@ class CleanMessages extends Command
             AND c.parent_id IS NULL
             AND m.data LIKE '%\"text\":\"\"%';
         ");
-        if ($c !== false) {
+        if (false !== $c) {
             while ($i = $c->fetch()) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
                     echo $i['id']."\n";
@@ -105,6 +105,7 @@ class CleanMessages extends Command
                 }
             }
         }
+
         return 0;
     }
 }

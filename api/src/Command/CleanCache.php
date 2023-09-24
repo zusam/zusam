@@ -76,6 +76,7 @@ class CleanCache extends Command
             }
             $cache_size -= $file['size'];
         }
+
         return 0;
     }
 }

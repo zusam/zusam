@@ -2,8 +2,8 @@
 
 namespace App\Service;
 
-use App\Entity\Notification as NotificationEntity;
 use App\Entity\Group as GroupEntity;
+use App\Entity\Notification as NotificationEntity;
 use Doctrine\ORM\EntityManagerInterface;
 
 class Group

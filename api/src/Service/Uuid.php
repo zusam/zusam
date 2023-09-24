@@ -9,8 +9,6 @@ class Uuid
      * Note that version 4 follows the format:
      *     xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
      * where y is one of: [8, 9, A, B].
-     *
-     * @return string
      */
     public static function uuidv4(string $seed = null): string
     {

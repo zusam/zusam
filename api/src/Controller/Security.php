@@ -10,14 +10,13 @@ use App\Service\Token;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RateLimiter\RequestRateLimiterInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\TooManyLoginAttemptsAuthenticationException;
 use Symfony\Component\Security\Core\Security as SymfonySecurity;
-use Symfony\Component\HttpFoundation\RateLimiter\RequestRateLimiterInterface;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
 
 class Security extends AbstractController
 {
@@ -108,6 +107,7 @@ class Security extends AbstractController
             // if the user tries to login from an invitation, let's test to eventually connect him
             if (!$this->passwordHasher->isPasswordValid($user, $password)) {
                 $this->logger->notice('Invalid password for '.$user->getId(), ['ip' => $_SERVER['REMOTE_ADDR']]);
+
                 return $this->json(['message' => 'Invalid login/password'], Response::HTTP_UNAUTHORIZED);
             }
         }

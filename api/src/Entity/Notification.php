@@ -4,13 +4,13 @@ namespace App\Entity;
 
 use App\Service\Uuid;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Table(name="`notification`")
+ *
  * @ORM\Entity()
  */
 class Notification
@@ -25,100 +25,135 @@ class Notification
 
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="guid")
+     *
      * @Groups({"read_notification"})
+     *
      * @Assert\NotBlank()
+     *
      * @OA\Property(type="guid")
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     *
      * @Groups({"read_notification"})
+     *
      * @Assert\Type("integer")
+     *
      * @Assert\NotNull()
+     *
      * @OA\Property(type="integer")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string")
+     *
      * @Groups({"read_notification"})
+     *
      * @Assert\NotBlank()
+     *
      * @OA\Property(type="string")
      */
     private $type;
 
     /**
      * @ORM\Column(type="guid", unique=true)
+     *
      * @Assert\NotBlank()
+     *
      * @OA\Property(type="guid")
      */
     private $secretKey;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="notifications")
+     *
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
+     *
      * @OA\Property(type="App\Entity\User")
      */
     private $owner;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\File")
+     *
      * @ORM\JoinColumn(name="miniature_id", referencedColumnName="id")
+     *
      * @Groups({"read_notification"})
+     *
      * @OA\Property(type="App\Entity\File")
      */
     private $miniature;
 
     /**
      * @ORM\Column(type="string")
+     *
      * @Groups({"read_notification"})
+     *
      * @OA\Property(type="string")
      */
     private $target;
 
     /**
      * @ORM\Column(type="boolean")
+     *
      * @Groups({"read_notification"})
+     *
      * @OA\Property(type="boolean")
      */
     private $read;
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     *
      * @Groups({"read_notification"})
+     *
      * @Assert\NotBlank()
+     *
      * @OA\Property(type="object")
      */
     private $data;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     *
      * @ORM\JoinColumn(name="from_user_id", referencedColumnName="id")
+     *
      * @Groups({"read_notification"})
+     *
      * @OA\Property(type="App\Entity\User")
      */
     private $fromUser;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Group")
+     *
      * @ORM\JoinColumn(name="from_group_id", referencedColumnName="id")
+     *
      * @Groups({"read_notification"})
+     *
      * @OA\Property(type="App\Entity\Group")
      */
     private $fromGroup;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Message")
+     *
      * @ORM\JoinColumn(name="from_message_id", referencedColumnName="id")
+     *
      * @Groups({"read_notification"})
+     *
      * @OA\Property(type="App\Entity\Message")
      */
     private $fromMessage;
 
     /**
      * @Groups("*")
+     *
      * @OA\Property(type="string")
      */
     private $entityType;

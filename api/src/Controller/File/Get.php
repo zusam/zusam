@@ -5,14 +5,13 @@ namespace App\Controller\File;
 use App\Controller\ApiController;
 use App\Entity\File;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class Get extends ApiController
 {
@@ -25,18 +24,22 @@ class Get extends ApiController
 
     /**
      * @Route("/files/{id}", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get a file",
+     *
      *  @Model(type=App\Entity\File::class, groups={"read_file"})
      * )
+     *
      * @OA\Tag(name="file")
+     *
      * @Security(name="api_key")
      */
     public function index(string $id): Response
     {
         // This controller is public to allow display of public messages
-        //$this->denyAccessUnlessGranted('ROLE_USER');
+        // $this->denyAccessUnlessGranted('ROLE_USER');
 
         $file = $this->em->getRepository(File::class)->findOneById($id);
         if (empty($file)) {

@@ -6,7 +6,6 @@ use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,111 +14,147 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="`user`")
+ *
  * @ORM\Entity()
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @Assert\NotBlank()
+     *
      * @Groups("*")
+     *
      * @OA\Property(type="guid")
+     *
      * @ORM\Column(type="guid")
+     *
      * @ORM\Id
      */
     private $id;
 
     /**
      * @Assert\NotNull()
+     *
      * @Assert\Type("integer")
+     *
      * @OA\Property(type="integer")
+     *
      * @ORM\Column(type="integer")
      */
     private $createdAt;
 
     /**
      * @Assert\NotBlank()
+     *
      * @Groups({"read_me", "write_user"})
+     *
      * @OA\Property(type="string")
+     *
      * @ORM\Column(type="string", unique=true)
      */
     private $login;
 
     /**
      * @Assert\NotBlank()
+     *
      * @Groups({"write_user"})
+     *
      * @OA\Property(type="string")
+     *
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
      * @Assert\NotBlank()
+     *
      * @OA\Property(type="guid")
+     *
      * @ORM\Column(type="guid", unique=true)
      */
     private $secretKey;
 
     /**
      * @Groups({"read_me"})
+     *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Group"))
+     *
      * @ORM\JoinTable(name="users_groups")
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
      */
     private $groups;
 
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="author")
      */
     private $messages;
 
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Bookmark"))
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="user")
      */
     private $bookmarks;
 
     /**
      * @Groups({"read_me", "read_user", "write_user", "read_message_preview"})
+     *
      * @OA\Property(type="App\Entity\File")
+     *
      * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
+     *
      * @ORM\OneToOne(targetEntity="App\Entity\File")
      */
     private $avatar;
 
     /**
      * @Assert\NotBlank()
+     *
      * @Groups("*")
+     *
      * @OA\Property(type="string")
+     *
      * @ORM\Column(type="string")
      */
     private $name;
 
     /**
      * @Assert\NotBlank()
+     *
      * @Groups({"read_me", "read_user", "write_user"})
+     *
      * @OA\Property(type="object")
+     *
      * @ORM\Column(type="json", nullable=true)
      */
     private $data;
 
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Notification"))
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="owner")
+     *
      * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $notifications;
 
     /**
      * @Assert\Type("integer")
+     *
      * @Groups({"read_me"})
+     *
      * @OA\Property(type="integer")
+     *
      * @ORM\Column(type="integer", nullable=true)
      */
     private $lastActivityDate;
 
     /**
      * @Groups("*")
+     *
      * @OA\Property(type="string")
      */
     private $entityType;

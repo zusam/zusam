@@ -4,16 +4,14 @@ namespace App\Controller\Group;
 
 use App\Controller\ApiController;
 use App\Entity\Group;
-use App\Entity\Notification;
 use App\Service\Group as GroupService;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
-use OpenApi\Annotations as OA;
 
 class AddInvitedUser extends ApiController
 {
@@ -30,12 +28,16 @@ class AddInvitedUser extends ApiController
 
     /**
      * @Route("/groups/invitation/{inviteKey}", methods={"POST"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Add the logged in user to the group",
+     *
      *  @OA\JsonContent(type="string")
      * )
+     *
      * @OA\Tag(name="group")
+     *
      * @Security(name="api_key")
      */
     public function index(string $inviteKey): Response
@@ -48,6 +50,7 @@ class AddInvitedUser extends ApiController
         }
 
         $this->groupService->addUser($group, $this->getUser());
+
         return new JsonResponse(['id' => $group->getId()], Response::HTTP_OK);
     }
 }

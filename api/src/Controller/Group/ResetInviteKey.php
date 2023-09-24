@@ -6,7 +6,6 @@ use App\Controller\ApiController;
 use App\Entity\Group;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -27,14 +26,18 @@ class ResetInviteKey extends ApiController
 
     /**
      * @Route("/groups/{id}/reset-invite-key", methods={"POST"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Reset invite key of a group",
+     *
      *  @OA\JsonContent(
      *    type="string",
      *  )
      * )
+     *
      * @OA\Tag(name="group")
+     *
      * @Security(name="api_key")
      */
     public function index(

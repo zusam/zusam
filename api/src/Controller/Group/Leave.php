@@ -28,12 +28,16 @@ class Leave extends ApiController
 
     /**
      * @Route("/groups/{id}/leave", methods={"POST"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Leave a group",
+     *
      *  @Model(type=App\Entity\Group::class, groups={"read_group"})
      * )
+     *
      * @OA\Tag(name="group")
+     *
      * @Security(name="api_key")
      */
     public function index(

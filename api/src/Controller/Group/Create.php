@@ -27,21 +27,28 @@ class Create extends ApiController
 
     /**
      * @Route("/groups", methods={"POST"})
+     *
      * @OA\RequestBody(
+     *
      *  @OA\Schema(
      *    type="object",
+     *
      *    @OA\Property(
      *      property="name",
      *      type="string"
      *    ),
      *  )
      * )
+     *
      * @OA\Response(
      *  response=201,
      *  description="Create a group",
+     *
      *  @Model(type=App\Entity\Group::class, groups={"read_group"})
      * )
+     *
      * @OA\Tag(name="group")
+     *
      * @Security(name="api_key")
      */
     public function index(

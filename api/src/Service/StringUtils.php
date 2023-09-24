@@ -7,46 +7,48 @@ class StringUtils
     public static function seems_utf8(string $str)
     {
         $length = strlen($str);
-        for ($i=0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; ++$i) {
             $c = ord($str[$i]);
             if ($c < 0x80) {
                 $n = 0;
-            } # 0bbbbbbb
+            } // 0bbbbbbb
             elseif (($c & 0xE0) == 0xC0) {
-                $n=1;
-            } # 110bbbbb
+                $n = 1;
+            } // 110bbbbb
             elseif (($c & 0xF0) == 0xE0) {
-                $n=2;
-            } # 1110bbbb
+                $n = 2;
+            } // 1110bbbb
             elseif (($c & 0xF8) == 0xF0) {
-                $n=3;
-            } # 11110bbb
+                $n = 3;
+            } // 11110bbb
             elseif (($c & 0xFC) == 0xF8) {
-                $n=4;
-            } # 111110bb
+                $n = 4;
+            } // 111110bb
             elseif (($c & 0xFE) == 0xFC) {
-                $n=5;
-            } # 1111110b
+                $n = 5;
+            } // 1111110b
             else {
                 return false;
-            } # Does not match any model
-            for ($j=0; $j<$n; $j++) { # n bytes matching 10bbbbbb follow ?
+            } // Does not match any model
+            for ($j = 0; $j < $n; ++$j) { // n bytes matching 10bbbbbb follow ?
                 if ((++$i == $length) || ((ord($str[$i]) & 0xC0) != 0x80)) {
                     return false;
                 }
             }
         }
+
         return true;
     }
 
     /**
      * Converts all accent characters to ASCII characters.
-     * https://stackoverflow.com/a/10790734
+     * https://stackoverflow.com/a/10790734.
      *
      * If there are no accent characters, then the string given is just returned.
      *
      * @param string $string Text that might have accent characters
-     * @return string Filtered string with replaced "nice" characters.
+     *
+     * @return string filtered string with replaced "nice" characters
      */
     public static function remove_accents($string)
     {
@@ -55,7 +57,7 @@ class StringUtils
         }
 
         if (self::seems_utf8($string)) {
-            $chars = array(
+            $chars = [
                 // Decompositions for Latin-1 Supplement
                 chr(195).chr(128) => 'A', chr(195).chr(129) => 'A',
                 chr(195).chr(130) => 'A', chr(195).chr(131) => 'A',
@@ -111,7 +113,7 @@ class StringUtils
                 chr(196).chr(172) => 'I', chr(196).chr(173) => 'i',
                 chr(196).chr(174) => 'I', chr(196).chr(175) => 'i',
                 chr(196).chr(176) => 'I', chr(196).chr(177) => 'i',
-                chr(196).chr(178) => 'IJ',chr(196).chr(179) => 'ij',
+                chr(196).chr(178) => 'IJ', chr(196).chr(179) => 'ij',
                 chr(196).chr(180) => 'J', chr(196).chr(181) => 'j',
                 chr(196).chr(182) => 'K', chr(196).chr(183) => 'k',
                 chr(196).chr(184) => 'k', chr(196).chr(185) => 'L',
@@ -127,13 +129,13 @@ class StringUtils
                 chr(197).chr(140) => 'O', chr(197).chr(141) => 'o',
                 chr(197).chr(142) => 'O', chr(197).chr(143) => 'o',
                 chr(197).chr(144) => 'O', chr(197).chr(145) => 'o',
-                chr(197).chr(146) => 'OE',chr(197).chr(147) => 'oe',
-                chr(197).chr(148) => 'R',chr(197).chr(149) => 'r',
-                chr(197).chr(150) => 'R',chr(197).chr(151) => 'r',
-                chr(197).chr(152) => 'R',chr(197).chr(153) => 'r',
-                chr(197).chr(154) => 'S',chr(197).chr(155) => 's',
-                chr(197).chr(156) => 'S',chr(197).chr(157) => 's',
-                chr(197).chr(158) => 'S',chr(197).chr(159) => 's',
+                chr(197).chr(146) => 'OE', chr(197).chr(147) => 'oe',
+                chr(197).chr(148) => 'R', chr(197).chr(149) => 'r',
+                chr(197).chr(150) => 'R', chr(197).chr(151) => 'r',
+                chr(197).chr(152) => 'R', chr(197).chr(153) => 'r',
+                chr(197).chr(154) => 'S', chr(197).chr(155) => 's',
+                chr(197).chr(156) => 'S', chr(197).chr(157) => 's',
+                chr(197).chr(158) => 'S', chr(197).chr(159) => 's',
                 chr(197).chr(160) => 'S', chr(197).chr(161) => 's',
                 chr(197).chr(162) => 'T', chr(197).chr(163) => 't',
                 chr(197).chr(164) => 'T', chr(197).chr(165) => 't',
@@ -153,7 +155,7 @@ class StringUtils
                 // Euro Sign
                 chr(226).chr(130).chr(172) => 'E',
                 // GBP (Pound) Sign
-                chr(194).chr(163) => '');
+                chr(194).chr(163) => ''];
 
             $string = strtr($string, $chars);
         } else {
@@ -169,11 +171,11 @@ class StringUtils
                 .chr(244).chr(245).chr(246).chr(248).chr(249).chr(250).chr(251)
                 .chr(252).chr(253).chr(255);
 
-            $chars['out'] = "EfSZszYcYuAAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy";
+            $chars['out'] = 'EfSZszYcYuAAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy';
 
             $string = strtr($string, $chars['in'], $chars['out']);
-            $double_chars['in'] = array(chr(140), chr(156), chr(198), chr(208), chr(222), chr(223), chr(230), chr(240), chr(254));
-            $double_chars['out'] = array('OE', 'oe', 'AE', 'DH', 'TH', 'ss', 'ae', 'dh', 'th');
+            $double_chars['in'] = [chr(140), chr(156), chr(198), chr(208), chr(222), chr(223), chr(230), chr(240), chr(254)];
+            $double_chars['out'] = ['OE', 'oe', 'AE', 'DH', 'TH', 'ss', 'ae', 'dh', 'th'];
             $string = str_replace($double_chars['in'], $double_chars['out'], $string);
         }
 

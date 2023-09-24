@@ -5,8 +5,6 @@ namespace App\Service;
 use App\Entity\File as FileEntity;
 use App\Entity\Link as LinkEntity;
 use App\Service\Image as ImageService;
-use App\Service\Url;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
@@ -30,7 +28,7 @@ class Link
     {
         $filesDir = realpath($this->params->get('dir.files'));
         $data = Url::getData($link->getUrl());
-        $data["loading"] = false;
+        $data['loading'] = false;
         $link->setData($data);
         $link->setUpdatedAt(time());
         if (!empty($data['image'])) {
@@ -49,12 +47,14 @@ class Link
         }
         $this->em->persist($link);
         $this->em->flush();
+
         return $link;
     }
 
     public function create($url)
     {
         $link = new LinkEntity($url);
+
         return $this->hydrateLink($link);
     }
 }
