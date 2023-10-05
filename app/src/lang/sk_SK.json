@@ -48,7 +48,7 @@
     "settings_updated": "Vaše nastavenia boli zmenené",
     "group_updated": "Nastavenia skupiny boli zmenené!",
     "group_left": "Opustili ste skupinu!",
-    "multiple_photos_upload": "Vyskytla sa chyba. Skúste nahrávať obrázky jeden po druhom (môže sa to stať v niektorých prehliadačoch).",
+    "multiple_photos_upload": "Objavila sa chyba. Skúste priložiť obrázky po jednom (táto chyba sa môže objavovať v niektorých prehliadačoch)",
     "error_new_message": "Pri odosielaní vašej správy došlo k chybe.",
     "error_upload": "Objavila sa chyba počas odosielania",
     "cancel_write": "Chcete naozaj zrušiť vytváranie nového príspevku?",
