@@ -1,5 +1,6 @@
 {
     "name": "zusam/api",
+    "description": "A truly private space for you and your friends",
     "type": "project",
     "license": "AGPL-3.0-or-later",
     "require": {
