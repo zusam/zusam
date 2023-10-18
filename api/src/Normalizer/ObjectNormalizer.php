@@ -2,6 +2,7 @@
 
 namespace App\Normalizer;
 
+use App\Entity\ApiEntity;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -121,12 +122,17 @@ class ObjectNormalizer extends AbstractObjectNormalizer
             return $this->handleMaxTreeDepth($object, $format, $context);
         }
 
+        if (!array_key_exists('groups', $context)) {
+            $context['groups'] = [];
+        }
+
+        if (is_string($context['groups'])) {
+            $context['groups'] = [$context['groups']];
+        }
+
         // Remove the "read_me" group if we normalize a user that is not us.
         if ('User' === array_values(array_slice(explode('\\', get_class($object)), -1))[0]) {
             if (!isset($context['currentUser']) || $object->getId() !== $context['currentUser']) {
-                if (is_string($context['groups'])) {
-                    $context['groups'] = [$context['groups']];
-                }
                 $context['groups'] = array_filter($context['groups'], function ($g) {
                     return 'read_me' !== $g;
                 });
@@ -134,9 +140,6 @@ class ObjectNormalizer extends AbstractObjectNormalizer
         }
 
         // Always add the '*' group
-        if (is_string($context['groups'])) {
-            $context['groups'] = [$context['groups']];
-        }
         $context['groups'][] = '*';
 
         return $this->normalizer->normalize($object, $format, $context);
@@ -144,7 +147,7 @@ class ObjectNormalizer extends AbstractObjectNormalizer
 
     public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
-        return $this->normalizer->supportsNormalization($data, $format, $context);
+        return $data instanceof ApiEntity;
     }
 
     public function getSupportedTypes(?string $format): array

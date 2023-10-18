@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\ApiEntity;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity()
  */
-class Message
+class Message extends ApiEntity
 {
     /**
      * @Assert\NotBlank()
@@ -383,7 +384,11 @@ class Message
 
     public function getBookmarks(): Collection
     {
-        return $this->bookmarks;
+        if (null === $this->bookmarks) {
+            return new ArrayCollection();
+        } else {
+            return $this->bookmarks;
+        }
     }
 
     public function addBookmark(Bookmark $bookmark): void

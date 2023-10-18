@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\ApiEntity;
 use App\Service\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity()
  */
-class Bookmark
+class Bookmark extends ApiEntity
 {
     /**
      * @Assert\NotBlank()

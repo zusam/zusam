@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\ApiEntity;
 use App\Service\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
@@ -12,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity
  */
-class Link
+class Link extends ApiEntity
 {
     /**
      * @ORM\Id

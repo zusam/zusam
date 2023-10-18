@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\ApiEntity;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity()
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @Assert\NotBlank()

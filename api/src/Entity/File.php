@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\ApiEntity;
 use App\Service\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
@@ -14,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity
  */
-class File
+class File extends ApiEntity
 {
     /* Statuses are :
      *      - raw: file was just uploaded and not modified
