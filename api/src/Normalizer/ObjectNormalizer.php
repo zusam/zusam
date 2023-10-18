@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer as SymfonyObjectNormalizer;
 
 /**
- * Changes to Symfony's ObjectNormalizer :.
+ * Changes to Symfony's ObjectNormalizer:
  *
  * Adds a MAX_TREE_DEPTH limitation
  * The usual objectNormalizer has a MAX_DEPTH limitation that can be used but it's
@@ -23,14 +23,17 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer as SymfonyObjectNor
  * See 4.3 implementation here:
  * https://github.com/symfony/symfony/blob/4.3/src/Symfony/Component/Serializer/Normalizer/AbstractObjectNormalizer.php#L527
  *
+ * Always adds the '*' serialization group to the context.
+ * This is done so that it can be an universal serialization group.
+ *
  * Removes the "read_me" group if we normalize a user that is not us.
- * This is done to avoid serializing objects the caller shoudn't have access to
+ * This is done to avoid serializing objects the caller shoudn't have access to.
  *
- * Returns null for non existent properties instead of throwing
- * I made this choice to be more resilient
+ * Returns null for non existent properties instead of throwing.
+ * I made this choice to be more resilient.
  *
- * Returns null for properties that are API entities without id
- * I made this choice to be more resilient
+ * Returns null for properties that are API entities without id.
+ * I made this choice to be more resilient.
  */
 class ObjectNormalizer extends AbstractObjectNormalizer
 {
