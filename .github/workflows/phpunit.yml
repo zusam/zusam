@@ -1,6 +1,6 @@
 name: PHPUnit Tests
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   phpunit:
@@ -24,10 +24,10 @@ jobs:
           coverage: none
 
       - name: Validate composer.json and composer.lock
-        run: composer validate --strict
+        run: cd api && composer validate --strict
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
+        run: cd api && composer install --prefer-dist --no-progress
 
       - name: Run PHPUnit tests
         run: cd api && php bin/phpunit
