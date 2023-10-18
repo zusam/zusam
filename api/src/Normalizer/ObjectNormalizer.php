@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Mapping\ClassDiscriminatorResolverInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer as SymfonyObjectNormalizer;
 
 /**
  * Changes to Symfony's ObjectNormalizer :.
@@ -32,10 +33,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
  */
 class ObjectNormalizer extends AbstractObjectNormalizer
 {
-    protected $propertyAccessor;
-
-    private readonly \Closure $objectClassResolver;
-
     /**
      * How deep the resulting normalized tree can be.
      * The default value is 1.
@@ -62,27 +59,9 @@ class ObjectNormalizer extends AbstractObjectNormalizer
      */
     protected const TREE_DEPTH_LIMIT_COUNTERS = 'tree_depth_limit_counters';
 
-    /**
-     * @internal
-     */
-    private $discriminatorCache = [];
-
     public function __construct(
-        array $defaultContext = [],
-        callable $objectClassResolver = null,
-        ClassDiscriminatorResolverInterface $classDiscriminatorResolver = null,
-        ClassMetadataFactoryInterface $classMetadataFactory = null,
-        NameConverterInterface $nameConverter = null,
-        PropertyAccessorInterface $propertyAccessor = null,
-        PropertyTypeExtractorInterface $propertyTypeExtractor = null,
+        private SymfonyObjectNormalizer $normalizer,
     ) {
-        if (!class_exists(PropertyAccess::class)) {
-            throw new LogicException('The ObjectNormalizer class requires the "PropertyAccess" component. Install "symfony/property-access" to use it.');
-        }
-
-        parent::__construct($classMetadataFactory, $nameConverter, $propertyTypeExtractor, $classDiscriminatorResolver, $objectClassResolver, $defaultContext);
-        $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
-        $this->objectClassResolver = ($objectClassResolver ?? static fn ($class) => \is_object($class) ? $class::class : $class)(...);
         $this->defaultContext[self::TREE_DEPTH_LIMIT] = 1;
     }
 
@@ -154,155 +133,37 @@ class ObjectNormalizer extends AbstractObjectNormalizer
             }
         }
 
-        return $this->normalize($object, $format, $context);
+        // Always add the '*' group
+        if (is_string($context['groups'])) {
+            $context['groups'] = [$context['groups']];
+        }
+        $context['groups'][] = '*';
+
+        return $this->normalizer->normalize($object, $format, $context);
     }
 
-    protected function getAllowedAttributes(object|string $classOrObject, array $context, bool $attributesAsString = false): array|bool
+    public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
-        $allowExtraAttributes = $context[self::ALLOW_EXTRA_ATTRIBUTES] ?? $this->defaultContext[self::ALLOW_EXTRA_ATTRIBUTES];
-        if (!$this->classMetadataFactory) {
-            if (!$allowExtraAttributes) {
-                throw new \LogicException(sprintf('A class metadata factory must be provided in the constructor when setting "%s" to false.', self::ALLOW_EXTRA_ATTRIBUTES));
-            }
+        return $this->normalizer->supportsNormalization($data, $format, $context);
+    }
 
-            return false;
-        }
+    public function getSupportedTypes(?string $format): array
+    {
+        return $this->normalizer->getSupportedTypes($format);
+    }
 
-        $tmpGroups = $context[self::GROUPS] ?? $this->defaultContext[self::GROUPS] ?? null;
-        $groups = (\is_array($tmpGroups) || is_scalar($tmpGroups)) ? (array) $tmpGroups : false;
-        if (false === $groups && $allowExtraAttributes) {
-            return false;
-        }
-
-        $allowedAttributes = [];
-        foreach ($this->classMetadataFactory->getMetadataFor($classOrObject)->getAttributesMetadata() as $attributeMetadata) {
-            $name = $attributeMetadata->getName();
-
-            if (
-                (
-                    false === $groups
-                    || in_array('*', $attributeMetadata->getGroups())
-                    || array_intersect($attributeMetadata->getGroups(), $groups)
-                )
-                && $this->isAllowedAttribute($classOrObject, $name, null, $context)
-            ) {
-                $allowedAttributes[] = $attributesAsString ? $name : $attributeMetadata;
-            }
-        }
-
-        return $allowedAttributes;
+    protected function setAttributeValue(object $object, string $attribute, mixed $value, string $format = null, array $context = [])
+    {
+        $this->normalizer->setAttributeValue($object, $attribute, $value, $format, $context);
     }
 
     protected function getAttributeValue(object $object, string $attribute, string $format = null, array $context = []): mixed
     {
-        $cacheKey = \get_class($object);
-        if (!\array_key_exists($cacheKey, $this->discriminatorCache)) {
-            $this->discriminatorCache[$cacheKey] = null;
-            if (null !== $this->classDiscriminatorResolver) {
-                $mapping = $this->classDiscriminatorResolver->getMappingForMappedObject($object);
-                $this->discriminatorCache[$cacheKey] = null === $mapping ? null : $mapping->getTypeProperty();
-            }
-        }
-
-        if ($attribute === $this->discriminatorCache[$cacheKey]) {
-            return $this->classDiscriminatorResolver->getTypeForMappedObject($object);
-        } else {
-            try {
-                $attributeValue = $this->propertyAccessor->getValue($object, $attribute);
-                // API objects always should have an id
-                // If it's not the case, return null
-                // TODO log it
-                if (
-                    is_object($attributeValue)
-                    && in_array(
-                        array_values(array_slice(explode('\\', \get_class($attributeValue)), -1))[0],
-                        ['User', 'File', 'Message', 'Notification', 'Group', 'Link']
-                    )
-                    && empty($attributeValue->getId())
-                ) {
-                    return null;
-                }
-
-                return $attributeValue;
-            } catch (\Exception $e) {
-                // TODO: log exception
-                return null;
-            }
-        }
+        return $this->normalizer->getAttributeValue($object, $attribute, $value, $format, $context);
     }
 
     protected function extractAttributes(object $object, string $format = null, array $context = []): array
     {
-        if (\stdClass::class === $object::class) {
-            return array_keys((array) $object);
-        }
-
-        // If not using groups, detect manually
-        $attributes = [];
-
-        // methods
-        $class = ($this->objectClassResolver)($object);
-        $reflClass = new \ReflectionClass($class);
-
-        foreach ($reflClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $reflMethod) {
-            if (
-                0 !== $reflMethod->getNumberOfRequiredParameters()
-                || $reflMethod->isStatic()
-                || $reflMethod->isConstructor()
-                || $reflMethod->isDestructor()
-            ) {
-                continue;
-            }
-
-            $name = $reflMethod->name;
-            $attributeName = null;
-
-            if (str_starts_with($name, 'get') || str_starts_with($name, 'has') || str_starts_with($name, 'can')) {
-                // getters, hassers and canners
-                $attributeName = substr($name, 3);
-
-                if (!$reflClass->hasProperty($attributeName)) {
-                    $attributeName = lcfirst($attributeName);
-                }
-            } elseif (str_starts_with($name, 'is')) {
-                // issers
-                $attributeName = substr($name, 2);
-
-                if (!$reflClass->hasProperty($attributeName)) {
-                    $attributeName = lcfirst($attributeName);
-                }
-            }
-
-            if (null !== $attributeName && $this->isAllowedAttribute($object, $attributeName, $format, $context)) {
-                $attributes[$attributeName] = true;
-            }
-        }
-
-        // properties
-        foreach ($reflClass->getProperties() as $reflProperty) {
-            if (!$reflProperty->isPublic()) {
-                continue;
-            }
-
-            if ($reflProperty->isStatic() || !$this->isAllowedAttribute($object, $reflProperty->name, $format, $context)) {
-                continue;
-            }
-
-            $attributes[$reflProperty->name] = true;
-        }
-
-        return array_keys($attributes);
-    }
-
-    /**
-     * @return void
-     */
-    protected function setAttributeValue(object $object, string $attribute, mixed $value, string $format = null, array $context = [])
-    {
-        try {
-            $this->propertyAccessor->setValue($object, $attribute, $value);
-        } catch (NoSuchPropertyException) {
-            // Properties not found are ignored
-        }
+        return $this->normalizer->extractAttributes($object, $format, $context);
     }
 }
