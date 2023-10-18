@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\ApiEntity;
 use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

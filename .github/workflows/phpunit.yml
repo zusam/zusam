@@ -4,7 +4,7 @@ on: [pull_request]
 
 jobs:
   phpunit:
-    name: Run PHPUnit
+    name: Run PHP tests
     runs-on: ubuntu-latest
 
     strategy:
@@ -31,3 +31,9 @@ jobs:
 
       - name: Run PHPUnit tests
         run: cd api && php bin/phpunit
+
+      - name: Run static analysis
+        run: cd api && php bin/composer analyze
+
+      - name: Run linting
+        run: cd api && php bin/composer lint

@@ -81,7 +81,7 @@
     },
     "scripts": {
         "lint": [
-          "php -d memory_limit=-1 ./vendor/bin/php-cs-fixer fix src/ --verbose"
+          "php -d memory_limit=-1 ./vendor/bin/php-cs-fixer check src/ --verbose"
         ],
         "analyze": [
           "php -d memory_limit=-1 ./vendor/bin/phpstan analyse src/ -l 3"

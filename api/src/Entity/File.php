@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\ApiEntity;
 use App\Service\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;

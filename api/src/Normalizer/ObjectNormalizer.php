@@ -3,19 +3,11 @@
 namespace App\Normalizer;
 
 use App\Entity\ApiEntity;
-use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
-use Symfony\Component\Serializer\Exception\LogicException;
-use Symfony\Component\Serializer\Mapping\ClassDiscriminatorResolverInterface;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
-use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer as SymfonyObjectNormalizer;
 
 /**
- * Changes to Symfony's ObjectNormalizer:
+ * Changes to Symfony's ObjectNormalizer:.
  *
  * Adds a MAX_TREE_DEPTH limitation
  * The usual objectNormalizer has a MAX_DEPTH limitation that can be used but it's
@@ -165,7 +157,7 @@ class ObjectNormalizer extends AbstractObjectNormalizer
 
     protected function getAttributeValue(object $object, string $attribute, string $format = null, array $context = []): mixed
     {
-        return $this->normalizer->getAttributeValue($object, $attribute, $value, $format, $context);
+        return $this->normalizer->getAttributeValue($object, $attribute, $format, $context);
     }
 
     protected function extractAttributes(object $object, string $format = null, array $context = []): array
