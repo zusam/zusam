@@ -1,5 +1,3 @@
-# .github/workflows/phpunit.yml
-
 name: PHPUnit Tests
 
 on: [push, pull_request]
