@@ -3,6 +3,44 @@
     border: initial;
     color: inherit;
 
+    .dropdown-left {
+        top: calc(100% - 2px);
+        right: 0;
+        left: auto;
+        border-bottom-left-radius: 4px;
+        box-shadow: 4px 4px 4px #0003;
+
+        & > a {
+            padding: 5px 15px 5px 10px;
+        }
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        display: none;
+        padding: 0;
+        color: #444;
+        background-color: #fff;
+        border: 1px solid #7773;
+        text-align: left;
+        max-height: calc(90vh - 47px);
+        overflow: hidden auto;
+        max-width: 25rem;
+        margin: 0;
+        border-radius: 0;
+
+        & > a {
+            display: flex;
+            cursor: pointer;
+            padding: 5px 10px;
+            white-space: nowrap;
+
+            &:hover {
+                background-color: #eee;
+            }
+        }
+    }
+
     &:focus {
         outline: none;
     }
@@ -13,50 +51,12 @@
         }
     }
 
-    .dropdown-menu {
-        position: absolute;
-        display: none;
-        padding: 0;
-        overflow: hidden;
-        color: #444;
-        background-color: #fff;
-        border: 1px solid #7773;
-        text-align: left;
-        max-height: calc(90vh - 47px);
-        overflow-y: auto;
-        max-width: 25rem;
-        overflow-x: hidden;
-        margin: 0;
-        border-radius: 0;
-
-        & > a {
-            display: flex;
-            cursor: pointer;
-            padding: 5px 10px 5px 10px;
-            white-space: nowrap;
-            &:hover {
-                background-color: #eee;
-            }
-        }
-    }
-
     .dropdown-right {
         top: calc(100% - 2px);
         left: 0;
         right: auto;
         border-bottom-right-radius: 4px;
         box-shadow: -4px 4px 4px #0003;
-    }
-
-    .dropdown-left {
-        top: calc(100% - 2px);
-        right: 0;
-        left: auto;
-        border-bottom-left-radius: 4px;
-        box-shadow: 4px 4px 4px #0003;
-        & > a {
-            padding: 5px 15px 5px 10px;
-        }
     }
 
     .dropdown-options {

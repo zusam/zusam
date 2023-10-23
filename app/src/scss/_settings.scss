@@ -16,27 +16,24 @@
         padding: 1rem;
         border: 1px solid #ddd;
     }
+
     .nav-link {
         color: #444;
     }
+
     .nav-link.active {
         text-decoration: none !important;
     }
+
     .nav-link:hover {
         text-decoration: underline;
     }
+
     .group-list {
         display: block;
         position: relative;
         z-index: 30;
         cursor: pointer;
-
-        &.active {
-            background-color: whitesmoke;
-            .dropdown-menu {
-                display: block;
-            }
-        }
 
         /* Sub Menus */
         .dropdown-menu {
@@ -48,7 +45,7 @@
             padding: 0;
             background-color: $white;
             text-align: left;
-            box-shadow: $material_shadow;
+            box-shadow: $material-shadow;
 
             a {
                 display: block;
@@ -61,13 +58,21 @@
                 }
             }
         }
+
+        &.active {
+            background-color: whitesmoke;
+
+            .dropdown-menu {
+                display: block;
+            }
+        }
     }
 }
 
 .user-list {
     padding: 2rem;
     background: #fff;
-    border: 1px solid rgba(0,0,0,.125);
+    border: 1px solid rgb(0 0 0 / 12.5%);
 
     h3::first-letter {
         text-transform: capitalize;

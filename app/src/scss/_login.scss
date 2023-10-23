@@ -4,7 +4,7 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background: radial-gradient($zusam_color, adjust-hue($zusam_color, -5deg));
+    background: radial-gradient($zusam-color, color.adjust($zusam-color, $hue: -5deg));
     display: flex;
     align-items: center;
     position: fixed;
@@ -20,6 +20,7 @@
         img {
             margin-bottom: 3rem;
         }
+
         form {
             width: 100%;
             max-width: 20rem;
@@ -39,6 +40,7 @@
         text-align: right;
         color: white;
         font-size: 0.8rem;
+
         span:hover {
             text-decoration: underline;
             cursor: pointer;

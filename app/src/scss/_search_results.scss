@@ -1,5 +1,4 @@
 .search-results-container {
-
     .message-preview-placeholder {
         display: block;
         width: 100%;
@@ -52,7 +51,7 @@
             border-top-right-radius: 4px;
             word-wrap: break-word;
 
-            &:first-letter {
+            &::first-letter {
                 float: left;
                 font-size: 6rem;
                 color: #555;

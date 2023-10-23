@@ -1,9 +1,9 @@
 .main-nav {
-    background-color: $zusam_color;
+    background-color: $zusam-color;
     color: white;
     display: flex;
     flex-flow: row;
-    height: $navbar_height;
+    height: $navbar-height;
     justify-content: space-between;
     position: sticky;
     top: 0;
@@ -21,7 +21,7 @@
         max-width: 30rem;
         padding: 0 5px;
 
-        @media (max-width: 400px) {
+        @media (width <= 400px) {
             &:focus-within {
                 position: absolute;
                 z-index: 2;
@@ -35,7 +35,7 @@
         height: 100%;
 
         &.active {
-            background-color: adjust-hue($zusam_color, 5deg);
+            background-color: color.adjust($zusam-color, $hue: 5deg);
         }
 
         .avatar {
@@ -54,7 +54,7 @@
     .groups {
         cursor: pointer;
         position: relative;
-        background-color: $zusam_color;
+        background-color: $zusam-color;
         height: 100%;
         line-height: 200%;
         flex-shrink: 0;
@@ -64,20 +64,20 @@
         }
 
         &.active {
-            background-color: adjust-hue($zusam_color, 5deg);
+            background-color: color.adjust($zusam-color, $hue: 5deg);
         }
     }
 
     .back {
         font-size: 1.2rem;
-        padding: 0px 1rem;
+        padding: 0 1rem;
         height: 100%;
         display: flex;
         align-items: center;
         cursor: pointer;
 
         &:hover {
-            background-color: adjust-hue($zusam_color, 5deg);
+            background-color: color.adjust($zusam-color, $hue: 5deg);
         }
     }
 }
