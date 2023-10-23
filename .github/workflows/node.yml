@@ -1,0 +1,25 @@
+name: Node Tests
+
+on: [pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install --include=dev
+
+    - name: Run ESLint
+      run: npx eslint -c .eslintrc.json src/
+
+    - name: Run stylelint
+      run: npx stylelint "src/scss/**/*.scss"
