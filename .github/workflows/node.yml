@@ -16,10 +16,10 @@ jobs:
         node-version: '18'
 
     - name: Install dependencies
-      run: npm install --include=dev
+      run: cd app && npm install --include=dev
 
     - name: Run ESLint
-      run: npx eslint -c .eslintrc.json src/
+      run: cd app && npx eslint -c .eslintrc.json src/
 
     - name: Run stylelint
-      run: npx stylelint "src/scss/**/*.scss"
+      run: cd app && npx stylelint "src/scss/**/*.scss"
