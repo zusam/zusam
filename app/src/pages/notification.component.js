@@ -1,13 +1,12 @@
 import { h, Fragment } from "preact";
 import { http, util, notifications } from "/src/core";
 import { useEffect, useState } from "preact/hooks";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FaIcon } from "/src/misc";
 
 export default function Notification(props) {
 
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const [target, setTarget] = useState(null);
   const [action, setAction] = useState(null);
@@ -121,13 +120,6 @@ export default function Notification(props) {
     default:
       return "";
     }
-  };
-
-  const onClick = (event, target) => {
-    event.preventDefault();
-    notifications.markAsRead(props.id).then(() => {
-      navigate(target);
-    });
   };
 
   useEffect(() => {

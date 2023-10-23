@@ -46,10 +46,10 @@ function App() {
   useEffect(() => {
     // this test is here to ensure that 'api' gets loaded before
     // this may come from a transpilation issue with parceljs
-    if(api && typeof api.update === 'function') {
+    if(api && typeof api.update === "function") {
       api.update();
     } else {
-      console.error('Could not use api.update()');
+      console.error("Could not use api.update()");
     }
     notifications.update();
     bookmarks_utils.update();

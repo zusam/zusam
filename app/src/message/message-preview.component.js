@@ -38,7 +38,7 @@ export default function MessagePreview(props) {
     e.currentTarget.style.position = "absolute";
     e.currentTarget.style.left = "50%";
     e.currentTarget.style.transform = "translate(-50%, 0%)";
-  }
+  };
 
   useEffect(() => {
     http.get(`/api/messages/${props.id}/preview`).then(p => {

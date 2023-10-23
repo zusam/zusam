@@ -17,18 +17,18 @@ import zh_Hans from "/src/lang/zh_Hans.json";
 
 const lang = {
   possibleLang: {
-    "cs_CZ": "čeština",
-    "de_DE": "Deutsch",
-    "en_US": "english",
-    "es_ES": "español",
-    "fr_FR": "français",
-    "hu_HU": "magyar nyelv",
-    "ko_KR": "한국어",
-    "nl_NL": "Nederlands",
-    "ru_RU": "Русский",
-    "sk_SK": "Slovenský",
-    "zgh": "ⵜⴰⵎⴰⵣⵉⵖⵜ",
-    "zh_Hans": "中文",
+    cs_CZ: "čeština",
+    de_DE: "Deutsch",
+    en_US: "english",
+    es_ES: "español",
+    fr_FR: "français",
+    hu_HU: "magyar nyelv",
+    ko_KR: "한국어",
+    nl_NL: "Nederlands",
+    ru_RU: "Русский",
+    sk_SK: "Slovenský",
+    zgh: "ⵜⴰⵎⴰⵣⵉⵖⵜ",
+    zh_Hans: "中文",
   }, // possible dicts names to load
   getDefaultLang: () =>
     (document.querySelector("meta[name='zusam:default-lang']") || {}).content ||

@@ -149,7 +149,7 @@ export default function GroupSettings() {
         {users.map(
           user =>
             user && (
-              <div class="user-card">
+              <div class="user-card" key={user.id}>
                 <img
                   class="avatar material-shadow-with-hover"
                   style={util.backgroundHash(user.id)}
