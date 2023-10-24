@@ -95,5 +95,7 @@
     "video_not_ready": "Video is nog niet klaar.",
     "bookmark_added": "Bericht toegevoegd aan bookmarks !",
     "bookmark_removed": "Bericht verwijderd uit bookmarks !",
-    "parent_message": "Parent bericht"
+    "parent_message": "Parent bericht",
+    "upload_audio": "",
+    "audio_not_ready": ""
 }

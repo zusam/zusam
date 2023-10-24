@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 .remove-button {
     display: none;
     cursor: pointer;
@@ -76,8 +78,8 @@
 
                 @media (hover: hover) {
                     &:hover {
-                        background-color: color.adjust-hue($zusam-color, -15deg);
-                        border-color: color.adjust-hue($zusam-color, -15deg);
+                        background-color: color.adjust($zusam-color, $hue:-15deg);
+                        border-color: color.adjust($zusam-color, $hue:-15deg);
                         color: white;
                     }
                 }
@@ -145,7 +147,7 @@
     color: #fff;
 
     &:hover {
-        background-color: color.adjust-hue($zusam-color, -15deg);
+        background-color: color.adjust($zusam-color, $hue:-15deg);
         color: #fff;
     }
 }

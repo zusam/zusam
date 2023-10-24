@@ -1,3 +1,5 @@
+@use 'sass:list';
+
 // override boostraps variables here
 
 $grid-breakpoints: (
@@ -21,7 +23,7 @@ $grid-breakpoints: (
 
     @each $value in $params {
         @media (min-width: #{map-get($grid-breakpoints, list.nth($value, 1))}) {
-            width: calc(#{100 / list.nth($value, 2)}% - #{$gutter});
+            width: calc((100% / #{list.nth($value, 2)}) - #{$gutter});
         }
     }
 }

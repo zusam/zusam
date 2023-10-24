@@ -95,5 +95,7 @@
     "groups": "Skupiny",
     "none": "Žádná",
     "daily": "Denní",
-    "weekly": "Týdenní"
+    "weekly": "Týdenní",
+    "upload_audio": "",
+    "audio_not_ready": ""
 }
