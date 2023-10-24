@@ -5,6 +5,7 @@ namespace App\Controller\Group;
 use App\Controller\ApiController;
 use App\Entity\Group;
 use App\Entity\User;
+use App\Service\Group as GroupService;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -18,11 +19,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class Create extends ApiController
 {
+    private $groupService;
+
     public function __construct(
         EntityManagerInterface $em,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        GroupService $groupService,
     ) {
         parent::__construct($em, $serializer);
+        $this->groupService = $groupService;
     }
 
     /**
@@ -64,14 +69,7 @@ class Create extends ApiController
             );
         }
 
-        $group = new Group();
-        $group->setName($requestData['name']);
-        $this->em->persist($group);
-
-        $currentUser->setLastActivityDate(time());
-        $this->em->persist($currentUser);
-
-        $this->em->flush();
+        $group = $this->groupService->create($requestData['name'], $currentUser);
 
         return new Response(
             $this->serialize($group, ['read_group']),

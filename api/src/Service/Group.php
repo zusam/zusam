@@ -21,6 +21,20 @@ class Group
         return $this->em->getRepository(GroupEntity::class)->findOneById($id);
     }
 
+    public function create($name, $user)
+    {
+        $group = new GroupEntity();
+        $group->setName($name);
+        $this->em->persist($group);
+
+        $user->setLastActivityDate(time());
+        $this->em->persist($user);
+
+        $this->em->flush();
+
+        return $group;
+    }
+
     public function addUser($group, $user)
     {
         $group->addUser($user);

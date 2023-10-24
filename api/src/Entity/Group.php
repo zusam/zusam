@@ -201,7 +201,11 @@ class Group extends ApiEntity
 
     public function getTags(): Collection
     {
-        return $this->tags;
+        if (null === $this->tags) {
+            return new ArrayCollection();
+        } else {
+            return $this->tags;
+        }
     }
 
     public function addTag(Tag $tag): void
