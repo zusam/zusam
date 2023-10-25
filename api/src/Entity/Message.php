@@ -20,7 +20,7 @@ class Message extends ApiEntity
     /**
      * @Assert\NotBlank()
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="guid")
      *
@@ -55,7 +55,7 @@ class Message extends ApiEntity
     private $data;
 
     /**
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
      *
@@ -172,7 +172,7 @@ class Message extends ApiEntity
     /**
      * @Assert\NotNull()
      *
-     * @Groups({"*"})
+     * @Groups({"public"})
      *
      * @OA\Property(type="string")
      *
@@ -181,7 +181,7 @@ class Message extends ApiEntity
     private $type;
 
     /**
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="string")
      */

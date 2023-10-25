@@ -30,7 +30,7 @@ class File extends ApiEntity
      *
      * @Assert\NotBlank()
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="guid")
      */
@@ -77,7 +77,7 @@ class File extends ApiEntity
     /**
      * @ORM\Column(type="string")
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="string")
      */
@@ -113,7 +113,7 @@ class File extends ApiEntity
     private $secretKey;
 
     /**
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="string")
      */

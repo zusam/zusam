@@ -134,8 +134,8 @@ class ObjectNormalizer extends AbstractObjectNormalizer
             }
         }
 
-        // Always add the '*' group
-        $context['groups'][] = '*';
+        // Always add the 'public' group
+        $context['groups'][] = 'public';
 
         return $this->normalizer->normalize($object, $format, $context);
     }

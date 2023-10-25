@@ -18,7 +18,7 @@ class Bookmark extends ApiEntity
     /**
      * @Assert\NotBlank()
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="guid")
      *
@@ -33,7 +33,7 @@ class Bookmark extends ApiEntity
      *
      * @Assert\Type("integer")
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="integer")
      *
@@ -44,7 +44,7 @@ class Bookmark extends ApiEntity
     /**
      * @Assert\NotNull()
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="App\Entity\User")
      *
@@ -62,7 +62,7 @@ class Bookmark extends ApiEntity
     private $message;
 
     /**
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="string")
      */

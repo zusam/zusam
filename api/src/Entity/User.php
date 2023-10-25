@@ -22,7 +22,7 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     /**
      * @Assert\NotBlank()
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="guid")
      *
@@ -113,7 +113,7 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     /**
      * @Assert\NotBlank()
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="string")
      *
@@ -153,7 +153,7 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     private $lastActivityDate;
 
     /**
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="string")
      */

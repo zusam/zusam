@@ -22,7 +22,7 @@ class Group extends ApiEntity
      *
      * @ORM\Column(type="guid")
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @Assert\NotBlank()
      *
@@ -55,7 +55,7 @@ class Group extends ApiEntity
     /**
      * @ORM\Column(type="string")
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @Assert\NotBlank()
      *
@@ -105,7 +105,7 @@ class Group extends ApiEntity
     private $data;
 
     /**
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="string")
      */

@@ -20,7 +20,7 @@ class Tag extends ApiEntity
     /**
      * @Assert\NotBlank()
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="guid")
      *
@@ -35,7 +35,7 @@ class Tag extends ApiEntity
      *
      * @Assert\Type("integer")
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="integer")
      *
@@ -46,7 +46,7 @@ class Tag extends ApiEntity
     /**
      * @Assert\NotNull()
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="App\Entity\Group")
      *
@@ -66,7 +66,7 @@ class Tag extends ApiEntity
     /**
      * @Assert\NotBlank()
      *
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="string")
      *
@@ -75,7 +75,7 @@ class Tag extends ApiEntity
     private $name;
 
     /**
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="string")
      */

@@ -152,7 +152,7 @@ class Notification extends ApiEntity
     private $fromMessage;
 
     /**
-     * @Groups("*")
+     * @Groups("public")
      *
      * @OA\Property(type="string")
      */
