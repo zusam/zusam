@@ -9,7 +9,7 @@ echo "deb https://packages.sury.org/php/ $(lsb_release -s -c) main" | sudo tee /
 sudo apt update
 ```
 
-We're going to use php8.1 here but Zusam is compatible with 8.0+
+We're going to use php8.1 here but Zusam is compatible with 8.1+
 ```
 sudo apt install -y nginx unzip ffmpeg php8.1 php8.1-fpm php8.1-xml php8.1-curl php8.1-mbstring php8.1-sqlite3 php-imagick php8.1-intl curl
 ```
