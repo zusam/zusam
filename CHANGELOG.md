@@ -2,6 +2,22 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [0.5.5] - 2023-11-23
+
+### Log
+- Update documentation
+- Pin preact to 10.17.1 to fix wrong order of messages
+- Rename the '*' serialization group to 'public'
+- Fix group creation
+- Add a basic CI on github
+- Remove support for php 8.0
+- Rework & fix the objectNormalizer
+- Various fixes, updates and linting
+
+### Remarks
+
+Mostly bugfix release.
+
 ## [0.5.4] - 2023-09-19
 
 ### Log
