@@ -40,7 +40,7 @@ the frontend is made with [Preact](https://preactjs.com) and [ParcelJS](https://
 
 Requirements:
 
-- PHP 8.0+ (with iconv, mbstring, curl, xml, sqlite3 and imagick extensions)
+- PHP 8.1+ (with iconv, mbstring, curl, xml, sqlite3 and imagick extensions)
 - Ffmpeg 3+
 
 Installation guides:
