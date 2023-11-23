@@ -51,6 +51,7 @@ class IssueNotification extends Command
         }
 
         $this->em->flush();
+
         return 0;
     }
 }

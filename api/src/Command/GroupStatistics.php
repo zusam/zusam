@@ -6,7 +6,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GroupStatistics extends Command
@@ -49,25 +48,25 @@ class GroupStatistics extends Command
 
         $c = $this->pdo->query('SELECT * FROM "group";');
         $groups = [];
-        if ($c !== false) {
+        if (false !== $c) {
             while ($group = $c->fetch()) {
                 $users = [];
                 $messages = [];
                 $messages_last_month = 0;
 
                 $users_query = $this->pdo->query('SELECT * from users_groups ug WHERE ug.group_id = "'.$group['id'].'";');
-                if ($users_query !== false) {
+                if (false !== $users_query) {
                     while ($u = $users_query->fetch()) {
                         $users[] = $u['user_id'];
                     }
                 }
 
                 $messages_query = $this->pdo->query('SELECT * from message m WHERE m.group_id = "'.$group['id'].'";');
-                if ($messages_query !== false) {
+                if (false !== $messages_query) {
                     while ($m = $messages_query->fetch()) {
                         $messages[] = $m['id'];
-                        if ($m["created_at"] > time() - 60*60*24*30) {
-                            $messages_last_month++;
+                        if ($m['created_at'] > time() - 60 * 60 * 24 * 30) {
+                            ++$messages_last_month;
                         }
                     }
                 }
@@ -89,6 +88,7 @@ class GroupStatistics extends Command
             ->setHeaders(['group id', 'users', 'messages', 'last activity', 'messages last month'])
             ->setRows($groups);
         $table->render();
+
         return 0;
     }
 }

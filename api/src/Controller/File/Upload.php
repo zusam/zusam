@@ -4,17 +4,17 @@ namespace App\Controller\File;
 
 use App\Controller\ApiController;
 use App\Entity\File;
-use App\Service\Image as ImageService;
 use App\Service\File as FileService;
+use App\Service\Image as ImageService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class Upload extends ApiController
 {
@@ -31,21 +31,28 @@ class Upload extends ApiController
 
     /**
      * @Route("/files", methods={"POST"})
+     *
      * @OA\RequestBody(
+     *
      *  @OA\Schema(
      *    type="object",
+     *
      *    @OA\Property(
      *      property="file",
      *      type="binary"
      *    )
      *  )
      * )
+     *
      * @OA\Response(
      *  response=201,
      *  description="Upload a file",
+     *
      *  @Model(type=App\Entity\File::class, groups={"read_file"})
      * )
+     *
      * @OA\Tag(name="file")
+     *
      * @Security(name="api_key")
      */
     public function index(Request $request, ImageService $imageService): Response

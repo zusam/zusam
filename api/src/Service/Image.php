@@ -81,6 +81,7 @@ class Image
     {
         $output = tempnam(sys_get_temp_dir(), 'zusam_temp').'.jpg';
         exec($ghostscriptPath.' -dBATCH -dNOPAUSE -q -o "'.$output.'" -dFirstPage=1 -dLastPage=1 -r72 -dJPEGQ=100 -sDEVICE=jpeg "'.$input.'"');
+
         return $output;
     }
 
@@ -191,11 +192,12 @@ class Image
         // We read through the file til we reach the end of the file, or we've found
         // at least 2 frame headers
         while (!feof($fh)) {
-            $chunk = fread($fh, 1024 * 100); //read 100kb at a time
+            $chunk = fread($fh, 1024 * 100); // read 100kb at a time
             $count += preg_match_all('#\x00\x21\xF9\x04.{4}\x00(\x2C|\x21)#s', $chunk, $matches);
         }
 
         fclose($fh);
+
         return $count;
     }
 

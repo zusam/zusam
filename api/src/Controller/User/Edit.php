@@ -33,12 +33,16 @@ class Edit extends ApiController
 
     /**
      * @Route("/bookmarks/{id}", methods={"POST"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Register a bookmark",
+     *
      *  @Model(type=App\Entity\User::class, groups={"read_user"})
      * )
+     *
      * @OA\Tag(name="user")
+     *
      * @Security(name="api_key")
      */
     public function post_bookmark(
@@ -66,12 +70,16 @@ class Edit extends ApiController
 
     /**
      * @Route("/bookmarks/{id}", methods={"DELETE"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Unregister a bookmark",
+     *
      *  @Model(type=App\Entity\User::class, groups={"read_user"})
      * )
+     *
      * @OA\Tag(name="user")
+     *
      * @Security(name="api_key")
      */
     public function delete_bookmark(
@@ -103,9 +111,12 @@ class Edit extends ApiController
 
     /**
      * @Route("/users/{id}", methods={"PUT"})
+     *
      * @OA\RequestBody(
+     *
      *  @OA\Schema(
      *    type="object",
+     *
      *    @OA\Property(
      *      property="password",
      *      type="string",
@@ -133,12 +144,16 @@ class Edit extends ApiController
      *    ),
      *  )
      * )
+     *
      * @OA\Response(
      *  response=200,
      *  description="Modify a user",
+     *
      *  @Model(type=App\Entity\User::class, groups={"read_user"})
      * )
+     *
      * @OA\Tag(name="user")
+     *
      * @Security(name="api_key")
      */
     public function index(
@@ -193,12 +208,16 @@ class Edit extends ApiController
 
     /**
      * @Route("/users/{id}/reset-api-key", methods={"POST"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Reset a user api key",
+     *
      *  @OA\JsonContent(type="string")
      * )
+     *
      * @OA\Tag(name="user")
+     *
      * @Security(name="api_key")
      */
     public function resetApiKey(

@@ -25,12 +25,16 @@ class Get extends ApiController
 
     /**
      * @Route("/users/{id}", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Returns a user given its id",
+     *
      *  @Model(type=App\Entity\User::class, groups={"read_user"})
      * )
+     *
      * @OA\Tag(name="user")
+     *
      * @Security(name="api_key")
      */
     #[Cache(public: true, maxage: 86400)]

@@ -104,6 +104,7 @@ class NotificationEmails extends Command
                 break;
             }
         }
+
         return 0;
     }
 }

@@ -26,15 +26,20 @@ class GetFromUser extends ApiController
 
     /**
      * @Route("/users/{id}/notifications", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get all notifications from a user",
+     *
      *  @OA\JsonContent(
      *    type="array",
+     *
      *    @OA\Items(ref=@Model(type=App\Entity\Notification::class, groups={"read_notification"}))
      *  )
      * )
+     *
      * @OA\Tag(name="notification")
+     *
      * @Security(name="api_key")
      */
     public function get_notifications(string $id): Response
@@ -56,15 +61,20 @@ class GetFromUser extends ApiController
 
     /**
      * @Route("/me/notifications", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get all notifications from a user",
+     *
      *  @OA\JsonContent(
      *    type="array",
+     *
      *    @OA\Items(ref=@Model(type=App\Entity\Notification::class, groups={"read_notification"}))
      *  )
      * )
+     *
      * @OA\Tag(name="notification")
+     *
      * @Security(name="api_key")
      */
     public function my_notifications(
@@ -80,15 +90,20 @@ class GetFromUser extends ApiController
 
     /**
      * @Route("/users/{id}/notifications/{limit}", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get recent notifications from a user",
+     *
      *  @OA\JsonContent(
      *    type="array",
+     *
      *    @OA\Items(ref=@Model(type=App\Entity\Notification::class, groups={"read_notification"}))
      *  )
      * )
+     *
      * @OA\Tag(name="notification")
+     *
      * @Security(name="api_key")
      */
     public function get_notifications_with_limit(string $id, int $limit): Response
@@ -112,15 +127,20 @@ class GetFromUser extends ApiController
 
     /**
      * @Route("/me/notifications/{limit}", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get all notifications from a user",
+     *
      *  @OA\JsonContent(
      *    type="array",
+     *
      *    @OA\Items(ref=@Model(type=App\Entity\Notification::class, groups={"read_notification"}))
      *  )
      * )
+     *
      * @OA\Tag(name="notification")
+     *
      * @Security(name="api_key")
      */
     public function my_notifications_with_limit(

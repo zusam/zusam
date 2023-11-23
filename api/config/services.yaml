@@ -66,92 +66,75 @@ services:
 
     App\Controller\Security:
       arguments:
-        $logger: '@monolog.logger.zusam'
         $limiter: '@security.login_throttling.login.limiter'
 
     App\Command\Cron:
       arguments:
-        $logger: '@monolog.logger.zusam'
 
     App\Command\Migration:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
-        $logger: '@monolog.logger.zusam'
 
     App\Command\PreparePreviews:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
-        $logger: '@monolog.logger.zusam'
 
     App\Command\ConvertVideo:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_files)%'
         $binaryFfmpeg: '%env(resolve:FFMPEG_PATH)%'
-        $logger: '@monolog.logger.zusam'
 
     App\Command\ConvertImages:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_files)%'
-        $logger: '@monolog.logger.zusam'
 
     App\Command\CompressGifs:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_files)%'
-        $logger: '@monolog.logger.zusam'
 
     App\Command\CleanCache:
       arguments:
         $targetDir: '%env(resolve:dir_cache)%'
-        $logger: '@monolog.logger.zusam'
 
     App\Command\CleanFiles:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
         $targetDir: '%env(resolve:dir_files)%'
-        $logger: '@monolog.logger.zusam'
 
     App\Command\CleanGroups:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
-        $logger: '@monolog.logger.zusam'
 
     App\Command\CleanMessages:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
-        $logger: '@monolog.logger.zusam'
 
     App\Command\CleanNotifications:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
-        $logger: '@monolog.logger.zusam'
 
     App\Command\IssueNotification:
       arguments:
-        $logger: '@monolog.logger.zusam'
 
     App\Command\NotificationEmails:
       arguments:
-        $logger: '@monolog.logger.zusam'
 
     App\Command\StorageStatistics:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
-        $logger: '@monolog.logger.zusam'
         $targetDir: '%env(resolve:dir_files)%'
 
     App\Command\GroupStatistics:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
-        $logger: '@monolog.logger.zusam'
         $targetDir: '%env(resolve:dir_files)%'
 
     App\Command\UserStatistics:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
-        $logger: '@monolog.logger.zusam'
         $targetDir: '%env(resolve:dir_files)%'
 
     App\Command\ActivateBot:
@@ -170,4 +153,3 @@ services:
         $lang: '%env(resolve:LANG)%'
         $allow_email: '%env(resolve:ALLOW_EMAIL)%'
         $env: '%kernel.environment%'
-        $logger: '@monolog.logger.zusam'

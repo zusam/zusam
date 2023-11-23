@@ -34,7 +34,7 @@ class User
         return $this->em->getRepository(UserEntity::class)->findOneById($id);
     }
 
-    public function create($login, $password = "")
+    public function create($login, $password = '')
     {
         $user = $this->em->getRepository(UserEntity::class)->findOneByLogin($login);
 
@@ -44,10 +44,10 @@ class User
 
         $user = new UserEntity();
         $user->setLogin($login);
-        if ($password == "") {
-            $user->setPassword("");
+        if ('' == $password) {
+            $user->setPassword('');
         } else {
-            $user->setPassword($this->hasher->encodePassword($user, $password));
+            $user->setPassword($this->hasher->hashPassword($user, $password));
         }
         $user->setName(explode('@', $login)[0]);
         $this->em->persist($user);

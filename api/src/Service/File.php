@@ -28,23 +28,23 @@ class File
     {
         // check if mimetype is in accepted list
         if (
-            !in_array(explode("/", $file->getType())[0], ["image", "video", "audio"])
-            && $file->getType() !== "application/pdf"
+            !in_array(explode('/', $file->getType())[0], ['image', 'video', 'audio'])
+            && 'application/pdf' !== $file->getType()
         ) {
             return false;
         }
 
         // check if mimetype is currently allowed in parameters
-        if ('image/' == substr($file->getType(), 0, 6) && $this->params->get('allow.upload.image') != "true") {
+        if ('image/' == substr($file->getType(), 0, 6) && 'true' != $this->params->get('allow.upload.image')) {
             return false;
         }
-        if ('video/' == substr($file->getType(), 0, 6) && $this->params->get('allow.upload.video') != "true") {
+        if ('video/' == substr($file->getType(), 0, 6) && 'true' != $this->params->get('allow.upload.video')) {
             return false;
         }
-        if ('audio/' == substr($file->getType(), 0, 6) && $this->params->get('allow.upload.audio') != "true") {
+        if ('audio/' == substr($file->getType(), 0, 6) && 'true' != $this->params->get('allow.upload.audio')) {
             return false;
         }
-        if ('application/pdf' == $file->getType() && $this->params->get('allow.upload.pdf') != "true") {
+        if ('application/pdf' == $file->getType() && 'true' != $this->params->get('allow.upload.pdf')) {
             return false;
         }
 
@@ -55,7 +55,7 @@ class File
     {
         // don't convert video if it's in a playable format and size
         if (
-            in_array($file->getType(), explode(",", $this->params->get('video_format_not_converted')))
+            in_array($file->getType(), explode(',', $this->params->get('video_format_not_converted')))
             && FileEntity::STATUS_READY != $file->getStatus()
             && $file->getSize() < intval($this->params->get('video_size_not_converted')) * 1024 * 1024
         ) {
@@ -100,13 +100,13 @@ class File
         $file->setStatus(FileEntity::STATUS_RAW);
         $file->setSize($symfonyFile->getSize());
         $extension = $symfonyFile->guessExtension() ?? pathinfo($symfonyFile->getRealPath(), PATHINFO_EXTENSION);
-        $file->setContentUrl($file->getId() . "." . $extension);
+        $file->setContentUrl($file->getId().'.'.$extension);
 
         if (!$this->isSupportedFileType($file)) {
             return null; // TODO throw exception
         }
 
-        $target = $this->params->get('dir.files') . "/" . $file->getContentUrl();
+        $target = $this->params->get('dir.files').'/'.$file->getContentUrl();
         if ($copy) {
             copy($symfonyFile->getRealPath(), $target);
         } else {
@@ -127,6 +127,7 @@ class File
         }
 
         $symfonyFile = new SymfonyFile($file_path);
+
         return $this->createFromSymfonyFile($symfonyFile, $copy);
     }
 }

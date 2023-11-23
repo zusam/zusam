@@ -2,9 +2,9 @@
 
 namespace App\EventListener;
 
+use App\Command\Cron;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use App\Command\Cron;
 
 class TerminateListener
 {
@@ -19,7 +19,7 @@ class TerminateListener
 
     public function onKernelTerminate(TerminateEvent $event)
     {
-        if (!$event->getRequestType() == HttpKernelInterface::MAIN_REQUEST) {
+        if (HttpKernelInterface::MAIN_REQUEST == !$event->getRequestType()) {
             // don't do anything if it's not the master request
             return;
         }

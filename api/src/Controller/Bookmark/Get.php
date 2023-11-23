@@ -3,8 +3,6 @@
 namespace App\Controller\Bookmark;
 
 use App\Controller\ApiController;
-use App\Entity\Link;
-use App\Entity\Message;
 use App\Entity\Bookmark;
 use App\Service\Bookmark as BookmarkService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,12 +29,16 @@ class Get extends ApiController
 
     /**
      * @Route("/bookmarks/{id}", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get a bookmark",
+     *
      *  @Model(type=App\Entity\Bookmark::class, groups={"read_bookmark"})
      * )
+     *
      * @OA\Tag(name="bookmark")
+     *
      * @Security(name="api_key")
      */
     public function index(string $id): Response

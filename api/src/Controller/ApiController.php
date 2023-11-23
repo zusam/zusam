@@ -34,10 +34,10 @@ abstract class ApiController extends AbstractController
             'json',
             [
                 ObjectNormalizer::MAX_TREE_DEPTH_HANDLER => function ($object, $format = null, array $context = []) {
-                    return \method_exists($object, 'getId') ? ['id' => $object->getId()] : "";
+                    return \method_exists($object, 'getId') ? ['id' => $object->getId()] : '';
                 },
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format = null, array $context = []) {
-                    return \method_exists($object, 'getId') ? ['id' => $object->getId()] : "";
+                    return \method_exists($object, 'getId') ? ['id' => $object->getId()] : '';
                 },
                 AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
                 AbstractObjectNormalizer::CIRCULAR_REFERENCE_LIMIT => 1, // symfony default
@@ -62,10 +62,10 @@ abstract class ApiController extends AbstractController
             'json',
             [
             ObjectNormalizer::MAX_TREE_DEPTH_HANDLER => function ($object, $format = null, array $context = []) {
-                return \method_exists($object, 'getId') ? ['id' => $object->getId()] : "";
+                return \method_exists($object, 'getId') ? ['id' => $object->getId()] : '';
             },
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format = null, array $context = []) {
-                return \method_exists($object, 'getId') ? ['id' => $object->getId()] : "";
+                return \method_exists($object, 'getId') ? ['id' => $object->getId()] : '';
             },
             AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
             AbstractObjectNormalizer::CIRCULAR_REFERENCE_LIMIT => 1, // symfony default

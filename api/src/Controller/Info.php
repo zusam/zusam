@@ -2,19 +2,16 @@
 
 namespace App\Controller;
 
-use App\Controller\ApiController;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
-use OpenApi\Annotations as OA;
 
 class Info extends ApiController
 {
     /**
      * @Route("/info", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get informations about the API",
@@ -43,12 +40,12 @@ class Info extends ApiController
         return new JsonResponse([
           'version' => $this->getParameter('version'),
           'upload' => [
-            'image' => $this->getParameter('allow.upload.image') == 'true' && $has_imagick,
-            'video' => $this->getParameter('allow.upload.video') == 'true' && $has_ffmpeg,
-            'pdf' => $this->getParameter('allow.upload.pdf') == 'true' && $has_ghostscript,
+            'image' => 'true' == $this->getParameter('allow.upload.image') && $has_imagick,
+            'video' => 'true' == $this->getParameter('allow.upload.video') && $has_ffmpeg,
+            'pdf' => 'true' == $this->getParameter('allow.upload.pdf') && $has_ghostscript,
           ],
           'default_lang' => $this->getParameter('lang'),
-          'allow_email' => $this->getParameter('allow.email') == 'true',
+          'allow_email' => 'true' == $this->getParameter('allow.email'),
         ], JsonResponse::HTTP_OK);
     }
 }

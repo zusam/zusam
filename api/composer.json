@@ -1,9 +1,10 @@
 {
     "name": "zusam/api",
+    "description": "A truly private space for you and your friends",
     "type": "project",
     "license": "AGPL-3.0-or-later",
     "require": {
-        "php": ">=8.0, <9.0",
+        "php": ">=8.1, <9.0",
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-imagick": "*",
@@ -24,7 +25,7 @@
         "symfony/dotenv": "^6.2",
         "symfony/event-dispatcher": "^6.2",
         "symfony/expression-language": "^6.2",
-        "symfony/flex": "^2.0",
+        "symfony/flex": "^2.3",
         "symfony/framework-bundle": "^6.2",
         "symfony/intl": "^6.2",
         "symfony/mailer": "^6.2",
@@ -46,9 +47,10 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.16",
         "phpstan/phpstan": "^1.0.1",
+        "phpunit/phpunit": "^10.3",
         "symfony/browser-kit": "^6.2",
-        "symfony/phpunit-bridge": "^6.2",
-        "symfony/stopwatch": "6.*",
+        "symfony/css-selector": "^6.2",
+        "symfony/stopwatch": "^6.2",
         "symfony/web-profiler-bundle": "^6.2"
     },
     "config": {
@@ -79,7 +81,7 @@
     },
     "scripts": {
         "lint": [
-          "php -d memory_limit=-1 ./vendor/bin/php-cs-fixer fix src/ --verbose"
+          "php -d memory_limit=-1 ./vendor/bin/php-cs-fixer check src/ --verbose"
         ],
         "analyze": [
           "php -d memory_limit=-1 ./vendor/bin/phpstan analyse src/ -l 3"

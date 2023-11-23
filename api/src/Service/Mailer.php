@@ -37,11 +37,12 @@ class Mailer
 
     private function sendMail($email)
     {
-        if ('prod' == $this->env && $this->allow_email == 'true') {
+        if ('prod' == $this->env && 'true' == $this->allow_email) {
             try {
                 $this->symfonyMailer->send($email);
             } catch (\Exception $e) {
-                $this->logger->error("Could not send email to " . array_key_first($email->getTo()));
+                $this->logger->error('Could not send email to '.array_key_first($email->getTo()));
+
                 return [$e->getMessage()];
             }
         }

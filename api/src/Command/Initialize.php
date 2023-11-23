@@ -5,8 +5,8 @@ namespace App\Command;
 use App\Entity\Group;
 use App\Entity\Message;
 use App\Entity\User;
-use App\Service\Uuid;
 use App\Service\Message as MessageService;
+use App\Service\Uuid;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -65,7 +65,6 @@ class Initialize extends Command
             '--force' => true,
         ]), $output);
 
-
         $user = $this->em->getRepository(User::class)->findOneByLogin($input->getArgument('user'));
         // Only execute the rest of the initialization if the user doesn't exist
         if (empty($user)) {
@@ -101,15 +100,15 @@ class Initialize extends Command
             $message_1 = new Message();
             $message_1 = $this->messageService->create(
                 [
-                    "data" => [
+                    'data' => [
                       'title' => 'Welcome to Zusam !',
                       'text' => '
                           This is a simple message.
                           Try to post something yourself by using the new message button on the group page or by leaving a comment here.
                       ',
                     ],
-                    "files" => [],
-                    "parent" => "",
+                    'files' => [],
+                    'parent' => '',
                 ],
                 $user,
                 $group
@@ -129,6 +128,7 @@ class Initialize extends Command
             $this->em->persist($message_1);
         }
         $this->em->flush();
+
         return 0;
     }
 }

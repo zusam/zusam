@@ -1,9 +1,0 @@
-monolog:
-  # https://symfony.com/doc/current/logging/channels_handlers.html#configure-additional-channels-without-tagged-services
-  channels: ["zusam"]
-  handlers:
-    main:
-      type: stream
-      path: "%kernel.logs_dir%/%kernel.environment%.log"
-      level: debug
-      channels: ["!event"]

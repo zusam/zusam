@@ -1,7 +1,7 @@
 {
   "name": "Zusam",
   "license": "AGPL-3.0-or-later",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "scripts": {
     "build": "parcel build --public-url='/' src/index.html",
     "clean": "rm -rf dist/*",
@@ -9,7 +9,8 @@
     "postbuild": "node ./build-tools/set_version_in_files.js dist/index.html",
     "prebuild": "npm run lang",
     "prelang": "npm run clean",
-    "analyze": "./node_modules/.bin/eslint -c .eslintrc.json src/"
+    "analyze": "npx eslint -c .eslintrc.json src/",
+    "stylelint": "npx stylelint src/scss/**/*.scss"
   },
   "dependencies": {
     "@parcel/core": "^2.5.0",
@@ -23,7 +24,7 @@
     "js-cookie": "^3.0.1",
     "mobile-drag-drop": "^3.0.0-beta.0",
     "node-sass": "^9.0.0",
-    "preact": "^10.7.1",
+    "preact": "10.17.1",
     "react-i18next": "^13.0.2",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
@@ -53,7 +54,9 @@
     "parcel": "^2.5.0",
     "prettier": "^3.0.0",
     "sass": "^1.50.1",
-    "size-limit": "^8.0.1"
+    "size-limit": "^8.0.1",
+    "stylelint": "^15.11.0",
+    "stylelint-config-standard-scss": "^11.0.0"
   },
   "alias": {
     "react": "preact/compat",

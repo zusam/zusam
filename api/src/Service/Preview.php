@@ -5,8 +5,6 @@ namespace App\Service;
 use App\Entity\File;
 use App\Entity\Message;
 use App\Service\Url as UrlService;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class Preview
 {

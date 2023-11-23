@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Controller\ApiController;
 use App\Entity\Message;
 use App\Service\Token;
 use Doctrine\ORM\EntityManagerInterface;

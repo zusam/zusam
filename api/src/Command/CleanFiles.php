@@ -49,7 +49,7 @@ class CleanFiles extends Command
 
         // First we remove all files not linked to a user and/or a message
         $c = $this->pdo->query('SELECT f.id, f.content_url FROM file f WHERE NOT EXISTS (SELECT * FROM messages_files mf WHERE mf.file_id = f.id) AND NOT EXISTS (SELECT * FROM user u WHERE u.avatar_id = f.id) AND NOT EXISTS (SELECT * FROM link l WHERE l.preview_id = f.id);');
-        if ($c !== false) {
+        if (false !== $c) {
             while ($i = $c->fetch()) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
                     echo $this->targetDir.'/'.$i['content_url']."\n";
@@ -69,7 +69,7 @@ class CleanFiles extends Command
                 continue;
             }
 
-            if (filesize($this->targetDir.'/'.$file) === 0) {
+            if (0 === filesize($this->targetDir.'/'.$file)) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
                     echo $this->targetDir."/$file\n";
                 }
@@ -94,7 +94,7 @@ class CleanFiles extends Command
 
         // Remove all file rows whithout any corresponding file on disk
         $c = $this->pdo->query('SELECT f.id, f.content_url FROM file f;');
-        if ($c !== false) {
+        if (false !== $c) {
             while ($i = $c->fetch()) {
                 if (!file_exists($this->targetDir.'/'.$i['content_url'])) {
                     if ($input->getOption('verbose') || $input->getOption('only-list')) {
@@ -107,6 +107,7 @@ class CleanFiles extends Command
                 }
             }
         }
+
         return 0;
     }
 }

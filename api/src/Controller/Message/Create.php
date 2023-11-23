@@ -3,12 +3,9 @@
 namespace App\Controller\Message;
 
 use App\Controller\ApiController;
-use App\Entity\File;
 use App\Entity\Group;
 use App\Entity\Message;
-use App\Entity\Notification;
 use App\Service\Message as MessageService;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -35,26 +32,34 @@ class Create extends ApiController
 
     /**
      * @Route("/messages", methods={"POST"})
+     *
      * @OA\RequestBody(
+     *
      *  @OA\Schema(
      *    type="object",
+     *
      *    @OA\Property(property="text", type="string"),
      *    @OA\Property(property="title", type="string"),
      *    @OA\Property(
      *      property="files",
      *      type="array",
+     *
      *      @OA\Items(
      *        type="string",
      *      )
      *    ),
      *  )
      * )
+     *
      * @OA\Response(
      *  response=201,
      *  description="Create a message",
+     *
      *  @Model(type=App\Entity\Message::class, groups={"read_message"})
      * )
+     *
      * @OA\Tag(name="message")
+     *
      * @Security(name="api_key")
      */
     public function index(Request $request): Response

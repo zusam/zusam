@@ -2,12 +2,11 @@
 
 namespace App\Command;
 
-use App\Entity\User as USerEntity;
 use App\Entity\Message as MessageEntity;
-use App\Entity\Bookmark as BookmarkEntity;
+use App\Entity\User as USerEntity;
 use App\Service\Bookmark as BookmarkService;
-use Psr\Log\LoggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -45,14 +44,14 @@ class Migration extends Command
     {
         $this->logger->info($this->getName());
 
-        $c = $this->pdo->query("SELECT id, data FROM user;");
+        $c = $this->pdo->query('SELECT id, data FROM user;');
         $users = [];
         while ($i = $c->fetch()) {
             if ($input->getOption('verbose') || $input->getOption('dry-run')) {
             }
             $data = json_decode($i['data'], true);
             if (!empty($data['bookmarks'])) {
-                $users[] = $i["id"];
+                $users[] = $i['id'];
             }
         }
         foreach ($users as $user_id) {
@@ -60,9 +59,9 @@ class Migration extends Command
             $data = $userEntity->getData();
             if (!empty($data['bookmarks'])) {
                 if ($input->getOption('verbose') || $input->getOption('dry-run')) {
-                    $output->writeln("user " . $user_id . " has " . count($data["bookmarks"]) . " bookmarks.");
+                    $output->writeln('user '.$user_id.' has '.count($data['bookmarks']).' bookmarks.');
                 }
-                foreach ($data["bookmarks"] as $message_id) {
+                foreach ($data['bookmarks'] as $message_id) {
                     $messageEntity = $this->em->getRepository(MessageEntity::class)->findOneById($message_id);
                     if (!empty($messageEntity)) {
                         $bookmark = $this->bookmarkService->create($userEntity, $messageEntity);
@@ -71,11 +70,11 @@ class Migration extends Command
                             $this->em->flush();
                         }
                         if ($input->getOption('verbose') || $input->getOption('dry-run')) {
-                            $output->writeln("Added " . $message_id . " to the user's bookmarks.");
+                            $output->writeln('Added '.$message_id." to the user's bookmarks.");
                         }
                     }
                 }
-                unset($data["bookmarks"]);
+                unset($data['bookmarks']);
                 $userEntity->setData($data);
                 if (!$input->getOption('dry-run')) {
                     $this->em->persist($userEntity);
@@ -86,6 +85,7 @@ class Migration extends Command
                 }
             }
         }
+
         return 0;
     }
 }
