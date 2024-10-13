@@ -31,7 +31,7 @@ Check out the [Issues](https://github.com/zusam/zusam/issues) for things that ne
 
 ### Pull requests
 
-Please target any pull requests to the `next` branch. This branch will be copied to `master` with each release.
+Please target any pull requests to the `next` branch. This branch will be merged into `master` with each release.
 
 ### Setting up dev environment
 
@@ -50,14 +50,19 @@ You might get an error that it can't find the container that it just built. This
 You'll now be inside the container, in the zusam directory. `cd app` to get to the front end app directory, then run `npm install --save-dev` to install the npm packages.
 
 Next, compile the webapp and copy to the public directory with:
+
 `npm run build; rm -r ../public/*.{js,css,map,png}; cp -r dist/* ../public/`
 
 Now install the composer dependencies by running:
+
 `cd /zusam/api && php bin/composer install`
 
 Now exit the container with ctrl + D and then run the container using repo files using:
+
 `dev/start-test-container`
 
-You should now be able to access Zusam on http://localhost:8080
+You should now be able to access Zusam on [http://localhost:8080](http://localhost:8080). A user `zusam` with password `zusam` is created by default.
 
-Any code updates you make should be reflected immediately in this running instance.
+Any code updates you make in the `api` directory should be reflected immediately in this running instance. For the web app in the `app` directory, after making changes you will need to rerun the command to build and copy to the public directory: 
+
+`npm run build; rm -r ../public/*.{js,css,map,png}; cp -r dist/* ../public/`
