@@ -70,7 +70,7 @@ class ConvertImages extends Command
             list($width, $height) = getimagesize($inputFile);
             // This is a special check for long format images that should not be limited in height
             // example: https://imgs.xkcd.com/comics/earth_temperature_timeline.png
-            if ($height / $width > 10) {
+            if ($width != 0 && $height / $width > 10) {
                 $this->imageService->createThumbnail(
                     $inputFile,
                     $outputFile.'.converted',
