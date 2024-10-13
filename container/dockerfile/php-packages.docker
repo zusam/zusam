@@ -1,0 +1,30 @@
+// The correct PHP version can be found at
+// https://pkgs.alpinelinux.org/packages?name=php%3F%3F&branch=v3.20&repo=&arch=x86_64&origin=yes
+// (Switch the branch to the version specified in base.docker)
+
+RUN set -xe && apk add --no-cache \\
+    php83 \\
+    php83-common \\
+    php83-ctype \\
+    php83-curl \\
+    php83-dom \\
+    php83-fileinfo \\
+    php83-fpm \\
+    php83-iconv \\
+    php83-intl \\
+    php83-json \\
+    php83-mbstring \\
+    php83-opcache \\
+    php83-openssl \\
+    php83-pdo_sqlite \\
+    php83-pecl-apcu \\
+    php83-pecl-imagick \\
+    php83-phar \\
+    php83-posix \\
+    php83-session \\
+    php83-simplexml \\
+    php83-tokenizer \\
+    php83-xml \\
+    php83-xmlwriter \\
+    && ln -sf /usr/bin/php83 /usr/bin/php
+

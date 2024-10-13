@@ -4,6 +4,7 @@
 WORKDIR /zusam
 
 #include "packages.docker"
+#include "php-packages.docker"
 #include "zusam-files.docker"
 #include "setup.docker"
 
