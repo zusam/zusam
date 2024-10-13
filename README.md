@@ -54,7 +54,7 @@ Installation guides:
 The project has the goal of being really stable for the backend once `1.0` is hit.
 That means no database structure changes, an update system and a stable API.  
 The webapp can still change a lot after that point.  
-For now, Zusam is completely usable in a day-to-day basis but is subject to significative
+For now, Zusam is completely usable in a day-to-day basis but is subject to significant
 evolutions with upcoming updates and doesn't guarantee backwards compatibility.  
 I try my best to make updates as easy as possible.
 
@@ -67,8 +67,7 @@ It should work on the latest versions of Edge and Safari but is not tested on th
 
 Zusam is free and open-source software licensed
 under [AGPLv3](https://www.gnu.org/licenses/agpl.html).  
-You can open issues for bugs you've found or features you think are missing.
-You can also submit pull requests to this repository.
+You can open issues for bugs you've found or features you think are missing, or submit pull requests to this repository. See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information.
 
 Zusam is being translated using [Weblate](https://hosted.weblate.org/projects/zusam/core/):  
 <a href="https://hosted.weblate.org/engage/zusam/">
