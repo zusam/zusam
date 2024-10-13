@@ -24,7 +24,7 @@ jobs:
       run: cd app && npm install --include=dev
 
     - name: Run ESLint
-      run: cd app && npx eslint -c .eslintrc.json src/
+      run: cd app && npm run analyze
 
     - name: Run stylelint
-      run: cd app && npx stylelint "src/scss/**/*.scss"
+      run: cd app && npm run stylelint
