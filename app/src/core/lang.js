@@ -11,22 +11,24 @@ import hu_HU from "/src/lang/hu_HU.json";
 import ko_KR from "/src/lang/ko_KR.json";
 import nl_NL from "/src/lang/nl_NL.json";
 import sk_SK from "/src/lang/sk_SK.json";
+import ru_RU from "/src/lang/ru_RU.json";
 import zgh from "/src/lang/zgh.json";
 import zh_Hans from "/src/lang/zh_Hans.json";
 
 const lang = {
   possibleLang: {
-    "cs_CZ": "čeština",
-    "de_DE": "Deutsch",
-    "en_US": "english",
-    "es_ES": "español",
-    "fr_FR": "français",
-    "hu_HU": "magyar nyelv",
-    "ko_KR": "한국어",
-    "nl_NL": "Nederlands",
-    "sk_SK": "Slovenský",
-    "zgh": "ⵜⴰⵎⴰⵣⵉⵖⵜ",
-    "zh_Hans": "中文",
+    cs_CZ: "čeština",
+    de_DE: "Deutsch",
+    en_US: "english",
+    es_ES: "español",
+    fr_FR: "français",
+    hu_HU: "magyar nyelv",
+    ko_KR: "한국어",
+    nl_NL: "Nederlands",
+    ru_RU: "Русский",
+    sk_SK: "Slovenský",
+    zgh: "ⵜⴰⵎⴰⵣⵉⵖⵜ",
+    zh_Hans: "中文",
   }, // possible dicts names to load
   getDefaultLang: () =>
     (document.querySelector("meta[name='zusam:default-lang']") || {}).content ||
@@ -48,6 +50,7 @@ i18n.use(initReactI18next).init({
     ko_KR: { translation: ko_KR },
     nl_NL: { translation: nl_NL },
     nl: { translation: nl_NL }, // backwards compatibility, remove for 0.6
+    ru_RU: { translation: ru_RU },
     sk_SK: { translation: sk_SK },
     sk: { translation: sk_SK }, // backwards compatibility, remove for 0.6
     zgh: { translation: zgh },

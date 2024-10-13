@@ -6,140 +6,183 @@ use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="`message`")
+ *
  * @ORM\Entity()
  */
-class Message
+class Message extends ApiEntity
 {
     /**
      * @Assert\NotBlank()
-     * @Groups("*")
+     *
+     * @Groups("public")
+     *
      * @OA\Property(type="guid")
+     *
      * @ORM\Column(type="guid")
+     *
      * @ORM\Id
      */
     private $id;
 
     /**
      * @Assert\NotNull()
+     *
      * @Assert\Type("integer")
+     *
      * @Groups({"read_message"})
+     *
      * @OA\Property(type="integer")
+     *
      * @ORM\Column(type="integer")
      */
     private $createdAt;
 
     /**
      * @Assert\NotBlank()
+     *
      * @Groups({"read_message", "read_notification", "read_message_preview"})
+     *
      * @OA\Property(type="object")
+     *
      * @ORM\Column(type="json", nullable=true)
      */
     private $data;
 
     /**
-     * @Groups("*")
+     * @Groups("public")
+     *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
      */
     private $author;
 
     /**
      * @Groups({"read_message"})
+     *
      * @OA\Property(type="App\Entity\Group")
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="messages")
      */
     private $group;
 
     /**
      * @Groups({"read_message"})
+     *
      * @OA\Property(type="App\Entity\Message")
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+     *
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Message", inversedBy="children")
      */
     private $parent;
 
     /**
      * @Groups({"read_message"})
+     *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="parent")
      */
     private $children;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\File")
+     *
      * @ORM\JoinTable(name="messages_files",
      *      joinColumns={@ORM\JoinColumn(name="message_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id")}
      *      )
+     *
      * @ORM\OrderBy({"fileIndex" = "ASC"})
+     *
      * @Groups({"read_message"})
+     *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\File"))
      */
     private $files;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", mappedBy="messages")
+     *
      * @Groups({"read_message", "write_message"})
+     *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Tag"))
      */
     private $tags;
 
     /**
      * @Assert\NotNull()
+     *
      * @Assert\Type("integer")
+     *
      * @Groups({"read_message", "read_message_preview"})
+     *
      * @OA\Property(type="integer")
+     *
      * @ORM\Column(type="integer")
      */
     private $lastActivityDate;
 
     /**
      * @Groups({"read_message", "read_message_preview"})
+     *
      * @OA\Property(type="App\Entity\File")
+     *
      * @ORM\JoinColumn(name="preview_id", referencedColumnName="id")
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\File")
      */
     private $preview;
 
     /**
      * @Assert\NotBlank()
+     *
      * @OA\Property(type="guid")
+     *
      * @ORM\Column(type="guid", unique=true)
      */
     private $secretKey;
 
     /**
      * @Assert\NotNull()
+     *
      * @Groups({"read_message"})
+     *
      * @OA\Property(type="boolean")
+     *
      * @ORM\Column(type="boolean")
      */
     private $isInFront;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="message")
+     *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Bookmark"))
      */
     private $bookmarks;
 
     /**
      * @Assert\NotNull()
-     * @Groups({"*"})
+     *
+     * @Groups({"public"})
+     *
      * @OA\Property(type="string")
+     *
      * @ORM\Column(type="string")
      */
     private $type;
 
     /**
-     * @Groups("*")
+     * @Groups("public")
+     *
      * @OA\Property(type="string")
      */
     private $entityType;
@@ -252,7 +295,11 @@ class Message
 
     public function getTags(): Collection
     {
-        return $this->tags;
+        if (null === $this->tags) {
+            return new ArrayCollection();
+        } else {
+            return $this->tags;
+        }
     }
 
     public function setTags(Collection $tags): void
@@ -292,9 +339,11 @@ class Message
 
     public function getUrls(): array
     {
-        $text = $this->getData()['text'];
-        if (!empty($text)) {
-            return self::getUrlsFromText($text);
+        if (is_array($this->getData()) && array_key_exists('text', $this->getData())) {
+            $text = $this->getData()['text'];
+            if (!empty($text)) {
+                return self::getUrlsFromText($text);
+            }
         }
 
         return [];
@@ -338,7 +387,11 @@ class Message
 
     public function getBookmarks(): Collection
     {
-        return $this->bookmarks;
+        if (null === $this->bookmarks) {
+            return new ArrayCollection();
+        } else {
+            return $this->bookmarks;
+        }
     }
 
     public function addBookmark(Bookmark $bookmark): void

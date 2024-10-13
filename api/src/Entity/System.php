@@ -7,28 +7,36 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="`system`")
+ *
  * @ORM\Entity
  */
 class System
 {
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="string")
+     *
      * @Assert\Type("string")
+     *
      * @Assert\NotBlank()
      */
     private $key;
 
     /**
      * @ORM\Column(type="text")
+     *
      * @Assert\Type("text")
+     *
      * @Assert\NotNull()
      */
     private $value;
 
     /**
      * @ORM\Column(type="integer")
+     *
      * @Assert\Type("integer")
+     *
      * @Assert\NotNull()
      */
     private $createdAt;

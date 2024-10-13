@@ -2,15 +2,12 @@
 
 namespace App\Normalizer;
 
+use App\Entity\ApiEntity;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer as SymfonyObjectNormalizer;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
-use Symfony\Component\Serializer\Mapping\ClassDiscriminatorResolverInterface;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
-use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
 /**
- * Changes to Symfony's ObjectNormalizer :
+ * Changes to Symfony's ObjectNormalizer:.
  *
  * Adds a MAX_TREE_DEPTH limitation
  * The usual objectNormalizer has a MAX_DEPTH limitation that can be used but it's
@@ -18,16 +15,19 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
  * See 4.3 implementation here:
  * https://github.com/symfony/symfony/blob/4.3/src/Symfony/Component/Serializer/Normalizer/AbstractObjectNormalizer.php#L527
  *
+ * Always adds the '*' serialization group to the context.
+ * This is done so that it can be an universal serialization group.
+ *
  * Removes the "read_me" group if we normalize a user that is not us.
- * This is done to avoid serializing objects the caller shoudn't have access to
+ * This is done to avoid serializing objects the caller shoudn't have access to.
  *
- * Returns null for non existent properties instead of throwing
- * I made this choice to be more resilient
+ * Returns null for non existent properties instead of throwing.
+ * I made this choice to be more resilient.
  *
- * Returns null for properties that are API entities without id
- * I made this choice to be more resilient
+ * Returns null for properties that are API entities without id.
+ * I made this choice to be more resilient.
  */
-class ObjectNormalizer extends SymfonyObjectNormalizer
+class ObjectNormalizer extends AbstractObjectNormalizer
 {
     /**
      * How deep the resulting normalized tree can be.
@@ -55,21 +55,9 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
      */
     protected const TREE_DEPTH_LIMIT_COUNTERS = 'tree_depth_limit_counters';
 
-    /**
-     * @internal
-     */
-    private $discriminatorCache = [];
-
     public function __construct(
-        ClassMetadataFactoryInterface $classMetadataFactory = null,
-        NameConverterInterface $nameConverter = null,
-        PropertyAccessorInterface $propertyAccessor = null,
-        PropertyTypeExtractorInterface $propertyTypeExtractor = null,
-        ClassDiscriminatorResolverInterface $classDiscriminatorResolver = null,
-        callable $objectClassResolver = null,
-        array $defaultContext = []
+        private SymfonyObjectNormalizer $normalizer,
     ) {
-        parent::__construct($classMetadataFactory, $nameConverter, $propertyAccessor, $propertyTypeExtractor, $classDiscriminatorResolver, $objectClassResolver, $defaultContext);
         $this->defaultContext[self::TREE_DEPTH_LIMIT] = 1;
     }
 
@@ -110,11 +98,7 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
      * If a max tree depth handler is set, it will be called. Otherwise, a
      * {@class MaxTreeDepthException} will be thrown.
      *
-     * @param object      $object
-     * @param string|null $format
-     * @param array       $context
-     *
-     * @return mixed
+     * @param object $object
      *
      * @throws MaxTreeDepthException
      */
@@ -127,106 +111,57 @@ class ObjectNormalizer extends SymfonyObjectNormalizer
         throw new MaxTreeDepthException(sprintf('Max tree depth has been reached when serializing the object of class "%s" (configured limit: %d)', \get_class($object), $this->defaultContext[self::TREE_DEPTH_LIMIT]));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function normalize($object, $format = null, array $context = [])
     {
         if ($this->isMaxTreeDepth($object, $context)) {
             return $this->handleMaxTreeDepth($object, $format, $context);
         }
 
+        if (!array_key_exists('groups', $context)) {
+            $context['groups'] = [];
+        }
+
+        if (is_string($context['groups'])) {
+            $context['groups'] = [$context['groups']];
+        }
+
         // Remove the "read_me" group if we normalize a user that is not us.
         if ('User' === array_values(array_slice(explode('\\', get_class($object)), -1))[0]) {
             if (!isset($context['currentUser']) || $object->getId() !== $context['currentUser']) {
-                if (is_string($context['groups'])) {
-                    $context['groups'] = [$context['groups']];
-                }
                 $context['groups'] = array_filter($context['groups'], function ($g) {
                     return 'read_me' !== $g;
                 });
             }
         }
 
-        return parent::normalize($object, $format, $context);
+        // Always add the 'public' group
+        $context['groups'][] = 'public';
+
+        return $this->normalizer->normalize($object, $format, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getAllowedAttributes(object|string $classOrObject, array $context, bool $attributesAsString = false): array|bool
+    public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
-        $allowExtraAttributes = $context[self::ALLOW_EXTRA_ATTRIBUTES] ?? $this->defaultContext[self::ALLOW_EXTRA_ATTRIBUTES];
-        if (!$this->classMetadataFactory) {
-            if (!$allowExtraAttributes) {
-                throw new \LogicException(sprintf('A class metadata factory must be provided in the constructor when setting "%s" to false.', self::ALLOW_EXTRA_ATTRIBUTES));
-            }
-
-            return false;
-        }
-
-        $tmpGroups = $context[self::GROUPS] ?? $this->defaultContext[self::GROUPS] ?? null;
-        $groups = (\is_array($tmpGroups) || is_scalar($tmpGroups)) ? (array) $tmpGroups : false;
-        if (false === $groups && $allowExtraAttributes) {
-            return false;
-        }
-
-        $allowedAttributes = [];
-        foreach ($this->classMetadataFactory->getMetadataFor($classOrObject)->getAttributesMetadata() as $attributeMetadata) {
-            $name = $attributeMetadata->getName();
-
-            if (
-                (
-                    false === $groups
-                    || in_array('*', $attributeMetadata->getGroups())
-                    || array_intersect($attributeMetadata->getGroups(), $groups)
-                )
-                && $this->isAllowedAttribute($classOrObject, $name, null, $context)
-            ) {
-                $allowedAttributes[] = $attributesAsString ? $name : $attributeMetadata;
-            }
-        }
-
-        return $allowedAttributes;
+        return $data instanceof ApiEntity;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getAttributeValue(object $object, string $attribute, ?string $format = null, array $context = []): mixed
+    public function getSupportedTypes(?string $format): array
     {
-        $cacheKey = \get_class($object);
-        if (!\array_key_exists($cacheKey, $this->discriminatorCache)) {
-            $this->discriminatorCache[$cacheKey] = null;
-            if (null !== $this->classDiscriminatorResolver) {
-                $mapping = $this->classDiscriminatorResolver->getMappingForMappedObject($object);
-                $this->discriminatorCache[$cacheKey] = null === $mapping ? null : $mapping->getTypeProperty();
-            }
-        }
+        return $this->normalizer->getSupportedTypes($format);
+    }
 
-        if ($attribute === $this->discriminatorCache[$cacheKey]) {
-            return $this->classDiscriminatorResolver->getTypeForMappedObject($object);
-        } else {
-            try {
-                $attributeValue = $this->propertyAccessor->getValue($object, $attribute);
-                // API objects always should have an id
-                // If it's not the case, return null
-                // TODO log it
-                if (
-                    is_object($attributeValue)
-                    && in_array(
-                        array_values(array_slice(explode('\\', \get_class($attributeValue)), -1))[0],
-                        ['User', 'File', 'Message', 'Notification', 'Group', 'Link']
-                    )
-                    && empty($attributeValue->getId())
-                ) {
-                    return null;
-                }
-                return $attributeValue;
-            } catch (\Exception $e) {
-                // TODO: log exception
-                return null;
-            }
-        }
+    protected function setAttributeValue(object $object, string $attribute, mixed $value, string $format = null, array $context = [])
+    {
+        $this->normalizer->setAttributeValue($object, $attribute, $value, $format, $context);
+    }
+
+    protected function getAttributeValue(object $object, string $attribute, string $format = null, array $context = []): mixed
+    {
+        return $this->normalizer->getAttributeValue($object, $attribute, $format, $context);
+    }
+
+    protected function extractAttributes(object $object, string $format = null, array $context = []): array
+    {
+        return $this->normalizer->extractAttributes($object, $format, $context);
     }
 }

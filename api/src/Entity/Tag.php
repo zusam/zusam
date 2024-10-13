@@ -6,60 +6,77 @@ use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="`tag`")
+ *
  * @ORM\Entity()
  */
-class Tag
+class Tag extends ApiEntity
 {
     /**
      * @Assert\NotBlank()
-     * @Groups("*")
+     *
+     * @Groups("public")
+     *
      * @OA\Property(type="guid")
+     *
      * @ORM\Column(type="guid")
+     *
      * @ORM\Id
      */
     private $id;
 
     /**
      * @Assert\NotNull()
+     *
      * @Assert\Type("integer")
-     * @Groups("*")
+     *
+     * @Groups("public")
+     *
      * @OA\Property(type="integer")
+     *
      * @ORM\Column(type="integer")
      */
     private $createdAt;
 
     /**
      * @Assert\NotNull()
-     * @Groups("*")
+     *
+     * @Groups("public")
+     *
      * @OA\Property(type="App\Entity\Group")
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="tags")
      */
     private $group;
 
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+     *
      * @ORM\JoinTable(name="tags_messages")
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Message", inversedBy="tags")
      */
     private $messages;
 
     /**
      * @Assert\NotBlank()
-     * @Groups("*")
+     *
+     * @Groups("public")
+     *
      * @OA\Property(type="string")
+     *
      * @ORM\Column(type="string")
      */
     private $name;
 
     /**
-     * @Groups("*")
+     * @Groups("public")
+     *
      * @OA\Property(type="string")
      */
     private $entityType;

@@ -25,7 +25,7 @@
     "settings_updated": "你的设置已更新",
     "group_left": "你离开了群组!",
     "group_updated": "群组已更新!",
-    "multiple_photos_upload": "发生错误。 请尝试一个一个地上传图像(在某些浏览器中可能会发生这种情况)。",
+    "multiple_photos_upload": "发生错误。 请尝试逐个上传图像(在某些浏览器中可能会发生这种情况)。",
     "error_new_message": "发送消息时出错。",
     "error_upload": "上传出错",
     "cancel_write": "是否确实要取消编写新消息?",

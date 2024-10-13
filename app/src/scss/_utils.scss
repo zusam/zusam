@@ -28,6 +28,7 @@
 
 .seamless-link {
     cursor: pointer;
+
     &, &:hover {
         color: inherit;
         text-decoration: none;
@@ -48,9 +49,6 @@
 }
 
 @mixin unselectable {
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
     user-select: none;
 }
 
@@ -82,10 +80,11 @@
     display: flex;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
     .d-md-block {
         display: block;
     }
+
     .d-md-flex {
         display: flex;
     }

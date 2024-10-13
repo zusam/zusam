@@ -56,12 +56,14 @@ class ConvertVideo extends Command
         $this->logger->info($this->getName());
         if (!is_executable($this->binaryFfmpeg)) {
             $this->logger->error('ffmpeg located at '.$this->binaryFfmpeg.' is not executable.');
+
             return 0;
         }
         $c = $this->pdo->query("SELECT id, content_url FROM file WHERE id IN (SELECT file_id FROM messages_files) AND status = '".File::STATUS_RAW."' AND type LIKE 'video%' LIMIT 10;");
         $rows = $c->fetchAll();
         if (count($rows) < 1) {
-            $this->logger->info("No video to convert.");
+            $this->logger->info('No video to convert.');
+
             return 0;
         }
         $rawFile = $rows[0];
@@ -70,6 +72,7 @@ class ConvertVideo extends Command
             $this->logger->notice('Converting '.$this->targetDir.'/'.$rawFile['content_url']);
         } else {
             $this->logger->error('Video file '.$this->targetDir.'/'.$rawFile['content_url'].' is not readable.');
+
             return 0;
         }
         $threads = 1;
@@ -91,6 +94,7 @@ class ConvertVideo extends Command
         } else {
             $this->logger->error('zusam:convert:video '.$rawFile['id'].' failed.');
         }
+
         return 0;
     }
 }

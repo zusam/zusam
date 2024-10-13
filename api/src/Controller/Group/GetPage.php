@@ -6,7 +6,6 @@ use App\Controller\ApiController;
 use App\Entity\Group;
 use App\Service\Preview as PreviewService;
 use Doctrine\ORM\EntityManagerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -35,16 +34,21 @@ class GetPage extends ApiController
 
     /**
      * @Route("/groups/{id}/page/{n}", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get a group page",
+     *
      *  @OA\JsonContent(
      *    type="object",
+     *
      *    @OA\Property(
      *      property="messages",
      *      type="array",
+     *
      *      @OA\Items(
      *        type="object",
+     *
      *        @OA\Property(property="id", type="string"),
      *        @OA\Property(property="entityType", type="string"),
      *        @OA\Property(property="data", type="object"),
@@ -57,7 +61,9 @@ class GetPage extends ApiController
      *    @OA\Property(property="totalItems", type="integer"),
      *  )
      * )
+     *
      * @OA\Tag(name="message")
+     *
      * @Security(name="api_key")
      */
     public function index(string $id, int $n): Response
@@ -73,7 +79,7 @@ class GetPage extends ApiController
         $cacheKey = 'group_'.$groupId.'_page_'.$n;
 
         $data = $this->cache->get($cacheKey, function (ItemInterface $item) use ($groupId, $n) {
-            $item->expiresAfter(3600*24*7);
+            $item->expiresAfter(3600 * 24 * 7);
             $item->tag('group_'.$groupId);
 
             $query = $this->em->createQuery(
@@ -94,7 +100,7 @@ class GetPage extends ApiController
             $totalItems = $query->getArrayResult();
             $data = [
                 'messages' => array_map(function ($e) {
-                    return $e["id"];
+                    return $e['id'];
                 }, $messages),
                 'totalItems' => $totalItems[0]['totalItems'],
             ];

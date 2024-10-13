@@ -48,7 +48,7 @@
     "settings_updated": "Your settings were updated",
     "group_updated": "The group was updated !",
     "group_left": "You left the group !",
-    "multiple_photos_upload": "An error occurred. Try uploading images one by one (this can happen in some browsers).",
+    "multiple_photos_upload": "An error ocurred. Try uploading images one by one (this can happen in some browsers)",
     "error_new_message": "An error occurred while sending your message.",
     "error_upload": "An error occurred during the upload",
     "cancel_write": "Do you really want to cancel writing a new message?",

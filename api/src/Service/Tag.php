@@ -20,6 +20,7 @@ class Tag
         $tag = new TagEntity();
         $tag->setGroup($group);
         $tag->setName($name);
+
         return $tag;
     }
 }

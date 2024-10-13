@@ -57,11 +57,11 @@ class CleanNotifications extends Command
         }
 
         // remove notifications related to groups where their owner is not
-        $c = $this->pdo->query("
+        $c = $this->pdo->query('
             SELECT n.id FROM notification as n WHERE NOT EXISTS (
                 SELECT * FROM users_groups as ug WHERE ug.user_id = n.owner_id AND ug.group_id = n.from_group_id
             );
-        ");
+        ');
         while ($i = $c->fetch()) {
             if ($input->getOption('verbose') || $input->getOption('only-list')) {
                 echo $i['id']."\n";
@@ -70,6 +70,7 @@ class CleanNotifications extends Command
                 $this->pdo->query("DELETE FROM `notification` WHERE id = '".$i['id']."';");
             }
         }
+
         return 0;
     }
 }

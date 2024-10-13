@@ -40,7 +40,7 @@ class PreparePreviews extends Command
         $this->setName('zusam:prepare-previews')
             ->setDescription('Prepare-previews of parent messages.')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Reprepare preview already processed.')
-            ->addOption('memory', null, InputOption::VALUE_REQUIRED, 'Maximum RAM usage (defaults to 70Mo).', "70")
+            ->addOption('memory', null, InputOption::VALUE_REQUIRED, 'Maximum RAM usage (defaults to 70Mo).', '70')
             ->addOption('filter', null, InputOption::VALUE_REQUIRED, 'Filter previews to process (substring of url).', null)
             ->setHelp('This command preprocesses previews of parent messages for a faster first load.');
     }
@@ -58,7 +58,6 @@ class PreparePreviews extends Command
         $number_descriptions = 0;
         $number_titles = 0;
 
-
         $c = $this->pdo->query('SELECT id, data FROM message ORDER BY created_at DESC;');
         $messages = [];
         while ($i = $c->fetch()) {
@@ -69,7 +68,7 @@ class PreparePreviews extends Command
             if (memory_get_usage(true) > 1024 * 1024 * $max_memory) {
                 $output->writeln([
                     "Memory usage went over $max_memory Mo. Stopping the script.",
-                    'Duration: '.(floor(microtime(true) - $start_time)).' seconds',
+                    'Duration: '.floor(microtime(true) - $start_time).' seconds',
                     'Number of links: '.$number_links,
                 ]);
                 exit(0);
@@ -85,7 +84,7 @@ class PreparePreviews extends Command
             if ($input->getOption('filter')) {
                 $filter = $input->getOption('filter');
                 $urls = array_filter($urls, function ($k) use ($filter) {
-                    return mb_stripos($k, $filter) !== false;
+                    return false !== mb_stripos($k, $filter);
                 });
             }
 
@@ -110,6 +109,7 @@ class PreparePreviews extends Command
 
             $this->em->flush();
         }
+
         return 0;
     }
 }

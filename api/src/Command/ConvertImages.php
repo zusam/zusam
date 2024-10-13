@@ -63,6 +63,7 @@ class ConvertImages extends Command
                 $this->logger->notice('Converting '.$inputFile);
             } else {
                 $this->logger->error('Image file '.$inputFile.' is not readable.');
+
                 return 0;
             }
 
@@ -98,6 +99,7 @@ class ConvertImages extends Command
                 $this->logger->error('zusam:convert:images '.$rawFile['id'].' failed.');
             }
         }
+
         return 0;
     }
 }

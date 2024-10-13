@@ -13,7 +13,7 @@ class UuidTest extends TestCase
             $uuid = Uuid::uuidv4();
             $this->assertFalse(in_array($uuid, $uuids));
             $this->assertEquals(Uuid::uuidv4($uuid), Uuid::uuidv4($uuid));
-            $this->assertRegExp("/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/", $uuid);
+            $this->assertMatchesRegularExpression("/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/", $uuid);
             $uuids[] = $uuid;
         }
     }

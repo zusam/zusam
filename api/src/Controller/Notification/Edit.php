@@ -28,12 +28,16 @@ class Edit extends ApiController
 
     /**
      * @Route("/notifications/{id}", methods={"PUT"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Modify a notification",
+     *
      *  @Model(type=App\Entity\Notification::class, groups={"read_notification"})
      * )
+     *
      * @OA\Tag(name="notification")
+     *
      * @Security(name="api_key")
      */
     public function index(

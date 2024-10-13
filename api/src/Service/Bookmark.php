@@ -20,6 +20,7 @@ class Bookmark
         $bookmark = new BookmarkEntity();
         $bookmark->setUser($user);
         $bookmark->setMessage($message);
+
         return $bookmark;
     }
 }

@@ -60,7 +60,7 @@ class CompressGifs extends Command
             $framecount = $this->imageService->getGifFrameCount($this->targetDir.'/'.$rawFile['content_url']);
             $filesize = filesize($this->targetDir.'/'.$rawFile['content_url']);
             if (
-                $filesize < $targetsize*$targetsize*310*$framecount/1024
+                $filesize < $targetsize * $targetsize * 310 * $framecount / 1024
                 || $filesize < 1024 * 1024 * 2 // 2Mo
                 || $framecount < 2
             ) {
@@ -70,7 +70,7 @@ class CompressGifs extends Command
             ++$i;
             $outputFile = $this->targetDir.'/'.$rawFile['id'];
             if ($input->getOption('verbose') || $input->getOption('only-list')) {
-                $output->writeln($this->targetDir."/".$rawFile['content_url']);
+                $output->writeln($this->targetDir.'/'.$rawFile['content_url']);
             }
             if (!$input->getOption('only-list')) {
                 $this->imageService->compressGif(
@@ -86,6 +86,7 @@ class CompressGifs extends Command
                 return 0;
             }
         }
+
         return 0;
     }
 }

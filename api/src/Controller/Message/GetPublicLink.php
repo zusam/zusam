@@ -2,18 +2,17 @@
 
 namespace App\Controller\Message;
 
+use App\Controller\ApiController;
 use App\Entity\Message;
 use App\Service\Token;
-use App\Controller\ApiController;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Routing\Annotation\Route;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class GetPublicLink extends ApiController
 {
@@ -26,14 +25,18 @@ class GetPublicLink extends ApiController
 
     /**
      * @Route("/messages/{id}/get-public-link", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get a message's public link token",
+     *
      *  @OA\JsonContent(
      *    type="string",
      *  )
      * )
+     *
      * @OA\Tag(name="message")
+     *
      * @Security(name="api_key")
      */
     public function index(string $id): Response

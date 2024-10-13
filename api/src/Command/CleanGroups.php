@@ -50,7 +50,7 @@ class CleanGroups extends Command
         }
 
         $c = $this->pdo->query('SELECT g.id FROM `group` g LEFT JOIN users_groups ug ON ug.group_id = g.id WHERE ug.group_id IS NULL;');
-        if ($c === false) {
+        if (false === $c) {
             return 0;
         }
         while ($i = $c->fetch()) {
@@ -61,6 +61,7 @@ class CleanGroups extends Command
                 $this->pdo->query("DELETE FROM `group` WHERE id = '".$i['id']."';");
             }
         }
+
         return 0;
     }
 }

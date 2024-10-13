@@ -2,12 +2,9 @@
 
 namespace App\Service;
 
-use App\Entity\File as FileEntity;
-use App\Entity\Message as MessageEntity;
-use App\Entity\Notification as NotificationEntity;
 use App\Entity\Link as LinkEntity;
+use App\Entity\Notification as NotificationEntity;
 use App\Service\Link as LinkService;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
 class Notification
@@ -29,40 +26,40 @@ class Notification
             $notif_data = $notification->getData();
             $message = $notification->getFromMessage();
             if (empty($message)) {
-                return "";
+                return '';
             }
 
             while (!$message->getIsInFront()) {
                 $message = $message->getParent();
                 if (empty($message)) {
-                    return "";
+                    return '';
                 }
             }
 
             $data = $message->getData();
             $urls = $message->getUrls();
         } catch (\Exception $e) {
-            return "";
+            return '';
         }
 
-        $title = "";
-        if (!empty($data["title"])) {
-            $title = $data["title"];
+        $title = '';
+        if (!empty($data['title'])) {
+            $title = $data['title'];
         }
         if (empty($title) && count($urls) > 0) {
             $link = $this->em->getRepository(LinkEntity::class)->findOneByUrl($urls[0]);
             if (!empty($link)) {
-                if (empty($link->getData()["url"])) {
+                if (empty($link->getData()['url'])) {
                     $this->linkService->hydrateLink($link);
                 }
-                if (!empty($link->getData()["url"])) {
-                    $title = $link->getData()["title"] ?? $link->getData()["description"] ?? $link->getData()["url"];
+                if (!empty($link->getData()['url'])) {
+                    $title = $link->getData()['title'] ?? $link->getData()['description'] ?? $link->getData()['url'];
                 }
             }
         }
 
-        if (empty($title) && !empty($data["text"])) {
-            $title = $data["text"];
+        if (empty($title) && !empty($data['text'])) {
+            $title = $data['text'];
         }
 
         return $title;
@@ -73,11 +70,11 @@ class Notification
         try {
             $message = $notification->getFromMessage();
             if (empty($message)) {
-                return "";
+                return '';
             }
             $author = $message->getAuthor();
         } catch (\Exception $e) {
-            return "";
+            return '';
         }
 
         return $author->getName();
@@ -93,6 +90,7 @@ class Notification
         $notif->setType($type);
         $notif->setFromMessage($fromMessage);
         $this->em->persist($notif);
+
         return $notif;
     }
 }

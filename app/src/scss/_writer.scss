@@ -1,19 +1,16 @@
-.message.child .writer {
-    width: 100%;
-}
+@use 'sass:color';
 
-@media (min-width: map-get($grid-breakpoints, "md")) {
-    .children .message .writer {
-        margin-left: 5rem;
-        margin-bottom: 1rem;
-    }
-}
-
-@media (min-width: map-get($grid-breakpoints, "md")) {
-    .message.child .writer {
-        position: relative;
-        top: 12px;
-    }
+.remove-button {
+    display: none;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+    position: absolute;
+    padding: 7px 20px;
+    font-size: 2rem;
+    color: #fff;
+    background: rgb(0 0 0 / 80%);
+    border-bottom-left-radius: 10px;
 }
 
 .writer {
@@ -66,6 +63,7 @@
             color: #888;
             font-size: 1.3rem;
             cursor: pointer;
+
             &:hover {
                 color: #444;
             }
@@ -73,17 +71,20 @@
 
         .actions {
             margin-left: auto;
+
             .cancel, .submit {
                 border-radius: 2px;
                 cursor: pointer;
+
                 @media (hover: hover) {
                     &:hover {
-                        background-color: adjust-hue($zusam_color, -15deg);
-                        border-color: adjust-hue($zusam_color, -15deg);
+                        background-color: color.adjust($zusam-color, $hue:-15deg);
+                        border-color: color.adjust($zusam-color, $hue:-15deg);
                         color: white;
                     }
                 }
             }
+
             .cancel {
                 border-color: #f7a71b;
                 color: #f7a71b;
@@ -91,6 +92,7 @@
                 background-color: white;
                 padding: 3px 9px;
             }
+
             .submit {
                 padding: 4px 10px;
                 margin-left: 2rem;
@@ -106,17 +108,22 @@
     }
 }
 
-.remove-button {
-    display: none;
-    cursor: pointer;
-    top: 0;
-    right: 0;
-    position: absolute;
-    padding: 7px 20px;
-    font-size: 2rem;
-    color: #fff;
-    background: rgba(0, 0, 0, 0.8);
-    border-bottom-left-radius: 10px;
+.message.child .writer {
+    width: 100%;
+}
+
+@media (min-width: map-get($grid-breakpoints, "md")) {
+    .children .message .writer {
+        margin-left: 5rem;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, "md")) {
+    .message.child .writer {
+        position: relative;
+        top: 12px;
+    }
 }
 
 .writer .video-uploaded .spinner {
@@ -124,7 +131,7 @@
 }
 
 .write-button {
-    background-color: $zusam_color;
+    background-color: $zusam-color;
     border-radius: 100%;
     bottom: 2rem;
     cursor: pointer;
@@ -138,8 +145,9 @@
     width: 4rem;
     z-index: 500;
     color: #fff;
+
     &:hover {
-        background-color: adjust-hue($zusam_color, -15deg);
+        background-color: color.adjust($zusam-color, $hue:-15deg);
         color: #fff;
     }
 }

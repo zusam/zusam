@@ -26,15 +26,20 @@ class GetFromUser extends ApiController
 
     /**
      * @Route("/users/{id}/bookmarks", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get all bookmarks from a user",
+     *
      *  @OA\JsonContent(
      *    type="array",
+     *
      *    @OA\Items(ref=@Model(type=App\Entity\Bookmark::class, groups={"read_bookmark"}))
      *  )
      * )
+     *
      * @OA\Tag(name="bookmark")
+     *
      * @Security(name="api_key")
      */
     public function get_bookmarks(string $id): Response
@@ -56,15 +61,20 @@ class GetFromUser extends ApiController
 
     /**
      * @Route("/me/bookmarks", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get all bookmarks from a user",
+     *
      *  @OA\JsonContent(
      *    type="array",
+     *
      *    @OA\Items(ref=@Model(type=App\Entity\Bookmark::class, groups={"read_bookmark"}))
      *  )
      * )
+     *
      * @OA\Tag(name="bookmark")
+     *
      * @Security(name="api_key")
      */
     public function my_bookmarks(
@@ -80,15 +90,20 @@ class GetFromUser extends ApiController
 
     /**
      * @Route("/users/{id}/bookmarks/{limit}", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get recent bookmarks from a user",
+     *
      *  @OA\JsonContent(
      *    type="array",
+     *
      *    @OA\Items(ref=@Model(type=App\Entity\Bookmark::class, groups={"read_bookmark"}))
      *  )
      * )
+     *
      * @OA\Tag(name="bookmark")
+     *
      * @Security(name="api_key")
      */
     public function get_bookmarks_with_limit(string $id, int $limit): Response
@@ -112,15 +127,20 @@ class GetFromUser extends ApiController
 
     /**
      * @Route("/me/bookmarks/{limit}", methods={"GET"})
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get all bookmarks from a user",
+     *
      *  @OA\JsonContent(
      *    type="array",
+     *
      *    @OA\Items(ref=@Model(type=App\Entity\Bookmark::class, groups={"read_bookmark"}))
      *  )
      * )
+     *
      * @OA\Tag(name="bookmark")
+     *
      * @Security(name="api_key")
      */
     public function my_bookmarks_with_limit(

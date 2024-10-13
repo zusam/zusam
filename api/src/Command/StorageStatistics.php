@@ -6,7 +6,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class StorageStatistics extends Command
@@ -49,7 +48,7 @@ class StorageStatistics extends Command
 
         $c = $this->pdo->query('SELECT * FROM "group";');
         $groups = [];
-        if ($c !== false) {
+        if (false !== $c) {
             while ($group = $c->fetch()) {
                 $messages_query = $this->pdo->query('SELECT * from message m WHERE m.group_id = "'.$group['id'].'";');
                 $messages = [];
@@ -61,27 +60,27 @@ class StorageStatistics extends Command
                 $videos_size = 0;
                 $images_size = 0;
                 $pdfs_size = 0;
-                if ($messages_query !== false) {
+                if (false !== $messages_query) {
                     while ($m = $messages_query->fetch()) {
                         $messagesfiles_query = $this->pdo->query('SELECT * from messages_files mf WHERE mf.message_id = "'.$m['id'].'";');
                         $files = [];
-                        if ($messagesfiles_query !== false) {
+                        if (false !== $messagesfiles_query) {
                             while ($mf = $messagesfiles_query->fetch()) {
-                                $nb_files++;
+                                ++$nb_files;
                                 $file_query = $this->pdo->query('SELECT * from file f WHERE f.id = "'.$mf['file_id'].'";');
-                                if ($file_query !== false && $file = $file_query->fetch()) {
+                                if (false !== $file_query && $file = $file_query->fetch()) {
                                     $path = $this->targetDir.'/'.$file['content_url'];
                                     $real_total_size += filesize($path);
                                     if (preg_match('/video/', $file['type'])) {
-                                        $nb_videos++;
+                                        ++$nb_videos;
                                         $videos_size += filesize($path);
                                     }
                                     if (preg_match('/image/', $file['type'])) {
-                                        $nb_images++;
+                                        ++$nb_images;
                                         $images_size += filesize($path);
                                     }
                                     if (preg_match('/pdf/', $file['type'])) {
-                                        $nb_pdfs++;
+                                        ++$nb_pdfs;
                                         $pdfs_size += filesize($path);
                                     }
                                 }
@@ -93,13 +92,13 @@ class StorageStatistics extends Command
                 $groups[] = [
                     $group['id'],
                     $nb_files,
-                    floor($real_total_size/(1024*1024)),
+                    floor($real_total_size / (1024 * 1024)),
                     $nb_videos,
-                    floor($videos_size/(1024*1024)),
+                    floor($videos_size / (1024 * 1024)),
                     $nb_images,
-                    floor($images_size/(1024*1024)),
+                    floor($images_size / (1024 * 1024)),
                     $nb_pdfs,
-                    floor($pdfs_size/(1024*1024)),
+                    floor($pdfs_size / (1024 * 1024)),
                 ];
             }
         }
@@ -111,6 +110,7 @@ class StorageStatistics extends Command
             ->setHeaders(['group id', 'files', 'Total size', 'videos', 'videos size', 'images', 'images size', 'pdfs', 'pdfs size'])
             ->setRows($groups);
         $table->render();
+
         return 0;
     }
 }

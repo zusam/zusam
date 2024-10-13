@@ -51,7 +51,7 @@ export default class MessageList extends Component {
           let msgList = this.state.messages;
           // don't add already added messages
           res["messages"].map(
-            mid => !msgList.find(msg => msg.id == mid) && msgList.push({"id":mid})
+            mid => !msgList.find(msg => msg.id == mid) && msgList.push({id:mid})
           );
           this.setState({
             messages: msgList,

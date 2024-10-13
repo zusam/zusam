@@ -4,17 +4,17 @@ namespace App\Entity;
 
 use App\Service\Uuid;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Table(name="`file`")
+ *
  * @ORM\Entity
  */
-class File
+class File extends ApiEntity
 {
     /* Statuses are :
      *      - raw: file was just uploaded and not modified
@@ -25,33 +25,46 @@ class File
 
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="guid")
+     *
      * @Assert\NotBlank()
-     * @Groups("*")
+     *
+     * @Groups("public")
+     *
      * @OA\Property(type="guid")
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     *
      * @Assert\Type("integer")
+     *
      * @Assert\NotNull()
+     *
      * @Groups({"read_file"})
+     *
      * @OA\Property(type="integer")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string")
+     *
      * @Groups({"read_message", "read_file"})
+     *
      * @OA\Property(type="string")
      */
     private $type;
 
     /**
      * @ORM\Column(type="string")
+     *
      * @Assert\NotBlank()
+     *
      * @Groups({"read_message", "read_file"})
+     *
      * @OA\Property(type="string")
      */
     private $status;
@@ -63,35 +76,45 @@ class File
 
     /**
      * @ORM\Column(type="string")
-     * @Groups("*")
+     *
+     * @Groups("public")
+     *
      * @OA\Property(type="string")
      */
     private $contentUrl;
 
     /**
      * @ORM\Column(type="integer")
+     *
      * @Groups({"read_file"})
+     *
      * @OA\Property(type="integer")
      */
     private $size;
 
     /**
-     * This should not be used anymore, deprecated
+     * This should not be used anymore, deprecated.
+     *
      * @ORM\Column(type="integer", nullable=true)
+     *
      * @Groups({"read_message", "read_file"})
+     *
      * @OA\Property(type="integer")
      */
     private $fileIndex;
 
     /**
      * @ORM\Column(type="guid", unique=true)
+     *
      * @Assert\NotBlank()
+     *
      * @OA\Property(type="guid")
      */
     private $secretKey;
 
     /**
-     * @Groups("*")
+     * @Groups("public")
+     *
      * @OA\Property(type="string")
      */
     private $entityType;

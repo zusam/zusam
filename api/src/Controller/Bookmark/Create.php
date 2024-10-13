@@ -4,8 +4,8 @@ namespace App\Controller\Bookmark;
 
 use App\Controller\ApiController;
 use App\Entity\Bookmark;
-use App\Entity\User;
 use App\Entity\Message;
+use App\Entity\User;
 use App\Service\Bookmark as BookmarkService;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -33,21 +33,28 @@ class Create extends ApiController
 
     /**
      * @Route("/bookmarks", methods={"POST"})
+     *
      * @OA\RequestBody(
+     *
      *  @OA\Schema(
      *    type="object",
+     *
      *    @OA\Property(
      *      property="message_id",
      *      type="string"
      *    ),
      *  )
      * )
+     *
      * @OA\Response(
      *  response=201,
      *  description="Create a bookmark",
+     *
      *  @Model(type=App\Entity\Bookmark::class, groups={"read_bookmark"})
      * )
+     *
      * @OA\Tag(name="bookmark")
+     *
      * @Security(name="api_key")
      */
     public function index(

@@ -3,16 +3,15 @@
 namespace App\Controller\Link;
 
 use App\Controller\ApiController;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Url as UrlService;
+use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
-use OpenApi\Annotations as OA;
 
 class GetByUrl extends ApiController
 {
@@ -29,9 +28,12 @@ class GetByUrl extends ApiController
 
     /**
      * @Route("/links/by_url", methods={"POST"})
+     *
      * @OA\RequestBody(
+     *
      *  @OA\Schema(
      *    type="object",
+     *
      *    @OA\Property(
      *      property="name",
      *      type="string"
@@ -46,11 +48,14 @@ class GetByUrl extends ApiController
      *    ),
      *  )
      * )
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get a link by its url",
+     *
      *  @OA\JsonContent(
      *    type="object",
+     *
      *    @OA\Property(property="id", type="string"),
      *    @OA\Property(property="data", type="object"),
      *    @OA\Property(property="url", type="string"),
@@ -63,7 +68,9 @@ class GetByUrl extends ApiController
      *    )
      *  )
      * )
+     *
      * @OA\Tag(name="link")
+     *
      * @Security(name="api_key")
      */
     public function getLinkByPost(Request $request): Response
@@ -83,15 +90,19 @@ class GetByUrl extends ApiController
 
     /**
      * @Route("/links/by_url", methods={"GET"})
+     *
      * @OA\Parameter(
      *  name="url",
      *  in="query",
      * )
+     *
      * @OA\Response(
      *  response=200,
      *  description="Get a link by its url",
+     *
      *  @OA\JsonContent(
      *    type="object",
+     *
      *    @OA\Property(property="id", type="string"),
      *    @OA\Property(property="data", type="object"),
      *    @OA\Property(property="url", type="string"),
@@ -104,7 +115,9 @@ class GetByUrl extends ApiController
      *    )
      *  )
      * )
+     *
      * @OA\Tag(name="link")
+     *
      * @Security(name="api_key")
      */
     public function getLinkByGet(Request $request): Response
@@ -122,6 +135,7 @@ class GetByUrl extends ApiController
     {
         $data = $this->getLinkData($url, $rescan, $onlyData);
         $response = new JsonResponse($data, Response::HTTP_OK);
+
         return $response;
     }
 

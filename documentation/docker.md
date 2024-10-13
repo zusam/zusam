@@ -29,3 +29,34 @@ sudo docker run -p 80:8080 -v "$(pwd)/data:/zusam/data" --name zusam -e INIT_USE
 The login for the first user is `email@domain.example` with the password `initpass` in this example.  
 Please change the initial password after initialization since it's public if passed as an docker ENV variable.  
 If you don't specify an `INIT_USER`/`INIT_PASSWORD`, they will default to `zusam`.
+
+---
+
+In some situation, you could prefer to use a docker-compose file. Here is a quick example of a zusam service:
+
+```
+services:
+  zusam:
+    # Adapt the next line to use the latest version of zusam
+    # https://hub.docker.com/r/zusam/zusam/tags
+    image: zusam/zusam:0.5.5
+    environment:
+      - DATABASE_NAME=data.db
+      - INIT_GROUP=zusam
+      - INIT_PASSWORD=zusam
+      - INIT_USER=zusam
+      - SUBPATH=
+    restart: always
+    volumes:
+      # "/path/to/your/data/dir" should be replaced
+      - /path/to/your/data/dir:/zusam/data
+    ports:
+      - "80:8080"
+```
+
+Environment explanations:
+- DATABASE_NAME: name of the sqlite3 database file
+- INIT_GROUP: name of the initial group to be created
+- INIT_PASSWORD: password of the initial user to be created
+- INIT_USER: name of the initial user to be created
+- SUBPATH: specify if zusam needs to be served in a subpath (use "/foo" if you want to serve it on "example.com/foo")
