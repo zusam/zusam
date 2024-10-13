@@ -38,14 +38,14 @@ class Info extends ApiController
         }
 
         return new JsonResponse([
-          'version' => $this->getParameter('version'),
-          'upload' => [
-            'image' => 'true' == $this->getParameter('allow.upload.image') && $has_imagick,
-            'video' => 'true' == $this->getParameter('allow.upload.video') && $has_ffmpeg,
-            'pdf' => 'true' == $this->getParameter('allow.upload.pdf') && $has_ghostscript,
-          ],
-          'default_lang' => $this->getParameter('lang'),
-          'allow_email' => 'true' == $this->getParameter('allow.email'),
+            'version' => $this->getParameter('version'),
+            'upload' => [
+                'image' => 'true' == $this->getParameter('allow.upload.image') && $has_imagick,
+                'video' => 'true' == $this->getParameter('allow.upload.video') && $has_ffmpeg,
+                'pdf' => 'true' == $this->getParameter('allow.upload.pdf') && $has_ghostscript,
+            ],
+            'default_lang' => $this->getParameter('lang'),
+            'allow_email' => 'true' == $this->getParameter('allow.email'),
         ], JsonResponse::HTTP_OK);
     }
 }
