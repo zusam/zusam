@@ -239,7 +239,7 @@
 }
 
 .bandcamp-embed {
-    @media (min-width: map-get($grid-breakpoints, "md")) {
+    @media (min-width: map.get($grid-breakpoints, "md")) {
         width: 450px;
         height: 570px;
         padding: 0 !important;

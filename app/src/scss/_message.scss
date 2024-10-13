@@ -225,7 +225,7 @@
       flex-flow: column;
       width: calc(100% - 5rem);
 
-      @media (max-width: map-get($grid-breakpoints, "md")) {
+      @media (max-width: map.get($grid-breakpoints, "md")) {
         width: 100%;
       }
     }
@@ -239,7 +239,7 @@
       font-size: .7rem;
       width: 5rem;
 
-      @media (min-width: map-get($grid-breakpoints, "md")) {
+      @media (min-width: map.get($grid-breakpoints, "md")) {
         .infos {
           display: none;
         }
@@ -281,7 +281,7 @@
       }
     }
 
-    @media (max-width: map-get($grid-breakpoints, "md")) {
+    @media (max-width: map.get($grid-breakpoints, "md")) {
       background-color: #fff;
       flex-direction: column;
       box-shadow: $material-shadow;
@@ -313,7 +313,7 @@
     margin: 1rem;
     background: linear-gradient(15deg, #999, #ddd);
 
-    @media (max-width: map-get($grid-breakpoints, "sm")) {
+    @media (max-width: map.get($grid-breakpoints, "sm")) {
       margin: 1rem 0;
     }
   }
@@ -324,11 +324,11 @@
     position: relative;
     max-width: 320px;
 
-    @media (min-width: map-get($grid-breakpoints, "sm")) and (max-width: map-get($grid-breakpoints, "md")) {
+    @media (min-width: map.get($grid-breakpoints, "sm")) and (max-width: map.get($grid-breakpoints, "md")) {
       max-width: 250px;
     }
 
-    @media (max-width: map-get($grid-breakpoints, "sm")) {
+    @media (max-width: map.get($grid-breakpoints, "sm")) {
       margin: 1rem 0;
     }
 
