@@ -34,8 +34,6 @@ class Edit extends ApiController
     }
 
     /**
-     * @Route("/messages/{id}", methods={"PUT"})
-     *
      * @OA\RequestBody(
      *
      *  @OA\Schema(
@@ -65,6 +63,7 @@ class Edit extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/messages/{id}', methods: ['PUT'])]
     public function index(
         string $id,
         Request $request,

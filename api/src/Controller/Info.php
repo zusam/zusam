@@ -10,13 +10,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class Info extends ApiController
 {
     /**
-     * @Route("/info", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get informations about the API",
      * )
      */
+    #[Route('/info', methods: ['GET'])]
     public function index(): Response
     {
         // check if ghostscript is found

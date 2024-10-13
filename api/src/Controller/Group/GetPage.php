@@ -33,8 +33,6 @@ class GetPage extends ApiController
     }
 
     /**
-     * @Route("/groups/{id}/page/{n}", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get a group page",
@@ -66,6 +64,7 @@ class GetPage extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/groups/{id}/page/{n}", methods: ["GET"])]
     public function index(string $id, int $n): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

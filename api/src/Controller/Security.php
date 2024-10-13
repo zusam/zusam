@@ -40,9 +40,7 @@ class Security extends AbstractController
         $this->limiter = $limiter;
     }
 
-    /**
-     * @Route("/login", methods={"POST"})
-     */
+    #[Route('/login', methods: ['POST'])]
     public function login(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
@@ -79,9 +77,7 @@ class Security extends AbstractController
         return $this->json(['api_key' => $user->getSecretKey()], Response::HTTP_OK);
     }
 
-    /**
-     * @Route("/signup", methods={"POST"})
-     */
+    #[Route('/signup', methods: ['POST'])]
     public function signup(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
@@ -151,9 +147,7 @@ class Security extends AbstractController
         return $this->json(['api_key' => $user->getSecretKey()], Response::HTTP_OK);
     }
 
-    /**
-     * @Route("/password-reset-mail", methods={"POST"})
-     */
+    #[Route('/password-reset-mail', methods: ['POST'])]
     public function sendPasswordResetMail(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
@@ -170,9 +164,7 @@ class Security extends AbstractController
         }
     }
 
-    /**
-     * @Route("/new-password", methods={"POST"})
-     */
+    #[Route('/new-password', methods: ['POST'])]
     public function newPassword(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);

@@ -24,8 +24,6 @@ class GetPublicLink extends ApiController
     }
 
     /**
-     * @Route("/messages/{id}/get-public-link", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get a message's public link token",
@@ -39,6 +37,7 @@ class GetPublicLink extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/messages/{id}/get-public-link', methods: ['GET'])]
     public function index(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

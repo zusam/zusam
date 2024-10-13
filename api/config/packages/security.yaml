@@ -1,7 +1,4 @@
 security:
-  # you must use the authenticator manager for login throttling
-  # https://symfony.com/doc/current/security.html#limiting-login-attempts
-  enable_authenticator_manager: true
   password_hashers:
     # Use native password hasher, which auto-selects and migrates the best
     # possible hashing algorithm (starting from Symfony 5.3 this is "bcrypt")

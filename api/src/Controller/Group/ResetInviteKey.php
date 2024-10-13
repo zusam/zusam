@@ -25,8 +25,6 @@ class ResetInviteKey extends ApiController
     }
 
     /**
-     * @Route("/groups/{id}/reset-invite-key", methods={"POST"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Reset invite key of a group",
@@ -40,6 +38,7 @@ class ResetInviteKey extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/groups/{id}/reset-invite-key", methods: ["POST"])]
     public function index(
         string $id,
         #[CurrentUser] User $currentUser

@@ -28,8 +28,6 @@ class Get extends ApiController
     }
 
     /**
-     * @Route("/bookmarks/{id}", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get a bookmark",
@@ -41,6 +39,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/bookmarks/{id}", methods: ["GET"])]
     public function index(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

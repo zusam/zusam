@@ -31,8 +31,6 @@ class Get extends ApiController
     }
 
     /**
-     * @Route("/groups/{id}", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get a group",
@@ -44,6 +42,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/groups/{id}", methods: ["GET"])]
     public function index(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -71,8 +70,6 @@ class Get extends ApiController
     }
 
     /**
-     * @Route("/groups/{id}/random", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get a random message from the group",
@@ -84,6 +81,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/groups/{id}/random", methods: ["GET"])]
     public function random_message(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

@@ -27,8 +27,6 @@ class GetByUrl extends ApiController
     }
 
     /**
-     * @Route("/links/by_url", methods={"POST"})
-     *
      * @OA\RequestBody(
      *
      *  @OA\Schema(
@@ -73,6 +71,7 @@ class GetByUrl extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/links/by_url", methods: ["POST"])]
     public function getLinkByPost(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -89,8 +88,6 @@ class GetByUrl extends ApiController
     }
 
     /**
-     * @Route("/links/by_url", methods={"GET"})
-     *
      * @OA\Parameter(
      *  name="url",
      *  in="query",
@@ -120,6 +117,7 @@ class GetByUrl extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/links/by_url", methods: ["GET"])]
     public function getLinkByGet(Request $request): Response
     {
         // No api token verification because this endpoint is used in public posts

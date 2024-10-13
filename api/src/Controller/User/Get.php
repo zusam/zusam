@@ -24,8 +24,6 @@ class Get extends ApiController
     }
 
     /**
-     * @Route("/users/{id}", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Returns a user given its id",
@@ -37,6 +35,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/users/{id}', methods: ['GET'])]
     #[Cache(public: true, maxage: 86400)]
     public function index(string $id): Response
     {
