@@ -1,7 +1,7 @@
 framework:
-    cache:
-        pools:
-            app.group_pages:
-                adapter: 'cache.adapter.filesystem'
-                default_lifetime: 3600 # 1 hour
-                tags: true
+  cache:
+    pools:
+      app.group_pages:
+        adapter: 'cache.adapter.filesystem'
+        default_lifetime: 3600 # 1 hour
+        tags: true

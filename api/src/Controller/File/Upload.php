@@ -30,8 +30,6 @@ class Upload extends ApiController
     }
 
     /**
-     * @Route("/files", methods={"POST"})
-     *
      * @OA\RequestBody(
      *
      *  @OA\Schema(
@@ -55,6 +53,7 @@ class Upload extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/files", methods: ["POST"])]
     public function index(Request $request, ImageService $imageService): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

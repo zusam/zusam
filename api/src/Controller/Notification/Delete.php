@@ -25,8 +25,6 @@ class Delete extends ApiController
     }
 
     /**
-     * @Route("/notifications/{id}", methods={"DELETE"})
-     *
      * @OA\Response(
      *  response=204,
      *  description="Delete a notification"
@@ -36,6 +34,7 @@ class Delete extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/notifications/{id}', methods: ['DELETE'])]
     public function index(
         string $id,
         #[CurrentUser] User $currentUser

@@ -1,6 +1,6 @@
 .settings {
     form {
-        @media (max-width: map-get($grid-breakpoints, "sm")) {
+        @media (max-width: map.get($grid-breakpoints, "sm")) {
             border: none !important;
             padding-left: 0;
         }

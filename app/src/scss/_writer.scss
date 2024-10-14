@@ -86,9 +86,8 @@
             }
 
             .cancel {
-                border-color: #f7a71b;
                 color: #f7a71b;
-                border: 1px solid;
+                border: 1px solid #f7a71b;
                 background-color: white;
                 padding: 3px 9px;
             }
@@ -112,14 +111,14 @@
     width: 100%;
 }
 
-@media (min-width: map-get($grid-breakpoints, "md")) {
+@media (min-width: map.get($grid-breakpoints, "md")) {
     .children .message .writer {
         margin-left: 5rem;
         margin-bottom: 1rem;
     }
 }
 
-@media (min-width: map-get($grid-breakpoints, "md")) {
+@media (min-width: map.get($grid-breakpoints, "md")) {
     .message.child .writer {
         position: relative;
         top: 12px;

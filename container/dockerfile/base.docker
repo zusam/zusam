@@ -1,4 +1,7 @@
-FROM alpine:3.18
+// The lastest version number can be found at:
+// https://hub.docker.com/_/alpine
+
+FROM alpine:3.20
 
 RUN apk add --no-cache -U tini s6
 ENTRYPOINT ["/sbin/tini", "--"]

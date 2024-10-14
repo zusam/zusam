@@ -27,8 +27,6 @@ class Edit extends ApiController
     }
 
     /**
-     * @Route("/notifications/{id}", methods={"PUT"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Modify a notification",
@@ -40,6 +38,7 @@ class Edit extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/notifications/{id}', methods: ['PUT'])]
     public function index(
         string $id,
         Request $request,

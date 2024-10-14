@@ -1,6 +1,6 @@
 COPY container/s6.d /etc/s6.d
 COPY container/config /zusam/config
-COPY container/php81 /etc/php81
+COPY container/php83 /etc/php83
 COPY container/nginx /etc/nginx
 COPY container/run.sh /usr/local/bin/run.sh
 COPY container/dev_run.sh /usr/local/bin/dev_run.sh

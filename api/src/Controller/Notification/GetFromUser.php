@@ -25,8 +25,6 @@ class GetFromUser extends ApiController
     }
 
     /**
-     * @Route("/users/{id}/notifications", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get all notifications from a user",
@@ -42,6 +40,7 @@ class GetFromUser extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/users/{id}/notifications', methods: ['GET'])]
     public function get_notifications(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -60,8 +59,6 @@ class GetFromUser extends ApiController
     }
 
     /**
-     * @Route("/me/notifications", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get all notifications from a user",
@@ -77,6 +74,7 @@ class GetFromUser extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/me/notifications', methods: ['GET'])]
     public function my_notifications(
         #[CurrentUser] User $currentUser
     ): Response {
@@ -89,8 +87,6 @@ class GetFromUser extends ApiController
     }
 
     /**
-     * @Route("/users/{id}/notifications/{limit}", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get recent notifications from a user",
@@ -106,6 +102,7 @@ class GetFromUser extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/users/{id}/notifications/{limit}', methods: ['GET'])]
     public function get_notifications_with_limit(string $id, int $limit): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -126,8 +123,6 @@ class GetFromUser extends ApiController
     }
 
     /**
-     * @Route("/me/notifications/{limit}", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get all notifications from a user",
@@ -143,6 +138,7 @@ class GetFromUser extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/me/notifications/{limit}', methods: ['GET'])]
     public function my_notifications_with_limit(
         int $limit,
         #[CurrentUser] User $currentUser

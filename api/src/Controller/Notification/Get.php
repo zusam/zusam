@@ -28,8 +28,6 @@ class Get extends ApiController
     }
 
     /**
-     * @Route("/notifications/{id}", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get a notification",
@@ -41,6 +39,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/notifications/{id}', methods: ['GET'])]
     public function index(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

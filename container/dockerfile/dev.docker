@@ -4,6 +4,7 @@
 WORKDIR /zusam
 
 #include "packages.docker"
+#include "php-packages.docker"
 #include "zusam-files.docker"
 #include "setup.docker"
 
@@ -11,34 +12,7 @@ EXPOSE 8080
 VOLUME /zusam/data
 CMD ["dev_run.sh"]
 
-RUN set -xe && apk add --no-cache \\
-    ffmpeg \\
-    imagemagick \\
-    nginx \\
-    openssl \\
-    php81 \\
-    php81-common \\
-    php81-ctype \\
-    php81-curl \\
-    php81-dom \\
-    php81-fileinfo \\
-    php81-fpm \\
-    php81-iconv \\
-    php81-intl \\
-    php81-json \\
-    php81-mbstring \\
-    php81-opcache \\
-    php81-openssl \\
-    php81-pdo_sqlite \\
-    php81-pecl-apcu \\
-    php81-pecl-imagick \\
-    php81-phar \\
-    php81-posix \\
-    php81-session \\
-    php81-simplexml \\
-    php81-tokenizer \\
-    php81-xml \\
-    php81-xmlwriter
+// The following are additional packages useful during dev
 
 RUN set -xe && apk add --no-cache \\
     acl \\
@@ -51,11 +25,9 @@ RUN set -xe && apk add --no-cache \\
     npm \\
     openssh \\
     openssl \\
-    php81-phar \\
     rsync \\
     sqlite \\
     sudo \\
     unzip \\
     wget \\
-    yarn \\
     zip

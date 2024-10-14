@@ -32,8 +32,6 @@ class Edit extends ApiController
     }
 
     /**
-     * @Route("/bookmarks/{id}", methods={"POST"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Register a bookmark",
@@ -45,6 +43,7 @@ class Edit extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/bookmarks/{id}', methods: ['POST'])]
     public function post_bookmark(
         string $id,
         #[CurrentUser] User $user
@@ -69,8 +68,6 @@ class Edit extends ApiController
     }
 
     /**
-     * @Route("/bookmarks/{id}", methods={"DELETE"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Unregister a bookmark",
@@ -82,6 +79,7 @@ class Edit extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/bookmarks/{id}', methods: ['DELETE'])]
     public function delete_bookmark(
         string $id,
         #[CurrentUser] User $user
@@ -110,8 +108,6 @@ class Edit extends ApiController
     }
 
     /**
-     * @Route("/users/{id}", methods={"PUT"})
-     *
      * @OA\RequestBody(
      *
      *  @OA\Schema(
@@ -156,6 +152,7 @@ class Edit extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/users/{id}', methods: ['PUT'])]
     public function index(
         string $id,
         Request $request,
@@ -207,8 +204,6 @@ class Edit extends ApiController
     }
 
     /**
-     * @Route("/users/{id}/reset-api-key", methods={"POST"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Reset a user api key",
@@ -220,6 +215,7 @@ class Edit extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/users/{id}/reset-api-key', methods: ['POST'])]
     public function resetApiKey(
         string $id,
         #[CurrentUser] User $currentUser

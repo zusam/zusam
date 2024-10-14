@@ -5,7 +5,7 @@
         margin: 1rem;
         background: linear-gradient(15deg, #999, #ddd);
 
-        @media (max-width: map-get($grid-breakpoints, "sm")) {
+        @media (max-width: map.get($grid-breakpoints, "sm")) {
             margin: 1rem 0;
         }
     }
@@ -15,7 +15,7 @@
         margin: 1rem;
         position: relative;
 
-        @media (max-width: map-get($grid-breakpoints, "sm")) {
+        @media (max-width: map.get($grid-breakpoints, "sm")) {
             margin: 1rem 0;
         }
 

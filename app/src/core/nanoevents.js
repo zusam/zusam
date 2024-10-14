@@ -11,4 +11,4 @@ let createNanoEvents = () => ({
   }
 });
 
-module.exports = { createNanoEvents };
+export default createNanoEvents;
