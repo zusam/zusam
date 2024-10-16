@@ -33,7 +33,7 @@ class Group extends ApiEntity
     /**
      * @ORM\Column(type="string", unique=true)
      *
-     * @Groups({"read_group"})
+     * @Groups({"read_secret_key"})
      *
      * @Assert\NotBlank()
      *
