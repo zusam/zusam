@@ -4,12 +4,12 @@ Na Zusam-e máš nové príspevky!
 Môžeš si ich pozriet na nasledovnom odkazoch:
 {% for notification in notifications %}
 {% if notification.type == 'new_message' %}
-- https://{{ domain }}/messages/{{ notification.target }}
+- {{ base_url }}/messages/{{ notification.target }}
 {% endif %}
 {% if notification.type == 'new_comment' %}
-- https://{{ domain }}/messages/{{ notification.fromMessage.id }}/{{ notification.target }}
+- {{ base_url }}/messages/{{ notification.fromMessage.id }}/{{ notification.target }}
 {% endif %}
 {% endfor %}
 
 Ak nechceš dostávať tento email, môžeš to vypnúť v tvojich nastaveniach alebo kliknúť na nasledujúci odkaz:
-https://{{ domain }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}
+{{ base_url }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}

@@ -4,12 +4,12 @@ There is something new in Zusam!
 You can see these new messages by going to the following links:
 {% for notification in notifications %}
 {% if notification.type == 'new_message' %}
-- https://{{ domain }}/messages/{{ notification.target }}
+- {{ base_url }}/messages/{{ notification.target }}
 {% endif %}
 {% if notification.type == 'new_comment' %}
-- https://{{ domain }}/messages/{{ notification.fromMessage.id }}/{{ notification.target }}
+- {{ base_url }}/messages/{{ notification.fromMessage.id }}/{{ notification.target }}
 {% endif %}
 {% endfor %}
 
 If you do not want to receive this email anymore, you can deactivate it in your settings or click on the following link:
-https://{{ domain }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}
+{{ base_url }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}

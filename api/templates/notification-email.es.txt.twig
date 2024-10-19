@@ -4,12 +4,12 @@ Hola {{ name }},
 Puedes ver estos nuevos mensajes en los siguientes enlaces:
 {% for notification in notifications %}
 {% if notification.type == 'new_message' %}
-- https://{{ domain }}/messages/{{ notification.target }}
+- {{ base_url }}/messages/{{ notification.target }}
 {% endif %}
 {% if notification.type == 'new_comment' %}
-- https://{{ domain }}/messages/{{ notification.fromMessage.id }}/{{ notification.target }}
+- {{ base_url }}/messages/{{ notification.fromMessage.id }}/{{ notification.target }}
 {% endif %}
 {% endfor %}
 
 Si ya no desea recibir este correo, puede desactivarlo en su configuración o hacer clic en el siguiente enlace:
-https://{{ domain }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}
+{{ base_url }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}

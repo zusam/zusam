@@ -6,6 +6,7 @@ use App\Entity\User;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Mailer
 {
@@ -16,6 +17,7 @@ class Mailer
     private $logger;
     private $symfonyMailer;
     private $twig;
+    private Url $url;
 
     public function __construct(
         \Twig\Environment $twig,
@@ -25,6 +27,7 @@ class Mailer
         string $env,
         LoggerInterface $logger,
         MailerInterface $symfonyMailer,
+        Url $url,
     ) {
         $this->allow_email = $allow_email;
         $this->domain = $domain;
@@ -33,6 +36,7 @@ class Mailer
         $this->logger = $logger;
         $this->symfonyMailer = $symfonyMailer;
         $this->twig = $twig;
+        $this->url = $url;
     }
 
     private function sendMail($email)
@@ -74,7 +78,7 @@ class Mailer
                 $this->twig->render(
                     "notification-email.$lang.txt.twig",
                     [
-                        'domain' => $this->domain,
+                        'base_url' => $this->url->getBaseUrl(),
                         'notifications' => $notifications,
                         'user' => $user,
                         'unsubscribe_token' => $unsubscribe_token,
@@ -110,8 +114,7 @@ class Mailer
                     "password-reset-mail.$lang.txt.twig",
                     [
                         'name' => ucfirst($user->getName()),
-                        'url' => 'https://'
-                        .$this->domain
+                        'url' => $this->url->getBaseUrl()
                         .'/password-reset'
                         .'?mail='.urlencode($user->getLogin())
                         .'&key='.$token,
