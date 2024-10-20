@@ -43,8 +43,10 @@ class ResetInviteKey extends ApiController
         string $id,
         #[CurrentUser] User $currentUser
     ): Response {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
+        $this->denyAccessUnlessGranted(null);
+        if ($this->getParameter('show.group.invitation.links') != 'true') {
+            return new JsonResponse(['error' => 'Invitation link reset is restricted'], JsonResponse::HTTP_FORBIDDEN);
+        }
         $group = $this->em->getRepository(Group::class)->findOneById($id);
         if (empty($group)) {
             return new JsonResponse(['error' => 'Not Found'], JsonResponse::HTTP_NOT_FOUND);
