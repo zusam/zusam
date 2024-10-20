@@ -125,6 +125,9 @@ services:
     App\Command\NotificationEmails:
       arguments:
 
+    App\Command\ListInviteLinks:
+      arguments:
+
     App\Command\StorageStatistics:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
