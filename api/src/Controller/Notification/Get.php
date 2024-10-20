@@ -53,8 +53,8 @@ class Get extends ApiController
         if (in_array(
             $notification->getType(),
             [
-              Notification::NEW_COMMENT,
-              Notification::NEW_MESSAGE,
+                Notification::NEW_COMMENT,
+                Notification::NEW_MESSAGE,
             ]
         )) {
             $notification_data_output['parentAuthorName'] = $this->notificationService->getParentAuthorName($notification);

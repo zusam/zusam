@@ -25,7 +25,7 @@ security:
     main:
       lazy: true
       stateless: true
-      access_denied_handler: App\Security\AccessDeniedHandler
-      entry_point: App\Security\EntryPointService
-      custom_authenticators:
-        - App\Security\ApiKeyAuthenticator
+      access_token:
+        token_handler: App\Security\ApiKeyAuthenticator
+        token_extractors:
+          - App\Security\ApiKeyExtractor

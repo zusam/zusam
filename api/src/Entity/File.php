@@ -179,7 +179,7 @@ class File extends ApiEntity
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $file
+     * @param File|UploadedFile $file
      */
     public function setFile($file = null): void
     {
