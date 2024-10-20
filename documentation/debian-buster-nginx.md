@@ -55,6 +55,7 @@ server {
     }
     location /files {
         expires 1M;
+        add_header Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; sandbox";
         try_files $uri =404;
     }
     location /api {
