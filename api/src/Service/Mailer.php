@@ -6,7 +6,6 @@ use App\Entity\User;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Mailer
 {
