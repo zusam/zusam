@@ -56,6 +56,15 @@ class Url
         return $this->linkService->hydrateLink($link);
     }
 
+    public function getBaseUrl(): string
+    {
+        $protocol = $this->params->get('protocol');
+        $domain = $this->params->get('domain');
+        $port = $this->params->get('port');
+
+        return $protocol . '://' . $domain . ($port ? ':' . $port : '');
+    }
+
     // taken from https://github.com/guzzle/psr7/blob/089edd38f5b8abba6cb01567c2a8aaa47cec4c72/src/Uri.php#L166
     public static function composeComponents(?string $scheme, ?string $authority, string $path, ?string $query, ?string $fragment): string
     {

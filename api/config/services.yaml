@@ -3,7 +3,9 @@
 parameters:
   lang: '%env(resolve:LANG)%'
   version: '%env(resolve:VERSION)%'
+  protocol: '%env(resolve:PROTOCOL)%'
   domain: '%env(resolve:DOMAIN)%'
+  port: '%env(resolve:PORT)%'
   app_env: '%env(resolve:APP_ENV)%'
   allow.upload.image: '%env(resolve:ALLOW_IMAGE_UPLOAD)%'
   allow.upload.video: '%env(resolve:ALLOW_VIDEO_UPLOAD)%'
@@ -153,3 +155,6 @@ services:
         $lang: '%env(resolve:LANG)%'
         $allow_email: '%env(resolve:ALLOW_EMAIL)%'
         $env: '%kernel.environment%'
+
+    App\Service\Url:
+      arguments:
