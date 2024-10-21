@@ -59,8 +59,11 @@ class Get extends ApiController
         $data = $this->cache->get($cacheKey, function (ItemInterface $item) use ($group) {
             $item->expiresAfter(3600 * 24 * 7);
             $item->tag('group_'.$group->getId());
-
-            return $this->serialize($group, ['read_group']);
+            $serialization_groups = ['read_group'];
+            if ($this->getParameter('show.group.invitation.links') == 'true') {
+                $serialization_groups[] = 'read_secret_key';
+            }
+            return $this->serialize($group, $serialization_groups);
         });
 
         return new Response(

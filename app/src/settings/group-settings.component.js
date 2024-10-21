@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { alert, http, util, router } from "/src/core";
+import { alert, http, util, router, api } from "/src/core";
 import { useStoreon } from "storeon/preact";
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
@@ -108,28 +108,30 @@ export default function GroupSettings() {
                       {t("save_changes")}
                     </button>
                   </form>
-                  <form class="mb-1 border-bottom pb-1">
-                    <div class="form-group">
-                      <label for="inviteKey">
-                        {t("invitation_link")}:{" "}
-                      </label>
-                      <input
-                        type="text"
-                        name="inviteKey"
-                        value={
-                          `${window.location.protocol}//${window.location.host}/invitation/${secretKey}`
-                        }
-                        class="form-control font-size-80"
-                        readonly="readonly"
-                      />
-                    </div>
-                    <button
-                      class="btn btn-outline-secondary"
-                      onClick={resetSecretKey}
-                    >
-                      {t("reset_invitation_link")}
-                    </button>
-                  </form>
+                  {api?.info?.show?.group_invitation_links && (
+                    <form class="mb-1 border-bottom pb-1">
+                      <div class="form-group">
+                        <label for="inviteKey">
+                          {t("invitation_link")}:{" "}
+                        </label>
+                        <input
+                          type="text"
+                          name="inviteKey"
+                          value={
+                            `${window.location.protocol}//${window.location.host}/invitation/${secretKey}`
+                          }
+                          class="form-control font-size-80"
+                          readonly="readonly"
+                        />
+                      </div>
+                      <button
+                        class="btn btn-outline-secondary"
+                        onClick={resetSecretKey}
+                      >
+                        {t("reset_invitation_link")}
+                      </button>
+                    </form>
+                  )}
                   <form>
                     <button
                       onClick={e => leaveGroup(e)}

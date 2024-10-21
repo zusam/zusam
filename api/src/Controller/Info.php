@@ -45,6 +45,9 @@ class Info extends ApiController
           ],
           'default_lang' => $this->getParameter('lang'),
           'allow_email' => 'true' == $this->getParameter('allow.email'),
+          'show' => [
+            'group_invitation_links' => 'true' == $this->getParameter('show.group.invitation.links'),
+          ]
         ], JsonResponse::HTTP_OK);
     }
 }
