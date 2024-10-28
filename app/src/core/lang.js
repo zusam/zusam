@@ -9,12 +9,12 @@ import es_ES from "/src/lang/es_ES.json";
 import fr_FR from "/src/lang/fr_FR.json";
 import hu_HU from "/src/lang/hu_HU.json";
 import ko_KR from "/src/lang/ko_KR.json";
-import nb_NO from "src/lang/nb_NO.json";
+import nb_NO from "/src/lang/nb_NO.json";
 import nl_NL from "/src/lang/nl_NL.json";
-import pt_BR from "src/lang/pt_BR.json";
+import pt_BR from "/src/lang/pt_BR.json";
 import ru_RU from "/src/lang/ru_RU.json";
 import sk_SK from "/src/lang/sk_SK.json";
-import ta_IN from "src/lang/ta_IN.json";
+import ta_IN from "/src/lang/ta_IN.json";
 import zgh from "/src/lang/zgh.json";
 import zh_Hans from "/src/lang/zh_Hans.json";
 
