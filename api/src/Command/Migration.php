@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Message as MessageEntity;
-use App\Entity\User as USerEntity;
+use App\Entity\User as UserEntity;
 use App\Service\Bookmark as BookmarkService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;

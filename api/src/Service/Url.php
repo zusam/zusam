@@ -110,22 +110,22 @@ class Url
             $data = json_decode($res->getBody(), true);
 
             return [
-        'authorName' => $data['author_name'],
-        'authorUrl' => $data['author_url'],
-        'code' => $data['html'],
-        'description' => $data['title'],
-        'thumbnail_url' => $data['thumbnail_url'],
-        'image' => $data['thumbnail_url'],
-        'origin' => $url,
-        'title' => $data['author_name'],
-        'providerName' => $data['provider_name'],
-        'providerUrl' => $data['provider_url'],
-      ];
+                'authorName' => $data['author_name'],
+                'authorUrl' => $data['author_url'],
+                'code' => $data['html'],
+                'description' => $data['title'],
+                'thumbnail_url' => $data['thumbnail_url'],
+                'image' => $data['thumbnail_url'],
+                'origin' => $url,
+                'title' => $data['author_name'],
+                'providerName' => $data['provider_name'],
+                'providerUrl' => $data['provider_url'],
+            ];
         } catch (\Exception $e) {
             return [
-        'origin' => $url, // The original input url
-        'exception' => $e->getMessage(),
-      ];
+                'origin' => $url, // The original input url
+                'exception' => $e->getMessage(),
+            ];
         }
     }
 
@@ -136,44 +136,44 @@ class Url
             $info = $embed->get(Url::exceptionRedirect($url));
 
             return [
-        'title' => $info->title, // The page title
-        'description' => $info->description, // The page description
-        'url' => Url::composeComponents( // The canonical url
-            $info->url->getScheme(),
-            $info->url->getAuthority(),
-            $info->url->getPath(),
-            $info->url->getQuery(),
-            $info->url->getFragment(),
-        ),
-        'keywords' => $info->keywords, // The page keywords (tags)
+                'title' => $info->title, // The page title
+                'description' => $info->description, // The page description
+                'url' => Url::composeComponents( // The canonical url
+                    $info->url->getScheme(),
+                    $info->url->getAuthority(),
+                    $info->url->getPath(),
+                    $info->url->getQuery(),
+                    $info->url->getFragment(),
+                ),
+                'keywords' => $info->keywords, // The page keywords (tags)
 
-        'image' => $info->image, // The image choosen as main image
+                'image' => $info->image, // The image choosen as main image
 
-        'code' => $info->code ? $info->code->html : null, // The code to embed the image, video, etc
+                'code' => $info->code ? $info->code->html : null, // The code to embed the image, video, etc
 
-        'authorName' => $info->authorName, // The resource author
-        'authorUrl' => $info->authorUrl, // The author url
+                'authorName' => $info->authorName, // The resource author
+                'authorUrl' => $info->authorUrl, // The author url
 
-        'cms' => $info->cms, // The cms used
-        'language' => $info->language, // The language of the page
-        'languages' => $info->languages, // The alternative languages
+                'cms' => $info->cms, // The cms used
+                'language' => $info->language, // The language of the page
+                'languages' => $info->languages, // The alternative languages
 
-        'providerName' => $info->providerName, // The provider name of the page (Youtube, Twitter, Instagram, etc)
-        'providerUrl' => $info->providerUrl, // The provider url
-        'icon' => $info->icon, // The big icon of the site
-        'favicon' => $info->favicon, // The favicon of the site (an .ico file or a png with up to 32x32px)
+                'providerName' => $info->providerName, // The provider name of the page (Youtube, Twitter, Instagram, etc)
+                'providerUrl' => $info->providerUrl, // The provider url
+                'icon' => $info->icon, // The big icon of the site
+                'favicon' => $info->favicon, // The favicon of the site (an .ico file or a png with up to 32x32px)
 
-        'publishedTime' => $info->publishedTime, // The published time of the resource
-        'license' => $info->license, // The license url of the resource
-        'feeds' => $info->feeds, // The RSS/Atom feeds
-        'content-type' => $info->getResponse()->getHeader('content-Type'), // The content type of the url
-        'origin' => $url, // The original input url
-      ];
+                'publishedTime' => $info->publishedTime, // The published time of the resource
+                'license' => $info->license, // The license url of the resource
+                'feeds' => $info->feeds, // The RSS/Atom feeds
+                'content-type' => $info->getResponse()->getHeader('content-Type'), // The content type of the url
+                'origin' => $url, // The original input url
+            ];
         } catch (\Exception $e) {
             return [
-        'origin' => $url, // The original input url
-        'exception' => $e->getMessage(),
-      ];
+                'origin' => $url, // The original input url
+                'exception' => $e->getMessage(),
+            ];
         }
     }
 
