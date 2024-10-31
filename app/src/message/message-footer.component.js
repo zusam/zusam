@@ -1,5 +1,5 @@
 import { h, Fragment } from "preact";
-import { util, me, notifications, alert } from "/src/core";
+import { util, me, notifications, alert, api } from "/src/core";
 import { Link } from "react-router-dom";
 import { FaIcon } from "/src/misc";
 import { useTranslation } from "react-i18next";
@@ -88,14 +88,14 @@ export default function MessageFooter(props) {
                   {t("delete")}
                 </a>
               )}
-              {
+              {api?.info?.allow_public_links && (
                 <a
                   class="seamless-link capitalize"
                   onClick={e => props.openPublicLink(e)}
                 >
                   {t("public_link")}
                 </a>
-              }
+              )}
               {me.groups?.length > 1 && (
                 <a
                   class="seamless-link capitalize"
