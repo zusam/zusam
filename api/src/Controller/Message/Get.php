@@ -24,8 +24,6 @@ class Get extends ApiController
     }
 
     /**
-     * @Route("/messages/{id}", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get a message",
@@ -37,6 +35,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/messages/{id}', methods: ['GET'])]
     public function index(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -66,8 +65,6 @@ class Get extends ApiController
     }
 
     /**
-     * @Route("/messages/{id}/preview", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get a message",
@@ -79,6 +76,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/messages/{id}/preview', methods: ['GET'])]
     public function preview(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

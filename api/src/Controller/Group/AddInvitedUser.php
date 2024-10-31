@@ -27,8 +27,6 @@ class AddInvitedUser extends ApiController
     }
 
     /**
-     * @Route("/groups/invitation/{inviteKey}", methods={"POST"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Add the logged in user to the group",
@@ -40,6 +38,7 @@ class AddInvitedUser extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/groups/invitation/{inviteKey}", methods: ["POST"])]
     public function index(string $inviteKey): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

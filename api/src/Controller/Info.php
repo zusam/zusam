@@ -10,13 +10,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class Info extends ApiController
 {
     /**
-     * @Route("/info", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get informations about the API",
      * )
      */
+    #[Route('/info', methods: ['GET'])]
     public function index(): Response
     {
         // check if ghostscript is found
@@ -46,6 +45,9 @@ class Info extends ApiController
           ],
           'default_lang' => $this->getParameter('lang'),
           'allow_email' => 'true' == $this->getParameter('allow.email'),
+          'show' => [
+            'group_invitation_links' => 'true' == $this->getParameter('show.group.invitation.links'),
+          ]
         ], JsonResponse::HTTP_OK);
     }
 }

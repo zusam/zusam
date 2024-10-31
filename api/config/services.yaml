@@ -3,12 +3,15 @@
 parameters:
   lang: '%env(resolve:LANG)%'
   version: '%env(resolve:VERSION)%'
+  protocol: '%env(resolve:PROTOCOL)%'
   domain: '%env(resolve:DOMAIN)%'
+  port: '%env(resolve:PORT)%'
   app_env: '%env(resolve:APP_ENV)%'
   allow.upload.image: '%env(resolve:ALLOW_IMAGE_UPLOAD)%'
   allow.upload.video: '%env(resolve:ALLOW_VIDEO_UPLOAD)%'
   allow.upload.pdf: '%env(resolve:ALLOW_PDF_UPLOAD)%'
   allow.upload.audio: '%env(resolve:ALLOW_AUDIO_UPLOAD)%'
+  show.group.invitation.links: '%env(resolve:SHOW_GROUP_INVITATION_LINKS)%'
   idle_hours: '%env(resolve:IDLE_HOURS)%'
   video_conversion_threads: '%env(resolve:VIDEO_CONVERSION_THREADS)%'
   video_format_not_converted: '%env(resolve:VIDEO_FORMAT_NOT_CONVERTED)%'
@@ -122,6 +125,9 @@ services:
     App\Command\NotificationEmails:
       arguments:
 
+    App\Command\ListInviteLinks:
+      arguments:
+
     App\Command\StorageStatistics:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
@@ -153,3 +159,6 @@ services:
         $lang: '%env(resolve:LANG)%'
         $allow_email: '%env(resolve:ALLOW_EMAIL)%'
         $env: '%kernel.environment%'
+
+    App\Service\Url:
+      arguments:

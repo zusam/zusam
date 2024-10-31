@@ -19,9 +19,7 @@ class PublicController extends ApiController
         parent::__construct($em, $serializer);
     }
 
-    /**
-     * @Route("/public/{token}", methods={"GET"})
-     */
+    #[Route('/public/{token}', methods: ['GET'])]
     public function public(string $token)
     {
         $token_data = Token::extract($token);

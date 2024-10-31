@@ -31,8 +31,6 @@ class Delete extends ApiController
     }
 
     /**
-     * @Route("/messages/{id}", methods={"DELETE"})
-     *
      * @OA\Response(
      *  response=204,
      *  description="Delete a message"
@@ -42,6 +40,7 @@ class Delete extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/messages/{id}', methods: ['DELETE'])]
     public function index(
         string $id,
         #[CurrentUser] User $currentUser

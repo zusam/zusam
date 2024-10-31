@@ -102,7 +102,7 @@ class ObjectNormalizer extends AbstractObjectNormalizer
      *
      * @throws MaxTreeDepthException
      */
-    protected function handleMaxTreeDepth($object, string $format = null, array $context = [])
+    protected function handleMaxTreeDepth($object, ?string $format = null, array $context = [])
     {
         $maxTreeDepthHandler = $context[self::MAX_TREE_DEPTH_HANDLER] ?? $this->defaultContext[self::MAX_TREE_DEPTH_HANDLER];
         if ($maxTreeDepthHandler) {
@@ -140,7 +140,7 @@ class ObjectNormalizer extends AbstractObjectNormalizer
         return $this->normalizer->normalize($object, $format, $context);
     }
 
-    public function supportsNormalization($data, string $format = null, array $context = []): bool
+    public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof ApiEntity;
     }
@@ -150,17 +150,17 @@ class ObjectNormalizer extends AbstractObjectNormalizer
         return $this->normalizer->getSupportedTypes($format);
     }
 
-    protected function setAttributeValue(object $object, string $attribute, mixed $value, string $format = null, array $context = [])
+    protected function setAttributeValue(object $object, string $attribute, mixed $value, ?string $format = null, array $context = [])
     {
         $this->normalizer->setAttributeValue($object, $attribute, $value, $format, $context);
     }
 
-    protected function getAttributeValue(object $object, string $attribute, string $format = null, array $context = []): mixed
+    protected function getAttributeValue(object $object, string $attribute, ?string $format = null, array $context = []): mixed
     {
         return $this->normalizer->getAttributeValue($object, $attribute, $format, $context);
     }
 
-    protected function extractAttributes(object $object, string $format = null, array $context = []): array
+    protected function extractAttributes(object $object, ?string $format = null, array $context = []): array
     {
         return $this->normalizer->extractAttributes($object, $format, $context);
     }

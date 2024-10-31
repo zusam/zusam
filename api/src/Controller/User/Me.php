@@ -21,8 +21,6 @@ class Me extends ApiController
     }
 
     /**
-     * @Route("/me", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Returns the current logged in user",
@@ -34,6 +32,7 @@ class Me extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/me', methods: ['GET'])]
     public function index(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

@@ -31,8 +31,6 @@ class Create extends ApiController
     }
 
     /**
-     * @Route("/groups", methods={"POST"})
-     *
      * @OA\RequestBody(
      *
      *  @OA\Schema(
@@ -56,6 +54,7 @@ class Create extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/groups", methods: ["POST"])]
     public function index(
         Request $request,
         #[CurrentUser] User $currentUser

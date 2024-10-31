@@ -31,8 +31,6 @@ class Get extends ApiController
     }
 
     /**
-     * @Route("/groups/{id}", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get a group",
@@ -44,6 +42,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/groups/{id}", methods: ["GET"])]
     public function index(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -60,8 +59,11 @@ class Get extends ApiController
         $data = $this->cache->get($cacheKey, function (ItemInterface $item) use ($group) {
             $item->expiresAfter(3600 * 24 * 7);
             $item->tag('group_'.$group->getId());
-
-            return $this->serialize($group, ['read_group']);
+            $serialization_groups = ['read_group'];
+            if ($this->getParameter('show.group.invitation.links') == 'true') {
+                $serialization_groups[] = 'read_secret_key';
+            }
+            return $this->serialize($group, $serialization_groups);
         });
 
         return new Response(
@@ -71,8 +73,6 @@ class Get extends ApiController
     }
 
     /**
-     * @Route("/groups/{id}/random", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get a random message from the group",
@@ -84,6 +84,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/groups/{id}/random", methods: ["GET"])]
     public function random_message(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

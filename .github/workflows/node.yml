@@ -6,6 +6,11 @@ jobs:
   lint:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ['18', '20', '22']
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -13,13 +18,13 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '18'
+        node-version: ${{ matrix.node-version }}
 
     - name: Install dependencies
       run: cd app && npm install --include=dev
 
     - name: Run ESLint
-      run: cd app && npx eslint -c .eslintrc.json src/
+      run: cd app && npm run analyze
 
     - name: Run stylelint
-      run: cd app && npx stylelint "src/scss/**/*.scss"
+      run: cd app && npm run stylelint

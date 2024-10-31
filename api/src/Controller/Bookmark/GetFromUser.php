@@ -25,8 +25,6 @@ class GetFromUser extends ApiController
     }
 
     /**
-     * @Route("/users/{id}/bookmarks", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get all bookmarks from a user",
@@ -42,6 +40,7 @@ class GetFromUser extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/users/{id}/bookmarks", methods: ["GET"])]
     public function get_bookmarks(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -60,8 +59,6 @@ class GetFromUser extends ApiController
     }
 
     /**
-     * @Route("/me/bookmarks", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get all bookmarks from a user",
@@ -77,6 +74,7 @@ class GetFromUser extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/me/bookmarks", methods: ["GET"])]
     public function my_bookmarks(
         #[CurrentUser] User $currentUser
     ): Response {
@@ -89,8 +87,6 @@ class GetFromUser extends ApiController
     }
 
     /**
-     * @Route("/users/{id}/bookmarks/{limit}", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get recent bookmarks from a user",
@@ -106,6 +102,7 @@ class GetFromUser extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/users/{id}/bookmarks/{limit}", methods: ["GET"])]
     public function get_bookmarks_with_limit(string $id, int $limit): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -126,8 +123,6 @@ class GetFromUser extends ApiController
     }
 
     /**
-     * @Route("/me/bookmarks/{limit}", methods={"GET"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Get all bookmarks from a user",
@@ -143,6 +138,7 @@ class GetFromUser extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/me/bookmarks/{limit}", methods: ["GET"])]
     public function my_bookmarks_with_limit(
         int $limit,
         #[CurrentUser] User $currentUser

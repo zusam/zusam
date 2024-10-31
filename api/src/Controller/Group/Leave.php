@@ -27,8 +27,6 @@ class Leave extends ApiController
     }
 
     /**
-     * @Route("/groups/{id}/leave", methods={"POST"})
-     *
      * @OA\Response(
      *  response=200,
      *  description="Leave a group",
@@ -40,6 +38,7 @@ class Leave extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route("/groups/{id}/leave", methods: ["POST"])]
     public function index(
         string $id,
         #[CurrentUser] User $currentUser

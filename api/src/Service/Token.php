@@ -35,4 +35,12 @@ class Token
             return [];
         }
     }
+
+    public static function is_uuid(string $uuid): bool
+    {
+        // Regular expression to match a valid UUID
+        $pattern = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
+
+        return 1 === preg_match($pattern, $uuid);
+    }
 }

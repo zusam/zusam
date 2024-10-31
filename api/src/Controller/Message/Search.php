@@ -45,8 +45,6 @@ class Search extends ApiController
     }
 
     /**
-     * @Route("/messages/search", methods={"POST"})
-     *
      * @OA\Parameter(
      *  name="data",
      *  in="body",
@@ -93,6 +91,7 @@ class Search extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/messages/search', methods: ['POST'])]
     public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

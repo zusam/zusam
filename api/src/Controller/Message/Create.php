@@ -31,8 +31,6 @@ class Create extends ApiController
     }
 
     /**
-     * @Route("/messages", methods={"POST"})
-     *
      * @OA\RequestBody(
      *
      *  @OA\Schema(
@@ -62,6 +60,7 @@ class Create extends ApiController
      *
      * @Security(name="api_key")
      */
+    #[Route('/messages', methods: ['POST'])]
     public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

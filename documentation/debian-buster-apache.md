@@ -29,7 +29,7 @@ curl -Ls https://github.com/zusam/zusam/archive/refs/heads/master.tar.gz | tar x
 
 Let's copy the webapp in the public directory (you don't need to do this if you only want the api server running):
 ```
-cp app/dist/* public/
+cp -r app/dist/* public/
 ```
 
 Install the server dependencies:
@@ -49,6 +49,17 @@ Replace `/etc/apache2/sites-available/000-default.conf` with the following:
                 Require all granted
                 FallbackResource /index.html
         </Directory>
+        <Directory /srv/zusam/public/files>
+            Header set Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; sandbox"
+
+            # Disable script execution
+            Options -ExecCGI
+            php_admin_flag engine off
+
+            # Try to serve the file, or return 404 if not found
+            FallbackResource disabled
+            ErrorDocument 404 /404.html
+        </Directory>
         <Directory /srv/zusam/public/api>
                 FallbackResource /api/index.php
         </Directory>
@@ -59,6 +70,7 @@ Replace `/etc/apache2/sites-available/000-default.conf` with the following:
 ```
 
 Set `upload_max_filesize` and `post_max_size` to `2048M` in `/etc/php/8.1/apache2/php.ini`.  
+Activate the headers module with: `sudo a2enmod headers`.  
 And then restart apache with `sudo systemctl restart apache2`.
 
 Initialiaze the database (replace values with yours):
