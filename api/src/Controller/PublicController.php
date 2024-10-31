@@ -22,6 +22,10 @@ class PublicController extends ApiController
     #[Route('/public/{token}', methods: ['GET'])]
     public function public(string $token)
     {
+        if ($this->getParameter('allow.public.links') != 'true') {
+            return new JsonResponse(['error' => 'Public links are disabled'], JsonResponse::HTTP_FORBIDDEN);
+        }
+
         $token_data = Token::extract($token);
         if (empty($token_data) || empty($token_data['id']) || empty($token_data['sub'])) {
             return new JsonResponse(['message' => 'Invalid token'], JsonResponse::HTTP_BAD_REQUEST);
