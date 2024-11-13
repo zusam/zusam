@@ -10,7 +10,7 @@
     "replies_one": "{{count}} பதில்",
     "bookmark_added": "செய்தி புக்மார்க்கு செய்யப்பட்டது.",
     "next_coms": "அடுத்த கருத்துகளைப் பார்க்கவும்",
-    "ago": "{{காலம்}} முன்பு",
+    "ago": "{{duration}} முன்பு",
     "groups": "குழுக்கள்",
     "login_placeholder": "மின்னஞ்சல்",
     "password_placeholder": "கடவுச்சொல்",
