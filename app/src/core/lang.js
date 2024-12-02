@@ -1,6 +1,7 @@
 import me from "./me.js";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import api from "/src/core/api.js";
 
 import cs_CZ from "/src/lang/cs_CZ.json";
 import de_DE from "/src/lang/de_DE.json";
@@ -37,8 +38,7 @@ const lang = {
     zh_Hans: "中文",
   }, // possible dicts names to load
   getDefaultLang: () =>
-    (document.querySelector("meta[name='zusam:default-lang']") || {}).content ||
-    "en_US",
+    (api?.info?.default_lang || "en_US"),
   getCurrentLang: () => me.lang || lang.getDefaultLang(),
 };
 
