@@ -17,6 +17,12 @@ export default function GroupsDropdownNavbar() {
             {t("groups")} <FaIcon family={"solid"} icon={"caret-down"} />
           </div>
           <div class="dropdown-menu dropdown-left">
+            <Link
+              to={"/feed"}
+              class="seamless-link unselectable"
+            >
+              {`${t("feed_group")}`}
+            </Link>
             {this.props.groups.filter(e => !!e).map(e => (
               <Link
                 key={e.id}
