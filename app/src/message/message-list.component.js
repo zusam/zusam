@@ -35,6 +35,15 @@ export default class MessageList extends Component {
   }
 
   loadMessages(page) {
+    if (this.props.isFeed) {
+      http
+        .get("/api/feed?limit=30&offset=" + page * 30)
+        .then((res) => {
+          this.updateMessageList(res, page);
+        });
+      return;
+    }
+
     http
       .get(`/api/groups/${this.props.id}`)
       .then(res => {
@@ -46,24 +55,30 @@ export default class MessageList extends Component {
     http
       .get(`/api/groups/${this.props.id}/page/${page}`)
       .then(res => {
-        if (res && Array.isArray(res["messages"])) {
-          let new_loaded = Math.max(this.state.loaded, page * 30);
-          let msgList = this.state.messages;
-          // don't add already added messages
-          res["messages"].map(
-            mid => !msgList.find(msg => msg.id == mid) && msgList.push({id:mid})
-          );
-          this.setState({
-            messages: msgList,
-            totalMessages: res["totalItems"],
-            page,
-            loaded: new_loaded
-          });
-          if ((page + 1) * 30 < new_loaded) {
-            setTimeout(() => this.loadMessages(page + 1));
-          }
-        }
+        this.updateMessageList(res, page);
       });
+  }
+
+  updateMessageList(res, page){
+    if (res && Array.isArray(res["messages"])) {
+      let new_loaded = Math.max(this.state.loaded, page * 30);
+      let msgList = this.state.messages;
+      // don't add already added messages
+      res["messages"].map(
+        mid => !msgList.find(msg => msg.id == mid) && msgList.push({id:mid})
+      );
+      this.setState({
+        messages: msgList,
+        totalMessages: res["totalItems"],
+        page,
+        loaded: new_loaded
+      }, () => {
+      });
+
+      if ((page + 1) * 30 < new_loaded) {
+        setTimeout(() => this.loadMessages(page + 1));
+      }
+    }
   }
 
   onScroll() {
@@ -96,7 +111,7 @@ export default class MessageList extends Component {
   }
 
   render() {
-    if (!this.props.id) {
+    if (!this.props.id && !this.props.isFeed) {
       return;
     }
     return (
