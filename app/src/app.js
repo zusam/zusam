@@ -62,14 +62,14 @@ function App() {
   });
 
   me.fetch().then(user => {
-    if (location.pathname == "/") {
+    if (location.pathname === "/") {
       let redirect = "/login";
       if (user) {
         redirect = "/create-group";
         if (user.data?.default_group) {
-          redirect = `/groups/${user?.data["default_group"]}`;
+          redirect = user.data.default_group === "feed_group" ? "/feed" : `/groups/${user.data.default_group}`;
         } else if (user?.groups[0]) {
-          redirect = `/groups/${user?.groups[0].id}`;
+          redirect = "/feed";
         }
       }
       navigate(redirect);

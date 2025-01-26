@@ -45,9 +45,9 @@ export default function Login() {
           me.update().then(user => {
             let redirect = "/create-group";
             if (user.data?.default_group) {
-              redirect = `/groups/${user?.data["default_group"]}`;
+              redirect = user.data.default_group === "feed_group" ? "/feed" : `/groups/${user.data.default_group}`;
             } else if (user?.groups[0]) {
-              redirect = `/groups/${user?.groups[0].id}`;
+              redirect = "/feed";
             }
             navigate(redirect);
           });
