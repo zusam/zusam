@@ -49,7 +49,7 @@ class NotificationEmails extends Command
             }
 
             $data = $user->getData();
-            $notif = isset($data['notification_emails']) ? $data['notification_emails'] : '';
+            $notif = isset($data['notification_emails']) ? $data['notification_emails'] : 'immediately';
             $lastNotificationEmailCheck = $user->getLastNotificationEmailCheck();
             $now = time();
 

@@ -344,7 +344,7 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
         return $this->lastNotificationEmailCheck ?? 0;
     }
 
-    public function setLastNotificationEmailCheck(?int $lastNotificationEmailCheck):void
+    public function setLastNotificationEmailCheck(?int $lastNotificationEmailCheck): void
     {
         $this->lastNotificationEmailCheck = $lastNotificationEmailCheck ?? 0;
     }
