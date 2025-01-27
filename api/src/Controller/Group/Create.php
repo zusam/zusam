@@ -71,7 +71,7 @@ class Create extends ApiController
         $group = $this->groupService->create($requestData['name'], $currentUser);
 
         return new Response(
-            $this->serialize($group, ['read_group']),
+            $this->serialize($group, ['read_group', 'read_secret_key']),
             Response::HTTP_OK
         );
     }
