@@ -153,6 +153,17 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     private $lastActivityDate;
 
     /**
+     * @Assert\Type("integer")
+     *
+     * @Groups({"read_me"})
+     *
+     * @OA\Property(type="integer")
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private int $lastNotificationEmailCheck;
+
+    /**
      * @Groups("public")
      *
      * @OA\Property(type="string")
@@ -326,6 +337,16 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     public function setLastActivityDate(?int $lastActivityDate): void
     {
         $this->lastActivityDate = $lastActivityDate ?? 0;
+    }
+
+    public function getLastNotificationEmailCheck(): int
+    {
+        return $this->lastNotificationEmailCheck ?? 0;
+    }
+
+    public function setLastNotificationEmailCheck(?int $lastNotificationEmailCheck):void
+    {
+        $this->lastNotificationEmailCheck = $lastNotificationEmailCheck ?? 0;
     }
 
     // necessary for UserInterface

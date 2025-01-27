@@ -162,6 +162,7 @@ export default function UserSettings() {
                         value={me?.data["notification_emails"]}
                       >
                         <option value="none">{t("none")}</option>
+                        <option value="immediately">{t("immediately")}</option>
                         <option value="hourly">{t("hourly")}</option>
                         <option value="daily">{t("daily")}</option>
                         <option value="weekly">{t("weekly")}</option>
