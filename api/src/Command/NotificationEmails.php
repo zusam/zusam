@@ -52,6 +52,10 @@ class NotificationEmails extends Command
             $notif = isset($data['notification_emails']) ? $data['notification_emails'] : 'immediately';
             $lastNotificationEmailCheck = $user->getLastNotificationEmailCheck();
             $now = time();
+            if (empty($lastNotificationEmailCheck)) {
+                $user->setLastNotificationEmailCheck($now);
+                continue;
+            }
 
             // don't evaluate further if we are not in the right conditions
             $firstOfMonth1AM = strtotime('first day of this month 1:00 AM');
@@ -69,8 +73,7 @@ class NotificationEmails extends Command
 
             // Update last email sent time regardless of if email is sent, as we don't want monthly to retry all month
             // until there is an email to send. Same for weekly/daily/hourly
-
-            $user->setLastNotificationEmailCheck(time());
+            $user->setLastNotificationEmailCheck($now);
 
             $notifications = array_filter($user->getNotifications()->toArray(), function ($n) use ($lastNotificationEmailCheck) {
                 return $n->getCreatedAt() > $lastNotificationEmailCheck;
@@ -89,7 +92,6 @@ class NotificationEmails extends Command
                     }
                 }
                 if (!$input->getOption('only-list')) {
-                    $this->em->persist($user);
                     $this->mailer->sendNotificationEmail($user, $notifications);
                 }
             }
