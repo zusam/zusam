@@ -22,7 +22,7 @@ const lang = {
   possibleLang: {
     cs_CZ: "čeština",
     de_DE: "Deutsch",
-    en_US: "english",
+    en_US: "English",
     es_ES: "español",
     fr_FR: "français",
     hu_HU: "magyar nyelv",
