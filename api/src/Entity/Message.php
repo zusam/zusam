@@ -119,7 +119,7 @@ class Message extends ApiEntity
     private $tags;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Reaction", mappedBy="messages")
+     * @ORM\OneToMany(targetEntity="App\Entity\Reaction", mappedBy="message")
      *
      * @Groups({"read_message", "write_message"})
      *

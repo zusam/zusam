@@ -59,7 +59,7 @@ class Reaction extends ApiEntity
      *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="reactions")
      */
     private $author;
 
@@ -70,7 +70,7 @@ class Reaction extends ApiEntity
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Message", inversedBy="reactions")
      */
-    private $message;
+    private Message $message;
 
     public function getEntityType(): string
     {

@@ -67,8 +67,11 @@ class Create extends ApiController
 
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
-        $reaction = $this->reactionService->create($requestData['reaction'], $this->getUser(), $message);
-
-        return new JsonResponse(['created' => 'done'], Response::HTTP_CREATED);
+        $this->reactionService->create($requestData['reaction'], $this->getUser(), $message);
+        $reactions = $message->getReactions();
+        return new Response(
+            $this->serialize($reactions, ['read_reaction']),
+            Response::HTTP_OK,
+        );
     }
 }
