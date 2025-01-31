@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Service;
+
+use App\Entity\File as FileEntity;
+use App\Entity\Reaction as ReactionEntity;
+use App\Entity\Notification as NotificationEntity;
+use App\Service\Notification as NotificationService;
+use App\Service\Url as UrlService;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
+
+class Reaction
+{
+    private $em;
+
+    public function __construct(
+        EntityManagerInterface $em,
+    ) {
+        $this->em = $em;
+    }
+
+    public function create($reaction, $author, $message): ReactionEntity
+    {
+        $reactionInstance = new ReactionEntity();
+
+        $reactionInstance->setAuthor($author);
+        $reactionInstance->setMessage($message);
+        $reactionInstance->setCreatedAt(time());
+        $reactionInstance->setReaction($reaction);
+        $message->addReaction($reactionInstance);
+        $author->setLastActivityDate(time());
+
+        $this->em->persist($reactionInstance);
+        $this->em->persist($message);
+        $this->em->persist($author);
+        $this->em->flush();
+
+        return $reactionInstance;
+    }
+}
