@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { HumanTime } from "/src/pages";
 import { useStoreon } from "storeon/preact";
 import store from "/src/store";
-import MessageEmojiSelector from "./message-emojipicker.component";
 
 export default function MessageFooter(props) {
 
@@ -68,14 +67,6 @@ export default function MessageFooter(props) {
             }
           </div>
         </Fragment>
-        {!props?.isPublic && (
-          <Fragment>
-            <div class="dot">&bull;</div>
-            <div class="font-size-90">
-              <MessageEmojiSelector messageId={props?.message.id} />
-            </div>
-          </Fragment>
-        )}
       </div>
       <div>
         {!props?.isPublic && (
