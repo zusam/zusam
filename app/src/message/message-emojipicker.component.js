@@ -1,10 +1,16 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 import EmojiPicker from "emoji-picker-react";
+import { http } from "/src/core";
+
 export default function MessageEmojiSelector(props) {
   const [showPicker, setShowPicker] = useState(false);
-  const handleEmojiClick = (emoji) => {
+  const handleEmojiClick = async (emoji) => {
     setShowPicker(false);
+    http.post(`/api/messages/${props.messageId}/reactions`, {
+      reaction: emoji.emoji,
+    });
+
   };
 
   return (

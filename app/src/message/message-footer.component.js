@@ -72,7 +72,7 @@ export default function MessageFooter(props) {
           <Fragment>
             <div class="dot">&bull;</div>
             <div class="font-size-90">
-              <MessageEmojiSelector />
+              <MessageEmojiSelector messageId={props?.message.id} />
             </div>
           </Fragment>
         )}
