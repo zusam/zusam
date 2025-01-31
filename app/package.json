@@ -17,6 +17,7 @@
     "@storeon/crosstab": "^1.0.2",
     "@storeon/localstorage": "^1.5.0",
     "bootstrap": "^5.3.3",
+    "emoji-picker-react": "^4.12.0",
     "glightbox": "^3.2.0",
     "i18next": "^23.2.11",
     "idb-keyval": "^6.1.0",
