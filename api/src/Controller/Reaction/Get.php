@@ -5,6 +5,7 @@ namespace App\Controller\Reaction;
 use App\Controller\ApiController;
 use App\Entity\Message;
 use App\Entity\User;
+use App\Service\Reaction as ReactionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -18,11 +19,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Get extends ApiController
 {
+    private $reactionService;
+
     public function __construct(
         EntityManagerInterface $em,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        ReactionService $reactionService
     ) {
         parent::__construct($em, $serializer);
+        $this->reactionService = $reactionService;
     }
 
     /**
@@ -43,14 +48,14 @@ class Get extends ApiController
 
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $message = $this->em->getRepository(Message::class)->findOneById($id);
+        $message = $this->em->getRepository(Message::class)->findOneBy(['id' => $id]);
         if (empty($message)) {
             return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
         }
 
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $message->getGroup());
 
-        $reactions = $message->getReactions();
+        $reactions = $this->reactionService->getReactionSummary($message);
         return new Response(
             $this->serialize($reactions, ['read_reaction']),
             Response::HTTP_OK,

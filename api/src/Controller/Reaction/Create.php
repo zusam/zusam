@@ -55,7 +55,7 @@ class Create extends ApiController
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $requestData = json_decode($request->getcontent(), true);
-        $message = $this->em->getRepository(Message::class)->findOneById($id);
+        $message = $this->em->getRepository(Message::class)->findOneBy(['id' => $id]);
         if (empty($message)) {
             return new JsonResponse(['error' => 'Bad Request'], Response::HTTP_BAD_REQUEST);
         }
@@ -68,7 +68,7 @@ class Create extends ApiController
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
         $this->reactionService->create($requestData['reaction'], $this->getUser(), $message);
-        $reactions = $message->getReactions();
+        $reactions = $this->reactionService->getReactionSummary($message);
         return new Response(
             $this->serialize($reactions, ['read_reaction']),
             Response::HTTP_OK,

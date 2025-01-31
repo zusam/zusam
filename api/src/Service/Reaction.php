@@ -41,4 +41,8 @@ class Reaction
 
         return $reactionInstance;
     }
+
+    public function getReactionSummary($message) {
+        return $message->getReactions();
+    }
 }
