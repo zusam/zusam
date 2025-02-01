@@ -6,6 +6,7 @@ use App\Controller\ApiController;
 use App\Entity\Message;
 use App\Entity\Notification;
 use App\Entity\User;
+use App\Entity\Reaction;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -57,6 +58,11 @@ class Delete extends ApiController
         $notifications = $this->em->getRepository(Notification::class)->findByTarget($id);
         foreach ($notifications as $n) {
             $this->em->remove($n);
+        }
+
+        $reactions = $message->getReactions();
+        foreach ($reactions as $reaction) {
+            $this->em->remove($reaction);
         }
 
         $currentUser->setLastActivityDate(time());
