@@ -23,10 +23,24 @@ class Reaction
         $this->em = $em;
     }
 
-    public function create($reaction, $author, $message): ReactionEntity
+    public function create($reaction, $author, $message): ?ReactionEntity
     {
-        $reactionInstance = new ReactionEntity();
+        $existingReaction = $this->em->getRepository(ReactionEntity::class)->findOneBy([
+            'author' => $author,
+            'message' => $message,
+            'reaction' => $reaction
+        ]);
 
+        if ($existingReaction) {
+            $this->em->remove($existingReaction);
+
+            $author->setLastActivityDate(time());
+            $this->em->persist($author);
+            $this->em->flush();
+            return null;
+        }
+
+        $reactionInstance = new ReactionEntity();
         $reactionInstance->setAuthor($author);
         $reactionInstance->setMessage($message);
         $reactionInstance->setCreatedAt(time());
@@ -57,7 +71,7 @@ class Reaction
                     'emoji' => $emoji,
                     'users' => [],
                     'count' => 0,
-                    'currentUserReacted' => false
+                    'currentUserReactionId' => ''
                 ];
             }
 
@@ -65,7 +79,7 @@ class Reaction
             $summary[$emoji]['count']++;
 
             if ($author->getId() === $currentUser->getId()) {
-                $summary[$emoji]['currentUserReacted'] = true;
+                $summary[$emoji]['currentUserReactionId'] = $reaction->getId();
             }
         }
 

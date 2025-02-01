@@ -14,7 +14,7 @@ export default function MessageReactions(props) {
       emoji: reaction.emoji,
       count: reaction.count,
       users: reaction.users,
-      currentUserReacted: reaction.currentUserReacted,
+      currentUserReactionId: reaction.currentUserReactionId,
     }));
     setReactions(formattedReactions);
   };
@@ -30,32 +30,32 @@ export default function MessageReactions(props) {
     fetchReactions();
   }, [props.messageId]);
 
-  const handleReactionClick = async (emoji, currentUserReacted) => {
+  const handleReactionClick = async (currentUserReactionId) => {
     // If current user set this emoji type, click to remove it
-    if (currentUserReacted) {
-      const reactionData = await http.delete(`/api/messages/${props.messageId}/reactions/${emoji}`);
-      await loadReactions(reactionData);
+    if (currentUserReactionId) {
+      await http.delete(`/api/messages/${props.messageId}/reactions/${currentUserReactionId}`);
+      await loadReactions(await http.get(`/api/messages/${props.messageId}/reactions`));
     }
   };
 
   return (
     <div className="message-reactions" >
-      {reactions.map(({ emoji, count, users, currentUserReacted }) => (
+      {reactions.map(({ emoji, count, users, currentUserReactionId: currentUserReactionId }) => (
         <div
           key={emoji}
           className="reaction-emoji"
           style={{
-            cursor: currentUserReacted ? "pointer" : "default",
+            cursor: currentUserReactionId ? "pointer" : "default",
           }}
           onMouseEnter={() => setHoveredReaction(emoji)}
           onMouseLeave={() => setHoveredReaction(null)}
         >
           <span
             style={{
-              opacity: hoveredReaction === emoji && currentUserReacted ? 0.6 : 1,
+              opacity: hoveredReaction === emoji && currentUserReactionId ? 0.6 : 1,
               transition: "opacity 0.2s ease-in-out",
             }}
-            onClick={() => currentUserReacted && handleReactionClick(emoji, currentUserReacted)}
+            onClick={() => currentUserReactionId && handleReactionClick(currentUserReactionId)}
           >
             {emoji}
           </span>
