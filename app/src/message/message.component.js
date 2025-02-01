@@ -10,7 +10,6 @@ import { useEffect, useState, useRef, useReducer } from "preact/hooks";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useStoreon } from "storeon/preact";
-import MessageReactions from "./message-reactions.component";
 
 export default function Message(props) {
 
@@ -248,9 +247,6 @@ export default function Message(props) {
                 isPublic={props?.isPublic}
                 isChild={props?.isChild}
               />
-              {message && !props.isPublic && (
-                <MessageReactions messageId={message.id} />
-              )}
               <MessageFooter
                 author={author}
                 message={message}
