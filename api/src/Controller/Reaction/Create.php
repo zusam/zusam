@@ -57,6 +57,11 @@ class Create extends ApiController
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $requestData = json_decode($request->getcontent(), true);
+        $reactionString = trim(strip_tags($requestData['reaction']));
+        if (grapheme_strlen($reactionString) !== 1){
+            return new JsonResponse(['error' => 'Bad Request'], Response::HTTP_BAD_REQUEST);
+        }
+
         $message = $this->em->getRepository(Message::class)->findOneBy(['id' => $id]);
         if (empty($message)) {
             return new JsonResponse(['error' => 'Bad Request'], Response::HTTP_BAD_REQUEST);
