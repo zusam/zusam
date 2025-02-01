@@ -49,6 +49,10 @@ class Get extends ApiController
 
         $this->denyAccessUnlessGranted('ROLE_USER');
 
+        if ($this->getParameter('allow.message.reactions') === "false") {
+            return new JsonResponse(['error' => 'Reactions are currently disabled.'], Response::HTTP_FORBIDDEN);
+        }
+
         $message = $this->em->getRepository(Message::class)->findOneBy(['id' => $id]);
         if (empty($message)) {
             return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
