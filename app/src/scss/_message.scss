@@ -418,6 +418,47 @@
   }
 }
 
+.message-reactions {
+  display: flex;
+  gap: 8px;
+  margin-top: 5px;
+  margin-left: 5px;
+
+  .reaction-emoji {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+  }
+
+  .reaction-count {
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  .reaction-tooltip {
+    position: absolute;
+    background: #333;
+    color: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .reaction-button {
+    margin-top: 5px;
+  }
+}
+
 .more-coms {
   margin: 1rem auto;
   font-size: 85%;

@@ -1,24 +1,22 @@
-import {Fragment, h} from "preact";
+import { Fragment, h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { http } from "/src/core";
 import MessageEmojiSelector from "./message-emojiselector.component";
 
 export default function MessageReactions(props) {
   const [reactions, setReactions] = useState([]);
+  const [hoveredReaction, setHoveredReaction] = useState(null);
 
-  const loadReactions = (reactionData) => {
+  const MAX_VISIBLE_USERS = 5;
 
-    const groupedReactions = reactionData.reduce((acc, reaction) => {
-      const emoji = reaction.reaction;
-      if (acc[emoji]) {
-        acc[emoji].count += 1;
-      } else {
-        acc[emoji] = { emoji, count: 1 };
-      }
-      return acc;
-    }, {});
-
-    setReactions(Object.values(groupedReactions));
+  const loadReactions = async (reactionData) => {
+    const formattedReactions = Object.values(reactionData).map(reaction => ({
+      emoji: reaction.emoji,
+      count: reaction.count,
+      users: reaction.users,
+      currentUserReacted: reaction.currentUserReacted,
+    }));
+    setReactions(formattedReactions);
   };
 
   useEffect(() => {
@@ -26,22 +24,61 @@ export default function MessageReactions(props) {
 
     const fetchReactions = async () => {
       const reactionData = await http.get(`/api/messages/${props.messageId}/reactions`);
-      loadReactions(reactionData);
+      await loadReactions(reactionData);
     };
 
     fetchReactions();
   }, [props.messageId]);
 
+  const handleReactionClick = async (emoji, currentUserReacted) => {
+    // If current user set this emoji type, click to remove it
+    if (currentUserReacted) {
+      const reactionData = await http.delete(`/api/messages/${props.messageId}/reactions/${emoji}`);
+      await loadReactions(reactionData);
+    }
+  };
+
   return (
-    <div style={{ display: "flex", gap: "8px", marginTop: "5px", marginLeft: "5px" }}>
-      {reactions.map(({ emoji, count }) => (
-        <div key={emoji} style={{ fontSize: "1.2rem", display: "flex", alignItems: "center", gap: "4px" }}>
-          <span>{emoji}</span>
-          <span style={{ fontSize: "0.8rem", color: "#666" }}>{count}</span>
+    <div className="message-reactions" >
+      {reactions.map(({ emoji, count, users, currentUserReacted }) => (
+        <div
+          key={emoji}
+          className="reaction-emoji"
+          style={{
+            cursor: currentUserReacted ? "pointer" : "default",
+          }}
+          onMouseEnter={() => setHoveredReaction(emoji)}
+          onMouseLeave={() => setHoveredReaction(null)}
+        >
+          <span
+            style={{
+              opacity: hoveredReaction === emoji && currentUserReacted ? 0.6 : 1,
+              transition: "opacity 0.2s ease-in-out",
+            }}
+            onClick={() => currentUserReacted && handleReactionClick(emoji, currentUserReacted)}
+          >
+            {emoji}
+          </span>
+          <span className="reaction-count" >{count}</span>
+
+          {hoveredReaction === emoji && (
+            <div className="reaction-tooltip" >
+              {users.slice(0, MAX_VISIBLE_USERS).map(user => (
+                <div>{user}</div>
+              ))}
+
+              {users.length > MAX_VISIBLE_USERS && (
+                <div>
+                  +{users.length - MAX_VISIBLE_USERS} more
+                </div>
+              )}
+            </div>
+          )}
         </div>
       ))}
+
       <Fragment>
-        <div class="font-size-90"  style={{ marginTop: "5px" }}>
+        <div class="font-size-90" className="reaction-button">
           <MessageEmojiSelector messageId={props?.messageId} updateReactions={loadReactions} />
         </div>
       </Fragment>

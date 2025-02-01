@@ -5,6 +5,7 @@ namespace App\Controller\Reaction;
 use App\Controller\ApiController;
 use App\Entity\Group;
 use App\Entity\Message;
+use App\Entity\User;
 use App\Service\Reaction as ReactionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class Create extends ApiController
@@ -50,7 +52,7 @@ class Create extends ApiController
      * @Security(name="api_key")
      */
         #[Route('/messages/{id}/reactions', methods: ['POST'])]
-        public function index($id, Request $request): Response
+        public function index($id, Request $request, #[CurrentUser] User $currentUser): Response
         {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -68,10 +70,11 @@ class Create extends ApiController
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
         $this->reactionService->create($requestData['reaction'], $this->getUser(), $message);
-        $reactions = $this->reactionService->getReactionSummary($message);
+        $reactions = $this->reactionService->getReactionSummary($message, $currentUser);
         return new Response(
-            $this->serialize($reactions, ['read_reaction']),
+            json_encode($reactions),
             Response::HTTP_OK,
+            ['Content-Type' => 'application/json']
         );
     }
 }

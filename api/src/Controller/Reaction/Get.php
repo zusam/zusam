@@ -14,6 +14,7 @@ use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -43,7 +44,7 @@ class Get extends ApiController
      * @Security(name="api_key")
      */
     #[Route('/messages/{id}/reactions', methods: ['GET'])]
-    public function index(string $id): Response
+    public function index(string $id, #[CurrentUser] User $currentUser): Response
     {
 
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -55,10 +56,11 @@ class Get extends ApiController
 
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $message->getGroup());
 
-        $reactions = $this->reactionService->getReactionSummary($message);
+        $reactions = $this->reactionService->getReactionSummary($message, $currentUser);
         return new Response(
-            $this->serialize($reactions, ['read_reaction']),
+            json_encode($reactions),
             Response::HTTP_OK,
+            ['Content-Type' => 'application/json']
         );
     }
 }

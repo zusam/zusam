@@ -42,7 +42,33 @@ class Reaction
         return $reactionInstance;
     }
 
-    public function getReactionSummary($message) {
-        return $message->getReactions();
+    public function getReactionSummary($message, $currentUser)
+    {
+
+        $reactions = $message->getReactions();
+        $summary = [];
+
+        foreach ($reactions as $reaction) {
+            $emoji = $reaction->getReaction();
+            $author = $reaction->getAuthor();
+
+            if (!isset($summary[$emoji])) {
+                $summary[$emoji] = [
+                    'emoji' => $emoji,
+                    'users' => [],
+                    'count' => 0,
+                    'currentUserReacted' => false
+                ];
+            }
+
+            $summary[$emoji]['users'][] = $author->getName();
+            $summary[$emoji]['count']++;
+
+            if ($author->getId() === $currentUser->getId()) {
+                $summary[$emoji]['currentUserReacted'] = true;
+            }
+        }
+
+        return array_values($summary);
     }
 }
