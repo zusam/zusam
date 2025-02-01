@@ -40,6 +40,7 @@ export default function MessageEmojiSelector(props) {
             emojiStyle="native"
             reactionsDefaultOpen={true}
             previewConfig={{defaultEmoji: "26aa", defaultCaption: "", showPreview: true}}
+            reactions={["1f44d", "2764-fe0f", "1f923", "1f622", "1f44e", "1f621"]}
           />
         </div>
       )}
