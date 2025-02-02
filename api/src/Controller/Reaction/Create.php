@@ -56,7 +56,7 @@ class Create extends ApiController
         {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        if ($this->getParameter('allow.message.reactions') === "false") {
+        if ($this->getParameter('allow.message.reactions') !== "true") {
             return new JsonResponse(['error' => 'Reactions are currently disabled.'], Response::HTTP_FORBIDDEN);
         }
 
