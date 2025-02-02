@@ -2,10 +2,12 @@ import { h } from "preact";
 import { useState, useEffect, useRef } from "preact/hooks";
 import EmojiPicker from "emoji-picker-react";
 import { http } from "/src/core";
+import {useTranslation} from "react-i18next";
 
 export default function MessageEmojiSelector(props) {
   const [showPicker, setShowPicker] = useState(false);
   const pickerRef = useRef(null);
+  const { t } = useTranslation();
 
   const handleEmojiClick = async (emoji) => {
     setShowPicker(false);
@@ -32,7 +34,7 @@ export default function MessageEmojiSelector(props) {
 
   return (
     <div ref={pickerRef} >
-      <div style={{cursor: "pointer"}} onClick={() => setShowPicker(!showPicker)}>➕ React</div>
+      <div style={{cursor: "pointer"}} onClick={() => setShowPicker(!showPicker)}>➕ {t("react")}</div>
       {showPicker && (
         <div style={{position: "absolute", zIndex: 1000}}>
           <EmojiPicker
