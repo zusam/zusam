@@ -2,16 +2,8 @@
 
 namespace App\Service;
 
-use App\Entity\File as FileEntity;
 use App\Entity\Reaction as ReactionEntity;
-use App\Entity\Notification as NotificationEntity;
-use App\Service\Notification as NotificationService;
-use App\Service\Url as UrlService;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class Reaction
 {
@@ -23,12 +15,12 @@ class Reaction
         $this->em = $em;
     }
 
-    public function create($reaction, $author, $message): ?ReactionEntity
+    public function create($reactionValue, $author, $message): ?ReactionEntity
     {
         $existingReaction = $this->em->getRepository(ReactionEntity::class)->findOneBy([
             'author' => $author,
             'message' => $message,
-            'reaction' => $reaction
+            'value' => $reactionValue
         ]);
 
         if ($existingReaction) {
@@ -44,7 +36,7 @@ class Reaction
         $reactionInstance->setAuthor($author);
         $reactionInstance->setMessage($message);
         $reactionInstance->setCreatedAt(time());
-        $reactionInstance->setValue($reaction);
+        $reactionInstance->setValue($reactionValue);
         $message->addReaction($reactionInstance);
         $author->setLastActivityDate(time());
 
