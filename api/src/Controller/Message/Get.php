@@ -5,6 +5,7 @@ namespace App\Controller\Message;
 use App\Controller\ApiController;
 use App\Entity\Message;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -48,7 +49,12 @@ class Get extends ApiController
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $message->getGroup());
         $message_norm = $this->normalize($message, ['read_message']);
         $message_norm['preview'] = $this->normalize($message->getPreview(), ['read_message']);
-        $message_norm['author'] = $this->normalize($message->getAuthor(), ['read_message_preview']);
+
+        try {
+            $message_norm['author'] = $this->normalize($message->getAuthor(), ['read_message_preview']);
+        } catch (EntityNotFoundException $e) {
+            $message_norm['author'] = null;
+        }
 
         $lineage = [];
         $parent = $message->getParent();
