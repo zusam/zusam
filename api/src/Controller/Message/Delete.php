@@ -60,11 +60,6 @@ class Delete extends ApiController
             $this->em->remove($n);
         }
 
-        $reactions = $message->getReactions();
-        foreach ($reactions as $reaction) {
-            $this->em->remove($reaction);
-        }
-
         $currentUser->setLastActivityDate(time());
         $this->em->persist($currentUser);
 
