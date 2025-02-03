@@ -70,7 +70,8 @@ class Get extends ApiController
                 $notification_data_output['miniature'] = $this->normalize($notification->getFromUser()->getAvatar(), ['read_notification']);
             } catch (EntityNotFoundException $e) {
                 $notification_data_output['miniature'] = null;
-            }        }
+            }
+        }
 
         return new JsonResponse($notification_data_output, Response::HTTP_OK);
     }

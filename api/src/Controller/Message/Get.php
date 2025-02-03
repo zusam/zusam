@@ -49,7 +49,7 @@ class Get extends ApiController
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $message->getGroup());
         $message_norm = $this->normalize($message, ['read_message']);
         $message_norm['preview'] = $this->normalize($message->getPreview(), ['read_message']);
-        
+
         try {
             $message_norm['author'] = $this->normalize($message->getAuthor(), ['read_message_preview']);
         } catch (EntityNotFoundException $e) {
