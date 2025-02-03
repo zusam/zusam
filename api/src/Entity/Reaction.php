@@ -52,7 +52,7 @@ class Reaction extends ApiEntity
      *
      * @ORM\Column(type="string")
      */
-    private $reaction;
+    private $value;
 
     /**
      * @Groups("public")
@@ -108,18 +108,18 @@ class Reaction extends ApiEntity
         $this->author = $author;
     }
 
-    public function getReaction(): string
+    public function getValue(): string
     {
-        if (null === $this->reaction) {
+        if (null === $this->value) {
             return "";
         } else {
-            return $this->reaction;
+            return $this->value;
         }
     }
 
-    public function setReaction(string $reaction): void
+    public function setValue(string $value): void
     {
-        $this->reaction = $reaction;
+        $this->value = $value;
     }
 
     public function getMessage(): Message

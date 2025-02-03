@@ -44,7 +44,7 @@ class Reaction
         $reactionInstance->setAuthor($author);
         $reactionInstance->setMessage($message);
         $reactionInstance->setCreatedAt(time());
-        $reactionInstance->setReaction($reaction);
+        $reactionInstance->setValue($reaction);
         $message->addReaction($reactionInstance);
         $author->setLastActivityDate(time());
 
@@ -63,7 +63,7 @@ class Reaction
         $summary = [];
 
         foreach ($reactions as $reaction) {
-            $emoji = $reaction->getReaction();
+            $emoji = $reaction->getValue();
             $author = $reaction->getAuthor();
 
             if (!isset($summary[$emoji])) {
