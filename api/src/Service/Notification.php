@@ -73,11 +73,12 @@ class Notification
                 return '';
             }
             $author = $message->getAuthor();
+            $name = $author->getName();
         } catch (\Exception $e) {
             return '';
         }
 
-        return $author->getName();
+        return $name;
     }
 
     public function create($type, $target, $owner, $fromUser = null, $fromGroup = null, $fromMessage = null)
