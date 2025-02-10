@@ -5,6 +5,7 @@ import { GroupsDropdownNavbar, NotificationsDropdownNavbar } from "/src/navbar";
 import { Link } from "react-router-dom";
 import { useStoreon } from "storeon/preact";
 import { useTranslation } from "react-i18next";
+import { FaIcon } from "/src/misc";
 
 export default function Navbar() {
 
@@ -56,6 +57,18 @@ export default function Navbar() {
           </div>
         </div>
         <NotificationsDropdownNavbar />
+
+        <div class={`nav-link feed-button unselectable ${router.route === "feed" ? "feed-active" : ""}`}>
+          <Link
+            to={"/feed"}
+            class="seamless-link unselectable"
+          >
+            <FaIcon
+              family={"regular"}
+              icon={"house"}
+            />
+          </Link>
+        </div>
       </div>
       { ["messages", "groups"].includes(router.route) && (
         <Search />
