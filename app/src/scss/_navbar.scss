@@ -90,6 +90,7 @@
 
     .feed-active {
         background-color: color.adjust($zusam-color, $hue: 5deg);
+        border-bottom: 0.35rem solid color.adjust($zusam-color, $hue: 15%);
     }
 }
 

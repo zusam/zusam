@@ -58,21 +58,20 @@ export default function Navbar() {
         </div>
         <NotificationsDropdownNavbar />
 
-        <div class={`nav-link feed-button unselectable ${router.route === "feed" ? "feed-active" : ""}`}>
-          <Link
-            to={"/feed"}
-            class="seamless-link unselectable"
-          >
-            <FaIcon
-              family={"regular"}
-              icon={"house"}
-            />
-          </Link>
-        </div>
+        <Link
+          to={"/feed"}
+          class={`seamless-link nav-link feed-button unselectable ${router.route === "feed" ? "feed-active" : ""}`}
+        >
+          <FaIcon
+            family={"regular"}
+            icon={"house"}
+          />
+        </Link>
       </div>
-      { ["messages", "groups"].includes(router.route) && (
-        <Search />
-      )}
+      {
+        ["messages", "groups"].includes(router.route) && (
+          <Search/>
+        )}
       <div class="navbar-block">
         <GroupsDropdownNavbar groups={me.groups} />
       </div>
