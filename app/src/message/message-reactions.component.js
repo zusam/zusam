@@ -7,7 +7,7 @@ export default function MessageReactions(props) {
   const [reactions, setReactions] = useState([]);
   const [hoveredReaction, setHoveredReaction] = useState(null);
 
-  const MAX_VISIBLE_USERS = 5;
+  const MAX_VISIBLE_USERS = 10;
 
   const loadReactions = async (reactionData) => {
     const formattedReactions = Object.values(reactionData).map(reaction => ({
@@ -39,7 +39,7 @@ export default function MessageReactions(props) {
   };
 
   return (
-    <div className="message-reactions" >
+    <a className="d-flex action seamless-link font-size-90 capitalize" >
       {reactions.map(({ emoji, count, users, currentUserReactionId: currentUserReactionId }) => (
         <div
           key={emoji}
@@ -47,6 +47,7 @@ export default function MessageReactions(props) {
           style={{
             cursor: currentUserReactionId ? "pointer" : "default",
           }}
+          title={users.slice(0, MAX_VISIBLE_USERS).join("\n") + (users.length > MAX_VISIBLE_USERS ? `\nand ${users.length - MAX_VISIBLE_USERS} more...` : "")}
           onMouseEnter={() => setHoveredReaction(emoji)}
           onMouseLeave={() => setHoveredReaction(null)}
         >
@@ -60,28 +61,17 @@ export default function MessageReactions(props) {
             {emoji}
           </span>
           <span className="reaction-count" >{count}</span>
-
-          {hoveredReaction === emoji && (
-            <div className="reaction-tooltip" >
-              {users.slice(0, MAX_VISIBLE_USERS).map(user => (
-                <div>{user}</div>
-              ))}
-
-              {users.length > MAX_VISIBLE_USERS && (
-                <div>
-                  +{users.length - MAX_VISIBLE_USERS} more
-                </div>
-              )}
-            </div>
-          )}
         </div>
       ))}
+      {reactions.length > 0 && (
+        <div class="dot d-none d-sm-block">&bull;</div>
+      )}
 
       <Fragment>
         <div class="font-size-90" className="reaction-button">
           <MessageEmojiSelector messageId={props?.messageId} updateReactions={loadReactions} />
         </div>
       </Fragment>
-    </div>
+    </a>
   );
 }

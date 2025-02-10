@@ -2,7 +2,6 @@ import { h } from "preact";
 import { http, util, api } from "/src/core";
 import { EmbedBlock, FileGrid } from "/src/embed";
 import { useEffect, useState } from "preact/hooks";
-import MessageReactions from "./message-reactions.component";
 
 export default function MessageBody(props) {
 
@@ -75,9 +74,6 @@ export default function MessageBody(props) {
       )}
       {props.files && (
         <FileGrid files={props.files} />
-      )}
-      {props.message && !props.isPublic && api?.info?.allow_message_reactions && (
-        <MessageReactions messageId={props.message.id} />
       )}
     </div>
   );

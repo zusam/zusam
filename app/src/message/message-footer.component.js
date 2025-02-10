@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { HumanTime } from "/src/pages";
 import { useStoreon } from "storeon/preact";
 import store from "/src/store";
+import MessageReactions from "./message-reactions.component";
 
 export default function MessageFooter(props) {
 
@@ -15,6 +16,12 @@ export default function MessageFooter(props) {
   return (
     <div class="message-footer">
       <div class="infos">
+        {props.message && !props.isPublic && api?.info?.allow_message_reactions && (
+          <Fragment>
+            <MessageReactions messageId={props.message.id} />
+            <div class="dot d-none d-sm-block">&bull;</div>
+          </Fragment>
+        )}
         {!props?.isPublic && props?.author && props?.author?.id === me.id && (
           <Fragment>
             <a
