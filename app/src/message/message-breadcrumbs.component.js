@@ -65,11 +65,11 @@ export default function MessageBreadcrumbs(props) {
       <div class="message-breadcrumbs">
         <nav style="--bs-breadcrumb-divider: '>';">
           <ol class="breadcrumb">
-            <li className="breadcrumb-item">
+            <li class="breadcrumb-item">
               <Link to="/feed" class="no-decoration">{`${t("feed_group")}`}</Link>
             </li>
             {group && (
-              <li className="breadcrumb-item">
+              <li class="breadcrumb-item">
                 <Link
                   key={group.id}
                   to={`/groups/${group.id}`}
@@ -81,10 +81,10 @@ export default function MessageBreadcrumbs(props) {
               <Fragment key={e}>
                 <Fragment>
                   {i == 1 && stack.length > 3 && (
-                    <li className="breadcrumb-item">...</li>
+                    <li class="breadcrumb-item">...</li>
                   )}
                 </Fragment>
-                <li className="breadcrumb-item">
+                <li class="breadcrumb-item">
                   <Link
                     key={e}
                     to={`/messages/${e}`}
