@@ -119,7 +119,7 @@ class Get extends ApiController
 
         $groupIds = $this->getUser()->getGroups()->map(fn($group) => $group->getId())->toArray();
 
-        $limit = $request->query->getInt('limit', 30);
+        $limit = min(100, $request->query->getInt('limit', 30));
         $offset = $request->query->getInt('offset', 0);
 
         // Get message IDs
