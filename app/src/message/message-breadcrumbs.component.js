@@ -2,10 +2,8 @@ import { h, Fragment } from "preact";
 import { http, util } from "/src/core";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "preact/hooks";
-import { useTranslation } from "react-i18next";
 
 export default function MessageBreadcrumbs(props) {
-  const { t } = useTranslation();
   const stack = [props.message.id, ...props.message.lineage].reverse();
   const [breadcrumbs, setBreadcrumbs] = useState([]);
   const [group, setGroup] = useState(null);
@@ -65,9 +63,6 @@ export default function MessageBreadcrumbs(props) {
       <div class="message-breadcrumbs">
         <nav style="--bs-breadcrumb-divider: '>';">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-              <Link to="/feed" class="no-decoration">{`${t("feed_group")}`}</Link>
-            </li>
             {group && (
               <li class="breadcrumb-item">
                 <Link
