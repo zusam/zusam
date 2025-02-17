@@ -19,7 +19,7 @@ export default function MessageFooter(props) {
         {props.message && !props.isPublic && api?.info?.allow_message_reactions && (
           <Fragment>
             <MessageReactions messageId={props.message.id} />
-            <div class="dot d-none d-sm-block">&bull;</div>
+            <div class="dot">&bull;</div>
           </Fragment>
         )}
         {!props?.isPublic && props?.author && props?.author?.id === me.id && (

@@ -64,7 +64,7 @@ export default function MessageReactions(props) {
         </div>
       ))}
       {reactions.length > 0 && (
-        <div class="dot d-none d-sm-block">&bull;</div>
+        <div class="dot">&bull;</div>
       )}
 
       <Fragment>
