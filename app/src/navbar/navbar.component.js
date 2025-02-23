@@ -61,6 +61,8 @@ export default function Navbar() {
         <Link
           to={"/feed"}
           class={`seamless-link nav-link feed-button unselectable ${router.route === "feed" ? "feed-active" : ""}`}
+          title={t("feed_group")}
+          aria-label={t("feed_group")}
         >
           <FaIcon
             family={"regular"}
