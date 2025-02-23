@@ -61,8 +61,9 @@ class NotificationEmails extends Command
             $firstOfMonth1AM = strtotime('first day of this month 1:00 AM');
             $lastMonday1AM = strtotime('last monday at 1:00 AM');
             $today1AM = strtotime('today 1:00 AM');
+            $thisHour = strtotime(date('Y-m-d H:00:00'));
 
-            $isHourlyDue = ('hourly' === $notif && (date('i', $now) === '00' || ($now - $lastNotificationEmailCheck) > 3600));
+            $isHourlyDue = ('hourly' === $notif && (date('i', $now) === '00' || ($lastNotificationEmailCheck) < $thisHour));
             $isMonthlyDue = ('monthly' === $notif && (date('j-G', $now) === '1-1' || $lastNotificationEmailCheck < $firstOfMonth1AM));
             $isWeeklyDue = ('weekly' === $notif && (date('N-G', $now) === '1-1' || $lastNotificationEmailCheck < $lastMonday1AM));
             $isDailyDue = ('daily' === $notif && (date('G', $now) === '1' || $lastNotificationEmailCheck < $today1AM));
