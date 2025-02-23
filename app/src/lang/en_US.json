@@ -99,5 +99,5 @@
     "audio_not_ready": "Audio is not ready yet.",
     "upload_audio": "Add an audio file.",
     "react": "React",
-    "more": "more"
+    "and_x_more": "and {{count}} more"
 }

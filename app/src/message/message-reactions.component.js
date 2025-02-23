@@ -49,7 +49,7 @@ export default function MessageReactions(props) {
           style={{
             cursor: currentUserReactionId ? "pointer" : "default",
           }}
-          title={users.slice(0, MAX_VISIBLE_USERS).join("\n") + (users.length > MAX_VISIBLE_USERS ? `\nand ${users.length - MAX_VISIBLE_USERS} ${t("more")}...` : "")}
+          title={users.slice(0, MAX_VISIBLE_USERS).join("\n") + (users.length > MAX_VISIBLE_USERS ? `\n${t("and_x_more", { count: `${users.length - MAX_VISIBLE_USERS}` })}...` : "")}
           onMouseEnter={() => setHoveredReaction(emoji)}
           onMouseLeave={() => setHoveredReaction(null)}
         >
