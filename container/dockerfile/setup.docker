@@ -3,7 +3,7 @@ RUN set -xe \\
     && adduser -D -G zusam -u $UID zusam \\
     && mkdir -p /run/nginx /zusam/data /var/tmp/nginx /var/lib/nginx \\
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget unzip \\
-    && COMPOSER_ALLOW_SUPERUSER=1 php83 /zusam/api/bin/composer install -d /zusam/api --no-dev --prefer-dist \\
+    && COMPOSER_ALLOW_SUPERUSER=1 php /zusam/api/bin/composer install -d /zusam/api --no-dev --prefer-dist \\
     && rm -rf /zusam/data/data.db \\
     && apk del .build-deps \\
     && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public /var/tmp/nginx
