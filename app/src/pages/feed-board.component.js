@@ -1,6 +1,8 @@
 import { h } from "preact";
+import { FaIcon } from "/src/misc";
 import { Navbar } from "/src/navbar";
 import { MessageList } from "/src/message";
+import { Link } from "react-router-dom";
 
 export default function FeedBoard() {
   return (
@@ -15,6 +17,12 @@ export default function FeedBoard() {
               </div>
             </article>
           </div>
+          <Link
+            class="write-button material-shadow seamless-link"
+            to={"/share"}
+          >
+            <FaIcon family={"solid"} icon={"pencil-alt"} />
+          </Link>
         </div>
       </div>
     </main>
