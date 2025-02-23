@@ -1,12 +1,8 @@
 import { h } from "preact";
 import { Navbar } from "/src/navbar";
 import { MessageList } from "/src/message";
-import {useStoreon} from "storeon/preact";
-import GroupsDropdownWrite from "/src/misc/groups-dropdown-write.component";
 
 export default function FeedBoard() {
-  const { me } = useStoreon("me");
-
   return (
     <main>
       <Navbar />
@@ -19,7 +15,6 @@ export default function FeedBoard() {
               </div>
             </article>
           </div>
-          <GroupsDropdownWrite groups={me.groups} />
         </div>
       </div>
     </main>
