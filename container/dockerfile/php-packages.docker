@@ -26,5 +26,5 @@ RUN set -xe && apk add --no-cache \\
     php84-tokenizer \\
     php84-xml \\
     php84-xmlwriter \\
-    && ln -sf /usr/bin/php83 /usr/bin/php
+    && ln -sf /usr/bin/php84 /usr/bin/php
 
