@@ -98,5 +98,6 @@
     "parent_message": "Parent message",
     "audio_not_ready": "Audio is not ready yet.",
     "upload_audio": "Add an audio file.",
-    "react": "React"
+    "react": "React",
+    "more": "more"
 }

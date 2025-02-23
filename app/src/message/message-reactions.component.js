@@ -2,10 +2,12 @@ import { Fragment, h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { http } from "/src/core";
 import MessageEmojiSelector from "./message-emojiselector.component";
+import {useTranslation} from "react-i18next";
 
 export default function MessageReactions(props) {
   const [reactions, setReactions] = useState([]);
   const [hoveredReaction, setHoveredReaction] = useState(null);
+  const { t } = useTranslation();
 
   const MAX_VISIBLE_USERS = 10;
 
@@ -47,7 +49,7 @@ export default function MessageReactions(props) {
           style={{
             cursor: currentUserReactionId ? "pointer" : "default",
           }}
-          title={users.slice(0, MAX_VISIBLE_USERS).join("\n") + (users.length > MAX_VISIBLE_USERS ? `\nand ${users.length - MAX_VISIBLE_USERS} more...` : "")}
+          title={users.slice(0, MAX_VISIBLE_USERS).join("\n") + (users.length > MAX_VISIBLE_USERS ? `\nand ${users.length - MAX_VISIBLE_USERS} ${t("more")}...` : "")}
           onMouseEnter={() => setHoveredReaction(emoji)}
           onMouseLeave={() => setHoveredReaction(null)}
         >
