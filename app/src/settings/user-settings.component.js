@@ -177,7 +177,6 @@ export default function UserSettings() {
                         class="form-control"
                         value={me?.data["default_group"]}
                       >
-                        <option key="feed" value="feed_group">{`${t("feed_group")}`}</option>
                         {me.groups?.map(e => (
                           <option key={e.id} value={e.id}>{e.name}</option>
                         ))}

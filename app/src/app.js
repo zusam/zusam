@@ -66,9 +66,7 @@ function App() {
       let redirect = "/login";
       if (user) {
         redirect = "/create-group";
-        if (user.data?.default_group) {
-          redirect = user.data.default_group === "feed_group" ? "/feed" : `/groups/${user.data.default_group}`;
-        } else if (user?.groups[0]) {
+        if (user?.groups[0]) {
           redirect = "/feed";
         }
       }
