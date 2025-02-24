@@ -49,42 +49,36 @@ class NotificationEmails extends Command
             }
 
             $data = $user->getData();
-            $notif = isset($data['notification_emails']) ? $data['notification_emails'] : '';
-
-            // don't evaluate further if we are not in the right conditions
-            if (
-                'hourly' != $notif
-                && ('monthly' != $notif || '1-1' != date('j-G')) // first of the month at 1AM
-                && ('weekly' != $notif || '1-1' != date('N-G')) // monday at 1AM
-                && ('daily' != $notif || '1' != date('G')) // 1AM
-            ) {
+            $notif = isset($data['notification_emails']) ? $data['notification_emails'] : 'immediately';
+            $lastNotificationEmailCheck = $user->getLastNotificationEmailCheck();
+            $now = time();
+            if (empty($lastNotificationEmailCheck)) {
+                $user->setLastNotificationEmailCheck($now);
                 continue;
             }
 
-            // fix a max_age for messages to be notified
-            // avoids sending multiple mails for the same message
-            switch ($notif) {
-                case 'hourly':
-                    $max_age = 60 * 60;
-                    break;
-                case 'daily':
-                    $max_age = 60 * 60 * 24;
-                    break;
-                case 'weekly':
-                    $max_age = 60 * 60 * 24 * 7;
-                    break;
-                case 'monthly':
-                    $max_age = 60 * 60 * 24 * 7 * 30;
-                    break;
-                default:
-                    $max_age = 0;
+            // don't evaluate further if we are not in the right conditions
+            $firstOfMonth1AM = strtotime('first day of this month 1:00 AM');
+            $lastMonday1AM = strtotime('last monday at 1:00 AM');
+            $today1AM = strtotime('today 1:00 AM');
+            $thisHour = strtotime(date('Y-m-d H:00:00'));
+
+            $isHourlyDue = ('hourly' === $notif && (date('i', $now) === '00' || ($lastNotificationEmailCheck) < $thisHour));
+            $isMonthlyDue = ('monthly' === $notif && (date('j-G', $now) === '1-1' || $lastNotificationEmailCheck < $firstOfMonth1AM));
+            $isWeeklyDue = ('weekly' === $notif && (date('N-G', $now) === '1-1' || $lastNotificationEmailCheck < $lastMonday1AM));
+            $isDailyDue = ('daily' === $notif && (date('G', $now) === '1' || $lastNotificationEmailCheck < $today1AM));
+
+            if ('immediately' !== $notif && !$isHourlyDue && !$isMonthlyDue && !$isWeeklyDue && !$isDailyDue) {
+                continue;
             }
 
-            // only get recent enough notifications
-            $notifications = array_filter($user->getNotifications()->toArray(), function ($n) use ($max_age) {
-                return time() - $n->getCreatedAt() < $max_age;
-            });
+            // Update last email sent time regardless of if email is sent, as we don't want monthly to retry all month
+            // until there is an email to send. Same for weekly/daily/hourly
+            $user->setLastNotificationEmailCheck($now);
 
+            $notifications = array_filter($user->getNotifications()->toArray(), function ($n) use ($lastNotificationEmailCheck) {
+                return $n->getCreatedAt() > $lastNotificationEmailCheck;
+            });
             if (count($notifications) > 0) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
                     $output->writeln([
@@ -101,10 +95,9 @@ class NotificationEmails extends Command
                 if (!$input->getOption('only-list')) {
                     $this->mailer->sendNotificationEmail($user, $notifications);
                 }
-                break;
             }
         }
-
+        $this->em->flush();
         return 0;
     }
 }

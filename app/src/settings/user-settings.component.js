@@ -159,9 +159,10 @@ export default function UserSettings() {
                       <select
                         name="notification_emails"
                         class="form-control"
-                        value={me?.data["notification_emails"]}
+                        value={me?.data["notification_emails"] || "immediately"}
                       >
                         <option value="none">{t("none")}</option>
+                        <option value="immediately">{t("immediately")}</option>
                         <option value="hourly">{t("hourly")}</option>
                         <option value="daily">{t("daily")}</option>
                         <option value="weekly">{t("weekly")}</option>

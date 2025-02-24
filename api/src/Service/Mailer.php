@@ -75,7 +75,7 @@ class Mailer
             ->to($user->getLogin())
             ->text(
                 $this->twig->render(
-                    "notification-email.$lang.txt.twig",
+                    $this->getTemplatePath("notification-email", $lang),
                     [
                         'base_url' => $this->url->getBaseUrl(),
                         'notifications' => $notifications,
@@ -110,7 +110,7 @@ class Mailer
             ->to($user->getLogin())
             ->text(
                 $this->twig->render(
-                    "password-reset-mail.$lang.txt.twig",
+                    $this->getTemplatePath("password-reset-mail", $lang),
                     [
                         'name' => ucfirst($user->getName()),
                         'url' => $this->url->getBaseUrl()
@@ -124,5 +124,15 @@ class Mailer
         ;
 
         return $this->sendMail($email);
+    }
+
+    private function getTemplatePath(string $template, string $lang): string
+    {
+        $templatePath = "$template.$lang.txt.twig";
+        $defaultTemplatePath = "$template.en_US.txt.twig";
+        if ($this->twig->getLoader()->exists($templatePath)) {
+            return $templatePath;
+        }
+        return $defaultTemplatePath;
     }
 }
