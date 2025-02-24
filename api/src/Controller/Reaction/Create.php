@@ -51,9 +51,9 @@ class Create extends ApiController
      *
      * @Security(name="api_key")
      */
-        #[Route('/messages/{id}/reactions', methods: ['POST'])]
-        public function index($id, Request $request, #[CurrentUser] User $currentUser): Response
-        {
+    #[Route('/messages/{id}/reactions', methods: ['POST'])]
+    public function index($id, Request $request, #[CurrentUser] User $currentUser): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         if ($this->getParameter('allow.message.reactions') !== "true") {
@@ -62,7 +62,7 @@ class Create extends ApiController
 
         $requestData = json_decode($request->getcontent(), true);
         $reactionString = trim(strip_tags($requestData['reaction']));
-        if (grapheme_strlen($reactionString) !== 1){
+        if (grapheme_strlen($reactionString) !== 1) {
             return new JsonResponse(['error' => 'Bad Request'], Response::HTTP_BAD_REQUEST);
         }
 
@@ -81,7 +81,7 @@ class Create extends ApiController
         $currentUser->setLastActivityDate(time());
         $this->em->persist($currentUser);
         $this->em->flush();
-        
+
         $this->reactionService->create($requestData['reaction'], $this->getUser(), $message);
         $reactions = $this->reactionService->getReactionSummary($message, $currentUser);
         return new Response(

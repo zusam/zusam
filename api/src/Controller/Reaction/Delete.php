@@ -45,8 +45,8 @@ class Delete extends ApiController
     public function index(
         string $id,
         string $reactionId,
-        #[CurrentUser] User $currentUser): Response
-    {
+        #[CurrentUser] User $currentUser
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         if ($this->getParameter('allow.message.reactions') !== "true") {
