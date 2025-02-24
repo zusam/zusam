@@ -4,6 +4,7 @@ namespace App\Controller\Message;
 
 use App\Controller\ApiController;
 use App\Entity\Message;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -116,8 +117,12 @@ class Get extends ApiController
     public function feed(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
-
-        $groupIds = $this->getUser()->getGroups()->map(fn ($group) => $group->getId())->toArray();
+        $user = $this->getUser();
+        if ($user instanceof User) {
+            $groupIds = $user->getGroups()->map(fn($group) => $group->getId())->toArray();
+        } else {
+            return new JsonResponse(['error' => 'Bad Request'], Response::HTTP_BAD_REQUEST);
+        }
 
         $limit = min(100, $request->query->getInt('limit', 30));
         $offset = $request->query->getInt('offset', 0);
