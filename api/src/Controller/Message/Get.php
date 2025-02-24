@@ -117,7 +117,7 @@ class Get extends ApiController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $groupIds = $this->getUser()->getGroups()->map(fn($group) => $group->getId())->toArray();
+        $groupIds = $this->getUser()->getGroups()->map(fn ($group) => $group->getId())->toArray();
 
         $limit = min(100, $request->query->getInt('limit', 30));
         $offset = $request->query->getInt('offset', 0);
@@ -136,7 +136,7 @@ class Get extends ApiController
             ->getQuery()
             ->getResult();
 
-        $messageIdsArray = array_map(fn($message) => $message['id'], $messageIds);
+        $messageIdsArray = array_map(fn ($message) => $message['id'], $messageIds);
 
         // Count total messages user can access
         $totalItems = $this->em->getRepository(Message::class)
