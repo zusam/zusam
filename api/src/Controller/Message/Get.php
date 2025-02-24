@@ -119,7 +119,7 @@ class Get extends ApiController
         $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
         if ($user instanceof User) {
-            $groupIds = $user->getGroups()->map(fn($group) => $group->getId())->toArray();
+            $groupIds = $user->getGroups()->map(fn ($group) => $group->getId())->toArray();
         } else {
             return new JsonResponse(['error' => 'Bad Request'], Response::HTTP_BAD_REQUEST);
         }
