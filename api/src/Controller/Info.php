@@ -46,6 +46,7 @@ class Info extends ApiController
           'default_lang' => $this->getParameter('lang'),
           'allow_email' => 'true' == $this->getParameter('allow.email'),
           'allow_public_links' => 'true' == $this->getParameter('allow.public.links'),
+          'allow_message_reactions' => 'true' == $this->getParameter('allow.message.reactions'),
           'show' => [
             'group_invitation_links' => 'true' == $this->getParameter('show.group.invitation.links'),
           ]

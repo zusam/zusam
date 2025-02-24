@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { http, util } from "/src/core";
+import { http, util, api } from "/src/core";
 import { EmbedBlock, FileGrid } from "/src/embed";
 import { useEffect, useState } from "preact/hooks";
 

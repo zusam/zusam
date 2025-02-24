@@ -93,6 +93,13 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     private $messages;
 
     /**
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Reaction"))
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Reaction", mappedBy="author")
+     */
+    private Collection $reactions;
+
+    /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Bookmark"))
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="user")
@@ -181,6 +188,7 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
         $this->groups = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
+        $this->reactions = new ArrayCollection();
         $this->createdAt = time();
         $this->secretKey = Uuid::uuidv4();
         $this->data = [];
