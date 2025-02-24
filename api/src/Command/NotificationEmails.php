@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Message;
 use App\Entity\User;
 use App\Service\Mailer;
+use App\Service\Notification as NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -17,16 +18,19 @@ class NotificationEmails extends Command
     private $em;
     private $mailer;
     private $logger;
+    private $notificationService;
 
     public function __construct(
         LoggerInterface $logger,
         EntityManagerInterface $em,
-        Mailer $mailer
+        Mailer $mailer,
+        NotificationService $notificationService
     ) {
         parent::__construct();
         $this->em = $em;
         $this->mailer = $mailer;
         $this->logger = $logger;
+        $this->notificationService = $notificationService;
     }
 
     protected function configure()
@@ -72,13 +76,22 @@ class NotificationEmails extends Command
                 continue;
             }
 
+            $notifications = array_filter($user->getNotifications()->toArray(), function ($n) use ($lastNotificationEmailCheck, $now) {
+                return $n->getCreatedAt() > $lastNotificationEmailCheck;
+            });
+
+            $notificationService = $this->notificationService;
+            $notificationData = array_map(function ($notification) use ($notificationService) {
+                return [
+                    'notification' => $notification,
+                    'title' => $notificationService->getTitle($notification),
+                ];
+            }, $notifications);
+
             // Update last email sent time regardless of if email is sent, as we don't want monthly to retry all month
             // until there is an email to send. Same for weekly/daily/hourly
             $user->setLastNotificationEmailCheck($now);
 
-            $notifications = array_filter($user->getNotifications()->toArray(), function ($n) use ($lastNotificationEmailCheck) {
-                return $n->getCreatedAt() > $lastNotificationEmailCheck;
-            });
             if (count($notifications) > 0) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
                     $output->writeln([
@@ -93,7 +106,7 @@ class NotificationEmails extends Command
                     }
                 }
                 if (!$input->getOption('only-list')) {
-                    $this->mailer->sendNotificationEmail($user, $notifications);
+                    $this->mailer->sendNotificationEmail($user, $notificationData);
                 }
             }
         }
