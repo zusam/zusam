@@ -12,6 +12,7 @@ parameters:
   allow.upload.pdf: '%env(resolve:ALLOW_PDF_UPLOAD)%'
   allow.upload.audio: '%env(resolve:ALLOW_AUDIO_UPLOAD)%'
   allow.public.links: '%env(resolve:ALLOW_PUBLIC_LINKS)%'
+  allow.message.reactions: '%env(resolve:ALLOW_MESSAGE_REACTIONS)%'
   show.group.invitation.links: '%env(resolve:SHOW_GROUP_INVITATION_LINKS)%'
   idle_hours: '%env(resolve:IDLE_HOURS)%'
   video_conversion_threads: '%env(resolve:VIDEO_CONVERSION_THREADS)%'

@@ -119,6 +119,15 @@ class Message extends ApiEntity
     private $tags;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Reaction", mappedBy="message", cascade={"remove"}, orphanRemoval=true)
+     *
+     * @Groups({"read_message", "write_message"})
+     *
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Reaction"))
+     */
+    private Collection $reactions;
+
+    /**
      * @Assert\NotNull()
      *
      * @Assert\Type("integer")
@@ -198,6 +207,7 @@ class Message extends ApiEntity
         $this->children = new ArrayCollection();
         $this->files = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->reactions = new ArrayCollection();
         $this->createdAt = time();
         $this->lastActivityDate = time();
         $this->secretKey = Uuid::uuidv4();
@@ -315,6 +325,26 @@ class Message extends ApiEntity
     public function removeTag(Tag $tag): void
     {
         $this->tags->removeElement($tag);
+    }
+
+    public function getReactions()
+    {
+        return $this->reactions;
+    }
+
+    public function setReactions(Collection $reactions): void
+    {
+        $this->reactions = $reactions;
+    }
+
+    public function addReaction(Reaction $reaction): void
+    {
+        $this->reactions[] = $reaction;
+    }
+
+    public function removeReaction(Tag $reaction): void
+    {
+        $this->reactions->removeElement($reaction);
     }
 
     public function getLastActivityDate(): int
