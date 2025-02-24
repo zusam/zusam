@@ -49,7 +49,7 @@ class Cron extends Command
             ],
             [
                 'name' => 'zusam:notification:emails',
-                'period' => intval($this->params->get('cron.notification.emails')),
+                'period' => intval($this->params->get('cron.notification.emails.throttling')),
                 'type' => 'light',
                 'options' => [
                     '--log-send' => true,
