@@ -53,11 +53,13 @@ class NotificationEmails extends Command
             }
 
             $data = $user->getData();
-            $notif = isset($data['notification_emails']) ? $data['notification_emails'] : 'immediately';
+            $notif = $data['notification_emails'] ?? 'immediately';
             $lastNotificationEmailCheck = $user->getLastNotificationEmailCheck();
             $now = time();
+
             if (empty($lastNotificationEmailCheck)) {
                 $user->setLastNotificationEmailCheck($now);
+                $this->em->flush();
                 continue;
             }
 
@@ -76,7 +78,12 @@ class NotificationEmails extends Command
                 continue;
             }
 
-            $notifications = array_filter($user->getNotifications()->toArray(), function ($n) use ($lastNotificationEmailCheck, $now) {
+            // Update last email sent time regardless of if email is sent, as we don't want monthly to retry all month
+            // until there is an email to send. Needs to be after check for hourly/daily/etc so catch ups happen.
+            $user->setLastNotificationEmailCheck($now);
+            $this->em->flush();
+
+            $notifications = array_filter($user->getNotifications()->toArray(), function ($n) use ($lastNotificationEmailCheck) {
                 return $n->getCreatedAt() > $lastNotificationEmailCheck;
             });
 
@@ -87,10 +94,6 @@ class NotificationEmails extends Command
                     'title' => $notificationService->getTitle($notification),
                 ];
             }, $notifications);
-
-            // Update last email sent time regardless of if email is sent, as we don't want monthly to retry all month
-            // until there is an email to send. Same for weekly/daily/hourly
-            $user->setLastNotificationEmailCheck($now);
 
             if (count($notifications) > 0) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
