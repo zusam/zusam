@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "preact/hooks";
 
 export default function MessageBreadcrumbs(props) {
-
   const stack = [props.message.id, ...props.message.lineage].reverse();
   const [breadcrumbs, setBreadcrumbs] = useState([]);
   const [group, setGroup] = useState(null);

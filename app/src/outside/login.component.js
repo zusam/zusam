@@ -44,10 +44,8 @@ export default function Login() {
         storage.set("apiKey", res.api_key).then(() => {
           me.update().then(user => {
             let redirect = "/create-group";
-            if (user.data?.default_group) {
-              redirect = `/groups/${user?.data["default_group"]}`;
-            } else if (user?.groups[0]) {
-              redirect = `/groups/${user?.groups[0].id}`;
+            if (user?.groups[0]) {
+              redirect = "/feed";
             }
             navigate(redirect);
           });
