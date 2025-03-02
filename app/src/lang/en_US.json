@@ -2,6 +2,7 @@
     "previous_coms": "See previous comments",
     "next_coms": "See next comments",
     "ago": "{{duration}} ago",
+    "feed_group": "My Feed",
     "groups": "Groups",
     "login_placeholder": "e-mail",
     "password_placeholder": "password",

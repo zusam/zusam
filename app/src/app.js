@@ -9,7 +9,7 @@ import {
 } from "/src/outside";
 import { MessageParent } from "/src/message";
 import { GroupWriter } from "/src/writer";
-import { CreateGroup, GroupBoard, Share, BookmarkBoard, RandomMessage } from "/src/pages";
+import { CreateGroup, GroupBoard, FeedBoard, Share, BookmarkBoard, RandomMessage } from "/src/pages";
 import { Settings } from "/src/settings";
 import { GroupSearchWrapper } from "/src/navbar";
 import {
@@ -62,14 +62,12 @@ function App() {
   });
 
   me.fetch().then(user => {
-    if (location.pathname == "/") {
+    if (location.pathname === "/") {
       let redirect = "/login";
       if (user) {
         redirect = "/create-group";
-        if (user.data?.default_group) {
-          redirect = `/groups/${user?.data["default_group"]}`;
-        } else if (user?.groups[0]) {
-          redirect = `/groups/${user?.groups[0].id}`;
+        if (user?.groups[0]) {
+          redirect = "/feed";
         }
       }
       navigate(redirect);
@@ -106,6 +104,7 @@ function App() {
       <Route path="/groups/:id/random" element={<RandomMessage />} />
       <Route path="/groups/:id/search" element={<GroupSearchWrapper />} />
       <Route path="/groups/:id/write" element={<GroupWriter />} />
+      <Route path="/feed" element={<FeedBoard />} />
       <Route path="/messages/:id" element={<MessageParent />} />
       <Route path="/messages/:id/:child_id" element={<MessageParent />} />
     </Routes>

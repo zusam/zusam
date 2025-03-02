@@ -82,6 +82,15 @@
             background-color: color.adjust($zusam-color, $hue: 5deg);
         }
     }
+
+    .feed-button {
+        color: inherit;
+        line-height: 200%;
+    }
+
+    .feed-active {
+        background-color: color.adjust($zusam-color, $hue: 5deg);
+    }
 }
 
 .navbar-block {
