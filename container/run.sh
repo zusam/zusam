@@ -23,11 +23,6 @@ if [ -f /zusam/config ]; then
     /zusam/config
 fi
 
-if [ -f /zusam/public/index.html ]; then
-  sed -i -e "s|content=\"en\"|content=\"${LANG}\"|g" \
-    /zusam/public/index.html
-fi
-
 if ! [ -f /zusam/data/config ]; then
   cp /zusam/config /zusam/data/config
 fi
