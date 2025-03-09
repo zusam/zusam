@@ -124,6 +124,8 @@ class Cron extends Command
     {
         // create context for logs
         $context = [];
+        // Set default idle hours
+        $idle_hours = [0, 24];
 
         // don't run if on a POST or an upload files request. Don't run twice in the same process
         if (!empty($_POST) || !empty($_FILES) || defined('TASK_RUNNING') || $this->running) {
@@ -152,7 +154,7 @@ class Cron extends Command
         if (!$onlyRunAlwaysTasks) {
             // if a task is running but it's old, it's probably a lockup.
             // continue but log it
-            if (!$onlyRunAlwaysTasks && isset($last_task_timestamp) && $last_task_timestamp < time() - intval($this->params->get('max_task_lock_duration'))) {
+            if (isset($last_task_timestamp) && $last_task_timestamp < time() - intval($this->params->get('max_task_lock_duration'))) {
                 $this->logger->notice('Removing old task lock');
             }
 
@@ -163,17 +165,14 @@ class Cron extends Command
                 $idle_hours = explode('-', $this->params->get('idle_hours'));
                 $idle_hours[0] = intval($idle_hours[0]);
                 $idle_hours[1] = intval($idle_hours[1]);
-            } else {
-                $idle_hours = [0, 24];
             }
         }
 
         foreach ($this->tasks as $task) {
 
             // If we are only doing "always" tasks, skip others
-            if ($onlyRunAlwaysTasks
-                && isset($task['type'])
-                && 'always' !== $task['type']) {
+            if (!isset($task['type'])
+                || $onlyRunAlwaysTasks && 'always' !== $task['type']) {
                 continue;
             }
 
