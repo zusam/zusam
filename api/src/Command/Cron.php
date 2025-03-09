@@ -171,8 +171,13 @@ class Cron extends Command
         foreach ($this->tasks as $task) {
 
             // If we are only doing "always" tasks, skip others
-            if (!isset($task['type'])
-                || $onlyRunAlwaysTasks && 'always' !== $task['type']) {
+            if (
+                !isset($task['type'])
+                || (
+                    $onlyRunAlwaysTasks
+                    && 'always' !== $task['type']
+                )
+            ) {
                 continue;
             }
 
