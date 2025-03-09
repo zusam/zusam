@@ -178,8 +178,7 @@ class Cron extends Command
 
             // if it's a heavy task and we're not in the idle hours, don't do it
             if (
-                isset($task['type'])
-                && 'heavy' == $task['type']
+                'heavy' == $task['type']
                 && (
                     (new \DateTime())->format('H') < $idle_hours[0]
                     || (new \DateTime())->format('H') > $idle_hours[1]
