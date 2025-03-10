@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New Content on Zusam</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background-color: #fff;
+            color: #333;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .post {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        .post:last-child {
+            border-bottom: none;
+        }
+        .post-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #f7a71b;
+            text-decoration: none;
+        }
+        .button {
+            background-color: #f7a71b;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .unsubscribe {
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>New Content on Zusam</h1>
+        <p>Hello {{ user.name }},</p>
+        <p>Check out the latest posts:</p>
+
+        {% for notification in notifications %}
+            {% if notification.notification.type == 'new_message' %}
+            <div class="post">
+                <a href="{{ base_url }}/messages/{{ notification.notification.target }}" class="post-title">{{ notification.title }}</a>
+            </div>
+            {% endif %}
+        {% endfor %}
+
+        <p>
+            <a href="{{ base_url }}/feed" class="button">View feed</a>
+        </p>
+        <footer>
+            <p class="unsubscribe">
+                If you no longer wish to receive these emails, you can
+                <a href="{{ base_url }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}">unsubscribe here</a>.
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
+
