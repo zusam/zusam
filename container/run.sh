@@ -7,7 +7,7 @@ set -xe
 rm -rf $(find /etc/s6.d -name 'event')
 
 crontab -r
-echo "* * * * * php83 /zusam/api/bin/console zusam:cron > /dev/stdout" | crontab -
+echo "* * * * * php /zusam/api/bin/console zusam:cron > /dev/stdout" | crontab -
 
 DATABASE_URL="sqlite:///%kernel.project_dir%/../data/${DATABASE_NAME}"
 
@@ -45,5 +45,5 @@ else
   ln -sfn /etc/nginx/nginx-root.conf /etc/nginx/nginx.conf
 fi
 
-chown -R "$UID:$GID" /zusam /etc/s6.d /etc/nginx /etc/php83 /var/lib/nginx /var/log /run/nginx
-su-exec "$UID:$GID" /bin/s6-svscan /etc/s6.d
+chown -R "$UID:$GID" /zusam /etc/s6.d /etc/nginx /etc/php84 /var/lib/nginx /var/log /run/nginx
+su-exec "$UID:$GID" /usr/bin/s6-svscan /etc/s6.d

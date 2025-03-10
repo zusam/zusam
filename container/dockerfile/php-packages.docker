@@ -26,5 +26,7 @@ RUN set -xe && apk add --no-cache \\
     php84-tokenizer \\
     php84-xml \\
     php84-xmlwriter \\
-    && ln -sf /usr/bin/php84 /usr/bin/php
+    && ln -sf /usr/bin/php84 /usr/bin/php \\
+    && ln -sf /usr/sbin/php-fpm84 /usr/sbin/php-fpm
 
+COPY container/php /etc/php84
