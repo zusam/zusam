@@ -1,2 +1,2 @@
 #!/bin/sh
-exec php-fpm83 --allow-to-run-as-root
+exec /usr/sbin/php-fpm --allow-to-run-as-root
