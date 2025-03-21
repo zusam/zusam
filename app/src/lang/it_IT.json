@@ -1,1 +1,22 @@
-{}
+{
+    "login_placeholder": "e-mail",
+    "name": "Nome",
+    "next_coms": "Vedi i prossimi commenti",
+    "settings": "Impostazioni",
+    "text_placeholder": "Scrivi qui il tuo messaggio",
+    "title_placeholder": "Titolo del messaggio (opzionale)",
+    "upload_music": "Aggiungi musica",
+    "new_password_placeholder": "nuova password",
+    "add_date": "Aggiungi una data",
+    "password_placeholder": "password",
+    "previous_coms": "Vedi i commenti precedenti",
+    "confirm_password_placeholder": "conferma la password",
+    "submit": "Invia",
+    "upload_pdf": "Aggiungi PDF",
+    "ago": "{{duration}} fa",
+    "groups": "Gruppi",
+    "connect": "Connessione",
+    "upload_image": "Aggiungi foto",
+    "logout": "Esci",
+    "upload_video": "Aggiungi un video"
+}
