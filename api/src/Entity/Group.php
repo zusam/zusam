@@ -42,7 +42,7 @@ class Group extends ApiEntity
     private $secretKey;
 
     /**
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string", unique=true, nullable=true)
      *
      * @Groups({"read_invite_key"})
      *
