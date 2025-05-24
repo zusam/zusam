@@ -46,9 +46,7 @@ class ListInviteLinks extends Command
                         $this->url->getBaseUrl() . '/invitation/' . $inviteKey,
                     ]);
                 } else {
-                    $this->output->writeln([
-                        'Group has no invite key. Use zusam:invitations:reset to generate a key.',
-                    ]);
+                    throw new \Exception('Group has no invite key');
                 }
 
             } else {

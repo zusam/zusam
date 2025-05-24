@@ -27,6 +27,7 @@ final class Version20250520092849 extends AbstractMigration
         , invite_key VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('INSERT INTO "group" (id, secret_key, created_at, name, last_activity_date, data) SELECT id, secret_key, created_at, name, last_activity_date, data FROM __temp__group');
         $this->addSql('DROP TABLE __temp__group');
+        $this->addSql('UPDATE "group" SET invite_key = secret_key');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_6DC044C57F4741F5 ON "group" (secret_key)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_6DC044C5916567E ON "group" (invite_key)');
     }
