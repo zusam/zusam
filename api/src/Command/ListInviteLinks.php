@@ -41,7 +41,7 @@ class ListInviteLinks extends Command
             $group = $this->em->getRepository(Group::class)->find($input->getOption('group-id'));
             if ($group) {
                 $inviteKey = $group->getInviteKey();
-                if  ($inviteKey) {
+                if ($inviteKey) {
                     $this->output->writeln([
                         $this->url->getBaseUrl() . '/invitation/' . $inviteKey,
                     ]);
@@ -64,7 +64,7 @@ class ListInviteLinks extends Command
         $table->setHeaders(['Group ID', 'Group Name', 'Invite Link']);
         foreach ($groups as $group) {
             $inviteKey = $group->getInviteKey();
-            if   ($inviteKey) {
+            if ($inviteKey) {
                 $table->addRow([$group->getId(), $group->getName(), $this->url->getBaseUrl() . '/invitation/' . $inviteKey]);
             }
         }
