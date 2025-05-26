@@ -20,9 +20,7 @@ class CreateGroup extends Component {
     }
     group.createdAt = Math.floor(Date.now() / 1000);
     http.post("/api/groups", group).then(res => {
-      http.post(`/api/groups/invitation/${  res.secretKey}`, {}).then(res => {
-        window.location = util.toApp(`/groups/${res.id}`);
-      });
+      window.location = util.toApp(`/groups/${res.id}`);
     });
   }
 

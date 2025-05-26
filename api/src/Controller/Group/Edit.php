@@ -105,7 +105,7 @@ class Edit extends ApiController
         $this->em->persist($group);
 
         // Clear cache for the group
-        $this->cache->invalidateTags(['group_'.$group()->getId()]);
+        $this->cache->invalidateTags(['group_'.$group->getId()]);
 
         $this->em->flush();
 

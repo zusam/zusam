@@ -40,9 +40,15 @@ class ListInviteLinks extends Command
         if ($input->getOption('group-id')) {
             $group = $this->em->getRepository(Group::class)->find($input->getOption('group-id'));
             if ($group) {
-                $this->output->writeln([
-                    $this->url->getBaseUrl() . '/invitation/' . $group->getSecretKey(),
-                ]);
+                $inviteKey = $group->getInviteKey();
+                if ($inviteKey) {
+                    $this->output->writeln([
+                        $this->url->getBaseUrl() . '/invitation/' . $inviteKey,
+                    ]);
+                } else {
+                    throw new \Exception('Group has no invite key');
+                }
+
             } else {
                 $this->output->writeln([
                     'Group ID not found',
@@ -55,7 +61,10 @@ class ListInviteLinks extends Command
         $table = new Table($output);
         $table->setHeaders(['Group ID', 'Group Name', 'Invite Link']);
         foreach ($groups as $group) {
-            $table->addRow([$group->getId(), $group->getName(), $this->url->getBaseUrl() . '/invitation/' . $group->getSecretKey()]);
+            $inviteKey = $group->getInviteKey();
+            if ($inviteKey) {
+                $table->addRow([$group->getId(), $group->getName(), $this->url->getBaseUrl() . '/invitation/' . $inviteKey]);
+            }
         }
         $table->render();
 

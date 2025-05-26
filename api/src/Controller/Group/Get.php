@@ -61,7 +61,7 @@ class Get extends ApiController
             $item->tag('group_'.$group->getId());
             $serialization_groups = ['read_group'];
             if ($this->getParameter('show.group.invitation.links') == 'true') {
-                $serialization_groups[] = 'read_secret_key';
+                $serialization_groups[] = 'read_invite_key';
             }
             return $this->serialize($group, $serialization_groups);
         });

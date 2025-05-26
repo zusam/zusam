@@ -12,6 +12,7 @@ export default function GroupSettings() {
   const { me, dispatch } = useStoreon("me");
   const navigate = useNavigate();
   const [secretKey, setSecretKey] = useState("");
+  const [inviteKey, setInviteKey] = useState("");
   const [users, setUsers] = useState([]);
   const [group, setGroup] = useState({});
   const [alertMessage, setAlertMessage] = useState("");
@@ -21,6 +22,7 @@ export default function GroupSettings() {
       group => {
         setGroup(group);
         setSecretKey(group.secretKey);
+        setInviteKey(group.inviteKey);
         Promise.all(group.users.map(u => http.get(`/api/users/${u.id}`).then(u => u))).then(
           users => setUsers(users)
         );
@@ -29,13 +31,13 @@ export default function GroupSettings() {
     setAlertMessage(t(router.getParam("alert")));
   }, []);
 
-  const resetSecretKey = (event) => {
+  const resetInviteKey = (event) => {
     event.preventDefault();
     http
       .post(`/api/groups/${group.id}/reset-invite-key`, {})
       .then(res => {
         alert.add(t("group_updated"));
-        setSecretKey(res["inviteKey"]);
+        setInviteKey(res["inviteKey"]);
       });
   };
 
@@ -118,7 +120,7 @@ export default function GroupSettings() {
                           type="text"
                           name="inviteKey"
                           value={
-                            `${window.location.protocol}//${window.location.host}/invitation/${secretKey}`
+                            `${window.location.protocol}//${window.location.host}/invitation/${inviteKey}`
                           }
                           class="form-control font-size-80"
                           readonly="readonly"
@@ -126,7 +128,7 @@ export default function GroupSettings() {
                       </div>
                       <button
                         class="btn btn-outline-secondary"
-                        onClick={resetSecretKey}
+                        onClick={resetInviteKey}
                       >
                         {t("reset_invitation_link")}
                       </button>
