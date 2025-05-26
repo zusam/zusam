@@ -39,12 +39,12 @@ class ResetInviteLink extends Command
         if ($input->getOption('group-id')) {
             $group = $this->em->getRepository(Group::class)->find($input->getOption('group-id'));
             if ($group) {
-                $group->resetSecretKey();
+                $group->resetInviteKey();
                 $this->em->persist($group);
                 $this->em->flush();
 
                 $this->output->writeln([
-                    $this->url->getBaseUrl() . '/invitation/' . $group->getSecretKey(),
+                    $this->url->getBaseUrl() . '/invitation/' . $group->getInviteKey(),
                 ]);
             } else {
                 $this->output->writeln([

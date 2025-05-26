@@ -43,7 +43,7 @@ class AddInvitedUser extends ApiController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $group = $this->em->getRepository(Group::class)->findOneBySecretKey($inviteKey);
+        $group = $this->em->getRepository(Group::class)->findOneByInviteKey($inviteKey);
         if (empty($group)) {
             return new JsonResponse(['error' => 'Invalid invite key !'], Response::HTTP_BAD_REQUEST);
         }

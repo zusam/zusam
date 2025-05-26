@@ -28,6 +28,7 @@ class Group
         $this->em->persist($group);
 
         $user->setLastActivityDate(time());
+        $this->addUser($group, $user);
         $this->em->persist($user);
 
         $this->em->flush();

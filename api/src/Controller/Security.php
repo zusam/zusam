@@ -108,7 +108,7 @@ class Security extends AbstractController
             }
         }
 
-        $group = $this->em->getRepository(Group::class)->findOneBySecretKey($inviteKey);
+        $group = $this->em->getRepository(Group::class)->findOneByInviteKey($inviteKey);
 
         if (empty($group)) {
             return $this->json(['message' => 'Invalid invite key !'], Response::HTTP_BAD_REQUEST);

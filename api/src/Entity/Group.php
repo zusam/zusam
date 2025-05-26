@@ -33,13 +33,22 @@ class Group extends ApiEntity
     /**
      * @ORM\Column(type="string", unique=true)
      *
-     * @Groups({"read_secret_key"})
+     * @Groups({"read_group"})
      *
      * @Assert\NotBlank()
      *
      * @OA\Property(type="string")
      */
     private $secretKey;
+
+    /**
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     *
+     * @Groups({"read_invite_key"})
+     *
+     * @OA\Property(type="string")
+     */
+    private $inviteKey;
 
     /**
      * @ORM\Column(type="integer")
@@ -123,6 +132,7 @@ class Group extends ApiEntity
         $this->messages = new ArrayCollection();
         $this->createdAt = time();
         $this->secretKey = Uuid::uuidv4();
+        $this->inviteKey = Uuid::uuidv4();
     }
 
     public function getId(): string
@@ -138,6 +148,16 @@ class Group extends ApiEntity
     public function resetSecretKey(): void
     {
         $this->secretKey = Uuid::uuidv4();
+    }
+
+    public function getInviteKey(): string
+    {
+        return $this->inviteKey;
+    }
+
+    public function resetInviteKey(): void
+    {
+        $this->inviteKey = Uuid::uuidv4();
     }
 
     public function getCreatedAt(): int
