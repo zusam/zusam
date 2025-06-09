@@ -84,7 +84,7 @@ class NotificationEmails extends Command
             $this->em->flush();
 
             $notifications = array_filter($user->getNotifications()->toArray(), function ($n) use ($lastNotificationEmailCheck) {
-                return $n->getCreatedAt() > $lastNotificationEmailCheck;
+                return $n->getCreatedAt() > $lastNotificationEmailCheck && in_array($n->getType(), ['new_message', 'new_comment'], true);
             });
 
             $notificationService = $this->notificationService;
