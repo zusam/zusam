@@ -94,7 +94,7 @@ function App() {
       <Route path="/public/:token" element={<Public />} />
       <Route path="/share" element={<Share />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/stop-notification-emails" element={<StopNotificationEmails />} />
+      <Route path="/stop-notification-emails/:userId/:token" element={<StopNotificationEmails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/logout" element={<Navigate replace to="/login" />} />
       <Route path="/:type/:id/settings" element={<Settings />} />
