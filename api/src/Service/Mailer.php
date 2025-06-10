@@ -69,31 +69,36 @@ class Mailer
             'sub' => Token::SUB_STOP_EMAIL_NOTIFICATIONS,
         ], $user->getSecretKey());
 
-        $email = (new Email())
-            ->subject('Zusam Notification Email')
-            ->from('noreply@'.$this->domain)
-            ->to($user->getLogin())
-            ->text(
-                $this->twig->render(
-                    $this->getTemplatePath("notification-email", $lang, 'txt'),
-                    [
-                        'base_url' => $this->url->getBaseUrl(),
-                        'notifications' => $notifications,
-                        'user' => $user,
-                        'unsubscribe_token' => $unsubscribe_token,
-                    ]
+        try {
+            $email = (new Email())
+                ->subject('Zusam Notification Email')
+                ->from('noreply@' . $this->domain)
+                ->to($user->getLogin())
+                ->text(
+                    $this->twig->render(
+                        $this->getTemplatePath("notification-email", $lang, 'txt'),
+                            [
+                                'base_url' => $this->url->getBaseUrl(),
+                                'notifications' => $notifications,
+                                'user' => $user,
+                                'unsubscribe_token' => $unsubscribe_token,
+                            ]
+                    )
                 )
-            )
-            ->html($this->twig->render(
-                $this->getTemplatePath("notification-email", $lang, 'html'),
-                [
-                    'base_url' => $this->url->getBaseUrl(),
-                    'notifications' => $notifications,
-                    'user' => $user,
-                    'unsubscribe_token' => $unsubscribe_token,
-                ]
-            ))
-        ;
+                ->html($this->twig->render(
+                    $this->getTemplatePath("notification-email", $lang, 'html'),
+                        [
+                            'base_url' => $this->url->getBaseUrl(),
+                            'notifications' => $notifications,
+                            'user' => $user,
+                            'unsubscribe_token' => $unsubscribe_token,
+                        ]
+                ))
+            ;
+        } catch (\Exception $e) {
+            $this->logger->error('Could not send email to ' . $user->getLogin() . '. Error: ' . $e->getMessage());
+            return false;
+        }
 
         return $this->sendMail($email);
     }
