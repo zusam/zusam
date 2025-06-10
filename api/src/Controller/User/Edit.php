@@ -183,7 +183,18 @@ class Edit extends ApiController
             }
         }
         if (!empty($requestData['data'])) {
-            $user->setData(array_merge($user->getData(), $requestData['data']));
+            $data =  $requestData['data'];
+
+            // Don't flood user with notifications if they were previously disabled
+            if (
+                !empty($data['notification_emails'])
+                && $data['notification_emails'] !== 'none'
+                && $user->getData()['notification_emails'] === 'none'
+            ) {
+                $user->setLastNotificationEmailCheck(time());
+            }
+
+            $user->setData(array_merge($user->getData(), $data));
         }
         if (!empty($requestData['avatar'])) {
             $file = $this->em->getRepository(File::class)->findOneById($requestData['avatar']);
