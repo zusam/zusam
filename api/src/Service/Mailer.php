@@ -77,7 +77,7 @@ class Mailer
                 ->text(
                     $this->twig->render(
                         $this->getTemplatePath("notification-email", $lang, 'txt'),
-                            [
+                        [
                                 'base_url' => $this->url->getBaseUrl(),
                                 'notifications' => $notifications,
                                 'user' => $user,
@@ -87,7 +87,7 @@ class Mailer
                 )
                 ->html($this->twig->render(
                     $this->getTemplatePath("notification-email", $lang, 'html'),
-                        [
+                    [
                             'base_url' => $this->url->getBaseUrl(),
                             'notifications' => $notifications,
                             'user' => $user,
