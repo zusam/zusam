@@ -81,8 +81,12 @@
         </p>
         <footer>
             <p class="unsubscribe">
+                To change the frequency of emails,
+                <a href="{{ base_url }}/users/{{ user.id }}/settings">visit your settings page</a>.
+            </p>
+            <p class="unsubscribe">
                 If you no longer wish to receive these emails, you can
-                <a href="{{ base_url }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}">unsubscribe here</a>.
+                <a href="{{ base_url }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}">unsubscribe</a>.
             </p>
         </footer>
     </div>
