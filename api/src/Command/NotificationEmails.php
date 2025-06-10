@@ -57,7 +57,7 @@ class NotificationEmails extends Command
             $lastNotificationEmailCheck = $user->getLastNotificationEmailCheck();
             $now = time();
 
-            if (empty($lastNotificationEmailCheck)) {
+            if (empty($lastNotificationEmailCheck) || 'none' === $notif) {
                 $user->setLastNotificationEmailCheck($now);
                 $this->em->flush();
                 continue;
