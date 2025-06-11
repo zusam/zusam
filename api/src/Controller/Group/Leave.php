@@ -20,7 +20,6 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class Leave extends ApiController
 {
-
     private $cache;
 
     public function __construct(
