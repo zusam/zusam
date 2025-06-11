@@ -21,16 +21,25 @@
         }
         .post {
             border-bottom: 1px solid #ddd;
-            padding: 15px 0;
+            padding: 0 0 15px 0;
         }
         .post:last-child {
             border-bottom: none;
         }
         .post-title {
-            font-size: 18px;
+            font-size: 1.2em;
             font-weight: bold;
             color: #f7a71b;
             text-decoration: none;
+        }
+        li {
+            font-size: 1.2em;
+        }
+        ul {
+            margin: 0;
+        }
+        p {
+            font-size: 1em;
         }
         .button {
             background-color: #f7a71b;
@@ -52,25 +61,32 @@
 </head>
 <body>
     <div class="container">
-        <h1>New Content on Zusam</h1>
+        <h2>New Content on Zusam</h2>
         <p>Hello {{ user.name }},</p>
-        <p>Check out the latest posts:</p>
-
-        {% for notification in notifications %}
-            {% if notification.notification.type == 'new_message' %}
-            <div class="post">
-                <a href="{{ base_url }}/messages/{{ notification.notification.target }}" class="post-title">{{ notification.title }}</a>
-            </div>
-            {% endif %}
-        {% endfor %}
+        <p>Check out the newest content on Zusam:</p>
+        <div class="post">
+            <ul>
+            {% for notification in notifications %}
+                {% if notification.notification.type == 'new_message' %}
+                    <li><strong>{{ notification.notification.fromUser.name }}</strong> created a post <a href="{{ base_url }}/messages/{{ notification.notification.target }}" class="post-title">{{ notification.title }}</a></li>
+                {%  elseif notification.notification.type == 'new_comment' %}
+                    <li><strong>{{ notification.notification.fromUser.name }}</strong> has commented on the post <a href="{{ base_url }}/messages/{{ notification.notification.fromMessage.id }}/{{ notification.notification.target }}" class="post-title">{{ notification.title }}</a></li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </div>
 
         <p>
             <a href="{{ base_url }}/feed" class="button">View feed</a>
         </p>
         <footer>
             <p class="unsubscribe">
+                To change the frequency of emails,
+                <a href="{{ base_url }}/users/{{ user.id }}/settings">visit your settings page</a>.
+            </p>
+            <p class="unsubscribe">
                 If you no longer wish to receive these emails, you can
-                <a href="{{ base_url }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}">unsubscribe here</a>.
+                <a href="{{ base_url }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}">unsubscribe</a>.
             </p>
         </footer>
     </div>
