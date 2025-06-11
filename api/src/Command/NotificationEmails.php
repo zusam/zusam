@@ -57,7 +57,7 @@ class NotificationEmails extends Command
             $lastNotificationEmailCheck = $user->getLastNotificationEmailCheck();
             $now = time();
 
-            if (empty($lastNotificationEmailCheck)) {
+            if (empty($lastNotificationEmailCheck) || 'none' === $notif) {
                 $user->setLastNotificationEmailCheck($now);
                 $this->em->flush();
                 continue;
@@ -84,7 +84,7 @@ class NotificationEmails extends Command
             $this->em->flush();
 
             $notifications = array_filter($user->getNotifications()->toArray(), function ($n) use ($lastNotificationEmailCheck) {
-                return $n->getCreatedAt() > $lastNotificationEmailCheck;
+                return $n->getCreatedAt() > $lastNotificationEmailCheck && in_array($n->getType(), ['new_message', 'new_comment'], true);
             });
 
             $notificationService = $this->notificationService;
