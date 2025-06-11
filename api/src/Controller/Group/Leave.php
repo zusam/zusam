@@ -16,14 +16,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class Leave extends ApiController
 {
+
+    private $cache;
+
     public function __construct(
         EntityManagerInterface $em,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        TagAwareCacheInterface $cache,
     ) {
         parent::__construct($em, $serializer);
+        $this->cache = $cache;
     }
 
     /**
@@ -80,6 +86,7 @@ class Leave extends ApiController
         }
 
         $this->em->flush();
+        $this->cache->invalidateTags(['group_'.$group->getId()]);
 
         return new Response(
             $this->serialize($group, ['read_group']),
