@@ -50,6 +50,7 @@ class Get extends ApiController
             return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
         }
         $notification_data_output = $this->normalize($notification, ['read_notification']);
+        $notification_data_output["fromGroup"] = $this->normalize($notification->getFromGroup(), ['read_notification']);
 
         if (in_array(
             $notification->getType(),
