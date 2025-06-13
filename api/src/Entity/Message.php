@@ -196,6 +196,11 @@ class Message extends ApiEntity
      */
     private $entityType;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $sortOrder;
+
     public function getEntityType(): string
     {
         return strtolower((new \ReflectionClass($this))->getShortName());
@@ -442,5 +447,17 @@ class Message extends ApiEntity
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getSortOrder(): ?int
+    {
+        return $this->sortOrder;
+    }
+
+    public function setSortOrder(?int $sortOrder): static
+    {
+        $this->sortOrder = $sortOrder;
+
+        return $this;
     }
 }
