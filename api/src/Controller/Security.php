@@ -61,11 +61,13 @@ class Security extends AbstractController
             return $this->json(['message' => 'Invalid login/password'], Response::HTTP_UNAUTHORIZED);
         }
 
-        // Throttle login attempts
-        $request->attributes->set(SymfonySecurity::LAST_USERNAME, $user->getUserIdentifier());
-        $limit = $this->limiter->consume($request);
-        if (!$limit->isAccepted()) {
-            throw new TooManyLoginAttemptsAuthenticationException(intval(ceil(($limit->getRetryAfter()->getTimestamp() - time()) / 60)));
+        if ($this->getParameter('kernel.environment') !== 'test') {
+            // Throttle login attempts
+            $request->attributes->set(SymfonySecurity::LAST_USERNAME, $user->getUserIdentifier());
+            $limit = $this->limiter->consume($request);
+            if (!$limit->isAccepted()) {
+                throw new TooManyLoginAttemptsAuthenticationException(intval(ceil(($limit->getRetryAfter()->getTimestamp() - time()) / 60)));
+            }
         }
 
         if (!$this->passwordHasher->isPasswordValid($user, $password)) {

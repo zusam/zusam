@@ -37,7 +37,7 @@ export default class MessageList extends Component {
   loadMessages(page) {
     if (this.props.isFeed) {
       http
-        .get("/api/feed?limit=30&offset=" + page * 30)
+        .get("/api/feed/page/" + page * 30)
         .then((res) => {
           this.updateMessageList(res, page);
         });
