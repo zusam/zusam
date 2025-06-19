@@ -271,4 +271,29 @@ class MessageApiTest extends BaseApiTestCase
         $this->apiRequestWithAuth('GET', '/messages/' . $message->getId() . '/reactions');
         $this->assertResponseStatusCodeSame(403);
     }
+
+    public function testFeedPages():  void
+    {
+        $this->getTestMessages(40);
+        $this->apiRequestWithAuth('GET', '/feed/page/0');
+        $this->assertResponseIsSuccessful();
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertCount(30, $data['messages']);
+        $this->assertArrayHasKey('messages', $data, 'Message array is missing');
+        $this->assertSame(40, (int) $data['totalItems']);
+    }
+
+    public function testFeedCombinesGroups(): void
+    {
+        $user = $this->getTestUser();
+        $otherGroup = $this->getTestGroupNotLinked();
+        $otherGroup->addUser($user);
+        $user->addGroup($otherGroup);
+        $message = $this->getTestMessage();
+        $otherMessage = $this->getTestMessageFromGroupNotLinked();
+        $this->apiRequestWithAuth('GET', '/feed/page/0');
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertContains($message->getId(), $data['messages']);
+        $this->assertContains($otherMessage->getId(), $data['messages']);
+    }
 }

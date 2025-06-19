@@ -23,6 +23,7 @@ class BaseApiTestCase extends WebTestCase
     protected UserEntity|null $testUser = null;
     protected GroupEntity|null $testGroup =  null;
     protected MessageEntity|null $testMessage = null;
+    protected array $testMessages = [];
     protected MessageEntity|null $testSearchForMessage = null;
     protected ReactionEntity|null $testReaction = null;
     protected array $testNotifications = [];
@@ -197,6 +198,14 @@ class BaseApiTestCase extends WebTestCase
             $this->testMessage = $this->createMessage($this->getTestGroup(), $this->getTestUser());
         }
         return $this->testMessage;
+    }
+
+    public function getTestMessages($number = 1): array
+    {
+            for ($i = 0; $i < $number; $i++) {
+            $this->testMessages[$i] = $this->createMessage($this->getTestGroup(), $this->getTestUser(), 'Test message ' . $i);
+        }
+        return  $this->testMessages;
     }
 
     public function getTestSearchForMessage(): MessageEntity

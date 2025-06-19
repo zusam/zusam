@@ -178,4 +178,16 @@ class GroupApiTest extends BaseApiTestCase
         $this->apiRequestWithAuth('GET', '/groups/' . $group->getId() . '/page/0');
         $this->assertResponseStatusCodeSame(403);
     }
+
+    public function testGetGroupMessagesPages():  void
+    {
+        $group = $this->getTestGroup();
+        $this->getTestMessages(40);
+        $this->apiRequestWithAuth('GET', '/groups/' . $group->getId() . '/page/0');
+        $this->assertResponseIsSuccessful();
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertCount(30, $data['messages']);
+        $this->assertArrayHasKey('messages', $data, 'Message array is missing');
+        $this->assertSame(40, (int) $data['totalItems']);
+    }
 }
