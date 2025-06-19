@@ -283,4 +283,57 @@ class BaseApiTestCase extends WebTestCase
 
         return $this->testReaction;
     }
+
+    protected function prepImageFileOnDisk(): string
+    {
+        $filesDir = self::getContainer()->getParameter('dir.files');
+
+        if (!is_dir($filesDir)) {
+            mkdir($filesDir, 0777, true);
+        }
+
+        $cacheDir = self::getContainer()->getParameter('dir.cache') . '/images';
+        if (!is_dir($cacheDir)) {
+            mkdir($cacheDir, 0777, true);
+        }
+
+        array_map('unlink', glob($cacheDir . '/*.jpg'));
+
+        $sourceFileName = 'screenshot.jpg';
+        $sourcePath = __DIR__ . '/../../../readme/' . $sourceFileName;
+        $targetPath = $filesDir . '/' . uniqid('upload_', true) . '.jpg';
+
+        copy($sourcePath, $targetPath);
+
+        return $targetPath;
+    }
+
+    protected function createImageFile(): File
+    {
+        $path = $this->prepImageFileOnDisk();
+
+        $file = new File();
+        $file->setType('image/jpeg');
+        $file->setContentUrl(basename($path));
+        $file->setSize(filesize($path));
+
+        $em = $this->getEntityManager();
+        $em->persist($file);
+        $em->flush();
+
+        return $file;
+    }
+
+    protected function createUploadedImageFile(): UploadedFile
+    {
+        $path = $this->prepImageFileOnDisk();
+
+        return new UploadedFile(
+            $path,
+            basename($path),
+            'image/jpeg',
+            null,
+            true
+        );
+    }
 }
