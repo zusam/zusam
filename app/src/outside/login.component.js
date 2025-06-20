@@ -103,31 +103,31 @@ export default function Login() {
           </form>
         )}
         {!!showResetPassword && (
-            <div>
-              {allowEmails ? (
-                  <form>
-                    <div class="form-group mb-3">
-                      <input
-                          type="email"
-                          class="form-control"
-                          required
-                          id="login"
-                          placeholder={t("login_placeholder")}
-                      />
-                    </div>
-                    <button
-                        type="submit"
-                        class="btn btn-light"
-                        onClick={e => sendPasswordReset(e)}
-                        disabled={sending}
-                    >
-                      {t("submit")}
-                    </button>
-                  </form>
-              ) : (
-                  <div class="welcome">{t("email_disabled")}</div>
-              )}
-            </div>
+          <div>
+            {allowEmails ? (
+              <form>
+                <div class="form-group mb-3">
+                  <input
+                    type="email"
+                    class="form-control"
+                    required
+                    id="login"
+                    placeholder={t("login_placeholder")}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="btn btn-light"
+                  onClick={e => sendPasswordReset(e)}
+                  disabled={sending}
+                >
+                  {t("submit")}
+                </button>
+              </form>
+            ) : (
+              <div class="welcome">{t("email_disabled")}</div>
+            )}
+          </div>
         )}
       </div>
     </div>

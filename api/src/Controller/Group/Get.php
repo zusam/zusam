@@ -103,7 +103,7 @@ class Get extends ApiController
         }
 
         return new Response(
-            $this->serialize($messages[random_int(0, count($messages)-1)], ['read_message']),
+            $this->serialize($messages[random_int(0, count($messages) - 1)], ['read_message']),
             Response::HTTP_OK
         );
     }
