@@ -71,7 +71,7 @@ class Security extends AbstractController
         }
 
         if (!$this->passwordHasher->isPasswordValid($user, $password)) {
-            $this->logger->notice('Invalid password for '.$user->getId(), ['ip' => $_SERVER['REMOTE_ADDR']]);
+            $this->logger->notice('Invalid password for '.$user->getId(), ['ip' => $request->getClientIp()]);
 
             return $this->json(['message' => 'Invalid login/password'], Response::HTTP_UNAUTHORIZED);
         }
