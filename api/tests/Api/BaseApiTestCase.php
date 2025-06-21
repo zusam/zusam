@@ -308,8 +308,8 @@ class BaseApiTestCase extends WebTestCase
 
         array_map('unlink', glob($cacheDir . '/*.jpg'));
 
-        $sourceFileName = 'screenshot.jpg';
-        $sourcePath = __DIR__ . '/../../../readme/' . $sourceFileName;
+        $sourceFileName = 'icon-512x512.png';
+        $sourcePath = __DIR__ . '/' . $sourceFileName;
         $targetPath = $filesDir . '/' . uniqid('upload_', true) . '.jpg';
 
         copy($sourcePath, $targetPath);
@@ -322,7 +322,7 @@ class BaseApiTestCase extends WebTestCase
         $path = $this->prepImageFileOnDisk();
 
         $file = new File();
-        $file->setType('image/jpeg');
+        $file->setType('image/png');
         $file->setContentUrl(basename($path));
         $file->setSize(filesize($path));
 
@@ -340,7 +340,7 @@ class BaseApiTestCase extends WebTestCase
         return new UploadedFile(
             $path,
             basename($path),
-            'image/jpeg',
+            'image/png',
             null,
             true
         );
