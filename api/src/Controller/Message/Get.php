@@ -113,9 +113,11 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route('/feed', methods: ['GET'])]
-    public function feed(Request $request): Response
+    #[Route('/feed/page/{page}', methods: ['GET'])]
+    public function feed(Request $request, int $page): Response
     {
+        $limit = 30;
+
         $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
         if ($user instanceof User) {
@@ -123,9 +125,6 @@ class Get extends ApiController
         } else {
             return new JsonResponse(['error' => 'Bad Request'], Response::HTTP_BAD_REQUEST);
         }
-
-        $limit = min(100, $request->query->getInt('limit', 30));
-        $offset = $request->query->getInt('offset', 0);
 
         // Get message IDs
         $messageIds = $this->em->getRepository(Message::class)
@@ -137,7 +136,7 @@ class Get extends ApiController
             ->setParameter('groupIds', $groupIds)
             ->orderBy('m.lastActivityDate', 'DESC')
             ->setMaxResults($limit)
-            ->setFirstResult($offset)
+            ->setFirstResult($page)
             ->getQuery()
             ->getResult();
 

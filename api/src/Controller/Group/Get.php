@@ -98,8 +98,12 @@ class Get extends ApiController
 
         $messages = $this->em->getRepository(Message::class)->findByGroup($id);
 
+        if (empty($messages)) {
+            return new JsonResponse(['error' => 'No messages found'], JsonResponse::HTTP_NO_CONTENT);
+        }
+
         return new Response(
-            $this->serialize($messages[random_int(0, count($messages))], ['read_message']),
+            $this->serialize($messages[random_int(0, count($messages) - 1)], ['read_message']),
             Response::HTTP_OK
         );
     }
