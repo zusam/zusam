@@ -12,4 +12,4 @@ jobs:
 
       - name: Validate JSON files
         run: |
-          find app/src/lang -type f -name "*.json" -exec jq . {} \; || exit 1
+          find translations -type f -name "*.json" -exec jq . {} \; || exit 1
