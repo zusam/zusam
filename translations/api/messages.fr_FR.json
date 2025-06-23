@@ -1,0 +1,18 @@
+{
+  "created.a.post": "a écrit un message",
+  "new.content.on.zusam": "Du nouveau sur Zusam",
+  "hello": "Bonjour",
+  "check.out.new.content.on.zusam": "Voici ce qu'il y a de nouveau sur Zusam",
+  "has.commented.on.the.post": "a commenté le message",
+  "view.feed": "Votre fil",
+  "change.email.frequency": "Pour changer la fréquence des courriels",
+  "visit.settings.page": "visitez la page de vos paramètres",
+  "if.you.dont.want.emails": "Si vous ne souhaitez plus recevoir ces courriels, vous pouvez",
+  "unsubscribe": "vous désinscrire",
+  "notification.email.subject": "Du nouveau sur Zusam",
+  "password.reset.email.subject": "Réinitialisation de mot de passe pour Zusam",
+  "password.reset.instructions.html": "Nous avons reçu une demande de réinitialisation de votre mot de passe. Cliquez sur le bouton ci-dessous pour démarrer:",
+  "reset.password": "Réinitialisation de mot de passe",
+  "ignore.password.reset": "Si vous n'avez pas demandé à réinitialiser votre mot de passe, vous pouvez ignorer ce courriel en toute sécurité.",
+  "password.reset.instructions.txt": "Ceci est un courriel de réinitialisation de votre mot de passe pour Zusam. Pour commencer, ouvrez le lien suivant dans votre navigateur:"
+}
