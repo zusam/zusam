@@ -16,5 +16,4 @@ jobs:
 
       - name: Check for missing translations for the API [en_US]
         run: |
-          cd api
-          bin/console debug:trans --only-missing -n en_US
+          cd api && php bin/console debug:trans --only-missing -n en_US
