@@ -162,6 +162,6 @@ class Mailer
         if ($this->twig->getLoader()->exists($templatePath)) {
             return $templatePath;
         }
-        throw new Exception('Could not find twig template: ' + $templatePath);
+        throw new \Exception('Could not find twig template: ' . $templatePath);
     }
 }
