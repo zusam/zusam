@@ -8,7 +8,14 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: ctype, curl, dom, fileinfo, iconv, intl, json, mbstring, pdo_sqlite, imagick, posix, simplexml, xml, xmlwriter
+          coverage: none
 
       - name: Validate JSON files
         run: |
