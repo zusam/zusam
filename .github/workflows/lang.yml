@@ -17,6 +17,9 @@ jobs:
           extensions: ctype, curl, dom, fileinfo, iconv, intl, json, mbstring, pdo_sqlite, imagick, posix, simplexml, xml, xmlwriter
           coverage: none
 
+      - name: Install dependencies
+        run: cd api && composer install --prefer-dist --no-progress
+
       - name: Validate JSON files
         run: |
           find translations -type f -name "*.json" -exec jq . {} \; || exit 1
