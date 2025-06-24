@@ -9,11 +9,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['18', '20', '22']
+        node-version: ['18', '20', '22', '24']
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
@@ -28,3 +28,6 @@ jobs:
 
     - name: Run stylelint
       run: cd app && npm run stylelint
+
+    - name: Build
+      run: cd app && npm run build
