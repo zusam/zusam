@@ -3,21 +3,21 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import api from "/src/core/api.js";
 
-import cs_CZ from "/src/lang/cs_CZ.json";
-import de_DE from "/src/lang/de_DE.json";
-import en_US from "/src/lang/en_US.json";
-import es_ES from "/src/lang/es_ES.json";
-import fr_FR from "/src/lang/fr_FR.json";
-import hu_HU from "/src/lang/hu_HU.json";
-import ko_KR from "/src/lang/ko_KR.json";
-import nb_NO from "/src/lang/nb_NO.json";
-import nl_NL from "/src/lang/nl_NL.json";
-import pt_BR from "/src/lang/pt_BR.json";
-import ru_RU from "/src/lang/ru_RU.json";
-import sk_SK from "/src/lang/sk_SK.json";
-import ta_IN from "/src/lang/ta_IN.json";
-import zgh from "/src/lang/zgh.json";
-import zh_Hans from "/src/lang/zh_Hans.json";
+import cs_CZ from "/../translations/app/cs_CZ.json";
+import de_DE from "/../translations/app/de_DE.json";
+import en_US from "/../translations/app/en_US.json";
+import es_ES from "/../translations/app/es_ES.json";
+import fr_FR from "/../translations/app/fr_FR.json";
+import hu_HU from "/../translations/app/hu_HU.json";
+import ko_KR from "/../translations/app/ko_KR.json";
+import nb_NO from "/../translations/app/nb_NO.json";
+import nl_NL from "/../translations/app/nl_NL.json";
+import pt_BR from "/../translations/app/pt_BR.json";
+import ru_RU from "/../translations/app/ru_RU.json";
+import sk_SK from "/../translations/app/sk_SK.json";
+import ta_IN from "/../translations/app/ta_IN.json";
+import zgh from "/../translations/app/zgh.json";
+import zh_Hans from "/../translations/app/zh_Hans.json";
 
 const lang = {
   possibleLang: {
@@ -46,21 +46,16 @@ i18n.use(initReactI18next).init({
   resources: {
     cs_CZ: { translation: cs_CZ },
     de_DE: { translation: de_DE },
-    en: { translation: en_US }, // backwards compatibility, remove for 0.6
     en_US: { translation: en_US },
     es_ES: { translation: es_ES },
-    es: { translation: es_ES }, // backwards compatibility, remove for 0.6
     fr_FR: { translation: fr_FR },
-    fr: { translation: fr_FR }, // backwards compatibility, remove for 0.6
     hu_HU: { translation: hu_HU },
     ko_KR: { translation: ko_KR },
     nb_NO: { translation: nb_NO },
     nl_NL: { translation: nl_NL },
-    nl: { translation: nl_NL }, // backwards compatibility, remove for 0.6
     pt_BR: { translation: pt_BR },
     ru_RU: { translation: ru_RU },
     sk_SK: { translation: sk_SK },
-    sk: { translation: sk_SK }, // backwards compatibility, remove for 0.6
     ta_IN: { translation: ta_IN },
     zgh: { translation: zgh },
     zh_Hans: { translation: zh_Hans },
