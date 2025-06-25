@@ -13,12 +13,14 @@ DATABASE_URL="sqlite:///%kernel.project_dir%/../data/${DATABASE_NAME}"
 
 if [ -f /zusam/config ]; then
   sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
-    -e "s|<DOMAIN>|${DOMAIN}|g" \
     -e "s|<ALLOW_EMAIL>|${ALLOW_EMAIL}|g" \
     -e "s|<ALLOW_IMAGE_UPLOAD>|${ALLOW_IMAGE_UPLOAD}|g" \
+    -e "s|<ALLOW_MESSAGE_REACTIONS>|${ALLOW_MESSAGE_REACTIONS}|g"\
+    -e "s|<ALLOW_PUBLIC_LINKS>|${ALLOW_PUBLIC_LINKS}|g"\
     -e "s|<ALLOW_VIDEO_UPLOAD>|${ALLOW_VIDEO_UPLOAD}|g" \
-    -e "s|<DATABASE_URL>|${DATABASE_URL}|g" \
     -e "s|<APP_ENV>|${APP_ENV}|g" \
+    -e "s|<DATABASE_URL>|${DATABASE_URL}|g" \
+    -e "s|<DOMAIN>|${DOMAIN}|g" \
     -e "s|<LANG>|${LANG}|g" \
     /zusam/config
 fi
@@ -34,6 +36,8 @@ fi
 # initialize database if none is present
 if ! [ -f "/zusam/data/${DATABASE_NAME}" ]; then
   /zusam/api/bin/console zusam:init "${INIT_USER}" "${INIT_GROUP}" "${INIT_PASSWORD}"
+else
+  /zusam/api/bin/console doctrine:migrations:migrate --no-interaction -vv -e "${APP_NEV}"
 fi
 
 if [ -n "${SUBPATH}" ]; then
