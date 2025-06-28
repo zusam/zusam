@@ -37,7 +37,7 @@ fi
 if ! [ -f "/zusam/data/${DATABASE_NAME}" ]; then
   /zusam/api/bin/console zusam:init "${INIT_USER}" "${INIT_GROUP}" "${INIT_PASSWORD}"
 else
-  /zusam/api/bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration -vv -e "${APP_NEV}"
+  /zusam/api/bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration -vv -e "${APP_ENV}"
 fi
 
 if [ -n "${SUBPATH}" ]; then
