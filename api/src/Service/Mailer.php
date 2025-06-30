@@ -4,8 +4,8 @@ namespace App\Service;
 
 use App\Entity\User;
 use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Mailer
@@ -44,7 +44,7 @@ class Mailer
 
     private function sendMail($email)
     {
-        if ('prod' == $this->env && 'true' == $this->allow_email) {
+        if ('true' == $this->allow_email) {
             try {
                 $this->symfonyMailer->send($email);
             } catch (\Exception $e) {
@@ -75,10 +75,11 @@ class Mailer
         ], $user->getSecretKey());
 
         try {
-            $email = (new Email())
+            $email = (new TemplatedEmail())
                 ->subject($this->translator->trans("notification.email.subject"))
                 ->from('noreply@' . $this->domain)
                 ->to($user->getLogin())
+                ->locale($lang)
                 ->text(
                     $this->twig->render(
                         $this->getTemplatePath("notification-email", 'txt'),
@@ -100,12 +101,11 @@ class Mailer
                         ]
                 ))
             ;
+            return $this->sendMail($email);
         } catch (\Exception $e) {
             $this->logger->error('Could not send email to ' . $user->getLogin() . '. Error: ' . $e->getMessage());
             return false;
         }
-
-        return $this->sendMail($email);
     }
 
     public function sendPasswordReset(User $user)
@@ -123,37 +123,42 @@ class Mailer
             'sub' => Token::SUB_RESET_PASSWORD,
         ], $user->getPassword());
 
-        $email = (new Email())
-            ->subject($this->translator->trans("password.reset.email.subject"))
-            ->from('noreply@'.$this->domain)
-            ->to($user->getLogin())
-            ->text(
-                $this->twig->render(
-                    $this->getTemplatePath("password-reset-mail", 'txt'),
-                    [
-                        'name' => ucfirst($user->getName()),
-                        'url' => $this->url->getBaseUrl()
-                        .'/password-reset'
-                        .'?mail='.urlencode($user->getLogin())
-                        .'&key='.$token,
-                    ]
-                )
-            )
-            ->html(
-                $this->twig->render(
-                    $this->getTemplatePath("password-reset-mail", 'html'),
-                    [
-                        'name' => ucfirst($user->getName()),
-                        'url' => $this->url->getBaseUrl()
+        try {
+            $email = (new TemplatedEmail())
+                ->subject($this->translator->trans("password.reset.email.subject"))
+                ->from('noreply@'.$this->domain)
+                ->to($user->getLogin())
+                ->locale($lang)
+                ->text(
+                    $this->twig->render(
+                        $this->getTemplatePath("password-reset-mail", 'txt'),
+                        [
+                            'name' => ucfirst($user->getName()),
+                            'url' => $this->url->getBaseUrl()
                             .'/password-reset'
                             .'?mail='.urlencode($user->getLogin())
                             .'&key='.$token,
-                    ]
+                        ]
+                    )
                 )
-            )
-        ;
-
-        return $this->sendMail($email);
+                ->html(
+                    $this->twig->render(
+                        $this->getTemplatePath("password-reset-mail", 'html'),
+                        [
+                            'name' => ucfirst($user->getName()),
+                            'url' => $this->url->getBaseUrl()
+                                .'/password-reset'
+                                .'?mail='.urlencode($user->getLogin())
+                                .'&key='.$token,
+                        ]
+                    )
+                )
+            ;
+            return $this->sendMail($email);
+        } catch (\Exception $e) {
+            $this->logger->error('Could not send email to ' . $user->getLogin() . '. Error: ' . $e->getMessage());
+            return false;
+        }
     }
 
     private function getTemplatePath(string $template, string $type): string
