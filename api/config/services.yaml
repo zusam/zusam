@@ -76,10 +76,6 @@ services:
     App\Command\Cron:
       arguments:
 
-    App\Command\Migration:
-      arguments:
-        $dsn: '%env(resolve:DATABASE_URL)%'
-
     App\Command\PreparePreviews:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'
