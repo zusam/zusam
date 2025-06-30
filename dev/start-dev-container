@@ -16,6 +16,11 @@ cdroot() {
 cdroot
 
 make dev
-docker run --rm -it -e UID="$(id -u)" -e GID="$(id -g)" -v "$initial_path":/zusam:z --name "zusam-dev" "zusam-dev"
+docker run --rm -it --name "zusam-dev" -p 8080:8080 \
+  -e UID="$(id -u)" -e GID="$(id -g)" \
+  -v "$initial_path"/data:/zusam/data:z \
+  -v "$initial_path"/public:/zusam/public:z \
+  -v "$initial_path"/api:/zusam/api:z \
+  "zusam-dev"
 
 cd "$initial_path"
