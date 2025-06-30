@@ -20,7 +20,7 @@ final class Version20250202033732 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE user ADD COLUMN last_notification_email_check INTEGER DEFAULT NULL');
+        $this->addSql('ALTER TABLE "user" ADD COLUMN last_notification_email_check INTEGER DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
