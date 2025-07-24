@@ -65,9 +65,6 @@ class GetMiniature extends ApiController
                 $imageService->createThumbnail($sourceFilePath, $cacheFile, $width, $height, false);
             }
         }
-        if (is_readable($cacheFile)) {
-            return new BinaryFileResponse($cacheFile, 200, ['Content-Type' => mime_content_type($cacheFile)]);
-        }
 
         return new JsonResponse(['message' => 'Not Found'], JsonResponse::HTTP_NOT_FOUND);
     }

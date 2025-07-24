@@ -3,11 +3,23 @@
 namespace App\Normalizer;
 
 use App\Entity\ApiEntity;
+use App\Entity\User;
+use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer as SymfonyObjectNormalizer;
 
 /**
- * Changes to Symfony's ObjectNormalizer:.
+ * A custom normalizer that adds pre-normalization logic.
+ *
+ * This normalizer is designed to work with Symfony's serializer and provides
+ * functionality that runs before the standard ObjectNormalizer. It is compatible
+ * with Symfony versions where ObjectNormalizer is final.
+ *
+ * This class uses the Decorator pattern by implementing NormalizerAwareInterface,
+ * allowing it to delegate the final normalization step to the main serializer chain.
  *
  * Adds a MAX_TREE_DEPTH limitation
  * The usual objectNormalizer has a MAX_DEPTH limitation that can be used but it's
@@ -27,8 +39,17 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer as SymfonyObjectNor
  * Returns null for properties that are API entities without id.
  * I made this choice to be more resilient.
  */
-class ObjectNormalizer extends AbstractObjectNormalizer
+class ObjectNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
+    use NormalizerAwareTrait;
+
+    /**
+     * A context flag to prevent infinite recursion by ensuring this normalizer
+     * does not process an object it has already passed on.
+     * @internal
+     */
+    private const ALREADY_CALLED = 'custom_object_normalizer_already_called';
+
     /**
      * How deep the resulting normalized tree can be.
      * The default value is 1.
@@ -51,27 +72,77 @@ class ObjectNormalizer extends AbstractObjectNormalizer
     public const MAX_TREE_DEPTH_HANDLER = 'max_tree_depth_handler';
 
     /**
+     * Internal context key for tracking the current depth.
+     * @internal
+     */
+    private const TREE_DEPTH_COUNTER = 'tree_depth_counter';
+
+    /**
      * @internal
      */
     protected const TREE_DEPTH_LIMIT_COUNTERS = 'tree_depth_limit_counters';
 
-    public function __construct(
-        private SymfonyObjectNormalizer $normalizer,
-    ) {
-        $this->defaultContext[self::TREE_DEPTH_LIMIT] = 1;
+    private array $defaultContext;
+
+    /**
+     * @param array $defaultContext Default context values for this normalizer.
+     */
+    public function __construct(array $defaultContext = [])
+    {
+        $this->defaultContext = array_merge([
+            self::TREE_DEPTH_LIMIT => 1,
+            self::ENABLE_MAX_TREE_DEPTH => false,
+        ], $defaultContext);
     }
 
     /**
-     * Detects if the configured max tree depth limit is reached.
+     * Normalizes the data after applying custom logic.
      *
-     * @param object $object
+     * {@inheritdoc}
+     */
+    public function normalize(mixed $data, ?string $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
+    {
+        // 1. Check if the max depth has been reached for the current branch.
+        if ($this->isMaxTreeDepth($context)) {
+            return $this->handleMaxTreeDepth($data, $format, $context);
+        }
+
+        // 2. Increment depth counter for the next level of serialization.
+        $context = $this->incrementTreeDepth($context);
+
+        // 3. Prepare serialization groups.
+        if (is_string($context['groups'])) {
+            $context['groups'] = [$context['groups']];
+        }
+
+        // 4. Remove the "read_me" group if we normalize a user that is not the current user.
+        if ($data instanceof User) {
+            $isCurrentUser = isset($context['currentUser']) && $data->getId() === $context['currentUser'];
+            if (!$isCurrentUser) {
+                $context['groups'] = array_filter($context['groups'], fn($g) => 'read_me' !== $g);
+            }
+        }
+
+        // 5. Always add the 'public' group and ensure it's unique.
+        $context['groups'][] = 'public';
+        $context['groups'] = array_values(array_unique($context['groups']));
+
+        // 6. Mark as called and delegate to the main serializer.
+        // The main serializer will then find the next appropriate normalizer (e.g., the built-in ObjectNormalizer).
+        $context[self::ALREADY_CALLED] = true;
+
+        return $this->normalizer->normalize($data, $format, $context);
+    }
+
+
+    /**
+     * Detects if the configured max tree depth limit has been reached.
+     *
      * @param array  $context
      *
      * @return bool
-     *
-     * @throws MaxTreeDepthException
      */
-    protected function isMaxTreeDepth($object, &$context)
+    protected function isMaxTreeDepth(&$context)
     {
         $enableMaxTreeDepth = $context[self::ENABLE_MAX_TREE_DEPTH] ?? $this->defaultContext[self::ENABLE_MAX_TREE_DEPTH] ?? false;
         if (!$enableMaxTreeDepth) {
@@ -98,46 +169,28 @@ class ObjectNormalizer extends AbstractObjectNormalizer
      * If a max tree depth handler is set, it will be called. Otherwise, a
      * {@class MaxTreeDepthException} will be thrown.
      *
-     * @param object $object
+     * @param mixed $data
      *
      * @throws MaxTreeDepthException
      */
-    protected function handleMaxTreeDepth($object, ?string $format = null, array $context = [])
+    protected function handleMaxTreeDepth(mixed $data, ?string $format = null, array $context = [])
     {
         $maxTreeDepthHandler = $context[self::MAX_TREE_DEPTH_HANDLER] ?? $this->defaultContext[self::MAX_TREE_DEPTH_HANDLER];
         if ($maxTreeDepthHandler) {
-            return $maxTreeDepthHandler($object, $format, $context);
+            return $maxTreeDepthHandler($data, $format, $context);
         }
-        throw new MaxTreeDepthException(sprintf('Max tree depth has been reached when serializing the object of class "%s" (configured limit: %d)', \get_class($object), $this->defaultContext[self::TREE_DEPTH_LIMIT]));
+        throw new MaxTreeDepthException(sprintf('Max tree depth has been reached when serializing the data of class "%s" (configured limit: %d)', \get_class($data), $this->defaultContext[self::TREE_DEPTH_LIMIT]));
     }
 
-    public function normalize($object, $format = null, array $context = [])
+    /**
+     * Increments the tree depth counter in the context.
+     */
+    private function incrementTreeDepth(array $context): array
     {
-        if ($this->isMaxTreeDepth($object, $context)) {
-            return $this->handleMaxTreeDepth($object, $format, $context);
+        if ($context[self::ENABLE_MAX_TREE_DEPTH] ?? $this->defaultContext[self::ENABLE_MAX_TREE_DEPTH]) {
+            $context[self::TREE_DEPTH_COUNTER] = ($context[self::TREE_DEPTH_COUNTER] ?? 0) + 1;
         }
-
-        if (!array_key_exists('groups', $context)) {
-            $context['groups'] = [];
-        }
-
-        if (is_string($context['groups'])) {
-            $context['groups'] = [$context['groups']];
-        }
-
-        // Remove the "read_me" group if we normalize a user that is not us.
-        if ('User' === array_values(array_slice(explode('\\', get_class($object)), -1))[0]) {
-            if (!isset($context['currentUser']) || $object->getId() !== $context['currentUser']) {
-                $context['groups'] = array_filter($context['groups'], function ($g) {
-                    return 'read_me' !== $g;
-                });
-            }
-        }
-
-        // Always add the 'public' group
-        $context['groups'][] = 'public';
-
-        return $this->normalizer->normalize($object, $format, $context);
+        return $context;
     }
 
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
@@ -148,20 +201,5 @@ class ObjectNormalizer extends AbstractObjectNormalizer
     public function getSupportedTypes(?string $format): array
     {
         return $this->normalizer->getSupportedTypes($format);
-    }
-
-    protected function setAttributeValue(object $object, string $attribute, mixed $value, ?string $format = null, array $context = [])
-    {
-        $this->normalizer->setAttributeValue($object, $attribute, $value, $format, $context);
-    }
-
-    protected function getAttributeValue(object $object, string $attribute, ?string $format = null, array $context = []): mixed
-    {
-        return $this->normalizer->getAttributeValue($object, $attribute, $format, $context);
-    }
-
-    protected function extractAttributes(object $object, ?string $format = null, array $context = []): array
-    {
-        return $this->normalizer->extractAttributes($object, $format, $context);
     }
 }
