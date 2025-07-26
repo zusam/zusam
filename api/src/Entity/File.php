@@ -9,120 +9,68 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="`file`")
- *
- * @ORM\Entity
- */
+#[ORM\Entity]
+#[ORM\Table(name: '`file`')]
 class File extends ApiEntity
 {
     /* Statuses are :
      *      - raw: file was just uploaded and not modified
-     *      - ready: file is in its final form before beeing used.
+     *      - ready: file is in its final form before being used.
      */
     public const STATUS_RAW = 'raw';
     public const STATUS_READY = 'ready';
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="guid")
-     *
-     * @Assert\NotBlank()
-     *
-     * @Groups("public")
-     *
-     * @OA\Property(type="guid")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: 'guid')]
+    #[Assert\NotBlank]
+    #[Groups(['public'])]
+    #[OA\Property(type: 'guid')]
+    private string $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     *
-     * @Assert\Type("integer")
-     *
-     * @Assert\NotNull()
-     *
-     * @Groups({"read_file"})
-     *
-     * @OA\Property(type="integer")
-     */
-    private $createdAt;
+    #[ORM\Column(type: 'integer')]
+    #[Assert\Type('integer')]
+    #[Assert\NotNull]
+    #[Groups(['read_file'])]
+    #[OA\Property(type: 'integer')]
+    private int $createdAt;
 
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @Groups({"read_message", "read_file"})
-     *
-     * @OA\Property(type="string")
-     */
-    private $type;
+    #[ORM\Column(type: 'string')]
+    #[Groups(['read_message', 'read_file'])]
+    #[OA\Property(type: 'string')]
+    private string $type;
 
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank()
-     *
-     * @Groups({"read_message", "read_file"})
-     *
-     * @OA\Property(type="string")
-     */
-    private $status;
+    #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank]
+    #[Groups(['read_message', 'read_file'])]
+    #[OA\Property(type: 'string')]
+    private string $status;
 
-    /**
-     * @Assert\NotNull()
-     */
+    #[Assert\NotNull]
     private $file;
 
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @Groups("public")
-     *
-     * @OA\Property(type="string")
-     */
-    private $contentUrl;
+    #[ORM\Column(type: 'string')]
+    #[Groups(['public'])]
+    #[OA\Property(type: 'string')]
+    private string $contentUrl;
 
-    /**
-     * @ORM\Column(type="integer")
-     *
-     * @Groups({"read_file"})
-     *
-     * @OA\Property(type="integer")
-     */
-    private $size;
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read_file'])]
+    #[OA\Property(type: 'integer')]
+    private int $size;
 
-    /**
-     * This should not be used anymore, deprecated.
-     *
-     * @ORM\Column(type="integer", nullable=true)
-     *
-     * @Groups({"read_message", "read_file"})
-     *
-     * @OA\Property(type="integer")
-     */
-    private $fileIndex;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read_message', 'read_file'])]
+    #[OA\Property(type: 'integer')]
+    private ?int $fileIndex = null;
 
-    /**
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @Assert\NotBlank()
-     *
-     * @OA\Property(type="guid")
-     */
-    private $secretKey;
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[Assert\NotBlank]
+    #[OA\Property(type: 'guid')]
+    private string $secretKey;
 
-    /**
-     * @Groups("public")
-     *
-     * @OA\Property(type="string")
-     */
-    private $entityType;
-
-    public function getEntityType(): string
-    {
-        return strtolower((new \ReflectionClass($this))->getShortName());
-    }
+    #[Groups(['public'])]
+    #[OA\Property(type: 'string')]
+    private string $entityType;
 
     public function __construct()
     {

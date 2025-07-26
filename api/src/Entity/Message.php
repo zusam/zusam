@@ -6,199 +6,113 @@ use App\Service\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="`message`")
- *
- * @ORM\Entity()
- */
+#[ORM\Entity]
+#[ORM\Table(name: '`message`')]
 class Message extends ApiEntity
 {
-    /**
-     * @Assert\NotBlank()
-     *
-     * @Groups("public")
-     *
-     * @OA\Property(type="guid")
-     *
-     * @ORM\Column(type="guid")
-     *
-     * @ORM\Id
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'guid')]
+    #[Assert\NotBlank]
+    #[Groups(['public'])]
+    #[OA\Property(type: 'guid')]
     private $id;
 
-    /**
-     * @Assert\NotNull()
-     *
-     * @Assert\Type("integer")
-     *
-     * @Groups({"read_message"})
-     *
-     * @OA\Property(type="integer")
-     *
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotNull]
+    #[Assert\Type('integer')]
+    #[Groups(['read_message'])]
+    #[OA\Property(type: 'integer')]
     private $createdAt;
 
-    /**
-     * @Assert\NotBlank()
-     *
-     * @Groups({"read_message", "read_notification", "read_message_preview"})
-     *
-     * @OA\Property(type="object")
-     *
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: 'json', nullable: true)]
+    #[Assert\NotBlank]
+    #[Groups(['read_message', 'read_notification', 'read_message_preview'])]
+    #[OA\Property(type: 'object')]
     private $data;
 
-    /**
-     * @Groups("public")
-     *
-     * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'messages')]
+    #[Groups(['public'])]
+    #[OA\Property(type: User::class)]
     private $author;
 
-    /**
-     * @Groups({"read_message"})
-     *
-     * @OA\Property(type="App\Entity\Group")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="messages")
-     */
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'messages')]
+    #[Groups(['read_message'])]
+    #[OA\Property(type: Group::class)]
     private $group;
 
-    /**
-     * @Groups({"read_message"})
-     *
-     * @OA\Property(type="App\Entity\Message")
-     * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
-     *
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Message", inversedBy="children")
-     */
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id')]
+    #[Groups(['read_message'])]
+    #[OA\Property(type: Message::class)]
     private $parent;
 
-    /**
-     * @Groups({"read_message"})
-     *
-     * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="parent")
-     */
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    #[Groups(['read_message'])]
+    #[OA\Property(type: 'array', items: new OA\Items(type: Message::class))]
     private $children;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\File")
-     *
-     * @ORM\JoinTable(name="messages_files",
-     *      joinColumns={@ORM\JoinColumn(name="message_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id")}
-     *      )
-     *
-     * @ORM\OrderBy({"fileIndex" = "ASC"})
-     *
-     * @Groups({"read_message"})
-     *
-     * @OA\Property(type="array", @OA\Items(type="App\Entity\File"))
-     */
+    #[ORM\ManyToMany(targetEntity: File::class)]
+    #[ORM\JoinTable(name: 'messages_files')]
+    #[ORM\JoinColumn(name: 'message_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'file_id', referencedColumnName: 'id')]
+    #[ORM\OrderBy(['fileIndex' => 'ASC'])]
+    #[Groups(['read_message'])]
+    #[OA\Property(type: 'array', items: new OA\Items(type: File::class))]
     private $files;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", mappedBy="messages")
-     *
-     * @Groups({"read_message", "write_message"})
-     *
-     * @OA\Property(type="array", @OA\Items(type="App\Entity\Tag"))
-     */
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'messages')]
+    #[Groups(['read_message', 'write_message'])]
+    #[OA\Property(type: 'array', items: new OA\Items(type: Tag::class))]
     private $tags;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Reaction", mappedBy="message", cascade={"remove"}, orphanRemoval=true)
-     *
-     * @Groups({"read_message", "write_message"})
-     *
-     * @OA\Property(type="array", @OA\Items(type="App\Entity\Reaction"))
-     */
+    #[ORM\OneToMany(mappedBy: 'message', targetEntity: Reaction::class, cascade: ['remove'], orphanRemoval: true)]
+    #[Groups(['read_message', 'write_message'])]
+    #[OA\Property(type: 'array', items: new OA\Items(type: Reaction::class))]
     private Collection $reactions;
 
-    /**
-     * @Assert\NotNull()
-     *
-     * @Assert\Type("integer")
-     *
-     * @Groups({"read_message", "read_message_preview"})
-     *
-     * @OA\Property(type="integer")
-     *
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotNull]
+    #[Assert\Type('integer')]
+    #[Groups(['read_message', 'read_message_preview'])]
+    #[OA\Property(type: 'integer')]
     private $lastActivityDate;
 
-    /**
-     * @Groups({"read_message", "read_message_preview"})
-     *
-     * @OA\Property(type="App\Entity\File")
-     *
-     * @ORM\JoinColumn(name="preview_id", referencedColumnName="id")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\File")
-     */
+    #[ORM\ManyToOne(targetEntity: File::class)]
+    #[ORM\JoinColumn(name: 'preview_id', referencedColumnName: 'id')]
+    #[Groups(['read_message', 'read_message_preview'])]
+    #[OA\Property(type: File::class)]
     private $preview;
 
-    /**
-     * @Assert\NotBlank()
-     *
-     * @OA\Property(type="guid")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     */
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[Assert\NotBlank]
+    #[OA\Property(type: 'guid')]
     private $secretKey;
 
-    /**
-     * @Assert\NotNull()
-     *
-     * @Groups({"read_message"})
-     *
-     * @OA\Property(type="boolean")
-     *
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
+    #[Assert\NotNull]
+    #[Groups(['read_message'])]
+    #[OA\Property(type: 'boolean')]
     private $isInFront;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="message")
-     *
-     * @OA\Property(type="array", @OA\Items(type="App\Entity\Bookmark"))
-     */
+    #[ORM\OneToMany(mappedBy: 'message', targetEntity: Bookmark::class)]
+    #[OA\Property(type: 'array', items: new OA\Items(type: Bookmark::class))]
     private $bookmarks;
 
-    /**
-     * @Assert\NotNull()
-     *
-     * @Groups({"public"})
-     *
-     * @OA\Property(type="string")
-     *
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
+    #[Assert\NotNull]
+    #[Groups(['public'])]
+    #[OA\Property(type: 'string')]
     private $type;
 
-    /**
-     * @Groups("public")
-     *
-     * @OA\Property(type="string")
-     */
+    #[Groups(['public'])]
+    #[OA\Property(type: 'string')]
     private $entityType;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $sortOrder;
 
     public function getEntityType(): string

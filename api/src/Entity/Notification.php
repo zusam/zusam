@@ -4,15 +4,12 @@ namespace App\Entity;
 
 use App\Service\Uuid;
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="`notification`")
- *
- * @ORM\Entity()
- */
+#[ORM\Entity]
+#[ORM\Table(name: '`notification`')]
 class Notification extends ApiEntity
 {
     // notification types
@@ -23,145 +20,79 @@ class Notification extends ApiEntity
     public const GLOBAL_NOTIFICATION = 'global_notification';
     public const GROUP_NAME_CHANGE = 'group_name_change';
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="guid")
-     *
-     * @Groups({"read_notification"})
-     *
-     * @Assert\NotBlank()
-     *
-     * @OA\Property(type="guid")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: 'guid')]
+    #[Groups(['read_notification'])]
+    #[Assert\NotBlank]
+    #[OA\Property(type: 'guid')]
+    private string $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     *
-     * @Groups({"read_notification"})
-     *
-     * @Assert\Type("integer")
-     *
-     * @Assert\NotNull()
-     *
-     * @OA\Property(type="integer")
-     */
-    private $createdAt;
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['read_notification'])]
+    #[Assert\Type('integer')]
+    #[Assert\NotNull]
+    #[OA\Property(type: 'integer')]
+    private int $createdAt;
 
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @Groups({"read_notification"})
-     *
-     * @Assert\NotBlank()
-     *
-     * @OA\Property(type="string")
-     */
-    private $type;
+    #[ORM\Column(type: 'string')]
+    #[Groups(['read_notification'])]
+    #[Assert\NotBlank]
+    #[OA\Property(type: 'string')]
+    private string $type;
 
-    /**
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @Assert\NotBlank()
-     *
-     * @OA\Property(type="guid")
-     */
-    private $secretKey;
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[Assert\NotBlank]
+    #[OA\Property(type: 'guid')]
+    private string $secretKey;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="notifications")
-     *
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
-     *
-     * @OA\Property(type="App\Entity\User")
-     */
-    private $owner;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'notifications')]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id')]
+    #[OA\Property(type: User::class)]
+    private ?User $owner = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\File")
-     *
-     * @ORM\JoinColumn(name="miniature_id", referencedColumnName="id")
-     *
-     * @Groups({"read_notification"})
-     *
-     * @OA\Property(type="App\Entity\File")
-     */
-    private $miniature;
+    #[ORM\ManyToOne(targetEntity: File::class)]
+    #[ORM\JoinColumn(name: 'miniature_id', referencedColumnName: 'id')]
+    #[Groups(['read_notification'])]
+    #[OA\Property(type: File::class)]
+    private ?File $miniature = null;
 
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @Groups({"read_notification"})
-     *
-     * @OA\Property(type="string")
-     */
-    private $target;
+    #[ORM\Column(type: 'string')]
+    #[Groups(['read_notification'])]
+    #[OA\Property(type: 'string')]
+    private string $target;
 
-    /**
-     * @ORM\Column(type="boolean")
-     *
-     * @Groups({"read_notification"})
-     *
-     * @OA\Property(type="boolean")
-     */
-    private $read;
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['read_notification'])]
+    #[OA\Property(type: 'boolean')]
+    private bool $read;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     *
-     * @Groups({"read_notification"})
-     *
-     * @Assert\NotBlank()
-     *
-     * @OA\Property(type="object")
-     */
-    private $data;
+    #[ORM\Column(type: 'json', nullable: true)]
+    #[Groups(['read_notification'])]
+    #[Assert\NotBlank]
+    #[OA\Property(type: 'object')]
+    private ?array $data = [];
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     *
-     * @ORM\JoinColumn(name="from_user_id", referencedColumnName="id")
-     *
-     * @Groups({"read_notification"})
-     *
-     * @OA\Property(type="App\Entity\User")
-     */
-    private $fromUser;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'from_user_id', referencedColumnName: 'id')]
+    #[Groups(['read_notification'])]
+    #[OA\Property(type: User::class)]
+    private ?User $fromUser = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Group")
-     *
-     * @ORM\JoinColumn(name="from_group_id", referencedColumnName="id")
-     *
-     * @Groups({"read_notification"})
-     *
-     * @OA\Property(type="App\Entity\Group")
-     */
-    private $fromGroup;
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    #[ORM\JoinColumn(name: 'from_group_id', referencedColumnName: 'id')]
+    #[Groups(['read_notification'])]
+    #[OA\Property(type: Group::class)]
+    private ?Group $fromGroup = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Message")
-     *
-     * @ORM\JoinColumn(name="from_message_id", referencedColumnName="id")
-     *
-     * @Groups({"read_notification"})
-     *
-     * @OA\Property(type="App\Entity\Message")
-     */
-    private $fromMessage;
+    #[ORM\ManyToOne(targetEntity: Message::class)]
+    #[ORM\JoinColumn(name: 'from_message_id', referencedColumnName: 'id')]
+    #[Groups(['read_notification'])]
+    #[OA\Property(type: Message::class)]
+    private ?Message $fromMessage = null;
 
-    /**
-     * @Groups("public")
-     *
-     * @OA\Property(type="string")
-     */
-    private $entityType;
-
-    public function getEntityType(): string
-    {
-        return strtolower((new \ReflectionClass($this))->getShortName());
-    }
+    #[Groups(['public'])]
+    #[OA\Property(type: 'string')]
+    private string $entityType;
 
     public function __construct()
     {

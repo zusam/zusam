@@ -8,70 +8,38 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="`bookmark`")
- *
- * @ORM\Entity()
- */
+#[ORM\Entity]
+#[ORM\Table(name: '`bookmark`')]
 class Bookmark extends ApiEntity
 {
-    /**
-     * @Assert\NotBlank()
-     *
-     * @Groups("public")
-     *
-     * @OA\Property(type="guid")
-     *
-     * @ORM\Column(type="guid")
-     *
-     * @ORM\Id
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: 'guid')]
+    #[Assert\NotBlank]
+    #[Groups(['public'])]
+    #[OA\Property(type: 'guid')]
+    private string $id;
 
-    /**
-     * @Assert\NotNull()
-     *
-     * @Assert\Type("integer")
-     *
-     * @Groups("public")
-     *
-     * @OA\Property(type="integer")
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $createdAt;
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotNull]
+    #[Assert\Type('integer')]
+    #[Groups(['public'])]
+    #[OA\Property(type: 'integer')]
+    private int $createdAt;
 
-    /**
-     * @Assert\NotNull()
-     *
-     * @Groups("public")
-     *
-     * @OA\Property(type="App\Entity\User")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="bookmarks")
-     */
-    private $user;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookmarks')]
+    #[Assert\NotNull]
+    #[Groups(['public'])]
+    #[OA\Property(type: 'App\Entity\User')]
+    private User $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Message", inversedBy="bookmarks")
-     *
-     * @Groups({"read_bookmark"})
-     *
-     * @OA\Property(type="App\Entity\Message")
-     */
-    private $message;
+    #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'bookmarks')]
+    #[Groups(['read_bookmark'])]
+    #[OA\Property(type: 'App\Entity\Message')]
+    private Message $message;
 
-    /**
-     * @Groups("public")
-     *
-     * @OA\Property(type="string")
-     */
-    private $entityType;
-
-    public function getEntityType(): string
-    {
-        return strtolower((new \ReflectionClass($this))->getShortName());
-    }
+    #[Groups(['public'])]
+    #[OA\Property(type: 'string')]
+    private string $entityType;
 
     public function __construct()
     {
