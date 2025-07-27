@@ -17,7 +17,7 @@
     "password_reset_mail_sent": "Se etter e-post om tilbakestilling av passord i innboksen din.",
     "invitation_welcome": "Velkommen til Zusam. Registrer deg før du tar del i gruppen.",
     "group_updated": "Gruppen ble oppdatert.",
-    "error_new_message": "En feil inntraff ved forsendelse av meldingen din",
+    "error_new_message": "En feil inntraff ved forsendelse av meldingen din.",
     "just_now": "Akkurat nå",
     "none": "Ingen",
     "cancel_write": "Forkast den nye meldingen?",
@@ -95,7 +95,7 @@
     "cancel": "Avbryt",
     "empty_message": "Meldingen er tom og kan ikke sendes.",
     "notification_emails": "E-postmerknader",
-    "notification_emails_stopped": "E-postmerknader stoppet.",
+    "notification_emails_stopped": "E-postmerknader stoppet!",
     "bookmark_removed": "Meldingsbokmerke fjernet.",
     "parent_message": "Inneholdende melding"
 }
