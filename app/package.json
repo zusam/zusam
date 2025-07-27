@@ -5,7 +5,7 @@
   "scripts": {
     "build": "parcel build --public-url='/' src/index.html",
     "clean": "rm -rf dist/*",
-    "lang": "cp -r src/lang dist/",
+    "lang": "cp -r ../translations/app dist/lang",
     "postbuild": "node ./build-tools/set_version_in_files.js dist/index.html",
     "prebuild": "npm run lang",
     "prelang": "npm run clean",

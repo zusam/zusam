@@ -1,0 +1,18 @@
+{
+  "created.a.post": "created a post",
+  "new.content.on.zusam": "New Content on Zusam",
+  "hello": "Hello",
+  "check.out.new.content.on.zusam": "Check out the newest content on Zusam",
+  "has.commented.on.the.post": "has commented on the post",
+  "view.feed": "View feed",
+  "change.email.frequency": "To change the frequency of emails",
+  "visit.settings.page": "visit your settings page",
+  "if.you.dont.want.emails": "If you no longer wish to receive these emails, you can",
+  "unsubscribe": "unsubscribe",
+  "notification.email.subject": "Zusam Notification Email",
+  "password.reset.email.subject": "Zusam Password Reset",
+  "password.reset.instructions.html": "We received a request to reset your password. Click the button below to set up a new password:",
+  "reset.password": "Reset Password",
+  "ignore.password.reset": "If you did not request a password reset, you can safely ignore this email.",
+  "password.reset.instructions.txt": "This is a password reset email for Zusam. To reset your password, open the following link in your browser:"
+}

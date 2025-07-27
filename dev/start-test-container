@@ -18,6 +18,7 @@ cdroot
 make prod
 docker run --rm -it --name "zusam-test" -p 8080:8080 \
   -e UID="$(id -u)" -e GID="$(id -g)" \
+  -v "$initial_path"/translations:/zusam/translations:z \
   -v "$initial_path"/data:/zusam/data:z \
   -v "$initial_path"/public:/zusam/public:z \
   -v "$initial_path"/api:/zusam/api:z \
