@@ -72,8 +72,7 @@ export default function MessageBreadcrumbs(props) {
                 >{util.limitLength(group.name || group.id.slice(0, 8), 30)}</Link>
               </li>
             )}
-            {stack_truncated.filter(e => e != null).map((e, i) => {
-              return (
+            {stack_truncated.filter(e => e != null).map((e, i) => (
               <Fragment key={e}>
                 <Fragment>
                   {i == 1 && stack.length > 3 && (
@@ -88,7 +87,7 @@ export default function MessageBreadcrumbs(props) {
                   >{util.limitLength(breadcrumbs_truncated[i] || e.slice(0, 8), 30)}</Link>
                 </li>
               </Fragment>
-            );})}
+            ))}
           </ol>
         </nav>
       </div>
