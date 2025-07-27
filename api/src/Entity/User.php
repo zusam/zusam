@@ -19,12 +19,11 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     /**
      * @Assert\NotBlank()
      *
-     * @Groups("public")
-     *
      * @OA\Property(type="guid")
      */
     #[ORM\Id]
     #[ORM\Column(type: "guid")]
+    #[Groups(['public'])]
     private $id;
 
     /**
@@ -40,21 +39,19 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     /**
      * @Assert\NotBlank()
      *
-     * @Groups({"read_me", "write_user"})
-     *
      * @OA\Property(type="string")
      */
     #[ORM\Column(type: "string", unique: true)]
+    #[Groups(['read_me', 'write_user'])]
     private $login;
 
     /**
      * @Assert\NotBlank()
      *
-     * @Groups({"write_user"})
-     *
      * @OA\Property(type="string")
      */
     #[ORM\Column(type: "string")]
+    #[Groups(['write_user'])]
     private $password;
 
     /**
@@ -66,12 +63,11 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     private $secretKey;
 
     /**
-     * @Groups({"read_me"})
-     *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Group"))
      */
     #[ORM\ManyToMany(targetEntity: "App\Entity\Group", inversedBy: "users")]
     #[ORM\JoinTable(name: "users_groups")]
+    #[Groups(['read_me'])]
     private $groups;
 
     /**
@@ -93,32 +89,29 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     private $bookmarks;
 
     /**
-     * @Groups({"read_me", "read_user", "write_user", "read_message_preview"})
-     *
      * @OA\Property(type="App\Entity\File")
      */
     #[ORM\OneToOne(targetEntity: "App\Entity\File")]
     #[ORM\JoinColumn(name: "avatar_id", referencedColumnName: "id")]
+    #[Groups(['read_me', 'read_user', 'write_user', 'read_message_preview'])]
     private $avatar;
 
     /**
      * @Assert\NotBlank()
      *
-     * @Groups("public")
-     *
      * @OA\Property(type="string")
      */
     #[ORM\Column(type: "string")]
+    #[Groups(['public'])]
     private $name;
 
     /**
      * @Assert\NotBlank()
      *
-     * @Groups({"read_me", "read_user", "write_user"})
-     *
      * @OA\Property(type="object")
      */
     #[ORM\Column(type: "json", nullable: true)]
+    #[Groups(['read_me', 'read_user', 'write_user'])]
     private $data;
 
     /**
@@ -131,28 +124,25 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     /**
      * @Assert\Type("integer")
      *
-     * @Groups({"read_me"})
-     *
      * @OA\Property(type="integer")
      */
     #[ORM\Column(type: "integer", nullable: true)]
+    #[Groups(['read_me'])]
     private $lastActivityDate;
 
     /**
      * @Assert\Type("integer")
      *
-     * @Groups({"read_me"})
-     *
      * @OA\Property(type="integer")
      */
     #[ORM\Column(type: "integer", nullable: true)]
+    #[Groups(['read_me'])]
     private int $lastNotificationEmailCheck;
 
     /**
-     * @Groups("public")
-     *
      * @OA\Property(type="string")
      */
+    #[Groups(['public'])]
     private $entityType;
 
     public function getEntityType(): string

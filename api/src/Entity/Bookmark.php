@@ -33,6 +33,7 @@ class Bookmark extends ApiEntity
     private User $user;
 
     #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'bookmarks')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Groups(['read_bookmark'])]
     #[OA\Property(type: 'App\Entity\Message')]
     private Message $message;

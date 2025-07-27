@@ -72,6 +72,11 @@ class File extends ApiEntity
     #[OA\Property(type: 'string')]
     private string $entityType;
 
+    public function getEntityType(): string
+    {
+        return strtolower((new \ReflectionClass($this))->getShortName());
+    }
+
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
