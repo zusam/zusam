@@ -1,0 +1,16 @@
+{{ "hello" | trans }} {{ user.name }},
+{{ "check.out.new.content.on.zusam" | trans }}:
+{% for notification in notifications %}
+    {% if notification.notification.type == 'new_message' %}
+- {{ notification.notification.fromUser.name }} {{ "created.a.post" | trans }}: {{ notification.title }}
+  {{ base_url }}/messages/{{ notification.notification.target }}
+    {%  elseif notification.notification.type == 'new_comment' %}
+- {{ notification.notification.fromUser.name }} {{ "has.commented.on.the.post" | trans }}: {{ notification.title }}
+  {{ base_url }}/messages/{{ notification.notification.fromMessage.id }}/{{ notification.notification.target }}
+    {% endif %}
+{% endfor %}
+
+{{ "change.email.frequency" | trans }} {{ "visit.settings.page" | trans }}:
+{{ base_url }}/users/{{ user.id }}/settings"
+{{ "if.you.dont.want.emails" | trans }} {{ "unsubscribe" | trans }}:
+{{ base_url }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}"

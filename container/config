@@ -16,10 +16,4 @@ FFPROBE_PATH="/usr/bin/ffprobe"
 dir_files="%kernel.project_dir%/../data/files"
 dir_cache="%kernel.project_dir%/../data/cache"
 
-mailer_username="username"
-mailer_password="password"
-mailer_auth_mode="cram-md5"
-mailer_port=587
-mailer_host="smtp.example.com"
-mailer_transport="smtp"
-mailer_encryption="tls"
+MAILER_DSN="<MAILER_DSN>"

@@ -153,10 +153,14 @@ services:
     App\Service\Mailer:
       arguments:
         $twig: '@twig'
+        $translator: '@translator'
         $domain: '%env(resolve:DOMAIN)%'
         $lang: '%env(resolve:LANG)%'
         $allow_email: '%env(resolve:ALLOW_EMAIL)%'
         $env: '%kernel.environment%'
+        $logger: '@logger'
+        $symfonyMailer: '@mailer'
+        $url: '@App\Service\Url'
 
     App\Service\Url:
       arguments:

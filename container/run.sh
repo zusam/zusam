@@ -2,6 +2,10 @@
 
 set -xe
 
+# Output that can be useful for debugging
+echo "USER: ${UID}"
+echo "GROUP: ${GID}"
+
 # Remove event directories that can cause fails like:
 # s6-supervise <service name>: fatal: unable to mkfifodir event: Permission denied
 rm -rf $(find /etc/s6.d -name 'event')
@@ -22,6 +26,7 @@ if [ -f /zusam/config ]; then
     -e "s|<DATABASE_URL>|${DATABASE_URL}|g" \
     -e "s|<DOMAIN>|${DOMAIN}|g" \
     -e "s|<LANG>|${LANG}|g" \
+    -e "s|<MAILER_DSN>|${MAILER_DSN}|g" \
     /zusam/config
 fi
 
