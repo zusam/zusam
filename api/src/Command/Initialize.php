@@ -65,12 +65,12 @@ class Initialize extends Command
             '--force' => true,
         ]), $output);
 
-        $syncCommand = $this->getApplication()->find('doctrine:migrations:sync-metadata-storage');
-        $syncCommand->run(new ArrayInput([
+        $doctrineMigrationsSync = $this->getApplication()->find('doctrine:migrations:sync-metadata-storage');
+        $doctrineMigrationsSync->run(new ArrayInput([
             'command' => 'doctrine:migrations:sync-metadata-storage',
         ]), $output);
 
-        $versionCommand = $this->getApplication()->find('doctrine:migrations:version');
+        $doctrineMigrationsVersion = $this->getApplication()->find('doctrine:migrations:version');
         $args = new ArrayInput([
             'command' => 'doctrine:migrations:version',
             '--add' => true,
@@ -78,7 +78,7 @@ class Initialize extends Command
         ]);
         $args->setInteractive(false);
 
-        $versionCommand->run($args, $output);
+        $doctrineMigrationsVersion->run($args, $output);
 
         $user = $this->em->getRepository(User::class)->findOneByLogin($input->getArgument('user'));
         // Only execute the rest of the initialization if the user doesn't exist
