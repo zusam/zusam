@@ -117,8 +117,7 @@ class Search extends ApiController
             "SELECT m FROM App\Entity\Message m"
             ." WHERE m.group = '".$group->getId()."'"
         );
-        $messages = $query->iterate();
-
+        $messages = $query->toIterable();
         // flatten the search terms before starting the search
         $flattened_search_terms = array_map(function ($e) {
             return StringUtils::remove_accents($e);
@@ -127,8 +126,7 @@ class Search extends ApiController
         $totalItems = 0;
         $results = [];
         $i = 0;
-        foreach ($messages as $row) {
-            $message = $row[0];
+        foreach ($messages as $message) {
             ++$i;
             $data = $message->getData();
             $score = 0;
@@ -203,7 +201,7 @@ class Search extends ApiController
             }
 
             // detach from Doctrine, so that it can be Garbage-Collected immediately
-            $this->em->detach($row[0]);
+            $this->em->detach($message);
         }
 
         usort($results, function ($a, $b) {
