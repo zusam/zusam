@@ -217,7 +217,7 @@ class Notification extends ApiEntity
     {
         $this->fromMessage = $fromMessage;
     }
-    
+
     public function getEntityType(): string
     {
         return strtolower((new \ReflectionClass($this))->getShortName());
