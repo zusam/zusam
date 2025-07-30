@@ -18,41 +18,56 @@ class Message extends ApiEntity
     #[ORM\Column(type: 'guid')]
     #[Assert\NotBlank]
     #[Groups(['public'])]
-    #[OA\Property(type: 'guid')]
+    /**
+     * @OA\Property(type="guid")
+     */
     private $id;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotNull]
     #[Assert\Type('integer')]
     #[Groups(['read_message'])]
-    #[OA\Property(type: 'integer')]
+    /**
+     * @OA\Property(type="integer")
+     */
     private $createdAt;
 
     #[ORM\Column(type: 'json', nullable: true)]
     #[Assert\NotBlank]
     #[Groups(['read_message', 'read_notification', 'read_message_preview'])]
-    #[OA\Property(type: 'object')]
+    /**
+     * @OA\Property(type="object")
+     */
     private $data;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'messages')]
     #[Groups(['public'])]
-    #[OA\Property(type: User::class)]
+    /**
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
+     */
     private $author;
 
     #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'messages')]
     #[Groups(['read_message'])]
-    #[OA\Property(type: Group::class)]
+    /**
+     * @OA\Property(type="App\Entity\Group")
+     */
     private $group;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id')]
     #[Groups(['read_message'])]
-    #[OA\Property(type: Message::class)]
+    /**
+     * @OA\Property(type="App\Entity\Message")
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+     */
     private $parent;
 
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
     #[Groups(['read_message'])]
-    #[OA\Property(type: 'array', items: new OA\Items(type: Message::class))]
+    /**
+    * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+    */
     private $children;
 
     #[ORM\ManyToMany(targetEntity: File::class)]
@@ -61,55 +76,74 @@ class Message extends ApiEntity
     #[ORM\InverseJoinColumn(name: 'file_id', referencedColumnName: 'id')]
     #[ORM\OrderBy(['fileIndex' => 'ASC'])]
     #[Groups(['read_message'])]
-    #[OA\Property(type: 'array', items: new OA\Items(type: File::class))]
+    /**
+    * @OA\Property(type="array", @OA\Items(type="App\Entity\File"))
+    */
     private $files;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'messages')]
     #[Groups(['read_message', 'write_message'])]
-    #[OA\Property(type: 'array', items: new OA\Items(type: Tag::class))]
+    /**
+    * @OA\Property(type="array", @OA\Items(type="App\Entity\Tag"))
+    */
     private $tags;
 
     #[ORM\OneToMany(mappedBy: 'message', targetEntity: Reaction::class, cascade: ['remove'], orphanRemoval: true)]
     #[Groups(['read_message', 'write_message'])]
-    #[OA\Property(type: 'array', items: new OA\Items(type: Reaction::class))]
+    /**
+    * @OA\Property(type="array", @OA\Items(type="App\Entity\Reaction"))
+    */
     private Collection $reactions;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotNull]
     #[Assert\Type('integer')]
     #[Groups(['read_message', 'read_message_preview'])]
-    #[OA\Property(type: 'integer')]
+    /**
+     * @OA\Property(type="integer")
+     */
     private $lastActivityDate;
 
     #[ORM\ManyToOne(targetEntity: File::class)]
     #[ORM\JoinColumn(name: 'preview_id', referencedColumnName: 'id')]
     #[Groups(['read_message', 'read_message_preview'])]
-    #[OA\Property(type: File::class)]
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\File")
+     */
     private $preview;
 
     #[ORM\Column(type: 'guid', unique: true)]
     #[Assert\NotBlank]
-    #[OA\Property(type: 'guid')]
+    /**
+     * @OA\Property(type="guid")
+     */
     private $secretKey;
 
     #[ORM\Column(type: 'boolean')]
     #[Assert\NotNull]
     #[Groups(['read_message'])]
-    #[OA\Property(type: 'boolean')]
+    /**
+     * @OA\Property(type="boolean")
+     */
     private $isInFront;
 
     #[ORM\OneToMany(mappedBy: 'message', targetEntity: Bookmark::class)]
-    #[OA\Property(type: 'array', items: new OA\Items(type: Bookmark::class))]
+    /**
+    * @OA\Property(type="array", @OA\Items(type="App\Entity\Bookmark"))
+    */
     private $bookmarks;
 
     #[ORM\Column(type: 'string')]
     #[Assert\NotNull]
     #[Groups(['public'])]
-    #[OA\Property(type: 'string')]
-    private $type;
+    /**
+     * @OA\Property(type="string")
+     */    private $type;
 
     #[Groups(['public'])]
-    #[OA\Property(type: 'string')]
+    /**
+     * @OA\Property(type="string")
+     */
     private $entityType;
 
     #[ORM\Column(type: 'integer', nullable: true)]
