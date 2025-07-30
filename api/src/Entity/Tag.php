@@ -18,35 +18,47 @@ class Tag extends ApiEntity
     #[ORM\Column(type: 'guid')]
     #[Assert\NotBlank]
     #[Groups(['public'])]
-    #[OA\Property(type: 'guid')]
+    /**
+     * @OA\Property(type="guid")
+     */
     private string $id;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotNull]
     #[Assert\Type('integer')]
     #[Groups(['public'])]
-    #[OA\Property(type: 'integer')]
+    /**
+     * @OA\Property(type="integer")
+     */
     private int $createdAt;
 
     #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'tags')]
     #[Assert\NotNull]
     #[Groups(['public'])]
-    #[OA\Property(type: 'App\Entity\Group')]
+    /**
+     * @OA\Property(type="App\Entity\Group")
+     */
     private Group $group;
 
     #[ORM\ManyToMany(targetEntity: Message::class, inversedBy: 'tags')]
     #[ORM\JoinTable(name: 'tags_messages')]
-    #[OA\Property(type: 'array', items: new OA\Items(type: 'App\Entity\Message'))]
+    /**
+    * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+    */
     private Collection $messages;
 
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank]
     #[Groups(['public'])]
-    #[OA\Property(type: 'string')]
+    /**
+     * @OA\Property(type="string")
+     */
     private string $name;
 
     #[Groups(['public'])]
-    #[OA\Property(type: 'string')]
+    /**
+     * @OA\Property(type="string")
+     */
     private ?string $entityType = null;
 
     public function __construct()

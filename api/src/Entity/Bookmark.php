@@ -16,30 +16,40 @@ class Bookmark extends ApiEntity
     #[ORM\Column(type: 'guid')]
     #[Assert\NotBlank]
     #[Groups(['public'])]
-    #[OA\Property(type: 'guid')]
+    /**
+     * @OA\Property(type="guid")
+     */
     private string $id;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotNull]
     #[Assert\Type('integer')]
     #[Groups(['public'])]
-    #[OA\Property(type: 'integer')]
+    /**
+     * @OA\Property(type="integer")
+     */
     private int $createdAt;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookmarks')]
     #[Assert\NotNull]
     #[Groups(['public'])]
-    #[OA\Property(type: 'App\Entity\User')]
+    /**
+     * @OA\Property(type="App\Entity\User")
+     */
     private User $user;
 
     #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'bookmarks')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Groups(['read_bookmark'])]
-    #[OA\Property(type: 'App\Entity\Message')]
+    /**
+     * @OA\Property(type="App\Entity\Message")
+     */
     private Message $message;
 
     #[Groups(['public'])]
-    #[OA\Property(type: 'string')]
+    /**
+     * @OA\Property(type="string")
+     */
     private string $entityType;
 
     public function __construct()
@@ -81,5 +91,10 @@ class Bookmark extends ApiEntity
     public function setMessage(Message $message): void
     {
         $this->message = $message;
+    }
+
+    public function getEntityType(): string
+    {
+        return strtolower((new \ReflectionClass($this))->getShortName());
     }
 }

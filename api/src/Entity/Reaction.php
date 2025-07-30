@@ -16,30 +16,40 @@ class Reaction extends ApiEntity
     #[ORM\Column(type: 'guid')]
     #[Assert\NotBlank]
     #[Groups(['public'])]
-    #[OA\Property(type: 'guid')]
+    /**
+     * @OA\Property(type="guid")
+     */
     private string $id;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotNull]
     #[Assert\Type('integer')]
     #[Groups(['read_reaction'])]
-    #[OA\Property(type: 'integer')]
+    /**
+     * @OA\Property(type="integer")
+     */
     private int $createdAt;
 
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank]
     #[Groups(['read_reaction'])]
-    #[OA\Property(type: 'string')]
+    /**
+     * @OA\Property(type="string")
+     */
     private string $value;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reactions')]
     #[Groups(['public'])]
-    #[OA\Property(type: 'array', items: new OA\Items(type: 'App\Entity\User'))]
+    /**
+    * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
+    */
     private ?User $author = null;
 
     #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'reactions')]
     #[Groups(['read_reaction'])]
-    #[OA\Property(type: 'App\Entity\Message')]
+    /**
+     * @OA\Property(type="App\Entity\Message")
+     */
     private Message $message;
 
     public function getEntityType(): string
