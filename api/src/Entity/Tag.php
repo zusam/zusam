@@ -20,7 +20,7 @@ class Tag extends ApiEntity
     #[Groups(['public'])]
     /**
      * @OA\Property(type="guid")
-     */    
+     */
     private string $id;
 
     #[ORM\Column(type: 'integer')]
