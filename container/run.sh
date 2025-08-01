@@ -38,6 +38,8 @@ if ! [ -L /zusam/public/files ]; then
   ln -s /zusam/data/files /zusam/public/files
 fi
 
+COMPOSER_ALLOW_SUPERUSER=1 /usr/bin/php /zusam/api/bin/composer install -d /zusam/api --no-interaction
+
 # initialize database if none is present
 if ! [ -f "/zusam/data/${DATABASE_NAME}" ]; then
   /zusam/api/bin/console zusam:init "${INIT_USER}" "${INIT_GROUP}" "${INIT_PASSWORD}"
@@ -53,6 +55,8 @@ if [ -n "${SUBPATH}" ]; then
 else
   ln -sfn /etc/nginx/nginx-root.conf /etc/nginx/nginx.conf
 fi
+
+mkdir -p /zusam/api/var/log /zusam/api/var/cache
 
 chown -R "$UID:$GID" /zusam /etc/s6.d /etc/nginx /etc/php84 /var/lib/nginx /var/log /run/nginx
 su-exec "$UID:$GID" /usr/bin/s6-svscan /etc/s6.d

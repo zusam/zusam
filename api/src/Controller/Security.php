@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\TooManyLoginAttemptsAuthenticationException;
-use Symfony\Component\Security\Core\Security as SymfonySecurity;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
 
 class Security extends AbstractController
 {
@@ -63,7 +63,7 @@ class Security extends AbstractController
 
         if ($this->getParameter('kernel.environment') !== 'test') {
             // Throttle login attempts
-            $request->attributes->set(SymfonySecurity::LAST_USERNAME, $user->getUserIdentifier());
+            $request->attributes->set(SecurityRequestAttributes::LAST_USERNAME, $user->getUserIdentifier());
             $limit = $this->limiter->consume($request);
             if (!$limit->isAccepted()) {
                 throw new TooManyLoginAttemptsAuthenticationException(intval(ceil(($limit->getRetryAfter()->getTimestamp() - time()) / 60)));
