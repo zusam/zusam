@@ -13,14 +13,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
+use App\Service\User as UserService;
 
 class Delete extends ApiController
 {
+    private UserService $us;
     public function __construct(
         EntityManagerInterface $em,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        UserService $us
     ) {
         parent::__construct($em, $serializer);
+        $this->us = $us;
     }
 
     /**
@@ -49,9 +53,7 @@ class Delete extends ApiController
 
         $currentUser->setLastActivityDate(time());
         $this->em->persist($currentUser);
-        $this->em->remove($user);
-        $this->em->flush();
-
+        $this->us->delete($user);
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }
