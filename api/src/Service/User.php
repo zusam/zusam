@@ -61,14 +61,15 @@ class User
         return $user;
     }
 
-    public function delete(UserEntity $user){
+    public function delete(UserEntity $user)
+    {
         $notifications = $this->em->getRepository(NotificationEntity::class)->findBy(['owner' => $user,]);
         foreach ($notifications as $notification) {
-                $this->notificationService->delete($notification);
+            $this->notificationService->delete($notification);
         }
         $notifications = $this->em->getRepository(NotificationEntity::class)->findBy(['fromUser' => $user,]);
         foreach ($notifications as $notification) {
-                $this->notificationService->delete($notification);
+            $this->notificationService->delete($notification);
         }
         $this->em->remove($user);
         $this->em->flush();
