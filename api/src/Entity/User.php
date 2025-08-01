@@ -12,24 +12,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="`user`")
- *
- * @ORM\Entity()
- */
+#[ORM\Entity()]
+#[ORM\Table(name: "user")]
 class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @Assert\NotBlank()
      *
-     * @Groups("public")
-     *
      * @OA\Property(type="guid")
-     *
-     * @ORM\Column(type="guid")
-     *
-     * @ORM\Id
      */
+    #[ORM\Id]
+    #[ORM\Column(type: "guid")]
+    #[Groups(['public'])]
     private $id;
 
     /**
@@ -38,143 +32,117 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
      * @Assert\Type("integer")
      *
      * @OA\Property(type="integer")
-     *
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Column(type: "integer")]
     private $createdAt;
 
     /**
      * @Assert\NotBlank()
      *
-     * @Groups({"read_me", "write_user"})
-     *
      * @OA\Property(type="string")
-     *
-     * @ORM\Column(type="string", unique=true)
      */
+    #[ORM\Column(type: "string", unique: true)]
+    #[Groups(['read_me', 'write_user'])]
     private $login;
 
     /**
      * @Assert\NotBlank()
      *
-     * @Groups({"write_user"})
-     *
      * @OA\Property(type="string")
-     *
-     * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: "string")]
+    #[Groups(['write_user'])]
     private $password;
 
     /**
      * @Assert\NotBlank()
      *
      * @OA\Property(type="guid")
-     *
-     * @ORM\Column(type="guid", unique=true)
      */
+    #[ORM\Column(type: "guid", unique: true)]
     private $secretKey;
 
     /**
-     * @Groups({"read_me"})
-     *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Group"))
-     *
-     * @ORM\JoinTable(name="users_groups")
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
      */
+    #[ORM\ManyToMany(targetEntity: "App\Entity\Group", inversedBy: "users")]
+    #[ORM\JoinTable(name: "users_groups")]
+    #[Groups(['read_me'])]
     private $groups;
 
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="author")
      */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Message", mappedBy: "author")]
     private $messages;
 
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Reaction"))
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Reaction", mappedBy="author")
      */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Reaction", mappedBy: "author")]
     private Collection $reactions;
 
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Bookmark"))
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="user")
      */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Bookmark", mappedBy: "user")]
     private $bookmarks;
 
     /**
-     * @Groups({"read_me", "read_user", "write_user", "read_message_preview"})
-     *
      * @OA\Property(type="App\Entity\File")
-     *
-     * @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\File")
      */
+    #[ORM\OneToOne(targetEntity: "App\Entity\File")]
+    #[ORM\JoinColumn(name: "avatar_id", referencedColumnName: "id")]
+    #[Groups(['read_me', 'read_user', 'write_user', 'read_message_preview'])]
     private $avatar;
 
     /**
      * @Assert\NotBlank()
      *
-     * @Groups("public")
-     *
      * @OA\Property(type="string")
-     *
-     * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: "string")]
+    #[Groups(['public'])]
     private $name;
 
     /**
      * @Assert\NotBlank()
      *
-     * @Groups({"read_me", "read_user", "write_user"})
-     *
      * @OA\Property(type="object")
-     *
-     * @ORM\Column(type="json", nullable=true)
      */
+    #[ORM\Column(type: "json", nullable: true)]
+    #[Groups(['read_me', 'read_user', 'write_user'])]
     private $data;
 
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Notification"))
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="owner")
-     *
-     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Notification", mappedBy: "owner")]
+    #[ORM\OrderBy(["createdAt" => "DESC"])]
     private $notifications;
 
     /**
      * @Assert\Type("integer")
      *
-     * @Groups({"read_me"})
-     *
      * @OA\Property(type="integer")
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: "integer", nullable: true)]
+    #[Groups(['read_me'])]
     private $lastActivityDate;
 
     /**
      * @Assert\Type("integer")
      *
-     * @Groups({"read_me"})
-     *
      * @OA\Property(type="integer")
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: "integer", nullable: true)]
+    #[Groups(['read_me'])]
     private int $lastNotificationEmailCheck;
 
     /**
-     * @Groups("public")
-     *
      * @OA\Property(type="string")
      */
+    #[Groups(['public'])]
     private $entityType;
 
     public function getEntityType(): string
@@ -370,7 +338,7 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     }
 
     // necessary for UserInterface
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 }

@@ -10,81 +10,56 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="`tag`")
- *
- * @ORM\Entity()
- */
+#[ORM\Entity]
+#[ORM\Table(name: '`tag`')]
 class Tag extends ApiEntity
 {
+    #[ORM\Id]
+    #[ORM\Column(type: 'guid')]
+    #[Assert\NotBlank]
+    #[Groups(['public'])]
     /**
-     * @Assert\NotBlank()
-     *
-     * @Groups("public")
-     *
      * @OA\Property(type="guid")
-     *
-     * @ORM\Column(type="guid")
-     *
-     * @ORM\Id
      */
-    private $id;
+    private string $id;
 
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotNull]
+    #[Assert\Type('integer')]
+    #[Groups(['public'])]
     /**
-     * @Assert\NotNull()
-     *
-     * @Assert\Type("integer")
-     *
-     * @Groups("public")
-     *
      * @OA\Property(type="integer")
-     *
-     * @ORM\Column(type="integer")
      */
-    private $createdAt;
+    private int $createdAt;
 
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'tags')]
+    #[Assert\NotNull]
+    #[Groups(['public'])]
     /**
-     * @Assert\NotNull()
-     *
-     * @Groups("public")
-     *
      * @OA\Property(type="App\Entity\Group")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="tags")
      */
-    private $group;
+    private Group $group;
 
+    #[ORM\ManyToMany(targetEntity: Message::class, inversedBy: 'tags')]
+    #[ORM\JoinTable(name: 'tags_messages')]
     /**
-     * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
-     *
-     * @ORM\JoinTable(name="tags_messages")
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Message", inversedBy="tags")
-     */
-    private $messages;
+    * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+    */
+    private Collection $messages;
 
+    #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank]
+    #[Groups(['public'])]
     /**
-     * @Assert\NotBlank()
-     *
-     * @Groups("public")
-     *
-     * @OA\Property(type="string")
-     *
-     * @ORM\Column(type="string")
-     */
-    private $name;
-
-    /**
-     * @Groups("public")
-     *
      * @OA\Property(type="string")
      */
-    private $entityType;
+    private string $name;
 
-    public function getEntityType(): string
-    {
-        return strtolower((new \ReflectionClass($this))->getShortName());
-    }
+    #[Groups(['public'])]
+    /**
+     * @OA\Property(type="string")
+     */
+    private ?string $entityType = null;
 
     public function __construct()
     {

@@ -10,112 +10,85 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="`group`")
- *
- * @ORM\Entity
- */
+#[ORM\Entity]
+#[ORM\Table(name: '`group`')]
 class Group extends ApiEntity
 {
+    #[ORM\Id]
+    #[ORM\Column(type: 'guid')]
+    #[Groups(['public'])]
+    #[Assert\NotBlank]
     /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="guid")
-     *
-     * @Groups("public")
-     *
-     * @Assert\NotBlank()
-     *
      * @OA\Property(type="guid")
      */
     private $id;
 
+    #[ORM\Column(type: 'string', unique: true)]
+    #[Groups(['read_group'])]
+    #[Assert\NotBlank]
     /**
-     * @ORM\Column(type="string", unique=true)
-     *
-     * @Groups({"read_group"})
-     *
-     * @Assert\NotBlank()
-     *
      * @OA\Property(type="string")
      */
     private $secretKey;
 
+    #[ORM\Column(type: 'string', unique: true, nullable: true)]
+    #[Groups(['read_invite_key'])]
     /**
-     * @ORM\Column(type="string", unique=true, nullable=true)
-     *
-     * @Groups({"read_invite_key"})
-     *
      * @OA\Property(type="string")
      */
     private $inviteKey;
 
+    #[ORM\Column(type: 'integer')]
+    #[Assert\Type('integer')]
+    #[Assert\NotNull]
     /**
-     * @ORM\Column(type="integer")
-     *
-     * @Assert\Type("integer")
-     *
-     * @Assert\NotNull()
-     *
      * @OA\Property(type="integer")
      */
     private $createdAt;
 
+    #[ORM\Column(type: 'string')]
+    #[Groups(['public'])]
+    #[Assert\NotBlank]
     /**
-     * @ORM\Column(type="string")
-     *
-     * @Groups("public")
-     *
-     * @Assert\NotBlank()
-     *
      * @OA\Property(type="string")
      */
     private $name;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'groups')]
+    #[Groups(['read_group', 'write_group'])]
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="groups")
-     *
-     * @Groups({"read_group", "write_group"})
-     *
      * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
      */
     private $users;
 
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'group')]
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="group")
-     *
-     * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
-     */
+    * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+    */
     private $messages;
 
+    #[ORM\OneToMany(targetEntity: Tag::class, mappedBy: 'group')]
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="group")
-     *
-     * @OA\Property(type="array", @OA\Items(type="App\Entity\Tag"))
-     */
+    * @OA\Property(type="array", @OA\Items(type="App\Entity\Tag"))
+    */
     private $tags;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read_group', 'read_me'])]
+    #[Assert\Type('integer')]
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     *
-     * @Groups({"read_group", "read_me"})
-     *
-     * @Assert\Type("integer")
-     *
      * @OA\Property(type="integer")
      */
     private $lastActivityDate;
 
+    #[ORM\Column(type: 'json', nullable: true)]
     /**
-     * @ORM\Column(type="json", nullable=true)
-     *
      * @OA\Property(type="object")
      */
     private $data;
 
+    #[Groups(['public'])]
     /**
-     * @Groups("public")
-     *
      * @OA\Property(type="string")
      */
     private $entityType;

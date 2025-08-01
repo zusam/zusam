@@ -1,5 +1,5 @@
 // The correct PHP version can be found at
-// https://pkgs.alpinelinux.org/packages?name=php%3F%3F&branch=v3.21&repo=&arch=x86_64&origin=yes
+// https://pkgs.alpinelinux.org/packages?name=php%3F%3F&branch=v3.22&repo=&arch=x86_64&origin=yes
 // (Switch the branch to the version specified in base.docker)
 
 RUN set -xe && apk add --no-cache \\

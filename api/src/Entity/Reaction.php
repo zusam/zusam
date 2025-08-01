@@ -3,72 +3,52 @@
 namespace App\Entity;
 
 use App\Service\Uuid;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="reaction")
- *
- * @ORM\Entity()
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'reaction')]
 class Reaction extends ApiEntity
 {
+    #[ORM\Id]
+    #[ORM\Column(type: 'guid')]
+    #[Assert\NotBlank]
+    #[Groups(['public'])]
     /**
-     * @Assert\NotBlank()
-     *
-     * @Groups("public")
-     *
      * @OA\Property(type="guid")
-     *
-     * @ORM\Column(type="guid")
-     *
-     * @ORM\Id
      */
-    private $id;
+    private string $id;
 
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotNull]
+    #[Assert\Type('integer')]
+    #[Groups(['read_reaction'])]
     /**
-     * @Assert\NotNull()
-     *
-     * @Assert\Type("integer")
-     *
-     * @Groups({"read_reaction"})
-     *
      * @OA\Property(type="integer")
-     *
-     * @ORM\Column(type="integer")
      */
-    private $createdAt;
+    private int $createdAt;
 
+    #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank]
+    #[Groups(['read_reaction'])]
     /**
-     * @Assert\NotBlank()
-     *
-     * @Groups({"read_reaction"})
-     *
      * @OA\Property(type="string")
-     *
-     * @ORM\Column(type="string")
      */
-    private $value;
+    private string $value;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reactions')]
+    #[Groups(['public'])]
     /**
-     * @Groups("public")
-     *
-     * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="reactions")
-     */
-    private $author;
+    * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
+    */
+    private ?User $author = null;
 
+    #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'reactions')]
+    #[Groups(['read_reaction'])]
     /**
-     * @Groups({"read_reaction"})
-     *
      * @OA\Property(type="App\Entity\Message")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Message", inversedBy="reactions")
      */
     private Message $message;
 
