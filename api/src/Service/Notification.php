@@ -94,4 +94,9 @@ class Notification
 
         return $notif;
     }
+
+    public function delete(NotificationEntity $notification) {
+        $this->em->remove($notification);
+        $this->em->flush();
+    }
 }
