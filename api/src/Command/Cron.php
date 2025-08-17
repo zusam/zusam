@@ -141,7 +141,7 @@ class Cron extends Command
             return false;
         }
 
-        $lock = $factory->createLock('run-task');
+        $lock = $this->lockFactory->createLock('run-task');
         if (!$lock->acquire()) {
             $this->logger->info('Task already running');
             return false;
@@ -151,10 +151,7 @@ class Cron extends Command
                 // If we are only doing "always" tasks, skip others
                 if (
                     !isset($task['type'])
-                    || (
-                        $onlyRunAlwaysTasks
-                        && 'always' !== $task['type']
-                    )
+                    || 'always' !== $task['type']
                 ) {
                     continue;
                 }
