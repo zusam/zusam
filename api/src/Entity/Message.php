@@ -413,9 +413,9 @@ class Message extends ApiEntity
     #[SerializedName('children')]
     public function getChildrenAsIdObjects(): array
     {
-        return $this->children->map(function(Message $child) {
+        return $this->children->map(function (Message $child) {
             // Return an associative array instead of just the ID string
-            return ['id' => $child->getId()]; 
+            return ['id' => $child->getId()];
         })->toArray();
     }
 }
