@@ -10,7 +10,6 @@ import { FaIcon } from "/src/misc";
 export default function Navbar() {
 
   const { t } = useTranslation();
-  const { bookmarks } = useStoreon("bookmarks");
   const { me } = useStoreon("me");
 
   return (
@@ -34,14 +33,12 @@ export default function Navbar() {
             />
           </div>
           <div class="dropdown-menu dropdown-right">
-            { bookmarks?.length > 0 && (
-              <Link
-                class="d-block seamless-link capitalize"
-                to={"/bookmarks"}
-              >
-                {t("bookmarks")}
-              </Link>
-            )}
+            <Link
+              class="d-block seamless-link capitalize"
+              to={"/bookmarks"}
+            >
+              {t("bookmarks")}
+            </Link>
             <Link
               class="d-block seamless-link capitalize"
               to={`/users/${me.id}/settings`}
