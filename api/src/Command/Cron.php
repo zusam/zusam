@@ -12,17 +12,20 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Lock\Store\FlockStore;
 
 class Cron extends Command
 {
     private $logger;
     private $input;
     private $output;
-    private $running;
     private $system;
     private $tasks;
     private $kernel;
     private $params;
+    private $lockStore;
+    private $lockFactory;
 
     public function __construct(
         LoggerInterface $logger,
@@ -32,10 +35,11 @@ class Cron extends Command
     ) {
         parent::__construct();
         $this->logger = $logger;
-        $this->running = false;
         $this->system = $system;
         $this->kernel = $kernel;
         $this->params = $params;
+        $this->lockStore = new FlockStore();
+        $this->lockFactory = new LockFactory($this->lockStore);
         $this->tasks = [
             [
                 'name' => 'zusam:convert:images',
@@ -124,88 +128,58 @@ class Cron extends Command
     {
         // create context for logs
         $context = [];
-        // Set default idle hours
+        // get idle hours
         $idle_hours = [0, 24];
+        if (null !== $this->params->get('idle_hours')) {
+            $idle_hours = explode('-', $this->params->get('idle_hours'));
+            $idle_hours[0] = intval($idle_hours[0]);
+            $idle_hours[1] = intval($idle_hours[1]);
+        }
 
-        // don't run if on a POST or an upload files request. Don't run twice in the same process
-        if (!empty($_POST) || !empty($_FILES) || defined('TASK_RUNNING') || $this->running) {
-            $this->logger->info('Task already running');
-
+        // don't run if on a POST or an upload files request.
+        if (!empty($_POST) || !empty($_FILES)) {
             return false;
         }
 
-        define('TASK_RUNNING', true);
-        $this->running = true;
-
-        // check in database for the last running task
-        $task_running = $this->system->get('task_running');
-        $last_task_timestamp = $this->system->get('last_task_timestamp');
-        $last_task_name = $this->system->get('last_task_name');
-
-        // if a task is running and it's not older than MAX_TASK_LOCK_DURATION, only run our "always" tasks
-        $onlyRunAlwaysTasks = false;
-        if ($task_running && isset($last_task_timestamp) && $last_task_timestamp > time() - intval($this->params->get('max_task_lock_duration'))) {
-            $this->logger->notice($last_task_name.' is already running since '.(time() - $last_task_timestamp).'s');
-
-            $onlyRunAlwaysTasks = true;
+        $lock = $this->lockFactory->createLock('run-task');
+        if (!$lock->acquire()) {
+            $this->logger->info('Task already running');
+            return false;
         }
-
-        // Don't count the always-only task run as the last task when checking for duplicates
-        if (!$onlyRunAlwaysTasks) {
-            // if a task is running but it's old, it's probably a lockup.
-            // continue but log it
-            if (isset($last_task_timestamp) && $last_task_timestamp < time() - intval($this->params->get('max_task_lock_duration'))) {
-                $this->logger->notice('Removing old task lock');
+        try {
+            foreach ($this->tasks as $task) {
+                // If we are only doing "always" tasks, skip others
+                if (
+                    !isset($task['type'])
+                    || 'always' !== $task['type']
+                ) {
+                    continue;
+                }
+                // if it's a heavy task and we're not in the idle hours, don't do it
+                if (
+                    'heavy' == $task['type']
+                    && (
+                        (new \DateTime())->format('H') < $idle_hours[0]
+                        || (new \DateTime())->format('H') > $idle_hours[1]
+                    )
+                ) {
+                    continue;
+                }
+                $lastExecution = $this->system->get($task['name']);
+                if (empty($lastExecution) || $lastExecution < time() - $task['period']) {
+                    $this->logger->notice('Running '.$task['name']);
+                    $this->system->set('last_task_timestamp', time());
+                    $this->system->set('last_task_name', $task['name']);
+                    $this->system->set($task['name'], time());
+                    $this->runCommand(
+                        $task['name'],
+                        $task['options'] ?? []
+                    );
+                }
             }
-
-            $this->system->set('task_running', true);
-
-            // get idle hours
-            if (null !== $this->params->get('idle_hours')) {
-                $idle_hours = explode('-', $this->params->get('idle_hours'));
-                $idle_hours[0] = intval($idle_hours[0]);
-                $idle_hours[1] = intval($idle_hours[1]);
-            }
+        } finally {
+            $lock->release();
         }
-
-        foreach ($this->tasks as $task) {
-
-            // If we are only doing "always" tasks, skip others
-            if (
-                !isset($task['type'])
-                || (
-                    $onlyRunAlwaysTasks
-                    && 'always' !== $task['type']
-                )
-            ) {
-                continue;
-            }
-
-            // if it's a heavy task and we're not in the idle hours, don't do it
-            if (
-                'heavy' == $task['type']
-                && (
-                    (new \DateTime())->format('H') < $idle_hours[0]
-                    || (new \DateTime())->format('H') > $idle_hours[1]
-                )
-            ) {
-                continue;
-            }
-            $lastExecution = $this->system->get($task['name']);
-            if (empty($lastExecution) || $lastExecution < time() - $task['period']) {
-                $this->logger->notice('Running '.$task['name']);
-                $this->system->set('last_task_timestamp', time());
-                $this->system->set('last_task_name', $task['name']);
-                $this->system->set($task['name'], time());
-                $this->runCommand(
-                    $task['name'],
-                    $task['options'] ?? []
-                );
-            }
-        }
-
-        $this->system->set('task_running', false);
-
         return true;
     }
 
