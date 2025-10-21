@@ -136,7 +136,7 @@ class Cron extends Command
             $idle_hours[1] = intval($idle_hours[1]);
         }
 
-        // don't run if on a POST or an upload files request. Don't run twice in the same process
+        // don't run if on a POST or an upload files request.
         if (!empty($_POST) || !empty($_FILES)) {
             return false;
         }
