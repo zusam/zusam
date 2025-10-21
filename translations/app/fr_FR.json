@@ -97,5 +97,6 @@
     "bookmark_removed": "Message supprimé des marque-pages.",
     "parent_message": "Message parent",
     "audio_not_ready": "Le fichier audio n'est pas prêt.",
+    "you_have_no_bookmarks": "Vous n'avez pas de marques-pages.",
     "upload_audio": "Ajouter un fichier audio."
 }

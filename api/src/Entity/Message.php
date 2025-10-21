@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -64,7 +65,6 @@ class Message extends ApiEntity
     private $parent;
 
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
-    #[Groups(['read_message'])]
     /**
     * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
     */
@@ -407,5 +407,15 @@ class Message extends ApiEntity
         $this->sortOrder = $sortOrder;
 
         return $this;
+    }
+
+    #[Groups(['read_message'])]
+    #[SerializedName('children')]
+    public function getChildrenAsIdObjects(): array
+    {
+        return $this->children->map(function (Message $child) {
+            // Return an associative array instead of just the ID string
+            return ['id' => $child->getId()];
+        })->toArray();
     }
 }
