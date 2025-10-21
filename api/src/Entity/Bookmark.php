@@ -32,6 +32,7 @@ class Bookmark extends ApiEntity
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookmarks')]
     #[Assert\NotNull]
+    #[Groups(['public'])]
     /**
      * @OA\Property(type="App\Entity\User")
      */
