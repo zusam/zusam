@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { MessagePreview } from "/src/message";
 import { Navbar } from "/src/navbar";
+import { useTranslation } from "react-i18next";
 import { useStoreon } from "storeon/preact";
 
 export default function BookmarkBoard() {
