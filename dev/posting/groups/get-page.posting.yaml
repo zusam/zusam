@@ -1,0 +1,12 @@
+name: Get Group Messages (Paginated)
+description: Get messages from a group with pagination. Returns 30 messages per page. User must be a group member. Response includes message IDs and total count. Cached for 7 days.
+method: GET
+url: http://localhost:8080/api/groups/:groupId/page/:pageNumber
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+path_params:
+  - name: groupId
+    value: 00000000-0000-0000-0000-000000000000
+  - name: pageNumber
+    value: '1'

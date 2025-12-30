@@ -1,0 +1,10 @@
+name: Get Message
+description: Get full message details including author, preview, files, parent lineage, and child messages. User must be a member of the message's group. Returns 403 if not authorized.
+method: GET
+url: http://localhost:8080/api/messages/:id
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+path_params:
+  - name: id
+    value: 00000000-0000-0000-0000-000000000000

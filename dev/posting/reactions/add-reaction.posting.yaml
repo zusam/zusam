@@ -1,0 +1,17 @@
+name: Add Reaction
+description: Add an emoji reaction to a message. Reaction must be a single emoji/grapheme. Returns updated reaction summary. Requires reactions enabled in configuration (allow.message.reactions).
+method: POST
+url: http://localhost:8080/api/messages/:messageId/reactions
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+  - name: Content-Type
+    value: application/json
+path_params:
+  - name: messageId
+    value: 00000000-0000-0000-0000-000000000000
+body:
+  content: |-
+    {
+      "reaction": "👍"
+    }

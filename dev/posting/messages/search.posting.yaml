@@ -1,0 +1,15 @@
+name: Search Messages
+description: Search messages within a group. Use '+' to separate search terms. Searches in title (150 pts), text (100 pts), author name (50 pts), and link metadata (20-30 pts). Returns up to 100 results sorted by relevance score then date.
+method: POST
+url: http://localhost:8080/api/messages/search
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+  - name: Content-Type
+    value: application/json
+body:
+  content: |-
+    {
+      "search": "keyword+another",
+      "group": "00000000-0000-0000-0000-000000000000"
+    }

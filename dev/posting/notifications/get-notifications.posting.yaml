@@ -1,0 +1,7 @@
+name: Get User Notifications
+description: Get all notifications for the current user. Returns normalized notifications with group information, message titles, and parent author names. Can optionally limit results by adding a number to the URL path (e.g., /me/notifications/10).
+method: GET
+url: http://localhost:8080/api/me/notifications
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY

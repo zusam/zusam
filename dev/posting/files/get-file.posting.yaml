@@ -1,0 +1,7 @@
+name: Get File Metadata
+description: Get file metadata including ID, type, size, and content type. This is a public endpoint - no authentication required. Used to support public message links.
+method: GET
+url: http://localhost:8080/api/files/:id
+path_params:
+  - name: id
+    value: 00000000-0000-0000-0000-000000000000

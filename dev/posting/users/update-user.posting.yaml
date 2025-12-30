@@ -1,0 +1,17 @@
+name: Update User Profile
+description: Update user profile information. Can modify name, login, password, avatar (file ID), or custom data. User can only update their own account. Returns 403 if attempting to modify another user's profile.
+method: PUT
+url: http://localhost:8080/api/users/:id
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+  - name: Content-Type
+    value: application/json
+path_params:
+  - name: id
+    value: 00000000-0000-0000-0000-000000000000
+body:
+  content: |-
+    {
+      "name": "New Display Name"
+    }
