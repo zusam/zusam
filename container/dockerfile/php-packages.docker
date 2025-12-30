@@ -1,32 +1,31 @@
 // The correct PHP version can be found at
-// https://pkgs.alpinelinux.org/packages?name=php%3F%3F&branch=v3.22&repo=&arch=x86_64&origin=yes
+// https://pkgs.alpinelinux.org/packages?name=php%3F%3F&branch=v3.23&repo=&arch=x86_64&origin=yes
 // (Switch the branch to the version specified in base.docker)
 
 RUN set -xe && apk add --no-cache \\
-    php84 \\
-    php84-common \\
-    php84-ctype \\
-    php84-curl \\
-    php84-dom \\
-    php84-fileinfo \\
-    php84-fpm \\
-    php84-iconv \\
-    php84-intl \\
-    php84-json \\
-    php84-mbstring \\
-    php84-opcache \\
-    php84-openssl \\
-    php84-pdo_sqlite \\
-    php84-pecl-apcu \\
-    php84-pecl-imagick \\
-    php84-phar \\
-    php84-posix \\
-    php84-session \\
-    php84-simplexml \\
-    php84-tokenizer \\
-    php84-xml \\
-    php84-xmlwriter \\
-    && ln -sf /usr/bin/php84 /usr/bin/php \\
-    && ln -sf /usr/sbin/php-fpm84 /usr/sbin/php-fpm
+    php85 \\
+    php85-common \\
+    php85-ctype \\
+    php85-curl \\
+    php85-dom \\
+    php85-fileinfo \\
+    php85-fpm \\
+    php85-iconv \\
+    php85-intl \\
+    php85-json \\
+    php85-mbstring \\
+    php85-openssl \\
+    php85-pdo_sqlite \\
+    php85-pecl-apcu \\
+    php85-pecl-imagick \\
+    php85-phar \\
+    php85-posix \\
+    php85-session \\
+    php85-simplexml \\
+    php85-tokenizer \\
+    php85-xml \\
+    php85-xmlwriter \\
+    && ln -sf /usr/bin/php85 /usr/bin/php \\
+    && ln -sf /usr/sbin/php-fpm85 /usr/sbin/php-fpm
 
-COPY container/php /etc/php84
+COPY container/php /etc/php85

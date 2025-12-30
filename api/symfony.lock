@@ -1,12 +1,15 @@
 {
-    "doctrine/annotations": {
-        "version": "2.0",
+    "carthage-software/mago": {
+        "version": "1.0",
         "recipe": {
-            "repo": "github.com/symfony/recipes",
+            "repo": "github.com/symfony/recipes-contrib",
             "branch": "main",
-            "version": "1.10",
-            "ref": "64d8583af5ea57b7afa4aba4b159907f3a148b05"
-        }
+            "version": "1.0",
+            "ref": "0be125d45ff145f21b54f21d33f7e62846940db6"
+        },
+        "files": [
+            "mago.toml"
+        ]
     },
     "doctrine/deprecations": {
         "version": "1.1",
