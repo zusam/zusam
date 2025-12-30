@@ -20,7 +20,7 @@ class Reaction
         $existingReaction = $this->em->getRepository(ReactionEntity::class)->findOneBy([
             'author' => $author,
             'message' => $message,
-            'value' => $reactionValue
+            'value' => $reactionValue,
         ]);
 
         if ($existingReaction) {
@@ -29,6 +29,7 @@ class Reaction
             $author->setLastActivityDate(time());
             $this->em->persist($author);
             $this->em->flush();
+
             return null;
         }
 
@@ -50,7 +51,6 @@ class Reaction
 
     public function getReactionSummary($message, $currentUser)
     {
-
         $reactions = $message->getReactions();
         $summary = [];
 
@@ -63,12 +63,12 @@ class Reaction
                     'emoji' => $emoji,
                     'users' => [],
                     'count' => 0,
-                    'currentUserReactionId' => ''
+                    'currentUserReactionId' => '',
                 ];
             }
 
             $summary[$emoji]['users'][] = $author->getName();
-            $summary[$emoji]['count']++;
+            ++$summary[$emoji]['count'];
 
             if ($author->getId() === $currentUser->getId()) {
                 $summary[$emoji]['currentUserReactionId'] = $reaction->getId();

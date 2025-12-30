@@ -42,7 +42,8 @@ class Edit extends ApiController
     public function index(
         string $id,
         Request $request,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 

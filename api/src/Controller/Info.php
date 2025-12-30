@@ -54,6 +54,7 @@ class Info extends ApiController
                 'group_invitation_links' => 'true' == $this->getParameter('show.group.invitation.links'),
             ];
         }
+
         return new JsonResponse($data, JsonResponse::HTTP_OK);
     }
 }

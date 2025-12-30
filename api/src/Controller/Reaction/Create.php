@@ -8,7 +8,6 @@ use App\Entity\Message;
 use App\Entity\User;
 use App\Service\Reaction as ReactionService;
 use Doctrine\ORM\EntityManagerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -56,13 +55,13 @@ class Create extends ApiController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        if ($this->getParameter('allow.message.reactions') !== "true") {
+        if ('true' !== $this->getParameter('allow.message.reactions')) {
             return new JsonResponse(['error' => 'Reactions are currently disabled.'], Response::HTTP_FORBIDDEN);
         }
 
         $requestData = json_decode($request->getcontent(), true);
         $reactionString = trim(strip_tags($requestData['reaction']));
-        if (grapheme_strlen($reactionString) !== 1) {
+        if (1 !== grapheme_strlen($reactionString)) {
             return new JsonResponse(['error' => 'Bad Request'], Response::HTTP_BAD_REQUEST);
         }
 
@@ -84,6 +83,7 @@ class Create extends ApiController
 
         $this->reactionService->create($requestData['reaction'], $this->getUser(), $message);
         $reactions = $this->reactionService->getReactionSummary($message, $currentUser);
+
         return new Response(
             json_encode($reactions),
             Response::HTTP_OK,

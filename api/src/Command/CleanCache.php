@@ -21,7 +21,7 @@ class CleanCache extends Command
         parent::__construct();
         $this->logger = $logger;
 
-        @mkdir($targetDir, 0777, true);
+        @mkdir($targetDir, 0o777, true);
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
@@ -39,7 +39,8 @@ class CleanCache extends Command
             ->setDescription('Clean old cache files')
             ->addArgument('max-cache-size', InputArgument::OPTIONAL, 'Maximum cache usage in Mo (defaults to 512).')
             ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list files that would be deleted.')
-            ->setHelp('This command removes cache files older than one month.');
+            ->setHelp('This command removes cache files older than one month.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -50,17 +51,19 @@ class CleanCache extends Command
         $cache_size = 0;
         $files = [];
         foreach (scandir($this->targetDir.'/images/') as $file) {
-            if ('.' != $file && '..' != $file) {
-                $files[] = [
-                    'path' => $this->targetDir.'/images/'.$file,
-                    'mtime' => filemtime($this->targetDir.'/images/'.$file),
-                    'size' => filesize($this->targetDir.'/images/'.$file),
-                ];
-                $cache_size += filesize($this->targetDir.'/images/'.$file);
+            if (!('.' != $file && '..' != $file)) {
+                continue;
             }
+
+            $files[] = [
+                'path' => $this->targetDir.'/images/'.$file,
+                'mtime' => filemtime($this->targetDir.'/images/'.$file),
+                'size' => filesize($this->targetDir.'/images/'.$file),
+            ];
+            $cache_size += filesize($this->targetDir.'/images/'.$file);
         }
 
-        usort($files, function ($f1, $f2) {
+        usort($files, static function ($f1, $f2) {
             return $f1['mtime'] - $f2['mtime'];
         });
 

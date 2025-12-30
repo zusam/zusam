@@ -43,7 +43,8 @@ class ActivateBot extends Command
         $this->setName('zusam:bot:activate')
             ->setDescription('Activate a bot.')
             ->addArgument('bot_id', InputArgument::REQUIRED, "What's the id of the bot to activate ?")
-            ->setHelp("This command activates a bot so that it can do it's action.");
+            ->setHelp("This command activates a bot so that it can do it's action.")
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -62,9 +63,11 @@ class ActivateBot extends Command
         } else {
             // activate all bots
             foreach (scandir($this->params->get('dir.bots')) as $file) {
-                if ('.' != $file && '..' != $file && is_dir($this->params->get('dir.bots')."/$file")) {
-                    $this->runBot($file);
+                if (!('.' != $file && '..' != $file && is_dir($this->params->get('dir.bots')."/{$file}"))) {
+                    continue;
                 }
+
+                $this->runBot($file);
             }
         }
 
@@ -79,9 +82,10 @@ class ActivateBot extends Command
         $action_file = $this->botDir.'/'.$bot_id.'/action.php';
         if (file_exists($action_file) && is_readable($action_file)) {
             try {
-                set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+                set_error_handler(static function ($errno, $errstr, $errfile, $errline) {
                     throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
                 });
+
                 include $action_file;
             } catch (\Exception $e) {
                 $this->logger->error($bot_id.': '.$e->getMessage());

@@ -65,24 +65,26 @@ class Message
 
         $parent = $message->getParent();
         foreach ($group->getUsers() as $user) {
-            if ($user->getId() != $author->getId()) {
-                if (!empty($parent)) {
-                    $fromMessage = $parent;
-                    $type = NotificationEntity::NEW_COMMENT;
-                } else {
-                    $fromMessage = $message;
-                    $type = NotificationEntity::NEW_MESSAGE;
-                }
-
-                $this->notificationService->create(
-                    $type,
-                    $message->getId(),
-                    $user,
-                    $author,
-                    $group,
-                    $fromMessage
-                );
+            if ($user->getId() == $author->getId()) {
+                continue;
             }
+
+            if (!empty($parent)) {
+                $fromMessage = $parent;
+                $type = NotificationEntity::NEW_COMMENT;
+            } else {
+                $fromMessage = $message;
+                $type = NotificationEntity::NEW_MESSAGE;
+            }
+
+            $this->notificationService->create(
+                $type,
+                $message->getId(),
+                $user,
+                $author,
+                $group,
+                $fromMessage
+            );
         }
 
         $author->setLastActivityDate(time());
@@ -109,9 +111,11 @@ class Message
         if (count($message->getFiles()) > 0) {
             $firstFile = null;
             foreach ($message->getFiles() as $file) {
-                if (!$firstFile || $file->getFileIndex() < $firstFile->getFileIndex()) {
-                    $firstFile = $file;
+                if (!(!$firstFile || $file->getFileIndex() < $firstFile->getFileIndex())) {
+                    continue;
                 }
+
+                $firstFile = $file;
             }
 
             return $firstFile;

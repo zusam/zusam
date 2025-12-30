@@ -31,7 +31,7 @@ class GetMiniature extends ApiController
      * @Security(name="api_key")
      */
     #[Cache(public: true, maxage: 31536000)]
-    #[Route("/images/{type}/{width}/{height}/{id}", methods: ["GET"])]
+    #[Route('/images/{type}/{width}/{height}/{id}', methods: ['GET'])]
     public function index(
         string $id,
         int $width,

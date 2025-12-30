@@ -29,9 +29,10 @@ class ListInviteLinks extends Command
     protected function configure()
     {
         $this->setName('zusam:invitations:list')
-             ->setDescription('List the invite link for each group')
-             ->addOption('group-id', null, InputOption::VALUE_REQUIRED, "What's the ID of the group to fetch invites for?")
-             ->setHelp('List the invitation links for each of the groups');
+            ->setDescription('List the invite link for each group')
+            ->addOption('group-id', null, InputOption::VALUE_REQUIRED, "What's the ID of the group to fetch invites for?")
+            ->setHelp('List the invitation links for each of the groups')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -43,17 +44,17 @@ class ListInviteLinks extends Command
                 $inviteKey = $group->getInviteKey();
                 if ($inviteKey) {
                     $this->output->writeln([
-                        $this->url->getBaseUrl() . '/invitation/' . $inviteKey,
+                        $this->url->getBaseUrl().'/invitation/'.$inviteKey,
                     ]);
                 } else {
                     throw new \Exception('Group has no invite key');
                 }
-
             } else {
                 $this->output->writeln([
                     'Group ID not found',
                 ]);
             }
+
             return 0;
         }
 
@@ -63,7 +64,7 @@ class ListInviteLinks extends Command
         foreach ($groups as $group) {
             $inviteKey = $group->getInviteKey();
             if ($inviteKey) {
-                $table->addRow([$group->getId(), $group->getName(), $this->url->getBaseUrl() . '/invitation/' . $inviteKey]);
+                $table->addRow([$group->getId(), $group->getName(), $this->url->getBaseUrl().'/invitation/'.$inviteKey]);
             }
         }
         $table->render();

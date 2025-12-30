@@ -39,7 +39,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/bookmarks/{id}", methods: ["GET"])]
+    #[Route('/bookmarks/{id}', methods: ['GET'])]
     public function index(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

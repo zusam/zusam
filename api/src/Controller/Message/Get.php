@@ -12,10 +12,10 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class Get extends ApiController
 {
@@ -106,6 +106,7 @@ class Get extends ApiController
      * @OA\Response(
      *  response=200,
      *  description="Get an array of message IDs from groups for the user's feed",
+     *
      *  @OA\JsonContent(type="array", @OA\Items(type="integer"))
      * )
      *
@@ -121,7 +122,7 @@ class Get extends ApiController
         $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
         if ($user instanceof User) {
-            $groupIds = $user->getGroups()->map(fn ($group) => $group->getId())->toArray();
+            $groupIds = $user->getGroups()->map(static fn ($group) => $group->getId())->toArray();
         } else {
             return new JsonResponse(['error' => 'Bad Request'], Response::HTTP_BAD_REQUEST);
         }
@@ -138,9 +139,10 @@ class Get extends ApiController
             ->setMaxResults($limit)
             ->setFirstResult($page)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
 
-        $messageIdsArray = array_map(fn ($message) => $message['id'], $messageIds);
+        $messageIdsArray = array_map(static fn ($message) => $message['id'], $messageIds);
 
         // Count total messages user can access
         $totalItems = $this->em->getRepository(Message::class)
@@ -150,7 +152,8 @@ class Get extends ApiController
             ->where('g.id IN (:groupIds)')
             ->setParameter('groupIds', $groupIds)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
 
         return new JsonResponse([
             'messages' => $messageIdsArray,

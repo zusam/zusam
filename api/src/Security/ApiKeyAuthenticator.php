@@ -19,7 +19,7 @@ class ApiKeyAuthenticator implements AccessTokenHandlerInterface
         $this->em = $em;
     }
 
-    public function getUserBadgeFrom(string $apiKey): UserBadge
+    public function getUserBadgeFrom(#[\SensitiveParameter] string $apiKey): UserBadge
     {
         $user = $this->em->getRepository(User::class)->findOneBySecretKey($apiKey);
         if (null === $user->getSecretKey()) {

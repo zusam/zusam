@@ -6,7 +6,6 @@ use App\Controller\ApiController;
 use App\Entity\Message;
 use App\Entity\Notification;
 use App\Entity\User;
-use App\Entity\Reaction;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -44,7 +43,8 @@ class Delete extends ApiController
     #[Route('/messages/{id}', methods: ['DELETE'])]
     public function index(
         string $id,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 

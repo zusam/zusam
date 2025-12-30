@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\Message;
 use App\Entity\User;
 use App\Service\Mailer;
 use App\Service\Notification as NotificationService;
@@ -36,11 +35,12 @@ class NotificationEmails extends Command
     protected function configure()
     {
         $this->setName('zusam:notification:emails')
-             ->setDescription('Send notification emails.')
-             ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list user ids that would get a notification.')
-             ->addOption('log-send', null, InputOption::VALUE_NONE, 'Log when sending an email.')
-             ->addOption('log-as-error', null, InputOption::VALUE_NONE, 'Log sent emails as errors.')
-             ->setHelp('Send a notification email to the users that asked for it.');
+            ->setDescription('Send notification emails.')
+            ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list user ids that would get a notification.')
+            ->addOption('log-send', null, InputOption::VALUE_NONE, 'Log when sending an email.')
+            ->addOption('log-as-error', null, InputOption::VALUE_NONE, 'Log sent emails as errors.')
+            ->setHelp('Send a notification email to the users that asked for it.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -60,6 +60,7 @@ class NotificationEmails extends Command
             if (empty($lastNotificationEmailCheck) || 'none' === $notif) {
                 $user->setLastNotificationEmailCheck($now);
                 $this->em->flush();
+
                 continue;
             }
 
@@ -69,10 +70,10 @@ class NotificationEmails extends Command
             $today1AM = strtotime('today 1:00 AM');
             $thisHour = strtotime(date('Y-m-d H:00:00'));
 
-            $isHourlyDue = ('hourly' === $notif && (date('i', $now) === '00' || ($lastNotificationEmailCheck) < $thisHour));
-            $isMonthlyDue = ('monthly' === $notif && (date('j-G', $now) === '1-1' || $lastNotificationEmailCheck < $firstOfMonth1AM));
-            $isWeeklyDue = ('weekly' === $notif && (date('N-G', $now) === '1-1' || $lastNotificationEmailCheck < $lastMonday1AM));
-            $isDailyDue = ('daily' === $notif && (date('G', $now) === '1' || $lastNotificationEmailCheck < $today1AM));
+            $isHourlyDue = ('hourly' === $notif && ('00' === date('i', $now) || $lastNotificationEmailCheck < $thisHour));
+            $isMonthlyDue = ('monthly' === $notif && ('1-1' === date('j-G', $now) || $lastNotificationEmailCheck < $firstOfMonth1AM));
+            $isWeeklyDue = ('weekly' === $notif && ('1-1' === date('N-G', $now) || $lastNotificationEmailCheck < $lastMonday1AM));
+            $isDailyDue = ('daily' === $notif && ('1' === date('G', $now) || $lastNotificationEmailCheck < $today1AM));
 
             if ('immediately' !== $notif && !$isHourlyDue && !$isMonthlyDue && !$isWeeklyDue && !$isDailyDue) {
                 continue;
@@ -83,12 +84,12 @@ class NotificationEmails extends Command
             $user->setLastNotificationEmailCheck($now);
             $this->em->flush();
 
-            $notifications = array_filter($user->getNotifications()->toArray(), function ($n) use ($lastNotificationEmailCheck) {
+            $notifications = array_filter($user->getNotifications()->toArray(), static function ($n) use ($lastNotificationEmailCheck) {
                 return $n->getCreatedAt() > $lastNotificationEmailCheck && in_array($n->getType(), ['new_message', 'new_comment'], true);
             });
 
             $notificationService = $this->notificationService;
-            $notificationData = array_map(function ($notification) use ($notificationService) {
+            $notificationData = array_map(static function ($notification) use ($notificationService) {
                 return [
                     'notification' => $notification,
                     'title' => $notificationService->getTitle($notification),
@@ -114,6 +115,7 @@ class NotificationEmails extends Command
             }
         }
         $this->em->flush();
+
         return 0;
     }
 }

@@ -106,22 +106,6 @@ class Cron extends Command
         ];
     }
 
-    protected function configure()
-    {
-        $this->setName('zusam:cron')
-            ->setDescription('Launch recurrent tasks.')
-            ->setHelp('This command launches recurrent tasks defined as symfony commands.');
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $this->input = $input;
-        $this->output = $output;
-        $this->runTask();
-
-        return 0;
-    }
-
     // This can be called in controllers to avoid relying on system cron
     // Inspired by wp-cron.php from wordpress
     public function runTask(): bool
@@ -144,8 +128,10 @@ class Cron extends Command
         $lock = $this->lockFactory->createLock('run-task');
         if (!$lock->acquire()) {
             $this->logger->info('Task already running');
+
             return false;
         }
+
         try {
             foreach ($this->tasks as $task) {
                 // If we are only doing "always" tasks, skip others
@@ -180,20 +166,38 @@ class Cron extends Command
         } finally {
             $lock->release();
         }
+
         return true;
+    }
+
+    protected function configure()
+    {
+        $this->setName('zusam:cron')
+            ->setDescription('Launch recurrent tasks.')
+            ->setHelp('This command launches recurrent tasks defined as symfony commands.')
+        ;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $this->input = $input;
+        $this->output = $output;
+        $this->runTask();
+
+        return 0;
     }
 
     private function runCommand($id, $options = [])
     {
         try {
-            $this->logger->info("Executing $id from Cron");
+            $this->logger->info("Executing {$id} from Cron");
             $command = (new Application($this->kernel))->find($id);
             $returnCode = $command->run(new ArrayInput($options), $this->output ?? new NullOutput());
         } catch (\Exception $e) {
             $this->logger->error($id.' '.$e->getMessage());
         } finally {
             if (isset($returnCode) && 0 != $returnCode) {
-                $this->logger->error("$id failed, return code: $returnCode");
+                $this->logger->error("{$id} failed, return code: {$returnCode}");
             }
         }
     }

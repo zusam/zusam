@@ -84,7 +84,7 @@ class File
             'image/jpeg' == $file->getType()
             && FileEntity::STATUS_READY != $file->getStatus()
         ) {
-            list($width, $height) = getimagesize($this->params->get('dir.files').'/'.$file->getContentUrl());
+            [$width, $height] = getimagesize($this->params->get('dir.files').'/'.$file->getContentUrl());
             if ($width <= 2048 && $height <= 2048) {
                 $file->setStatus(FileEntity::STATUS_READY);
             }
@@ -112,7 +112,7 @@ class File
         } else {
             rename($symfonyFile->getRealPath(), $target);
         }
-        @chmod($target, 0666 & ~umask());
+        @chmod($target, 0o666 & ~umask());
         $file = $this->initialConversion($file);
         $this->em->persist($file);
         $this->em->flush();

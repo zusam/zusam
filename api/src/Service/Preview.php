@@ -22,9 +22,11 @@ class Preview
         if (count($message->getFiles()) > 0) {
             $firstFile = null;
             foreach ($message->getFiles() as $file) {
-                if (!$firstFile || $file->getFileIndex() < $firstFile->getFileIndex()) {
-                    $firstFile = $file;
+                if (!(!$firstFile || $file->getFileIndex() < $firstFile->getFileIndex())) {
+                    continue;
                 }
+
+                $firstFile = $file;
             }
 
             return $firstFile;

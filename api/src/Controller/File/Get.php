@@ -34,7 +34,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/files/{id}", methods: ["GET"])]
+    #[Route('/files/{id}', methods: ['GET'])]
     public function index(string $id): Response
     {
         // This controller is public to allow display of public messages

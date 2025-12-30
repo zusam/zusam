@@ -28,7 +28,7 @@ class ConvertImages extends Command
         $this->pdo = new \PDO($dsn, null, null);
         $this->logger = $logger;
 
-        @mkdir($targetDir, 0777, true);
+        @mkdir($targetDir, 0o777, true);
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
@@ -45,7 +45,8 @@ class ConvertImages extends Command
         $this->setName('zusam:convert:images')
             ->setDescription('Converts raw image files.')
             ->addOption('--max-convert', null, InputOption::VALUE_NONE, 'Maximum conversions to perform.')
-            ->setHelp('This command search for raw image files in the database and converts them.');
+            ->setHelp('This command search for raw image files in the database and converts them.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -67,10 +68,10 @@ class ConvertImages extends Command
                 return 0;
             }
 
-            list($width, $height) = getimagesize($inputFile);
+            [$width, $height] = getimagesize($inputFile);
             // This is a special check for long format images that should not be limited in height
             // example: https://imgs.xkcd.com/comics/earth_temperature_timeline.png
-            if ($width != 0 && $height / $width > 10) {
+            if (0 != $width && $height / $width > 10) {
                 $this->imageService->createThumbnail(
                     $inputFile,
                     $outputFile.'.converted',

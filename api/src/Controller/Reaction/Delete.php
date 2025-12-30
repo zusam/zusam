@@ -5,8 +5,8 @@ namespace App\Controller\Reaction;
 use App\Controller\ApiController;
 use App\Entity\Group;
 use App\Entity\Message;
-use App\Entity\User;
 use App\Entity\Reaction;
+use App\Entity\User;
 use App\Service\Reaction as ReactionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -45,11 +45,12 @@ class Delete extends ApiController
     public function index(
         string $id,
         string $reactionId,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        if ($this->getParameter('allow.message.reactions') !== "true") {
+        if ('true' !== $this->getParameter('allow.message.reactions')) {
             return new JsonResponse(['error' => 'Reactions are currently disabled.'], Response::HTTP_FORBIDDEN);
         }
 
@@ -78,7 +79,6 @@ class Delete extends ApiController
         $this->em->flush();
 
         $reactions = $this->reactionService->getReactionSummary($message, $currentUser);
-
 
         return new Response(
             json_encode($reactions),

@@ -28,9 +28,10 @@ class ResetInviteLink extends Command
     protected function configure()
     {
         $this->setName('zusam:invitations:reset')
-             ->setDescription('Resets the invitation key for a group')
-             ->addOption('group-id', null, InputOption::VALUE_REQUIRED, "What's the ID of the group to fetch invites for?")
-             ->setHelp('Resets the invitation key for the selected group and outputs the new invitation link');
+            ->setDescription('Resets the invitation key for a group')
+            ->addOption('group-id', null, InputOption::VALUE_REQUIRED, "What's the ID of the group to fetch invites for?")
+            ->setHelp('Resets the invitation key for the selected group and outputs the new invitation link')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -44,13 +45,14 @@ class ResetInviteLink extends Command
                 $this->em->flush();
 
                 $this->output->writeln([
-                    $this->url->getBaseUrl() . '/invitation/' . $group->getInviteKey(),
+                    $this->url->getBaseUrl().'/invitation/'.$group->getInviteKey(),
                 ]);
             } else {
                 $this->output->writeln([
                     'Group ID not found',
                 ]);
             }
+
             return 0;
         }
 

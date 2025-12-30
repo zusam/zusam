@@ -25,9 +25,10 @@ class CleanGroups extends Command
     protected function configure()
     {
         $this->setName('zusam:clean:groups')
-       ->setDescription('Clean dangling groups.')
-       ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list groups that would be deleted.')
-       ->setHelp('This command deletes groups not linked to any user.');
+            ->setDescription('Clean dangling groups.')
+            ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list groups that would be deleted.')
+            ->setHelp('This command deletes groups not linked to any user.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
