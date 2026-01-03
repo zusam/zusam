@@ -24,6 +24,15 @@ jobs:
         run: |
           find translations -type f -name "*.json" -exec jq . {} \; || exit 1
 
+      - name: Check JSON keys are in alphabetical order
+        run: |
+          for file in $(find translations -type f -name "*.json"); do
+            jq -e 'keys == (keys | sort)' "$file" > /dev/null || {
+              echo "ERROR: Keys in $file are not in alphabetical order"
+              exit 1
+            }
+          done
+
       - name: Check for missing translations for the API [en_US]
         run: |
           cd api && php bin/console debug:trans --only-missing -n en_US
