@@ -133,7 +133,7 @@ class Get extends ApiController
             ->select('m.id')
             ->innerJoin('m.group', 'g')
             ->where('g.id IN (:groupIds)')
-            ->andWhere('m.parent IS NULL')
+            ->andWhere('m.parent IS NULL OR m.isInFront = 1')
             ->setParameter('groupIds', $groupIds)
             ->orderBy('m.lastActivityDate', 'DESC')
             ->setMaxResults($limit)
