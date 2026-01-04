@@ -25,3 +25,21 @@ When I want to statically analyze the code, I run `npm run analyze`.
 The second script will launch an instance of Zusam by using the files
 in the repository (so that you can change things without rebuilding it).  
 I use the script `start-test-container` for that.
+
+## Dependencies update
+
+### API
+
+```
+cd api/
+php bin/composer outdated # check outdated packages
+php bin/composer update # update packages according to composer.json
+```
+
+### APP
+
+```
+cd app/
+npm outdated # check outdated packages
+npm update # update packages according to package.json
+```

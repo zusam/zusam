@@ -31,7 +31,7 @@ class ConvertVideo extends Command
         $this->pdo = new \PDO($dsn, null, null);
         $this->params = $params;
 
-        @mkdir($targetDir, 0777, true);
+        @mkdir($targetDir, 0o777, true);
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
@@ -48,7 +48,8 @@ class ConvertVideo extends Command
         $this->setName('zusam:convert:video')
             ->setDescription('Converts a raw video file.')
             ->addOption('threads', null, InputOption::VALUE_NONE, 'Number of threads to use for video conversion')
-            ->setHelp('This command search for a raw video file in the database and converts it.');
+            ->setHelp('This command search for a raw video file in the database and converts it.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

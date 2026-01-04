@@ -1,0 +1,14 @@
+name: Create Bookmark
+description: Add a message to the user's bookmarks for quick access later. Returns 201 Created with the bookmark object. User can only bookmark messages they have access to.
+method: POST
+url: http://localhost:8080/api/bookmarks
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+  - name: Content-Type
+    value: application/json
+body:
+  content: |-
+    {
+      "message_id": "00000000-0000-0000-0000-000000000000"
+    }

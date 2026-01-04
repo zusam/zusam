@@ -41,8 +41,8 @@ class Reaction extends ApiEntity
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reactions')]
     #[Groups(['public'])]
     /**
-    * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
-    */
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\User"))
+     */
     private ?User $author = null;
 
     #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'reactions')]
@@ -52,15 +52,15 @@ class Reaction extends ApiEntity
      */
     private Message $message;
 
-    public function getEntityType(): string
-    {
-        return strtolower((new \ReflectionClass($this))->getShortName());
-    }
-
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
         $this->createdAt = time();
+    }
+
+    public function getEntityType(): string
+    {
+        return strtolower(new \ReflectionClass($this)->getShortName());
     }
 
     public function getId(): string
@@ -91,10 +91,10 @@ class Reaction extends ApiEntity
     public function getValue(): string
     {
         if (null === $this->value) {
-            return "";
-        } else {
-            return $this->value;
+            return '';
         }
+
+        return $this->value;
     }
 
     public function setValue(string $value): void

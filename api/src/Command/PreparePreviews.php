@@ -42,7 +42,8 @@ class PreparePreviews extends Command
             ->addOption('force', null, InputOption::VALUE_NONE, 'Reprepare preview already processed.')
             ->addOption('memory', null, InputOption::VALUE_REQUIRED, 'Maximum RAM usage (defaults to 70Mo).', '70')
             ->addOption('filter', null, InputOption::VALUE_REQUIRED, 'Filter previews to process (substring of url).', null)
-            ->setHelp('This command preprocesses previews of parent messages for a faster first load.');
+            ->setHelp('This command preprocesses previews of parent messages for a faster first load.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -67,14 +68,15 @@ class PreparePreviews extends Command
         foreach ($messages as $i) {
             if (memory_get_usage(true) > 1024 * 1024 * $max_memory) {
                 $output->writeln([
-                    "Memory usage went over $max_memory Mo. Stopping the script.",
+                    "Memory usage went over {$max_memory} Mo. Stopping the script.",
                     'Duration: '.floor(microtime(true) - $start_time).' seconds',
                     'Number of links: '.$number_links,
                 ]);
+
                 exit(0);
             }
             ++$k;
-            echo "[$k/".count($messages).']: '.$i['id']."\n";
+            echo "[{$k}/".count($messages).']: '.$i['id']."\n";
 
             // get first url data
             $text = json_decode($i['data'], true)['text'];
@@ -83,7 +85,7 @@ class PreparePreviews extends Command
             // apply filter if any
             if ($input->getOption('filter')) {
                 $filter = $input->getOption('filter');
-                $urls = array_filter($urls, function ($k) use ($filter) {
+                $urls = array_filter($urls, static function ($k) use ($filter) {
                     return false !== mb_stripos($k, $filter);
                 });
             }
@@ -98,6 +100,7 @@ class PreparePreviews extends Command
                     $this->em->persist($link);
                 } catch (\Exception $e) {
                     $output->writeln([$e->getMessage()]);
+
                     continue;
                 }
             }

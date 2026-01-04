@@ -25,9 +25,10 @@ class CleanNotifications extends Command
     protected function configure()
     {
         $this->setName('zusam:clean:notifications')
-       ->setDescription('Clean dangling notifications.')
-       ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list notifications that would be deleted.')
-       ->setHelp('This command deletes notifications from removed users/groups and related to groups in which the user is not anymore.');
+            ->setDescription('Clean dangling notifications.')
+            ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list notifications that would be deleted.')
+            ->setHelp('This command deletes notifications from removed users/groups and related to groups in which the user is not anymore.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

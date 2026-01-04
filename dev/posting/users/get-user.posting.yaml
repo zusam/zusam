@@ -1,0 +1,10 @@
+name: Get User by ID
+description: Retrieve user profile by user ID. Returns basic user information. Response is cached for 24 hours.
+method: GET
+url: http://localhost:8080/api/users/:id
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+path_params:
+  - name: id
+    value: 00000000-0000-0000-0000-000000000000

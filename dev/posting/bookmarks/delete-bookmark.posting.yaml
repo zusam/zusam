@@ -1,0 +1,10 @@
+name: Delete Bookmark
+description: Remove a bookmark. User must be the bookmark owner. Returns 204 No Content on success. Message is not affected, only the bookmark reference is removed.
+method: DELETE
+url: http://localhost:8080/api/bookmarks/:id
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+path_params:
+  - name: id
+    value: 00000000-0000-0000-0000-000000000000

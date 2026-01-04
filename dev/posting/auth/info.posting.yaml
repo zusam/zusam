@@ -1,0 +1,7 @@
+name: Get API Info
+description: Get system information and configuration. When authenticated, returns additional details including feature flags (email, upload permissions, public links, reactions). Public endpoint - authentication is optional but provides more data when included.
+method: GET
+url: http://localhost:8080/api/info
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY

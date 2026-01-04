@@ -1,0 +1,7 @@
+name: Get User Bookmarks
+description: Get all bookmarks for the current user. Returns array of bookmark objects with associated message data. Can optionally limit results by adding a number to the URL path (e.g., /me/bookmarks/10 for recent 10).
+method: GET
+url: http://localhost:8080/api/me/bookmarks
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY

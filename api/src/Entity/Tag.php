@@ -43,8 +43,8 @@ class Tag extends ApiEntity
     #[ORM\ManyToMany(targetEntity: Message::class, inversedBy: 'tags')]
     #[ORM\JoinTable(name: 'tags_messages')]
     /**
-    * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
-    */
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+     */
     private Collection $messages;
 
     #[ORM\Column(type: 'string')]

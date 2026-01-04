@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class Get extends ApiController
 {
@@ -46,10 +45,9 @@ class Get extends ApiController
     #[Route('/messages/{id}/reactions', methods: ['GET'])]
     public function index(string $id, #[CurrentUser] User $currentUser): Response
     {
-
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        if ($this->getParameter('allow.message.reactions') !== "true") {
+        if ('true' !== $this->getParameter('allow.message.reactions')) {
             return new JsonResponse(['error' => 'Reactions are currently disabled.'], Response::HTTP_FORBIDDEN);
         }
 
@@ -61,6 +59,7 @@ class Get extends ApiController
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $message->getGroup());
 
         $reactions = $this->reactionService->getReactionSummary($message, $currentUser);
+
         return new Response(
             json_encode($reactions),
             Response::HTTP_OK,

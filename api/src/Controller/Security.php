@@ -61,7 +61,7 @@ class Security extends AbstractController
             return $this->json(['message' => 'Invalid login/password'], Response::HTTP_UNAUTHORIZED);
         }
 
-        if ($this->getParameter('kernel.environment') !== 'test') {
+        if ('test' !== $this->getParameter('kernel.environment')) {
             // Throttle login attempts
             $request->attributes->set(SecurityRequestAttributes::LAST_USERNAME, $user->getUserIdentifier());
             $limit = $this->limiter->consume($request);
@@ -133,15 +133,17 @@ class Security extends AbstractController
 
         // notify users of the group
         foreach ($group->getUsers() as $u) {
-            if ($u->getId() != $user->getId()) {
-                $notif = new Notification();
-                $notif->setTarget($group->getId());
-                $notif->setOwner($u);
-                $notif->setFromUser($user);
-                $notif->setFromGroup($group);
-                $notif->setType(Notification::USER_JOINED_GROUP);
-                $this->em->persist($notif);
+            if ($u->getId() == $user->getId()) {
+                continue;
             }
+
+            $notif = new Notification();
+            $notif->setTarget($group->getId());
+            $notif->setOwner($u);
+            $notif->setFromUser($user);
+            $notif->setFromGroup($group);
+            $notif->setType(Notification::USER_JOINED_GROUP);
+            $this->em->persist($notif);
         }
 
         $this->em->flush();
@@ -161,9 +163,9 @@ class Security extends AbstractController
         $ret = $this->mailer->sendPasswordReset($user);
         if (true === $ret) {
             return $this->json([], Response::HTTP_OK);
-        } else {
-            return $this->json($ret, Response::HTTP_BAD_GATEWAY);
         }
+
+        return $this->json($ret, Response::HTTP_BAD_GATEWAY);
     }
 
     #[Route('/new-password', methods: ['POST'])]

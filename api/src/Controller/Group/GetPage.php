@@ -64,7 +64,7 @@ class GetPage extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/groups/{id}/page/{n}", methods: ["GET"])]
+    #[Route('/groups/{id}/page/{n}', methods: ['GET'])]
     public function index(string $id, int $n): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -82,7 +82,7 @@ class GetPage extends ApiController
             $item->tag('group_'.$groupId);
 
             $query = $this->em->createQuery(
-                "SELECT m.id FROM App\Entity\Message m"
+                'SELECT m.id FROM App\Entity\Message m'
                 ." WHERE m.group = '".$groupId."'"
                 .' AND m.isInFront = 1'
                 .' ORDER BY m.lastActivityDate DESC'
@@ -92,13 +92,13 @@ class GetPage extends ApiController
             $messages = $query->getArrayResult();
 
             $query = $this->em->createQuery(
-                "SELECT COUNT(m.id) AS totalItems FROM App\Entity\Message m"
+                'SELECT COUNT(m.id) AS totalItems FROM App\Entity\Message m'
                 ." WHERE m.group = '".$groupId."'"
                 .' AND m.isInFront = 1'
             );
             $totalItems = $query->getArrayResult();
             $data = [
-                'messages' => array_map(function ($e) {
+                'messages' => array_map(static function ($e) {
                     return $e['id'];
                 }, $messages),
                 'totalItems' => $totalItems[0]['totalItems'],

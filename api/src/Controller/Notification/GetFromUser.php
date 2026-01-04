@@ -76,7 +76,8 @@ class GetFromUser extends ApiController
      */
     #[Route('/me/notifications', methods: ['GET'])]
     public function my_notifications(
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -141,7 +142,8 @@ class GetFromUser extends ApiController
     #[Route('/me/notifications/{limit}', methods: ['GET'])]
     public function my_notifications_with_limit(
         int $limit,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 

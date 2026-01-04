@@ -17,7 +17,7 @@ class Link extends ApiEntity
      * @OA\Property(type="guid")
      */
     #[ORM\Id]
-    #[ORM\Column(type: "guid")]
+    #[ORM\Column(type: 'guid')]
     private $id;
 
     /**
@@ -27,7 +27,7 @@ class Link extends ApiEntity
      *
      * @OA\Property(type="integer")
      */
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: 'integer')]
     private $createdAt;
 
     /**
@@ -37,7 +37,7 @@ class Link extends ApiEntity
      *
      * @OA\Property(type="integer")
      */
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: 'integer')]
     private $updatedAt;
 
     /**
@@ -45,7 +45,7 @@ class Link extends ApiEntity
      *
      * @OA\Property(type="object")
      */
-    #[ORM\Column(type: "json")]
+    #[ORM\Column(type: 'json')]
     private $data;
 
     /**
@@ -53,7 +53,7 @@ class Link extends ApiEntity
      *
      * @OA\Property(type="string")
      */
-    #[ORM\Column(type: "string", unique: true)]
+    #[ORM\Column(type: 'string', unique: true)]
     private $url;
 
     /**
@@ -68,13 +68,8 @@ class Link extends ApiEntity
      *
      * @OA\Property(type="guid")
      */
-    #[ORM\Column(type: "guid", unique: true)]
+    #[ORM\Column(type: 'guid', unique: true)]
     private $secretKey;
-
-    public function getEntityType(): string
-    {
-        return strtolower((new \ReflectionClass($this))->getShortName());
-    }
 
     public function __construct(string $url)
     {
@@ -84,6 +79,11 @@ class Link extends ApiEntity
         $this->updatedAt = time();
         $this->secretKey = Uuid::uuidv4();
         $this->data = [];
+    }
+
+    public function getEntityType(): string
+    {
+        return strtolower(new \ReflectionClass($this)->getShortName());
     }
 
     public function getId(): string

@@ -66,8 +66,8 @@ class Message extends ApiEntity
 
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
     /**
-    * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
-    */
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+     */
     private $children;
 
     #[ORM\ManyToMany(targetEntity: File::class)]
@@ -77,22 +77,22 @@ class Message extends ApiEntity
     #[ORM\OrderBy(['fileIndex' => 'ASC'])]
     #[Groups(['read_message'])]
     /**
-    * @OA\Property(type="array", @OA\Items(type="App\Entity\File"))
-    */
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\File"))
+     */
     private $files;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'messages')]
     #[Groups(['read_message', 'write_message'])]
     /**
-    * @OA\Property(type="array", @OA\Items(type="App\Entity\Tag"))
-    */
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Tag"))
+     */
     private $tags;
 
     #[ORM\OneToMany(mappedBy: 'message', targetEntity: Reaction::class, cascade: ['remove'], orphanRemoval: true)]
     #[Groups(['read_message', 'write_message'])]
     /**
-    * @OA\Property(type="array", @OA\Items(type="App\Entity\Reaction"))
-    */
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Reaction"))
+     */
     private Collection $reactions;
 
     #[ORM\Column(type: 'integer')]
@@ -129,8 +129,8 @@ class Message extends ApiEntity
 
     #[ORM\OneToMany(mappedBy: 'message', targetEntity: Bookmark::class)]
     /**
-    * @OA\Property(type="array", @OA\Items(type="App\Entity\Bookmark"))
-    */
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Bookmark"))
+     */
     private $bookmarks;
 
     #[ORM\Column(type: 'string')]
@@ -138,7 +138,7 @@ class Message extends ApiEntity
     #[Groups(['public'])]
     /**
      * @OA\Property(type="string")
-     */    private $type;
+     */ private $type;
 
     #[Groups(['public'])]
     /**
@@ -148,11 +148,6 @@ class Message extends ApiEntity
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $sortOrder;
-
-    public function getEntityType(): string
-    {
-        return strtolower((new \ReflectionClass($this))->getShortName());
-    }
 
     public function __construct()
     {
@@ -164,6 +159,11 @@ class Message extends ApiEntity
         $this->createdAt = time();
         $this->lastActivityDate = time();
         $this->secretKey = Uuid::uuidv4();
+    }
+
+    public function getEntityType(): string
+    {
+        return strtolower(new \ReflectionClass($this)->getShortName());
     }
 
     public function getId(): string
@@ -260,9 +260,9 @@ class Message extends ApiEntity
     {
         if (null === $this->tags) {
             return new ArrayCollection();
-        } else {
-            return $this->tags;
         }
+
+        return $this->tags;
     }
 
     public function setTags(Collection $tags): void
@@ -334,9 +334,9 @@ class Message extends ApiEntity
 
     public static function getUrlsFromText(string $text): array
     {
-        preg_match("/(\([^()]*)?https?:\/\/[^[\]\n\r ]*[-A-Za-z0-9+&@#\/%=~_()|.]/i", $text, $urls);
+        preg_match("/(\\([^()]*)?https?:\\/\\/[^[\\]\n\r ]*[-A-Za-z0-9+&@#\\/%=~_()|.]/i", $text, $urls);
 
-        return array_map(function ($url) {
+        return array_map(static function ($url) {
             if (!empty($url) && '(' === substr($url, 0, 1)) {
                 $url = substr($url, stripos($url, 'http'));
                 if (')' === substr($url, -1)) {
@@ -372,9 +372,9 @@ class Message extends ApiEntity
     {
         if (null === $this->bookmarks) {
             return new ArrayCollection();
-        } else {
-            return $this->bookmarks;
         }
+
+        return $this->bookmarks;
     }
 
     public function addBookmark(Bookmark $bookmark): void
@@ -413,7 +413,7 @@ class Message extends ApiEntity
     #[SerializedName('children')]
     public function getChildrenAsIdObjects(): array
     {
-        return $this->children->map(function (Message $child) {
+        return $this->children->map(static function (Message $child) {
             // Return an associative array instead of just the ID string
             return ['id' => $child->getId()];
         })->toArray();

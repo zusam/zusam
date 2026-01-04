@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\File;
 use App\Entity\Link;
 use App\Service\Link as LinkService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -62,7 +61,7 @@ class Url
         $domain = $this->params->get('domain');
         $port = $this->params->get('port');
 
-        return $protocol . '://' . $domain . ($port ? ':' . $port : '');
+        return $protocol.'://'.$domain.($port ? ':'.$port : '');
     }
 
     // taken from https://github.com/guzzle/psr7/blob/089edd38f5b8abba6cb01567c2a8aaa47cec4c72/src/Uri.php#L166
@@ -96,10 +95,9 @@ class Url
     public static function exceptionRedirect(string $url): string
     {
         // https://github.com/oscarotero/Embed/issues/458
-        $url = preg_replace("/^https?:\/\/(www.)?youtube.com\/shorts\//", 'https://youtube.com/watch?v=', $url);
-        $url = preg_replace("/^https?:\/\/(www.)?youtube.com\/embed\//", 'https://youtube.com/watch?v=', $url);
+        $url = preg_replace('/^https?:\/\/(www.)?youtube.com\/shorts\//', 'https://youtube.com/watch?v=', $url);
 
-        return $url;
+        return preg_replace('/^https?:\/\/(www.)?youtube.com\/embed\//', 'https://youtube.com/watch?v=', $url);
     }
 
     public static function getInstagramData(string $url): array

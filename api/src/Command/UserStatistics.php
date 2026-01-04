@@ -23,7 +23,7 @@ class UserStatistics extends Command
         $this->pdo = new \PDO($dsn, null, null);
         $this->logger = $logger;
 
-        @mkdir($targetDir, 0777, true);
+        @mkdir($targetDir, 0o777, true);
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
@@ -38,8 +38,9 @@ class UserStatistics extends Command
     protected function configure()
     {
         $this->setName('zusam:statistics:users')
-       ->setDescription('Users statistics')
-       ->setHelp('This command outputs statistics about users.');
+            ->setDescription('Users statistics')
+            ->setHelp('This command outputs statistics about users.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -80,13 +81,14 @@ class UserStatistics extends Command
                 ];
             }
         }
-        uasort($users, function ($a, $b) {
+        uasort($users, static function ($a, $b) {
             return $a[4] < $b[4] ? 1 : -1;
         });
         $table = new Table($output);
         $table
             ->setHeaders(['user id', 'messages last month', 'messages', 'groups', 'last activity'])
-            ->setRows($users);
+            ->setRows($users)
+        ;
         $table->render();
 
         return 0;

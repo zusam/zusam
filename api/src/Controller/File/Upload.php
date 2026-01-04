@@ -53,7 +53,7 @@ class Upload extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/files", methods: ["POST"])]
+    #[Route('/files', methods: ['POST'])]
     public function index(Request $request, ImageService $imageService): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -62,7 +62,7 @@ class Upload extends ApiController
         }
         $filesDir = realpath($this->getParameter('dir.files'));
         if (!is_writeable($filesDir)) {
-            throw new \Exception("Target directory ($filesDir [".$this->getParameter('dir.files').']) is not writable !');
+            throw new \Exception("Target directory ({$filesDir} [".$this->getParameter('dir.files').']) is not writable !');
         }
 
         $uploadedFile = $request->files->get('file');

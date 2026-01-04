@@ -42,7 +42,7 @@ class GetPublicLink extends ApiController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        if ($this->getParameter('allow.public.links') != 'true') {
+        if ('true' != $this->getParameter('allow.public.links')) {
             return new JsonResponse(['error' => 'Public link creation is restricted'], JsonResponse::HTTP_FORBIDDEN);
         }
 

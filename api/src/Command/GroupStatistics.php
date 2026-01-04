@@ -23,7 +23,7 @@ class GroupStatistics extends Command
         $this->pdo = new \PDO($dsn, null, null);
         $this->logger = $logger;
 
-        @mkdir($targetDir, 0777, true);
+        @mkdir($targetDir, 0o777, true);
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
@@ -38,8 +38,9 @@ class GroupStatistics extends Command
     protected function configure()
     {
         $this->setName('zusam:statistics:groups')
-       ->setDescription('Group statistics')
-       ->setHelp('This command outputs statistics about groups.');
+            ->setDescription('Group statistics')
+            ->setHelp('This command outputs statistics about groups.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -80,13 +81,14 @@ class GroupStatistics extends Command
                 ];
             }
         }
-        uasort($groups, function ($a, $b) {
+        uasort($groups, static function ($a, $b) {
             return $a[1] < $b[1] ? 1 : -1;
         });
         $table = new Table($output);
         $table
             ->setHeaders(['group id', 'users', 'messages', 'last activity', 'messages last month'])
-            ->setRows($groups);
+            ->setRows($groups)
+        ;
         $table->render();
 
         return 0;

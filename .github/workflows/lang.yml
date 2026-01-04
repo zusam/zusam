@@ -7,11 +7,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # https://github.com/marketplace/actions/checkout
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.1
 
+      # https://github.com/shivammathur/setup-php
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@2.36.0
         with:
           php-version: ${{ matrix.php-version }}
           extensions: ctype, curl, dom, fileinfo, iconv, intl, json, mbstring, pdo_sqlite, imagick, posix, simplexml, xml, xmlwriter
@@ -23,6 +25,15 @@ jobs:
       - name: Validate JSON files
         run: |
           find translations -type f -name "*.json" -exec jq . {} \; || exit 1
+
+      - name: Check JSON keys are in alphabetical order
+        run: |
+          for file in $(find translations -type f -name "*.json"); do
+            jq -e 'keys == (keys | sort)' "$file" > /dev/null || {
+              echo "ERROR: Keys in $file are not in alphabetical order"
+              exit 1
+            }
+          done
 
       - name: Check for missing translations for the API [en_US]
         run: |

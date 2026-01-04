@@ -1,0 +1,14 @@
+name: Signup
+description: Register new user account with invitation key. Requires a valid invite key from an existing group. Returns API key upon successful registration.
+method: POST
+url: http://localhost:8080/api/signup
+headers:
+  - name: Content-Type
+    value: application/json
+body:
+  content: |-
+    {
+      "login": "newuser",
+      "password": "secure-password",
+      "invite_key": "your-invite-key-here"
+    }

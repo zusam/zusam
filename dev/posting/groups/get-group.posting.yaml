@@ -1,0 +1,10 @@
+name: Get Group Details
+description: Get group information including name, members, and invitation key (if enabled). User must be a member of the group. Response is cached for 7 days. Returns 403 if not a member.
+method: GET
+url: http://localhost:8080/api/groups/:id
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+path_params:
+  - name: id
+    value: 00000000-0000-0000-0000-000000000000

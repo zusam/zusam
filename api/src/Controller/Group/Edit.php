@@ -56,11 +56,12 @@ class Edit extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/groups/{id}", methods: ["PUT"])]
+    #[Route('/groups/{id}', methods: ['PUT'])]
     public function index(
         string $id,
         Request $request,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -82,19 +83,21 @@ class Edit extends ApiController
                 // create associated notifications
                 $author = $currentUser;
                 foreach ($group->getUsers() as $user) {
-                    if ($user->getId() != $author->getId()) {
-                        $notif = new Notification();
-                        $notif->setTarget($group->getId());
-                        $notif->setOwner($user);
-                        $notif->setFromUser($author);
-                        $notif->setFromGroup($group);
-                        $notif->setData([
-                            'previousGroupName' => $previousName,
-                            'newGroupName' => $newName,
-                        ]);
-                        $notif->setType(Notification::GROUP_NAME_CHANGE);
-                        $this->em->persist($notif);
+                    if ($user->getId() == $author->getId()) {
+                        continue;
                     }
+
+                    $notif = new Notification();
+                    $notif->setTarget($group->getId());
+                    $notif->setOwner($user);
+                    $notif->setFromUser($author);
+                    $notif->setFromGroup($group);
+                    $notif->setData([
+                        'previousGroupName' => $previousName,
+                        'newGroupName' => $newName,
+                    ]);
+                    $notif->setType(Notification::GROUP_NAME_CHANGE);
+                    $this->em->persist($notif);
                 }
             }
         }

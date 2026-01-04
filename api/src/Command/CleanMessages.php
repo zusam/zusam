@@ -25,9 +25,10 @@ class CleanMessages extends Command
     protected function configure()
     {
         $this->setName('zusam:clean:messages')
-       ->setDescription('Clean dangling messages.')
-       ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list messages that would be deleted.')
-       ->setHelp('This command deletes messages not linked to any group.');
+            ->setDescription('Clean dangling messages.')
+            ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list messages that would be deleted.')
+            ->setHelp('This command deletes messages not linked to any group.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

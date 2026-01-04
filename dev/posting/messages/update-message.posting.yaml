@@ -1,0 +1,17 @@
+name: Update Message
+description: Update message content, files, or metadata. User must be the message author. Automatically regenerates preview if text contains links. Returns updated message object.
+method: PUT
+url: http://localhost:8080/api/messages/:id
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+  - name: Content-Type
+    value: application/json
+path_params:
+  - name: id
+    value: 00000000-0000-0000-0000-000000000000
+body:
+  content: |-
+    {
+      "text": "Updated message content"
+    }

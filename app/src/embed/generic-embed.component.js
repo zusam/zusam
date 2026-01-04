@@ -8,6 +8,7 @@ export default class GenericEmbed extends Component {
           <iframe
             allowfullscreen
             class="embed-responsive-item"
+            referrerpolicy="strict-origin-when-cross-origin"
             src={this.props.url}
           />
         </div>

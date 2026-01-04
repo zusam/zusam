@@ -36,7 +36,7 @@ abstract class ApiController extends AbstractController
             $object,
             'json',
             [
-                AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format = null, array $context = []) {
+                AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => static function ($object, $format = null, array $context = []) {
                     return \method_exists($object, 'getId') ? ['id' => $object->getId()] : '';
                 },
                 AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -63,7 +63,7 @@ abstract class ApiController extends AbstractController
             $object,
             'json',
             [
-                AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format = null, array $context = []) {
+                AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => static function ($object, $format = null, array $context = []) {
                     return \method_exists($object, 'getId') ? ['id' => $object->getId()] : '';
                 },
                 AbstractObjectNormalizer::SKIP_NULL_VALUES => true,

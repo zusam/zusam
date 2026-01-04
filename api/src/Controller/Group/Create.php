@@ -54,10 +54,11 @@ class Create extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/groups", methods: ["POST"])]
+    #[Route('/groups', methods: ['POST'])]
     public function index(
         Request $request,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $requestData = json_decode($request->getcontent(), true);

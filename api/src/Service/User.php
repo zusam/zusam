@@ -3,8 +3,8 @@
 namespace App\Service;
 
 use App\Entity\Notification as NotificationEntity;
-use App\Service\Notification as NotificationService;
 use App\Entity\User as UserEntity;
+use App\Service\Notification as NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -39,7 +39,7 @@ class User
         return $this->em->getRepository(UserEntity::class)->findOneById($id);
     }
 
-    public function create($login, $password = '')
+    public function create($login, #[\SensitiveParameter] $password = '')
     {
         $user = $this->em->getRepository(UserEntity::class)->findOneByLogin($login);
 
@@ -63,11 +63,11 @@ class User
 
     public function delete(UserEntity $user)
     {
-        $notifications = $this->em->getRepository(NotificationEntity::class)->findBy(['owner' => $user,]);
+        $notifications = $this->em->getRepository(NotificationEntity::class)->findBy(['owner' => $user]);
         foreach ($notifications as $notification) {
             $this->notificationService->delete($notification);
         }
-        $notifications = $this->em->getRepository(NotificationEntity::class)->findBy(['fromUser' => $user,]);
+        $notifications = $this->em->getRepository(NotificationEntity::class)->findBy(['fromUser' => $user]);
         foreach ($notifications as $notification) {
             $this->notificationService->delete($notification);
         }

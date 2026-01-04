@@ -63,14 +63,14 @@ class Group extends ApiEntity
 
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'group')]
     /**
-    * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
-    */
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
+     */
     private $messages;
 
     #[ORM\OneToMany(targetEntity: Tag::class, mappedBy: 'group')]
     /**
-    * @OA\Property(type="array", @OA\Items(type="App\Entity\Tag"))
-    */
+     * @OA\Property(type="array", @OA\Items(type="App\Entity\Tag"))
+     */
     private $tags;
 
     #[ORM\Column(type: 'integer', nullable: true)]
@@ -93,11 +93,6 @@ class Group extends ApiEntity
      */
     private $entityType;
 
-    public function getEntityType(): string
-    {
-        return strtolower((new \ReflectionClass($this))->getShortName());
-    }
-
     public function __construct()
     {
         $this->id = Uuid::uuidv4();
@@ -106,6 +101,11 @@ class Group extends ApiEntity
         $this->createdAt = time();
         $this->secretKey = Uuid::uuidv4();
         $this->inviteKey = Uuid::uuidv4();
+    }
+
+    public function getEntityType(): string
+    {
+        return strtolower(new \ReflectionClass($this)->getShortName());
     }
 
     public function getId(): string
@@ -196,9 +196,9 @@ class Group extends ApiEntity
     {
         if (null === $this->tags) {
             return new ArrayCollection();
-        } else {
-            return $this->tags;
         }
+
+        return $this->tags;
     }
 
     public function addTag(Tag $tag): void

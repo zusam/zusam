@@ -28,10 +28,11 @@ class IssueNotification extends Command
     protected function configure()
     {
         $this->setName('zusam:notification:issue')
-             ->setDescription('Issue global notification.')
-             ->setHelp('This command sends a notification to all users.')
-             ->addArgument('text', InputArgument::REQUIRED, "What's the notification text ?")
-             ->addArgument('target', InputArgument::REQUIRED, 'Target URL when notification is clicked.');
+            ->setDescription('Issue global notification.')
+            ->setHelp('This command sends a notification to all users.')
+            ->addArgument('text', InputArgument::REQUIRED, "What's the notification text ?")
+            ->addArgument('target', InputArgument::REQUIRED, 'Target URL when notification is clicked.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

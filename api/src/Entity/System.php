@@ -3,11 +3,10 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity()]
-#[ORM\Table(name: "system")]
+#[ORM\Table(name: 'system')]
 class System
 {
     /**
@@ -16,7 +15,7 @@ class System
      * @Assert\NotBlank()
      */
     #[ORM\Id]
-    #[ORM\Column(type: "guid")]
+    #[ORM\Column(type: 'guid')]
     private $key;
 
     /**
@@ -24,7 +23,7 @@ class System
      *
      * @Assert\NotNull()
      */
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: 'text')]
     private $value;
 
     /**
@@ -32,19 +31,19 @@ class System
      *
      * @Assert\NotNull()
      */
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: 'integer')]
     private $createdAt;
-
-    public function getEntityType(): string
-    {
-        return strtolower((new \ReflectionClass($this))->getShortName());
-    }
 
     public function __construct(string $key, $value)
     {
         $this->createdAt = time();
         $this->key = $key;
         $this->value = serialize($value);
+    }
+
+    public function getEntityType(): string
+    {
+        return strtolower(new \ReflectionClass($this)->getShortName());
     }
 
     public function getCreatedAt(): int

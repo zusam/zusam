@@ -38,7 +38,7 @@ class AddInvitedUser extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/groups/invitation/{inviteKey}", methods: ["POST"])]
+    #[Route('/groups/invitation/{inviteKey}', methods: ['POST'])]
     public function index(string $inviteKey): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

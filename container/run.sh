@@ -58,5 +58,5 @@ fi
 
 mkdir -p /zusam/api/var/log /zusam/api/var/cache
 
-chown -R "$UID:$GID" /zusam /etc/s6.d /etc/nginx /etc/php84 /var/lib/nginx /var/log /run/nginx
+chown -R "$UID:$GID" /zusam /etc/s6.d /etc/nginx /etc/php85 /var/lib/nginx /var/log /run/nginx
 su-exec "$UID:$GID" /usr/bin/s6-svscan /etc/s6.d

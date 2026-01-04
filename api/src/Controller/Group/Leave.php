@@ -43,10 +43,11 @@ class Leave extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/groups/{id}/leave", methods: ["POST"])]
+    #[Route('/groups/{id}/leave', methods: ['POST'])]
     public function index(
         string $id,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -62,9 +63,11 @@ class Leave extends ApiController
 
         // delete all notifications related to this group
         foreach ($currentUser->getNotifications() as $notif) {
-            if ($notif->getFromGroup() == $group) {
-                $this->em->remove($notif);
+            if ($notif->getFromGroup() != $group) {
+                continue;
             }
+
+            $this->em->remove($notif);
         }
 
         $currentUser->setLastActivityDate(time());
@@ -73,15 +76,17 @@ class Leave extends ApiController
 
         // Notify users of the group
         foreach ($group->getUsers() as $u) {
-            if ($u->getId() != $currentUser->getId()) {
-                $notif = new Notification();
-                $notif->setTarget($group->getId());
-                $notif->setOwner($u);
-                $notif->setFromUser($currentUser);
-                $notif->setFromGroup($group);
-                $notif->setType(Notification::USER_LEFT_GROUP);
-                $this->em->persist($notif);
+            if ($u->getId() == $currentUser->getId()) {
+                continue;
             }
+
+            $notif = new Notification();
+            $notif->setTarget($group->getId());
+            $notif->setOwner($u);
+            $notif->setFromUser($currentUser);
+            $notif->setFromGroup($group);
+            $notif->setType(Notification::USER_LEFT_GROUP);
+            $this->em->persist($notif);
         }
 
         $this->em->flush();

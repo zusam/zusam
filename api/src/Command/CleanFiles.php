@@ -23,7 +23,7 @@ class CleanFiles extends Command
         $this->pdo = new \PDO($dsn, null, null);
         $this->logger = $logger;
 
-        @mkdir($targetDir, 0777, true);
+        @mkdir($targetDir, 0o777, true);
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
@@ -38,9 +38,10 @@ class CleanFiles extends Command
     protected function configure()
     {
         $this->setName('zusam:clean:files')
-       ->setDescription('Clean dangling files.')
-       ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list files that would be deleted.')
-       ->setHelp('This command deletes files not linked to any message or user.');
+            ->setDescription('Clean dangling files.')
+            ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list files that would be deleted.')
+            ->setHelp('This command deletes files not linked to any message or user.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -71,11 +72,12 @@ class CleanFiles extends Command
 
             if (0 === filesize($this->targetDir.'/'.$file)) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
-                    echo $this->targetDir."/$file\n";
+                    echo $this->targetDir."/{$file}\n";
                 }
                 if (!$input->getOption('only-list')) {
                     unlink($this->targetDir.'/'.$file);
                 }
+
                 continue;
             }
 
@@ -84,7 +86,7 @@ class CleanFiles extends Command
             // remove the file if not in the database or if the content_url doesn't match the filename
             if (empty($c) || $c['content_url'] != $file) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
-                    echo $this->targetDir."/$file\n";
+                    echo $this->targetDir."/{$file}\n";
                 }
                 if (!$input->getOption('only-list')) {
                     unlink($this->targetDir.'/'.$file);
@@ -96,14 +98,16 @@ class CleanFiles extends Command
         $c = $this->pdo->query('SELECT f.id, f.content_url FROM file f;');
         if (false !== $c) {
             while ($i = $c->fetch()) {
-                if (!file_exists($this->targetDir.'/'.$i['content_url'])) {
-                    if ($input->getOption('verbose') || $input->getOption('only-list')) {
-                        echo $this->targetDir.'/'.$i['content_url']."\n";
-                    }
-                    if (!$input->getOption('only-list')) {
-                        $this->pdo->query("DELETE FROM messages_files WHERE file_id = '".$i['id']."';");
-                        $this->pdo->query("DELETE FROM file WHERE id = '".$i['id']."';");
-                    }
+                if (file_exists($this->targetDir.'/'.$i['content_url'])) {
+                    continue;
+                }
+
+                if ($input->getOption('verbose') || $input->getOption('only-list')) {
+                    echo $this->targetDir.'/'.$i['content_url']."\n";
+                }
+                if (!$input->getOption('only-list')) {
+                    $this->pdo->query("DELETE FROM messages_files WHERE file_id = '".$i['id']."';");
+                    $this->pdo->query("DELETE FROM file WHERE id = '".$i['id']."';");
                 }
             }
         }
