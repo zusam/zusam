@@ -47,7 +47,6 @@
         "twig/twig": "^3.21"
     },
     "require-dev": {
-        "carthage-software/mago": "^1.0.0-rc.2",
         "friendsofphp/php-cs-fixer": "^3.77",
         "phpstan/phpstan": "^2.1.17",
         "phpunit/phpunit": "^12.2",
