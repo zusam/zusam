@@ -43,7 +43,7 @@ class System
 
     public function getEntityType(): string
     {
-        return strtolower((new \ReflectionClass($this))->getShortName());
+        return strtolower(new \ReflectionClass($this)->getShortName());
     }
 
     public function getCreatedAt(): int

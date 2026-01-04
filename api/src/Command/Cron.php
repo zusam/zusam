@@ -145,8 +145,8 @@ class Cron extends Command
                 if (
                     'heavy' == $task['type']
                     && (
-                        (new \DateTime())->format('H') < $idle_hours[0]
-                        || (new \DateTime())->format('H') > $idle_hours[1]
+                        new \DateTime()->format('H') < $idle_hours[0]
+                        || new \DateTime()->format('H') > $idle_hours[1]
                     )
                 ) {
                     continue;
@@ -191,7 +191,7 @@ class Cron extends Command
     {
         try {
             $this->logger->info("Executing {$id} from Cron");
-            $command = (new Application($this->kernel))->find($id);
+            $command = new Application($this->kernel)->find($id);
             $returnCode = $command->run(new ArrayInput($options), $this->output ?? new NullOutput());
         } catch (\Exception $e) {
             $this->logger->error($id.' '.$e->getMessage());

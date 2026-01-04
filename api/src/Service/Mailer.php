@@ -61,7 +61,7 @@ class Mailer
         ], $user->getSecretKey());
 
         try {
-            $email = (new TemplatedEmail())
+            $email = new TemplatedEmail()
                 ->subject($this->translator->trans('notification.email.subject'))
                 ->from('noreply@'.$this->domain)
                 ->to($user->getLogin())
@@ -112,7 +112,7 @@ class Mailer
         ], $user->getPassword());
 
         try {
-            $email = (new TemplatedEmail())
+            $email = new TemplatedEmail()
                 ->subject($this->translator->trans('password.reset.email.subject'))
                 ->from('noreply@'.$this->domain)
                 ->to($user->getLogin())

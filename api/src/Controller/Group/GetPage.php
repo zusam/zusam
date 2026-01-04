@@ -82,7 +82,7 @@ class GetPage extends ApiController
             $item->tag('group_'.$groupId);
 
             $query = $this->em->createQuery(
-                'SELECT m.id FROM App\\Entity\\Message m'
+                'SELECT m.id FROM App\Entity\Message m'
                 ." WHERE m.group = '".$groupId."'"
                 .' AND m.isInFront = 1'
                 .' ORDER BY m.lastActivityDate DESC'
@@ -92,7 +92,7 @@ class GetPage extends ApiController
             $messages = $query->getArrayResult();
 
             $query = $this->em->createQuery(
-                'SELECT COUNT(m.id) AS totalItems FROM App\\Entity\\Message m'
+                'SELECT COUNT(m.id) AS totalItems FROM App\Entity\Message m'
                 ." WHERE m.group = '".$groupId."'"
                 .' AND m.isInFront = 1'
             );

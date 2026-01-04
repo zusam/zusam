@@ -117,7 +117,7 @@ class Search extends ApiController
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
         $query = $this->em->createQuery(
-            'SELECT m FROM App\\Entity\\Message m'
+            'SELECT m FROM App\Entity\Message m'
             ." WHERE m.group = '".$group->getId()."'"
         );
         $messages = $query->toIterable();

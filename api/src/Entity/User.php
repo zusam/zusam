@@ -65,7 +65,7 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Group"))
      */
-    #[ORM\ManyToMany(targetEntity: 'App\\Entity\\Group', inversedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: 'App\Entity\Group', inversedBy: 'users')]
     #[ORM\JoinTable(name: 'users_groups')]
     #[Groups(['read_me'])]
     private $groups;
@@ -73,25 +73,25 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Message"))
      */
-    #[ORM\OneToMany(targetEntity: 'App\\Entity\\Message', mappedBy: 'author')]
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Message', mappedBy: 'author')]
     private $messages;
 
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Reaction"))
      */
-    #[ORM\OneToMany(targetEntity: 'App\\Entity\\Reaction', mappedBy: 'author')]
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Reaction', mappedBy: 'author')]
     private Collection $reactions;
 
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Bookmark"))
      */
-    #[ORM\OneToMany(targetEntity: 'App\\Entity\\Bookmark', mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Bookmark', mappedBy: 'user')]
     private $bookmarks;
 
     /**
      * @OA\Property(type="App\Entity\File")
      */
-    #[ORM\OneToOne(targetEntity: 'App\\Entity\\File')]
+    #[ORM\OneToOne(targetEntity: 'App\Entity\File')]
     #[ORM\JoinColumn(name: 'avatar_id', referencedColumnName: 'id')]
     #[Groups(['read_me', 'read_user', 'write_user', 'read_message_preview'])]
     private $avatar;
@@ -117,7 +117,7 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
     /**
      * @OA\Property(type="array", @OA\Items(type="App\Entity\Notification"))
      */
-    #[ORM\OneToMany(targetEntity: 'App\\Entity\\Notification', mappedBy: 'owner')]
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Notification', mappedBy: 'owner')]
     #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private $notifications;
 
@@ -159,7 +159,7 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
 
     public function getEntityType(): string
     {
-        return strtolower((new \ReflectionClass($this))->getShortName());
+        return strtolower(new \ReflectionClass($this)->getShortName());
     }
 
     public function getId(): string
