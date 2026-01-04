@@ -67,7 +67,12 @@ function App() {
       if (user) {
         redirect = "/create-group";
         if (user?.groups[0]) {
-          redirect = "/feed";
+          const defaultPage = user?.data?.default_page || "default_group";
+          if (defaultPage === "default_group" && user?.data?.default_group) {
+            redirect = `/groups/${user.data.default_group}`;
+          } else {
+            redirect = "/feed";
+          }
         }
       }
       navigate(redirect);

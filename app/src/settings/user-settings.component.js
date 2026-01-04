@@ -69,6 +69,9 @@ export default function UserSettings() {
     const default_group = document.querySelector(
       "#settings_form select[name='default_group']"
     ).value;
+    const default_page = document.querySelector(
+      "#settings_form select[name='default_page']"
+    ).value;
     const lang = document.querySelector("#settings_form select[name='lang']")
       .value;
     let user = {};
@@ -84,6 +87,7 @@ export default function UserSettings() {
     user["data"] = {
       notification_emails,
       default_group,
+      default_page,
       lang
     };
     http.put(`/api/users/${me.id}`, user).then(res => {
@@ -181,6 +185,19 @@ export default function UserSettings() {
                         {me.groups?.map(e => (
                           <option key={e.id} value={e.id}>{e.name}</option>
                         ))}
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="default_page">
+                        {t("default_page")}:
+                      </label>
+                      <select
+                        name="default_page"
+                        class="form-control"
+                        value={me?.data["default_page"] || "default_group"}
+                      >
+                        <option value="feed">{t("feed")}</option>
+                        <option value="default_group">{t("default_group")}</option>
                       </select>
                     </div>
                     <div class="form-group">
