@@ -17,4 +17,4 @@ jobs:
           python-version: '3.12'
 
       - name: Run integration tests
-        run: make integ-tests
+        run: make integ-tests container_pgrm=docker
