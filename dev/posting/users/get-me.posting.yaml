@@ -1,0 +1,7 @@
+name: Get Current User
+description: Get the currently authenticated user's profile including groups, bookmarks, and user data. Requires authentication.
+method: GET
+url: http://localhost:8080/api/me
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY

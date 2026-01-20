@@ -1,0 +1,14 @@
+name: Create Group
+description: Create a new group. User becomes the first member and can invite others. Returns 201 Created with the new group object including its ID and invitation key.
+method: POST
+url: http://localhost:8080/api/groups
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+  - name: Content-Type
+    value: application/json
+body:
+  content: |-
+    {
+      "name": "My New Group"
+    }

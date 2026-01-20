@@ -36,12 +36,13 @@ class Initialize extends Command
     protected function configure()
     {
         $this->setName('zusam:init')
-             ->setDescription('Initialize the database with a first user and group.')
-             ->addArgument('user', InputArgument::REQUIRED, "What's the name of the first user ?")
-             ->addArgument('group', InputArgument::REQUIRED, "What's the name of the first group ?")
-             ->addArgument('password', InputArgument::REQUIRED, "What's the password of the first user ?")
-             ->addOption('remove-existing', null, InputOption::VALUE_NONE, 'Remove existing database beforehand.')
-             ->addOption('seed', null, InputOption::VALUE_REQUIRED, 'Specify a seed for UUIDs generation.');
+            ->setDescription('Initialize the database with a first user and group.')
+            ->addArgument('user', InputArgument::REQUIRED, "What's the name of the first user ?")
+            ->addArgument('group', InputArgument::REQUIRED, "What's the name of the first group ?")
+            ->addArgument('password', InputArgument::REQUIRED, "What's the password of the first user ?")
+            ->addOption('remove-existing', null, InputOption::VALUE_NONE, 'Remove existing database beforehand.')
+            ->addOption('seed', null, InputOption::VALUE_REQUIRED, 'Specify a seed for UUIDs generation.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -64,6 +65,21 @@ class Initialize extends Command
             'command' => 'doctrine:schema:update',
             '--force' => true,
         ]), $output);
+
+        $doctrineMigrationsSync = $this->getApplication()->find('doctrine:migrations:sync-metadata-storage');
+        $doctrineMigrationsSync->run(new ArrayInput([
+            'command' => 'doctrine:migrations:sync-metadata-storage',
+        ]), $output);
+
+        $doctrineMigrationsVersion = $this->getApplication()->find('doctrine:migrations:version');
+        $args = new ArrayInput([
+            'command' => 'doctrine:migrations:version',
+            '--add' => true,
+            '--all' => true,
+        ]);
+        $args->setInteractive(false);
+
+        $doctrineMigrationsVersion->run($args, $output);
 
         $user = $this->em->getRepository(User::class)->findOneByLogin($input->getArgument('user'));
         // Only execute the rest of the initialization if the user doesn't exist

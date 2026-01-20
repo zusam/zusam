@@ -1,0 +1,10 @@
+name: Get Message Reactions
+description: Get all reactions for a message including counts and user's own reactions. Requires reactions to be enabled in configuration. Returns 403 if reactions are disabled.
+method: GET
+url: http://localhost:8080/api/messages/:messageId/reactions
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+path_params:
+  - name: messageId
+    value: 00000000-0000-0000-0000-000000000000

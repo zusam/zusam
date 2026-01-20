@@ -42,7 +42,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/groups/{id}", methods: ["GET"])]
+    #[Route('/groups/{id}', methods: ['GET'])]
     public function index(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -60,9 +60,10 @@ class Get extends ApiController
             $item->expiresAfter(3600 * 24 * 7);
             $item->tag('group_'.$group->getId());
             $serialization_groups = ['read_group'];
-            if ($this->getParameter('show.group.invitation.links') == 'true') {
-                $serialization_groups[] = 'read_secret_key';
+            if ('true' == $this->getParameter('show.group.invitation.links')) {
+                $serialization_groups[] = 'read_invite_key';
             }
+
             return $this->serialize($group, $serialization_groups);
         });
 
@@ -84,7 +85,7 @@ class Get extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/groups/{id}/random", methods: ["GET"])]
+    #[Route('/groups/{id}/random', methods: ['GET'])]
     public function random_message(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -98,8 +99,12 @@ class Get extends ApiController
 
         $messages = $this->em->getRepository(Message::class)->findByGroup($id);
 
+        if (empty($messages)) {
+            return new JsonResponse(['error' => 'No messages found'], JsonResponse::HTTP_NO_CONTENT);
+        }
+
         return new Response(
-            $this->serialize($messages[random_int(0, count($messages))], ['read_message']),
+            $this->serialize($messages[random_int(0, count($messages) - 1)], ['read_message']),
             Response::HTTP_OK
         );
     }

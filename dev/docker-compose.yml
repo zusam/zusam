@@ -1,0 +1,27 @@
+services:
+  zusam:
+    environment:
+      - UID=${UID:-1000}
+      - GID=${GID:-1000}
+      - MAILER_DSN=smtp://mailpit:1025
+      - ALLOW_EMAIL=true
+      - APP_ENV=dev
+    image: zusam
+    container_name: zusam
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../translations:/zusam/translations:z
+      - ../data:/zusam/data:z
+      - ../public:/zusam/public:z
+      - ../api:/zusam/api:z
+  mailpit:
+    image: axllent/mailpit
+    container_name: mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1

@@ -28,7 +28,7 @@ class CompressGifs extends Command
         $this->pdo = new \PDO($dsn, null, null);
         $this->logger = $logger;
 
-        @mkdir($targetDir, 0777, true);
+        @mkdir($targetDir, 0o777, true);
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
@@ -43,11 +43,12 @@ class CompressGifs extends Command
     protected function configure()
     {
         $this->setName('zusam:compress:gifs')
-             ->setDescription('Tries to compress gifs.')
-             ->addOption('max-compressions', null, InputOption::VALUE_NONE, 'Maximum number of compressions to do.')
-             ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list files that would be compressed.')
-             ->addOption('target-size', null, InputOption::VALUE_NONE, 'Only list files that would be compressed.')
-             ->setHelp('This command search for gif files and compresses them.');
+            ->setDescription('Tries to compress gifs.')
+            ->addOption('max-compressions', null, InputOption::VALUE_NONE, 'Maximum number of compressions to do.')
+            ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list files that would be compressed.')
+            ->addOption('target-size', null, InputOption::VALUE_NONE, 'Only list files that would be compressed.')
+            ->setHelp('This command search for gif files and compresses them.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

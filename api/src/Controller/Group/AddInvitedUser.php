@@ -38,12 +38,12 @@ class AddInvitedUser extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/groups/invitation/{inviteKey}", methods: ["POST"])]
+    #[Route('/groups/invitation/{inviteKey}', methods: ['POST'])]
     public function index(string $inviteKey): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $group = $this->em->getRepository(Group::class)->findOneBySecretKey($inviteKey);
+        $group = $this->em->getRepository(Group::class)->findOneByInviteKey($inviteKey);
         if (empty($group)) {
             return new JsonResponse(['error' => 'Invalid invite key !'], Response::HTTP_BAD_REQUEST);
         }

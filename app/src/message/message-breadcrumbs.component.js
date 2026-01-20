@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "preact/hooks";
 
 export default function MessageBreadcrumbs(props) {
-
   const stack = [props.message.id, ...props.message.lineage].reverse();
   const [breadcrumbs, setBreadcrumbs] = useState([]);
   const [group, setGroup] = useState(null);
@@ -73,7 +72,7 @@ export default function MessageBreadcrumbs(props) {
                 >{util.limitLength(group.name || group.id.slice(0, 8), 30)}</Link>
               </li>
             )}
-            {stack_truncated.map((e, i) => (
+            {stack_truncated.filter(e => e != null).map((e, i) => (
               <Fragment key={e}>
                 <Fragment>
                   {i == 1 && stack.length > 3 && (

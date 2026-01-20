@@ -1,0 +1,16 @@
+name: Create Message
+description: Create a new message in a group. Can include text, title, and file attachments. User must be a group member. Returns 201 Created with the full message object. Automatically generates preview for links in text.
+method: POST
+url: http://localhost:8080/api/messages
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+  - name: Content-Type
+    value: application/json
+body:
+  content: |-
+    {
+      "group": "00000000-0000-0000-0000-000000000000",
+      "text": "Hello world! Check out https://example.com",
+      "title": "My Post Title"
+    }

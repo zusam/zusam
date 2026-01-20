@@ -2,6 +2,54 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [0.6.0] - 2026-01-19
+
+### Log
+* #116 Various improvements (@nrobinaubertin)
+* #115 Performance improvements (@nrobinaubertin)
+* #114 Fixes (@nrobinaubertin)
+* #111 Update dependencies (@nrobinaubertin)
+* #110 Fix migrations (@nrobinaubertin)
+* #109 Regroup all translation files in one place (@nrobinaubertin)
+* #108 Add API tests and various minor changes picked up from tests (@Neriderc)
+* #107 Add $sortOrder to Message (@Neriderc)
+* #106 Fix issue showing user who left group (@Neriderc)
+* #105 Fix group name in notifications (@Neriderc)
+* #104 Email enhancements (@Neriderc)
+* #102 Refactor invites to use a separate invite key (@Neriderc)
+* #101 Fix container issues after 3.21 update (@nrobinaubertin)
+* #99 Html email templates (@Neriderc)
+* #98 Update container (@nrobinaubertin)
+* #95 Add message reaction functionality (@Neriderc)
+* #94 Fix errors when user deleted (@Neriderc)
+* #93 Refactor email sending (@Neriderc)
+* #92 Add feed functionality (@Neriderc)
+* #91 Fix English (@Neriderc)
+* #88 Fix create group (@Neriderc)
+* #82 Retrieve default language from API (@Neriderc)
+* #78 Add config option to disable public links (@Neriderc)
+
+### Remarks
+
+Feature release.  
+This update has a database structure change. Please see the corresponding migration file.  
+The data migration procedure was changed for this update. Don't forget to backup your data before applying it.
+
+## [0.5.6] - 2024-10-31
+
+### Log
+- Add CONTRIBUTING.md and SECURITY.md (@Neriderc)
+- Fix a rare issue with the convertImage command (@nrobinaubertin)
+- Add PROTOCOL and PORT to the backend configuration (@Neriderc)
+- Update translations (thank you to all the translators)
+- Add config option to show or hide the invite link for groups (@Neriderc)
+- Modernize and simplify access control (@nrobinaubertin)
+- Fix XSS security issue (Thanks @ppfeister for reporting it)
+
+### Remarks
+
+I want to particularly thank @Neriderc for his hard work on this release.
+
 ## [0.5.5] - 2023-11-23
 
 ### Log

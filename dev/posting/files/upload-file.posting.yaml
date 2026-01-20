@@ -1,0 +1,12 @@
+name: Upload File
+description: Upload a file (image, video, or PDF). File type permissions depend on configuration (allow.upload.image, allow.upload.video, allow.upload.pdf). Returns 201 Created with file object including ID, type, and metadata. Use the file ID when creating messages.
+method: POST
+url: http://localhost:8080/api/files
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+body:
+  content: |-
+    {
+      "file": "@/path/to/your/file.jpg"
+    }

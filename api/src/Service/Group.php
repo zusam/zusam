@@ -28,6 +28,7 @@ class Group
         $this->em->persist($group);
 
         $user->setLastActivityDate(time());
+        $this->addUser($group, $user);
         $this->em->persist($user);
 
         $this->em->flush();
@@ -44,15 +45,17 @@ class Group
 
         // Notify users of the group
         foreach ($group->getUsers() as $u) {
-            if ($u->getId() != $user->getId()) {
-                $notif = new NotificationEntity();
-                $notif->setTarget($group->getId());
-                $notif->setOwner($u);
-                $notif->setFromUser($user);
-                $notif->setFromGroup($group);
-                $notif->setType(NotificationEntity::USER_JOINED_GROUP);
-                $this->em->persist($notif);
+            if ($u->getId() == $user->getId()) {
+                continue;
             }
+
+            $notif = new NotificationEntity();
+            $notif->setTarget($group->getId());
+            $notif->setOwner($u);
+            $notif->setFromUser($user);
+            $notif->setFromGroup($group);
+            $notif->setType(NotificationEntity::USER_JOINED_GROUP);
+            $this->em->persist($notif);
         }
 
         $this->em->flush();

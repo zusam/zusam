@@ -62,9 +62,7 @@ class Bot
 
     public function get_bot(string $bot_id): User
     {
-        $bot = $this->userService->create($bot_id);
-
-        return $bot;
+        return $this->userService->create($bot_id);
     }
 
     public function create_file_from_url(string $url): File
@@ -73,9 +71,8 @@ class Bot
         $temp_file = fopen($temp_path, 'w');
         fwrite($temp_file, file_get_contents($url));
         fclose($temp_file);
-        $file = $this->fileService->createFromPath($temp_path, true);
 
-        return $file;
+        return $this->fileService->createFromPath($temp_path, true);
     }
 
     public function set_avatar(string $bot_id, string $avatar_path): void

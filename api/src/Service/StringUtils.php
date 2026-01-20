@@ -31,9 +31,11 @@ class StringUtils
                 return false;
             } // Does not match any model
             for ($j = 0; $j < $n; ++$j) { // n bytes matching 10bbbbbb follow ?
-                if ((++$i == $length) || ((ord($str[$i]) & 0xC0) != 0x80)) {
-                    return false;
+                if (!((++$i == $length) || ((ord($str[$i]) & 0xC0) != 0x80))) {
+                    continue;
                 }
+
+                return false;
             }
         }
 

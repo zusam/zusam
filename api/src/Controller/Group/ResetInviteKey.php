@@ -38,14 +38,15 @@ class ResetInviteKey extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/groups/{id}/reset-invite-key", methods: ["POST"])]
+    #[Route('/groups/{id}/reset-invite-key', methods: ['POST'])]
     public function index(
         string $id,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        if ($this->getParameter('show.group.invitation.links') != 'true') {
+        if ('true' != $this->getParameter('show.group.invitation.links')) {
             return new JsonResponse(['error' => 'Invitation link reset is restricted'], JsonResponse::HTTP_FORBIDDEN);
         }
         $group = $this->em->getRepository(Group::class)->findOneById($id);
@@ -55,13 +56,13 @@ class ResetInviteKey extends ApiController
 
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
-        $group->resetSecretKey();
+        $group->resetInviteKey();
 
         $currentUser->setLastActivityDate(time());
         $this->em->persist($currentUser);
         $this->em->persist($group);
         $this->em->flush();
 
-        return new JsonResponse(['inviteKey' => $group->getSecretKey()], JsonResponse::HTTP_OK);
+        return new JsonResponse(['inviteKey' => $group->getInviteKey()], JsonResponse::HTTP_OK);
     }
 }

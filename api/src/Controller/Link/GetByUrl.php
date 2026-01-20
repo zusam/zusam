@@ -71,7 +71,7 @@ class GetByUrl extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/links/by_url", methods: ["POST"])]
+    #[Route('/links/by_url', methods: ['POST'])]
     public function getLinkByPost(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -117,7 +117,7 @@ class GetByUrl extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/links/by_url", methods: ["GET"])]
+    #[Route('/links/by_url', methods: ['GET'])]
     public function getLinkByGet(Request $request): Response
     {
         // No api token verification because this endpoint is used in public posts
@@ -127,14 +127,6 @@ class GetByUrl extends ApiController
         }
 
         return $this->execute(rawurldecode($url));
-    }
-
-    private function execute(string $url, bool $rescan = false, bool $onlyData = false): Response
-    {
-        $data = $this->getLinkData($url, $rescan, $onlyData);
-        $response = new JsonResponse($data, Response::HTTP_OK);
-
-        return $response;
     }
 
     public function getLinkData(string $url, bool $rescan = false, bool $onlyData = false): array
@@ -151,8 +143,15 @@ class GetByUrl extends ApiController
                     'entityType' => $link->getPreview()->getEntityType(),
                 ] : '',
             ];
-        } else {
-            return json_decode($link->getData(), true);
         }
+
+        return json_decode($link->getData(), true);
+    }
+
+    private function execute(string $url, bool $rescan = false, bool $onlyData = false): Response
+    {
+        $data = $this->getLinkData($url, $rescan, $onlyData);
+
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 }

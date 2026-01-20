@@ -40,7 +40,7 @@ class GetFromUser extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/users/{id}/bookmarks", methods: ["GET"])]
+    #[Route('/users/{id}/bookmarks', methods: ['GET'])]
     public function get_bookmarks(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -74,9 +74,10 @@ class GetFromUser extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/me/bookmarks", methods: ["GET"])]
+    #[Route('/me/bookmarks', methods: ['GET'])]
     public function my_bookmarks(
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -102,7 +103,7 @@ class GetFromUser extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/users/{id}/bookmarks/{limit}", methods: ["GET"])]
+    #[Route('/users/{id}/bookmarks/{limit}', methods: ['GET'])]
     public function get_bookmarks_with_limit(string $id, int $limit): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -138,10 +139,11 @@ class GetFromUser extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/me/bookmarks/{limit}", methods: ["GET"])]
+    #[Route('/me/bookmarks/{limit}', methods: ['GET'])]
     public function my_bookmarks_with_limit(
         int $limit,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 

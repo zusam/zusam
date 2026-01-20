@@ -48,7 +48,7 @@ export default function MessagePreview(props) {
         });
       }
       setPreview(p?.preview);
-      setId(p?.id);
+      setId(props.id);
       setChildren(p?.children);
       setLoaded(true);
       setLastActivityDate(p?.lastActivityDate);

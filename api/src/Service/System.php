@@ -29,8 +29,8 @@ class System
     {
         if (!empty($system = $this->em->getRepository(SystemEntity::class)->findOneByKey($key))) {
             return $system->getValue();
-        } else {
-            return null;
         }
+
+        return null;
     }
 }

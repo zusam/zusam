@@ -1,0 +1,10 @@
+name: Reset API Key
+description: Generate a new API key for the user. Invalidates the current API key. User can only reset their own API key. Returns the new API key that must be used for subsequent requests.
+method: POST
+url: http://localhost:8080/api/users/:id/reset-api-key
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+path_params:
+  - name: id
+    value: 00000000-0000-0000-0000-000000000000

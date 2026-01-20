@@ -23,7 +23,7 @@ class StorageStatistics extends Command
         $this->pdo = new \PDO($dsn, null, null);
         $this->logger = $logger;
 
-        @mkdir($targetDir, 0777, true);
+        @mkdir($targetDir, 0o777, true);
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
@@ -38,8 +38,9 @@ class StorageStatistics extends Command
     protected function configure()
     {
         $this->setName('zusam:statistics:storage')
-       ->setDescription('Storage statistics')
-       ->setHelp('This command outputs statistics about files stored.');
+            ->setDescription('Storage statistics')
+            ->setHelp('This command outputs statistics about files stored.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -102,13 +103,14 @@ class StorageStatistics extends Command
                 ];
             }
         }
-        uasort($groups, function ($a, $b) {
+        uasort($groups, static function ($a, $b) {
             return $a[1] < $b[1] ? 1 : -1;
         });
         $table = new Table($output);
         $table
             ->setHeaders(['group id', 'files', 'Total size', 'videos', 'videos size', 'images', 'images size', 'pdfs', 'pdfs size'])
-            ->setRows($groups);
+            ->setRows($groups)
+        ;
         $table->render();
 
         return 0;

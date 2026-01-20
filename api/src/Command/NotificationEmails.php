@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
-use App\Entity\Message;
 use App\Entity\User;
 use App\Service\Mailer;
+use App\Service\Notification as NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -17,26 +17,30 @@ class NotificationEmails extends Command
     private $em;
     private $mailer;
     private $logger;
+    private $notificationService;
 
     public function __construct(
         LoggerInterface $logger,
         EntityManagerInterface $em,
-        Mailer $mailer
+        Mailer $mailer,
+        NotificationService $notificationService
     ) {
         parent::__construct();
         $this->em = $em;
         $this->mailer = $mailer;
         $this->logger = $logger;
+        $this->notificationService = $notificationService;
     }
 
     protected function configure()
     {
         $this->setName('zusam:notification:emails')
-             ->setDescription('Send notification emails.')
-             ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list user ids that would get a notification.')
-             ->addOption('log-send', null, InputOption::VALUE_NONE, 'Log when sending an email.')
-             ->addOption('log-as-error', null, InputOption::VALUE_NONE, 'Log sent emails as errors.')
-             ->setHelp('Send a notification email to the users that asked for it.');
+            ->setDescription('Send notification emails.')
+            ->addOption('only-list', null, InputOption::VALUE_NONE, 'Only list user ids that would get a notification.')
+            ->addOption('log-send', null, InputOption::VALUE_NONE, 'Log when sending an email.')
+            ->addOption('log-as-error', null, InputOption::VALUE_NONE, 'Log sent emails as errors.')
+            ->setHelp('Send a notification email to the users that asked for it.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -49,41 +53,48 @@ class NotificationEmails extends Command
             }
 
             $data = $user->getData();
-            $notif = isset($data['notification_emails']) ? $data['notification_emails'] : '';
+            $notif = $data['notification_emails'] ?? 'immediately';
+            $lastNotificationEmailCheck = $user->getLastNotificationEmailCheck();
+            $now = time();
 
-            // don't evaluate further if we are not in the right conditions
-            if (
-                'hourly' != $notif
-                && ('monthly' != $notif || '1-1' != date('j-G')) // first of the month at 1AM
-                && ('weekly' != $notif || '1-1' != date('N-G')) // monday at 1AM
-                && ('daily' != $notif || '1' != date('G')) // 1AM
-            ) {
+            if (empty($lastNotificationEmailCheck) || 'none' === $notif) {
+                $user->setLastNotificationEmailCheck($now);
+                $this->em->flush();
+
                 continue;
             }
 
-            // fix a max_age for messages to be notified
-            // avoids sending multiple mails for the same message
-            switch ($notif) {
-                case 'hourly':
-                    $max_age = 60 * 60;
-                    break;
-                case 'daily':
-                    $max_age = 60 * 60 * 24;
-                    break;
-                case 'weekly':
-                    $max_age = 60 * 60 * 24 * 7;
-                    break;
-                case 'monthly':
-                    $max_age = 60 * 60 * 24 * 7 * 30;
-                    break;
-                default:
-                    $max_age = 0;
+            // don't evaluate further if we are not in the right conditions
+            $firstOfMonth1AM = strtotime('first day of this month 1:00 AM');
+            $lastMonday1AM = strtotime('last monday at 1:00 AM');
+            $today1AM = strtotime('today 1:00 AM');
+            $thisHour = strtotime(date('Y-m-d H:00:00'));
+
+            $isHourlyDue = ('hourly' === $notif && ('00' === date('i', $now) || $lastNotificationEmailCheck < $thisHour));
+            $isMonthlyDue = ('monthly' === $notif && ('1-1' === date('j-G', $now) || $lastNotificationEmailCheck < $firstOfMonth1AM));
+            $isWeeklyDue = ('weekly' === $notif && ('1-1' === date('N-G', $now) || $lastNotificationEmailCheck < $lastMonday1AM));
+            $isDailyDue = ('daily' === $notif && ('1' === date('G', $now) || $lastNotificationEmailCheck < $today1AM));
+
+            if ('immediately' !== $notif && !$isHourlyDue && !$isMonthlyDue && !$isWeeklyDue && !$isDailyDue) {
+                continue;
             }
 
-            // only get recent enough notifications
-            $notifications = array_filter($user->getNotifications()->toArray(), function ($n) use ($max_age) {
-                return time() - $n->getCreatedAt() < $max_age;
+            // Update last email sent time regardless of if email is sent, as we don't want monthly to retry all month
+            // until there is an email to send. Needs to be after check for hourly/daily/etc so catch ups happen.
+            $user->setLastNotificationEmailCheck($now);
+            $this->em->flush();
+
+            $notifications = array_filter($user->getNotifications()->toArray(), static function ($n) use ($lastNotificationEmailCheck) {
+                return $n->getCreatedAt() > $lastNotificationEmailCheck && in_array($n->getType(), ['new_message', 'new_comment'], true);
             });
+
+            $notificationService = $this->notificationService;
+            $notificationData = array_map(static function ($notification) use ($notificationService) {
+                return [
+                    'notification' => $notification,
+                    'title' => $notificationService->getTitle($notification),
+                ];
+            }, $notifications);
 
             if (count($notifications) > 0) {
                 if ($input->getOption('verbose') || $input->getOption('only-list')) {
@@ -99,11 +110,11 @@ class NotificationEmails extends Command
                     }
                 }
                 if (!$input->getOption('only-list')) {
-                    $this->mailer->sendNotificationEmail($user, $notifications);
+                    $this->mailer->sendNotificationEmail($user, $notificationData);
                 }
-                break;
             }
         }
+        $this->em->flush();
 
         return 0;
     }

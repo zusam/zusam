@@ -46,7 +46,8 @@ class Edit extends ApiController
     #[Route('/bookmarks/{id}', methods: ['POST'])]
     public function post_bookmark(
         string $id,
-        #[CurrentUser] User $user
+        #[CurrentUser]
+        User $user
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -82,7 +83,8 @@ class Edit extends ApiController
     #[Route('/bookmarks/{id}', methods: ['DELETE'])]
     public function delete_bookmark(
         string $id,
-        #[CurrentUser] User $user
+        #[CurrentUser]
+        User $user
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -90,7 +92,7 @@ class Edit extends ApiController
         $data['bookmarks'] = array_values(
             array_filter(
                 $data['bookmarks'],
-                function ($e) use ($id) {
+                static function ($e) use ($id) {
                     return $e != $id;
                 }
             )
@@ -156,7 +158,8 @@ class Edit extends ApiController
     public function index(
         string $id,
         Request $request,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -218,7 +221,8 @@ class Edit extends ApiController
     #[Route('/users/{id}/reset-api-key', methods: ['POST'])]
     public function resetApiKey(
         string $id,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 

@@ -1,0 +1,10 @@
+name: Join Group via Invite Key
+description: Join a group using an invitation key. Creates a notification for existing group members. Returns the group ID on success. Returns 404 if invite key is invalid.
+method: POST
+url: http://localhost:8080/api/groups/invitation/:inviteKey
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+path_params:
+  - name: inviteKey
+    value: your-invite-key-here

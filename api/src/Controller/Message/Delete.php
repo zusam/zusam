@@ -43,7 +43,8 @@ class Delete extends ApiController
     #[Route('/messages/{id}', methods: ['DELETE'])]
     public function index(
         string $id,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 

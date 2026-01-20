@@ -34,10 +34,11 @@ class Delete extends ApiController
      *
      * @Security(name="api_key")
      */
-    #[Route("/bookmarks/{id}", methods: ["DELETE"])]
+    #[Route('/bookmarks/{id}', methods: ['DELETE'])]
     public function index(
         string $id,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 

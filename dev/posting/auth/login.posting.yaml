@@ -1,0 +1,13 @@
+name: Login
+description: Authenticate user and obtain API key. Returns the user's secret API key used for subsequent authenticated requests.
+method: POST
+url: http://localhost:8080/api/login
+headers:
+  - name: Content-Type
+    value: application/json
+body:
+  content: |-
+    {
+      "login": "zusam",
+      "password": "zusam"
+    }

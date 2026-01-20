@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
-abstract class ApiEntity
-{
-}
+use Doctrine\ORM\Mapping\MappedSuperclass;
+
+#[MappedSuperclass]
+abstract class ApiEntity {}

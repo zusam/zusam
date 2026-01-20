@@ -6,6 +6,7 @@ use App\Controller\ApiController;
 use App\Entity\Notification;
 use App\Service\Notification as NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -49,6 +50,7 @@ class Get extends ApiController
             return new JsonResponse(['error' => 'Not Found'], Response::HTTP_NOT_FOUND);
         }
         $notification_data_output = $this->normalize($notification, ['read_notification']);
+        $notification_data_output['fromGroup'] = $this->normalize($notification->getFromGroup(), ['read_notification']);
 
         if (in_array(
             $notification->getType(),
@@ -65,7 +67,11 @@ class Get extends ApiController
         if (Notification::GLOBAL_NOTIFICATION != $notification_data_output['type']
           && empty($notification->getMiniature())
         ) {
-            $notification_data_output['miniature'] = $this->normalize($notification->getFromUser()->getAvatar(), ['read_notification']);
+            try {
+                $notification_data_output['miniature'] = $this->normalize($notification->getFromUser()->getAvatar(), ['read_notification']);
+            } catch (EntityNotFoundException $e) {
+                $notification_data_output['miniature'] = null;
+            }
         }
 
         return new JsonResponse($notification_data_output, Response::HTTP_OK);

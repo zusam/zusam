@@ -4,6 +4,7 @@ namespace App\Controller\User;
 
 use App\Controller\ApiController;
 use App\Entity\User;
+use App\Service\User as UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -16,11 +17,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class Delete extends ApiController
 {
+    private UserService $us;
+
     public function __construct(
         EntityManagerInterface $em,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        UserService $us
     ) {
         parent::__construct($em, $serializer);
+        $this->us = $us;
     }
 
     /**
@@ -36,7 +41,8 @@ class Delete extends ApiController
     #[Route('/users/{id}', methods: ['DELETE'])]
     public function index(
         string $id,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -49,8 +55,7 @@ class Delete extends ApiController
 
         $currentUser->setLastActivityDate(time());
         $this->em->persist($currentUser);
-        $this->em->remove($user);
-        $this->em->flush();
+        $this->us->delete($user);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

@@ -1,0 +1,17 @@
+name: Mark Notification as Read
+description: Update notification status (typically mark as read). User must be the notification owner. Returns updated notification object. Can also update custom data field if needed.
+method: PUT
+url: http://localhost:8080/api/notifications/:id
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+  - name: Content-Type
+    value: application/json
+path_params:
+  - name: id
+    value: 00000000-0000-0000-0000-000000000000
+body:
+  content: |-
+    {
+      "read": true
+    }

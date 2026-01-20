@@ -1,0 +1,10 @@
+name: Delete Message
+description: Delete a message and its associated notifications. User must be the message author. Returns 204 No Content on success. Clears group cache after deletion.
+method: DELETE
+url: http://localhost:8080/api/messages/:id
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+path_params:
+  - name: id
+    value: 00000000-0000-0000-0000-000000000000

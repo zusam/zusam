@@ -20,8 +20,12 @@ class PublicController extends ApiController
     }
 
     #[Route('/public/{token}', methods: ['GET'])]
-    public function public(string $token)
+    public function public(#[\SensitiveParameter] string $token)
     {
+        if ('true' != $this->getParameter('allow.public.links')) {
+            return new JsonResponse(['error' => 'Public links are disabled'], JsonResponse::HTTP_FORBIDDEN);
+        }
+
         $token_data = Token::extract($token);
         if (empty($token_data) || empty($token_data['id']) || empty($token_data['sub'])) {
             return new JsonResponse(['message' => 'Invalid token'], JsonResponse::HTTP_BAD_REQUEST);
@@ -34,7 +38,7 @@ class PublicController extends ApiController
         return new JsonResponse(['message' => 'Invalid token'], JsonResponse::HTTP_BAD_REQUEST);
     }
 
-    private function getMessage(string $id, string $token): Response
+    private function getMessage(string $id, #[\SensitiveParameter] string $token): Response
     {
         $message = $this->em->getRepository(Message::class)->findOneById($id);
         if (empty($message)) {

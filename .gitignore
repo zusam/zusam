@@ -33,3 +33,6 @@ api/.php-cs-fixer.cache
 /public/*.woff2
 /public/*.json
 /public/*.webmanifest
+
+# DEV/TESTING
+/dev/posting/posting.env

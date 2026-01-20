@@ -18,7 +18,7 @@ class Uuid
 
         // if we have a seed, use it to generate the uuidv4
         $str = hash('sha512', $seed);
-        $num = intval(preg_replace("/[^\d]/", '', substr($str, 0, 10)));
+        $num = intval(preg_replace('/[^\d]/', '', substr($str, 0, 10)));
 
         return implode('-', [
             substr($str, 0, 8),

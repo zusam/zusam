@@ -42,7 +42,8 @@ class Edit extends ApiController
     public function index(
         string $id,
         Request $request,
-        #[CurrentUser] User $currentUser
+        #[CurrentUser]
+        User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -54,9 +55,6 @@ class Edit extends ApiController
         $this->denyAccessUnlessGranted(new Expression('user == object'), $notification->getOwner());
 
         $requestData = json_decode($request->getcontent(), true);
-        if (!empty($requestData['readAt'])) {
-            $notification->setReadAt($requestData['readAt']);
-        }
         if (!empty($requestData['data'])) {
             $notification->setData($requestData['data']);
         }

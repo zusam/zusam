@@ -1,0 +1,12 @@
+name: Delete Reaction
+description: Remove a reaction from a message. User must be the reaction author. Returns updated reaction summary (200 OK, not 204). Requires reactions enabled.
+method: DELETE
+url: http://localhost:8080/api/messages/:messageId/reactions/:reactionId
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+path_params:
+  - name: messageId
+    value: 00000000-0000-0000-0000-000000000000
+  - name: reactionId
+    value: 00000000-0000-0000-0000-000000000000

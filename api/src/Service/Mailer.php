@@ -4,8 +4,10 @@ namespace App\Service;
 
 use App\Entity\User;
 use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 class Mailer
 {
@@ -15,11 +17,13 @@ class Mailer
     private $lang;
     private $logger;
     private $symfonyMailer;
+    private $translator;
     private $twig;
     private Url $url;
 
     public function __construct(
-        \Twig\Environment $twig,
+        Environment $twig,
+        TranslatorInterface $translator,
         string $domain,
         string $lang,
         string $allow_email,
@@ -34,23 +38,9 @@ class Mailer
         $this->lang = $lang;
         $this->logger = $logger;
         $this->symfonyMailer = $symfonyMailer;
+        $this->translator = $translator;
         $this->twig = $twig;
         $this->url = $url;
-    }
-
-    private function sendMail($email)
-    {
-        if ('prod' == $this->env && 'true' == $this->allow_email) {
-            try {
-                $this->symfonyMailer->send($email);
-            } catch (\Exception $e) {
-                $this->logger->error('Could not send email to '.array_key_first($email->getTo()));
-
-                return [$e->getMessage()];
-            }
-        }
-
-        return true;
     }
 
     public function sendNotificationEmail(User $user, array $notifications = [])
@@ -63,31 +53,47 @@ class Mailer
         } else {
             $lang = $user->getData()['lang'];
         }
+        $this->translator->setLocale($lang);
 
         $unsubscribe_token = Token::encode([
             'exp' => time() + 86400 * 60,
             'sub' => Token::SUB_STOP_EMAIL_NOTIFICATIONS,
         ], $user->getSecretKey());
 
-        $email = (new Email())
-            ->subject('Zusam Notification Email')
-            ->from('noreply@'.$this->domain)
-            ->to($user->getLogin())
-            ->text(
-                $this->twig->render(
-                    "notification-email.$lang.txt.twig",
+        try {
+            $email = new TemplatedEmail()
+                ->subject($this->translator->trans('notification.email.subject'))
+                ->from('noreply@'.$this->domain)
+                ->to($user->getLogin())
+                ->locale($lang)
+                ->text(
+                    $this->twig->render(
+                        $this->getTemplatePath('notification-email', 'txt'),
+                        [
+                            'base_url' => $this->url->getBaseUrl(),
+                            'notifications' => $notifications,
+                            'user' => $user,
+                            'unsubscribe_token' => $unsubscribe_token,
+                        ]
+                    )
+                )
+                ->html($this->twig->render(
+                    $this->getTemplatePath('notification-email', 'html'),
                     [
                         'base_url' => $this->url->getBaseUrl(),
                         'notifications' => $notifications,
                         'user' => $user,
                         'unsubscribe_token' => $unsubscribe_token,
                     ]
-                ),
-                'text/plain'
-            )
-        ;
+                ))
+            ;
 
-        return $this->sendMail($email);
+            return $this->sendMail($email);
+        } catch (\Exception $e) {
+            $this->logger->error('Could not send email to '.$user->getLogin().'. Error: '.$e->getMessage());
+
+            return false;
+        }
     }
 
     public function sendPasswordReset(User $user)
@@ -97,6 +103,7 @@ class Mailer
         } else {
             $lang = $user->getData()['lang'];
         }
+        $this->translator->setLocale($lang);
 
         // using the user's password hash as seed allows this token to be one-time usage
         $token = Token::encode([
@@ -104,25 +111,68 @@ class Mailer
             'sub' => Token::SUB_RESET_PASSWORD,
         ], $user->getPassword());
 
-        $email = (new Email())
-            ->subject('Zusam Password Reset')
-            ->from('noreply@'.$this->domain)
-            ->to($user->getLogin())
-            ->text(
-                $this->twig->render(
-                    "password-reset-mail.$lang.txt.twig",
-                    [
-                        'name' => ucfirst($user->getName()),
-                        'url' => $this->url->getBaseUrl()
-                        .'/password-reset'
-                        .'?mail='.urlencode($user->getLogin())
-                        .'&key='.$token,
-                    ]
-                ),
-                'text/plain'
-            )
-        ;
+        try {
+            $email = new TemplatedEmail()
+                ->subject($this->translator->trans('password.reset.email.subject'))
+                ->from('noreply@'.$this->domain)
+                ->to($user->getLogin())
+                ->locale($lang)
+                ->text(
+                    $this->twig->render(
+                        $this->getTemplatePath('password-reset-mail', 'txt'),
+                        [
+                            'name' => ucfirst($user->getName()),
+                            'url' => $this->url->getBaseUrl()
+                            .'/password-reset'
+                            .'?mail='.urlencode($user->getLogin())
+                            .'&key='.$token,
+                        ]
+                    )
+                )
+                ->html(
+                    $this->twig->render(
+                        $this->getTemplatePath('password-reset-mail', 'html'),
+                        [
+                            'name' => ucfirst($user->getName()),
+                            'url' => $this->url->getBaseUrl()
+                                .'/password-reset'
+                                .'?mail='.urlencode($user->getLogin())
+                                .'&key='.$token,
+                        ]
+                    )
+                )
+            ;
 
-        return $this->sendMail($email);
+            return $this->sendMail($email);
+        } catch (\Exception $e) {
+            $this->logger->error('Could not send email to '.$user->getLogin().'. Error: '.$e->getMessage());
+
+            return false;
+        }
+    }
+
+    private function sendMail($email)
+    {
+        if ('true' == $this->allow_email) {
+            try {
+                $this->symfonyMailer->send($email);
+            } catch (\Exception $e) {
+                $this->logger->error('Could not send email to '.array_key_first($email->getTo()));
+
+                return [$e->getMessage()];
+            }
+        }
+
+        return true;
+    }
+
+    private function getTemplatePath(string $template, string $type): string
+    {
+        $templatePath = "{$template}.{$type}.twig";
+        if ($this->twig->getLoader()->exists($templatePath)) {
+            return $templatePath;
+        }
+
+        throw new \Exception('Could not find twig template: '.$templatePath);
     }
 }

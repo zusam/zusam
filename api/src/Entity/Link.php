@@ -7,86 +7,69 @@ use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="`link`")
- *
- * @ORM\Entity
- */
+#[ORM\Entity]
+#[ORM\Table(name: '`link`')]
 class Link extends ApiEntity
 {
     /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="guid")
-     *
      * @Assert\NotBlank()
      *
      * @OA\Property(type="guid")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'guid')]
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     *
      * @Assert\Type("integer")
      *
      * @Assert\NotNull()
      *
      * @OA\Property(type="integer")
      */
+    #[ORM\Column(type: 'integer')]
     private $createdAt;
 
     /**
-     * @ORM\Column(type="integer")
-     *
      * @Assert\Type("integer")
      *
      * @Assert\NotNull()
      *
      * @OA\Property(type="integer")
      */
+    #[ORM\Column(type: 'integer')]
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="json")
-     *
      * @Assert\NotBlank()
      *
      * @OA\Property(type="object")
      */
+    #[ORM\Column(type: 'json')]
     private $data;
 
     /**
-     * @ORM\Column(type="string", unique=true)
-     *
      * @Assert\NotBlank()
      *
      * @OA\Property(type="string")
      */
+    #[ORM\Column(type: 'string', unique: true)]
     private $url;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\File")
-     *
-     * @ORM\JoinColumn(name="preview_id", referencedColumnName="id")
-     *
      * @OA\Property(type="App\Entity\File")
      */
+    #[ORM\OneToOne(targetEntity: File::class)]
+    #[ORM\JoinColumn(name: 'preview_id', referencedColumnName: 'id')]
     private $preview;
 
     /**
-     * @ORM\Column(type="guid", unique=true)
-     *
      * @Assert\NotBlank()
      *
      * @OA\Property(type="guid")
      */
+    #[ORM\Column(type: 'guid', unique: true)]
     private $secretKey;
-
-    public function getEntityType(): string
-    {
-        return strtolower((new \ReflectionClass($this))->getShortName());
-    }
 
     public function __construct(string $url)
     {
@@ -96,6 +79,11 @@ class Link extends ApiEntity
         $this->updatedAt = time();
         $this->secretKey = Uuid::uuidv4();
         $this->data = [];
+    }
+
+    public function getEntityType(): string
+    {
+        return strtolower(new \ReflectionClass($this)->getShortName());
     }
 
     public function getId(): string

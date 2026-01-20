@@ -1,0 +1,10 @@
+name: Get User Feed
+description: Get messages from all groups the user is a member of. Returns 30 messages per page, sorted by activity date. Includes messages from all user's groups combined.
+method: GET
+url: http://localhost:8080/api/feed/page/:pageNumber
+headers:
+  - name: X-AUTH-TOKEN
+    value: $API_KEY
+path_params:
+  - name: pageNumber
+    value: '1'

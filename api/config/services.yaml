@@ -11,6 +11,8 @@ parameters:
   allow.upload.video: '%env(resolve:ALLOW_VIDEO_UPLOAD)%'
   allow.upload.pdf: '%env(resolve:ALLOW_PDF_UPLOAD)%'
   allow.upload.audio: '%env(resolve:ALLOW_AUDIO_UPLOAD)%'
+  allow.public.links: '%env(resolve:ALLOW_PUBLIC_LINKS)%'
+  allow.message.reactions: '%env(resolve:ALLOW_MESSAGE_REACTIONS)%'
   show.group.invitation.links: '%env(resolve:SHOW_GROUP_INVITATION_LINKS)%'
   idle_hours: '%env(resolve:IDLE_HOURS)%'
   video_conversion_threads: '%env(resolve:VIDEO_CONVERSION_THREADS)%'
@@ -28,7 +30,7 @@ parameters:
   dir.bots: '%env(resolve:dir_bots)%'
   cron.convert.images: '%env(resolve:CRON_CONVERT_IMAGES)%'
   cron.convert.video: '%env(resolve:CRON_CONVERT_VIDEO)%'
-  cron.notification.emails: '%env(resolve:CRON_NOTIFICATION_EMAILS)%'
+  cron.notification.emails.throttling: '%env(resolve:NOTIFICATION_EMAILS_THROTTLING)%'
   cron.compress.gifs: '%env(resolve:CRON_COMPRESS_GIFS)%'
   cron.bot.activate: '%env(resolve:CRON_BOT_ACTIVATE)%'
   cron.clean.cache: '%env(resolve:CRON_CLEAN_CACHE)%'
@@ -50,7 +52,8 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
       resource: '../src/*'
-      exclude: '../src/{Entity,Migrations,Tests,Kernel.php}'
+      exclude:
+        - '../src/{Entity,Migrations,Tests,Kernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -73,10 +76,6 @@ services:
 
     App\Command\Cron:
       arguments:
-
-    App\Command\Migration:
-      arguments:
-        $dsn: '%env(resolve:DATABASE_URL)%'
 
     App\Command\PreparePreviews:
       arguments:
@@ -155,10 +154,14 @@ services:
     App\Service\Mailer:
       arguments:
         $twig: '@twig'
+        $translator: '@translator'
         $domain: '%env(resolve:DOMAIN)%'
         $lang: '%env(resolve:LANG)%'
         $allow_email: '%env(resolve:ALLOW_EMAIL)%'
         $env: '%kernel.environment%'
+        $logger: '@logger'
+        $symfonyMailer: '@mailer'
+        $url: '@App\Service\Url'
 
     App\Service\Url:
       arguments:

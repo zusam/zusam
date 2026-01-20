@@ -8,6 +8,7 @@ use App\Entity\Link;
 use App\Entity\Message;
 use App\Service\StringUtils;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -33,12 +34,14 @@ class Search extends ApiController
         }
         foreach ($terms as $term) {
             if (
-                !empty($term)
+                !(!empty($term)
                 && mb_strlen($term) > 2
-                && false !== mb_stripos($text, $term, 0, 'UTF-8')
+                && false !== mb_stripos($text, $term, 0, 'UTF-8'))
             ) {
-                return true;
+                continue;
             }
+
+            return true;
         }
 
         return false;
@@ -114,21 +117,19 @@ class Search extends ApiController
         $this->denyAccessUnlessGranted(new Expression('user in object.getUsersAsArray()'), $group);
 
         $query = $this->em->createQuery(
-            "SELECT m FROM App\Entity\Message m"
+            'SELECT m FROM App\Entity\Message m'
             ." WHERE m.group = '".$group->getId()."'"
         );
-        $messages = $query->iterate();
-
+        $messages = $query->toIterable();
         // flatten the search terms before starting the search
-        $flattened_search_terms = array_map(function ($e) {
+        $flattened_search_terms = array_map(static function ($e) {
             return StringUtils::remove_accents($e);
         }, $search_terms);
 
         $totalItems = 0;
         $results = [];
         $i = 0;
-        foreach ($messages as $row) {
-            $message = $row[0];
+        foreach ($messages as $message) {
             ++$i;
             $data = $message->getData();
             $score = 0;
@@ -149,7 +150,7 @@ class Search extends ApiController
                 ) {
                     $score += 50;
                 }
-            } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+            } catch (EntityNotFoundException $e) {
                 // Just continue without adding anything to the score
                 // This try/catch is necessary because doctrine uses proxy classes
                 // https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/advanced-configuration.html#proxy-objects
@@ -203,10 +204,10 @@ class Search extends ApiController
             }
 
             // detach from Doctrine, so that it can be Garbage-Collected immediately
-            $this->em->detach($row[0]);
+            $this->em->detach($message);
         }
 
-        usort($results, function ($a, $b) {
+        usort($results, static function ($a, $b) {
             if ($a['score'] < $b['score']) {
                 return 1;
             }

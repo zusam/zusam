@@ -18,8 +18,8 @@ class StopNotificationEmails extends AbstractController
         $this->em = $em;
     }
 
-    #[Route('/public/{user_id}/{token}', methods: ['GET'])]
-    public function login(string $user_id, string $token)
+    #[Route('/stop-notification-emails/{user_id}/{token}', methods: ['GET'])]
+    public function login(string $user_id, #[\SensitiveParameter] string $token)
     {
         $user = $this->em->getRepository(User::class)->findOneById($user_id);
 

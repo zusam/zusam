@@ -5,52 +5,45 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="`system`")
- *
- * @ORM\Entity
- */
+#[ORM\Entity()]
+#[ORM\Table(name: 'system')]
 class System
 {
     /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="string")
-     *
      * @Assert\Type("string")
      *
      * @Assert\NotBlank()
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'guid')]
     private $key;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\Type("text")
      *
      * @Assert\NotNull()
      */
+    #[ORM\Column(type: 'text')]
     private $value;
 
     /**
-     * @ORM\Column(type="integer")
-     *
      * @Assert\Type("integer")
      *
      * @Assert\NotNull()
      */
+    #[ORM\Column(type: 'integer')]
     private $createdAt;
-
-    public function getEntityType(): string
-    {
-        return strtolower((new \ReflectionClass($this))->getShortName());
-    }
 
     public function __construct(string $key, $value)
     {
         $this->createdAt = time();
         $this->key = $key;
         $this->value = serialize($value);
+    }
+
+    public function getEntityType(): string
+    {
+        return strtolower(new \ReflectionClass($this)->getShortName());
     }
 
     public function getCreatedAt(): int
