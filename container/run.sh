@@ -40,8 +40,8 @@ fi
 
 COMPOSER_ALLOW_SUPERUSER=1 /usr/bin/php /zusam/api/bin/composer install -d /zusam/api --no-interaction
 
-# initialize database if none is present
-if ! [ -f "/zusam/data/${DATABASE_NAME}" ]; then
+# initialize database if none is present (use -s to check size > 0, as composer may create empty file)
+if ! [ -s "/zusam/data/${DATABASE_NAME}" ]; then
   /zusam/api/bin/console zusam:init "${INIT_USER}" "${INIT_GROUP}" "${INIT_PASSWORD}"
 else
   /zusam/api/bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration -vv -e "${APP_ENV}"

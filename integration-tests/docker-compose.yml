@@ -1,0 +1,18 @@
+services:
+  zusam:
+    image: zusam
+    container_name: zusam-integration-test
+    ports:
+      - "8080:8080"
+    environment:
+      - UID=1000
+      - GID=1000
+      - APP_ENV=test
+      - INIT_USER=zusam
+      - INIT_GROUP=zusam
+      - INIT_PASSWORD=zusam
+    volumes:
+      - zusam-data:/zusam/data
+
+volumes:
+  zusam-data:

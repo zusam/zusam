@@ -1,0 +1,20 @@
+name: Integration Tests
+
+on: [pull_request]
+
+jobs:
+  integration:
+    name: Run integration tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run integration tests
+        run: make integ-tests
