@@ -20,6 +20,17 @@ compile-webapp:
 	rm -rf ../public/*.{js,css,map,png}
 	cp -r dist/* ../public/
 
-.PHONY: clean dev prod nothing compile-webapp
+
+integ-tests: prod
+	cd integration-tests && \
+	$(container_pgrm) compose up -d && \
+	python3 -m venv venv && \
+	./venv/bin/pip install -q -r requirements.txt && \
+	./venv/bin/pytest -v; \
+	status=$$?; \
+	$(container_pgrm) compose down -v; \
+	exit $$status
+
+.PHONY: clean dev prod nothing compile-webapp integ-tests
 clean:
 	rm -f Dockerfile
