@@ -1,0 +1,4 @@
+paths-ignore:
+  - "integration-tests/**"
+  - "api/tests/**"
+  - "dev/**"
