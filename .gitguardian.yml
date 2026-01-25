@@ -1,4 +1,9 @@
-paths-ignore:
-  - "integration-tests/**"
-  - "api/tests/**"
-  - "dev/**"
+# Reference: https://docs.gitguardian.com/ggshield-docs/configuration
+# Required, otherwise ggshield considers the file to use the deprecated v1 format
+version: 2
+
+secret:
+  ignored-paths:
+    - "integration-tests/*"
+    - "api/tests/*"
+    - "dev/*"
