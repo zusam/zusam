@@ -3,6 +3,7 @@
 import hashlib
 import subprocess
 import time
+from pathlib import Path
 
 import httpx
 import pytest
@@ -46,6 +47,31 @@ SEEDED_GROUP_ID = _generate_seeded_uuid(f"{TEST_SEED}_group")
 SEEDED_GROUP_SECRET_KEY = _generate_seeded_uuid(f"{TEST_SEED}_group_secret_key")
 
 
+def _get_database_path() -> str:
+    """Get the actual database path from Symfony config."""
+    cmd = [
+        "docker", "exec", CONTAINER_NAME,
+        "/zusam/api/bin/console", "debug:config", "doctrine", "dbal.connections.default.url",
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"Failed to get database path from Symfony config:\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+
+    # Parse output like: "url: 'sqlite:////zusam/api/var/cache/test/test.db'"
+    for line in result.stdout.splitlines():
+        if "sqlite:" in line:
+            # Extract path after sqlite:///
+            return line.split("sqlite:///")[-1].rstrip("'").strip()
+
+    raise RuntimeError(
+        f"Could not parse database path from Symfony config output:\n{result.stdout}"
+    )
+
+
 @pytest.fixture(scope="session")
 def api_url() -> str:
     """Return the base API URL."""
@@ -70,31 +96,6 @@ def api_ready(api_url: str) -> None:
             time.sleep(delay)
 
     pytest.fail(f"API at {api_url} did not become ready after {max_attempts * delay} seconds")
-
-
-def _get_database_path() -> str:
-    """Get the actual database path from Symfony config."""
-    cmd = [
-        "docker", "exec", CONTAINER_NAME,
-        "/zusam/api/bin/console", "debug:config", "doctrine", "dbal.connections.default.url",
-    ]
-    result = subprocess.run(cmd, capture_output=True, text=True)
-
-    if result.returncode != 0:
-        raise RuntimeError(
-            f"Failed to get database path from Symfony config:\n"
-            f"stdout: {result.stdout}\nstderr: {result.stderr}"
-        )
-
-    # Parse output like: "url: 'sqlite:////zusam/api/var/cache/test/test.db'"
-    for line in result.stdout.splitlines():
-        if "sqlite:" in line:
-            # Extract path after sqlite:///
-            return line.split("sqlite:///")[-1].rstrip("'").strip()
-
-    raise RuntimeError(
-        f"Could not parse database path from Symfony config output:\n{result.stdout}"
-    )
 
 
 @pytest.fixture
@@ -194,27 +195,12 @@ def default_group_secret_key() -> str:
 @pytest.fixture
 def test_image_bytes() -> bytes:
     """
-    Return a minimal valid PNG image as bytes.
+    Return a valid PNG image as bytes for testing file uploads.
 
-    This is a 1x1 pixel red PNG, suitable for testing file uploads.
+    Uses the icon-512x512.png file from the integration-tests directory.
     """
-    # Minimal valid PNG: 1x1 pixel red image
-    # PNG signature + IHDR + IDAT + IEND chunks
-    return bytes([
-        0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A,  # PNG signature
-        0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52,  # IHDR chunk length + type
-        0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,  # Width=1, Height=1
-        0x08, 0x02, 0x00, 0x00, 0x00, 0x90, 0x77, 0x53,  # Bit depth=8, Color type=RGB, ...
-        0xDE,                                            # CRC
-        0x00, 0x00, 0x00, 0x0C, 0x49, 0x44, 0x41, 0x54,  # IDAT chunk length + type
-        0x08, 0xD7, 0x63, 0xF8, 0xCF, 0xC0, 0x00, 0x00,  # Compressed image data
-        0x01, 0xA0, 0x00, 0xA1,                          # CRC
-        0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44,  # IEND chunk
-        0xAE, 0x42, 0x60, 0x82,                          # CRC
-    ])
-
-
-# Mailpit fixtures for email testing
+    image_path = Path(__file__).parent / "icon-512x512.png"
+    return image_path.read_bytes()
 
 
 @pytest.fixture(scope="session")
