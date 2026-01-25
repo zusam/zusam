@@ -1,30 +1,87 @@
 # Dev environment and workflow
 
-I'll try to describe my proposal of a dev environment for Zusam and the tools
-provided in this repository to help you with it.
+Development for Zusam is driven by the Makefile at the repository root. It handles building container images, running the application, linting, compiling the frontend, and running integration tests.
 
-I'll assume that you are working on linux for the rest of this README.
+Linux is assumed for the rest of this README.
 
-## Working with containers
+## Makefile targets
 
-I find working with containers the best way to
-develop without messing my system too much.  
-You can find two scripts here to help you in that regard.  
+Run `make` with no arguments to see available targets.
 
-The first one, `start-dev-container` will create a container
-and shell you into it so that you can launch PHP's and JS's related utilities.  
-I try to use standard tools as much as possible. On the PHP side,
-I rely on composer to install packages and run scripts while on the JS side, it's npm.
+| Target | Description |
+|--------|-------------|
+| `make dev` | Build the `zusam-dev` development container image |
+| `make prod` | Build the `zusam` production container image |
+| `make start-dev` | Build and start a dev container with the repo mounted (for running PHP/JS tooling) |
+| `make start-test` | Build and start a production container with local sources mounted (for manual testing) |
+| `make compile-webapp` | Install frontend dependencies, build, and copy output to `public/` |
+| `make lint` | Run all linters inside a dev container |
+| `make integ-tests` | Build the production image, run integration tests, and tear down containers |
 
-My usual workflow for the frontend is first
-to install packages with `npm install --save-dev`.  
-Then I compile the webapp and copy the resulting files to the public directory with
-`npm run build; rm -r ../public/*.{js,css,map,png}; cp -r dist/* ../public/`.  
-When I want to statically analyze the code, I run `npm run analyze`.
+## Container images
 
-The second script will launch an instance of Zusam by using the files
-in the repository (so that you can change things without rebuilding it).  
-I use the script `start-test-container` for that.
+There are two container images:
+
+- **`zusam-dev`** (`make dev`): Development image with build tools. Used for linting and compiling the webapp inside a container.
+- **`zusam`** (`make prod`): Production image that runs the full Zusam stack (Nginx + PHP-FPM). Used for `start-test` and integration tests.
+
+Both are built from Dockerfiles in `container/dockerfile/` via the C preprocessor (`cpp`).
+
+## Typical workflows
+
+### Developing
+
+```bash
+# Start a dev container with the repo mounted
+make start-dev
+# You are now inside the container and can run composer, npm, etc.
+```
+
+### Testing locally
+
+```bash
+# Start a production container with local sources mounted
+make start-test
+# Zusam is available at http://localhost:8080
+```
+
+### Compiling the frontend
+
+```bash
+# Compile the webapp from a container (no local tooling needed)
+make compile-webapp
+```
+
+### Linting
+
+```bash
+# Run all linters inside a container (no local tooling needed)
+make lint
+```
+
+### Running integration tests
+
+```bash
+# From the repo root - builds, runs tests, tears down
+make integ-tests
+```
+
+See `integration-tests/README.md` for details on the test framework, fixtures, and writing tests.
+
+### Email testing with Mailpit
+
+The `dev/docker-compose.yml` includes a [Mailpit](https://mailpit.axe.email/) service alongside the Zusam container. To use it:
+
+```bash
+cd dev
+docker compose up -d
+```
+
+This starts Zusam on port 8080 and Mailpit on port 8025. Zusam is configured with `MAILER_DSN=smtp://mailpit:1025` and `ALLOW_EMAIL=true`, so notification emails are captured by Mailpit and viewable at `http://localhost:8025`.
+
+## API testing with Posting
+
+The `dev/posting/` directory contains a collection of API requests for [Posting](https://posting.sh), a terminal-based API client. See `dev/posting/README.md` for usage instructions.
 
 ## Dependencies update
 

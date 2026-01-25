@@ -1,7 +1,7 @@
 CONTAINER_PGRM := $(shell command -v podman || command -v docker)
 UID := $(shell id -u)
 GID := $(shell id -g)
-TARGETS := clean dev prod compile-webapp integ-tests lint
+TARGETS := dev prod compile-webapp integ-tests lint
 DEV_OCI_IMAGE := zusam-dev
 PROD_OCI_IMAGE := zusam
 
@@ -17,13 +17,20 @@ prod:
 	$(CONTAINER_PGRM) build -t $(PROD_OCI_IMAGE) -f Dockerfile .
 
 .ONESHELL:
-compile-webapp:
+compile-webapp-local:
 	cd app
 	mkdir -p dist
 	npm install --save-dev
 	npm run build
 	rm -rf ../public/*.{js,css,map,png}
 	cp -r dist/* ../public/
+
+compile-webapp:
+	$(CONTAINER_PGRM) run --rm -it --name "zusam-lint" \
+		-e UID=$(UID) -e GID=$(GID) \
+		-v "$(CURDIR):/zusam:z" \
+		$(DEV_OCI_IMAGE) \
+		make compile-webapp-local
 
 .ONESHELL:
 lint-api:
@@ -84,4 +91,4 @@ integ-tests: prod
 clean:
 	rm -f Dockerfile
 
-.PHONY: nothing $(TARGETS) lint-local lint-api lint-app lint-integ-tests
+.PHONY: nothing $(TARGETS) lint-local lint-api lint-app lint-integ-tests compile-webapp-local clean
