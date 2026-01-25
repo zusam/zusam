@@ -26,6 +26,7 @@ RUN set -xe && apk add --no-cache \\
     npm \\
     openssh \\
     openssl \\
+    python3 \\
     rsync \\
     sqlite \\
     sudo \\
