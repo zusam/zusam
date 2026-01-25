@@ -19,14 +19,13 @@ class TerminateListener
 
     public function onKernelTerminate(TerminateEvent $event)
     {
-        if (HttpKernelInterface::MAIN_REQUEST == !$event->getRequestType()) {
-            // don't do anything if it's not the master request
+        if (HttpKernelInterface::MAIN_REQUEST !== $event->getRequestType()) {
+            // don't do anything if it's not the main request
             return;
         }
 
-        // Do not run cron tasks in test or dev env
-        // This break tests with the httpClient
-        if ('prod' == $this->env) {
+        // Run cron tasks in prod and test environments (test for integration testing)
+        if (in_array($this->env, ['prod', 'test'], true)) {
             $this->cron->runTask();
         }
     }
