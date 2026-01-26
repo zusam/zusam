@@ -59,7 +59,7 @@
     "stylelint": "^16.22.0",
     "stylelint-config-standard-scss": "^15.0.1",
     "svgo": "^4.0.0",
-    "npm-check-updates": "^18.0.2"
+    "npm-check-updates": "^19.0.0"
   },
   "alias": {
     "react": "preact/compat",
