@@ -102,6 +102,9 @@ integ-tests: prod
 	./venv/bin/pip install -q -r requirements.txt
 	./venv/bin/pytest -v --tb long -sl
 	status=$$?
+	if [ "$status" -ne 0 ]; then
+		$(CONTAINER_PGRM) logs zusam-integration-tests
+	fi
 	$(CONTAINER_PGRM) compose down -v
 	exit $$status
 
