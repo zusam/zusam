@@ -23,4 +23,4 @@ jobs:
         uses: docker/setup-docker-action@v4.7.0
 
       - name: Run integration tests
-        run: make integ-tests
+        run: make integ-tests CONTAINER_PGRM=docker
