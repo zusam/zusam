@@ -8,6 +8,7 @@ services:
       - UID=1000
       - GID=1000
       - APP_ENV=test
+      - ENABLE_TERMINATE_LISTENER=true
       - INIT_USER=zusam
       - INIT_GROUP=zusam
       - INIT_PASSWORD=zusam

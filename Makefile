@@ -36,6 +36,7 @@ compile-webapp:
 lint-api:
 	cd api
 	composer install --quiet
+	composer fix
 	composer lint
 
 .ONESHELL:
