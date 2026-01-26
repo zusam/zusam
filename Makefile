@@ -27,6 +27,7 @@ compile-webapp-local:
 
 compile-webapp:
 	$(CONTAINER_PGRM) run --rm -it --name "zusam-lint" \
+		--user $(UID):$(GID) \
 		-e UID=$(UID) -e GID=$(GID) \
 		-v "$(CURDIR):/zusam:z" \
 		$(DEV_OCI_IMAGE) \
