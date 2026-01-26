@@ -1,7 +1,7 @@
 CONTAINER_PGRM := $(shell command -v podman || command -v docker)
 UID := $(shell id -u)
 GID := $(shell id -g)
-TARGETS := dev prod compile-webapp integ-tests lint
+TARGETS := dev prod compile-webapp integ-tests lint unit-tests
 DEV_OCI_IMAGE := zusam-dev
 PROD_OCI_IMAGE := zusam
 
@@ -61,6 +61,22 @@ lint: dev
 		$(DEV_OCI_IMAGE) \
 		make lint-local
 
+.ONESHELL:
+unit-tests-local:
+	cd api
+	composer validate --strict
+	composer install --prefer-dist --no-progress
+	php bin/phpunit
+	php bin/composer analyze
+	php bin/composer lint
+
+unit-tests: dev
+	$(CONTAINER_PGRM) run --rm -it --name "zusam" \
+		-e UID=$(UID) -e GID=$(GID) \
+		-v "$(CURDIR):/zusam:z" \
+		$(DEV_OCI_IMAGE) \
+		make unit-tests-local
+
 start-dev: dev
 	$(CONTAINER_PGRM) run --rm -it --name "zusam" \
 		-e UID=$(UID) -e GID=$(GID) \
@@ -81,6 +97,7 @@ start-test: prod
 integ-tests: prod
 	cd integration-tests
 	$(CONTAINER_PGRM) compose up -d
+	rm -rf venv
 	python3 -m venv venv
 	./venv/bin/pip install -q -r requirements.txt
 	./venv/bin/pytest -v --tb long -sl
@@ -91,4 +108,4 @@ integ-tests: prod
 clean:
 	rm -f Dockerfile
 
-.PHONY: nothing $(TARGETS) lint-local lint-api lint-app lint-integ-tests compile-webapp-local clean
+.PHONY: nothing $(TARGETS) lint-local lint-api lint-app lint-integ-tests compile-webapp-local clean unit-tests-local

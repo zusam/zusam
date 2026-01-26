@@ -8,13 +8,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # https://github.com/marketplace/actions/checkout
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.1
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        # https://github.com/actions/setup-python
+        uses: actions/setup-python@v6.2.0
         with:
           python-version: '3.12'
+
+      - name: Set up environment
+        run: |
+          apt-get update
+          apt-get install -y podman-compose
 
       - name: Run integration tests
         run: make integ-tests container_pgrm=docker
