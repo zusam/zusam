@@ -24,4 +24,4 @@ jobs:
           sudo apt-get install -y podman-compose
 
       - name: Run integration tests
-        run: make integ-tests container_pgrm=docker
+        run: make integ-tests
