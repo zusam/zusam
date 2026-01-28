@@ -11,7 +11,7 @@
         "ext-mbstring": "*",
         "ext-simplexml": "*",
         "ext-xml": "*",
-        "doctrine/doctrine-bundle": "^2.0",
+        "doctrine/doctrine-bundle": "^3.0",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^3.5",
         "embed/embed": "^4.4",
