@@ -8,7 +8,7 @@ echo "GROUP: ${GID}"
 
 # Remove event directories that can cause fails like:
 # s6-supervise <service name>: fatal: unable to mkfifodir event: Permission denied
-rm -rf $(find /etc/s6.d -name 'event')
+rm -rf "$(find /etc/s6.d -name 'event')"
 
 crontab -r
 echo "* * * * * php /zusam/api/bin/console zusam:cron > /dev/stdout" | crontab -
@@ -22,12 +22,15 @@ if [ -f /zusam/config ]; then
     -e "s|<ALLOW_MESSAGE_REACTIONS>|${ALLOW_MESSAGE_REACTIONS}|g"\
     -e "s|<ALLOW_PUBLIC_LINKS>|${ALLOW_PUBLIC_LINKS}|g"\
     -e "s|<ALLOW_VIDEO_UPLOAD>|${ALLOW_VIDEO_UPLOAD}|g" \
-    -e "s|<APP_ENV>|${APP_ENV}|g" \
     -e "s|<DATABASE_URL>|${DATABASE_URL}|g" \
     -e "s|<DOMAIN>|${DOMAIN}|g" \
     -e "s|<LANG>|${LANG}|g" \
     -e "s|<MAILER_DSN>|${MAILER_DSN}|g" \
     /zusam/config
+  # $APP_ENV doesn't have a value by default
+  if [ -n "${APP_ENV}" ]; then
+    sed -i -e "s|<APP_ENV>|${APP_ENV}|g" /zusam/config
+  fi
 fi
 
 if ! [ -f /zusam/data/config ]; then
@@ -38,13 +41,29 @@ if ! [ -L /zusam/public/files ]; then
   ln -s /zusam/data/files /zusam/public/files
 fi
 
-COMPOSER_ALLOW_SUPERUSER=1 /usr/bin/php /zusam/api/bin/composer install -d /zusam/api --no-interaction
+# Install backend dependencies
+COMPOSER_ALLOW_SUPERUSER=1 /usr/bin/php /zusam/api/bin/composer install -d /zusam/api --prefer-dist --no-interaction
 
-# initialize database if none is present
-if ! [ -f "/zusam/data/${DATABASE_NAME}" ]; then
+# Get actual database path from Symfony config (environment-aware)
+# Output format: "url: 'sqlite:////path/to/database.db'"
+get_db_path() {
+  /zusam/api/bin/console debug:config doctrine dbal.url 2>/dev/null \
+    | grep "url:" \
+    | sed "s/.*sqlite:\/\/\///" \
+    | sed "s/'$//"
+}
+
+DATABASE_PATH=$(get_db_path)
+echo "Resolved DATABASE_PATH: ${DATABASE_PATH}"
+
+# Ensure parent directory exists
+mkdir -p "$(dirname "${DATABASE_PATH}")"
+
+# Initialize database if none is present (use -s to check size > 0, as composer may create empty file)
+if ! [ -s "${DATABASE_PATH}" ]; then
   /zusam/api/bin/console zusam:init "${INIT_USER}" "${INIT_GROUP}" "${INIT_PASSWORD}"
 else
-  /zusam/api/bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration -vv -e "${APP_ENV}"
+  /zusam/api/bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration -vv
 fi
 
 if [ -n "${SUBPATH}" ]; then

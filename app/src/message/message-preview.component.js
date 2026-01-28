@@ -56,8 +56,15 @@ export default function MessagePreview(props) {
     });
   }, []);
 
-  if (!props?.id || !data) {
+  if (!props?.id) {
     return null;
+  }
+  if (!data) {
+    return (
+      <div class="d-inline-block message-preview unselectable">
+        <div class="card message-preview-loading material-shadow-with-hover" />
+      </div>
+    );
   }
   return (
     <Link

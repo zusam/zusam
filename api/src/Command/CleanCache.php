@@ -21,7 +21,9 @@ class CleanCache extends Command
         parent::__construct();
         $this->logger = $logger;
 
-        @mkdir($targetDir, 0o777, true);
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0o777, true);
+        }
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -xe
+
+initial_path="$(pwd)"
+
+cd "$(dirname "$0")"
+
+cdroot() {
+  if ! [ -e ".git" ] && [ "$(pwd)" != "/" ]; then
+    cd ..
+    cdroot
+  fi
+}
+
+cdroot
+
+make dev
+docker run --rm -it --name "zusam-compile-webapp" \
+  --user "$(id -u):$(id -g)" \
+  -v "$initial_path:/zusam:z" \
+  "zusam-dev" \
+  make compile-webapp
+
+cd "$initial_path"

@@ -21,10 +21,12 @@ RUN set -xe && apk add --no-cache \\
     curl \\
     git \\
     gnupg \\
+    make \\
     nodejs \\
     npm \\
     openssh \\
     openssl \\
+    python3 \\
     rsync \\
     sqlite \\
     sudo \\
