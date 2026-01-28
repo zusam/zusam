@@ -14,7 +14,7 @@ jobs:
     steps:
     # https://github.com/marketplace/actions/checkout
     - name: Checkout code
-      uses: actions/checkout@v6.0.1
+      uses: actions/checkout@v6.0.2
 
     # https://github.com/actions/setup-node
     - name: Set up Node.js
