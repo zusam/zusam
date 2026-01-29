@@ -134,14 +134,11 @@ class Cron extends Command
 
         try {
             foreach ($this->tasks as $task) {
-                // If we are only doing "always" tasks, skip others
-                if (
-                    !isset($task['type'])
-                    || 'always' !== $task['type']
-                ) {
+                // Skip tasks with no type
+                if (!isset($task['type'])) {
                     continue;
                 }
-                // if it's a heavy task and we're not in the idle hours, don't do it
+                // Skip heavy tasks outside idle hours
                 if (
                     'heavy' == $task['type']
                     && (
@@ -152,7 +149,7 @@ class Cron extends Command
                     continue;
                 }
                 $lastExecution = $this->system->get($task['name']);
-                if (empty($lastExecution) || $lastExecution < time() - $task['period']) {
+                if ('always' === $task['type'] || empty($lastExecution) || $lastExecution < time() - $task['period']) {
                     $this->logger->notice('Running '.$task['name']);
                     $this->system->set('last_task_timestamp', time());
                     $this->system->set('last_task_name', $task['name']);
