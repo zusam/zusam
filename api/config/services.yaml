@@ -68,7 +68,7 @@ services:
       arguments:
         $enableTerminateListener: '%env(bool:ENABLE_TERMINATE_LISTENER)%'
       tags:
-        - { name: kernel.event_listener, event: kernel.terminate }
+        - { name: kernel.event_listener, event: kernel.terminate, method: onKernelTerminate }
 
     App\Controller\Security:
       arguments:
