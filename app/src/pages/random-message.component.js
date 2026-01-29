@@ -9,8 +9,8 @@ export default function RandomMessage() {
 
   useEffect(() => {
     http.get(`/api/groups/${params.id}/random`).then(m => {
-      setMessage(m);
-    });
+      if (m) setMessage(m);
+    }).catch(() => null);
   }, []);
 
   if (message) {

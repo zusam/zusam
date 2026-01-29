@@ -11,8 +11,8 @@ const bookmarks_utils = {
 
   update() {
     return http.get(`/api/me/bookmarks/${bookmarks_utils.LIMIT + 1}`).then(r => {
-      store.dispatch("bookmarks/update", r);
-    });
+      if (r) store.dispatch("bookmarks/update", r);
+    }).catch(() => null);
   },
 };
 

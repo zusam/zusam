@@ -11,8 +11,8 @@ const notifications = {
 
   update() {
     return http.get(`/api/me/notifications/${notifications.LIMIT + 1}`).then(r => {
-      store.dispatch("notifications/update", r);
-    });
+      if (r) store.dispatch("notifications/update", r);
+    }).catch(() => null);
   },
 
   isNew(id) {
@@ -33,7 +33,7 @@ const notifications = {
       state.notifications.forEach(n => {
         http.delete(`/api/notifications/${n.id}`).then(() => {
           store.dispatch("notifications/remove", n);
-        });
+        }).catch(err => console.warn(err));
       });
     }
   },
@@ -44,7 +44,7 @@ const notifications = {
       state.notifications.forEach(n => {
         http.put(`/api/notifications/${n.id}`, {read: true}).then(() => {
           store.dispatch("notifications/read", n);
-        });
+        }).catch(err => console.warn(err));
       });
     }
   },
@@ -56,7 +56,7 @@ const notifications = {
         .map(n => {
           http.delete(`/api/notifications/${n.id}`).then(() => {
             store.dispatch("notifications/remove", n);
-          });
+          }).catch(err => console.warn(err));
         })
     );
   },
@@ -68,7 +68,7 @@ const notifications = {
         .map(n => {
           http.put(`/api/notifications/${n.id}`, {read: true}).then(() => {
             store.dispatch("notifications/read", n);
-          });
+          }).catch(err => console.warn(err));
         })
     );
   },

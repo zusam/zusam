@@ -12,6 +12,7 @@ export default function Search() {
   function search(evt) {
     evt.preventDefault();
     router.getEntity().then(entity => {
+      if (!entity) return;
       let group_id = null;
       switch (entity.entityType) {
       case "group":
@@ -30,7 +31,7 @@ export default function Search() {
         .split(" ");
       navigate(`/groups/${group_id}/search?q=${searchTerms.join("+")}`);
       window.dispatchEvent(new CustomEvent("groupSearch"));
-    });
+    }).catch(() => null);
   }
 
   return (

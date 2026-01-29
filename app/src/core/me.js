@@ -38,16 +38,24 @@ const me = {
     return http.get("/api/me", true).then(r => {
       if (!r || !r?.id) {
         store.dispatch("update", {});
-        return;
+        return null;
       }
-      Promise.all(r.groups.map(g => http.get(`/api/groups/${g.id}`).then(group => group))).then(
+      Promise.all(r.groups.map(g => http.get(`/api/groups/${g.id}`).catch(() => null).then(group => group))).then(
         groups => {
-          r.groups = groups;
+          r.groups = groups.filter(g => g != null);
           store.dispatch("me/update", Object.assign({loaded: true}, r));
         }
       );
       i18n.changeLanguage(r?.data?.lang);
       return r;
+    }).catch(err => {
+      if (err?.networkError) {
+        // Network issue — don't clear user state
+        return { _networkError: true };
+      }
+      // Auth failure (401/403) or other HTTP error — clear user state
+      store.dispatch("update", {});
+      return null;
     });
   },
 

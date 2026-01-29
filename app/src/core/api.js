@@ -13,6 +13,6 @@ const api = {
       store.dispatch("api/update", Object.assign({}, r));
       setTimeout(dispatchEvent(new CustomEvent("apiStateChange")));
       return r;
-    }),
+    }).catch(() => null),
 };
 export default api;

@@ -21,7 +21,7 @@ export default function UserSettings() {
 
   const resetApiKey = (event) => {
     event.preventDefault();
-    http.post(`/api/users/${me.id}/reset-api-key`, {}).then(() => router.logout());
+    http.post(`/api/users/${me.id}/reset-api-key`, {}).then(() => router.logout()).catch(err => console.warn(err));
   };
 
   const inputAvatar = () => {
@@ -37,7 +37,7 @@ export default function UserSettings() {
           http.put(`/api/users/${me.id}`, { avatar: file["id"] }).then(() => {
             setAlertMessage(t("settings_updated"));
             navigate(`${location.pathname}?alert=settings_updated`);
-          });
+          }).catch(err => console.warn(err));
         }
       );
     });
@@ -50,7 +50,7 @@ export default function UserSettings() {
     if (confirmDeletion) {
       http.delete(`/api/users/${me.id}`).then(() => {
         navigate("/logout");
-      });
+      }).catch(err => console.warn(err));
     }
   };
 
@@ -91,13 +91,14 @@ export default function UserSettings() {
       lang
     };
     http.put(`/api/users/${me.id}`, user).then(res => {
+      if (!res) return;
       if (res["error"]) {
         alert.add(res["error"], "alert-danger");
       } else {
         setAlertMessage(t("settings_updated"));
         navigate(`${location.pathname}?alert=settings_updated`);
       }
-    });
+    }).catch(() => null);
   };
 
   if (me && me?.data) {

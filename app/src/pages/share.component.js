@@ -25,6 +25,7 @@ export default function Share() {
   useEffect(() => {
     setTimeout(() => {
       meService.fetch().then(user => {
+        if (!user || user?._networkError) { setLoaded(true); return; }
         if (user.data["default_group"]) {
           setGroup(user.data["default_group"]);
         } else if (user.groups.length == 1) {
@@ -33,10 +34,11 @@ export default function Share() {
         if(searchParams.get("message")) {
           http.get(`/api/messages/${searchParams.get("message")}`)
             .then(m => {
+              if (!m) { setLoaded(true); return; }
               if (m?.files?.length) {
-                Promise.all(m.files.map(f => http.get(`/api/files/${f.id}`).then(f => f))).then(
+                Promise.all(m.files.map(f => http.get(`/api/files/${f.id}`).catch(() => null).then(f => f))).then(
                   files => {
-                    setFiles(files);
+                    setFiles(files.filter(f => f != null));
                     setTitle(m?.data?.title || "");
                     setText(m?.data?.text || "");
                     setUrl("");
@@ -49,7 +51,7 @@ export default function Share() {
                 setUrl("");
                 setLoaded(true);
               }
-            });
+            }).catch(() => { setLoaded(true); });
         } else {
           setLoaded(true);
         }

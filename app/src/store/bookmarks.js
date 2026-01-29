@@ -8,7 +8,7 @@ export const bookmarksStore = store => {
   });
 
   store.on("bookmark/remove", (state, bookmark) => {
-    http.delete(`/api/bookmarks/${bookmark.id}`);
+    http.delete(`/api/bookmarks/${bookmark.id}`).catch(err => console.warn(err));
     return {
       bookmarks: state.bookmarks.filter(b => b.id != bookmark.id)
     };
@@ -16,7 +16,7 @@ export const bookmarksStore = store => {
 
   store.on("bookmark/add", (state, message_id) => {
     http.post("/api/bookmarks", {message_id}).then(bookmark => {
-      store.dispatch("bookmarks/update", [...state.bookmarks, bookmark]);
-    });
+      if (bookmark) store.dispatch("bookmarks/update", [...state.bookmarks, bookmark]);
+    }).catch(() => null);
   });
 };

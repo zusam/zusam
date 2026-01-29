@@ -20,14 +20,15 @@ export default function GroupSettings() {
   useEffect(() => {
     http.get(`/api/groups/${params.id}`).then(
       group => {
+        if (!group) return;
         setGroup(group);
         setSecretKey(group.secretKey);
         setInviteKey(group.inviteKey);
-        Promise.all(group.users.map(u => http.get(`/api/users/${u.id}`).then(u => u))).then(
-          users => setUsers(users)
+        Promise.all(group.users.map(u => http.get(`/api/users/${u.id}`).catch(() => null).then(u => u))).then(
+          users => setUsers(users.filter(u => u != null))
         );
       }
-    );
+    ).catch(() => null);
     setAlertMessage(t(router.getParam("alert")));
   }, []);
 
@@ -36,9 +37,10 @@ export default function GroupSettings() {
     http
       .post(`/api/groups/${group.id}/reset-invite-key`, {})
       .then(res => {
+        if (!res) return;
         alert.add(t("group_updated"));
         setInviteKey(res["inviteKey"]);
-      });
+      }).catch(() => null);
   };
 
   const updateSettings = (event) => {
@@ -49,10 +51,11 @@ export default function GroupSettings() {
     }
     setGroup(Object.assign({}, group));
     http.put(`/api/groups/${group.id}`, group).then(res => {
+      if (!res) return;
       setGroup(res);
       setAlertMessage(t("group_updated"));
       navigate(`${location.pathname}?alert=group_updated`);
-    });
+    }).catch(() => null);
   };
 
   const leaveGroup = (event) => {
@@ -63,7 +66,7 @@ export default function GroupSettings() {
       http.put(`/api/users/${me.id}`, user).then(() => {
         dispatch("me/fetch");
         leave();
-      });
+      }).catch(err => console.warn(err));
     } else {
       leave();
     }
@@ -78,7 +81,7 @@ export default function GroupSettings() {
         alert.add(t("group_left"));
         navigate("/");
       }
-    });
+    }).catch(() => null);
   };
 
   return (

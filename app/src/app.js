@@ -62,6 +62,11 @@ function App() {
   });
 
   me.fetch().then(user => {
+    if (user?._networkError) {
+      // Network is down — don't redirect, stay on current page
+      return;
+    }
+
     if (location.pathname === "/") {
       let redirect = "/login";
       if (user) {
@@ -80,8 +85,8 @@ function App() {
 
     if (location.pathname.match(/^\/invitation/)) {
       if (user) {
-        http.post(`/api/groups/invitation/${router.id}`, {}).then(() => {
-          navigate("/");
+        http.post(`/api/groups/invitation/${router.id}`, {}).catch(() => null).then(res => {
+          if (res) navigate("/");
         });
       } else {
         navigate(`/signup?inviteKey=${router.id}`);
