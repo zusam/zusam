@@ -1,7 +1,7 @@
 CONTAINER_PGRM := $(shell command -v podman || command -v docker)
 UID := $(shell id -u)
 GID := $(shell id -g)
-TARGETS := dev prod compile-webapp integ-tests lint unit-tests
+TARGETS := dev prod compile-webapp integ-tests lint unit-tests start-test start-dev
 DEV_OCI_IMAGE := zusam-dev
 PROD_OCI_IMAGE := zusam
 
