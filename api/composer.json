@@ -12,7 +12,7 @@
         "ext-simplexml": "*",
         "ext-xml": "*",
         "doctrine/doctrine-bundle": "^2.0",
-        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.5",
         "embed/embed": "^4.4",
         "firebase/php-jwt": "^7.0",
