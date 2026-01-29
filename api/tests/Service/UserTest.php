@@ -32,12 +32,12 @@ class UserTest extends KernelTestCase
         $schemaTool->createSchema($metadata);
 
         // Create a mock of the UserPasswordHasherInterface
-        $hasherMock = $this->createMock(UserPasswordHasherInterface::class);
+        $hasherMock = $this->createStub(UserPasswordHasherInterface::class);
         $hasherMock->method('hashPassword')->willReturn('some_hashed_password');
         $this->passwordHasher = $hasherMock;
 
-        // Create a mock of the Notification Service
-        $this->notificationService = $this->createMock(NotificationService::class);
+        // Create a stub of the Notification Service
+        $this->notificationService = $this->createStub(NotificationService::class);
     }
 
     protected function tearDown(): void
@@ -51,9 +51,10 @@ class UserTest extends KernelTestCase
 
     public function testCreate()
     {
+        $notificationService = $this->createStub(NotificationService::class);
         $login = 'user1';
         $password = 'password1';
-        $userService = new User($this->entityManager, $this->passwordHasher, $this->notificationService);
+        $userService = new User($this->entityManager, $this->passwordHasher, $notificationService);
         $user = $userService->create($login, $password);
         $this->assertInstanceOf(UserEntity::class, $user);
         $this->assertEquals($login, $user->getLogin());
@@ -82,12 +83,13 @@ class UserTest extends KernelTestCase
         $this->entityManager->persist($notification2);
         $this->entityManager->flush();
 
+        $notificationService = $this->createMock(NotificationService::class);
         // Expect delete() to be called twice on the NotificationService
-        $this->notificationService
+        $notificationService
             ->expects($this->exactly(2))
             ->method('delete');
 
-        $userService = new User($this->entityManager, $this->passwordHasher, $this->notificationService);
+        $userService = new User($this->entityManager, $this->passwordHasher, $notificationService);
         $userService->delete($user);
 
         // Confirm user no longer exists

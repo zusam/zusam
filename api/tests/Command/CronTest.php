@@ -29,7 +29,7 @@ class CronTest extends TestCase
     {
         $this->systemSetCalls = [];
 
-        $this->system = $this->createMock(System::class);
+        $this->system = $this->createStub(System::class);
         $this->system->method('get')->willReturnCallback(function (string $key) {
             return $this->systemGetValues[$key] ?? null;
         });
@@ -37,12 +37,12 @@ class CronTest extends TestCase
             $this->systemSetCalls[] = ['key' => $key, 'value' => $value];
         });
 
-        $this->logger = $this->createMock(LoggerInterface::class);
-        $this->kernel = $this->createMock(KernelInterface::class);
+        $this->logger = $this->createStub(LoggerInterface::class);
+        $this->kernel = $this->createStub(KernelInterface::class);
         $this->kernel->method('getBundles')->willReturn([]);
         $this->kernel->method('getBundle')->willThrowException(new \InvalidArgumentException());
 
-        $this->params = $this->createMock(ParameterBagInterface::class);
+        $this->params = $this->createStub(ParameterBagInterface::class);
         $this->params->method('get')->willReturnCallback(function (string $key) use ($idleHours) {
             if ('idle_hours' === $key) {
                 return $idleHours;
