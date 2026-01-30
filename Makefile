@@ -25,7 +25,7 @@ compile-webapp-local:
 	rm -rf ../public/*.{js,css,map,png}
 	cp -r dist/* ../public/
 
-compile-webapp:
+compile-webapp: dev
 	$(CONTAINER_PGRM) run --rm -it --name "zusam-lint" \
 		--user $(UID):$(GID) \
 		-e UID=$(UID) -e GID=$(GID) \
