@@ -1,6 +1,7 @@
 import { h } from "preact";
-import { alert, http, util, router, api } from "/src/core";
-import { useStoreon } from "storeon/preact";
+import { alert, http, util, router, api, me as meService } from "/src/core";
+import { useStore } from "@nanostores/preact";
+import { $me } from "/src/store/me.js";
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,7 +10,7 @@ export default function GroupSettings() {
 
   const params = useParams();
   const { t } = useTranslation();
-  const { me, dispatch } = useStoreon("me");
+  const me = useStore($me);
   const navigate = useNavigate();
   const [secretKey, setSecretKey] = useState("");
   const [inviteKey, setInviteKey] = useState("");
@@ -64,7 +65,7 @@ export default function GroupSettings() {
       let user = {};
       user.data = { default_group: me.groups[0].id };
       http.put(`/api/users/${me.id}`, user).then(() => {
-        dispatch("me/fetch");
+        meService.fetch();
         leave();
       }).catch(err => console.warn(err));
     } else {
@@ -77,7 +78,7 @@ export default function GroupSettings() {
       if (!res || !res["entityType"]) {
         alert.add(t("error"), "alert-danger");
       } else {
-        dispatch("me/fetch");
+        meService.fetch();
         alert.add(t("group_left"));
         navigate("/");
       }

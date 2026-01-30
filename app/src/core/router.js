@@ -1,11 +1,11 @@
 import util from "./util.js";
 import http from "./http.js";
-import store from "/src/store";
+import { $router } from "/src/store/router.js";
 
 const router = {
 
   get() {
-    return store.get();
+    return $router.get();
   },
 
   get route() {
@@ -34,7 +34,7 @@ const router = {
 
   get backUrl() {
     console.err("don't use backUrl");
-    return store.get()?.backUrl;
+    return $router.get()?.backUrl;
   },
 
   get search() {
@@ -50,7 +50,7 @@ const router = {
 
   get entity() {
     console.err("don't use entity");
-    return store.get()?.entity;
+    return $router.get()?.entity;
   },
 
   removeSubpath: path =>

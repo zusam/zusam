@@ -1,22 +1,22 @@
+import { atom } from "nanostores";
 import { http } from "/src/core";
 
-export const bookmarksStore = store => {
-  store.on("@init", () => ({bookmarks:[]}));
+export const $bookmarks = atom([]);
 
-  store.on("bookmarks/update", (state, bookmarks = []) => {
-    return {bookmarks};
-  });
+export function updateBookmarks(bookmarks = []) {
+  $bookmarks.set(bookmarks);
+}
 
-  store.on("bookmark/remove", (state, bookmark) => {
-    http.delete(`/api/bookmarks/${bookmark.id}`).catch(err => console.warn(err));
-    return {
-      bookmarks: state.bookmarks.filter(b => b.id != bookmark.id)
-    };
-  });
+export function removeBookmark(bookmark) {
+  http.delete(`/api/bookmarks/${bookmark.id}`).catch(err => console.warn(err));
+  $bookmarks.set(
+    $bookmarks.get().filter(b => b.id != bookmark.id)
+  );
+}
 
-  store.on("bookmark/add", (state, message_id) => {
-    http.post("/api/bookmarks", {message_id}).then(bookmark => {
-      if (bookmark) store.dispatch("bookmarks/update", [...state.bookmarks, bookmark]);
-    }).catch(() => null);
-  });
-};
+export function addBookmark(message_id) {
+  const current = $bookmarks.get();
+  http.post("/api/bookmarks", { message_id }).then(bookmark => {
+    if (bookmark) updateBookmarks([...current, bookmark]);
+  }).catch(() => null);
+}

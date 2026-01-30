@@ -9,13 +9,14 @@ import { Writer } from "/src/writer";
 import { useEffect, useState, useRef, useReducer } from "preact/hooks";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useStoreon } from "storeon/preact";
+import { useStore } from "@nanostores/preact";
+import { $me } from "/src/store/me.js";
 
 export default function Message(props) {
 
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { me } = useStoreon("me");
+  const me = useStore($me);
   const [author, setAuthor] = useState(null);
   const [parent, setParent] = useState(null);
   const [files, setFiles] = useState(null);

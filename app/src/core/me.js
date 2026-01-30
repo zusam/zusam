@@ -1,49 +1,49 @@
 import http from "./http.js";
 import storage from "./storage.js";
-import store from "/src/store";
+import { $me, updateMe, resetMe } from "/src/store/me.js";
 import i18n from "i18next";
 
 const me = {
 
   get() {
-    return store.get()?.me;
+    return $me.get();
   },
 
   get data() {
-    return store.get()?.me?.data;
+    return $me.get()?.data;
   },
 
   get lang() {
-    return store.get()?.me?.data?.lang;
+    return $me.get()?.data?.lang;
   },
 
   get groups() {
-    return store.get()?.me?.groups;
+    return $me.get()?.groups;
   },
 
   get id() {
-    return store.get()?.me?.id;
+    return $me.get()?.id;
   },
 
   get avatar() {
-    return store.get()?.me?.avatar;
+    return $me.get()?.avatar;
   },
 
   getGroupName(id) {
-    let group = store.get()["groups"]?.find(g => g["id"] == id);
+    let group = $me.get()?.groups?.find(g => g["id"] == id);
     return group ? group["name"] : "";
   },
 
   update() {
     return http.get("/api/me", true).then(r => {
       if (!r || !r?.id) {
-        store.dispatch("update", {});
+        updateMe({});
         return null;
       }
       Promise.all(r.groups.map(g => http.get(`/api/groups/${g.id}`).catch(() => null).then(group => group))).then(
         groups => {
           r.groups = groups.filter(g => g != null);
-          store.dispatch("me/update", Object.assign({loaded: true}, r));
+          updateMe(Object.assign({loaded: true}, r));
         }
       );
       i18n.changeLanguage(r?.data?.lang);
@@ -54,20 +54,20 @@ const me = {
         return { _networkError: true };
       }
       // Auth failure (401/403) or other HTTP error — clear user state
-      store.dispatch("update", {});
+      updateMe({});
       return null;
     });
   },
 
   fetch() {
-    if (store.get()["loaded"]) {
-      return new Promise(r => r(store.get()));
+    if ($me.get()["loaded"]) {
+      return new Promise(r => r($me.get()));
     }
     return me.update();
   },
 
   reset() {
-    store.dispatch("@init");
+    resetMe();
   },
 
   logout() {
