@@ -27,8 +27,7 @@ sudo docker run -p 80:8080 -v "$(pwd)/data:/zusam/data" --name zusam -e INIT_USE
 ```
 
 The login for the first user is `email@domain.example` with the password `initpass` in this example.  
-Please change the initial password after initialization since it's public if passed as an docker ENV variable.  
-If you don't specify an `INIT_USER`/`INIT_PASSWORD`, they will default to `zusam`.
+The default starting user, group and password are `zusam`.
 
 ---
 
@@ -57,6 +56,6 @@ services:
 Environment explanations:
 - DATABASE_NAME: name of the sqlite3 database file
 - INIT_GROUP: name of the initial group to be created
-- INIT_PASSWORD: password of the initial user to be created
+- INIT_PASSWORD: password of the initial user to be created (defaults to "zusam" if unset)
 - INIT_USER: name of the initial user to be created
 - SUBPATH: specify if zusam needs to be served in a subpath (use "/foo" if you want to serve it on "example.com/foo")
