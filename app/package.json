@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@parcel/core": "^2.15.4",
-    "@nanostores/preact": "^0.5.2",
+    "@nanostores/preact": "^1.0.0",
     "bootstrap": "^5.3.7",
     "emoji-picker-react": "^4.13.2",
     "glightbox": "^3.3.1",
