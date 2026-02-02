@@ -61,7 +61,10 @@ mkdir -p "$(dirname "${DATABASE_PATH}")"
 
 # Initialize database if none is present (use -s to check size > 0, as composer may create empty file)
 if ! [ -s "${DATABASE_PATH}" ]; then
-  /zusam/api/bin/console zusam:init "${INIT_USER}" "${INIT_GROUP}" "${INIT_PASSWORD}"
+  INIT_USER_VALUE=${INIT_USER:-zusam}
+  INIT_GROUP_VALUE=${INIT_GROUP:-zusam}
+  INIT_PASSWORD_VALUE=${INIT_PASSWORD:-zusam}
+  /zusam/api/bin/console zusam:init "${INIT_USER_VALUE}" "${INIT_GROUP_VALUE}" "${INIT_PASSWORD_VALUE}"
 else
   /zusam/api/bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration -vv
 fi

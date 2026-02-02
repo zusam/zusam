@@ -92,6 +92,9 @@ export default function Writer(props) {
         return;
       }
       window.dispatchEvent(new CustomEvent("editMessage", { detail: res }));
+    }).catch(() => {
+      setSending(false);
+      alert.add(t("error_new_message"), "alert-danger");
     });
     setSending(true);
   };
@@ -125,6 +128,9 @@ export default function Writer(props) {
         navigate(`/messages/${res.id}`);
       }
       setForm(writerForm, [], "", "");
+    }).catch(() => {
+      setSending(false);
+      alert.add(t("error_new_message"), "alert-danger");
     });
     setSending(true);
   };

@@ -10,7 +10,7 @@ export default function MessageSearchResult(props) {
 
   useEffect(() => {
     if (props?.message?.author) {
-      http.get(`/api/users/${props.message.author}`).then(author => author && setAuthor(author));
+      http.get(`/api/users/${props.message.author}`).then(author => author && setAuthor(author)).catch(() => null);
     }
   }, []);
 

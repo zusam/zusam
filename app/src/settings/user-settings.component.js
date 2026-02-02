@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { lang, router, alert, http, util, storage } from "/src/core";
-import { useStoreon } from "storeon/preact";
+import { useStore } from "@nanostores/preact";
+import { $me } from "/src/store/me.js";
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -8,7 +9,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 export default function UserSettings() {
 
   const { t } = useTranslation();
-  const { me } = useStoreon("me");
+  const me = useStore($me);
   const navigate = useNavigate();
   const location = useLocation();
   const [apiKey, setApiKey] = useState(null);
@@ -21,7 +22,7 @@ export default function UserSettings() {
 
   const resetApiKey = (event) => {
     event.preventDefault();
-    http.post(`/api/users/${me.id}/reset-api-key`, {}).then(() => router.logout());
+    http.post(`/api/users/${me.id}/reset-api-key`, {}).then(() => router.logout()).catch(err => console.warn(err));
   };
 
   const inputAvatar = () => {
@@ -37,7 +38,7 @@ export default function UserSettings() {
           http.put(`/api/users/${me.id}`, { avatar: file["id"] }).then(() => {
             setAlertMessage(t("settings_updated"));
             navigate(`${location.pathname}?alert=settings_updated`);
-          });
+          }).catch(err => console.warn(err));
         }
       );
     });
@@ -50,7 +51,7 @@ export default function UserSettings() {
     if (confirmDeletion) {
       http.delete(`/api/users/${me.id}`).then(() => {
         navigate("/logout");
-      });
+      }).catch(err => console.warn(err));
     }
   };
 
@@ -91,13 +92,14 @@ export default function UserSettings() {
       lang
     };
     http.put(`/api/users/${me.id}`, user).then(res => {
+      if (!res) return;
       if (res["error"]) {
         alert.add(res["error"], "alert-danger");
       } else {
         setAlertMessage(t("settings_updated"));
         navigate(`${location.pathname}?alert=settings_updated`);
       }
-    });
+    }).catch(() => null);
   };
 
   if (me && me?.data) {

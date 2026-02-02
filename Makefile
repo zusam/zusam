@@ -1,7 +1,7 @@
 CONTAINER_PGRM := $(shell command -v podman || command -v docker)
 UID := $(shell id -u)
 GID := $(shell id -g)
-TARGETS := dev prod compile-webapp integ-tests lint unit-tests
+TARGETS := dev prod compile-webapp integ-tests lint unit-tests start-test start-dev
 DEV_OCI_IMAGE := zusam-dev
 PROD_OCI_IMAGE := zusam
 
@@ -25,7 +25,7 @@ compile-webapp-local:
 	rm -rf ../public/*.{js,css,map,png}
 	cp -r dist/* ../public/
 
-compile-webapp:
+compile-webapp: dev
 	$(CONTAINER_PGRM) run --rm -it --name "zusam-lint" \
 		--user $(UID):$(GID) \
 		-e UID=$(UID) -e GID=$(GID) \

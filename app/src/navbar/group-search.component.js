@@ -30,7 +30,7 @@ export default function GroupSearch(props) {
         setMessages(res["messages"]);
         setLoaded(true);
       }
-    });
+    }).catch(() => null);
   };
 
   useEffect(() => {

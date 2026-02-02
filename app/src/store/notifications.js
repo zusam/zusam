@@ -1,19 +1,21 @@
-export const notificationsStore = store => {
-  store.on("@init", () => ({notifications:[]}));
+import { atom } from "nanostores";
 
-  store.on("notifications/update", (state, notifications = []) => {
-    return {notifications};
-  });
+export const $notifications = atom([]);
 
-  store.on("notifications/remove", (state, notification) => {
-    return {
-      notifications: state.notifications.filter(n => n.id != notification.id)
-    };
-  });
+export function updateNotifications(notifications = []) {
+  $notifications.set(notifications);
+}
 
-  store.on("notifications/read", (state, notification) => {
-    return {
-      notifications: state.notifications.map(n => n.id === notification.id ? Object.assign(n, {read: true}) : n)
-    };
-  });
-};
+export function removeNotification(notification) {
+  $notifications.set(
+    $notifications.get().filter(n => n.id != notification.id)
+  );
+}
+
+export function readNotification(notification) {
+  $notifications.set(
+    $notifications.get().map(n =>
+      n.id === notification.id ? Object.assign(n, { read: true }) : n
+    )
+  );
+}

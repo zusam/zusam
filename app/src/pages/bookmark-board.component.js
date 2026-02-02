@@ -2,12 +2,13 @@ import { h } from "preact";
 import { MessagePreview } from "/src/message";
 import { Navbar } from "/src/navbar";
 import { useTranslation } from "react-i18next";
-import { useStoreon } from "storeon/preact";
+import { useStore } from "@nanostores/preact";
+import { $bookmarks } from "/src/store/bookmarks.js";
 
 export default function BookmarkBoard() {
 
   const { t } = useTranslation();
-  const { bookmarks } = useStoreon("bookmarks");
+  const bookmarks = useStore($bookmarks);
 
   if (!bookmarks) {
     return (

@@ -27,7 +27,7 @@ class MessageTest extends KernelTestCase
             ->get('doctrine')
             ->getManager();
 
-        $this->cache = $this->createMock(TagAwareCacheInterface::class);
+        $this->cache = $this->createStub(TagAwareCacheInterface::class);
 
         $schemaTool = new SchemaTool($this->entityManager);
         $metadata = [
@@ -52,8 +52,8 @@ class MessageTest extends KernelTestCase
     public function testCreateMessage()
     {
         // Mock dependencies
-        $urlService = $this->createMock(Url::class);
-        $notificationService = $this->createMock(Notification::class);
+        $urlService = $this->createStub(Url::class);
+        $notificationService = $this->createStub(Notification::class);
 
         // Create entities for testing
         $author = new UserEntity();

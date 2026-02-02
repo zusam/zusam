@@ -18,7 +18,7 @@ export default function Login() {
     storage.reset();
 
     api.update().then(info => {
-      setAllowEmails(info.allow_email);
+      if (info) setAllowEmails(info.allow_email);
     });
   }, []);
 
@@ -31,9 +31,14 @@ export default function Login() {
       setSending(false);
       if (res && !res.message) {
         alert.add(t("password_reset_mail_sent"));
-      } else {
+      } else if (res) {
         alert.add(t(res.message), "alert-danger");
+      } else {
+        alert.add(t("error"), "alert-danger");
       }
+    }).catch(() => {
+      setSending(false);
+      alert.add(t("error"), "alert-danger");
     });
   };
 
@@ -60,6 +65,9 @@ export default function Login() {
       } else {
         alert.add(t("error"), "alert-danger");
       }
+    }).catch(() => {
+      setSending(false);
+      alert.add(t("error"), "alert-danger");
     });
   };
 

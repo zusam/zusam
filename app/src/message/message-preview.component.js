@@ -42,10 +42,11 @@ export default function MessagePreview(props) {
 
   useEffect(() => {
     http.get(`/api/messages/${props.id}/preview`).then(p => {
+      if (!p) return;
       if (p?.author?.id) {
         http.get(`/api/users/${p.author.id}`).then(u => {
-          setAuthor(u);
-        });
+          if (u) setAuthor(u);
+        }).catch(() => null);
       }
       setPreview(p?.preview);
       setId(props.id);
@@ -53,7 +54,7 @@ export default function MessagePreview(props) {
       setLoaded(true);
       setLastActivityDate(p?.lastActivityDate);
       setData(p?.data);
-    });
+    }).catch(() => null);
   }, []);
 
   if (!props?.id) {

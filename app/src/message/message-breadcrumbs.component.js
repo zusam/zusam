@@ -33,11 +33,11 @@ export default function MessageBreadcrumbs(props) {
 
   const loadBreadcrumbs = ids => {
     let breadcrumbs = [];
-    Promise.all(ids.map(id => http.get(`/api/messages/${id}`))).then((messages) => {
+    Promise.all(ids.map(id => http.get(`/api/messages/${id}`).catch(() => null))).then((messages) => {
       Promise.all(messages.map(message => {
         let previewUrl = util.getUrl(message?.data?.text);
         if (previewUrl) {
-          return http.get(`/api/links/by_url?url=${encodeURIComponent(previewUrl[0])}`);
+          return http.get(`/api/links/by_url?url=${encodeURIComponent(previewUrl[0])}`).catch(() => null);
         }
         return Promise.resolve(null);
       })).then((links) => {
@@ -52,8 +52,8 @@ export default function MessageBreadcrumbs(props) {
   useEffect(() => {
     loadBreadcrumbs(stack);
     http.get(`/api/groups/${props.message.group.id}`).then(group => {
-      setGroup(group);
-    });
+      if (group) setGroup(group);
+    }).catch(() => null);
   }, []);
 
   if (stack.length > 0) {

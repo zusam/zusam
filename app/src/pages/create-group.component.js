@@ -20,8 +20,8 @@ class CreateGroup extends Component {
     }
     group.createdAt = Math.floor(Date.now() / 1000);
     http.post("/api/groups", group).then(res => {
-      window.location = util.toApp(`/groups/${res.id}`);
-    });
+      if (res?.id) window.location = util.toApp(`/groups/${res.id}`);
+    }).catch(() => null);
   }
 
   render() {

@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 import { FaIcon } from "/src/misc";
 import { useTranslation } from "react-i18next";
 import { HumanTime } from "/src/pages";
-import { useStoreon } from "storeon/preact";
-import store from "/src/store";
+import { useStore } from "@nanostores/preact";
+import { $bookmarks, addBookmark, removeBookmark } from "/src/store/bookmarks.js";
 import MessageReactions from "./message-reactions.component";
 
 export default function MessageFooter(props) {
 
   const { t } = useTranslation();
-  const { bookmarks } = useStoreon("bookmarks");
+  const bookmarks = useStore($bookmarks);
 
   return (
     <div class="message-footer">
@@ -126,7 +126,7 @@ export default function MessageFooter(props) {
                   class="seamless-link capitalize"
                   onClick={() => {
                     alert.add(t("bookmark_added"));
-                    store.dispatch("bookmark/add", props.message.id);
+                    addBookmark(props.message.id);
                   }}
                 >
                   {t("add_bookmark")}
@@ -137,7 +137,7 @@ export default function MessageFooter(props) {
                   class="seamless-link capitalize"
                   onClick={() => {
                     alert.add(t("bookmark_removed"));
-                    store.dispatch("bookmark/remove", bookmarks.find(b => b.message.id === props.message.id));
+                    removeBookmark(bookmarks.find(b => b.message.id === props.message.id));
                   }}
                 >
                   {t("remove_bookmark")}

@@ -2,13 +2,14 @@ import { h } from "preact";
 import { notifications as notifs } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { Notification } from "/src/pages";
-import { useStoreon } from "storeon/preact";
+import { useStore } from "@nanostores/preact";
+import { $notifications } from "/src/store/notifications.js";
 import { useTranslation } from "react-i18next";
 
 export default function NotificationsDropdownNavbar() {
 
   const { t } = useTranslation();
-  const { notifications } = useStoreon("notifications");
+  const notifications = useStore($notifications);
   if (!notifications) {
     return null;
   }
