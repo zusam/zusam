@@ -21,7 +21,6 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
-
 class Edit extends ApiController
 {
     private $messageService;
@@ -100,7 +99,7 @@ class Edit extends ApiController
                 $message->setSortOrder(null);
             }
 
-            $this->cache->invalidateTags(['group_' . $groupId]);
+            $this->cache->invalidateTags(['group_'.$groupId]);
         }
         if (!empty($requestData['lastActivityDate'])) {
             $message->setLastActivityDate($requestData['lastActivityDate']);

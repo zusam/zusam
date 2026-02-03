@@ -6,7 +6,6 @@ use App\Entity\File as FileEntity;
 use App\Entity\Message as MessageEntity;
 use App\Entity\Notification as NotificationEntity;
 use App\Service\Notification as NotificationService;
-use App\Service\Group as GroupService;
 use App\Service\Url as UrlService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +22,6 @@ class Message
         EntityManagerInterface $em,
         UrlService $urlService,
         NotificationService $notificationService,
-        GroupService $groupService,
         TagAwareCacheInterface $cache,
     ) {
         $this->cache = $cache;
@@ -134,7 +132,8 @@ class Message
         return null;
     }
 
-    public function getNextMessageSortOrderForGroup(string $groupId) {
+    public function getNextMessageSortOrderForGroup(string $groupId)
+    {
         $maxSortOrder = $this->em->getRepository(MessageEntity::class)
             ->createQueryBuilder('m')
             ->select('MAX(m.sortOrder)')
@@ -142,7 +141,8 @@ class Message
             ->andWhere('m.sortOrder IS NOT NULL')
             ->setParameter('groupId', $groupId)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
 
         return ((int) $maxSortOrder) + 1;
     }

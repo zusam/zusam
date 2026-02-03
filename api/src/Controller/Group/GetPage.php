@@ -93,7 +93,8 @@ class GetPage extends ApiController
                 ->addOrderBy('m.lastActivityDate', 'DESC')
                 ->setFirstResult(30 * $n)
                 ->setMaxResults(30)
-                ->getQuery();
+                ->getQuery()
+            ;
 
             $messages = $query->getArrayResult();
 
@@ -109,7 +110,8 @@ class GetPage extends ApiController
                 ->where('m.group = :groupId')
                 ->andWhere('m.isInFront = 1')
                 ->setParameter('groupId', $groupId)
-                ->getQuery();
+                ->getQuery()
+            ;
 
             $totalItems = $query->getSingleScalarResult();
             $data = [
