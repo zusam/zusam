@@ -102,12 +102,21 @@ class GetPage extends ApiController
                 ." WHERE m.group = '".$groupId."'"
                 .' AND m.isInFront = 1'
             );
-            $totalItems = $query->getArrayResult();
+
+            $query = $this->em->getRepository(Message::class)
+                ->createQueryBuilder('m')
+                ->select('COUNT(m.id)')
+                ->where('m.group = :groupId')
+                ->andWhere('m.isInFront = 1')
+                ->setParameter('groupId', $groupId)
+                ->getQuery();
+
+            $totalItems = $query->getSingleScalarResult();
             $data = [
                 'messages' => array_map(static function ($e) {
                     return $e['id'];
                 }, $messages),
-                'totalItems' => $totalItems[0]['totalItems'],
+                'totalItems' => (int) $totalItems,
             ];
 
             return $data;
