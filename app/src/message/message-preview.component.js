@@ -14,6 +14,7 @@ export default function MessagePreview(props) {
   const [lastActivityDate, setLastActivityDate] = useState(null);
   const [children, setChildren] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [isPinned, setIsPinned] = useState(false);
 
   const getAvatar = user => {
     return (
@@ -54,6 +55,7 @@ export default function MessagePreview(props) {
       setLoaded(true);
       setLastActivityDate(p?.lastActivityDate);
       setData(p?.data);
+      setIsPinned(p?.sortOrder !== undefined);
     }).catch(() => null);
   }, []);
 
@@ -86,6 +88,14 @@ export default function MessagePreview(props) {
                 </div>
               ) : (
                 <div class="text-preview">{data?.text}</div>
+              )}
+              {isPinned && (
+                <div class="pinned-icon">
+                  <FaIcon
+                    family={"regular"}
+                    icon={"thumbtack"}
+                  />
+                </div>
               )}
             </Fragment>
           )}

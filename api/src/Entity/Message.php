@@ -147,6 +147,7 @@ class Message extends ApiEntity
     private $entityType;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read_message', 'read_message_preview'])]
     private $sortOrder;
 
     public function __construct()
