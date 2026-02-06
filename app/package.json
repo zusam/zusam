@@ -13,8 +13,8 @@
     "stylelint": "npx stylelint src/scss/**/*.scss"
   },
   "dependencies": {
-    "@parcel/core": "^2.15.4",
     "@nanostores/preact": "^1.0.0",
+    "@parcel/core": "^2.15.4",
     "bootstrap": "^5.3.7",
     "emoji-picker-react": "^4.13.2",
     "glightbox": "^3.3.1",
@@ -23,12 +23,13 @@
     "image-blob-reduce": "^4.1.0",
     "js-cookie": "^3.0.5",
     "mobile-drag-drop": "^3.0.0-rc.0",
-    "sass": "^1.89.2",
+    "nanostores": "^0.11.3",
     "preact": "^10.26.9",
+    "quill": "^2.0.3",
     "react-i18next": "^16.0.0",
     "react-router": "^6.30.1",
     "react-router-dom": "^6.30.1",
-    "nanostores": "^0.11.3"
+    "sass": "^1.89.2"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
@@ -51,14 +52,14 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.0",
     "globals": "^17.0.0",
-    "parcel": "^2.15.4",
+    "npm-check-updates": "^19.0.0",
+    "parcel": "^2.16.4",
     "prettier": "^3.6.2",
     "sass": "^1.89.2",
     "size-limit": "^12.0.0",
     "stylelint": "^16.22.0",
     "stylelint-config-standard-scss": "^15.0.1",
-    "svgo": "^4.0.0",
-    "npm-check-updates": "^19.0.0"
+    "svgo": "^4.0.0"
   },
   "alias": {
     "react": "preact/compat",

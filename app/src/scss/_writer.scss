@@ -151,3 +151,15 @@
         color: #fff;
     }
 }
+
+.ql-editor {
+  height: 250px;
+}
+
+.child .ql-editor {
+  height: 150px;
+}
+
+.quill-container {
+    margin-top: 10px;
+}

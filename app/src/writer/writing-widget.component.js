@@ -2,6 +2,7 @@ import { h } from "preact";
 import { http, util, api } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { EmbedBlock, FileGrid } from "/src/embed";
+import QuillEditor from "./QuillEditor";
 import { useTranslation } from "react-i18next";
 import { useState, useRef, useEffect } from "preact/hooks";
 
@@ -12,6 +13,7 @@ export default function WritingWidget(props) {
   const [title, setTitle] = useState(props.title || "");
   const { t } = useTranslation();
   const writerForm = useRef(null);
+  const editorRef = useRef(null);
 
   const cleanForm = () => {
     setPreview(null);
@@ -25,7 +27,10 @@ export default function WritingWidget(props) {
       // we get the raw value here because onChange() does not capture all possible inputs
       // and then the values of text/title could not be up to date
       title: writerForm?.current?.querySelector(".title-input")?.value,
-      text: writerForm?.current?.querySelector(".text-input")?.value,
+      text: JSON.stringify({ 
+        delta: editorRef.current.getContents(),
+        textOnly: editorRef.current.getText()
+      })
     });
     cleanForm();
   };
@@ -95,18 +100,11 @@ export default function WritingWidget(props) {
           onChange={e => setTitle(e.target.value)}
         />
       )}
-      <textarea
-        onKeyPress={e => onKeyPress(e, true)}
-        onPaste={e => onPaste(e)}
-        class="text-input"
-        rows="5"
-        autocomplete="off"
-        autofocus={props.focus}
-        placeholder={t("text_placeholder")}
-        maxlength="50000"
-        value={text}
-        onChange={e => setText(e.target.value)}
+
+      <QuillEditor
+        editorRef={quill => { editorRef.current = quill; }}
       />
+
       {!!preview && (
         <EmbedBlock inWriter={true} {...preview} />
       )}
