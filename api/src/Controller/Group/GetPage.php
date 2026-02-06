@@ -114,6 +114,9 @@ class GetPage extends ApiController
             ;
 
             $totalItems = $query->getSingleScalarResult();
+            if (!is_numeric($totalItems)) {
+                return new JsonResponse(['error' => 'Error counting items'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
             $data = [
                 'messages' => array_map(static function ($e) {
                     return $e['id'];
