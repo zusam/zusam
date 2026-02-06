@@ -14,6 +14,7 @@ export default function MessagePreview(props) {
   const [lastActivityDate, setLastActivityDate] = useState(null);
   const [children, setChildren] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [textPreview, setTextPreview] = useState("");
 
   const getAvatar = user => {
     return (
@@ -54,6 +55,15 @@ export default function MessagePreview(props) {
       setLoaded(true);
       setLastActivityDate(p?.lastActivityDate);
       setData(p?.data);
+
+      // We need to handle messages created before the editor 
+      // was added and we started storing in JSON
+      try {
+        setTextPreview(JSON.parse(p?.data.text).textOnly);
+      } catch {
+        setTextPreview(p?.data?.text);
+      }
+
     }).catch(() => null);
   }, []);
 
@@ -85,7 +95,7 @@ export default function MessagePreview(props) {
                   <img width="320" height="180" src={util.crop(util.getId(preview), 320, 180)} onError={e => setDefaultMiniature(e)} />
                 </div>
               ) : (
-                <div class="text-preview">{data?.text}</div>
+                <div class="text-preview">{textPreview}</div>
               )}
             </Fragment>
           )}
