@@ -13,7 +13,6 @@ export default function WritingWidget(props) {
   const [title, setTitle] = useState(props.title || "");
   const { t } = useTranslation();
   const writerForm = useRef(null);
-  const editorRef = useRef(null);
 
   let defaultValue;
   try {
@@ -32,32 +31,31 @@ export default function WritingWidget(props) {
 
   const sendMessage = writerForm => {
     props.sendMessage(writerForm, {
-      // we get the raw value here because onChange() does not capture all possible inputs
-      // and then the values of text/title could not be up to date
       title: writerForm?.current?.querySelector(".title-input")?.value,
       text: JSON.stringify({ 
-        delta: editorRef.current.getContents(),
-        textOnly: editorRef.current.getText()
+        delta: props.editorRef.current.getContents(),
+        textOnly: props.editorRef.current.getText()
       })
     });
     cleanForm();
   };
 
-  const genPreview = t => {
-    if (!t) {
+  const genPreview = (text, delta) => {
+    if (!text || text.trim() === "") {
+      setPreview(null);
+      setLink(null);
       return;
     }
-    t.style.height = "1px";
-    t.style.height = `${25 + t.scrollHeight}px`;
+    // Text can contain links, so we need the delta content to find all links
+    let deltaString = JSON.stringify(delta);
     // waiting for the dom to be updated
     setTimeout(() => {
-      const text = t.value;
-      let links = text.match(/(https?:\/\/[^\s]+)/gi);
+      let links = deltaString.match(/(https?:\/\/[^\s\\"]+)/gi);
       if (links && links[0] != link) {
         http
           .get(`/api/links/by_url?url=${encodeURIComponent(links[0])}`)
           .then(r => {
-            if (r && t.value.indexOf(links[0]) >= 0) {
+            if (r && deltaString.indexOf(links[0]) >= 0) {
               setLink(links[0]);
               setPreview(r);
             }
@@ -66,7 +64,7 @@ export default function WritingWidget(props) {
     }, 0);
   };
 
-  const onKeyPress = (event, doGenPreview = false) => {
+  const onKeyPress = (event) => {
     if (event.ctrlKey && util.is_it_enter(event)) {
       sendMessage(writerForm);
       return;
@@ -74,18 +72,11 @@ export default function WritingWidget(props) {
     if (![" ", "Enter", "v"].includes(event.key)) {
       return;
     }
-    if (doGenPreview) {
-      genPreview(event.currentTarget);
-    }
   };
 
   const onPaste = (event) => {
     props.addFiles("image/jpeg", event.clipboardData.files);
   };
-
-  useEffect(() => {
-    genPreview(document?.getElementById(props.id)?.querySelector(".text-input"));
-  }, []);
 
   if (props.sending) {
     return (
@@ -109,11 +100,15 @@ export default function WritingWidget(props) {
         />
       )}
 
-      <div onPasteCapture={onPaste}>
+      <div 
+        onPasteCapture={onPaste}
+        onKeyPress={onKeyPress}
+      >
         <QuillEditor
-          editorRef={quill => { editorRef.current = quill; }}
+          editorRef={quill => { props.editorRef.current = quill; }}
           defaultValue={defaultValue}
           placeholder={t("text_placeholder")}
+          genPreview={genPreview}
         />
       </div>
 

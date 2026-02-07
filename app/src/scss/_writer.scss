@@ -40,17 +40,6 @@
         border-bottom: 1px solid #eee;
     }
 
-    .text-input {
-        resize: none;
-        min-height: 10rem;
-        max-height: 40rem;
-        width: 100%;
-        padding: 10px;
-        border: none;
-        border-bottom: 1px solid #eee;
-        margin-bottom: 10px;
-    }
-
     .options {
         padding: 5px 0;
         margin-top: 5px;
@@ -158,6 +147,10 @@
 
 .child .ql-editor {
   height: 150px;
+}
+
+.ql-disabled .ql-editor {
+  height: 100%;
 }
 
 .quill-container {

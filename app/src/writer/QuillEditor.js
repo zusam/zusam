@@ -37,6 +37,8 @@ export default function QuillEditor(props) {
           index += 1;
         }
       });
+
+      props.genPreview(quill.getText(), quill.getContents());
     });
 
     return () => {
