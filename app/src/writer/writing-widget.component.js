@@ -109,10 +109,13 @@ export default function WritingWidget(props) {
         />
       )}
 
-      <QuillEditor
-        editorRef={quill => { editorRef.current = quill; }}
-        defaultValue={defaultValue}
-      />
+      <div onPasteCapture={onPaste}>
+        <QuillEditor
+          editorRef={quill => { editorRef.current = quill; }}
+          defaultValue={defaultValue}
+          placeholder={t("text_placeholder")}
+        />
+      </div>
 
       {!!preview && (
         <EmbedBlock inWriter={true} {...preview} />
