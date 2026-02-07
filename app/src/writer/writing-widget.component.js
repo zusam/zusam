@@ -64,12 +64,9 @@ export default function WritingWidget(props) {
     }, 0);
   };
 
-  const onKeyPress = (event) => {
+  const onKeyDown = (event) => {
     if (event.ctrlKey && util.is_it_enter(event)) {
       sendMessage(writerForm);
-      return;
-    }
-    if (![" ", "Enter", "v"].includes(event.key)) {
       return;
     }
   };
@@ -102,7 +99,7 @@ export default function WritingWidget(props) {
 
       <div 
         onPasteCapture={onPaste}
-        onKeyPress={onKeyPress}
+        onKeyDown={onKeyDown}
       >
         <QuillEditor
           editorRef={quill => { props.editorRef.current = quill; }}
