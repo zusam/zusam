@@ -15,6 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`message`')]
 class Message extends ApiEntity
 {
+    // message types
+    public const TYPE_STANDARD = 'standard';
+    public const TYPE_RICH_TEXT = 'rich_text';
+
     #[ORM\Id]
     #[ORM\Column(type: 'guid')]
     #[Assert\NotBlank]

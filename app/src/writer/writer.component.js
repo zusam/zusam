@@ -143,12 +143,26 @@ export default function Writer(props) {
   };
 
   const sendMessage = (writerForm, data) => {
+    let type;
+    try {
+      let obj = JSON.parse(data.text);
+      // Only one insert is done if there are no style attributes, so check if that one 
+      // attribute matches the text only version (in case there's just one segment and it's styled)
+      if (obj.delta.ops[0].insert === obj.textOnly) {
+        type = "standard";
+      } else {
+        type = "rich_text";
+      }
+    } catch {
+      type = "standard";
+    }
     let msg = {
       files: files.filter(e => !e?.removed).filter(e => ["ready", "raw"].includes(e?.status)).map(e => e?.id).filter(e => !!e),
       data: {
         title: data?.title,
         text: data?.text,
-      }
+      },
+      type: type
     };
     if (props.messageId) {
       putMessage(msg, writerForm);

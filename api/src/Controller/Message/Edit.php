@@ -89,6 +89,9 @@ class Edit extends ApiController
         if (!empty($requestData['lastActivityDate'])) {
             $message->setLastActivityDate($requestData['lastActivityDate']);
         }
+        if (!empty($requestData['type']) && in_array($requestData['type'], [Message::TYPE_STANDARD, Message::TYPE_RICH_TEXT], true)) {
+            $message->setType($requestData['type']);
+        }
 
         $message->setFiles(new ArrayCollection(array_map(function ($fid) {
             return $this->em->getRepository(File::class)->findOneById($fid);
