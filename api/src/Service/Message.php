@@ -131,4 +131,19 @@ class Message
 
         return null;
     }
+
+    public function getNextMessageSortOrderForGroup(string $groupId)
+    {
+        $maxSortOrder = $this->em->getRepository(MessageEntity::class)
+            ->createQueryBuilder('m')
+            ->select('MAX(m.sortOrder)')
+            ->where('m.group = :groupId')
+            ->andWhere('m.sortOrder IS NOT NULL')
+            ->setParameter('groupId', $groupId)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return ((int) $maxSortOrder) + 1;
+    }
 }

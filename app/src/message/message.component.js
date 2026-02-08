@@ -192,6 +192,34 @@ export default function Message(props) {
       }).catch(() => null);
   };
 
+  const pinInGroup = () => {
+    http
+      .put(`/api/messages/${props.id}`, {
+        pinnedInGroup: true
+      })
+      .then(res => {
+        if (!res) {
+          alert.add(t("error"), "alert-danger");
+          return;
+        }
+        navigate(`/groups/${message.group.id}`);
+      }).catch(() => null);
+  };
+
+  const unpinInGroup = () => {
+    http
+      .put(`/api/messages/${props.id}`, {
+        pinnedInGroup: false
+      })
+      .then(m => {
+        if (!m) {
+          alert.add(t("error"), "alert-danger");
+          return;
+        }
+        hydrateMessage(m);  
+      }).catch(() => null);
+  };
+
   const cancelEdit = event => {
     event.preventDefault();
     setEdit(false);
@@ -272,6 +300,8 @@ export default function Message(props) {
                 deleteMessage={deleteMessage}
                 shareMessage={shareMessage}
                 publishInGroup={publishInGroup}
+                pinInGroup={pinInGroup}
+                unpinInGroup={unpinInGroup}
                 openPublicLink={openPublicLink}
                 isPublic={props?.isPublic}
                 isChild={props?.isChild}
