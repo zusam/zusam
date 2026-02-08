@@ -18,7 +18,11 @@ export default function QuillEditor(props) {
     if (props.editorRef) props.editorRef(quill);
 
     if (props.defaultValue) {
-      quill.setContents(props.defaultValue);
+      try {
+        quill.setContents(JSON.parse(props.defaultValue).delta);
+      } catch {
+        quill.setText(props.defaultValue);
+      }
     }
 
     // I cannot work out how to prevent the image being added into the editor

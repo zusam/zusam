@@ -14,14 +14,6 @@ export default function WritingWidget(props) {
   const { t } = useTranslation();
   const writerForm = useRef(null);
 
-  let defaultValue;
-  try {
-    defaultValue = JSON.parse(text).delta;
-  } catch {
-    defaultValue = text;
-  }
-
-
   const cleanForm = () => {
     setPreview(null);
     setLink(null);
@@ -103,7 +95,7 @@ export default function WritingWidget(props) {
       >
         <QuillEditor
           editorRef={quill => { props.editorRef.current = quill; }}
-          defaultValue={defaultValue}
+          defaultValue={text}
           placeholder={t("text_placeholder")}
           genPreview={genPreview}
         />
