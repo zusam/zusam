@@ -9,12 +9,12 @@ export default function MessageBody(props) {
   const [preview, setPreview] = useState(null);
   const readOnlyRefs = useRef({});
 
-  const displayMessageText = () => {
-    if (!props.message.data) {
+  const displayStandardMessageText = (text) => {
+    if (!text) {
       return "";
     }
     // escape html a little (just enough to avoid xss I hope)
-    let txt = props.message.data["text"]
+    let txt = text
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .trim();
@@ -51,18 +51,19 @@ export default function MessageBody(props) {
     }
   }, [preview, props.message]);
 
-  let quillContent = null;
-  let quillError = false;
+  let messageContent = "";
+  let quillRichText = props.message.type === "rich_text";
   // We need to handle messages created before the editor 
   // was added and we started storing in JSON
   if (props.message?.data?.text) {
     try {
-      quillContent = JSON.parse(props.message.data.text).delta;
+      const quillContent = JSON.parse(props.message.data.text);
+      messageContent = quillRichText ? quillContent.delta : quillContent.textOnly;
     } catch {
-      quillError = true;
+      quillRichText = false;
+      messageContent = props.message.data["text"];
     }
   }
-
   return (
     <div class="message-body">
       {props.message.data && props.message.data.title && (
@@ -74,15 +75,15 @@ export default function MessageBody(props) {
         props.message.data.text &&
         props.message.data.text.trim() && (
         <div class="card-text" >
-          {!quillError ? (
+          {quillRichText ? (
             <QuillReadOnly
               editorRef={quill => { readOnlyRefs.current[props.message.id] = quill; }}
-              contents={quillContent}
+              contents={messageContent}
             />
           ) : (
             <p
               class="card-text"
-              dangerouslySetInnerHTML={displayMessageText()}
+              dangerouslySetInnerHTML={displayStandardMessageText(messageContent)}
             />
           )}
         </div>

@@ -146,8 +146,8 @@ export default function Writer(props) {
     let type;
     try {
       let obj = JSON.parse(data.text);
-      // Only one insert is done if there are no style attributes, so check if that one 
-      // attribute matches the text only version (in case there's just one segment and it's styled)
+      // Only one insert is done if there are no style attributes, so check if that attribute
+      // matches the text only version (in case there's just one segment and it's styled)
       if (obj.delta.ops[0].insert === obj.textOnly) {
         type = "standard";
       } else {
