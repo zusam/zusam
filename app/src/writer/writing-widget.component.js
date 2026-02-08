@@ -82,7 +82,7 @@ export default function WritingWidget(props) {
         <input
           type="text"
           class="title-input"
-          onKeyPress={e => onKeyPress(e)}
+          onKeyPress={e => onKeyDown(e)}
           placeholder={t("title_placeholder")}
           value={title}
           onChange={e => setTitle(e.target.value)}
