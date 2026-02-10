@@ -14,7 +14,7 @@ export function parseMessage(message) {
   if (parsed) {
     delta = parsed?.delta ?? null;
     textOnly = parsed?.textOnly ?? "";
-    type = parsed?.type ?? "standard";
+    type = message?.type ?? "standard";
   } else {
     delta = null;
     textOnly = message.data.text ?? "";
