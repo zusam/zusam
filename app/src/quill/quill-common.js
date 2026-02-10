@@ -1,13 +1,11 @@
 function parseJson (jsonString){
   try {
     let o = JSON.parse(jsonString);
-    if (o && typeof o === "object") {
-      return o; 
-    }
+    return o && typeof o === "object" ? o : false;
   }
-  catch (e) { }
-
-  return false;
+  catch (e) { 
+    return false;
+  }  
 };
 
 export function parseMessage(message) {
