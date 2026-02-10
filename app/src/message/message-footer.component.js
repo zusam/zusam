@@ -12,6 +12,7 @@ export default function MessageFooter(props) {
 
   const { t } = useTranslation();
   const bookmarks = useStore($bookmarks);
+  const isPinned = props?.message?.sortOrder !== undefined;
 
   return (
     <div class="message-footer">
@@ -119,6 +120,14 @@ export default function MessageFooter(props) {
                   onClick={e => props.publishInGroup(e)}
                 >
                   {t("publish_in_group")}
+                </a>
+              )}
+              {props?.message?.isInFront && (
+                <a
+                  class="seamless-link capitalize"
+                  onClick={e => isPinned ? props.unpinInGroup(e) : props.pinInGroup(e)}
+                >
+                  {isPinned ? t("unpin_in_group") : t("pin_in_group")}
                 </a>
               )}
               {!bookmarks.some(b => b.message.id === props?.message.id) && (

@@ -19,18 +19,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class Edit extends ApiController
 {
     private $messageService;
+    private $cache;
 
     public function __construct(
         EntityManagerInterface $em,
         SerializerInterface $serializer,
-        MessageService $messageService
+        MessageService $messageService,
+        TagAwareCacheInterface $cache
     ) {
         parent::__construct($em, $serializer);
         $this->messageService = $messageService;
+        $this->cache = $cache;
     }
 
     /**
@@ -85,6 +89,17 @@ class Edit extends ApiController
         }
         if (!empty($requestData['isInFront'])) {
             $message->setIsInFront($requestData['isInFront']);
+        }
+        if (array_key_exists('pinnedInGroup', $requestData)) {
+            $groupId = $message->getGroup()->getId();
+            if ($requestData['pinnedInGroup']) {
+                $sortOrder = $this->messageService->getNextMessageSortOrderForGroup($groupId);
+                $message->setSortOrder($sortOrder);
+            } else {
+                $message->setSortOrder(null);
+            }
+
+            $this->cache->invalidateTags(['group_'.$groupId]);
         }
         if (!empty($requestData['lastActivityDate'])) {
             $message->setLastActivityDate($requestData['lastActivityDate']);

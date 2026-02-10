@@ -4,6 +4,7 @@ namespace App\Controller\Group;
 
 use App\Controller\ApiController;
 use App\Entity\Group;
+use App\Entity\Message;
 use App\Service\Preview as PreviewService;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -81,14 +82,20 @@ class GetPage extends ApiController
             $item->expiresAfter(3600 * 24 * 7);
             $item->tag('group_'.$groupId);
 
-            $query = $this->em->createQuery(
-                'SELECT m.id FROM App\Entity\Message m'
-                ." WHERE m.group = '".$groupId."'"
-                .' AND m.isInFront = 1'
-                .' ORDER BY m.lastActivityDate DESC'
-            );
-            $query->setMaxResults(30);
-            $query->setFirstResult(30 * $n);
+            $query = $this->em->getRepository(Message::class)
+                ->createQueryBuilder('m')
+                ->select('m.id')
+                ->where('m.group = :groupId')
+                ->andWhere('m.isInFront = 1')
+                ->setParameter('groupId', $groupId)
+                ->orderBy('CASE WHEN m.sortOrder IS NULL THEN 1 ELSE 0 END', 'ASC')
+                ->addOrderBy('m.sortOrder', 'ASC')
+                ->addOrderBy('m.lastActivityDate', 'DESC')
+                ->setFirstResult(30 * $n)
+                ->setMaxResults(30)
+                ->getQuery()
+            ;
+
             $messages = $query->getArrayResult();
 
             $query = $this->em->createQuery(
@@ -96,12 +103,25 @@ class GetPage extends ApiController
                 ." WHERE m.group = '".$groupId."'"
                 .' AND m.isInFront = 1'
             );
-            $totalItems = $query->getArrayResult();
+
+            $query = $this->em->getRepository(Message::class)
+                ->createQueryBuilder('m')
+                ->select('COUNT(m.id)')
+                ->where('m.group = :groupId')
+                ->andWhere('m.isInFront = 1')
+                ->setParameter('groupId', $groupId)
+                ->getQuery()
+            ;
+
+            $totalItems = $query->getSingleScalarResult();
+            if (!is_numeric($totalItems)) {
+                return new JsonResponse(['error' => 'Error counting items'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
             $data = [
                 'messages' => array_map(static function ($e) {
                     return $e['id'];
                 }, $messages),
-                'totalItems' => $totalItems[0]['totalItems'],
+                'totalItems' => (int) $totalItems,
             ];
 
             return $data;

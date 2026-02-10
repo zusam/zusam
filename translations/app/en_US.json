@@ -76,6 +76,8 @@
     "previous_coms": "See previous comments",
     "public_link": "public link",
     "publish_in_group": "publish in the group",
+    "pin_in_group": "pin in group",
+    "unpin_in_group": "unpin",
     "quit_group": "Leave the group",
     "react": "React",
     "remove_bookmark": "Unbookmark message",
