@@ -2,8 +2,8 @@ import { h } from "preact";
 import { http, util, api } from "/src/core";
 import { EmbedBlock, FileGrid } from "/src/embed";
 import { useEffect, useState, useRef } from "preact/hooks";
-import QuillReadOnly from "./QuillReadOnly";
-
+import QuillReadOnly from "../quill/QuillReadOnly.component";
+import { parseMessage } from "../quill/quill-common";
 export default function MessageBody(props) {
 
   const [preview, setPreview] = useState(null);
@@ -51,19 +51,8 @@ export default function MessageBody(props) {
     }
   }, [preview, props.message]);
 
-  let messageContent = "";
-  let quillRichText = props.message.type === "rich_text";
-  // We need to handle messages created before the editor 
-  // was added and we started storing in JSON
-  if (props.message?.data?.text) {
-    try {
-      const quillContent = JSON.parse(props.message.data.text);
-      messageContent = quillRichText ? quillContent.delta : quillContent.textOnly;
-    } catch {
-      quillRichText = false;
-      messageContent = props.message.data["text"];
-    }
-  }
+  
+  const quillData = parseMessage(props.message);
   return (
     <div class="message-body">
       {props.message.data && props.message.data.title && (
@@ -75,15 +64,15 @@ export default function MessageBody(props) {
         props.message.data.text &&
         props.message.data.text.trim() && (
         <div class="card-text" >
-          {quillRichText ? (
+          {quillData.type ? (
             <QuillReadOnly
               editorRef={quill => { readOnlyRefs.current[props.message.id] = quill; }}
-              contents={messageContent}
+              contents={quillData.delta}
             />
           ) : (
             <p
               class="card-text"
-              dangerouslySetInnerHTML={displayStandardMessageText(messageContent)}
+              dangerouslySetInnerHTML={displayStandardMessageText(quillData.text)}
             />
           )}
         </div>

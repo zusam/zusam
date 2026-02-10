@@ -4,6 +4,7 @@ import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
 import { HumanTime } from "/src/pages";
 import { useEffect, useState } from "preact/hooks";
+import { parseMessage } from "../quill/quill-common";
 
 export default function MessagePreview(props) {
 
@@ -56,13 +57,7 @@ export default function MessagePreview(props) {
       setLastActivityDate(p?.lastActivityDate);
       setData(p?.data);
 
-      // We need to handle messages created before the editor 
-      // was added and we started storing in JSON
-      try {
-        setTextPreview(JSON.parse(p?.data.text).textOnly);
-      } catch {
-        setTextPreview(p?.data?.text);
-      }
+      setTextPreview(parseMessage(props.message).text);
 
     }).catch(() => null);
   }, []);

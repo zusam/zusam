@@ -2,6 +2,7 @@ import { h, Fragment } from "preact";
 import { http, util } from "/src/core";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "preact/hooks";
+import { parseMessage } from "../quill/quill-common";
 
 export default function MessageBreadcrumbs(props) {
   const stack = [props.message.id, ...props.message.lineage].reverse();
@@ -17,23 +18,15 @@ export default function MessageBreadcrumbs(props) {
         return previewLink["data"]["title"];
       }
       if (message["data"] && message["data"]["text"]) {
-        let text;
-        // We need to handle messages created before the editor 
-        // was added and we started storing in JSON
-        try {
-          text = JSON.parse(props.message.data.text).textOnly;
-        } catch {
-          text = props.message.data.text;
-        }
-        
-        let url = util.getUrl(text);
+        const quillData = parseMessage(props.message);
+        let url = util.getUrl(quillData.text);
         if (url && url.length > 0) {
           url = url[0];
         }
         if (url) {
           return url;
         }
-        return text;
+        return quillData.text;
       }
     }
     // When all else fails, just say who and when
