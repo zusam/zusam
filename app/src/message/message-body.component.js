@@ -64,7 +64,7 @@ export default function MessageBody(props) {
         props.message.data.text &&
         props.message.data.text.trim() && (
         <div class="card-text" >
-          {quillData.type ? (
+          {quillData.type === "rich_text" ? (
             <QuillReadOnly
               editorRef={quill => { readOnlyRefs.current[props.message.id] = quill; }}
               contents={quillData.delta}
