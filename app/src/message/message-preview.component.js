@@ -94,7 +94,7 @@ export default function MessagePreview(props) {
               ) : (
                 <div class="text-preview">{textPreview}</div>
               )}
-              {isPinned && (
+              {isPinned && !props.isFeed && (
                 <div class="pinned-icon">
                   <FaIcon
                     family={"regular"}

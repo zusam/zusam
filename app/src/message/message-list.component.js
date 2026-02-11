@@ -122,6 +122,7 @@ export default class MessageList extends Component {
               tabindex={i + 1}
               key={msg.id}
               id={msg.id}
+              isFeed={this.props.isFeed}
             />
           );
         })}
