@@ -15,7 +15,6 @@ export default function Login() {
   useEffect(() => {
     // reroute if already logged in
     storage.get("apiKey").then(apiKey => apiKey && navigate("/"));
-    storage.reset();
 
     api.update().then(info => {
       if (info) setAllowEmails(info.allow_email);
