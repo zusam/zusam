@@ -58,7 +58,7 @@ export default function MessagePreview(props) {
       setLastActivityDate(p?.lastActivityDate);
       setData(p?.data);
 
-      setTextPreview(parseMessage(props.message).text);
+      setTextPreview(parseMessage(p).text);
 
       setIsPinned(p?.sortOrder !== undefined);
     }).catch(() => null);
