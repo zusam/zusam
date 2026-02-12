@@ -2,7 +2,7 @@ import { h } from "preact";
 import { http, util, api } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { EmbedBlock, FileGrid } from "/src/embed";
-import QuillEditor from "../quill/quill-editor.component
+import QuillEditor from "../quill/quill-editor.component";
 import { useTranslation } from "react-i18next";
 import { useState, useRef, useEffect } from "preact/hooks";
 
