@@ -148,7 +148,7 @@ class Security extends AbstractController
 
         $this->em->flush();
 
-        return $this->json(['api_key' => $user->getSecretKey()], Response::HTTP_OK);
+        return $this->json(['api_key' => $user->getSecretKey(), 'group' => $group->getId()], Response::HTTP_OK);
     }
 
     #[Route('/password-reset-mail', methods: ['POST'])]
