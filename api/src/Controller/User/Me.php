@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -33,13 +33,27 @@ class Me extends ApiController
      * @Security(name="api_key")
      */
     #[Route('/me', methods: ['GET'])]
-    public function index(): Response
+    public function index(): JsonResponse
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        return new Response(
-            $this->serialize($this->getUser(), ['read_user', 'read_me']),
-            Response::HTTP_OK
+        $user = $this->getUser();
+        $user_norm = $this->normalize($user, ['read_user', 'read_me']);
+        
+        if (!isset($user_norm['data']['default_page'])) {
+            $user_norm['data']['default_page'] = $this->getParameter('default.page');
+        }
+
+        if (!isset($user_norm['data']['default_group'])) {
+            $groups = $user->getGroups();
+            if (!empty($groups) && !$groups->isEmpty()) {
+                $user_norm['data']['default_group'] = $groups->first()->getId();
+            }
+        }
+
+        return new JsonResponse(
+            $user_norm,
+            JsonResponse::HTTP_OK
         );
     }
 }

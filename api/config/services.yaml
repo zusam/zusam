@@ -14,6 +14,7 @@ parameters:
   allow.public.links: '%env(resolve:ALLOW_PUBLIC_LINKS)%'
   allow.message.reactions: '%env(resolve:ALLOW_MESSAGE_REACTIONS)%'
   show.group.invitation.links: '%env(resolve:SHOW_GROUP_INVITATION_LINKS)%'
+  default.page: '%env(resolve:DEFAULT_PAGE)%'
   idle_hours: '%env(resolve:IDLE_HOURS)%'
   video_conversion_threads: '%env(resolve:VIDEO_CONVERSION_THREADS)%'
   video_format_not_converted: '%env(resolve:VIDEO_FORMAT_NOT_CONVERTED)%'
