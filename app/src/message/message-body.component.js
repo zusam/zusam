@@ -2,7 +2,7 @@ import { h } from "preact";
 import { http, util, api } from "/src/core";
 import { EmbedBlock, FileGrid } from "/src/embed";
 import { useEffect, useState, useRef } from "preact/hooks";
-import QuillReadOnly from "../quill/QuillReadOnly.component";
+import QuillReadOnly from "../quill/quill-read-only.component";
 import { parseMessage } from "../quill/quill-common";
 export default function MessageBody(props) {
 
@@ -71,7 +71,6 @@ export default function MessageBody(props) {
             />
           ) : (
             <p
-              class="card-text"
               dangerouslySetInnerHTML={displayStandardMessageText(quillData.text)}
             />
           )}
