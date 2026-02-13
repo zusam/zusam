@@ -131,7 +131,7 @@ class Security extends AbstractController
             $group->addUser($user);
             $this->em->persist($user);
             $this->em->persist($group);
-            
+
             // notify users of the group
             foreach ($group->getUsers() as $u) {
                 if ($u->getId() == $user->getId()) {

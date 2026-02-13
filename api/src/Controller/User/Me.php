@@ -40,7 +40,7 @@ class Me extends ApiController
 
         $user = $this->getUser();
         $user_norm = $this->normalize($user, ['read_user', 'read_me']);
-        
+
         if (!isset($user_norm['data']['default_page'])) {
             $user_norm['data']['default_page'] = $this->getParameter('default.page');
         }

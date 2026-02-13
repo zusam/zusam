@@ -57,6 +57,7 @@ class AddInvitedUser extends ApiController
         if (!$user->getGroups()->contains($group)) {
             $this->groupService->addUser($group, $user);
         }
+
         return new JsonResponse(['id' => $group->getId(), 'group' => $group->getId()], Response::HTTP_OK);
     }
 }
