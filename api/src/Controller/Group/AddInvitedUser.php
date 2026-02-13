@@ -47,9 +47,10 @@ class AddInvitedUser extends ApiController
         if (empty($group)) {
             return new JsonResponse(['error' => 'Invalid invite key !'], Response::HTTP_BAD_REQUEST);
         }
-
-        $this->groupService->addUser($group, $this->getUser());
-
-        return new JsonResponse(['id' => $group->getId()], Response::HTTP_OK);
+        $user = $this->getUser();
+        if (!$user->getGroups()->contains($group)) {
+            $this->groupService->addUser($group, $user);
+        }
+        return new JsonResponse(['id' => $group->getId(), 'group' => $group->getId()], Response::HTTP_OK);
     }
 }

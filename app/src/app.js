@@ -94,7 +94,7 @@ function App() {
     if (location.pathname.match(/^\/invitation/)) {
       if (user) {
         http.post(`/api/groups/invitation/${router.id}`, {}).catch(() => null).then(res => {
-          if (res) navigate("/");
+          if (res) navigate(res.group ? "/groups/" + res.group : "/");
         });
       } else {
         navigate(`/signup?inviteKey=${router.id}`);
