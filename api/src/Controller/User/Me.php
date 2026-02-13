@@ -3,6 +3,7 @@
 namespace App\Controller\User;
 
 use App\Controller\ApiController;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -44,9 +45,9 @@ class Me extends ApiController
             $user_norm['data']['default_page'] = $this->getParameter('default.page');
         }
 
-        if (!isset($user_norm['data']['default_group'])) {
+        if (!isset($user_norm['data']['default_group']) && $user instanceof User) {
             $groups = $user->getGroups();
-            if (!empty($groups) && !$groups->isEmpty()) {
+            if (!$groups->isEmpty()) {
                 $user_norm['data']['default_group'] = $groups->first()->getId();
             }
         }
