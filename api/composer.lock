@@ -1944,16 +1944,16 @@
         },
         {
             "name": "nelmio/api-doc-bundle",
-            "version": "v5.9.2",
+            "version": "v5.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "c08e19919ab174125ce0ce33063bee5c879900d9"
+                "reference": "b1661c99a84407ca358950a91cb2288af785a0b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/c08e19919ab174125ce0ce33063bee5c879900d9",
-                "reference": "c08e19919ab174125ce0ce33063bee5c879900d9",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/b1661c99a84407ca358950a91cb2288af785a0b4",
+                "reference": "b1661c99a84407ca358950a91cb2288af785a0b4",
                 "shasum": ""
             },
             "require": {
@@ -1977,6 +1977,7 @@
                 "zircote/swagger-php": "^4.11.1 || ^5.0"
             },
             "conflict": {
+                "symfony/property-info": "6.4.32 || 7.3.10 || 7.4.4 || 8.0.4",
                 "zircote/swagger-php": "4.8.7 || 5.5.0"
             },
             "require-dev": {
@@ -2054,7 +2055,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nelmio/NelmioApiDocBundle/issues",
-                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v5.9.2"
+                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v5.9.3"
             },
             "funding": [
                 {
@@ -2062,7 +2063,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-08T12:41:53+00:00"
+            "time": "2026-02-13T12:59:25+00:00"
         },
         {
             "name": "nelmio/cors-bundle",
