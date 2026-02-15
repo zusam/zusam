@@ -125,30 +125,31 @@ class Security extends AbstractController
             $user->setData(['mail' => $login]);
         }
 
-        // add the user to the group
-        $user->addGroup($group);
-        $group->addUser($user);
-        $this->em->persist($user);
-        $this->em->persist($group);
+        // If not already in the group, add the user
+        if (!$user->getGroups()->contains($group)) {
+            $user->addGroup($group);
+            $group->addUser($user);
+            $this->em->persist($user);
+            $this->em->persist($group);
 
-        // notify users of the group
-        foreach ($group->getUsers() as $u) {
-            if ($u->getId() == $user->getId()) {
-                continue;
+            // notify users of the group
+            foreach ($group->getUsers() as $u) {
+                if ($u->getId() == $user->getId()) {
+                    continue;
+                }
+
+                $notif = new Notification();
+                $notif->setTarget($group->getId());
+                $notif->setOwner($u);
+                $notif->setFromUser($user);
+                $notif->setFromGroup($group);
+                $notif->setType(Notification::USER_JOINED_GROUP);
+                $this->em->persist($notif);
             }
-
-            $notif = new Notification();
-            $notif->setTarget($group->getId());
-            $notif->setOwner($u);
-            $notif->setFromUser($user);
-            $notif->setFromGroup($group);
-            $notif->setType(Notification::USER_JOINED_GROUP);
-            $this->em->persist($notif);
         }
-
         $this->em->flush();
 
-        return $this->json(['api_key' => $user->getSecretKey()], Response::HTTP_OK);
+        return $this->json(['api_key' => $user->getSecretKey(), 'group' => $group->getId()], Response::HTTP_OK);
     }
 
     #[Route('/password-reset-mail', methods: ['POST'])]

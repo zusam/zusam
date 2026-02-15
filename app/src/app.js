@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { http, api, me, notifications, bookmarks_utils, router } from "/src/core";
+import { http, api, me, notifications, bookmarks_utils, router, storage } from "/src/core";
 import {
   Login,
   Public,
@@ -41,6 +41,14 @@ function App() {
         });
     }
   };
+
+  function Logout() {
+    useEffect(() => {
+      storage.reset();
+    }, []);
+
+    return <Navigate replace to="/login" />;
+  }
 
   // initial load
   useEffect(() => {
@@ -86,7 +94,7 @@ function App() {
     if (location.pathname.match(/^\/invitation/)) {
       if (user) {
         http.post(`/api/groups/invitation/${router.id}`, {}).catch(() => null).then(res => {
-          if (res) navigate("/");
+          if (res) navigate(res.group ? "/groups/" + res.group : "/");
         });
       } else {
         navigate(`/signup?inviteKey=${router.id}`);
@@ -106,7 +114,7 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/stop-notification-emails/:userId/:token" element={<StopNotificationEmails />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/logout" element={<Navigate replace to="/login" />} />
+      <Route path="/logout" element={<Logout />} />
       <Route path="/:type/:id/settings" element={<Settings />} />
       <Route path="/bookmarks" element={<BookmarkBoard />} />
       <Route path="/create-group" element={<CreateGroup />} />

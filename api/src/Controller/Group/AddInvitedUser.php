@@ -4,6 +4,7 @@ namespace App\Controller\Group;
 
 use App\Controller\ApiController;
 use App\Entity\Group;
+use App\Entity\User;
 use App\Service\Group as GroupService;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -47,9 +48,16 @@ class AddInvitedUser extends ApiController
         if (empty($group)) {
             return new JsonResponse(['error' => 'Invalid invite key !'], Response::HTTP_BAD_REQUEST);
         }
+        $user = $this->getUser();
 
-        $this->groupService->addUser($group, $this->getUser());
+        if (!$user instanceof User) {
+            return new JsonResponse(['error' => 'Unknown error'], Response::HTTP_BAD_REQUEST);
+        }
 
-        return new JsonResponse(['id' => $group->getId()], Response::HTTP_OK);
+        if (!$user->getGroups()->contains($group)) {
+            $this->groupService->addUser($group, $user);
+        }
+
+        return new JsonResponse(['id' => $group->getId(), 'group' => $group->getId()], Response::HTTP_OK);
     }
 }

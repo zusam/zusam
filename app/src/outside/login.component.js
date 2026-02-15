@@ -15,7 +15,6 @@ export default function Login() {
   useEffect(() => {
     // reroute if already logged in
     storage.get("apiKey").then(apiKey => apiKey && navigate("/"));
-    storage.reset();
 
     api.update().then(info => {
       if (info) setAllowEmails(info.allow_email);
@@ -53,11 +52,7 @@ export default function Login() {
       if (res && res.api_key) {
         storage.set("apiKey", res.api_key).then(() => {
           me.update().then(user => {
-            let redirect = "/create-group";
-            if (user?.groups[0]) {
-              redirect = "/feed";
-            }
-            navigate(redirect);
+            navigate("/");
           });
         });
       } else if (res && res.message) {

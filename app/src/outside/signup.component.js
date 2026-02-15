@@ -23,7 +23,7 @@ export default function Signup() {
       .then(res => {
         if (res && !res.message) {
           storage.set("apiKey", res.api_key);
-          setTimeout(() => navigate("/"), 100);
+          setTimeout(() => navigate(res.group ? "/groups/" + res.group : "/"), 100);
         } else {
           alert.add(t(res.message));
         }
