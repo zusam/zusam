@@ -94,14 +94,6 @@ export default function MessagePreview(props) {
               ) : (
                 <div class="text-preview">{textPreview}</div>
               )}
-              {isPinned && !props.isFeed && (
-                <div class="pinned-icon">
-                  <FaIcon
-                    family={"regular"}
-                    icon={"thumbtack"}
-                  />
-                </div>
-              )}
             </Fragment>
           )}
         </div>
@@ -115,6 +107,14 @@ export default function MessagePreview(props) {
           >
             {data?.title || (<HumanTime timestamp={lastActivityDate} />)}
           </span>
+          {isPinned && !props.isFeed && (
+            <div class="pinned-icon">
+              <FaIcon
+                family={"regular"}
+                icon={"thumbtack"}
+              />
+            </div>
+          )}
           <span class="children">
             {children > 0 && (
               <span>
