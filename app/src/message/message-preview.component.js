@@ -4,6 +4,7 @@ import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
 import { HumanTime } from "/src/pages";
 import { useEffect, useState } from "preact/hooks";
+import { parseMessage } from "../quill/quill-common";
 
 export default function MessagePreview(props) {
 
@@ -14,6 +15,7 @@ export default function MessagePreview(props) {
   const [lastActivityDate, setLastActivityDate] = useState(null);
   const [children, setChildren] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [textPreview, setTextPreview] = useState("");
   const [isPinned, setIsPinned] = useState(false);
 
   const getAvatar = user => {
@@ -55,6 +57,9 @@ export default function MessagePreview(props) {
       setLoaded(true);
       setLastActivityDate(p?.lastActivityDate);
       setData(p?.data);
+
+      setTextPreview(parseMessage(p).text);
+
       setIsPinned(p?.sortOrder !== undefined);
     }).catch(() => null);
   }, []);
@@ -87,9 +92,9 @@ export default function MessagePreview(props) {
                   <img width="320" height="180" src={util.crop(util.getId(preview), 320, 180)} onError={e => setDefaultMiniature(e)} />
                 </div>
               ) : (
-                <div class="text-preview">{data?.text}</div>
+                <div class="text-preview">{textPreview}</div>
               )}
-              {isPinned && (
+              {isPinned && !props.isFeed && (
                 <div class="pinned-icon">
                   <FaIcon
                     family={"regular"}

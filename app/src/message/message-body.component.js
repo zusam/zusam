@@ -1,18 +1,20 @@
 import { h } from "preact";
 import { http, util, api } from "/src/core";
 import { EmbedBlock, FileGrid } from "/src/embed";
-import { useEffect, useState } from "preact/hooks";
-
+import { useEffect, useState, useRef } from "preact/hooks";
+import QuillReadOnly from "../quill/quill-read-only.component";
+import { parseMessage } from "../quill/quill-common";
 export default function MessageBody(props) {
 
   const [preview, setPreview] = useState(null);
+  const readOnlyRefs = useRef({});
 
-  const displayMessageText = () => {
-    if (!props.message.data) {
+  const displayStandardMessageText = (text) => {
+    if (!text) {
       return "";
     }
     // escape html a little (just enough to avoid xss I hope)
-    let txt = props.message.data["text"]
+    let txt = text
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .trim();
@@ -47,8 +49,10 @@ export default function MessageBody(props) {
         }
       }
     }
-  });
+  }, [preview, props.message]);
 
+  
+  const quillData = parseMessage(props.message);
   return (
     <div class="message-body">
       {props.message.data && props.message.data.title && (
@@ -59,10 +63,18 @@ export default function MessageBody(props) {
       {props.message.data &&
         props.message.data.text &&
         props.message.data.text.trim() && (
-        <p
-          class="card-text"
-          dangerouslySetInnerHTML={displayMessageText()}
-        />
+        <div class="card-text" >
+          {quillData.type === "rich_text" ? (
+            <QuillReadOnly
+              editorRef={quill => { readOnlyRefs.current[props.message.id] = quill; }}
+              contents={quillData.delta}
+            />
+          ) : (
+            <p
+              dangerouslySetInnerHTML={displayStandardMessageText(quillData.text)}
+            />
+          )}
+        </div>
       )}
       {preview && (!props.message.data || !props.message.data["no_embed"]) && (
         <EmbedBlock
