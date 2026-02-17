@@ -11,6 +11,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class NotificationEmails extends Command
 {
@@ -18,18 +19,21 @@ class NotificationEmails extends Command
     private $mailer;
     private $logger;
     private $notificationService;
+    private $params;
 
     public function __construct(
         LoggerInterface $logger,
         EntityManagerInterface $em,
         Mailer $mailer,
-        NotificationService $notificationService
+        NotificationService $notificationService,
+        ParameterBagInterface $params
     ) {
         parent::__construct();
         $this->em = $em;
         $this->mailer = $mailer;
         $this->logger = $logger;
         $this->notificationService = $notificationService;
+        $this->params = $params;
     }
 
     protected function configure()
@@ -53,7 +57,7 @@ class NotificationEmails extends Command
             }
 
             $data = $user->getData();
-            $notif = $data['notification_emails'] ?? 'immediately';
+            $notif = $data['notification_emails'] ?? $this->params->get('default.notifications');
             $lastNotificationEmailCheck = $user->getLastNotificationEmailCheck();
             $now = time();
 
