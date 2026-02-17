@@ -3,6 +3,7 @@ import { http, util, notifications } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { useEffect, useState } from "preact/hooks";
 import { Link } from "react-router-dom";
+import { parseMessage } from "../quill/quill-common";
 
 export default function MessageSearchResult(props) {
 
@@ -64,7 +65,7 @@ export default function MessageSearchResult(props) {
     }
 
     // escape html a little (just enough to avoid xss I hope)
-    let txt = props?.message?.data?.text.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
+    let txt = parseMessage(props?.message)?.text?.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
 
     // make the search terms stand out for not url words
     let lines = txt.split("\n");
@@ -178,7 +179,7 @@ export default function MessageSearchResult(props) {
             />
           </div>
           <div class="text">
-            {props?.message?.data?.text.trim() && (
+            {props?.message?.data?.text?.trim() && (
               <p
                 class="card-text"
                 dangerouslySetInnerHTML={displayMessageText()}
