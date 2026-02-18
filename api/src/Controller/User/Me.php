@@ -52,6 +52,10 @@ class Me extends ApiController
             }
         }
 
+        if (!isset($user_norm['data']['notification_emails'])) {
+            $user_norm['data']['notification_emails'] = $this->getParameter('default.notifications');
+        }
+
         return new JsonResponse(
             $user_norm,
             JsonResponse::HTTP_OK
