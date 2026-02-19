@@ -134,7 +134,17 @@ class Search extends ApiController
             $data = $message->getData();
             $score = 0;
 
-            if (isset($data['text']) && self::has_term($flattened_search_terms, $data['text'])) {
+            // Old messages may be plain text instead of JSON with textOnly property, handle both
+            $searchText = $data['text'] ?? '';
+            if (is_string($searchText)) {
+                $decoded = json_decode($searchText, true);
+
+                if (is_array($decoded) && isset($decoded['textOnly'])) {
+                    $searchText = $decoded['textOnly'];
+                }
+            }
+
+            if (self::has_term($flattened_search_terms, $searchText)) {
                 $score += 100;
             }
 
