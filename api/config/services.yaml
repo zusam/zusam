@@ -79,10 +79,6 @@ services:
     App\Command\Cron:
       arguments:
 
-    App\Command\PreparePreviews:
-      arguments:
-        $dsn: '%env(resolve:DATABASE_URL)%'
-
     App\Command\ConvertVideo:
       arguments:
         $dsn: '%env(resolve:DATABASE_URL)%'

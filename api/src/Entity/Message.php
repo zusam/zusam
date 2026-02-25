@@ -330,6 +330,10 @@ class Message extends ApiEntity
         if (is_array($this->getData()) && array_key_exists('text', $this->getData())) {
             $text = $this->getData()['text'];
             if (!empty($text)) {
+                $parsed = json_decode($text, true);
+                if (is_array($parsed) && isset($parsed['textOnly'])) {
+                    $text = $parsed['textOnly'];
+                }
                 return self::getUrlsFromText($text);
             }
         }
