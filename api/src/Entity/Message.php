@@ -334,6 +334,7 @@ class Message extends ApiEntity
                 if (is_array($parsed) && isset($parsed['textOnly'])) {
                     $text = $parsed['textOnly'];
                 }
+
                 return self::getUrlsFromText($text);
             }
         }
