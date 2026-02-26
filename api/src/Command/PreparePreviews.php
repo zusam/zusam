@@ -16,12 +16,10 @@ class PreparePreviews extends Command
 {
     private $em;
     private $logger;
-    private $pdo;
     private $previewService;
     private $urlService;
 
     public function __construct(
-        string $dsn,
         EntityManagerInterface $em,
         LoggerInterface $logger,
         PreviewService $previewService,
@@ -30,7 +28,6 @@ class PreparePreviews extends Command
         parent::__construct();
         $this->em = $em;
         $this->logger = $logger;
-        $this->pdo = new \PDO($dsn, null, null);
         $this->previewService = $previewService;
         $this->urlService = $urlService;
     }
@@ -59,13 +56,16 @@ class PreparePreviews extends Command
         $number_descriptions = 0;
         $number_titles = 0;
 
-        $c = $this->pdo->query('SELECT id, data FROM message ORDER BY created_at DESC;');
-        $messages = [];
-        while ($i = $c->fetch()) {
-            $messages[] = $i;
-        }
+        $messages = $this->em->getRepository(Message::class)
+            ->createQueryBuilder('m')
+            ->select('m')
+            ->orderBy('m.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+
         $k = 0;
-        foreach ($messages as $i) {
+        foreach ($messages as $message) {
             if (memory_get_usage(true) > 1024 * 1024 * $max_memory) {
                 $output->writeln([
                     "Memory usage went over {$max_memory} Mo. Stopping the script.",
@@ -76,11 +76,10 @@ class PreparePreviews extends Command
                 exit(0);
             }
             ++$k;
-            echo "[{$k}/".count($messages).']: '.$i['id']."\n";
+            echo "[{$k}/".count($messages).']: '.$message->getId()."\n";
 
             // get first url data
-            $text = json_decode($i['data'], true)['text'];
-            $urls = Message::getUrlsFromText($text);
+            $urls = $message->getUrls();
 
             // apply filter if any
             if ($input->getOption('filter')) {
@@ -106,7 +105,6 @@ class PreparePreviews extends Command
             }
 
             // process preview
-            $message = $this->em->getRepository(Message::class)->findOneById($i['id']);
             $message->setPreview($this->previewService->genPreview($message));
             $this->em->persist($message);
 

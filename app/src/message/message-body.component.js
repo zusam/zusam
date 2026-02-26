@@ -38,10 +38,12 @@ export default function MessageBody(props) {
     return { __html: txt };
   };
 
+  const quillData = parseMessage(props.message);
+
   useEffect(() => {
     if (!preview && props.message) {
       if (props.message.data) {
-        let previewUrl = util.getUrl(props.message.data["text"]);
+        let previewUrl = util.getUrl(quillData.text);
         if (previewUrl) {
           http
             .get(`/api/links/by_url?url=${encodeURIComponent(previewUrl[0])}`)
@@ -50,9 +52,6 @@ export default function MessageBody(props) {
       }
     }
   }, [preview, props.message]);
-
-  
-  const quillData = parseMessage(props.message);
   return (
     <div class="message-body">
       {props.message.data && props.message.data.title && (
