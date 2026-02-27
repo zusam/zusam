@@ -97,5 +97,13 @@
     "User not found": "用户不存在",
     "users": "用户",
     "video_not_ready": "视频尚未准备好。",
-    "weekly": "每周"
+    "weekly": "每周",
+    "and_x_more": "还有{{count}}个",
+    "default_page": "默认页面",
+    "email_disabled": "邮件功能不可用。请联系您的系统管理员帮助您重置密码。",
+    "feed": "合集",
+    "feed_group": "我的合集",
+    "immediately": "立即",
+    "react": "处置",
+    "you_have_no_bookmarks": "您还没有书签"
 }
