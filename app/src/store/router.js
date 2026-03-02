@@ -1,18 +1,19 @@
-export const routerStore = store => {
-  store.on("@init", () => ({
-    route: "",
-    id: "",
-    action: "",
-    backUrl: "",
-    entityType: "",
-    search: "",
-    entity: {},
-  }));
+import { atom } from "nanostores";
 
-  store.on("router/update", (_, newState) => {
-    return {
-      entity: newState.entity,
-      backUrl: newState.backUrl,
-    };
+export const $router = atom({
+  route: "",
+  id: "",
+  action: "",
+  backUrl: "",
+  entityType: "",
+  search: "",
+  entity: {},
+});
+
+export function updateRouter(newState) {
+  $router.set({
+    ...$router.get(),
+    entity: newState.entity,
+    backUrl: newState.backUrl,
   });
-};
+}

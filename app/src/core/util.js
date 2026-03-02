@@ -38,7 +38,7 @@ const util = {
   genId: seed => `z${seed || ""}-${Date.now().toString().slice(-5)}${Math.random().toString().slice(-5)}`,
   // transform an id into int for the API (TODO: revisit this on 0.5)
   id2Int: id => parseInt(id.replace(/[^\d]/g,""), 10),
-  urlRegExp: /(\([^()]*)?https?:\/\/[^[\]\n\r ]*[-A-Za-z0-9+&@#/%=~_()|]/i,
+  urlRegExp: /(\([^()]*)?https?:\/\/[^[\]\n\r "]*[-A-Za-z0-9+&@#/%=~_()|]/i,
   getUrl: txt => {
     if (!txt) {
       return "";

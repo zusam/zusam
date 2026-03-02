@@ -2,6 +2,7 @@ import { h } from "preact";
 import { http, util, api } from "/src/core";
 import { FaIcon } from "/src/misc";
 import { EmbedBlock, FileGrid } from "/src/embed";
+import QuillEditor from "../quill/quill-editor.component";
 import { useTranslation } from "react-i18next";
 import { useState, useRef, useEffect } from "preact/hooks";
 
@@ -22,29 +23,31 @@ export default function WritingWidget(props) {
 
   const sendMessage = writerForm => {
     props.sendMessage(writerForm, {
-      // we get the raw value here because onChange() does not capture all possible inputs
-      // and then the values of text/title could not be up to date
       title: writerForm?.current?.querySelector(".title-input")?.value,
-      text: writerForm?.current?.querySelector(".text-input")?.value,
+      text: JSON.stringify({ 
+        delta: props.editorRef.current.getContents(),
+        textOnly: props.editorRef.current.getText()
+      })
     });
     cleanForm();
   };
 
-  const genPreview = t => {
-    if (!t) {
+  const genPreview = (text, delta) => {
+    if (!text || text.trim() === "") {
+      setPreview(null);
+      setLink(null);
       return;
     }
-    t.style.height = "1px";
-    t.style.height = `${25 + t.scrollHeight}px`;
+    // Text can contain links, so we need the delta content to find all links
+    let deltaString = JSON.stringify(delta);
     // waiting for the dom to be updated
     setTimeout(() => {
-      const text = t.value;
-      let links = text.match(/(https?:\/\/[^\s]+)/gi);
+      let links = deltaString.match(/(https?:\/\/[^\s\\"]+)/gi);
       if (links && links[0] != link) {
         http
           .get(`/api/links/by_url?url=${encodeURIComponent(links[0])}`)
           .then(r => {
-            if (r && t.value.indexOf(links[0]) >= 0) {
+            if (r && deltaString.indexOf(links[0]) >= 0) {
               setLink(links[0]);
               setPreview(r);
             }
@@ -53,26 +56,16 @@ export default function WritingWidget(props) {
     }, 0);
   };
 
-  const onKeyPress = (event, doGenPreview = false) => {
+  const onKeyDown = (event) => {
     if (event.ctrlKey && util.is_it_enter(event)) {
       sendMessage(writerForm);
       return;
-    }
-    if (![" ", "Enter", "v"].includes(event.key)) {
-      return;
-    }
-    if (doGenPreview) {
-      genPreview(event.currentTarget);
     }
   };
 
   const onPaste = (event) => {
     props.addFiles("image/jpeg", event.clipboardData.files);
   };
-
-  useEffect(() => {
-    genPreview(document?.getElementById(props.id)?.querySelector(".text-input"));
-  }, []);
 
   if (props.sending) {
     return (
@@ -89,24 +82,25 @@ export default function WritingWidget(props) {
         <input
           type="text"
           class="title-input"
-          onKeyPress={e => onKeyPress(e)}
+          onKeyPress={e => onKeyDown(e)}
           placeholder={t("title_placeholder")}
           value={title}
           onChange={e => setTitle(e.target.value)}
         />
       )}
-      <textarea
-        onKeyPress={e => onKeyPress(e, true)}
-        onPaste={e => onPaste(e)}
-        class="text-input"
-        rows="5"
-        autocomplete="off"
-        autofocus={props.focus}
-        placeholder={t("text_placeholder")}
-        maxlength="50000"
-        value={text}
-        onChange={e => setText(e.target.value)}
-      />
+
+      <div 
+        onPasteCapture={onPaste}
+        onKeyDown={onKeyDown}
+      >
+        <QuillEditor
+          editorRef={quill => { props.editorRef.current = quill; }}
+          defaultValue={text}
+          placeholder={t("text_placeholder")}
+          genPreview={genPreview}
+        />
+      </div>
+
       {!!preview && (
         <EmbedBlock inWriter={true} {...preview} />
       )}

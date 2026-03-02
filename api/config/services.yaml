@@ -14,6 +14,8 @@ parameters:
   allow.public.links: '%env(resolve:ALLOW_PUBLIC_LINKS)%'
   allow.message.reactions: '%env(resolve:ALLOW_MESSAGE_REACTIONS)%'
   show.group.invitation.links: '%env(resolve:SHOW_GROUP_INVITATION_LINKS)%'
+  default.page: '%env(resolve:DEFAULT_PAGE)%'
+  default.notifications: '%env(resolve:DEFAULT_NOTIFICATIONS)%'
   idle_hours: '%env(resolve:IDLE_HOURS)%'
   video_conversion_threads: '%env(resolve:VIDEO_CONVERSION_THREADS)%'
   video_format_not_converted: '%env(resolve:VIDEO_FORMAT_NOT_CONVERTED)%'
@@ -66,9 +68,9 @@ services:
 
     App\EventListener\TerminateListener:
       arguments:
-        $env: '%kernel.environment%'
+        $enableTerminateListener: '%env(bool:ENABLE_TERMINATE_LISTENER)%'
       tags:
-        - { name: kernel.event_listener, event: kernel.terminate }
+        - { name: kernel.event_listener, event: kernel.terminate, method: onKernelTerminate }
 
     App\Controller\Security:
       arguments:
@@ -76,10 +78,6 @@ services:
 
     App\Command\Cron:
       arguments:
-
-    App\Command\PreparePreviews:
-      arguments:
-        $dsn: '%env(resolve:DATABASE_URL)%'
 
     App\Command\ConvertVideo:
       arguments:

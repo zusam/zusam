@@ -157,7 +157,7 @@ class Mailer
             try {
                 $this->symfonyMailer->send($email);
             } catch (\Exception $e) {
-                $this->logger->error('Could not send email to '.array_key_first($email->getTo()));
+                $this->logger->error('Could not send email to '.array_key_first($email->getTo()).'. Error: '.$e->getMessage());
 
                 return [$e->getMessage()];
             }

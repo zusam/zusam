@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { http, api, me, notifications, bookmarks_utils, router } from "/src/core";
+import { http, api, me, notifications, bookmarks_utils, router, storage } from "/src/core";
 import {
   Login,
   Public,
@@ -42,6 +42,14 @@ function App() {
     }
   };
 
+  function Logout() {
+    useEffect(() => {
+      storage.reset();
+    }, []);
+
+    return <Navigate replace to="/login" />;
+  }
+
   // initial load
   useEffect(() => {
     // this test is here to ensure that 'api' gets loaded before
@@ -62,6 +70,11 @@ function App() {
   });
 
   me.fetch().then(user => {
+    if (user?._networkError) {
+      // Network is down — don't redirect, stay on current page
+      return;
+    }
+
     if (location.pathname === "/") {
       let redirect = "/login";
       if (user) {
@@ -80,8 +93,8 @@ function App() {
 
     if (location.pathname.match(/^\/invitation/)) {
       if (user) {
-        http.post(`/api/groups/invitation/${router.id}`, {}).then(() => {
-          navigate("/");
+        http.post(`/api/groups/invitation/${router.id}`, {}).catch(() => null).then(res => {
+          if (res) navigate(res.group ? "/groups/" + res.group : "/");
         });
       } else {
         navigate(`/signup?inviteKey=${router.id}`);
@@ -101,7 +114,7 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/stop-notification-emails/:userId/:token" element={<StopNotificationEmails />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/logout" element={<Navigate replace to="/login" />} />
+      <Route path="/logout" element={<Logout />} />
       <Route path="/:type/:id/settings" element={<Settings />} />
       <Route path="/bookmarks" element={<BookmarkBoard />} />
       <Route path="/create-group" element={<CreateGroup />} />

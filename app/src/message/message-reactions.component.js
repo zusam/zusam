@@ -25,8 +25,8 @@ export default function MessageReactions(props) {
     if (!props.messageId) return;
 
     const fetchReactions = async () => {
-      const reactionData = await http.get(`/api/messages/${props.messageId}/reactions`);
-      await loadReactions(reactionData);
+      const reactionData = await http.get(`/api/messages/${props.messageId}/reactions`).catch(() => null);
+      if (reactionData) await loadReactions(reactionData);
     };
 
     fetchReactions();
@@ -35,8 +35,9 @@ export default function MessageReactions(props) {
   const handleReactionClick = async (currentUserReactionId) => {
     // If current user set this emoji type, click to remove it
     if (currentUserReactionId) {
-      await http.delete(`/api/messages/${props.messageId}/reactions/${currentUserReactionId}`);
-      await loadReactions(await http.get(`/api/messages/${props.messageId}/reactions`));
+      await http.delete(`/api/messages/${props.messageId}/reactions/${currentUserReactionId}`).catch(err => console.warn(err));
+      const reactionData = await http.get(`/api/messages/${props.messageId}/reactions`).catch(() => null);
+      if (reactionData) await loadReactions(reactionData);
     }
   };
 

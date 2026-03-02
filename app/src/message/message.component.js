@@ -9,13 +9,15 @@ import { Writer } from "/src/writer";
 import { useEffect, useState, useRef, useReducer } from "preact/hooks";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useStoreon } from "storeon/preact";
+import { useStore } from "@nanostores/preact";
+import { $me } from "/src/store/me.js";
+import MessageError from "./message-error.component.js";
 
 export default function Message(props) {
 
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { me } = useStoreon("me");
+  const me = useStore($me);
   const [author, setAuthor] = useState(null);
   const [parent, setParent] = useState(null);
   const [files, setFiles] = useState(null);
@@ -23,6 +25,7 @@ export default function Message(props) {
   const [edit, setEdit] = useState(false);
 
   const [message, setMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const messageRef = useRef(message);
   const setMessageRef = message => {
     messageRef.current = message;
@@ -56,19 +59,19 @@ export default function Message(props) {
     setMessageRef(m);
     if (m?.author?.id) {
       http.get(`/api/users/${m.author.id}`).then(u => {
-        setAuthor(u);
-      });
+        if (u) setAuthor(u);
+      }).catch(() => null);
     }
     if (m?.parent?.id) {
       http.get(`/api/messages/${m.parent.id}`).then(p => {
-        setParent(p);
-      });
+        if (p) setParent(p);
+      }).catch(() => null);
     }
     // delay loading of files a little bit
     setTimeout(() => {
       if (m?.files?.length) {
-        Promise.all(m.files.map(f => http.get(`/api/files/${f.id}`).then(f => f))).then(
-          files => setFiles(files)
+        Promise.all(m.files.map(f => http.get(`/api/files/${f.id}`).catch(() => null).then(f => f))).then(
+          files => setFiles(files.filter(f => f != null))
         );
       }
     }, 100);
@@ -82,18 +85,25 @@ export default function Message(props) {
       hydrateMessage(props.message);
     } else if (props?.token) {
       http.get(`/api/public/${props.token}`).then(m => {
+        if (!m) throw new Error("invalid_token");
         if (m?.files?.length) {
           setFiles(m?.files.map(f => ({id: f.id, status: "loading"})));
         }
         hydrateMessage(m);
+      }).catch (err => {
+        let error = {
+          "type": err?.message || "unknown",
+        };
+        setErrorMessage(error);
       });
     } else {
       http.get(`/api/messages/${props.id}`).then(m => {
+        if (!m) return;
         if (m?.files?.length) {
           setFiles(m?.files.map(f => ({id: f.id, status: "loading"})));
         }
         hydrateMessage(m);
-      });
+      }).catch(() => null);
     }
   };
 
@@ -121,8 +131,8 @@ export default function Message(props) {
     let newTab = window.open("about:blank", "_blank");
     const res = await http.get(
       `/api/messages/${props.id}/get-public-link`
-    );
-    newTab.location = `${document.baseURI}public/${res.token}`;
+    ).catch(() => null);
+    if (res) newTab.location = `${document.baseURI}public/${res.token}`;
   };
 
   const onEditMessage = event => {
@@ -153,7 +163,7 @@ export default function Message(props) {
         } else {
           navigate(`/groups/${message.group.id}`);
         }
-      });
+      }).catch(err => console.warn(err));
     }
   };
 
@@ -179,7 +189,35 @@ export default function Message(props) {
           return;
         }
         navigate(`/groups/${message.group.id}`);
-      });
+      }).catch(() => null);
+  };
+
+  const pinInGroup = () => {
+    http
+      .put(`/api/messages/${props.id}`, {
+        pinnedInGroup: true
+      })
+      .then(res => {
+        if (!res) {
+          alert.add(t("error"), "alert-danger");
+          return;
+        }
+        navigate(`/groups/${message.group.id}`);
+      }).catch(() => null);
+  };
+
+  const unpinInGroup = () => {
+    http
+      .put(`/api/messages/${props.id}`, {
+        pinnedInGroup: false
+      })
+      .then(m => {
+        if (!m) {
+          alert.add(t("error"), "alert-danger");
+          return;
+        }
+        hydrateMessage(m);  
+      }).catch(() => null);
   };
 
   const cancelEdit = event => {
@@ -204,6 +242,14 @@ export default function Message(props) {
       />
     );
   };
+
+  if (errorMessage?.type) {
+    return (
+      <Fragment>
+        <MessageError error={errorMessage} />
+      </Fragment>
+    );
+  }
 
   if (isRemoved || !message) {
     // placeholder (to be able to target it)
@@ -254,6 +300,8 @@ export default function Message(props) {
                 deleteMessage={deleteMessage}
                 shareMessage={shareMessage}
                 publishInGroup={publishInGroup}
+                pinInGroup={pinInGroup}
+                unpinInGroup={unpinInGroup}
                 openPublicLink={openPublicLink}
                 isPublic={props?.isPublic}
                 isChild={props?.isChild}

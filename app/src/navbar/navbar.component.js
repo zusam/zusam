@@ -3,14 +3,15 @@ import { router, util } from "/src/core";
 import { Search } from "/src/pages";
 import { GroupsDropdownNavbar, NotificationsDropdownNavbar } from "/src/navbar";
 import { Link } from "react-router-dom";
-import { useStoreon } from "storeon/preact";
+import { useStore } from "@nanostores/preact";
+import { $me } from "/src/store/me.js";
 import { useTranslation } from "react-i18next";
 import { FaIcon } from "/src/misc";
 
 export default function Navbar() {
 
   const { t } = useTranslation();
-  const { me } = useStoreon("me");
+  const me = useStore($me);
 
   return (
     <div class="main-nav nav align-items-center z-index-100">

@@ -20,6 +20,7 @@ export default function Writer(props) {
   const [uploading, setUploading] = useState(false);
   const forceUpdate = useForceUpdate();
   const writerId = util.genId();
+  const editorRef = useRef(null);
 
   // This allows to have the latest state of files in callbacks
   // https://stackoverflow.com/a/60643670
@@ -29,7 +30,7 @@ export default function Writer(props) {
   const setForm = (writerForm, files = [], title = "", text = "") => {
     setFiles(files);
     Array.from(writerForm.current.getElementsByClassName("title-input")).map(e => e.value = title);
-    Array.from(writerForm.current.getElementsByClassName("text-input")).map(e => e.value = text);
+    editorRef.current.setText(text);
   };
 
   const updateFile = (id, file) => {
@@ -92,6 +93,9 @@ export default function Writer(props) {
         return;
       }
       window.dispatchEvent(new CustomEvent("editMessage", { detail: res }));
+    }).catch(() => {
+      setSending(false);
+      alert.add(t("error_new_message"), "alert-danger");
     });
     setSending(true);
   };
@@ -108,7 +112,13 @@ export default function Writer(props) {
       msg.parent = util.getId(props.parent);
     }
     // don't post if there is nothing to post
-    if (!msg.files.length && !msg.data.text && !msg.data.title) {
+    let json;
+    try {
+      json = JSON.parse(msg.data.text);
+    } catch {
+      json = "";
+    }
+    if (!msg.files.length && !json.textOnly.trim() && !msg.data.title) {
       alert.add(t("empty_message"), "alert-danger");
       return;
     }
@@ -125,17 +135,34 @@ export default function Writer(props) {
         navigate(`/messages/${res.id}`);
       }
       setForm(writerForm, [], "", "");
+    }).catch(() => {
+      setSending(false);
+      alert.add(t("error_new_message"), "alert-danger");
     });
     setSending(true);
   };
 
   const sendMessage = (writerForm, data) => {
+    let type;
+    try {
+      let obj = JSON.parse(data.text);
+      // Only one insert is done if there are no style attributes, so check if that attribute
+      // matches the text only version (in case there's just one segment and it's styled)
+      if (obj.delta.ops[0].insert === obj.textOnly) {
+        type = "standard";
+      } else {
+        type = "rich_text";
+      }
+    } catch {
+      type = "standard";
+    }
     let msg = {
       files: files.filter(e => !e?.removed).filter(e => ["ready", "raw"].includes(e?.status)).map(e => e?.id).filter(e => !!e),
       data: {
         title: data?.title,
         text: data?.text,
-      }
+      },
+      type: type
     };
     if (props.messageId) {
       putMessage(msg, writerForm);
@@ -207,6 +234,7 @@ export default function Writer(props) {
       isChild={props.isChild}
       text={props.text}
       title={props.title}
+      editorRef={editorRef}
     />
   );
 }

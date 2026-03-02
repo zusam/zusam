@@ -31,7 +31,9 @@ class ConvertVideo extends Command
         $this->pdo = new \PDO($dsn, null, null);
         $this->params = $params;
 
-        @mkdir($targetDir, 0o777, true);
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0o777, true);
+        }
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {

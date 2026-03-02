@@ -1,6 +1,7 @@
 import { h } from "preact";
-import { alert, http, util, router, api } from "/src/core";
-import { useStoreon } from "storeon/preact";
+import { alert, http, util, router, api, me as meService } from "/src/core";
+import { useStore } from "@nanostores/preact";
+import { $me } from "/src/store/me.js";
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,7 +10,7 @@ export default function GroupSettings() {
 
   const params = useParams();
   const { t } = useTranslation();
-  const { me, dispatch } = useStoreon("me");
+  const me = useStore($me);
   const navigate = useNavigate();
   const [secretKey, setSecretKey] = useState("");
   const [inviteKey, setInviteKey] = useState("");
@@ -20,14 +21,15 @@ export default function GroupSettings() {
   useEffect(() => {
     http.get(`/api/groups/${params.id}`).then(
       group => {
+        if (!group) return;
         setGroup(group);
         setSecretKey(group.secretKey);
         setInviteKey(group.inviteKey);
-        Promise.all(group.users.map(u => http.get(`/api/users/${u.id}`).then(u => u))).then(
-          users => setUsers(users)
+        Promise.all(group.users.map(u => http.get(`/api/users/${u.id}`).catch(() => null).then(u => u))).then(
+          users => setUsers(users.filter(u => u != null))
         );
       }
-    );
+    ).catch(() => null);
     setAlertMessage(t(router.getParam("alert")));
   }, []);
 
@@ -36,9 +38,10 @@ export default function GroupSettings() {
     http
       .post(`/api/groups/${group.id}/reset-invite-key`, {})
       .then(res => {
+        if (!res) return;
         alert.add(t("group_updated"));
         setInviteKey(res["inviteKey"]);
-      });
+      }).catch(() => null);
   };
 
   const updateSettings = (event) => {
@@ -49,10 +52,11 @@ export default function GroupSettings() {
     }
     setGroup(Object.assign({}, group));
     http.put(`/api/groups/${group.id}`, group).then(res => {
+      if (!res) return;
       setGroup(res);
       setAlertMessage(t("group_updated"));
       navigate(`${location.pathname}?alert=group_updated`);
-    });
+    }).catch(() => null);
   };
 
   const leaveGroup = (event) => {
@@ -61,9 +65,9 @@ export default function GroupSettings() {
       let user = {};
       user.data = { default_group: me.groups[0].id };
       http.put(`/api/users/${me.id}`, user).then(() => {
-        dispatch("me/fetch");
+        meService.fetch();
         leave();
-      });
+      }).catch(err => console.warn(err));
     } else {
       leave();
     }
@@ -74,11 +78,11 @@ export default function GroupSettings() {
       if (!res || !res["entityType"]) {
         alert.add(t("error"), "alert-danger");
       } else {
-        dispatch("me/fetch");
+        meService.fetch();
         alert.add(t("group_left"));
         navigate("/");
       }
-    });
+    }).catch(() => null);
   };
 
   return (

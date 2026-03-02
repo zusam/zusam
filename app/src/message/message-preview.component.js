@@ -4,6 +4,7 @@ import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
 import { HumanTime } from "/src/pages";
 import { useEffect, useState } from "preact/hooks";
+import { parseMessage } from "../quill/quill-common";
 
 export default function MessagePreview(props) {
 
@@ -14,6 +15,8 @@ export default function MessagePreview(props) {
   const [lastActivityDate, setLastActivityDate] = useState(null);
   const [children, setChildren] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [textPreview, setTextPreview] = useState("");
+  const [isPinned, setIsPinned] = useState(false);
 
   const getAvatar = user => {
     return (
@@ -42,10 +45,11 @@ export default function MessagePreview(props) {
 
   useEffect(() => {
     http.get(`/api/messages/${props.id}/preview`).then(p => {
+      if (!p) return;
       if (p?.author?.id) {
         http.get(`/api/users/${p.author.id}`).then(u => {
-          setAuthor(u);
-        });
+          if (u) setAuthor(u);
+        }).catch(() => null);
       }
       setPreview(p?.preview);
       setId(props.id);
@@ -53,11 +57,22 @@ export default function MessagePreview(props) {
       setLoaded(true);
       setLastActivityDate(p?.lastActivityDate);
       setData(p?.data);
-    });
+
+      setTextPreview(parseMessage(p).text);
+
+      setIsPinned(p?.sortOrder !== undefined);
+    }).catch(() => null);
   }, []);
 
-  if (!props?.id || !data) {
+  if (!props?.id) {
     return null;
+  }
+  if (!data) {
+    return (
+      <div class="d-inline-block message-preview unselectable">
+        <div class="card message-preview-loading material-shadow-with-hover" />
+      </div>
+    );
   }
   return (
     <Link
@@ -77,7 +92,7 @@ export default function MessagePreview(props) {
                   <img width="320" height="180" src={util.crop(util.getId(preview), 320, 180)} onError={e => setDefaultMiniature(e)} />
                 </div>
               ) : (
-                <div class="text-preview">{data?.text}</div>
+                <div class="text-preview">{textPreview}</div>
               )}
             </Fragment>
           )}
@@ -92,6 +107,14 @@ export default function MessagePreview(props) {
           >
             {data?.title || (<HumanTime timestamp={lastActivityDate} />)}
           </span>
+          {isPinned && !props.isFeed && (
+            <div class="pinned-icon">
+              <FaIcon
+                family={"regular"}
+                icon={"thumbtack"}
+              />
+            </div>
+          )}
           <span class="children">
             {children > 0 && (
               <span>

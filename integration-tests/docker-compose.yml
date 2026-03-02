@@ -1,0 +1,30 @@
+services:
+  zusam:
+    image: zusam
+    container_name: zusam-integration-tests
+    ports:
+      - "8080:8080"
+    environment:
+      - UID=1000
+      - GID=1000
+      - APP_ENV=test
+      - ENABLE_TERMINATE_LISTENER=true
+      - INIT_USER=zusam
+      - INIT_GROUP=zusam
+      - INIT_PASSWORD=zusam
+      - MAILER_DSN=smtp://mailpit:1025
+      - ALLOW_EMAIL=true
+    volumes:
+      - zusam-integration-tests-data:/zusam/data
+    depends_on:
+      - mailpit
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: zusam-mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+volumes:
+  zusam-integration-tests-data:

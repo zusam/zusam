@@ -1,0 +1,32 @@
+.ql-editor {
+  height: 250px;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.ql-editor.ql-blank::before {
+  font-style: inherit;
+  color: #0007;
+}
+
+.ql-container {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.child .ql-editor {
+  height: 150px;
+}
+
+.ql-disabled .ql-editor {
+  height: 100%;
+  padding: 0;
+}
+
+.quill-container {
+    margin-top: 10px;
+}
+
+.ql-disabled {
+  border: 0 !important;
+}

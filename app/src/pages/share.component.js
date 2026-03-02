@@ -2,7 +2,8 @@ import { h } from "preact";
 import { me as meService, http } from "/src/core";
 import { Writer } from "/src/writer";
 import { Navbar } from "/src/navbar";
-import { useStoreon } from "storeon/preact";
+import { useStore } from "@nanostores/preact";
+import { $me } from "/src/store/me.js";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "preact/hooks";
@@ -10,7 +11,7 @@ import { useEffect, useState } from "preact/hooks";
 export default function Share() {
 
   const { t } = useTranslation();
-  const { me } = useStoreon("me");
+  const me = useStore($me);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
@@ -25,6 +26,7 @@ export default function Share() {
   useEffect(() => {
     setTimeout(() => {
       meService.fetch().then(user => {
+        if (!user || user?._networkError) { setLoaded(true); return; }
         if (user.data["default_group"]) {
           setGroup(user.data["default_group"]);
         } else if (user.groups.length == 1) {
@@ -33,10 +35,11 @@ export default function Share() {
         if(searchParams.get("message")) {
           http.get(`/api/messages/${searchParams.get("message")}`)
             .then(m => {
+              if (!m) { setLoaded(true); return; }
               if (m?.files?.length) {
-                Promise.all(m.files.map(f => http.get(`/api/files/${f.id}`).then(f => f))).then(
+                Promise.all(m.files.map(f => http.get(`/api/files/${f.id}`).catch(() => null).then(f => f))).then(
                   files => {
-                    setFiles(files);
+                    setFiles(files.filter(f => f != null));
                     setTitle(m?.data?.title || "");
                     setText(m?.data?.text || "");
                     setUrl("");
@@ -49,7 +52,7 @@ export default function Share() {
                 setUrl("");
                 setLoaded(true);
               }
-            });
+            }).catch(() => { setLoaded(true); });
         } else {
           setLoaded(true);
         }

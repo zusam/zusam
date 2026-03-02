@@ -14,8 +14,8 @@ export default function MessageEmojiSelector(props) {
     setShowPicker(false);
     const response = await http.post(`/api/messages/${props.messageId}/reactions`, {
       reaction: emoji.emoji,
-    });
-    props.updateReactions(response);
+    }).catch(() => null);
+    if (response) props.updateReactions(response);
   };
 
   const handleClickOutside = (event) => {

@@ -1,24 +1,24 @@
 import http from "./http.js";
-import store from "/src/store";
+import { $notifications, updateNotifications, removeNotification, readNotification } from "/src/store/notifications.js";
 
 const notifications = {
 
   LIMIT: 20,
 
   get() {
-    return store.get()?.notifications || [];
+    return $notifications.get() || [];
   },
 
   update() {
     return http.get(`/api/me/notifications/${notifications.LIMIT + 1}`).then(r => {
-      store.dispatch("notifications/update", r);
-    });
+      if (r) updateNotifications(r);
+    }).catch(() => null);
   },
 
   isNew(id) {
-    let state = store.get();
-    if (Array.isArray(state["notifications"])) {
-      return state.notifications.filter(n => !n.read).some(
+    let list = $notifications.get();
+    if (Array.isArray(list)) {
+      return list.filter(n => !n.read).some(
         n =>
           notifications.matchNotification(n, id) ||
           (n.type == "new_comment" && n.fromMessage.id === id)
@@ -28,47 +28,47 @@ const notifications = {
   },
 
   removeAllNotifications() {
-    let state = store.get();
-    if (Array.isArray(state["notifications"])) {
-      state.notifications.forEach(n => {
+    let list = $notifications.get();
+    if (Array.isArray(list)) {
+      list.forEach(n => {
         http.delete(`/api/notifications/${n.id}`).then(() => {
-          store.dispatch("notifications/remove", n);
-        });
+          removeNotification(n);
+        }).catch(err => console.warn(err));
       });
     }
   },
 
   markAllNotificationsAsRead() {
-    let state = store.get();
-    if (Array.isArray(state["notifications"])) {
-      state.notifications.forEach(n => {
+    let list = $notifications.get();
+    if (Array.isArray(list)) {
+      list.forEach(n => {
         http.put(`/api/notifications/${n.id}`, {read: true}).then(() => {
-          store.dispatch("notifications/read", n);
-        });
+          readNotification(n);
+        }).catch(err => console.warn(err));
       });
     }
   },
 
   removeMatchingNotifications(id) {
     return Promise.all(
-      store.get().notifications
+      $notifications.get()
         .filter(n => notifications.matchNotification(n, id))
         .map(n => {
           http.delete(`/api/notifications/${n.id}`).then(() => {
-            store.dispatch("notifications/remove", n);
-          });
+            removeNotification(n);
+          }).catch(err => console.warn(err));
         })
     );
   },
 
   markAsRead(id) {
     return Promise.all(
-      store.get().notifications
+      $notifications.get()
         .filter(n => notifications.matchNotification(n, id))
         .map(n => {
           http.put(`/api/notifications/${n.id}`, {read: true}).then(() => {
-            store.dispatch("notifications/read", n);
-          });
+            readNotification(n);
+          }).catch(err => console.warn(err));
         })
     );
   },

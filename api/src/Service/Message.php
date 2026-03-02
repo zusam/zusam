@@ -35,7 +35,6 @@ class Message
         $message = new MessageEntity();
         $message->setAuthor($author);
         $message->setGroup($group);
-        $message->setType('standard');
 
         if (!empty($data['createdAt'])) {
             $message->setCreatedAt($data['createdAt']);
@@ -60,6 +59,11 @@ class Message
             }, $data['files'])));
         }
 
+        if (!empty($data['type']) && in_array($data['type'], [MessageEntity::TYPE_STANDARD, MessageEntity::TYPE_RICH_TEXT], true)) {
+            $message->setType($data['type']);
+        } else {
+            $message->setType('standard');
+        }
         $message->setPreview($this->genPreview($message, $message->getIsInFront()));
         $this->em->persist($message);
 
@@ -130,5 +134,20 @@ class Message
         }
 
         return null;
+    }
+
+    public function getNextMessageSortOrderForGroup(string $groupId)
+    {
+        $maxSortOrder = $this->em->getRepository(MessageEntity::class)
+            ->createQueryBuilder('m')
+            ->select('MAX(m.sortOrder)')
+            ->where('m.group = :groupId')
+            ->andWhere('m.sortOrder IS NOT NULL')
+            ->setParameter('groupId', $groupId)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return ((int) $maxSortOrder) + 1;
     }
 }

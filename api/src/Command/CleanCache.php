@@ -21,7 +21,9 @@ class CleanCache extends Command
         parent::__construct();
         $this->logger = $logger;
 
-        @mkdir($targetDir, 0o777, true);
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0o777, true);
+        }
         $this->targetDir = realpath($targetDir);
 
         if (!$this->targetDir) {
@@ -50,17 +52,21 @@ class CleanCache extends Command
 
         $cache_size = 0;
         $files = [];
-        foreach (scandir($this->targetDir.'/images/') as $file) {
+        $imagesDir = $this->targetDir.'/images';
+        if (!is_dir($imagesDir)) {
+            return 0;
+        }
+        foreach (scandir($imagesDir) as $file) {
             if (!('.' != $file && '..' != $file)) {
                 continue;
             }
 
             $files[] = [
-                'path' => $this->targetDir.'/images/'.$file,
-                'mtime' => filemtime($this->targetDir.'/images/'.$file),
-                'size' => filesize($this->targetDir.'/images/'.$file),
+                'path' => $imagesDir.'/'.$file,
+                'mtime' => filemtime($imagesDir.'/'.$file),
+                'size' => filesize($imagesDir.'/'.$file),
             ];
-            $cache_size += filesize($this->targetDir.'/images/'.$file);
+            $cache_size += filesize($imagesDir.'/'.$file);
         }
 
         usort($files, static function ($f1, $f2) {

@@ -2,6 +2,24 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [0.6.1] - 2026-03-01
+
+### Log
+* #176 Add Quill editor to enable rich text content (@Neriderc)
+* #170 Add option to pin a message (@Neriderc)
+* #188 Add default_notifications environment variable (@Neriderc)
+* #177 Add environment variable to set default page (@Neriderc)
+* #159 Add error when public link token is invalid (@Neriderc)
+* #123 Rework Makefile, add integration tests, add loading placeholder for messages (@nrobinaubertin)
+* #199 Fix embeds (@nrobinaubertin)
+* #187 Fix search issue (@Neriderc)
+* #182 Change pin icon display location and color (@nrobinaubertin)
+* #158 Various improvements (@nrobinaubertin)
+
+### Remarks
+
+Feature and bugfix release.
+
 ## [0.6.0] - 2026-01-19
 
 ### Log

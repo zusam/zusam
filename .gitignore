@@ -3,6 +3,7 @@
 .viminfo
 TODO/
 Dockerfile
+__pycache__
 
 # EXEC
 /.composer

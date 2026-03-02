@@ -15,6 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`message`')]
 class Message extends ApiEntity
 {
+    // message types
+    public const TYPE_STANDARD = 'standard';
+    public const TYPE_RICH_TEXT = 'rich_text';
+
     #[ORM\Id]
     #[ORM\Column(type: 'guid')]
     #[Assert\NotBlank]
@@ -147,6 +151,7 @@ class Message extends ApiEntity
     private $entityType;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read_message', 'read_message_preview'])]
     private $sortOrder;
 
     public function __construct()
@@ -325,6 +330,11 @@ class Message extends ApiEntity
         if (is_array($this->getData()) && array_key_exists('text', $this->getData())) {
             $text = $this->getData()['text'];
             if (!empty($text)) {
+                $parsed = json_decode($text, true);
+                if (is_array($parsed) && isset($parsed['textOnly'])) {
+                    $text = $parsed['textOnly'];
+                }
+
                 return self::getUrlsFromText($text);
             }
         }

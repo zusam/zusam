@@ -50,10 +50,15 @@ const http = {
           method: "GET",
           headers: new Headers(h)
         })
-          .then(res => res.ok && res.json())
-          .catch(err => console.warn(`ERROR for ${url}`, err));
-      })
-      .catch(error => alert.add(error, "alert-danger"));
+          .then(res => {
+            if (res.ok) return res.json();
+            return Promise.reject({ status: res.status, statusText: res.statusText });
+          })
+          .catch(err => {
+            if (err?.status) return Promise.reject(err);
+            return Promise.reject({ networkError: true });
+          });
+      });
   },
   post: (url, data, delay = 0, contentType = "application/json") =>
     http.request(url, data, "POST", delay, contentType),
@@ -89,6 +94,9 @@ const http = {
         }
         return fetch(url, fetchOptions)
           .then(res => {
+            if (!res.ok) {
+              return Promise.reject({ status: res.status, statusText: res.statusText });
+            }
             try {
               if (method != "DELETE") {
                 return res.json();
@@ -99,9 +107,11 @@ const http = {
               return Promise.reject(exception.message);
             }
           })
-          .catch(err => console.warn(`ERROR for ${url}`, err));
-      })
-      .catch(error => alert.add(error, "alert-danger"));
+          .catch(err => {
+            if (err?.status) return Promise.reject(err);
+            return Promise.reject({ networkError: true });
+          });
+      });
   }
 };
 export default http;

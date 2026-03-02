@@ -39,6 +39,7 @@ class BaseApiTestCase extends WebTestCase
         parent::setUp();
 
         $this->client = static::createClient();
+        $this->client->disableReboot();
 
         $this ->rebuildSchema();
     }
@@ -85,7 +86,13 @@ class BaseApiTestCase extends WebTestCase
             ],
             !empty($body) ? json_encode($body) : null
         );
+        $this->refreshEntityManager();
         return $this->client->getResponse();
+    }
+
+    protected function refreshEntityManager(): void
+    {
+        $this->entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     protected function createUser(string $login = 'zusam@example.com', string $password = 'zusam'): UserEntity
@@ -118,6 +125,11 @@ class BaseApiTestCase extends WebTestCase
             $data = json_decode($response->getContent(), true);
             $this->assertArrayHasKey('api_key', $data);
             $this->apiKey = $data['api_key'];
+        }
+
+        $em = $this->getEntityManager();
+        if ($this->testUser && !$em->contains($this->testUser)) {
+            $this->testUser = $em->getRepository(UserEntity::class)->find($this->testUser->getId());
         }
 
         return $this->testUser;
@@ -153,8 +165,9 @@ class BaseApiTestCase extends WebTestCase
     public function getTestGroup(): GroupEntity
     {
         if (!$this->testGroup) {
+            $this->getTestUser();
             $this->testGroup = $this->createGroup();
-            $this->testGroup->addUser($this->getTestUser());
+            $this->testGroup->addUser($this->testUser);
             $this->testUser->addGroup($this->testGroup);
             $em = $this->getEntityManager();
             $em->persist($this->testGroup);

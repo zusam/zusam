@@ -1,7 +1,7 @@
-export const apiStore = store => {
-  store.on("@init", () => ({api: {}}));
+import { atom } from "nanostores";
 
-  store.on("api/update", (state, api) => {
-    return {api};
-  });
-};
+export const $api = atom({});
+
+export function updateApi(api) {
+  $api.set(api);
+}

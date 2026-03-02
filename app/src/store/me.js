@@ -1,9 +1,11 @@
-//import { http } from "/src/core";
+import { atom } from "nanostores";
 
-export const meStore = store => {
-  store.on("@init", () => ({me: {}}));
+export const $me = atom({});
 
-  store.on("me/update", (state, me) => {
-    return {me};
-  });
-};
+export function updateMe(me) {
+  $me.set(me);
+}
+
+export function resetMe() {
+  $me.set({});
+}

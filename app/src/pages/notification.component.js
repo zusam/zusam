@@ -130,12 +130,12 @@ export default function Notification(props) {
         setTitle(n.title);
         if (n?.fromUser?.id) {
           http.get(`/api/users/${n.fromUser.id}`).then(u => {
-            setAuthor(u);
-          });
+            if (u) setAuthor(u);
+          }).catch(() => null);
         }
         setNotification(n);
       }
-    });
+    }).catch(() => null);
   }, []);
 
   if (!notification) {
