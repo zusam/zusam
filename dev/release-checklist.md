@@ -1,0 +1,7 @@
+- [ ] Update CHANGELOG.md
+- [ ] Compile webapp
+- [ ] Create PR with title `<version number>` and copy the list of improvements in the description
+- [ ] Merge to master
+- [ ] Create `<version number>` tag
+- [ ] Create new release
+- [ ] Build the latest docker image and push it to the docker.io registry
