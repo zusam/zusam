@@ -131,13 +131,13 @@ class Mailer
                 )
                 ->htmlTemplate($this->getTemplatePath('password-reset-mail', 'html'))
                 ->context(
-                [
-                    'name' => ucfirst($user->getName()),
-                    'url' => $this->url->getBaseUrl()
-                        . '/password-reset'
-                        . '?mail=' . urlencode($user->getLogin())
-                        . '&key=' . $token,
-                ]
+                    [
+                        'name' => ucfirst($user->getName()),
+                        'url' => $this->url->getBaseUrl()
+                            .'/password-reset'
+                            .'?mail='.urlencode($user->getLogin())
+                            .'&key='.$token,
+                    ]
                 )
             ;
 
