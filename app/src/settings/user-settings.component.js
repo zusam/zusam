@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { lang, router, alert, http, util, storage } from "/src/core";
 import { useStore } from "@nanostores/preact";
-import { $me } from "/src/store/me.js";
+import { $me, updateMe } from "/src/store/me.js";
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -96,6 +96,7 @@ export default function UserSettings() {
       if (res["error"]) {
         alert.add(res["error"], "alert-danger");
       } else {
+        updateMe(res);
         setAlertMessage(t("settings_updated"));
         navigate(`${location.pathname}?alert=settings_updated`);
       }
