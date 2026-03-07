@@ -1,94 +1,649 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>{{ "new.content.on.zusam" | trans }}</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            background-color: #fff;
-            color: #333;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .post {
-            border-bottom: 1px solid #ddd;
-            padding: 0 0 15px 0;
-        }
-        .post:last-child {
-            border-bottom: none;
-        }
-        .post-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #f7a71b;
-            text-decoration: none;
-        }
-        li {
-            font-size: 1.2em;
-        }
-        ul {
-            margin: 0;
-        }
-        p {
-            font-size: 1em;
-        }
-        .button {
-            background-color: #f7a71b;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            display: inline-block;
-            font-weight: bold;
-            font-size: 16px;
-            margin-top: 20px;
-            text-align: center;
-        }
-        .unsubscribe {
-            font-size: 0.9em;
-            color: #555;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>{{ "new.content.on.zusam" | trans }}</h2>
-        <p>{{ "hello" | trans }} {{ user.name }},</p>
-        <p>{{ "check.out.new.content.on.zusam" | trans }}:</p>
-        <div class="post">
-            <ul>
-            {% for notification in notifications %}
-                {% if notification.notification.type == 'new_message' %}
-                    <li><strong>{{ notification.notification.fromUser.name }}</strong> {{ "created.a.post" | trans }} <a href="{{ base_url }}/messages/{{ notification.notification.target }}" class="post-title">{{ notification.title }}</a></li>
-                {%  elseif notification.notification.type == 'new_comment' %}
-                    <li><strong>{{ notification.notification.fromUser.name }}</strong> {{ "has.commented.on.the.post" | trans }} <a href="{{ base_url }}/messages/{{ notification.notification.fromMessage.id }}/{{ notification.notification.target }}" class="post-title">{{ notification.title }}</a></li>
-                {% endif %}
-            {% endfor %}
-            </ul>
-        </div>
+<!doctype html>
+<html lang="und" dir="auto" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
-        <p>
-            <a href="{{ base_url }}/feed" class="button">{{ "view.feed" | trans }}</a>
-        </p>
-        <footer>
-            <p class="unsubscribe">
-                {{ "change.email.frequency" | trans }}
-                <a href="{{ base_url }}/users/{{ user.id }}/settings">{{ "visit.settings.page" | trans }}</a>.
-            </p>
-            <p class="unsubscribe">
-                {{ "if.you.dont.want.emails" | trans }}
-                <a href="{{ base_url }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}"> {{ "unsubscribe" | trans }}</a>.
-            </p>
-        </footer>
+<head>
+  <title>{{ "new.content.on.zusam" | trans }}</title>
+  <!--[if !mso]><!-->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!--<![endif]-->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style type="text/css">
+    #outlook a {
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    table,
+    td {
+      border-collapse: collapse;
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+    }
+
+    img {
+      border: 0;
+      height: auto;
+      line-height: 100%;
+      outline: none;
+      text-decoration: none;
+      -ms-interpolation-mode: bicubic;
+    }
+
+    p {
+      display: block;
+      margin: 13px 0;
+    }
+
+  </style>
+  <!--[if mso]>
+    <noscript>
+    <xml>
+    <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+    </xml>
+    </noscript>
+    <![endif]-->
+  <!--[if lte mso 11]>
+    <style type="text/css">
+      .mj-outlook-group-fix { width:100% !important; }
+    </style>
+    <![endif]-->
+  <style type="text/css">
+    @media only screen and (min-width:480px) {
+      .mj-column-per-100 {
+        width: 100% !important;
+        max-width: 100%;
+      }
+    }
+
+  </style>
+  <style media="screen and (min-width:480px)">
+    .moz-text-html .mj-column-per-100 {
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+  </style>
+  <style type="text/css">
+    @media only screen and (max-width:479px) {
+      table.mj-full-width-mobile {
+        width: 100% !important;
+      }
+
+      td.mj-full-width-mobile {
+        width: auto !important;
+      }
+    }
+
+  </style>
+</head>
+
+<body style="word-spacing:normal;background-color:#dedede;">
+  <div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">{{ "check.out.new.content.on.zusam" | trans }}</div>
+  <div aria-label="{{ "new.content.on.zusam" | trans }}" aria-roledescription="email" style="background-color:#dedede;" role="article" lang="und" dir="auto">
+    <!-- spacer -->
+    <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div style="margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:5px 0 0 0;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                  <tbody>
+                    <tr>
+                      <td style="vertical-align:top;padding:0;">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style width="100%">
+                          <tbody>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="container-outlook" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div class="container" style="background-color: #fff; padding: 5px 20px 0; margin-top: 10px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 0px auto; max-width: 600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><![endif]-->
+              <!-- HEADER -->
+              <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:600px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:5px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:590px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
+                                            <tbody>
+                                              <tr>
+                                                <td style="width:180px;">
+                                                  <img alt="Zusam" src="data:image/png;base64,
+          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
+AAAASUVORK5CYII=
+" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="180" height="auto">
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><![endif]-->
+              <!-- TITLE -->
+              <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:600px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:20px 20px 10px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:560px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" style="font-size:0px;padding:0;word-break:break-word;">
+                                          <div style="font-family:Arial, Helvetica, sans-serif;font-size:28px;font-weight:bold;line-height:1.6;text-align:center;color:#333333;">{{ "new.content.on.zusam" | trans }}</div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td align="left" style="font-size:0px;padding:0;word-break:break-word;">
+                                          <div style="font-family:Arial, Helvetica, sans-serif;font-size:16px;line-height:1.6;text-align:left;color:#333333;">{{ "hello" | trans }} {{ user.name }},<br><br>
+                                            {{ "check.out.new.content.on.zusam" | trans }}:
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><![endif]-->
+              <!-- NOTIFICATIONS -->
+              <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:600px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:0 20px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:560px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style width="100%">
+                                    <tbody> {% for notification in notifications %} <tr>
+                                        <td align="left" style="font-size:0px;padding:0 0 12px;word-break:break-word;">
+                                          <div style="font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:1.6;text-align:left;color:#333333;">
+                                            <div class="notification-item" style="background-color: #f8f9fa; border-left: 4px solid #f7a71b; padding: 16px; margin-bottom: 12px; border-radius: 4px;">
+                                              <mj-raw> {% if notification.notification.type == 'new_message' %} </mj-raw>
+                                              <strong>{{ notification.notification.fromUser.name }}</strong>
+                                              {{ "created.a.post" | trans }}
+                                              <a href="{{ base_url }}/messages/{{ notification.notification.target }}" class="post-title" style="color: #f7a71b; text-decoration: none; font-weight: 600;">
+                                                {{ notification.title }}
+                                              </a>
+                                              <mj-raw> {% elseif notification.notification.type == 'new_comment' %} </mj-raw>
+                                              <strong>{{ notification.notification.fromUser.name }}</strong>
+                                              {{ "has.commented.on.the.post" | trans }}
+                                              <a href="{{ base_url }}/messages/{{ notification.notification.fromMessage.id }}/{{ notification.notification.target }}" class="post-title" style="color: #f7a71b; text-decoration: none; font-weight: 600;">
+                                                {{ notification.title }}
+                                              </a>
+                                              <mj-raw> {% endif %} </mj-raw>
+                                            </div>
+                                          </div>
+                                        </td>
+                                      </tr> {% endfor %} </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><![endif]-->
+              <!-- BUTTON -->
+              <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:600px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:0;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" style="font-size:0px;padding:12px 24px;word-break:break-word;">
+                                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
+                                            <tbody>
+                                              <tr>
+                                                <td align="center" bgcolor="#f7a71b" role="presentation" style="border:none;border-radius:6px;cursor:auto;mso-padding-alt:10px 25px;background:#f7a71b;" valign="middle">
+                                                  <a href="{{ base_url }}/feed" style="display:inline-block;background:#f7a71b;color:#ffffff;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:bold;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:6px;" target="_blank">
+                                                    {{ "view.feed" | trans }}
+                                                  </a>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><![endif]-->
+              <!-- DIVIDER -->
+              <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:600px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:0;padding-bottom:5px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                          <p style="border-top:solid 1px #e5e7eb;font-size:1px;margin:0px auto;width:100%;">
+                                          </p>
+                                          <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" style="border-top:solid 1px #e5e7eb;font-size:1px;margin:0px auto;width:550px;" role="presentation" width="550px" ><tr><td style="height:0;line-height:0;"> &nbsp;
+</td></tr></table><![endif]-->
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><![endif]-->
+              <!-- SETTINGS / UNSUBSCRIBE -->
+              <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" bgcolor="#f9fafb" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="background:#f9fafb;background-color:#f9fafb;margin:0px auto;max-width:600px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#f9fafb;background-color:#f9fafb;width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:0;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" style="font-size:0px;padding:0;padding-bottom:5px;word-break:break-word;">
+                                          <div style="font-family:Arial, Helvetica, sans-serif;font-size:12px;line-height:1.6;text-align:center;color:#6b7280;">{{ "receiving.email.because.notifications.enabled" | trans }}
+                                            {{ "change.email.frequency" | trans }}
+                                            <a href="{{ base_url }}/users/{{ user.id }}/settings" class="footer-link" style="color: #6b7280; text-decoration: underline;">
+                                              {{ "visit.settings.page" | trans }}
+                                            </a>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td align="center" style="font-size:0px;padding:0;word-break:break-word;">
+                                          <div style="font-family:Arial, Helvetica, sans-serif;font-size:12px;line-height:1.6;text-align:center;color:#6b7280;">{{ "if.you.dont.want.emails" | trans }}
+                                            <a href="{{ base_url }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}" class="footer-link" style="color: #6b7280; text-decoration: underline;">
+                                              {{ "unsubscribe" | trans }}
+                                            </a>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><![endif]-->
+    <!-- spacer -->
+    <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div style="margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:5px 0 0 0;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                  <tbody>
+                    <tr>
+                      <td style="vertical-align:top;padding:0;">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style width="100%">
+                          <tbody>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><![endif]-->
+  </div>
 </body>
+
 </html>
