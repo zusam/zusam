@@ -59,7 +59,12 @@ class Notification
         }
 
         if (empty($title) && !empty($data['text'])) {
-            $title = $data['text'];
+            $parsed = json_decode($data['text'], true);
+            if (is_array($parsed) && isset($parsed['textOnly'])) {
+                $title = $parsed['textOnly'];
+            } else {
+                $title = $data['text'];
+            }
         }
 
         return $title;
