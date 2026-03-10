@@ -1,0 +1,173 @@
+<mjml>
+  <mj-head>
+    <mj-title>{{ "new.content.on.zusam" | trans }}</mj-title>
+    <mj-preview>{{ "check.out.new.content.on.zusam" | trans }}</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, Helvetica, sans-serif" />
+      <mj-text color="#333333" line-height="1.6" padding="0" />
+      <mj-column padding="0" />
+      <mj-section padding="0" />
+    </mj-attributes>
+
+    <mj-style inline="inline">
+      .container {
+        background-color: #fff;
+        max-width: 600px;
+        padding: 5px 20px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .notification-item {
+        background-color: #f8f9fa;
+        border-left: 4px solid #f7a71b;
+        padding: 16px;
+        border-radius: 4px;
+      }
+
+      .post-title {
+        color: #f7a71b;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .footer-link {
+        color: #6b7280;
+        text-decoration: underline;
+      }
+    </mj-style>
+  </mj-head>
+
+  <mj-body background-color="#f4f4f4">
+    <!-- SPACER -->
+    <mj-section padding="5px 0 0 0">
+      <mj-column></mj-column>
+    </mj-section>
+
+    <mj-wrapper css-class="container">
+      <!-- HEADER -->
+      <mj-section padding="5px">
+        <mj-column>
+          <mj-image
+            width="180px"
+            src="{{ email.image('@assets/zusam_logo.png') }}"
+            alt="Zusam"
+            align="center"
+          />
+        </mj-column>
+      </mj-section>
+
+      <!-- TITLE -->
+      <mj-section padding="20px 20px 10px">
+        <mj-column>
+          <mj-text font-size="28px" font-weight="bold" align="center">
+            {{ "new.content.on.zusam" | trans }}
+          </mj-text>
+          <mj-text font-size="16px">
+            {{ "hello" | trans }} {{ user.name }},<br /><br />
+            {{ "check.out.new.content.on.zusam" | trans }}:
+          </mj-text>
+        </mj-column>
+      </mj-section>
+
+      <!-- NOTIFICATIONS -->
+      <mj-section padding="0 20px">
+        <mj-column>
+          <mj-raw> {% for notification in notifications %} </mj-raw>
+          <mj-text padding="0 0 12px">
+            <div class="notification-item">
+              <mj-raw>
+                {% if notification.notification.type == 'new_message' %}
+              </mj-raw>
+
+              <strong>{{ notification.notification.fromUser.name }}</strong>
+              {{ "created.a.post" | trans }}
+              <a
+                href="{{ base_url }}/messages/{{ notification.notification.target }}"
+                class="post-title"
+              >
+                {{ notification.title }}
+              </a>
+
+              <mj-raw>
+                {% elseif notification.notification.type == 'new_comment' %}
+              </mj-raw>
+
+              <strong>{{ notification.notification.fromUser.name }}</strong>
+              {{ "has.commented.on.the.post" | trans }}
+              <a
+                href="{{ base_url }}/messages/{{ notification.notification.fromMessage.id }}/{{ notification.notification.target }}"
+                class="post-title"
+              >
+                {{ notification.title }}
+              </a>
+
+              <mj-raw> {% endif %} </mj-raw>
+            </div>
+          </mj-text>
+          <mj-raw> {% endfor %} </mj-raw>
+        </mj-column>
+      </mj-section>
+
+      <!-- BUTTON -->
+      <mj-section>
+        <mj-column>
+          <mj-button
+            href="{{ base_url }}/feed"
+            background-color="#f7a71b"
+            color="#ffffff"
+            font-size="16px"
+            font-weight="bold"
+            border-radius="6px"
+            padding="12px 24px"
+          >
+            {{ "view.feed" | trans }}
+          </mj-button>
+        </mj-column>
+      </mj-section>
+
+      <!-- DIVIDER -->
+      <mj-section padding-bottom="5px">
+        <mj-column>
+          <mj-divider border-color="#e5e7eb" border-width="1px" />
+        </mj-column>
+      </mj-section>
+
+      <!-- SETTINGS / UNSUBSCRIBE -->
+      <mj-section background-color="#f9fafb">
+        <mj-column>
+          <mj-text
+            font-size="12px"
+            color="#6b7280"
+            align="center"
+            padding-bottom="5px"
+          >
+            {{ "receiving.email.because.notifications.enabled" | trans }}
+            {{ "change.email.frequency" | trans }}
+            <a
+              href="{{ base_url }}/users/{{ user.id }}/settings"
+              class="footer-link"
+            >
+              {{ "visit.settings.page" | trans }}
+            </a>
+          </mj-text>
+
+          <mj-text font-size="12px" color="#6b7280" align="center">
+            {{ "if.you.dont.want.emails" | trans }}
+            <a
+              href="{{ base_url }}/stop-notification-emails/{{ user.id }}/{{ unsubscribe_token }}"
+              class="footer-link"
+            >
+              {{ "unsubscribe" | trans }}
+            </a>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+
+    <!-- SPACER -->
+    <mj-section padding="5px 0 0 0">
+      <mj-column></mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

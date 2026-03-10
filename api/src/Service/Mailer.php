@@ -77,15 +77,15 @@ class Mailer
                         ]
                     )
                 )
-                ->html($this->twig->render(
-                    $this->getTemplatePath('notification-email', 'html'),
+                ->htmlTemplate($this->getTemplatePath('notification-email', 'html'))
+                ->context(
                     [
                         'base_url' => $this->url->getBaseUrl(),
                         'notifications' => $notifications,
                         'user' => $user,
                         'unsubscribe_token' => $unsubscribe_token,
                     ]
-                ))
+                )
             ;
 
             return $this->sendMail($email);
@@ -129,17 +129,15 @@ class Mailer
                         ]
                     )
                 )
-                ->html(
-                    $this->twig->render(
-                        $this->getTemplatePath('password-reset-mail', 'html'),
-                        [
-                            'name' => ucfirst($user->getName()),
-                            'url' => $this->url->getBaseUrl()
-                                .'/password-reset'
-                                .'?mail='.urlencode($user->getLogin())
-                                .'&key='.$token,
-                        ]
-                    )
+                ->htmlTemplate($this->getTemplatePath('password-reset-mail', 'html'))
+                ->context(
+                    [
+                        'name' => ucfirst($user->getName()),
+                        'url' => $this->url->getBaseUrl()
+                            .'/password-reset'
+                            .'?mail='.urlencode($user->getLogin())
+                            .'&key='.$token,
+                    ]
                 )
             ;
 
