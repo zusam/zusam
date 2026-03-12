@@ -22,7 +22,7 @@ export default function UserSettings() {
 
   const resetApiKey = (event) => {
     event.preventDefault();
-    http.post(`/api/users/${me.id}/reset-api-key`, {}).then(() => router.logout()).catch(err => console.warn(err));
+    http.post(`/api/users/${me.id}/reset-api-key`, {}).then(() => navigate("/logout")).catch(err => console.warn(err));
   };
 
   const inputAvatar = () => {
