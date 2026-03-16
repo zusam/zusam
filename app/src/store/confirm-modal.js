@@ -12,7 +12,7 @@ const DEFAULT_CONFIRM = {
 
 export const $confirm = atom(DEFAULT_CONFIRM);
 
-export function confirm(options) {
+export function showConfirm(options) {
   const opts = typeof options === "string" ? { message: options } : options;
 
   return new Promise((resolve) => {

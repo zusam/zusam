@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useStore } from "@nanostores/preact";
 import { $me } from "/src/store/me.js";
 import MessageError from "./message-error.component.js";
-import { confirm } from "/src/store/confirm-modal.js";
+import { showConfirm } from "/src/store/confirm-modal.js";
 
 export default function Message(props) {
 
@@ -158,7 +158,7 @@ export default function Message(props) {
   const deleteMessage = async event => {
     event.preventDefault();
 
-    if (await confirm({
+    if (await showConfirm({
       title: t("ask_delete_message"),
       message: t("cant_be_undone"),
       confirmText: t("delete"),
