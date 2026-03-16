@@ -85,6 +85,7 @@
     "replies_one": "{{count}} reply",
     "replies_other": "{{count}} replies",
     "reply": "reply",
+    "reset": "Reset",
     "reset_api_key": "Reset the API key (you will be disconnected)",
     "reset_invitation_link": "Reset invitation link",
     "reset_password_title": "Reset your password",
@@ -109,5 +110,6 @@
     "users": "users",
     "video_not_ready": "Video is not ready yet.",
     "weekly": "Weekly",
-    "you_have_no_bookmarks": "You have no bookmarks"
+    "you_have_no_bookmarks": "You have no bookmarks",
+    "you_will_be_logged_out": "You will be logged out."
 }

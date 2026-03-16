@@ -21,9 +21,17 @@ export default function UserSettings() {
     setAlertMessage(t(router.getParam("alert")));
   }, []);
 
-  const resetApiKey = (event) => {
+  const resetApiKey = async (event) => {
     event.preventDefault();
-    http.post(`/api/users/${me.id}/reset-api-key`, {}).then(() => router.logout()).catch(err => console.warn(err));
+    if (await showConfirm({
+      title: t("are_you_sure"),
+      message: t("you_will_be_logged_out"),
+      confirmText: t("reset"),
+      cancelText: t("cancel"),
+      variant: "warning"
+    })) {
+      http.post(`/api/users/${me.id}/reset-api-key`, {}).then(() => router.logout()).catch(err => console.warn(err));
+    }
   };
 
   const inputAvatar = () => {
