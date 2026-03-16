@@ -34,15 +34,23 @@ export default function GroupSettings() {
     setAlertMessage(t(router.getParam("alert")));
   }, []);
 
-  const resetInviteKey = (event) => {
+  const resetInviteKey = async (event) => {
     event.preventDefault();
-    http
-      .post(`/api/groups/${group.id}/reset-invite-key`, {})
-      .then(res => {
-        if (!res) return;
-        alert.add(t("group_updated"));
-        setInviteKey(res["inviteKey"]);
-      }).catch(() => null);
+    if (await showConfirm({
+      title: t("are_you_sure"),
+      message: t("existing_invite_link_invalidated"),
+      confirmText: t("reset_invitation_link"),
+      cancelText: t("cancel"),
+      variant: "warning"
+    })) {
+      http
+        .post(`/api/groups/${group.id}/reset-invite-key`, {})
+        .then(res => {
+          if (!res) return;
+          alert.add(t("group_updated"));
+          setInviteKey(res["inviteKey"]);
+        }).catch(() => null);
+    }
   };
 
   const updateSettings = (event) => {

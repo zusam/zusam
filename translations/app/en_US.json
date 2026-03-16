@@ -33,6 +33,7 @@
     "error": "An error occurred",
     "error_new_message": "An error occurred while sending your message.",
     "error_upload": "An error occurred during the upload",
+    "existing_invite_link_invalidated": "The existing invite link will no longer work.",
     "feed": "Feed",
     "feed_group": "My Feed",
     "forgot_password": "Forgot your password?",
