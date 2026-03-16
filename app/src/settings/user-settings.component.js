@@ -5,6 +5,7 @@ import { $me, updateMe } from "/src/store/me.js";
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
+import { showConfirm } from "/src/store/confirm-modal.js";
 
 export default function UserSettings() {
 
@@ -45,10 +46,15 @@ export default function UserSettings() {
     input.click();
   };
 
-  const destroyAccount = (event) => {
+  const destroyAccount = async (event) => {
     event.preventDefault();
-    let confirmDeletion = confirm(t("are_you_sure"));
-    if (confirmDeletion) {
+    if (await showConfirm({
+      title: t("are_you_sure"),
+      message: t("destroy_account_explain"),
+      confirmText: t("delete"),
+      cancelText: t("cancel"),
+      variant: "danger"
+    })) {
       http.delete(`/api/users/${me.id}`).then(() => {
         navigate("/logout");
       }).catch(err => console.warn(err));
