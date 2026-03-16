@@ -13,6 +13,7 @@
     "bookmarks": "bookmarks",
     "cancel": "Cancel",
     "cancel_write": "Do you really want to cancel writing a new message?",
+    "cant_be_undone": "This action can't be undone.",
     "changed_group_name": "changed the group's name",
     "confirm_password_placeholder": "confirm password",
     "connect": "Connect",
