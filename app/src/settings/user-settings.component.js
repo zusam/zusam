@@ -28,7 +28,7 @@ export default function UserSettings() {
       message: t("you_will_be_logged_out"),
       confirmText: t("reset"),
       cancelText: t("cancel"),
-      variant: "warning"
+      variant: "primary"
     })) {
       http.post(`/api/users/${me.id}/reset-api-key`, {}).then(() => router.logout()).catch(err => console.warn(err));
     }

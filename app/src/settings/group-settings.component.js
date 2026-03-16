@@ -41,7 +41,7 @@ export default function GroupSettings() {
       message: t("existing_invite_link_invalidated"),
       confirmText: t("reset_invitation_link"),
       cancelText: t("cancel"),
-      variant: "warning"
+      variant: "primary"
     })) {
       http
         .post(`/api/groups/${group.id}/reset-invite-key`, {})
@@ -75,7 +75,7 @@ export default function GroupSettings() {
       message: t("you_will_need_invite"),
       confirmText: t("quit_group"),
       cancelText: t("cancel"),
-      variant: "warning"
+      variant: "danger"
     })) {
       if (me.data?.default_group == group.id) {
         let user = {};
