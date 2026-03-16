@@ -23,6 +23,7 @@
     "default_group": "Default group",
     "default_page": "Default page",
     "delete": "Delete",
+    "delete_group": "Delete group",
     "destroy_account": "Delete your account",
     "destroy_account_explain": "Once you delete your account, there is no going back. Please be certain.",
     "edit": "Edit",
@@ -111,6 +112,7 @@
     "users": "users",
     "video_not_ready": "Video is not ready yet.",
     "weekly": "Weekly",
+    "you_are_last_group_will_delete": "You are the only member of this group. If you leave, the group will be deleted.",
     "you_have_no_bookmarks": "You have no bookmarks",
     "you_will_be_logged_out": "You will be logged out.",
     "you_will_need_invite": "You will need an invite to join again."

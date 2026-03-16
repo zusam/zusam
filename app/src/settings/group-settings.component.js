@@ -77,15 +77,23 @@ export default function GroupSettings() {
       cancelText: t("cancel"),
       variant: "danger"
     })) {
-      if (me.data?.default_group == group.id) {
-        let user = {};
-        user.data = { default_group: me.groups[0].id };
-        http.put(`/api/users/${me.id}`, user).then(() => {
-          meService.fetch();
+      if (group.users.length > 1 || await showConfirm({
+        title: t("are_you_sure"),
+        message: t("you_are_last_group_will_delete"),
+        confirmText: t("delete_group"),
+        cancelText: t("cancel"),
+        variant: "danger"
+      })) {
+        if (me.data?.default_group == group.id) {
+          let user = {};
+          user.data = { default_group: me.groups[0].id };
+          http.put(`/api/users/${me.id}`, user).then(() => {
+            meService.fetch();
+            leave();
+          }).catch(err => console.warn(err));
+        } else {
           leave();
-        }).catch(err => console.warn(err));
-      } else {
-        leave();
+        }
       }
     }
   };
