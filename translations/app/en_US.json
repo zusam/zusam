@@ -111,5 +111,6 @@
     "video_not_ready": "Video is not ready yet.",
     "weekly": "Weekly",
     "you_have_no_bookmarks": "You have no bookmarks",
-    "you_will_be_logged_out": "You will be logged out."
+    "you_will_be_logged_out": "You will be logged out.",
+    "you_will_need_invite": "You will need an invite to join again."
 }

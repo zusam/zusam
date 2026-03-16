@@ -5,6 +5,7 @@ import { $me } from "/src/store/me.js";
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
+import { showConfirm } from "/src/store/confirm-modal.js";
 
 export default function GroupSettings() {
 
@@ -59,17 +60,25 @@ export default function GroupSettings() {
     }).catch(() => null);
   };
 
-  const leaveGroup = (event) => {
+  const leaveGroup = async (event) => {
     event.preventDefault();
-    if (me.data?.default_group == group.id) {
-      let user = {};
-      user.data = { default_group: me.groups[0].id };
-      http.put(`/api/users/${me.id}`, user).then(() => {
-        meService.fetch();
+    if (await showConfirm({
+      title: t("are_you_sure"),
+      message: t("you_will_need_invite"),
+      confirmText: t("quit_group"),
+      cancelText: t("cancel"),
+      variant: "warning"
+    })) {
+      if (me.data?.default_group == group.id) {
+        let user = {};
+        user.data = { default_group: me.groups[0].id };
+        http.put(`/api/users/${me.id}`, user).then(() => {
+          meService.fetch();
+          leave();
+        }).catch(err => console.warn(err));
+      } else {
         leave();
-      }).catch(err => console.warn(err));
-    } else {
-      leave();
+      }
     }
   };
 
