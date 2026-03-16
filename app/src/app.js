@@ -107,7 +107,7 @@ function App() {
         navigate("/logout");
       }
     });
-  }, []);
+  }, [location.pathname]);
 
   return (
     <>
