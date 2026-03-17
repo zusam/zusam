@@ -61,6 +61,11 @@ class Create extends ApiController
         User $currentUser
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
+
+        if ('true' != $this->getParameter('allow.create.group')) {
+            return new JsonResponse(['error' => 'error_creating_group_disabled'], JsonResponse::HTTP_FORBIDDEN);
+        }
+
         $requestData = json_decode($request->getcontent(), true);
         if (empty($requestData)) {
             return new JsonResponse(
