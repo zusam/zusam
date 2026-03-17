@@ -93,23 +93,18 @@ const http = {
               : data;
         }
         return fetch(url, fetchOptions)
-          .then(res => {
+          .then(async res => {
+            const body = await res.json().catch(() => ({}));
+
             if (!res.ok) {
-              return Promise.reject({ status: res.status, statusText: res.statusText });
+              throw {
+                status: res.status,
+                statusText: res.statusText,
+                ...body
+              };
             }
-            try {
-              if (method != "DELETE") {
-                return res.json();
-              }
-              return {};
-            } catch (exception) {
-              console.warn(exception.message);
-              return Promise.reject(exception.message);
-            }
-          })
-          .catch(err => {
-            if (err?.status) return Promise.reject(err);
-            return Promise.reject({ networkError: true });
+
+            return method !== "DELETE" ? body : {};
           });
       });
   }
