@@ -6,6 +6,7 @@ use App\Controller\ApiController;
 use App\Entity\Message;
 use App\Entity\Notification;
 use App\Entity\User;
+use App\Service\Message as MessageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -20,14 +21,17 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 class Delete extends ApiController
 {
     private $cache;
+    private MessageService $ms;
 
     public function __construct(
         EntityManagerInterface $em,
         SerializerInterface $serializer,
         TagAwareCacheInterface $cache,
+        MessageService $ms,
     ) {
         parent::__construct($em, $serializer);
         $this->cache = $cache;
+        $this->ms = $ms;
     }
 
     /**
@@ -55,20 +59,13 @@ class Delete extends ApiController
 
         $this->denyAccessUnlessGranted(new Expression('user == object.getAuthor()'), $message);
 
-        $notifications = $this->em->getRepository(Notification::class)->findByTarget($id);
-        foreach ($notifications as $n) {
-            $this->em->remove($n);
-        }
-
         $currentUser->setLastActivityDate(time());
         $this->em->persist($currentUser);
 
-        $this->em->remove($message);
+        $this->ms->delete($message);
 
         // Clear cache for the group
-        $this->cache->invalidateTags(['group_'.$message->getGroup()->getId()]);
-
-        $this->em->flush();
+        $this->cache->invalidateTags(['group_' . $message->getGroup()->getId()]);
 
         return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
     }
