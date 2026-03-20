@@ -4,7 +4,6 @@ namespace App\Controller\Message;
 
 use App\Controller\ApiController;
 use App\Entity\Message;
-use App\Entity\Notification;
 use App\Entity\User;
 use App\Service\Message as MessageService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -65,7 +64,7 @@ class Delete extends ApiController
         $this->ms->delete($message);
 
         // Clear cache for the group
-        $this->cache->invalidateTags(['group_' . $message->getGroup()->getId()]);
+        $this->cache->invalidateTags(['group_'.$message->getGroup()->getId()]);
 
         return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
     }

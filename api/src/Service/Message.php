@@ -158,7 +158,7 @@ class Message
             $this->notificationService->delete($notification);
         }
 
-        $notifications = $this->em->getRepository(Notification::class)->find(['target' => $message->getId()]);
+        $notifications = $this->em->getRepository(NotificationEntity::class)->findBy(['target' => $message->getId()]);
         foreach ($notifications as $notification) {
             $this->notificationService->delete($notification);
         }
