@@ -21,7 +21,7 @@ const notifications = {
       return list.filter(n => !n.read).some(
         n =>
           notifications.matchNotification(n, id) ||
-          (n.type == "new_comment" && n.fromMessage.id === id)
+          (n.type == "new_comment" && n.fromMessage?.id === id)
       );
     }
     return false;
