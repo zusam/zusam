@@ -2,4 +2,4 @@ framework:
   mailer:
     dsn: '%env(MAILER_DSN)%'
     headers:
-      From: '%env(MAILER_FROM)%'
+      From: '%env(resolve:MAILER_FROM)%'
