@@ -7,7 +7,8 @@ import {useTranslation} from "react-i18next";
 export default function MessageReactions(props) {
   const [reactions, setReactions] = useState([]);
   const [hoveredReaction, setHoveredReaction] = useState(null);
-  const { t } = useTranslation();
+  const [emojiData, setEmojiData] = useState({});
+  const { t, i18n } = useTranslation();
 
   const MAX_VISIBLE_USERS = 10;
 
@@ -21,6 +22,22 @@ export default function MessageReactions(props) {
     setReactions(formattedReactions);
   };
 
+  const langMap = {
+    de_DE: () => import("./emoji-lang/emojis-de.js"),
+    es_ES: () => import("./emoji-lang/emojis-es.js"),
+    fi_FI: () => import("./emoji-lang/emojis-fi.js"),
+    fr_FR: () => import("./emoji-lang/emojis-fr.js"),
+    hu_HU: () => import("./emoji-lang/emojis-hu.js"),
+    it_IT: () => import("./emoji-lang/emojis-it.js"),
+    ko_KR: () => import("./emoji-lang/emojis-ko.js"),
+    nb_NO: () => import("./emoji-lang/emojis-nb.js"),
+    nl_NL: () => import("./emoji-lang/emojis-nl.js"),
+    pl_PL: () => import("./emoji-lang/emojis-pl.js"),
+    pt_BR: () => import("./emoji-lang/emojis-pt.js"),
+    ru_RU: () => import("./emoji-lang/emojis-ru.js"),
+    zh_Hans: () => import("./emoji-lang/emojis-zh.js")
+  };
+
   useEffect(() => {
     if (!props.messageId) return;
 
@@ -31,6 +48,20 @@ export default function MessageReactions(props) {
 
     fetchReactions();
   }, [props.messageId]);
+
+  useEffect(() => {
+    if (!langMap[i18n.language]) {
+      setEmojiData({});
+      return;
+    }
+
+    const load = async () => {
+      const module = await langMap[i18n.language]();
+      setEmojiData(module.default);
+    };
+
+    load();
+  }, [i18n.language]);
 
   const handleReactionClick = async (currentUserReactionId) => {
     // If current user set this emoji type, click to remove it
@@ -72,7 +103,7 @@ export default function MessageReactions(props) {
 
       <Fragment>
         <div class="font-size-90" className="reaction-button">
-          <MessageEmojiSelector messageId={props?.messageId} updateReactions={loadReactions} />
+          <MessageEmojiSelector messageId={props?.messageId} updateReactions={loadReactions} languageData={emojiData}/>
         </div>
       </Fragment>
     </a>
