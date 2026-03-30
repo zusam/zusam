@@ -28,6 +28,10 @@ export default function MessageReactions(props) {
     return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
   };
 
+  /*
+    These files are copied from the emoji-picker-react package as they can't be
+    loaded directly. They will need updating from time to time. See dev/README.md
+  */
   const langMap = {
     de_DE: () => import("./emoji-lang/emojis-de.js"),
     es_ES: () => import("./emoji-lang/emojis-es.js"),

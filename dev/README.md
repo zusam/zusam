@@ -100,3 +100,11 @@ cd app/
 npm outdated # check outdated packages
 npm update # update packages according to package.json
 ```
+#### Reactions data files
+The optional reactions functionality (disabled by default) relies on some data files copied from the emoji-picker-react package. These should be updated from time to time as translations may be updated or new emojis added.
+
+Only languages supported by both Zusam and the Emoji Picker React are copied. If a new language is added to either, the files should be reviewed to see if a new language can be supported. New files need to be imported in the message-reactions.component.js component.
+
+To update the files, copy the appropriate files from the `app/node_modules/emoji-picker-react/dist.data` directory into the `app/src/message/emoji-lang` folder.
+
+You will need to compile the frontend (as above) for the changes to apply.
