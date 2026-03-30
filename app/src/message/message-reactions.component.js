@@ -81,13 +81,19 @@ export default function MessageReactions(props) {
     load();
   }, [i18n.language]);
 
-  const handleReactionClick = async (currentUserReactionId) => {
+  const handleReactionClick = async (currentUserReactionId, emoji) => {
     // If current user set this emoji type, click to remove it
     if (currentUserReactionId) {
       await http.delete(`/api/messages/${props.messageId}/reactions/${currentUserReactionId}`).catch(err => console.warn(err));
-      const reactionData = await http.get(`/api/messages/${props.messageId}/reactions`).catch(() => null);
-      if (reactionData) await loadReactions(reactionData);
+    } else {
+      // If current user hasn't selected this emoji, click to add a reaction with this emoji type
+      await http.post(`/api/messages/${props.messageId}/reactions`, {
+        reaction: emoji,
+      }).catch(err => console.warn(err));
     }
+
+    const reactionData = await http.get(`/api/messages/${props.messageId}/reactions`).catch(err => console.warn(err));
+    if (reactionData) await loadReactions(reactionData);
   };
 
   return (
@@ -105,9 +111,6 @@ export default function MessageReactions(props) {
           <div
             key={emoji}
             className="reaction-emoji"
-            style={{
-              cursor: currentUserReactionId ? "pointer" : "default",
-            }}
             onMouseEnter={() => setHoveredReaction(emoji)}
             onMouseLeave={() => setHoveredReaction(null)}
           >
@@ -116,7 +119,7 @@ export default function MessageReactions(props) {
                 opacity: hoveredReaction === emoji && currentUserReactionId ? 0.6 : 1,
                 transition: "opacity 0.2s ease-in-out",
               }}
-              onClick={() => currentUserReactionId && handleReactionClick(currentUserReactionId)}
+              onClick={() => handleReactionClick(currentUserReactionId ?? "", emoji)}
             >
               {emoji}
             </span>
