@@ -428,44 +428,49 @@
   }
 }
 
-.message-reactions {
+.reaction-emoji {
   display: flex;
-  gap: 8px;
-  margin-top: 5px;
-  margin-left: 5px;
+  align-items: center;
+  gap: 2px;
+  margin: 2px;
+  position: relative;
+}
 
-  .reaction-emoji {
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    position: relative;
+.reaction-count {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.reaction-tooltip {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #eee;
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: 1000;
+  opacity: 0.95;
+  max-width: 300px;
+  width: max-content;
+
+  .reaction-tooltip-emoji {
+    font-size: 1.1rem;
   }
 
-  .reaction-count {
-    font-size: 0.8rem;
-    color: #666;
-  }
-
-  .reaction-tooltip {
-    position: absolute;
-    background: #333;
-    color: #fff;
-    padding: 8px;
-    border-radius: 4px;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.8rem;
+  .reaction-title {
     white-space: nowrap;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
   }
 
-  .reaction-button {
-    margin-top: 5px;
+  .reaction-hr {
+    margin: 0;
+  }
+
+  .reaction-user-list {
+    text-align: center;
+    color: #fff;
+    font-size: 1.1em;
   }
 }
 

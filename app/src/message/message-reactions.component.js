@@ -1,8 +1,8 @@
-import { Fragment, h } from "preact";
+import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { http } from "/src/core";
 import MessageEmojiSelector from "./message-emojiselector.component";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 export default function MessageReactions(props) {
   const [reactions, setReactions] = useState([]);
@@ -22,10 +22,6 @@ export default function MessageReactions(props) {
       currentUserReactionId: reaction.currentUserReactionId,
     }));
     setReactions(formattedReactions);
-  };
-
-  const capitaliseFirstLetter = (str) => {
-    return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
   };
 
   /*
@@ -97,7 +93,13 @@ export default function MessageReactions(props) {
   return (
     <a className="d-flex action seamless-link font-size-90 capitalize" >
       {reactions.map(({ emoji, unified, count, users, currentUserReactionId }) => {
-        const name = capitaliseFirstLetter(emojiMap[unified]) || "";
+        const name = emojiMap[unified];
+
+        const tooltipUserList =
+          users.slice(0, MAX_VISIBLE_USERS).join(", ") +
+          (users.length > MAX_VISIBLE_USERS
+            ? `\n${t("and_x_more", { count: `${users.length - MAX_VISIBLE_USERS}` })}...`
+            : "");
 
         return (
           <div
@@ -106,13 +108,6 @@ export default function MessageReactions(props) {
             style={{
               cursor: currentUserReactionId ? "pointer" : "default",
             }}
-            title={
-              `${emoji} ${name}\n\n` +
-              users.slice(0, MAX_VISIBLE_USERS).join("\n") +
-              (users.length > MAX_VISIBLE_USERS
-                ? `\n${t("and_x_more", { count: `${users.length - MAX_VISIBLE_USERS}` })}...`
-                : "")
-            }
             onMouseEnter={() => setHoveredReaction(emoji)}
             onMouseLeave={() => setHoveredReaction(null)}
           >
@@ -125,19 +120,31 @@ export default function MessageReactions(props) {
             >
               {emoji}
             </span>
+
             <span className="reaction-count">{count}</span>
+
+            {hoveredReaction === emoji && (
+              <div className="reaction-tooltip">
+                <div className="reaction-title"><span className="reaction-tooltip-emoji">{emoji}</span> <span>{name}</span></div>
+                <hr className="reaction-hr" />
+                <div className="reaction-user-list">
+                  { tooltipUserList }
+                </div>
+              </div>
+            )}
           </div>
         );
       })}
+
       {reactions.length > 0 && (
-        <div class="dot">&bull;</div>
+        <div className="dot">&bull;</div>
       )}
 
-      <Fragment>
-        <div class="font-size-90" className="reaction-button">
-          <MessageEmojiSelector messageId={props?.messageId} updateReactions={loadReactions} languageData={emojiData}/>
-        </div>
-      </Fragment>
+      <MessageEmojiSelector
+        messageId={props?.messageId}
+        updateReactions={loadReactions}
+        languageData={emojiData}
+      />
     </a>
   );
 }

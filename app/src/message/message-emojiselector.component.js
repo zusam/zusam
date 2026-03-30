@@ -36,7 +36,7 @@ export default function MessageEmojiSelector(props) {
 
   return (
     <div ref={pickerRef} >
-      <div class="d-flex" style={{cursor: "pointer"}} onClick={() => {if (EmojiPicker) setShowPicker(!showPicker);}}>{t("react")}</div>
+      <div onClick={() => {if (EmojiPicker) setShowPicker(!showPicker);}}>{t("react")}</div>
       {showPicker && (
         <div style={{ position: "absolute", zIndex: 1000 }}>
           <Suspense fallback={null}>
