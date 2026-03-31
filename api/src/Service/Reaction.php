@@ -82,7 +82,8 @@ class Reaction
     private function emojiToUnified($emoji)
     {
         $chars = preg_split('//u', $emoji, -1, PREG_SPLIT_NO_EMPTY);
-        $codes = array_map(fn($c) => dechex(mb_ord($c, 'UTF-8')), $chars);
+        $codes = array_map(fn ($c) => dechex(mb_ord($c, 'UTF-8')), $chars);
+
         return strtolower(implode('-', $codes));
     }
 }
