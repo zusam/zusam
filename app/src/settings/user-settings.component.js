@@ -30,7 +30,7 @@ export default function UserSettings() {
       cancelText: t("cancel"),
       variant: "primary"
     })) {
-      http.post(`/api/users/${me.id}/reset-api-key`, {}).then(() => router.logout()).catch(err => console.warn(err));
+      http.post(`/api/users/${me.id}/reset-api-key`, {}).then(() => navigate("/logout")).catch(err => console.warn(err));
     }
   };
 
