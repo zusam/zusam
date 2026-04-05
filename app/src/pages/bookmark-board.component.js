@@ -9,8 +9,7 @@ export default function BookmarkBoard() {
 
   const { t } = useTranslation();
   const bookmarks = useStore($bookmarks);
-
-  if (!bookmarks) {
+  if (bookmarks.length === 0) {
     return (
       <main>
         <Navbar />
