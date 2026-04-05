@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { h, Fragment } from "preact";
 import { http, api, me, notifications, bookmarks_utils, router, storage } from "/src/core";
 import {
   Login,
@@ -20,6 +20,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { useEffect } from "preact/hooks";
+import ConfirmModal from "/src/misc/confirm-modal.component.js";
 
 function App() {
 
@@ -69,63 +70,68 @@ function App() {
     };
   });
 
-  me.fetch().then(user => {
-    if (user?._networkError) {
-      // Network is down — don't redirect, stay on current page
-      return;
-    }
+  useEffect(() => {
+    me.fetch().then(user => {
+      if (user?._networkError) {
+        // Network is down — don't redirect, stay on current page
+        return;
+      }
 
-    if (location.pathname === "/") {
-      let redirect = "/login";
-      if (user) {
-        redirect = "/create-group";
-        if (user?.groups[0]) {
-          const defaultPage = user?.data?.default_page || "default_group";
-          if (defaultPage === "default_group" && user?.data?.default_group) {
-            redirect = `/groups/${user.data.default_group}`;
-          } else {
-            redirect = "/feed";
+      if (location.pathname === "/") {
+        let redirect = "/login";
+        if (user) {
+          redirect = "/create-group";
+          if (user?.groups[0]) {
+            const defaultPage = user?.data?.default_page || "default_group";
+            if (defaultPage === "default_group" && user?.data?.default_group) {
+              redirect = `/groups/${user.data.default_group}`;
+            } else {
+              redirect = "/feed";
+            }
           }
         }
+        navigate(redirect);
       }
-      navigate(redirect);
-    }
 
-    if (location.pathname.match(/^\/invitation/)) {
-      if (user) {
-        http.post(`/api/groups/invitation/${router.id}`, {}).catch(() => null).then(res => {
-          if (res) navigate(res.group ? "/groups/" + res.group : "/");
-        });
-      } else {
-        navigate(`/signup?inviteKey=${router.id}`);
+      if (location.pathname.match(/^\/invitation/)) {
+        if (user) {
+          http.post(`/api/groups/invitation/${router.id}`, {}).catch(() => null).then(res => {
+            if (res) navigate(res.group ? "/groups/" + res.group : "/");
+          });
+        } else {
+          navigate(`/signup?inviteKey=${router.id}`);
+        }
       }
-    }
 
-    if (!router.isOutside() && !user) {
-      navigate("/logout");
-    }
-  });
+      if (!router.isOutside() && !user) {
+        navigate("/logout");
+      }
+    });
+  }, [location.pathname]);
 
   return (
-    <Routes>
-      <Route path="/password-reset" element={<PasswordReset />} />
-      <Route path="/public/:token" element={<Public />} />
-      <Route path="/share" element={<Share />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/stop-notification-emails/:userId/:token" element={<StopNotificationEmails />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/logout" element={<Logout />} />
-      <Route path="/:type/:id/settings" element={<Settings />} />
-      <Route path="/bookmarks" element={<BookmarkBoard />} />
-      <Route path="/create-group" element={<CreateGroup />} />
-      <Route path="/groups/:id" element={<GroupBoard />} />
-      <Route path="/groups/:id/random" element={<RandomMessage />} />
-      <Route path="/groups/:id/search" element={<GroupSearchWrapper />} />
-      <Route path="/groups/:id/write" element={<GroupWriter />} />
-      <Route path="/feed" element={<FeedBoard />} />
-      <Route path="/messages/:id" element={<MessageParent />} />
-      <Route path="/messages/:id/:child_id" element={<MessageParent />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/password-reset" element={<PasswordReset />} />
+        <Route path="/public/:token" element={<Public />} />
+        <Route path="/share" element={<Share />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/stop-notification-emails/:userId/:token" element={<StopNotificationEmails />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
+        <Route path="/:type/:id/settings" element={<Settings />} />
+        <Route path="/bookmarks" element={<BookmarkBoard />} />
+        <Route path="/create-group" element={<CreateGroup />} />
+        <Route path="/groups/:id" element={<GroupBoard />} />
+        <Route path="/groups/:id/random" element={<RandomMessage />} />
+        <Route path="/groups/:id/search" element={<GroupSearchWrapper />} />
+        <Route path="/groups/:id/write" element={<GroupWriter />} />
+        <Route path="/feed" element={<FeedBoard />} />
+        <Route path="/messages/:id" element={<MessageParent />} />
+        <Route path="/messages/:id/:child_id" element={<MessageParent />} />
+      </Routes>
+      <ConfirmModal />
+    </>
   );
 }
 

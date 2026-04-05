@@ -5,6 +5,7 @@ import { $me } from "/src/store/me.js";
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
+import { showConfirm } from "/src/store/confirm-modal.js";
 
 export default function GroupSettings() {
 
@@ -33,15 +34,23 @@ export default function GroupSettings() {
     setAlertMessage(t(router.getParam("alert")));
   }, []);
 
-  const resetInviteKey = (event) => {
+  const resetInviteKey = async (event) => {
     event.preventDefault();
-    http
-      .post(`/api/groups/${group.id}/reset-invite-key`, {})
-      .then(res => {
-        if (!res) return;
-        alert.add(t("group_updated"));
-        setInviteKey(res["inviteKey"]);
-      }).catch(() => null);
+    if (await showConfirm({
+      title: t("are_you_sure"),
+      message: t("existing_invite_link_invalidated"),
+      confirmText: t("reset_invitation_link"),
+      cancelText: t("cancel"),
+      variant: "primary"
+    })) {
+      http
+        .post(`/api/groups/${group.id}/reset-invite-key`, {})
+        .then(res => {
+          if (!res) return;
+          alert.add(t("group_updated"));
+          setInviteKey(res["inviteKey"]);
+        }).catch(() => null);
+    }
   };
 
   const updateSettings = (event) => {
@@ -59,17 +68,33 @@ export default function GroupSettings() {
     }).catch(() => null);
   };
 
-  const leaveGroup = (event) => {
+  const leaveGroup = async (event) => {
     event.preventDefault();
-    if (me.data?.default_group == group.id) {
-      let user = {};
-      user.data = { default_group: me.groups[0].id };
-      http.put(`/api/users/${me.id}`, user).then(() => {
-        meService.fetch();
-        leave();
-      }).catch(err => console.warn(err));
-    } else {
-      leave();
+    if (await showConfirm({
+      title: t("are_you_sure"),
+      message: t("you_will_need_invite"),
+      confirmText: t("quit_group"),
+      cancelText: t("cancel"),
+      variant: "danger"
+    })) {
+      if (group.users.length > 1 || await showConfirm({
+        title: t("are_you_sure"),
+        message: t("you_are_last_group_will_delete"),
+        confirmText: t("delete_group"),
+        cancelText: t("cancel"),
+        variant: "danger"
+      })) {
+        if (me.data?.default_group == group.id) {
+          let user = {};
+          user.data = { default_group: me.groups[0].id };
+          http.put(`/api/users/${me.id}`, user).then(() => {
+            meService.fetch();
+            leave();
+          }).catch(err => console.warn(err));
+        } else {
+          leave();
+        }
+      }
     }
   };
 
