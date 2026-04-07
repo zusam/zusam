@@ -58,6 +58,10 @@ class Security extends AbstractController
         $user = $this->em->getRepository(User::class)->findOneByLogin($login);
 
         if (empty($user)) {
+            // If user doesn't exist, run a dummy hash to prevent timing attack
+            $user = new User();
+            $this->passwordHasher->hashPassword($user, 'dummy-password');
+
             return $this->json(['message' => 'Invalid login/password'], Response::HTTP_UNAUTHORIZED);
         }
 
