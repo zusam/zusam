@@ -236,14 +236,7 @@ class Notification extends ApiEntity
 
     public function getFromMessage(): ?Message
     {
-        try {
-            // Force Doctrine to load the entity otherwise a non-existing entity doesn't throw
-            $this->fromMessage->getData();
-
-            return $this->fromMessage;
-        } catch (\Throwable $e) {
-            return null;
-        }
+        return $this->fromMessage;
     }
 
     public function setFromMessage(Message $fromMessage): void

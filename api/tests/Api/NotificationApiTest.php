@@ -50,7 +50,19 @@ class NotificationApiTest extends BaseApiTestCase
             $message
         );
 
-        // Delete the message - to test that this doesn't break notifications
+        // Create a second one that should be valid
+        $message = $this->createMessage($group, $author);
+
+        $notificationService->create(
+            Notification::NEW_MESSAGE,
+            $message->getId(),
+            $recipient,
+            $author,
+            $group,
+            $message
+        );
+
+        // Delete the first message - to test that this doesn't break notifications
         $messageRef = $em->getReference(Message::class, $message->getId());
         $em->remove($messageRef);
         $em->flush();
@@ -62,12 +74,13 @@ class NotificationApiTest extends BaseApiTestCase
         $this->apiKey = $data['api_key'];
 
         // Actual test that the endpoint still works
-        $response = $this->apiRequestWithAuth('GET', '/me/notifications');
+        $response = $this->apiRequestWithAuth('GET', '/me/notifications/21');
 
         $this->assertResponseIsSuccessful();
 
         $data = json_decode($response->getContent(), true);
 
+        // Second notification should still exist
         $this->assertNotEmpty($data);
     }
 
