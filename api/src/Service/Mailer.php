@@ -63,7 +63,6 @@ class Mailer
         try {
             $email = new TemplatedEmail()
                 ->subject($this->translator->trans('notification.email.subject'))
-                ->from('noreply@'.$this->domain)
                 ->to($user->getLogin())
                 ->locale($lang)
                 ->text(
@@ -114,7 +113,6 @@ class Mailer
         try {
             $email = new TemplatedEmail()
                 ->subject($this->translator->trans('password.reset.email.subject'))
-                ->from('noreply@'.$this->domain)
                 ->to($user->getLogin())
                 ->locale($lang)
                 ->text(

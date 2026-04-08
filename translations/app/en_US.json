@@ -13,6 +13,7 @@
     "bookmarks": "bookmarks",
     "cancel": "Cancel",
     "cancel_write": "Do you really want to cancel writing a new message?",
+    "cant_be_undone": "This action can't be undone.",
     "changed_group_name": "changed the group's name",
     "confirm_password_placeholder": "confirm password",
     "connect": "Connect",
@@ -22,6 +23,7 @@
     "default_group": "Default group",
     "default_page": "Default page",
     "delete": "Delete",
+    "delete_group": "Delete group",
     "destroy_account": "Delete your account",
     "destroy_account_explain": "Once you delete your account, there is no going back. Please be certain.",
     "edit": "Edit",
@@ -33,6 +35,7 @@
     "error_creating_group_disabled": "Creating groups is disabled",
     "error_new_message": "An error occurred while sending your message.",
     "error_upload": "An error occurred during the upload",
+    "existing_invite_link_invalidated": "The existing invite link will no longer work.",
     "feed": "Feed",
     "feed_group": "My Feed",
     "forgot_password": "Forgot your password?",
@@ -85,6 +88,7 @@
     "replies_one": "{{count}} reply",
     "replies_other": "{{count}} replies",
     "reply": "reply",
+    "reset": "Reset",
     "reset_api_key": "Reset the API key (you will be disconnected)",
     "reset_invitation_link": "Reset invitation link",
     "reset_password_title": "Reset your password",
@@ -109,5 +113,8 @@
     "users": "users",
     "video_not_ready": "Video is not ready yet.",
     "weekly": "Weekly",
-    "you_have_no_bookmarks": "You have no bookmarks"
+    "you_are_last_group_will_delete": "You are the only member of this group. If you leave, the group will be deleted.",
+    "you_have_no_bookmarks": "You have no bookmarks",
+    "you_will_be_logged_out": "You will be logged out.",
+    "you_will_need_invite": "You will need an invite to join again."
 }
