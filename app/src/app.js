@@ -109,7 +109,6 @@ function App() {
         return;
       }
     }
-    });
   }, [location.pathname]);
 
   return (
