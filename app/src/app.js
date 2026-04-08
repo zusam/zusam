@@ -35,7 +35,7 @@ function App() {
       document
         .querySelectorAll(".dropdown")
         .forEach(n => {
-          if(n != e.target.closest(".dropdown")) {
+          if (n != e.target.closest(".dropdown")) {
             n.classList.remove("active");
           }
         });
@@ -54,7 +54,7 @@ function App() {
   useEffect(() => {
     // this test is here to ensure that 'api' gets loaded before
     // this may come from a transpilation issue with parceljs
-    if(api && typeof api.update === "function") {
+    if (api && typeof api.update === "function") {
       api.update();
     } else {
       console.error("Could not use api.update()");
@@ -69,43 +69,44 @@ function App() {
     };
   });
 
-  me.fetch().then(user => {
-    if (user?._networkError) {
+  try {
+    me.fetch().then(user => {
+      if (location.pathname === "/") {
+        let redirect = "/login";
+        if (user) {
+          redirect = "/create-group";
+          if (user?.groups[0]) {
+            const defaultPage = user?.data?.default_page || "default_group";
+            if (defaultPage === "default_group" && user?.data?.default_group) {
+              redirect = `/groups/${user.data.default_group}`;
+            } else {
+              redirect = "/feed";
+            }
+          }
+        }
+        navigate(redirect);
+      }
+
+      if (location.pathname.match(/^\/invitation/)) {
+        if (user) {
+          http.post(`/api/groups/invitation/${router.id}`, {}).catch(() => null).then(res => {
+            if (res) navigate(res.group ? "/groups/" + res.group : "/");
+          });
+        } else {
+          navigate(`/signup?inviteKey=${router.id}`);
+        }
+      }
+
+      if (!router.isOutside() && !user) {
+        navigate("/login");
+      }
+    });
+  } catch (err) {
+    if (err._networkError) {
       // Network is down — don't redirect, stay on current page
       return;
     }
-
-    if (location.pathname === "/") {
-      let redirect = "/login";
-      if (user) {
-        redirect = "/create-group";
-        if (user?.groups[0]) {
-          const defaultPage = user?.data?.default_page || "default_group";
-          if (defaultPage === "default_group" && user?.data?.default_group) {
-            redirect = `/groups/${user.data.default_group}`;
-          } else {
-            redirect = "/feed";
-          }
-        }
-      }
-      navigate(redirect);
-    }
-
-    if (location.pathname.match(/^\/invitation/)) {
-      if (user) {
-        http.post(`/api/groups/invitation/${router.id}`, {}).catch(() => null).then(res => {
-          if (res) navigate(res.group ? "/groups/" + res.group : "/");
-        });
-      } else {
-        navigate(`/signup?inviteKey=${router.id}`);
-      }
-    }
-
-    if (!router.isOutside() && !user) {
-      navigate("/login");
-    }
-  });
-
+  }
   return (
     <Routes>
       <Route path="/password-reset" element={<PasswordReset />} />
