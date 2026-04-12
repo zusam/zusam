@@ -150,4 +150,20 @@ class Message
 
         return ((int) $maxSortOrder) + 1;
     }
+
+    public function delete(MessageEntity $message)
+    {
+        $notifications = $this->em->getRepository(NotificationEntity::class)->findBy(['fromMessage' => $message]);
+        foreach ($notifications as $notification) {
+            $this->notificationService->delete($notification);
+        }
+
+        $notifications = $this->em->getRepository(NotificationEntity::class)->findBy(['target' => $message->getId()]);
+        foreach ($notifications as $notification) {
+            $this->notificationService->delete($notification);
+        }
+
+        $this->em->remove($message);
+        $this->em->flush();
+    }
 }

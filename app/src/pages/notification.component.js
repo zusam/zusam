@@ -125,7 +125,9 @@ export default function Notification(props) {
   useEffect(() => {
     http.get(`/api/notifications/${props.id}`, false, 100).then(n => {
       if (n) {
-        setTarget(getTarget(n, n.fromMessage?.id));
+        if (n?.fromMessage?.id) {
+          setTarget(getTarget(n, n.fromMessage.id));
+        }
         setAction(getAction(n));
         setTitle(n.title);
         if (n?.fromUser?.id) {

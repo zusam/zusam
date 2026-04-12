@@ -4,7 +4,9 @@ namespace App\Controller\Notification;
 
 use App\Controller\ApiController;
 use App\Entity\User;
+use App\Service\Notification as NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -17,11 +19,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class GetFromUser extends ApiController
 {
+    private $notificationService;
+
     public function __construct(
         EntityManagerInterface $em,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        NotificationService $notificationService
     ) {
         parent::__construct($em, $serializer);
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -148,9 +154,17 @@ class GetFromUser extends ApiController
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $notifications = $currentUser->getNotifications($limit);
+        $normalized = [];
+        for ($i = 0; $i < sizeof($notifications); ++$i) {
+            try {
+                $normalized[] = $this->normalize($notifications[$i], ['read_notification']);
+            } catch (EntityNotFoundException $e) {
+                $this->notificationService->delete($notifications[$i]);
+            }
+        }
 
-        return new Response(
-            $this->serialize($notifications, ['read_notification']),
+        return new JsonResponse(
+            $normalized,
             Response::HTTP_OK,
         );
     }
