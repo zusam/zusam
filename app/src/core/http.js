@@ -2,6 +2,12 @@ import alert from "./alert.js";
 import storage from "./storage.js";
 import util from "./util.js";
 
+export class NetworkError extends Error {
+  constructor() {
+    super("Network error");
+  }
+}
+
 const http = {
   sendFile: (formData, loadFn, progressFn = null, errorFn = null) => {
     return storage
@@ -56,7 +62,7 @@ const http = {
           })
           .catch(err => {
             if (err?.status) return Promise.reject(err);
-            return Promise.reject({ networkError: true });
+            return Promise.reject(new NetworkError());
           });
       });
   },
@@ -105,6 +111,10 @@ const http = {
             }
 
             return method !== "DELETE" ? body : {};
+          })
+          .catch(err => {
+            if (err?.status) return Promise.reject(err);
+            return Promise.reject(new NetworkError());
           });
       });
   }

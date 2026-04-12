@@ -1,5 +1,5 @@
 import { h, Fragment } from "preact";
-import { http, api, me, notifications, bookmarks_utils, router, storage } from "/src/core";
+import { http, api, me, notifications, bookmarks_utils, router, storage, NetworkError } from "/src/core";
 import {
   Login,
   Public,
@@ -104,7 +104,7 @@ function App() {
         }
       });
     } catch (err) {
-      if (err._networkError) {
+      if (err instanceof NetworkError) {
         // Network is down — don't redirect, stay on current page
         return;
       }
