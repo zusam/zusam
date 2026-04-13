@@ -101,10 +101,6 @@ npm outdated # check outdated packages
 npm update # update packages according to package.json
 ```
 #### Reactions data files
-The optional reactions functionality (disabled by default) relies on some data files copied from the emoji-picker-react package. These should be updated from time to time as translations may be updated or new emojis added.
+The optional reactions functionality (disabled by default) loads its localized emoji data straight from the `emoji-picker-react` package at runtime, via dynamic imports of `emoji-picker-react/dist/data/emojis-<lang>`. Each locale is code-split into its own chunk, so only the active language is fetched by the client.
 
-Only languages supported by both Zusam and the Emoji Picker React are copied. If a new language is added to either, the files should be reviewed to see if a new language can be supported. New files need to be imported in the message-reactions.component.js component.
-
-To update the files, copy the appropriate files from the `app/node_modules/emoji-picker-react/dist.data` directory into the `app/src/message/emoji-lang` folder.
-
-You will need to compile the frontend (as above) for the changes to apply.
+To add support for a new language, add an entry to `langMap` in `app/src/message/message-reactions.component.js`, using a locale file that exists under `app/node_modules/emoji-picker-react/dist/data/`. Updating `emoji-picker-react` automatically picks up new emojis and translation fixes — no files need to be copied into the repo.

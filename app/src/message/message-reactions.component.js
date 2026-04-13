@@ -24,25 +24,21 @@ export default function MessageReactions(props) {
     setReactions(formattedReactions);
   };
 
-  /*
-    These files are copied from the emoji-picker-react package as they can't be
-    loaded directly. They will need updating from time to time. See dev/README.md
-  */
   const langMap = {
-    de_DE: () => import("./emoji-lang/emojis-de.js"),
-    es_ES: () => import("./emoji-lang/emojis-es.js"),
-    en_US: () => import("./emoji-lang/emojis-en.js"),
-    fi_FI: () => import("./emoji-lang/emojis-fi.js"),
-    fr_FR: () => import("./emoji-lang/emojis-fr.js"),
-    hu_HU: () => import("./emoji-lang/emojis-hu.js"),
-    it_IT: () => import("./emoji-lang/emojis-it.js"),
-    ko_KR: () => import("./emoji-lang/emojis-ko.js"),
-    nb_NO: () => import("./emoji-lang/emojis-nb.js"),
-    nl_NL: () => import("./emoji-lang/emojis-nl.js"),
-    pl_PL: () => import("./emoji-lang/emojis-pl.js"),
-    pt_BR: () => import("./emoji-lang/emojis-pt.js"),
-    ru_RU: () => import("./emoji-lang/emojis-ru.js"),
-    zh_Hans: () => import("./emoji-lang/emojis-zh.js")
+    de_DE: () => import("emoji-picker-react/dist/data/emojis-de"),
+    es_ES: () => import("emoji-picker-react/dist/data/emojis-es"),
+    en_US: () => import("emoji-picker-react/dist/data/emojis-en"),
+    fi_FI: () => import("emoji-picker-react/dist/data/emojis-fi"),
+    fr_FR: () => import("emoji-picker-react/dist/data/emojis-fr"),
+    hu_HU: () => import("emoji-picker-react/dist/data/emojis-hu"),
+    it_IT: () => import("emoji-picker-react/dist/data/emojis-it"),
+    ko_KR: () => import("emoji-picker-react/dist/data/emojis-ko"),
+    nb_NO: () => import("emoji-picker-react/dist/data/emojis-nb"),
+    nl_NL: () => import("emoji-picker-react/dist/data/emojis-nl"),
+    pl_PL: () => import("emoji-picker-react/dist/data/emojis-pl"),
+    pt_BR: () => import("emoji-picker-react/dist/data/emojis-pt"),
+    ru_RU: () => import("emoji-picker-react/dist/data/emojis-ru"),
+    zh_Hans: () => import("emoji-picker-react/dist/data/emojis-zh"),
   };
 
   useEffect(() => {
