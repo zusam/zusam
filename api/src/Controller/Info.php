@@ -49,6 +49,7 @@ class Info extends ApiController
                 'pdf' => 'true' == $this->getParameter('allow.upload.pdf') && $has_ghostscript,
             ];
             $data['allow_public_links'] = 'true' == $this->getParameter('allow.public.links');
+            $data['allow_create_group'] = 'true' == $this->getParameter('allow.create.group');
             $data['allow_message_reactions'] = 'true' == $this->getParameter('allow.message.reactions');
             $data['show'] = [
                 'group_invitation_links' => 'true' == $this->getParameter('show.group.invitation.links'),

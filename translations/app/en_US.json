@@ -32,6 +32,7 @@
     "email_input": "Fill in your e-mail address here",
     "empty_message": "The message is empty and cannot be sent.",
     "error": "An error occurred",
+    "error_creating_group_disabled": "Creating groups is disabled",
     "error_new_message": "An error occurred while sending your message.",
     "error_upload": "An error occurred during the upload",
     "existing_invite_link_invalidated": "The existing invite link will no longer work.",

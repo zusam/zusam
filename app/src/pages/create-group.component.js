@@ -6,6 +6,9 @@ import { Navbar } from "/src/navbar";
 class CreateGroup extends Component {
   constructor() {
     super();
+    this.state = {
+      alertMessage: ""
+    };
     this.postNewGroup = this.postNewGroup.bind(this);
   }
 
@@ -21,7 +24,9 @@ class CreateGroup extends Component {
     group.createdAt = Math.floor(Date.now() / 1000);
     http.post("/api/groups", group).then(res => {
       if (res?.id) window.location = util.toApp(`/groups/${res.id}`);
-    }).catch(() => null);
+    }).catch((e) => {
+      this.setState({ alertMessage: this.props.t(e.error) });
+    });
   }
 
   render() {
@@ -64,6 +69,9 @@ class CreateGroup extends Component {
             </div>
           </div>
         </div>
+        {this.state.alertMessage && (
+          <div class="global-alert alert alert-danger">{this.state.alertMessage}</div>
+        )}
       </main>
     );
   }

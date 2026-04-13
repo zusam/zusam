@@ -1,4 +1,4 @@
-import http from "./http.js";
+import http, { NetworkError } from "./http.js";
 import storage from "./storage.js";
 import { $me, updateMe, resetMe } from "/src/store/me.js";
 import i18n from "i18next";
@@ -49,7 +49,7 @@ const me = {
       i18n.changeLanguage(r?.data?.lang);
       return r;
     }).catch(err => {
-      if (err?.networkError) {
+      if (err instanceof NetworkError) {
         // Network issue — don't clear user state
         return { _networkError: true };
       }

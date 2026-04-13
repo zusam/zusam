@@ -2,6 +2,7 @@ import { h, Fragment } from "preact";
 import { FaIcon } from "/src/misc";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { api } from "/src/core";
 
 export default function GroupsDropdownNavbar() {
   const { t } = useTranslation();
@@ -26,12 +27,14 @@ export default function GroupsDropdownNavbar() {
                 {e.name}
               </Link>
             ))}
-            <Link
-              to={"/create-group"}
-              class="seamless-link unselectable"
-            >
-              {`+ ${t("create_a_group")}`}
-            </Link>
+            {api?.info?.allow_create_group && (
+              <Link
+                to={"/create-group"}
+                class="seamless-link unselectable"
+              >
+                {`+ ${t("create_a_group")}`}
+              </Link>
+            )}
           </div>
         </div>
       )}

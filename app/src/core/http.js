@@ -2,6 +2,12 @@ import alert from "./alert.js";
 import storage from "./storage.js";
 import util from "./util.js";
 
+export class NetworkError extends Error {
+  constructor() {
+    super("Network error");
+  }
+}
+
 const http = {
   sendFile: (formData, loadFn, progressFn = null, errorFn = null) => {
     return storage
@@ -56,7 +62,7 @@ const http = {
           })
           .catch(err => {
             if (err?.status) return Promise.reject(err);
-            return Promise.reject({ networkError: true });
+            return Promise.reject(new NetworkError());
           });
       });
   },
@@ -93,23 +99,22 @@ const http = {
               : data;
         }
         return fetch(url, fetchOptions)
-          .then(res => {
+          .then(async res => {
+            const body = await res.json().catch(() => ({}));
+
             if (!res.ok) {
-              return Promise.reject({ status: res.status, statusText: res.statusText });
+              throw {
+                status: res.status,
+                statusText: res.statusText,
+                ...body
+              };
             }
-            try {
-              if (method != "DELETE") {
-                return res.json();
-              }
-              return {};
-            } catch (exception) {
-              console.warn(exception.message);
-              return Promise.reject(exception.message);
-            }
+
+            return method !== "DELETE" ? body : {};
           })
           .catch(err => {
             if (err?.status) return Promise.reject(err);
-            return Promise.reject({ networkError: true });
+            return Promise.reject(new NetworkError());
           });
       });
   }
