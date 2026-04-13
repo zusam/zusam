@@ -100,3 +100,7 @@ cd app/
 npm outdated # check outdated packages
 npm update # update packages according to package.json
 ```
+#### Reactions data files
+The optional reactions functionality (disabled by default) loads its localized emoji data straight from the `emoji-picker-react` package at runtime, via dynamic imports of `emoji-picker-react/dist/data/emojis-<lang>`. Each locale is code-split into its own chunk, so only the active language is fetched by the client.
+
+To add support for a new language, add an entry to `langMap` in `app/src/message/message-reactions.component.js`, using a locale file that exists under `app/node_modules/emoji-picker-react/dist/data/`. Updating `emoji-picker-react` automatically picks up new emojis and translation fixes — no files need to be copied into the repo.
