@@ -100,7 +100,7 @@ function App() {
         }
 
         if (!router.isOutside() && !user) {
-          navigate("/login");
+          navigate("/logout");
         }
       });
     } catch (err) {
