@@ -24,7 +24,7 @@ function getApiKey(storage: any): string | null {
   return null;
 }
 
-function fetchAuthRequest(apiKey: string, baseURL: string) {
+export function fetchAuthRequest(apiKey: string, baseURL: string) {
   return async function request(
     url: string,
     data?: any,
@@ -67,7 +67,7 @@ export const test = baseTest.extend<Fixtures>({
     await context.close();
   },
 
-  apiKey: async ({}, use) => {
+  apiKey: async ({ }, use) => {
     const storage = JSON.parse(
       fs.readFileSync(STORAGE_PATH, 'utf-8')
     );
