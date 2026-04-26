@@ -30,7 +30,13 @@ export default function GroupSettings() {
           users => setUsers(users.filter(u => u != null))
         );
       }
-    ).catch(() => null);
+    ).catch((e) => {
+      if ([403, 404].includes(e?.status)) {
+        // We don't have access to group, go to default page
+        navigate("/");
+        return;
+      }
+    });
     setAlertMessage(t(router.getParam("alert")));
   }, []);
 
@@ -84,30 +90,26 @@ export default function GroupSettings() {
         cancelText: t("cancel"),
         variant: "danger"
       })) {
-        if (me.data?.default_group == group.id) {
-          let user = {};
-          user.data = { default_group: me.groups[0].id };
-          http.put(`/api/users/${me.id}`, user).then(() => {
-            meService.fetch();
-            leave();
-          }).catch(err => console.warn(err));
-        } else {
-          leave();
-        }
+        leave();
       }
     }
   };
 
-  const leave = () => {
-    http.post(`/api/groups/${group.id}/leave`, {}).then(res => {
+  const leave = async () => {
+    try {
+      const res = await http.post(`/api/groups/${group.id}/leave`, {});
+
       if (!res || !res["entityType"]) {
         alert.add(t("error"), "alert-danger");
-      } else {
-        meService.fetch();
-        alert.add(t("group_left"));
-        navigate("/");
+        return;
       }
-    }).catch(() => null);
+      await meService.update();
+
+      alert.add(t("group_left"));
+      navigate("/");
+    } catch (e) {
+      console.warn(e);
+    }
   };
 
   return (

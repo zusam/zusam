@@ -2,10 +2,12 @@ import { h } from "preact";
 import { FaIcon } from "/src/misc";
 import { Navbar } from "/src/navbar";
 import { MessageList } from "/src/message";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 export default function GroupBoard() {
   let params = useParams();
+  const navigate = useNavigate();
+
   return (
     <main>
       <Navbar />
@@ -14,7 +16,7 @@ export default function GroupBoard() {
           <div>
             <article id="group" class="justify-content-center d-flex">
               <div class="message-container container-fluid d-flex justify-content-center flex-wrap">
-                <MessageList key={params.id} id={params.id} />
+                <MessageList key={params.id} id={params.id} navigate={navigate}/>
               </div>
             </article>
           </div>

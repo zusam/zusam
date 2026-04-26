@@ -84,6 +84,8 @@ function App() {
               } else {
                 redirect = "/feed";
               }
+            } else {
+              redirect = "/feed";
             }
           }
           navigate(redirect);

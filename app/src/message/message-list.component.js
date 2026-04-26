@@ -50,6 +50,12 @@ export default class MessageList extends Component {
         this.setState({
           group: res
         });
+      }).catch((e) => {
+        if ([403, 404].includes(e?.status)) {
+          // We don't have access to group, go to default page
+          this.props.navigate("/");
+          return;
+        }
       });
 
     http
