@@ -97,5 +97,13 @@
     "User not found": "El usuario no existe",
     "users": "usuarios",
     "video_not_ready": "El vídeo aún no está listo.",
-    "weekly": "Semanal"
+    "weekly": "Semanal",
+    "and_x_more": "y {{count}} más",
+    "default_page": "Página predeterminada",
+    "email_disabled": "Los correos electrónicos están deshabilitados. Póngase en contacto con el administrador del sistema para restablecer su contraseña.",
+    "feed": "Alimentación",
+    "feed_group": "Mi Alimentación",
+    "immediately": "Inmediatamente",
+    "react": "Reacción",
+    "you_have_no_bookmarks": "No tienes marcadores"
 }
