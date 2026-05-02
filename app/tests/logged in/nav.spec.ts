@@ -106,14 +106,14 @@ test("group list works", async ({ authRequest, page }) => {
   const groupId = me.groups.find(g => g.name === "zusam")?.id;
   await page.goto("/groups/" + groupId);
 
-  await page.locator(".nav-link.dropdown.groups").getByText(/Groups/i).click();
+  await page.locator(".nav-link.dropdown.groups .unselectable.pr-1").getByText(/Groups/i).click();
 
   await page.getByRole("link", { name: /Create a group/i }).click();
 
   await expect(page).toHaveURL("/create-group");
   await expect(page.getByRole("button", { name: /Create the group/i })).toBeVisible();
 
-  await page.locator(".nav-link.dropdown.groups").getByText(/Groups/i).click();
+  await page.locator(".nav-link.dropdown.groups .unselectable.pr-1").getByText(/Groups/i).click();
   await page.getByRole("link", { name: /zusam/i }).click();
 
   await expect(page).toHaveURL("/groups/" + groupId);

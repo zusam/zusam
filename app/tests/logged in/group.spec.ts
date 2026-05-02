@@ -1,6 +1,6 @@
 import { test, expect } from "../fixtures/login";
-import { getMe, addMessage, addGroup } from "../helpers/api";
-import { scrollFeedUntilVisible } from "../helpers/common";
+import { getMe, addMessage, addGroup, getGroup } from "../helpers/api";
+import { scrollFeedUntilVisible, createTestUser } from "../helpers/common";
 
 test("welcome message shows in group", async ({ authRequest, page }) => {
   const me = await getMe(authRequest);
@@ -24,7 +24,6 @@ test("searching title finds the appropriate message", async ({ authRequest, page
 
   // Throw in some new posts to test with
   for (let i = 0; i < 10; i++) {
-    console.log(i);
     await addMessage(authRequest, { meId: me.id, groupId: group.id, title: "Test searching post" + i, content: "Body of post" });
   }
 
@@ -57,7 +56,6 @@ test("searching body finds the appropriate message", async ({ authRequest, page 
 
   // Throw in some new posts to test with
   for (let i = 0; i < 10; i++) {
-    console.log(i);
     await addMessage(authRequest, { meId: me.id, groupId: group.id, title: "Test searching post" + i, content: "Body of post" });
   }
 
@@ -70,4 +68,21 @@ test("searching body finds the appropriate message", async ({ authRequest, page 
 
 
   await expect(page.locator(".message-preview", { hasText: "This is the post you're looking for" })).toBeVisible();
+});
+
+
+test("inviting to a group", async ({ authRequest, page, createUserPage, baseURL }) => {
+  const me = await getMe(authRequest);
+  const group = await addGroup(authRequest, { name: "Inviting test" });
+  // Creating group doesn't return invite key, so need to request full group data to get it
+  const { inviteKey } = await getGroup(authRequest, { groupId: group.id });
+  const message = await addMessage(authRequest, { meId: me.id, groupId: group.id, title: "Invite group post", content: "Post body" });
+
+  // Setup is done, now test with a new user
+  const user = await createTestUser(authRequest, baseURL ?? "");
+  const userPage = await createUserPage(user.apiKey);
+  await userPage.goto(baseURL + "/invitation/" + inviteKey);
+
+  await expect(userPage).toHaveURL("/groups/" + group.id);
+  await expect(userPage.locator("a[href=\"/messages/" + message.id + "\"]")).toBeVisible();
 });

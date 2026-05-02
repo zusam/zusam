@@ -1,5 +1,6 @@
 import { test as baseTest } from '@playwright/test';
 import fs from 'fs';
+import type { Page } from '@playwright/test';
 
 export * from '@playwright/test';
 
@@ -8,6 +9,7 @@ const STORAGE_PATH = './tests/auth/storageState.json';
 type Fixtures = {
   authRequest: ReturnType<typeof fetchAuthRequest>;
   apiKey: string;
+  createUserPage: (apiKey: string) => Promise<Page>;
 };
 
 function getApiKey(storage: any): string | null {
@@ -84,4 +86,28 @@ export const test = baseTest.extend<Fixtures>({
   authRequest: async ({ baseURL, apiKey }, use) => {
     await use(fetchAuthRequest(apiKey, baseURL ?? ''));
   },
+
+createUserPage: async ({ browser, baseURL }, use) => {
+  await use(async (apiKey: string) => {
+    const context = await browser.newContext({
+      storageState: {
+        cookies: [],
+        origins: [
+          {
+            origin: baseURL!,
+            localStorage: [
+              {
+                name: "apiKey",
+                value: JSON.stringify({ data: apiKey }),
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    const page = await context.newPage();
+    return page;
+  });
+},
 });

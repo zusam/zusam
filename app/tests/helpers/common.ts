@@ -1,6 +1,7 @@
-import { getMe, addUser } from "./api";
+import { getMe, addUser, addGroup } from "./api";
 import { fetchAuthRequest } from "../fixtures/login";
 import type { RequestFn } from "./api";
+type AuthRequest = ReturnType<typeof fetchAuthRequest>;
 
 export async function scrollFeedUntilVisible(page, locator, maxScrolls = 20) {
   for (let i = 0; i < maxScrolls; i++) {
@@ -31,4 +32,18 @@ export async function createUserAndGetId(
     id: me.id,  
     me,
   };
+}
+
+
+export async function createTestUser(authRequest: AuthRequest, baseURL: string) {
+  const group = await addGroup(authRequest, { name: "Group for user" });
+
+  const name = "user" + Date.now();
+
+  const user = await createUserAndGetId(
+    authRequest,
+    baseURL,
+    { login: name + "@example.com", groupId: group.id }
+  );
+  return user;
 }

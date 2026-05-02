@@ -7,11 +7,20 @@ export type Group = {
 export type User = {
   id: string;
   groups: Group[];
+  name: string;
+  login: string;
+  data: {
+    default_group: string;
+  }
 };
 
 export type CreatedUser = {
   api_key: string;
   group: string;
+};
+
+export type LoginResponse = {
+  api_key: string;
 };
 
 export type Notification = {
@@ -129,4 +138,16 @@ export async function getNotifications(
   request: RequestFn
 ): Promise<Notifications> {
   return request<Notifications>("/api/me/notifications/21", undefined, "GET");
+}
+
+export async function logIn(
+  request: RequestFn,
+  params: { login: string, password: string }
+): Promise<LoginResponse> {
+  const postData = {
+    login: params.login,
+    password: params.password
+  };
+
+  return request<LoginResponse>("/api/login", postData, "POST");
 }
