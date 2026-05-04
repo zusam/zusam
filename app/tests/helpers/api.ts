@@ -1,3 +1,5 @@
+import type { Page, Route } from '@playwright/test';
+
 export type Group = {
   id: string;
   name: string;
@@ -150,4 +152,20 @@ export async function logIn(
   };
 
   return request<LoginResponse>("/api/login", postData, "POST");
+}
+
+// The non-default setup has French as the default language. We can catch this
+// and rewrite it to English for other tests on this instance
+export async function mockDefaultLang(page: Page, lang = 'en_US') {
+  await page.route('**/api/info', async (route: Route) => {
+    const response = await route.fetch();
+    const json = await response.json();
+
+    json.default_lang = lang;
+
+    await route.fulfill({
+      response,
+      body: JSON.stringify(json),
+    });
+  });
 }

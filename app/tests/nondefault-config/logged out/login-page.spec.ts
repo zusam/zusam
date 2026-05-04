@@ -1,6 +1,14 @@
 import { test, expect } from "@playwright/test";
+import { mockDefaultLang } from "../../helpers/api";
+
+test("language defaults to French", async ({ page }) => {
+  await page.goto("/login");
+  await expect(page.getByRole("button", { name: /Connexion/i })).toBeVisible();
+});
 
 test("forgot password", async ({ page }) => {
+  await mockDefaultLang(page);
+
   await page.goto("/login");
   await page.getByText("Forgot your password?").click();
   await expect(page.locator("#login")).toBeVisible();
@@ -19,4 +27,3 @@ test("forgot password", async ({ page }) => {
     "User not found",
   );
 });
-
