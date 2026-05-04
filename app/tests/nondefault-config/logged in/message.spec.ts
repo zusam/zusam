@@ -1,7 +1,7 @@
 import { test, expect } from "../../fixtures/login";
 import { getMe, addMessage, addGroup } from "../../helpers/api";
 
-test("upload photos or videos is disabled", async ({ authRequest, page }) => {
+test("upload photos or videos is disabled", async ({ page }) => {
   await page.goto("/share");
   await expect(page.locator(".title-input")).toHaveAttribute("placeholder", "Title of your message (optional)");
 
@@ -40,4 +40,36 @@ test("creating public link", async ({ authRequest, page, browser }) => {
   // Just test that the unauthenticated context is actually logged out, by trying to access the feed
   await anonPage.goto("/feed");
   await expect(anonPage).toHaveURL("/login");
+});
+
+test("adding and removing an emoji", async ({ authRequest, page }) => {
+  const me = await getMe(authRequest);
+  const group = await addGroup(authRequest, { name: "New group" });
+
+  // Throw in a new post to test on
+  const message = await addMessage(authRequest, { meId: me.id, groupId: group.id, title: "Test public message", content: "Test message shared publically" });
+  await page.goto("/messages/" + message.id);
+
+  // Add an emoji
+  await page.locator(".message-footer").getByText("React").click();
+  await page.getByRole("list", { name: "Reactions" }).getByRole("button", { name: /red heart/i }).click();
+  const emoji = page.locator(".reaction-emoji");
+  await expect(emoji).toContainText("❤️1");
+
+  // Check it stays after a page reload
+  await page.reload();
+  await expect(emoji).toContainText("❤️1");
+
+  // Very basic tooltip content check
+  await emoji.hover();
+  const tooltip = emoji.locator(".reaction-tooltip");
+  await expect(tooltip).toHaveText("❤️ red heartzusam");
+
+  // Check that clicking the emoji deletes it
+  await emoji.click();
+  await expect(emoji).not.toBeVisible();
+
+  // Check it's still gone after a page reload
+  await page.reload();
+  await expect(emoji).not.toBeVisible();
 });
