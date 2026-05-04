@@ -1,5 +1,5 @@
-import { test, expect } from "../fixtures/login";
-import { scrollFeedUntilVisible } from "../helpers/common";
+import { test, expect } from "../../fixtures/login";
+import { scrollFeedUntilVisible } from "../../helpers/common";
 
 test("welcome message shows in feed", async ({ page }) => {
   await page.goto("/feed");

@@ -1,7 +1,7 @@
-import { test, expect } from "../fixtures/login";
-import { createTestUser } from "../helpers/common";
-import { logIn, addGroup, getMe, getGroup } from "../helpers/api";
-import { fetchAuthRequest } from "../fixtures/login";
+import { test, expect } from "../../fixtures/login";
+import { createTestUser } from "../../helpers/common";
+import { logIn, addGroup, getMe, getGroup } from "../../helpers/api";
+import { fetchAuthRequest } from "../../fixtures/login";
 
 // User settings tests create new users so as not to impact other tests with settings changes
 test.describe("Test user settings", () => {
@@ -231,11 +231,18 @@ test.describe("Test group settings", () => {
 
     const nameField = page.locator("#settings_form").getByPlaceholder("Choose a name");
     const name = group.name;
-    await expect(nameField).toHaveValue(name);
 
+    // Flaky test because of async loading, wait for everything to be loaded before continuing
+    await page.waitForLoadState("networkidle");
+
+    await expect(nameField).toHaveValue(name);
     await nameField.fill(name + " edited");
+    await expect(nameField).toHaveValue(name + " edited");
+
     await page.getByRole("button", { name: /Save changes/i }).click();
     await expect(page.locator(".global-alert")).toHaveText("The group was updated.");
+    await expect(nameField).toHaveValue(name + " edited");
+
 
     await page.goto("/groups/" + group.id + "/settings");
     await expect(page.locator(".global-alert")).not.toBeVisible();

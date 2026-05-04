@@ -1,6 +1,6 @@
-import { test, expect } from "../fixtures/login";
-import { getMe, addUser, addGroup, addMessage, getNotifications, bookmarkMessage } from "../helpers/api";
-import { scrollFeedUntilVisible, createUserAndGetId } from "../helpers/common";
+import { test, expect } from "../../fixtures/login";
+import { getMe, addUser, addGroup, addMessage, getNotifications, bookmarkMessage } from "../../helpers/api";
+import { scrollFeedUntilVisible, createUserAndGetId } from "../../helpers/common";
 
 test("go to bookmarks page", async ({ authRequest, page }) => {
   // Start by adding a post and bookmarking it so we can be confident of the page contents

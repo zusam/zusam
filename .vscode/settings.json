@@ -1,0 +1,14 @@
+{
+    "workbench.editor.enablePreview": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnPaste": true,
+    "eslint.format.enable": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "[typescript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    }
+}

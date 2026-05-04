@@ -1,5 +1,5 @@
-import { test, expect } from "../fixtures/login";
-import { getMe, addMessage, addGroup } from "../helpers/api";
+import { test, expect } from "../../fixtures/login";
+import { getMe, addMessage, addGroup } from "../../helpers/api";
 
 test("posting a new message to a group from share page", async ({ authRequest, page }) => {
   const group = await addGroup(authRequest, { name: "New group" });

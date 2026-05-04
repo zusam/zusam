@@ -1,6 +1,6 @@
-import { test, expect } from "../fixtures/login";
-import { getMe, addMessage, addGroup, getGroup } from "../helpers/api";
-import { scrollFeedUntilVisible, createTestUser } from "../helpers/common";
+import { test, expect } from "../../fixtures/login";
+import { getMe, addMessage, addGroup, getGroup } from "../../helpers/api";
+import { scrollFeedUntilVisible, createTestUser } from "../../helpers/common";
 
 test("welcome message shows in group", async ({ authRequest, page }) => {
   const me = await getMe(authRequest);
