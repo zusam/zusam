@@ -281,3 +281,21 @@ test.describe("Test group settings", () => {
     await expect(page).toHaveURL("/groups/" + me.data.default_group);
   });
 });
+
+
+test("group tab doesn't disappear on save", {
+  annotation: {
+    type: "issue",
+    description: "https://github.com/zusam/zusam/issues/243",
+  },
+}, async({ authRequest, page }) => {
+  const me = await getMe(authRequest);
+
+  await page.goto("/users/" + me.id + "/settings");
+  const tabs = page.locator(".settings .nav-tabs");
+  await expect(tabs.getByText("Groups", { exact: true })).toBeVisible();
+  
+  await page.getByRole("button", { name: /Save changes/i }).click();
+  await expect(page.locator(".global-alert")).toContainText("Your settings were updated");
+  await expect(tabs.getByText("Groups", { exact: true })).toBeVisible();
+});
