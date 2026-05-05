@@ -347,7 +347,7 @@ class Message extends ApiEntity
         preg_match("/(\\([^()]*)?https?:\\/\\/[^[\\]\n\r ]*[-A-Za-z0-9+&@#\\/%=~_()|.]/i", $text, $urls);
 
         return array_map(static function ($url) {
-            if (!empty($url) && '(' === substr($url, 0, 1)) {
+            if ('(' === substr($url, 0, 1)) {
                 $url = substr($url, stripos($url, 'http'));
                 if (')' === substr($url, -1)) {
                     $url = substr($url, 0, -1);
