@@ -203,7 +203,9 @@ export default function Writer(props) {
     }
     input.addEventListener("change", event => {
       addFiles(mimetype, event.target.files);
+      input.remove();
     });
+    input.addEventListener("cancel", () => input.remove());
     input.click();
   };
 
