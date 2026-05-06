@@ -21,6 +21,7 @@ import {
 } from "react-router-dom";
 import { useEffect } from "preact/hooks";
 import ConfirmModal from "/src/misc/confirm-modal.component.js";
+import i18n from "i18next";
 
 function App() {
 
@@ -56,7 +57,11 @@ function App() {
     // this test is here to ensure that 'api' gets loaded before
     // this may come from a transpilation issue with parceljs
     if (api && typeof api.update === "function") {
-      api.update();
+      api.update().then((res) => {
+        if (res?.default_lang) {
+          i18n.changeLanguage(res.default_lang);
+        };
+      });
     } else {
       console.error("Could not use api.update()");
     }
