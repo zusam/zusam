@@ -1,0 +1,16 @@
+services:
+  zusam:
+    environment:
+      - UID=${UID:-1000}
+      - GID=${GID:-1000}
+      - APP_ENV=dev
+      - ALLOW_EMAIL=true
+      - ALLOW_IMAGE_UPLOAD=false
+      - ALLOW_MESSAGE_REACTIONS=true
+      - ALLOW_PUBLIC_LINKS=false
+      - ALLOW_VIDEO_UPLOAD=false
+      - LANG="fr_FR"
+    image: zusam
+    container_name: zusam-test
+    ports:
+      - "8532:8080"

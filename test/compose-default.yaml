@@ -1,0 +1,10 @@
+services:
+  zusam:
+    environment:
+      - UID=${UID:-1000}
+      - GID=${GID:-1000}
+      - APP_ENV=dev
+    image: zusam
+    container_name: zusam-test
+    ports:
+      - "8532:8080"

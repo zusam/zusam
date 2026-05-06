@@ -16,7 +16,7 @@ export default function FileGrid(props) {
   }
   if (props.files && props.files.length > 3) {
     return (
-      <div class="file-grid">
+      <div id="file-grid" class="file-grid">
         {props.files
           .map(e => (
             <MiniFile
@@ -31,7 +31,7 @@ export default function FileGrid(props) {
     );
   }
   return (
-    <div class="d-flex justify-content-center flex-wrap">
+    <div id="file-grid" class="d-flex justify-content-center flex-wrap">
       {props.files
         .map(e => (
           <BigFile

@@ -56,9 +56,10 @@ const http = {
           method: "GET",
           headers: new Headers(h)
         })
-          .then(res => {
-            if (res.ok) return res.json();
-            return Promise.reject({ status: res.status, statusText: res.statusText });
+          .then(async res => {
+            const body = await res.json().catch(() => ({}));
+            if (res.ok) return body;
+            return Promise.reject({ status: res.status, statusText: res.statusText, ...body });
           })
           .catch(err => {
             if (err?.status) return Promise.reject(err);

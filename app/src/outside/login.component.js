@@ -35,9 +35,13 @@ export default function Login() {
       } else {
         alert.add(t("error"), "alert-danger");
       }
-    }).catch(() => {
+    }).catch((err) => {
       setSending(false);
-      alert.add(t("error"), "alert-danger");
+      if (err?.message) {
+        alert.add(t(err.message), "alert-danger");
+      } else {
+        alert.add(t("error"), "alert-danger");
+      }
     });
   };
 

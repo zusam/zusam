@@ -17,6 +17,7 @@ export default function Navbar() {
     <div class="main-nav nav align-items-center z-index-100">
       <div class="navbar-block">
         <div
+          id="profile-menu"
           class="menu dropdown cursor-pointer"
           tabindex="-1"
           onClick={e => e.currentTarget.classList.toggle("active")}

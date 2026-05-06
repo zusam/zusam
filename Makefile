@@ -79,6 +79,54 @@ unit-tests: dev
 		$(DEV_OCI_IMAGE) \
 		make unit-tests-local
 
+playwright-default:
+	cd test && $(CONTAINER_PGRM) compose -f compose-default.yaml up -d
+	trap 'cd ../test && $(CONTAINER_PGRM) compose -f compose-default.yaml down' EXIT;
+	until curl -s http://localhost:8532 > /dev/null; do \
+		echo "Waiting for app..."; \
+		sleep 5; \
+	done
+	cd ../app && PLAYWRIGHT_HTML_OPEN=never npx playwright test tests/default-config
+
+
+playwright-default-ui:
+	cd test && $(CONTAINER_PGRM) compose -f compose-default.yaml up -d
+	trap 'cd ../test && $(CONTAINER_PGRM) compose -f compose-default.yaml down' EXIT;
+	until curl -s http://localhost:8532 > /dev/null; do \
+		echo "Waiting for app..."; \
+		sleep 5; \
+	done
+	cd ../app && npx playwright test tests/default-config --ui
+
+	
+
+playwright-nondefault:
+	cd test && $(CONTAINER_PGRM) compose -f compose-nondefault.yaml up -d
+	trap 'cd ../test && $(CONTAINER_PGRM) compose -f compose-nondefault.yaml down' EXIT;
+	until curl -s http://localhost:8532 > /dev/null; do \
+		echo "Waiting for app..."; \
+		sleep 5; \
+	done
+	cd ../app && PLAYWRIGHT_HTML_OPEN=never npx playwright test tests/nondefault-config
+
+
+playwright-nondefault-ui:
+	cd test && $(CONTAINER_PGRM) compose -f compose-nondefault.yaml up -d
+	trap 'cd ../test && $(CONTAINER_PGRM) compose -f compose-nondefault.yaml down' EXIT;
+	until curl -s http://localhost:8532 > /dev/null; do \
+		echo "Waiting for app..."; \
+		sleep 5; \
+	done
+	cd ../app && npx playwright test tests/nondefault-config --ui
+
+playwright:
+	make playwright-default
+	make playwright-nondefault
+
+playwright-ui:
+	make playwright-default-ui
+	make playwright-nondefault-ui
+
 start-dev: dev
 	$(CONTAINER_PGRM) run --rm -it --name "zusam" \
 		-e UID=$(UID) -e GID=$(GID) \

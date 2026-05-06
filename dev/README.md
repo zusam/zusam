@@ -68,6 +68,19 @@ make integ-tests
 
 See `integration-tests/README.md` for details on the test framework, fixtures, and writing tests.
 
+### Running Playwright tests
+
+```bash
+# From the repo root - runs tests in CLI
+make playwright
+```
+You might need to install Playwright dependencies by running this from the `/app` directory:
+`npx playwright install --with-deps`
+
+This starts a Zusam docker container with the currently built prod image and then runs the Playwright tests locally against the image. It first runs a default Zusam image, then a second run against an with some of the settings changed via docker environment variables. There are makefile targets to run each separately, and for test development you may want to start the Playwright UI which can be done by adding `-ui` to the command. For example, `make playwright-default-ui`.
+
+If tests are failing, consider setting the number of workers in `/app/playwright.config.ts` to 1 to rule out a performance issue. You can also configure retries if tests are flaky.
+
 ### Email testing with Mailpit
 
 The `dev/docker-compose.yml` includes a [Mailpit](https://mailpit.axe.email/) service alongside the Zusam container. To use it:
