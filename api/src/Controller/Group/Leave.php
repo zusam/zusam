@@ -60,14 +60,14 @@ class Leave extends ApiController
 
         $group->removeUser($currentUser);
         $currentUser->removeGroup($group);
-        
+
         // If user's default group is this one, remove the setting
         $data = $currentUser->getData();
         if (!empty($data['default_group']) && $data['default_group'] === $id) {
             unset($data['default_group']);
             $currentUser->setData($data);
         }
-        
+
         // delete all notifications related to this group
         foreach ($currentUser->getNotifications() as $notif) {
             if ($notif->getFromGroup() != $group) {

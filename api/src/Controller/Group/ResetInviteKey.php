@@ -24,7 +24,6 @@ class ResetInviteKey extends ApiController
         EntityManagerInterface $em,
         SerializerInterface $serializer,
         TagAwareCacheInterface $cache,
-
     ) {
         parent::__construct($em, $serializer);
         $this->cache = $cache;

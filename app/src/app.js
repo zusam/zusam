@@ -19,7 +19,7 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import { useEffect } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import ConfirmModal from "/src/misc/confirm-modal.component.js";
 import i18n from "i18next";
 
@@ -27,6 +27,7 @@ function App() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const [defaultLang, setDefaultLang] = useState("");
 
   const toggleDropdowns = e => {
     if (!e.target.closest(".dropdown")) {
@@ -58,9 +59,7 @@ function App() {
     // this may come from a transpilation issue with parceljs
     if (api && typeof api.update === "function") {
       api.update().then((res) => {
-        if (res?.default_lang) {
-          i18n.changeLanguage(res.default_lang);
-        };
+        setDefaultLang(res.default_lang);
       });
     } else {
       console.error("Could not use api.update()");
@@ -74,6 +73,13 @@ function App() {
       window.removeEventListener("click", e => toggleDropdowns(e));
     };
   });
+
+  useEffect(() => {
+    const newLang = me.lang || defaultLang;
+    if (i18n.language !== newLang) {
+      i18n.changeLanguage(newLang);
+    }
+  }, [me.lang, defaultLang]);
 
   useEffect(() => {
     try {
