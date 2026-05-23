@@ -14,6 +14,9 @@ jobs:
     - uses: actions/setup-node@v6
       with:
         node-version: lts/*
+    - name: Install npm dependencies
+      working-directory: app
+      run:  npm install
     - name: Build webapp
       working-directory: app
       run: npm run build; rm -r ../public/*.{js,css,map,png}; cp -r dist/* ../public/
