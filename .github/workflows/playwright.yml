@@ -19,7 +19,7 @@ jobs:
       run:  npm install
     - name: Build webapp
       working-directory: app
-      run: npm run build; rm -r ../public/*.{js,css,map,png}; cp -r dist/* ../public/
+      run: npm run build; cp -r dist/* ../public/
     - name: Build container
       run: make prod
     - name: Install dependencies
