@@ -15,7 +15,8 @@ jobs:
       with:
         node-version: lts/*
     - name: Build webapp
-      run: make compile-webapp
+      working-directory: app
+      run: npm run build; rm -r ../public/*.{js,css,map,png}; cp -r dist/* ../public/
     - name: Build container
       run: make prod
     - name: Install dependencies
