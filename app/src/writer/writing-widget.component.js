@@ -13,8 +13,16 @@ export default function WritingWidget(props) {
   const [title, setTitle] = useState(props.title || "");
   const { t } = useTranslation();
   const writerForm = useRef(null);
+  // Holds the AbortController for the current in-flight link preview request,
+  // so we can cancel it when a different URL is detected.
+  const previewAbortRef = useRef(null);
+  // Incremented on send/clear so in-flight responses don't update state on
+  // the freshly-cleared form, while still letting the server finish caching
+  // the link metadata for the message that was just sent.
+  const previewGenRef = useRef(0);
 
   const cleanForm = () => {
+    previewGenRef.current++;
     setPreview(null);
     setLink(null);
     setText("");
@@ -44,14 +52,24 @@ export default function WritingWidget(props) {
     setTimeout(() => {
       let links = deltaString.match(/(https?:\/\/[^\s\\"]+)/gi);
       if (links && links[0] != link) {
+        // Cancel any previous request before starting a new one (e.g. user
+        // pasted a second URL before the first preview finished loading).
+        previewAbortRef.current?.abort();
+        const controller = new AbortController();
+        previewAbortRef.current = controller;
+        const gen = previewGenRef.current;
         http
-          .get(`/api/links/by_url?url=${encodeURIComponent(links[0])}`)
+          .get(`/api/links/by_url?url=${encodeURIComponent(links[0])}`, false, 0, controller.signal)
           .then(r => {
-            if (r && deltaString.indexOf(links[0]) >= 0) {
+            // Drop the result if the form was sent/cleared after this request
+            // started — the generation will have been incremented by cleanForm().
+            if (r && deltaString.indexOf(links[0]) >= 0 && previewGenRef.current === gen) {
               setLink(links[0]);
               setPreview(r);
             }
-          });
+          })
+          // Silently swallow AbortError — an abort is intentional, not an error.
+          .catch(() => {});
       }
     }, 0);
   };
