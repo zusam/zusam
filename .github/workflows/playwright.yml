@@ -1,0 +1,32 @@
+name: Container tests
+
+on: [pull_request]
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6.0.2
+    - uses: actions/setup-node@v6
+      with:
+        node-version: lts/*
+    - name: Build container
+      run: make prod
+    - name: Install dependencies
+      working-directory: app
+      run: npm ci
+    - name: Install Playwright Browsers
+      working-directory: app
+      run: npx playwright install --with-deps
+    - name: Run Playwright deffault tests
+      run: make playwright-default
+    - name: Run Playwright non-default tests
+      run: make playwright-nondefault
+    - uses: actions/upload-artifact@v5
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
