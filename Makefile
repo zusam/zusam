@@ -1,4 +1,4 @@
-CONTAINER_PGRM := $(shell command -v podman || command -v docker)
+CONTAINER_PGRM ?= $(shell command -v podman || command -v docker)
 UID := $(shell id -u)
 GID := $(shell id -g)
 TARGETS := dev prod compile-webapp integ-tests lint unit-tests start-test start-dev

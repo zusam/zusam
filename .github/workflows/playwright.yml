@@ -22,7 +22,7 @@ jobs:
     - name: Install Playwright Browsers
       working-directory: app
       run: npx playwright install --with-deps
-    - name: Run Playwright deffault tests
+    - name: Run Playwright default tests
       run: make playwright-default
     - name: Run Playwright non-default tests
       run: make playwright-nondefault
