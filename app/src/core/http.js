@@ -36,7 +36,7 @@ const http = {
       })
       .catch(error => alert.add(error, "alert-danger"));
   },
-  get: (url, nocache = false, delay = 0) => {
+  get: (url, nocache = false, delay = 0, signal = null) => {
     return storage
       .get("apiKey")
       .then(x => new Promise(resolve => setTimeout(() => resolve(x), delay)))
@@ -52,14 +52,13 @@ const http = {
         if (nocache) {
           h["X-NOCACHE"] = "nocache";
         }
-        return fetch(url, {
-          method: "GET",
-          headers: new Headers(h)
-        })
-          .then(async res => {
-            const body = await res.json().catch(() => ({}));
-            if (res.ok) return body;
-            return Promise.reject({ status: res.status, statusText: res.statusText, ...body });
+        const fetchOptions = { method: "GET", headers: new Headers(h) };
+        // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#canceling_a_request
+        if (signal) fetchOptions.signal = signal;
+        return fetch(url, fetchOptions)
+          .then(res => {
+            if (res.ok) return res.json();
+            return Promise.reject({ status: res.status, statusText: res.statusText });
           })
           .catch(err => {
             if (err?.status) return Promise.reject(err);
