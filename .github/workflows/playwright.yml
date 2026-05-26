@@ -32,9 +32,3 @@ jobs:
       run: make playwright-default
     - name: Run Playwright non-default tests
       run: make playwright-nondefault
-    - uses: actions/upload-artifact@v5
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
