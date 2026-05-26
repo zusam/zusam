@@ -21,4 +21,4 @@ dist/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
-/tests/auth/*
+/e2e/auth/*

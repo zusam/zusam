@@ -4,6 +4,7 @@ GID := $(shell id -g)
 TARGETS := dev prod compile-webapp integ-tests lint unit-tests start-test start-dev
 DEV_OCI_IMAGE := zusam-dev
 PROD_OCI_IMAGE := zusam
+PLAYWRIGHT_WORKERS := 1
 
 nothing:
 	@echo "Available targets: $(TARGETS)"
@@ -86,7 +87,7 @@ playwright-default:
 		echo "Waiting for app..."; \
 		sleep 5; \
 	done
-	cd ../app && PLAYWRIGHT_HTML_OPEN=never npx playwright test tests/default-config
+	cd ../app && PLAYWRIGHT_HTML_OPEN=never npx playwright test e2e/default-config --workers $(PLAYWRIGHT_WORKERS)
 
 
 playwright-default-ui:
@@ -96,7 +97,7 @@ playwright-default-ui:
 		echo "Waiting for app..."; \
 		sleep 5; \
 	done
-	cd ../app && npx playwright test tests/default-config --ui
+	cd ../app && npx playwright test e2e/default-config --ui --workers $(PLAYWRIGHT_WORKERS)
 
 	
 
@@ -107,7 +108,7 @@ playwright-nondefault:
 		echo "Waiting for app..."; \
 		sleep 5; \
 	done
-	cd ../app && PLAYWRIGHT_HTML_OPEN=never npx playwright test tests/nondefault-config
+	cd ../app && PLAYWRIGHT_HTML_OPEN=never npx playwright test e2e/nondefault-config --workers $(PLAYWRIGHT_WORKERS)
 
 
 playwright-nondefault-ui:
@@ -117,7 +118,7 @@ playwright-nondefault-ui:
 		echo "Waiting for app..."; \
 		sleep 5; \
 	done
-	cd ../app && npx playwright test tests/nondefault-config --ui
+	cd ../app && npx playwright test e2e/nondefault-config --ui --workers $(PLAYWRIGHT_WORKERS)
 
 playwright:
 	make playwright-default

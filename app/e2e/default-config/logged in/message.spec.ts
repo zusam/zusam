@@ -24,7 +24,7 @@ test("posting a new message to a group from share page", async ({ authRequest, p
     page.waitForEvent("filechooser"),
     await page.getByRole("button", { name: "Add photos" }).click(),
   ]);
-  await fileChooser.setFiles("tests/fixtures/media/image.jpg");
+  await fileChooser.setFiles("e2e/fixtures/media/image.jpg");
   await expect(page.locator(".img-fluid")).toBeVisible();
 
   // Upload video
@@ -32,7 +32,7 @@ test("posting a new message to a group from share page", async ({ authRequest, p
     page.waitForEvent("filechooser"),
     await page.getByRole("button", { name: "Add a video" }).click(),
   ]);
-  await fileChooser.setFiles("tests/fixtures/media/video.mp4");
+  await fileChooser.setFiles("e2e/fixtures/media/video.mp4");
   await expect(page.locator("video")).toBeVisible();
 
   // Upload pdf
@@ -41,7 +41,7 @@ test("posting a new message to a group from share page", async ({ authRequest, p
     await page.getByRole("button", { name: "Add PDF" }).click(),
   ]);
 
-  await fileChooser.setFiles("tests/fixtures/media/pdf.pdf");
+  await fileChooser.setFiles("e2e/fixtures/media/pdf.pdf");
   await expect(page.locator(".pdf-outline")).toBeVisible();
 
   await page.getByRole("button", { name: /Submit/i }).click();
@@ -55,7 +55,7 @@ test("posting a new message to a group from share page", async ({ authRequest, p
   await expect(page.locator(".ql-editor").first()).toHaveAttribute("contenteditable", "false");
   await expect(page.locator(".ql-editor h1")).toHaveText("Body test");
 
-  const files = page.locator("#file-grid");
+  const files = page.locator(".file-grid").first();
   await expect(files.locator("video")).toHaveCount(1);
   await expect(files.locator("a.pdf-outline")).toHaveCount(1);
   await expect(files.locator("a.image:not(.pdf-outline)")).toHaveCount(1);

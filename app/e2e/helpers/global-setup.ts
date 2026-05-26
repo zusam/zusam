@@ -1,6 +1,6 @@
 import { chromium } from '@playwright/test';
 
-const STORAGE_PATH = './tests/auth/storageState.json';
+const STORAGE_PATH = './e2e/auth/storageState.json';
 
 export default async function globalSetup(config: any) {
   const browser = await chromium.launch();

@@ -4,7 +4,7 @@ import type { Page } from '@playwright/test';
 
 export * from '@playwright/test';
 
-const STORAGE_PATH = './tests/auth/storageState.json';
+const STORAGE_PATH = './e2e/auth/storageState.json';
 
 type Fixtures = {
   authRequest: ReturnType<typeof fetchAuthRequest>;

@@ -158,14 +158,19 @@ export async function logIn(
 // and rewrite it to English for other tests on this instance
 export async function mockDefaultLang(page: Page, lang = 'en_US') {
   await page.route('**/api/info', async (route: Route) => {
-    const response = await route.fetch();
-    const json = await response.json();
+    try {
+      const response = await route.fetch();
+      const json = await response.json();
 
-    json.default_lang = lang;
+      json.default_lang = lang;
 
-    await route.fulfill({
-      response,
-      body: JSON.stringify(json),
-    });
+      await route.fulfill({
+        response,
+        body: JSON.stringify(json),
+      });
+    } catch { 
+      // Endpoint can be called multiple times, and if the call is still running when test ends then it throws an error
+      // If test criteria are met, then no need to fail test because of an outstanding API request
+    }
   });
 }

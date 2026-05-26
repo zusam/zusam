@@ -2,7 +2,7 @@ import { test, expect } from "../../fixtures/login";
 import { getMe, addMessage, addGroup } from "../../helpers/api";
 import { mockDefaultLang } from "../../helpers/api";
 
-// Our default setup uses French as a default. But we don't want that for these tests,
+// Our nondefault setup uses French as the default language to test it works. But we don't want that for these tests,
 // so capture the API response and modify it to English for each test in this file
 test.beforeEach(async ({ page }) => {
   await mockDefaultLang(page);
