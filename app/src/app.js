@@ -28,6 +28,7 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [defaultLang, setDefaultLang] = useState("");
+  const [userLang, setUserLang] = useState("");
 
   const toggleDropdowns = e => {
     if (!e.target.closest(".dropdown")) {
@@ -75,15 +76,18 @@ function App() {
   });
 
   useEffect(() => {
-    const newLang = me.lang || defaultLang;
+    const newLang = userLang || defaultLang;
     if (i18n.language !== newLang) {
       i18n.changeLanguage(newLang);
     }
-  }, [me.lang, defaultLang]);
+  }, [userLang, defaultLang]);
 
   useEffect(() => {
     try {
       me.fetch().then(user => {
+        if (user?.data?.lang) {
+          setUserLang(user.data.lang);
+        }
         if (location.pathname === "/") {
           let redirect = "/login";
           if (user) {
