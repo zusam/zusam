@@ -1,3 +1,5 @@
+.ONESHELL:
+
 CONTAINER_PGRM ?= $(shell command -v podman || command -v docker)
 UID := $(shell id -u)
 GID := $(shell id -g)
@@ -17,7 +19,6 @@ prod:
 	cpp -o Dockerfile container/dockerfile/prod.docker
 	$(CONTAINER_PGRM) build -t $(PROD_OCI_IMAGE) -f Dockerfile .
 
-.ONESHELL:
 compile-webapp-local:
 	cd app
 	mkdir -p dist
@@ -34,21 +35,18 @@ compile-webapp: dev
 		$(DEV_OCI_IMAGE) \
 		make compile-webapp-local
 
-.ONESHELL:
 lint-api:
 	cd api
 	composer install --quiet
 	composer fix
 	composer lint
 
-.ONESHELL:
 lint-app:
 	cd app
 	npm install --save-dev
 	npm run analyze
 	npm run stylelint
 
-.ONESHELL:
 lint-integ-tests:
 	cd integration-tests
 	python3 -m venv venv
@@ -64,7 +62,6 @@ lint: dev
 		$(DEV_OCI_IMAGE) \
 		make lint-local
 
-.ONESHELL:
 unit-tests-local:
 	cd api
 	composer validate --strict
@@ -143,7 +140,6 @@ start-test: prod
 		-v "$(CURDIR)"/api:/zusam/api:z \
 		$(PROD_OCI_IMAGE)
 
-.ONESHELL:
 integ-tests: prod
 	cd integration-tests
 	$(CONTAINER_PGRM) compose up -d
