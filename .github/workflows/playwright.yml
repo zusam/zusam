@@ -29,6 +29,6 @@ jobs:
       working-directory: app
       run: npx playwright install --with-deps
     - name: Run Playwright default tests
-      run: make playwright-default
+      run: make playwright-default-ci
     - name: Run Playwright non-default tests
-      run: make playwright-nondefault
+      run: make playwright-nondefault-ci

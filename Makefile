@@ -80,53 +80,52 @@ unit-tests: dev
 		$(DEV_OCI_IMAGE) \
 		make unit-tests-local
 
-playwright-default:
-	cd test && $(CONTAINER_PGRM) compose -f compose-default.yaml up -d
+define RUN_PLAYWRIGHT
+	docker network create playwright-network
+	cd test && $(CONTAINER_PGRM) compose -f compose-$(1).yaml up -d
 	trap 'cd ../test && $(CONTAINER_PGRM) compose -f compose-default.yaml down' EXIT;
 	until curl -s http://localhost:8532 > /dev/null; do \
 		echo "Waiting for app..."; \
 		sleep 5; \
 	done
-	cd ../app && PLAYWRIGHT_HTML_OPEN=never npx playwright test e2e/default-config --workers $(PLAYWRIGHT_WORKERS)
+	cd ../app && PLAYWRIGHT_HTML_OPEN=never npx playwright test e2e/$(1)-config $(2) --workers $(PLAYWRIGHT_WORKERS)
+	docker network rm playwright-network
+	cd ..
+endef
 
-
-playwright-default-ui:
-	cd test && $(CONTAINER_PGRM) compose -f compose-default.yaml up -d
-	trap 'cd ../test && $(CONTAINER_PGRM) compose -f compose-default.yaml down' EXIT;
+define RUN_PLAYWRIGHT_CONTAINER
+	docker network create playwright-network
+	cd test && $(CONTAINER_PGRM) compose -f compose-$(1).yaml up -d
 	until curl -s http://localhost:8532 > /dev/null; do \
 		echo "Waiting for app..."; \
 		sleep 5; \
-	done
-	cd ../app && npx playwright test e2e/default-config --ui --workers $(PLAYWRIGHT_WORKERS)
+	done; \
+	docker run -it --rm \
+		--network playwright-network \
+		--ipc=host \
+		-v "../app:/app" -w /app \
+		-e PLAYWRIGHT_HTML_OPEN=never \
+		-e PLAYWRIGHT_BASE_URL=http://zusam-test:8080 \
+		mcr.microsoft.com/playwright:v1.60.0-jammy \
+		npx playwright test e2e/$(1)-config --workers $(PLAYWRIGHT_WORKERS)
+	$(CONTAINER_PGRM) compose -f compose-$(1).yaml down; 
+	docker network rm playwright-network
+	cd ..
+endef
 
-	
+playwright-default-ci:
+	$(call RUN_PLAYWRIGHT,default)
 
-playwright-nondefault:
-	cd test && $(CONTAINER_PGRM) compose -f compose-nondefault.yaml up -d
-	trap 'cd ../test && $(CONTAINER_PGRM) compose -f compose-nondefault.yaml down' EXIT;
-	until curl -s http://localhost:8532 > /dev/null; do \
-		echo "Waiting for app..."; \
-		sleep 5; \
-	done
-	cd ../app && PLAYWRIGHT_HTML_OPEN=never npx playwright test e2e/nondefault-config --workers $(PLAYWRIGHT_WORKERS)
-
-
-playwright-nondefault-ui:
-	cd test && $(CONTAINER_PGRM) compose -f compose-nondefault.yaml up -d
-	trap 'cd ../test && $(CONTAINER_PGRM) compose -f compose-nondefault.yaml down' EXIT;
-	until curl -s http://localhost:8532 > /dev/null; do \
-		echo "Waiting for app..."; \
-		sleep 5; \
-	done
-	cd ../app && npx playwright test e2e/nondefault-config --ui --workers $(PLAYWRIGHT_WORKERS)
+playwright-nondefault-ci:
+	$(call RUN_PLAYWRIGHT,nondefault)
 
 playwright:
-	make playwright-default
-	make playwright-nondefault
+	$(call RUN_PLAYWRIGHT_CONTAINER,default)
+	$(call RUN_PLAYWRIGHT_CONTAINER,nondefault)
 
 playwright-ui:
-	make playwright-default-ui
-	make playwright-nondefault-ui
+	$(call RUN_PLAYWRIGHT,default,--ui)
+	$(call RUN_PLAYWRIGHT,nondefault,--ui)
 
 start-dev: dev
 	$(CONTAINER_PGRM) run --rm -it --name "zusam" \

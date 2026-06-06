@@ -14,3 +14,8 @@ services:
     container_name: zusam-test
     ports:
       - "8532:8080"
+    networks:
+      - playwright-network
+networks:
+  playwright-network:
+    external: true
