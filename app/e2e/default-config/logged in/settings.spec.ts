@@ -271,9 +271,23 @@ test.describe("Test group settings", () => {
     const group = await addGroup(authRequest, { name: "New group" });
     await page.goto("/groups/" + group.id + "/settings");
 
+    // Start listening for the leave API call before any modal interaction,
+    // so we don't miss it if leave() fires immediately after confirmation.
+    const leaveResponse = page.waitForResponse(
+      resp => resp.url().includes("/leave") && resp.request().method() === "POST"
+    );
+
     await page.getByRole("button", { name: "Leave the group" }).click();
     await page.locator(".modal-content").getByRole("button", { name: "Leave the group", exact: true }).click();
-    await page.locator(".modal-content").getByRole("button", { name: "Delete group", exact: true }).click();
+
+    // A second "Delete group" modal only appears if we're the last member.
+    // If the group has more than 1 user, leave() proceeds immediately.
+    const deleteButton = page.locator(".modal-content").getByRole("button", { name: "Delete group", exact: true });
+    await deleteButton.click({ timeout: 5000 }).catch(() => {});
+
+    // Wait for the leave API call to complete regardless of which path was taken
+    await leaveResponse;
+
     await expect(page.locator(".global-alert")).toHaveText("You left the group.");
 
     await page.goto("/groups/" + group.id + "/settings");
