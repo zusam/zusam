@@ -55,8 +55,11 @@ test("posting a new message to a group from share page", async ({ authRequest, p
   await expect(page.locator(".ql-editor").first()).toHaveAttribute("contenteditable", "false");
   await expect(page.locator(".ql-editor h1")).toHaveText("Body test");
 
+  // Video file may render as <video> (status "ready") or as a placeholder
+  // <a class="video-uploaded"> (status "raw", pending server-side transcoding).
+  // Both states confirm the video was attached to the message.
   const files = page.locator(".file-grid").first();
-  await expect(files.locator("video")).toHaveCount(1);
+  await expect(files.locator("video, .video-uploaded")).toHaveCount(1);
   await expect(files.locator("a.pdf-outline")).toHaveCount(1);
   await expect(files.locator("a.image:not(.pdf-outline)")).toHaveCount(1);
 });

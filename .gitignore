@@ -37,3 +37,5 @@ api/.php-cs-fixer.cache
 
 # DEV/TESTING
 /dev/posting/posting.env
+/app/tests
+/integration-tests/venv
