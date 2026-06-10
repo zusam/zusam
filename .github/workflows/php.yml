@@ -35,7 +35,7 @@ jobs:
         run: cd api && php bin/phpunit
 
       - name: Run static analysis
-        run: cd api && php bin/composer analyze
+        run: cd api && composer analyze
 
       - name: Run linting
-        run: cd api && php bin/composer lint
+        run: cd api && composer lint
