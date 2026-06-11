@@ -1,8 +1,8 @@
 import { h, Component, Fragment } from "preact";
-import { http } from "/src/core";
+import { http, withNavigate } from "/src/core";
 import { MessagePreview } from "/src/message";
 
-export default class MessageList extends Component {
+class MessageList extends Component {
   constructor(props) {
     super(props);
     let loaded = 1 + Math.floor((window.screen.width * window.screen.height) / (320 * 215));
@@ -136,3 +136,5 @@ export default class MessageList extends Component {
     );
   }
 }
+
+export default withNavigate(MessageList);
