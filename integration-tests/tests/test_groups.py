@@ -1,9 +1,9 @@
 """Integration tests for group operations."""
 
-import httpx
+import httpxyz
 
 
-def test_create_group(auth_client: httpx.Client):
+def test_create_group(auth_client: httpxyz.Client):
     """
     Test creating a new group.
 
@@ -24,7 +24,7 @@ def test_create_group(auth_client: httpx.Client):
     assert "secretKey" in group
 
 
-def test_rename_group(auth_client: httpx.Client):
+def test_rename_group(auth_client: httpxyz.Client):
     """
     Test renaming an existing group.
 
@@ -56,7 +56,7 @@ def test_rename_group(auth_client: httpx.Client):
 
 
 def test_signup_with_invitation(
-    auth_client: httpx.Client, client: httpx.Client, api_url: str, default_group_id: str
+    auth_client: httpxyz.Client, client: httpxyz.Client, api_url: str, default_group_id: str
 ):
     """
     Test signing up a new user with an invitation key.
@@ -91,7 +91,7 @@ def test_signup_with_invitation(
 
     # Step 4: Verify new user can access the group
     new_user_api_key = signup_result["api_key"]
-    with httpx.Client(
+    with httpxyz.Client(
         base_url=api_url,
         headers={"X-AUTH-TOKEN": new_user_api_key},
         timeout=30,

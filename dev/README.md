@@ -4,6 +4,12 @@ Development for Zusam is driven by the Makefile at the repository root. It handl
 
 Linux is assumed for the rest of this README.
 
+## Configuration
+
+See [configuration.md](configuration.md) for a detailed explanation of how
+configuration variables flow through the Dotenv cascade, the three execution
+contexts (FPM, CLI/cron, test), and the full variable reference.
+
 ## Makefile targets
 
 Run `make` with no arguments to see available targets.
@@ -111,7 +117,18 @@ cd dev
 docker compose up -d
 ```
 
-This starts Zusam on port 8080 and Mailpit on port 8025. Zusam is configured with `MAILER_DSN=smtp://mailpit:1025` and `ALLOW_EMAIL=true`, so notification emails are captured by Mailpit and viewable at `http://localhost:8025`.
+This starts Zusam on port 8080 and Mailpit on port 8025.
+
+Zusam reads its settings from `data/config` (see the [configuration
+docs](../documentation/docker.md#configuration)). To capture notification emails
+in Mailpit, set the following in `data/config` and restart the container:
+
+```ini
+ALLOW_EMAIL="true"
+MAILER_DSN="smtp://mailpit:1025"
+```
+
+Emails are then viewable at `http://localhost:8025`.
 
 ## API testing with Posting
 

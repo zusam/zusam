@@ -77,6 +77,9 @@ services:
       arguments:
         $limiter: '@security.login_throttling.login.limiter'
 
+    App\Command\ConfigShow:
+      arguments:
+
     App\Command\Cron:
       arguments:
 

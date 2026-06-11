@@ -57,10 +57,21 @@ lint-app:
 	npm run stylelint
 
 lint-integ-tests:
+	set -e
 	cd integration-tests
 	python3 -m venv venv
 	./venv/bin/pip install -q -r requirements.txt
+	./venv/bin/ruff format --check .
 	./venv/bin/ruff check .
+
+.ONESHELL:
+fmt-integ-tests:
+	set -e
+	cd integration-tests
+	python3 -m venv venv
+	./venv/bin/pip install -q -r requirements.txt
+	./venv/bin/ruff format .
+	./venv/bin/ruff check --fix .
 
 lint-local: lint-api lint-app lint-integ-tests
 
@@ -170,4 +181,4 @@ integ-tests: prod
 clean:
 	rm -f Dockerfile
 
-.PHONY: nothing $(TARGETS) lint-local lint-api lint-app lint-integ-tests compile-webapp-local clean unit-tests-local
+.PHONY: nothing $(TARGETS) lint-local lint-api lint-app lint-integ-tests fmt-integ-tests compile-webapp-local clean unit-tests-local

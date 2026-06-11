@@ -1,13 +1,12 @@
-"""Pytest fixtures for Zusam integration tests."""
+"""Pytest fixtures and helpers for Zusam integration tests."""
 
 import hashlib
 import subprocess
 import time
 from pathlib import Path
 
-import httpx
+import httpxyz
 import pytest
-
 
 # Test configuration
 API_BASE_URL = "http://localhost:8080"
@@ -16,7 +15,7 @@ CONTAINER_NAME = "zusam-integration-tests"
 TEST_SEED = "test_seed"
 DEFAULT_USER = "zusam"
 DEFAULT_PASSWORD = "zusam"
-LOG_FILE_PATH = "/zusam/api/var/log/test.log"
+LOG_FILE_PATH = "/zusam/api/var/log/prod.log"
 
 
 def _generate_seeded_uuid(seed: str) -> str:
@@ -31,13 +30,15 @@ def _generate_seeded_uuid(seed: str) -> str:
     num = int(digits) if digits else 0
     variant = ["8", "9", "a", "b"][num % 4]
 
-    return "-".join([
-        h[0:8],
-        h[8:12],
-        "4" + h[12:15],
-        variant + h[15:18],
-        h[18:30],
-    ])
+    return "-".join(
+        [
+            h[0:8],
+            h[8:12],
+            "4" + h[12:15],
+            variant + h[15:18],
+            h[18:30],
+        ]
+    )
 
 
 # Pre-computed deterministic IDs for test_seed
@@ -47,28 +48,44 @@ SEEDED_GROUP_ID = _generate_seeded_uuid(f"{TEST_SEED}_group")
 SEEDED_GROUP_SECRET_KEY = _generate_seeded_uuid(f"{TEST_SEED}_group_secret_key")
 
 
-def _get_database_path() -> str:
-    """Get the actual database path from Symfony config."""
-    cmd = [
-        "docker", "exec", CONTAINER_NAME,
-        "/zusam/api/bin/console", "debug:config", "doctrine", "dbal.connections.default.url",
-    ]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+def docker_exec(*args: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess:
+    """Run a command inside the zusam container (as root).
 
-    if result.returncode != 0:
-        raise RuntimeError(
-            f"Failed to get database path from Symfony config:\n"
-            f"stdout: {result.stdout}\nstderr: {result.stderr}"
-        )
+    *env* adds environment variables to the executed process, simulating an
+    operator setting them on the container.
+    """
+    env_flags = [flag for key, value in (env or {}).items() for flag in ("-e", f"{key}={value}")]
+    return subprocess.run(
+        ["docker", "exec", *env_flags, CONTAINER_NAME, *args],
+        capture_output=True,
+        text=True,
+    )
 
-    # Parse output like: "url: 'sqlite:////zusam/api/var/cache/test/test.db'"
-    for line in result.stdout.splitlines():
-        if "sqlite:" in line:
-            # Extract path after sqlite:///
-            return line.split("sqlite:///")[-1].rstrip("'").strip()
 
-    raise RuntimeError(
-        f"Could not parse database path from Symfony config output:\n{result.stdout}"
+def run_console(*args: str) -> subprocess.CompletedProcess:
+    """Run a Symfony console command inside the zusam container."""
+    return docker_exec("/zusam/api/bin/console", *args)
+
+
+def tail_log(lines: int = 40) -> str:
+    """Return the last lines of the application log inside the container."""
+    return docker_exec("tail", "-n", str(lines), LOG_FILE_PATH).stdout
+
+
+def configure_data_config(settings: dict[str, str]) -> None:
+    """Set key=value pairs in /zusam/data/config inside the container.
+
+    Any existing line for the key is removed, then the new value is appended,
+    so this works whether or not the key is already present.
+    """
+    script = " && ".join(
+        f"sed -i '/^{key}=/d' /zusam/data/config"
+        f" && printf '{key}=\"{value}\"\\n' >> /zusam/data/config"
+        for key, value in settings.items()
+    )
+    result = docker_exec("sh", "-c", script)
+    assert result.returncode == 0, (
+        f"Failed to configure data/config: {result.stderr}\n{result.stdout}"
     )
 
 
@@ -86,10 +103,10 @@ def api_ready(api_url: str) -> None:
 
     for attempt in range(max_attempts):
         try:
-            response = httpx.get(f"{api_url}/api/info", timeout=5)
+            response = httpxyz.get(f"{api_url}/api/info", timeout=5)
             if response.status_code == 200:
                 return
-        except httpx.RequestError:
+        except httpxyz.RequestError:
             pass
 
         if attempt < max_attempts - 1:
@@ -98,80 +115,76 @@ def api_ready(api_url: str) -> None:
     pytest.fail(f"API at {api_url} did not become ready after {max_attempts * delay} seconds")
 
 
+@pytest.fixture(scope="session")
+def configure_email(api_ready) -> None:
+    """Configure email delivery in data/config (once per session).
+
+    The container runs in prod mode with no email-related env vars; everything
+    is configured in data/config, just like a real deployment.
+    """
+    configure_data_config(
+        {
+            "ALLOW_EMAIL": "true",
+            "MAILER_DSN": "smtp://mailpit:1025",
+            "ENABLE_TERMINATE_LISTENER": "true",
+        }
+    )
+
+
 @pytest.fixture
-def fresh_db(api_ready) -> None:
+def fresh_db(configure_email) -> None:
     """
     Reset the database before each test using the seeded initialization.
 
     This runs `zusam:init --remove-existing --seed test_seed` in the container,
     ensuring each test starts with a clean, predictable database state.
+
+    Retries up to 3 times because the in-container crond may access the
+    database file during the drop/recreate window, causing transient I/O errors.
     """
-    cmd = [
-        "docker", "exec", CONTAINER_NAME,
-        "/zusam/api/bin/console", "zusam:init",
-        DEFAULT_USER, DEFAULT_USER, DEFAULT_PASSWORD,
-        "--remove-existing",
-        "--seed", TEST_SEED,
-    ]
-
-    result = subprocess.run(cmd, capture_output=True, text=True)
-
-    if result.returncode != 0:
+    last_result = None
+    for _ in range(3):
+        result = run_console(
+            "zusam:init",
+            DEFAULT_USER,
+            DEFAULT_USER,
+            DEFAULT_PASSWORD,
+            "--remove-existing",
+            "--seed",
+            TEST_SEED,
+        )
+        if result.returncode == 0:
+            break
+        last_result = result
+        time.sleep(2)
+    else:
         pytest.fail(
-            f"Failed to reset database:\nstdout: {result.stdout}\nstderr: {result.stderr}"
+            f"Failed to reset database after 3 attempts:\n"
+            f"stdout: {last_result.stdout}\nstderr: {last_result.stderr}"
         )
 
-    # Fix database permissions using dynamically resolved path
-    db_path = _get_database_path()
-    fix_perms_cmd = [
-        "docker", "exec", CONTAINER_NAME,
-        "chown", "zusam:zusam", db_path,
-    ]
-    subprocess.run(fix_perms_cmd, capture_output=True, text=True)
+    # docker exec runs as root; give the data back to the app user
+    docker_exec("chown", "-R", "1000:1000", "/zusam/data")
 
 
 @pytest.fixture
-def client(api_url: str, fresh_db) -> httpx.Client:
-    """Return an unauthenticated httpx client with the base URL configured."""
-    with httpx.Client(base_url=api_url, timeout=30) as c:
+def client(api_url: str, fresh_db) -> httpxyz.Client:
+    """Return an unauthenticated httpxyz client with the base URL configured."""
+    with httpxyz.Client(base_url=api_url, timeout=30) as c:
         yield c
 
 
 @pytest.fixture
-def auth_client(api_url: str, fresh_db) -> httpx.Client:
+def auth_client(api_url: str, fresh_db) -> httpxyz.Client:
     """
-    Return an authenticated httpx client using the seeded API key.
+    Return an authenticated httpxyz client using the seeded API key.
 
     This uses the deterministic API key generated from the test seed,
     avoiding the need to perform login for each test.
     """
     headers = {"X-AUTH-TOKEN": SEEDED_USER_SECRET_KEY}
-    with httpx.Client(base_url=api_url, headers=headers, timeout=30) as c:
+    with httpxyz.Client(base_url=api_url, headers=headers, timeout=30) as c:
         yield c
-
-
-@pytest.fixture
-def login_and_get_client(client: httpx.Client) -> httpx.Client:
-    """
-    Demonstrate the login flow and return an authenticated client.
-
-    This fixture shows how to authenticate via the API rather than
-    using the pre-computed seeded key.
-    """
-    response = client.post(
-        "/api/login",
-        json={"login": DEFAULT_USER, "password": DEFAULT_PASSWORD},
-    )
-    response.raise_for_status()
-
-    api_key = response.json()["api_key"]
-
-    # Create new client with auth header
-    auth_headers = {"X-AUTH-TOKEN": api_key}
-    with httpx.Client(
-        base_url=client.base_url, headers=auth_headers, timeout=30
-    ) as auth_client:
-        yield auth_client
 
 
 @pytest.fixture
@@ -201,65 +214,3 @@ def test_image_bytes() -> bytes:
     """
     image_path = Path(__file__).parent / "icon-512x512.png"
     return image_path.read_bytes()
-
-
-@pytest.fixture(scope="session")
-def mailpit_url() -> str:
-    """Return the mailpit API URL."""
-    return MAILPIT_API_URL
-
-
-@pytest.fixture
-def mailpit_clear(mailpit_url: str, api_ready) -> None:
-    """Clear the mailpit mailbox before each test."""
-    try:
-        response = httpx.delete(f"{mailpit_url}/api/v1/messages", timeout=5)
-        response.raise_for_status()
-    except httpx.RequestError as e:
-        pytest.skip(f"Mailpit not available: {e}")
-
-
-@pytest.fixture
-def mailpit_messages(mailpit_url: str):
-    """Return a function to fetch emails from mailpit."""
-    def _get_messages():
-        response = httpx.get(f"{mailpit_url}/api/v1/messages", timeout=5)
-        response.raise_for_status()
-        return response.json().get("messages", [])
-    return _get_messages
-
-
-@pytest.fixture
-def run_console_command():
-    """Return a function to run console commands in the zusam container."""
-    def _run_command(command: str, *args) -> subprocess.CompletedProcess:
-        cmd = [
-            "docker", "exec", CONTAINER_NAME,
-            "/zusam/api/bin/console", command,
-            *args,
-        ]
-        return subprocess.run(cmd, capture_output=True, text=True)
-    return _run_command
-
-
-@pytest.fixture
-def get_container_logs():
-    """Return a function to get recent container logs."""
-    def _get_logs(lines: int = 100) -> str:
-        cmd = ["docker", "logs", "--tail", str(lines), CONTAINER_NAME]
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        return result.stdout + result.stderr
-    return _get_logs
-
-
-@pytest.fixture
-def get_log_file():
-    """Return a function to read the application log file from the container."""
-    def _get_log(lines: int = 100) -> str:
-        cmd = [
-            "docker", "exec", CONTAINER_NAME,
-            "tail", "-n", str(lines), LOG_FILE_PATH,
-        ]
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        return result.stdout + result.stderr
-    return _get_log

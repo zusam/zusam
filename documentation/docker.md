@@ -63,6 +63,42 @@ sudo docker compose up -d
 Once it starts up, you can access Zusam at http://localhost:8080
 
 
+## Configuration
+
+Zusam settings (email, domain, language, feature flags, ...) are read from a
+single per-instance config file: **`data/config`** (inside your mounted data
+directory). On first start the container creates it from a template and fills in
+a generated `APP_SECRET`. The defaults for every available setting, with
+explanations, live in `api/.env`.
+
+To configure your instance, edit `data/config` and restart the container. The
+environment variables listed above (`INIT_*`, `APP_ENV`, `SUBPATH`,
+`DATABASE_NAME`) are operational only — application settings are **not** read from
+environment variables, so that the web server and the background cron behave
+identically.
+
+For example, to enable notification emails, set in `data/config`:
+```ini
+ALLOW_EMAIL="true"
+# See https://symfony.com/doc/current/mailer.html for the DSN format
+MAILER_DSN="smtp://user:password@smtp.example.com:587"
+DOMAIN="your.domain.example"
+```
+then restart the container. Both the web app and the system cron will then send
+mail.
+
+> **Upgrading from an older version?** Earlier images accepted some of these
+> settings (`ALLOW_EMAIL`, `MAILER_DSN`, `DOMAIN`, `LANG`, `ALLOW_*`) as `docker
+> -e` environment variables. They are now ignored; move any such values into
+> `data/config`. Existing `data/config` files keep working unchanged.
+
+To check what configuration a running container actually uses — and whether a
+stray environment variable is shadowing `data/config` — run:
+```
+sudo docker exec zusam /zusam/api/bin/console zusam:config:show
+```
+
+
 ## Build the container yourself
 
 You may want to build the container yourself. First, download the version you want. Download the latest release (here in ~/zusam):

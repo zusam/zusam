@@ -1,9 +1,9 @@
 """Integration tests for message creation and retrieval."""
 
-import httpx
+import httpxyz
 
 
-def test_login_and_create_message(client: httpx.Client, default_group_id: str):
+def test_login_and_create_message(client: httpxyz.Client, default_group_id: str):
     """
     Test the complete flow of logging in and creating a message.
 
@@ -45,7 +45,7 @@ def test_login_and_create_message(client: httpx.Client, default_group_id: str):
     assert message["data"]["text"] == "Hello from integration test!"
 
 
-def test_create_message_with_auth_client(auth_client: httpx.Client, default_group_id: str):
+def test_create_message_with_auth_client(auth_client: httpxyz.Client, default_group_id: str):
     """
     Test creating a message using the pre-authenticated client fixture.
 
@@ -67,7 +67,7 @@ def test_create_message_with_auth_client(auth_client: httpx.Client, default_grou
     assert message["data"]["title"] == "Test Title"
 
 
-def test_create_message_unauthenticated_fails(client: httpx.Client, default_group_id: str):
+def test_create_message_unauthenticated_fails(client: httpxyz.Client, default_group_id: str):
     """Test that creating a message without authentication fails."""
     message_data = {
         "group": default_group_id,
@@ -82,7 +82,7 @@ def test_create_message_unauthenticated_fails(client: httpx.Client, default_grou
     assert response.status_code == 401
 
 
-def test_create_child_message(auth_client: httpx.Client, default_group_id: str):
+def test_create_child_message(auth_client: httpxyz.Client, default_group_id: str):
     """
     Test creating a child message (reply to a parent message).
 
@@ -122,7 +122,7 @@ def test_create_child_message(auth_client: httpx.Client, default_group_id: str):
     assert child_message["parent"]["id"] == parent_id
 
 
-def test_delete_message(auth_client: httpx.Client, default_group_id: str):
+def test_delete_message(auth_client: httpxyz.Client, default_group_id: str):
     """
     Test deleting a message.
 
@@ -153,7 +153,7 @@ def test_delete_message(auth_client: httpx.Client, default_group_id: str):
     assert get_response.status_code == 404
 
 
-def test_edit_message(auth_client: httpx.Client, default_group_id: str):
+def test_edit_message(auth_client: httpxyz.Client, default_group_id: str):
     """
     Test editing an existing message.
 
@@ -190,7 +190,7 @@ def test_edit_message(auth_client: httpx.Client, default_group_id: str):
     assert updated_message["data"]["text"] == "Updated message text"
 
 
-def test_message_with_url_embed(auth_client: httpx.Client, default_group_id: str):
+def test_message_with_url_embed(auth_client: httpxyz.Client, default_group_id: str):
     """
     Test creating a message with a URL and fetching link metadata.
 

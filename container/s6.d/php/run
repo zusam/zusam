@@ -1,2 +1,2 @@
 #!/bin/sh
-exec /usr/sbin/php-fpm --allow-to-run-as-root
+exec su-exec "$UID:$GID" /usr/sbin/php-fpm

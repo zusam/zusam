@@ -1,10 +1,10 @@
 """Integration tests for user operations."""
 
-import httpx
+import httpxyz
 
 
 def test_change_user_avatar(
-    auth_client: httpx.Client, default_user_id: str, test_image_bytes: bytes
+    auth_client: httpxyz.Client, default_user_id: str, test_image_bytes: bytes
 ):
     """
     Test changing a user's avatar.

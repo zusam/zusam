@@ -1,9 +1,9 @@
 """Integration tests for file operations."""
 
-import httpx
+import httpxyz
 
 
-def test_upload_image(auth_client: httpx.Client, test_image_bytes: bytes):
+def test_upload_image(auth_client: httpxyz.Client, test_image_bytes: bytes):
     """
     Test uploading an image file.
 
