@@ -271,22 +271,28 @@ test.describe("Test group settings", () => {
     const group = await addGroup(authRequest, { name: "New group" });
     await page.goto("/groups/" + group.id + "/settings");
 
-    // Start listening for the leave API call before any modal interaction,
-    // so we don't miss it if leave() fires immediately after confirmation.
-    const leaveResponse = page.waitForResponse(
-      resp => resp.url().includes("/leave") && resp.request().method() === "POST"
-    );
+    // Wait for the group data API call to complete and the component to re-render.
+    // Without this, the leaveGroup closure captures the initial group = {} state,
+    // causing "Cannot read properties of undefined (reading 'length')" on group.users.
+    await expect(page.locator("input[name='name']")).toHaveValue("New group");
 
     await page.getByRole("button", { name: "Leave the group" }).click();
-    await page.locator(".modal-content").getByRole("button", { name: "Leave the group", exact: true }).click();
+
+    // Use native element.click() to avoid backdrop pointer-event interception
+    // that occurs in the Docker container environment.
+    const confirmBtn = page.locator(".modal-footer .btn-danger");
+    await expect(confirmBtn).toBeVisible();
+    await confirmBtn.evaluate(el => el.click());
 
     // A second "Delete group" modal only appears if we're the last member.
     // If the group has more than 1 user, leave() proceeds immediately.
-    const deleteButton = page.locator(".modal-content").getByRole("button", { name: "Delete group", exact: true });
-    await deleteButton.click({ timeout: 5000 }).catch(() => {});
-
-    // Wait for the leave API call to complete regardless of which path was taken
-    await leaveResponse;
+    const deleteBtn = page.locator(".modal-footer .btn-danger");
+    try {
+      await expect(deleteBtn).toBeVisible({ timeout: 5000 });
+      await deleteBtn.evaluate(el => el.click());
+    } catch {
+      // Second modal didn't appear - leave() was called directly
+    }
 
     await expect(page.locator(".global-alert")).toHaveText("You left the group.");
 
