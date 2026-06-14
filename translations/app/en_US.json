@@ -39,6 +39,7 @@
     "feed": "Feed",
     "feed_group": "My Feed",
     "forgot_password": "Forgot your password?",
+    "group_access_denied": "You don't have access to this group.",
     "group_left": "You left the group.",
     "groups": "Groups",
     "group_share_choice": "Which group do you want to send this message to?",

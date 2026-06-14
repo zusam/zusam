@@ -32,7 +32,8 @@ export default function GroupSettings() {
       }
     ).catch((e) => {
       if ([403, 404].includes(e?.status)) {
-        // We don't have access to group, go to default page
+        // We don't have access to group: notify and go to default page
+        alert.add(t("group_access_denied"), "alert-danger");
         navigate("/");
         return;
       }
