@@ -1,0 +1,34 @@
+name: Playwright tests
+
+on: [pull_request]
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      CONTAINER_PGRM: docker
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6.0.2
+    - uses: actions/setup-node@v6
+      with:
+        node-version: lts/*
+    - name: Install npm dependencies
+      working-directory: app
+      run:  npm install
+    - name: Build webapp
+      working-directory: app
+      run: npm run build; cp -r dist/* ../public/
+    - name: Build container
+      run: make prod
+    - name: Install dependencies
+      working-directory: app
+      run: npm ci
+    - name: Install Playwright Browsers
+      working-directory: app
+      run: npx playwright install --with-deps
+    - name: Run Playwright default tests
+      run: make playwright-default-ci
+    - name: Run Playwright non-default tests
+      run: make playwright-nondefault-ci

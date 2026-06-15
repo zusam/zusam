@@ -56,9 +56,10 @@ const http = {
         // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#canceling_a_request
         if (signal) fetchOptions.signal = signal;
         return fetch(url, fetchOptions)
-          .then(res => {
-            if (res.ok) return res.json();
-            return Promise.reject({ status: res.status, statusText: res.statusText });
+          .then(async res => {
+            const body = await res.json().catch(() => ({}));
+            if (res.ok) return body;
+            return Promise.reject({ status: res.status, statusText: res.statusText, ...body });
           })
           .catch(err => {
             if (err?.status) return Promise.reject(err);

@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 
 export default function GroupBoard() {
   let params = useParams();
+
   return (
     <main>
       <Navbar />

@@ -19,13 +19,16 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import { useEffect } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import ConfirmModal from "/src/misc/confirm-modal.component.js";
+import i18n from "i18next";
 
 function App() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const [defaultLang, setDefaultLang] = useState("");
+  const [userLang, setUserLang] = useState("");
 
   const toggleDropdowns = e => {
     if (!e.target.closest(".dropdown")) {
@@ -56,7 +59,9 @@ function App() {
     // this test is here to ensure that 'api' gets loaded before
     // this may come from a transpilation issue with parceljs
     if (api && typeof api.update === "function") {
-      api.update();
+      api.update().then((res) => {
+        setDefaultLang(res.default_lang);
+      });
     } else {
       console.error("Could not use api.update()");
     }
@@ -71,8 +76,18 @@ function App() {
   });
 
   useEffect(() => {
+    const newLang = userLang || defaultLang;
+    if (i18n.language !== newLang) {
+      i18n.changeLanguage(newLang);
+    }
+  }, [userLang, defaultLang]);
+
+  useEffect(() => {
     try {
       me.fetch().then(user => {
+        if (user?.data?.lang) {
+          setUserLang(user.data.lang);
+        }
         if (location.pathname === "/") {
           let redirect = "/login";
           if (user) {
@@ -84,6 +99,8 @@ function App() {
               } else {
                 redirect = "/feed";
               }
+            } else {
+              redirect = "/feed";
             }
           }
           navigate(redirect);
@@ -100,7 +117,7 @@ function App() {
         }
 
         if (!router.isOutside() && !user) {
-          navigate("/login");
+          navigate("/logout");
         }
       });
     } catch (err) {

@@ -31,7 +31,7 @@ export default function FileGrid(props) {
     );
   }
   return (
-    <div class="d-flex justify-content-center flex-wrap">
+    <div class="file-grid d-flex justify-content-center flex-wrap">
       {props.files
         .map(e => (
           <BigFile

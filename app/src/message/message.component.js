@@ -91,9 +91,9 @@ export default function Message(props) {
           setFiles(m?.files.map(f => ({id: f.id, status: "loading"})));
         }
         hydrateMessage(m);
-      }).catch (err => {
+      }).catch(err => {
         let error = {
-          "type": err?.message || "unknown",
+          "type": err?.error || "unknown",
         };
         setErrorMessage(error);
       });

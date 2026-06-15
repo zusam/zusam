@@ -71,7 +71,7 @@ export default function Notification(props) {
     case "new_comment":
       return (
         <span>
-          {`${t("the_message_from")  } `}
+          {`${t("the_message_from")} `}
           <strong>{notification?.parentAuthorName}</strong>
           {title && (
             <Fragment>
@@ -125,9 +125,7 @@ export default function Notification(props) {
   useEffect(() => {
     http.get(`/api/notifications/${props.id}`, false, 100).then(n => {
       if (n) {
-        if (n?.fromMessage?.id) {
-          setTarget(getTarget(n, n.fromMessage.id));
-        }
+        setTarget(getTarget(n, n?.fromMessage?.id));
         setAction(getAction(n));
         setTitle(n.title);
         if (n?.fromUser?.id) {

@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { lang, router, alert, http, util, storage } from "/src/core";
+import { lang, router, alert, http, util, storage, me as meCore } from "/src/core";
 import { useStore } from "@nanostores/preact";
 import { $me, updateMe } from "/src/store/me.js";
 import { useEffect, useState } from "preact/hooks";
@@ -110,7 +110,7 @@ export default function UserSettings() {
       if (res["error"]) {
         alert.add(res["error"], "alert-danger");
       } else {
-        updateMe(res);
+        meCore.update();
         setAlertMessage(t("settings_updated"));
         navigate(`${location.pathname}?alert=settings_updated`);
       }

@@ -8,6 +8,7 @@ import _bookmarks_utils from "./bookmarks_utils.js";
 import _router from "./router.js";
 import _storage from "./storage.js";
 import _util from "./util.js";
+import _withNavigate from "./with-navigate.js";
 
 export const alert = _alert;
 export const api = _api;
@@ -21,3 +22,4 @@ export const bookmarks_utils = _bookmarks_utils;
 export const router = _router;
 export const storage = _storage;
 export const util = _util;
+export const withNavigate = _withNavigate;

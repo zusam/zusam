@@ -14,14 +14,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class ResetInviteKey extends ApiController
 {
+    private $cache;
+
     public function __construct(
         EntityManagerInterface $em,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        TagAwareCacheInterface $cache,
     ) {
         parent::__construct($em, $serializer);
+        $this->cache = $cache;
     }
 
     /**
@@ -61,6 +66,10 @@ class ResetInviteKey extends ApiController
         $currentUser->setLastActivityDate(time());
         $this->em->persist($currentUser);
         $this->em->persist($group);
+
+        // Clear cache for the group
+        $this->cache->invalidateTags(['group_'.$group->getId()]);
+
         $this->em->flush();
 
         return new JsonResponse(['inviteKey' => $group->getInviteKey()], JsonResponse::HTTP_OK);
