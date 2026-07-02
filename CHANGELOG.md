@@ -2,6 +2,11 @@
 
 To upgrade, follow the [upgrade guide](https://github.com/zusam/zusam/blob/master/documentation/update.md).
 
+## [Unreleased]
+
+### Log
+* Fix user profile data leak across groups; restrict email to /me and require a shared group to read another user (@nrobinaubertin)
+
 ## [0.6.1] - 2026-03-01
 
 ### Log

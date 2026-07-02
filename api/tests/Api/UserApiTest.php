@@ -61,20 +61,39 @@ class UserApiTest extends BaseApiTestCase
         $this->assertEquals($user->getId(), $data['id'], 'User ID does not match');
         $this->assertEquals('Test User', $data['name'], 'Name does not match');
         $this->assertEquals('user', $data['entityType'], 'Entity type does not match');
-        $this->assertArrayHasKey('data', $data);
+        // The sensitive `data` field (email + preferences) is only exposed via /me.
+        $this->assertArrayNotHasKey('data', $data);
     }
 
-    public function testGetOtherUser(): void
+    public function testGetOtherUserNoSharedGroupForbidden(): void
     {
         $user = $this->getOtherUser();
         $this->apiRequestWithAuth('GET', '/users/' . $user->getId());
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function testGetOtherUserSharedGroup(): void
+    {
+        $testUser = $this->getTestUser();
+        $group = $this->getTestGroup();
+        $otherUser = $this->getOtherUser();
+
+        $group->addUser($otherUser);
+        $otherUser->addGroup($group);
+        $em = $this->getEntityManager();
+        $em->persist($group);
+        $em->persist($otherUser);
+        $em->flush();
+
+        $this->apiRequestWithAuth('GET', '/users/' . $otherUser->getId());
         $this->assertResponseIsSuccessful();
         $data = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertIsArray($data);
-        $this->assertEquals($user->getId(), $data['id'], 'Other user ID does not match');
+        $this->assertEquals($otherUser->getId(), $data['id'], 'Other user ID does not match');
         $this->assertEquals('Test User', $data['name'], 'Name does not match');
         $this->assertEquals('user', $data['entityType'], 'Entity type does not match');
-        $this->assertArrayHasKey('data', $data);
+        // Even to a group co-member, the email-bearing `data` field is not exposed.
+        $this->assertArrayNotHasKey('data', $data);
     }
 
     public function testDeleteUser(): void

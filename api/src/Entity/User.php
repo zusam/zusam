@@ -111,7 +111,7 @@ class User extends ApiEntity implements UserInterface, PasswordAuthenticatedUser
      * @OA\Property(type="object")
      */
     #[ORM\Column(type: 'json', nullable: true)]
-    #[Groups(['read_me', 'read_user', 'write_user'])]
+    #[Groups(['read_me', 'write_user'])]
     private $data;
 
     /**

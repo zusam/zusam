@@ -63,7 +63,7 @@ class Edit extends ApiController
         $this->em->flush();
 
         return new Response(
-            $this->serialize($user, ['read_user']),
+            $this->serialize($user, ['read_user', 'read_me']),
             Response::HTTP_OK
         );
     }
@@ -104,7 +104,7 @@ class Edit extends ApiController
         $this->em->flush();
 
         return new Response(
-            $this->serialize($user, ['read_user']),
+            $this->serialize($user, ['read_user', 'read_me']),
             Response::HTTP_OK
         );
     }
@@ -201,7 +201,7 @@ class Edit extends ApiController
         $this->em->flush();
 
         return new Response(
-            $this->serialize($user, ['read_user']),
+            $this->serialize($user, ['read_user', 'read_me']),
             Response::HTTP_OK
         );
     }
