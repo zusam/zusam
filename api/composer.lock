@@ -1261,16 +1261,16 @@
         },
         {
             "name": "embed/embed",
-            "version": "v4.4.18",
+            "version": "v4.4.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-embed/Embed.git",
-                "reference": "8e53eecc687981c8ca65d7e1ab4e9f63e592fc87"
+                "reference": "c45a9007285524350499f3fa70e7e2f0967af470"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-embed/Embed/zipball/8e53eecc687981c8ca65d7e1ab4e9f63e592fc87",
-                "reference": "8e53eecc687981c8ca65d7e1ab4e9f63e592fc87",
+                "url": "https://api.github.com/repos/php-embed/Embed/zipball/c45a9007285524350499f3fa70e7e2f0967af470",
+                "reference": "c45a9007285524350499f3fa70e7e2f0967af470",
                 "shasum": ""
             },
             "require": {
@@ -1332,7 +1332,7 @@
             "support": {
                 "email": "oom@oscarotero.com",
                 "issues": "https://github.com/oscarotero/Embed/issues",
-                "source": "https://github.com/php-embed/Embed/tree/v4.4.18"
+                "source": "https://github.com/php-embed/Embed/tree/v4.4.19"
             },
             "funding": [
                 {
@@ -1348,7 +1348,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-06-19T16:07:17+00:00"
+            "time": "2026-07-08T19:24:10+00:00"
         },
         {
             "name": "firebase/php-jwt",
