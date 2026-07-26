@@ -45,9 +45,24 @@ export default function MessageBody(props) {
       if (props.message.data) {
         let previewUrl = util.getUrl(quillData.text);
         if (previewUrl) {
-          http
-            .get(`/api/links/by_url?url=${encodeURIComponent(previewUrl[0])}`)
-            .then(r => setPreview(r));
+          if (props.isPublic) {
+            // Public posts can't call the authenticated by_url endpoint, so they
+            // resolve the already-computed embed by its link id (provided in the
+            // public message payload).
+            const link = (props.message.links || []).find(
+              l => l.url === previewUrl[0]
+            );
+            if (link) {
+              http
+                .get(`/api/links/${link.id}`)
+                .then(r => setPreview(r))
+                .catch(() => null);
+            }
+          } else {
+            http
+              .get(`/api/links/by_url?url=${encodeURIComponent(previewUrl[0])}`)
+              .then(r => setPreview(r));
+          }
         }
       }
     }

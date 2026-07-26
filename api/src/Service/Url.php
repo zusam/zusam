@@ -64,6 +64,118 @@ class Url
         return $protocol.'://'.$domain.($port ? ':'.$port : '');
     }
 
+    // SSRF guard: only allow http(s) urls whose host resolves exclusively to
+    // public IP addresses. Blocks loopback, private, reserved and link-local
+    // ranges (including the cloud metadata address 169.254.169.254).
+    //
+    // This is a best-effort filter, not a complete SSRF fix. Known gaps:
+    // - TOCTOU / DNS rebinding: we resolve and validate the host here, but
+    //   the HTTP clients that actually fetch it (GuzzleHttp\Client, Embed)
+    //   re-resolve the host independently when they connect. An attacker
+    //   controlling DNS for the host (very short TTL) can answer with a
+    //   public IP for this check and a private/metadata IP moments later for
+    //   the real connection. Fixing this requires pinning the IP validated
+    //   here for the actual connection (e.g. curl's CURLOPT_RESOLVE) instead
+    //   of trusting a second hostname resolution to agree with the first.
+    // - Redirects: this only validates the input url. GuzzleHttp\Client and
+    //   Embed both follow redirects by default, and a redirect target is
+    //   never re-validated, so a url that is public on the first hop can
+    //   still 3xx to a private/metadata address.
+    public static function isPublicHttpUrl(?string $url): bool
+    {
+        if (empty($url)) {
+            return false;
+        }
+
+        $parts = parse_url($url);
+        if (false === $parts || empty($parts['scheme']) || empty($parts['host'])) {
+            return false;
+        }
+
+        if (!in_array(strtolower($parts['scheme']), ['http', 'https'], true)) {
+            return false;
+        }
+
+        $host = $parts['host'];
+        // strip brackets from ipv6 literals (e.g. [::1])
+        $host = trim($host, '[]');
+
+        // Resolve the host to every IP it points to and reject if any is non-public.
+        $ips = self::resolveHost($host);
+        if (empty($ips)) {
+            return false;
+        }
+
+        foreach ($ips as $ip) {
+            if (!self::isPublicIp($ip)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Uses two different resolution mechanisms, which is intentional:
+    // gethostbynamel() goes through the system resolver (honors /etc/hosts
+    // and NSS), matching what the outbound HTTP client will actually connect
+    // to, but PHP has no equivalent of it for AAAA records, so IPv6 falls
+    // back to dns_get_record(), which queries DNS directly and ignores
+    // /etc/hosts. Either way, this is a point-in-time snapshot: see the
+    // TOCTOU/DNS-rebinding note on isPublicHttpUrl() above.
+    private static function resolveHost(string $host): array
+    {
+        // host is already an IP literal
+        if (false !== filter_var($host, FILTER_VALIDATE_IP)) {
+            return [$host];
+        }
+
+        $ips = [];
+        $ipv4 = gethostbynamel($host);
+        if (is_array($ipv4)) {
+            $ips = $ipv4;
+        }
+
+        $records = @dns_get_record($host, DNS_AAAA);
+        if (is_array($records)) {
+            foreach ($records as $record) {
+                if (!empty($record['ipv6'])) {
+                    $ips[] = $record['ipv6'];
+                }
+            }
+        }
+
+        return $ips;
+    }
+
+    private static function isPublicIp(string $ip): bool
+    {
+        // Reject private and reserved ranges. FILTER_FLAG_NO_RES_RANGE covers
+        // loopback (127.0.0.0/8), link-local (169.254.0.0/16) and other reserved
+        // blocks; FILTER_FLAG_NO_PRIV_RANGE covers 10/8, 172.16/12, 192.168/16,
+        // fc00::/7 and fe80::/10.
+        if (false === filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+            return false;
+        }
+
+        // Explicitly reject IPv6 loopback and IPv4-mapped IPv6 addresses, which
+        // the reserved-range flags do not always catch.
+        $packed = @inet_pton($ip);
+        if (false === $packed) {
+            return false;
+        }
+        if ('::1' === $ip) {
+            return false;
+        }
+        // IPv4-mapped IPv6 (::ffff:a.b.c.d): re-check the embedded IPv4 address.
+        if (16 === strlen($packed) && 0 === substr_compare($packed, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff", 0, 12)) {
+            $mapped = inet_ntop(substr($packed, 12));
+
+            return false !== $mapped && self::isPublicIp($mapped);
+        }
+
+        return true;
+    }
+
     // taken from https://github.com/guzzle/psr7/blob/089edd38f5b8abba6cb01567c2a8aaa47cec4c72/src/Uri.php#L166
     public static function composeComponents(?string $scheme, ?string $authority, string $path, ?string $query, ?string $fragment): string
     {
@@ -102,6 +214,12 @@ class Url
 
     public static function getInstagramData(string $url): array
     {
+        if (!self::isPublicHttpUrl($url)) {
+            return [
+                'origin' => $url,
+                'exception' => 'blocked url',
+            ];
+        }
         try {
             $client = new GuzzleHttp\Client();
             $res = $client->request('GET', 'https://api.instagram.com/oembed/?url='.$url);
@@ -177,6 +295,12 @@ class Url
 
     public static function getData(string $url): array
     {
+        if (!self::isPublicHttpUrl($url)) {
+            return [
+                'origin' => $url,
+                'exception' => 'blocked url',
+            ];
+        }
         $data = Url::getEmbedData($url);
         if ('Instagram' == $data['providerName']) {
             $instagramData = Url::getInstagramData($url);

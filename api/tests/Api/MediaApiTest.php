@@ -71,9 +71,16 @@ class MediaApiTest extends BaseApiTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
+    public function testGetLinkByUrlWithGetRequiresAuth()
+    {
+        // The GET endpoint is no longer public (SSRF fix): without a token it is denied.
+        $this->client->request('GET', '/links/by_url?url=https://example.com');
+        $this->assertResponseStatusCodeSame(401);
+    }
+
     public function testGetLinkByUrlWithGet()
     {
-        $this->client->request('GET', '/links/by_url?url=https://example.com');
+        $this->apiRequestWithAuth('GET', '/links/by_url?url=' . urlencode('https://example.com'));
 
         $this->assertResponseIsSuccessful();
         $data = json_decode($this->client->getResponse()->getContent(), true);

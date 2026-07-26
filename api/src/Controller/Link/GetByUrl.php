@@ -3,6 +3,7 @@
 namespace App\Controller\Link;
 
 use App\Controller\ApiController;
+use App\Entity\Link;
 use App\Service\Url as UrlService;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -81,6 +82,9 @@ class GetByUrl extends ApiController
         if (!$url) {
             return new JsonResponse(['error' => 'Invalid url'], Response::HTTP_BAD_REQUEST);
         }
+        if (!UrlService::isPublicHttpUrl($url)) {
+            return new JsonResponse(['error' => 'Invalid url'], Response::HTTP_BAD_REQUEST);
+        }
         $rescan = $data['rescan'] ?? false;
         $onlyData = $data['onlyData'] ?? false;
 
@@ -120,32 +124,42 @@ class GetByUrl extends ApiController
     #[Route('/links/by_url', methods: ['GET'])]
     public function getLinkByGet(Request $request): Response
     {
-        // No api token verification because this endpoint is used in public posts
-        $url = $request->query->get('url') ?? '';
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $url = rawurldecode($request->query->get('url') ?? '');
         if (!$url) {
             return new JsonResponse(['error' => 'Invalid url'], Response::HTTP_BAD_REQUEST);
         }
+        if (!UrlService::isPublicHttpUrl($url)) {
+            return new JsonResponse(['error' => 'Invalid url'], Response::HTTP_BAD_REQUEST);
+        }
 
-        return $this->execute(rawurldecode($url));
+        return $this->execute($url);
     }
 
     public function getLinkData(string $url, bool $rescan = false, bool $onlyData = false): array
     {
         $link = $this->urlService->getLink($url, $rescan);
         if (!$onlyData) {
-            return [
-                'id' => $link->getId(),
-                'data' => $link->getData(),
-                'url' => $url,
-                'updatedAt' => $link->getUpdatedAt(),
-                'preview' => $link->getPreview() ? [
-                    'id' => $link->getPreview()->getId(),
-                    'entityType' => $link->getPreview()->getEntityType(),
-                ] : '',
-            ];
+            return self::formatLink($link);
         }
 
         return json_decode($link->getData(), true);
+    }
+
+    // Standard public-facing representation of a Link, shared with the by-id endpoint.
+    public static function formatLink(Link $link): array
+    {
+        return [
+            'id' => $link->getId(),
+            'data' => $link->getData(),
+            'url' => $link->getUrl(),
+            'updatedAt' => $link->getUpdatedAt(),
+            'preview' => $link->getPreview() ? [
+                'id' => $link->getPreview()->getId(),
+                'entityType' => $link->getPreview()->getEntityType(),
+            ] : '',
+        ];
     }
 
     private function execute(string $url, bool $rescan = false, bool $onlyData = false): Response

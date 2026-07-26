@@ -211,6 +211,9 @@ class Image
 
                     return $im;
                 }
+                if (!Url::isPublicHttpUrl($input)) {
+                    throw new \Exception("Refusing to fetch non-public url {$input}.");
+                }
                 $client = new Client();
                 $res = $client->request('GET', $input);
                 if (200 == $res->getStatusCode()) {

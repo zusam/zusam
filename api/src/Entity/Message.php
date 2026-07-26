@@ -428,4 +428,16 @@ class Message extends ApiEntity
             return ['id' => $child->getId()];
         })->toArray();
     }
+
+    // Expose the (deterministic) link ids for the urls in this message so public
+    // posts can fetch their embeds by id, without calling the authenticated
+    // by_url endpoint. The id matches Link::__construct (Uuid::uuidv4($url)).
+    #[Groups(['read_message'])]
+    public function getLinks(): array
+    {
+        return array_values(array_filter(array_map(
+            static fn ($url) => $url ? ['id' => Uuid::uuidv4($url), 'url' => $url] : null,
+            $this->getUrls()
+        )));
+    }
 }
