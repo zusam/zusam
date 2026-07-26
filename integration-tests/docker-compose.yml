@@ -7,13 +7,10 @@ services:
     environment:
       - UID=1000
       - GID=1000
-      - APP_ENV=test
-      - ENABLE_TERMINATE_LISTENER=true
+      - APP_ENV=prod
       - INIT_USER=zusam
       - INIT_GROUP=zusam
       - INIT_PASSWORD=zusam
-      - MAILER_DSN=smtp://mailpit:1025
-      - ALLOW_EMAIL=true
     volumes:
       - zusam-integration-tests-data:/zusam/data
     depends_on:

@@ -10,29 +10,21 @@ echo "GROUP: ${GID}"
 # s6-supervise <service name>: fatal: unable to mkfifodir event: Permission denied
 rm -rf "$(find /etc/s6.d -name 'event')"
 
+# It's necessary that crond runs as root since we're operating it with crontab here (as root)
 crontab -r
-echo "* * * * * php /zusam/api/bin/console zusam:cron > /dev/stdout" | crontab -
+echo "* * * * * /sbin/su-exec ${UID}:${GID} /usr/bin/php /zusam/api/bin/console zusam:cron > /dev/stdout" | crontab -
 
 DATABASE_URL="sqlite:///%kernel.project_dir%/../data/${DATABASE_NAME}"
 
+# Preparation of the default configuration file
 if [ -f /zusam/config ]; then
   sed -i -e "s|<SECRET>|$(openssl rand -base64 48)|g" \
-    -e "s|<ALLOW_EMAIL>|${ALLOW_EMAIL}|g" \
-    -e "s|<ALLOW_IMAGE_UPLOAD>|${ALLOW_IMAGE_UPLOAD}|g" \
-    -e "s|<ALLOW_MESSAGE_REACTIONS>|${ALLOW_MESSAGE_REACTIONS}|g"\
-    -e "s|<ALLOW_PUBLIC_LINKS>|${ALLOW_PUBLIC_LINKS}|g"\
-    -e "s|<ALLOW_VIDEO_UPLOAD>|${ALLOW_VIDEO_UPLOAD}|g" \
     -e "s|<DATABASE_URL>|${DATABASE_URL}|g" \
-    -e "s|<DOMAIN>|${DOMAIN}|g" \
-    -e "s|<LANG>|${LANG}|g" \
-    -e "s|<MAILER_DSN>|${MAILER_DSN}|g" \
+    -e "s|<APP_ENV>|${APP_ENV:-prod}|g" \
     /zusam/config
-  # $APP_ENV doesn't have a value by default
-  if [ -n "${APP_ENV}" ]; then
-    sed -i -e "s|<APP_ENV>|${APP_ENV}|g" /zusam/config
-  fi
 fi
 
+# Copy of the default configuration file if none exists
 if ! [ -f /zusam/data/config ]; then
   cp /zusam/config /zusam/data/config
 fi
@@ -44,20 +36,10 @@ fi
 # Install backend dependencies
 COMPOSER_ALLOW_SUPERUSER=1 /usr/bin/php /zusam/api/bin/composer install -d /zusam/api --prefer-dist --no-interaction
 
-# Get actual database path from Symfony config (environment-aware)
-# Output format: "url: 'sqlite:////path/to/database.db'"
-get_db_path() {
-  /zusam/api/bin/console debug:config doctrine dbal.url 2>/dev/null \
-    | grep "url:" \
-    | sed "s/.*sqlite:\/\/\///" \
-    | sed "s/'$//"
-}
-
-DATABASE_PATH=$(get_db_path)
-echo "Resolved DATABASE_PATH: ${DATABASE_PATH}"
-
-# Ensure parent directory exists
-mkdir -p "$(dirname "${DATABASE_PATH}")"
+# The database always lives at /zusam/data/<DATABASE_NAME>.
+# We avoid using `debug:config` here because it returns unresolved env
+# placeholders (e.g. %env(resolve:DATABASE_URL)%) in prod mode.
+DATABASE_PATH="/zusam/data/${DATABASE_NAME}"
 
 # Initialize database if none is present (use -s to check size > 0, as composer may create empty file)
 if ! [ -s "${DATABASE_PATH}" ]; then
@@ -81,4 +63,5 @@ fi
 mkdir -p /zusam/api/var/log /zusam/api/var/cache
 
 chown -R "$UID:$GID" /zusam /etc/s6.d /etc/nginx /etc/php85 /var/lib/nginx /var/log /run/nginx
-su-exec "$UID:$GID" /usr/bin/s6-svscan /etc/s6.d
+
+exec /usr/bin/s6-svscan /etc/s6.d

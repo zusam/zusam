@@ -10,7 +10,9 @@
     "prebuild": "npm run lang",
     "prelang": "npm run clean",
     "analyze": "npx eslint -c eslint.config.js src/",
-    "stylelint": "npx stylelint src/scss/**/*.scss"
+    "fix": "npx eslint -c eslint.config.js src/ --fix",
+    "stylelint": "npx stylelint src/scss/**/*.scss",
+    "stylelint:fix": "npx stylelint src/scss/**/*.scss --fix"
   },
   "dependencies": {
     "@nanostores/preact": "^1.0.0",

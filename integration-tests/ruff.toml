@@ -1,0 +1,7 @@
+target-version = "py310"
+line-length = 100
+
+[lint]
+# Defaults (pycodestyle errors, pyflakes) plus pycodestyle warnings,
+# import sorting, modernization, bugbear and simplification checks.
+select = ["E", "W", "F", "I", "UP", "B", "SIM"]

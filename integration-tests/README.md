@@ -1,6 +1,6 @@
 # Integration Tests
 
-Pytest + httpx integration test framework for Zusam that runs against the production Docker image.
+Pytest + httpxyz integration test framework for Zusam that runs against the production Docker image.
 
 ## Prerequisites
 
@@ -46,14 +46,14 @@ Each test starts with a fresh database via the `fresh_db` fixture:
 
 1. Runs `zusam:init --remove-existing --seed test_seed` in the container
 2. The `--seed` option generates deterministic UUIDs for predictable test data
-3. Fixes database permissions (docker exec runs as root, web server as zusam)
+3. Fixes data directory permissions (docker exec runs as root, the app runs as UID 1000)
 
 ## Writing Tests
 
 ### Basic test with login flow
 
 ```python
-def test_example(client: httpx.Client, default_group_id: str):
+def test_example(client: httpxyz.Client, default_group_id: str):
     # Login
     response = client.post("/api/login", json={"login": "zusam", "password": "zusam"})
     api_key = response.json()["api_key"]
@@ -66,16 +66,25 @@ def test_example(client: httpx.Client, default_group_id: str):
 ### Using pre-authenticated client
 
 ```python
-def test_with_auth(auth_client: httpx.Client, default_group_id: str):
+def test_with_auth(auth_client: httpxyz.Client, default_group_id: str):
     # No login needed - auth_client has the API key header set
-    response = auth_client.post("/api/messages", json={
-        "group": default_group_id,
-        "data": {"text": "Hello!"}
-    })
+    response = auth_client.post(
+        "/api/messages", json={"group": default_group_id, "data": {"text": "Hello!"}}
+    )
     assert response.status_code == 201
 ```
 
 ## Troubleshooting
+
+### Email tests fail
+
+Check how the container actually resolves its configuration:
+```bash
+docker exec zusam-integration-tests /zusam/api/bin/console zusam:config:show
+```
+The "OS Env?" column must say `no` for all app-config variables (`ALLOW_EMAIL`,
+`MAILER_DSN`, ...): a `yes` means an environment variable is shadowing
+`data/config` for CLI/cron processes.
 
 ### Tests fail with "API did not become ready"
 
@@ -88,7 +97,7 @@ docker logs zusam-integration-tests
 
 This usually means database permissions are wrong. The `fresh_db` fixture should handle this automatically, but you can manually fix:
 ```bash
-docker exec zusam-integration-tests chown zusam:zusam /zusam/api/var/cache/test/test.db
+docker exec zusam-integration-tests chown -R 1000:1000 /zusam/data
 ```
 
 ### Container won't start

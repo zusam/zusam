@@ -11,7 +11,8 @@ ROOTLESS := $(shell $(CONTAINER_PGRM) info --format '{{.Host.Security.Rootless}}
 ifeq ($(ROOTLESS),true)
 USERNS := --userns=keep-id
 endif
-TARGETS := dev prod compile-webapp integ-tests lint unit-tests start-test start-dev
+
+TARGETS := dev prod compile-webapp integ-tests lint fmt unit-tests start-test start-dev
 DEV_OCI_IMAGE := zusam-dev
 PROD_OCI_IMAGE := zusam
 PLAYWRIGHT_WORKERS := 1
@@ -50,17 +51,39 @@ lint-api:
 	composer fix
 	composer lint
 
+fmt-api:
+	cd api
+	composer install --quiet
+	composer fix
+
 lint-app:
 	cd app
 	npm install --save-dev
 	npm run analyze
 	npm run stylelint
 
+fmt-app:
+	cd app
+	npm install --save-dev
+	npm run fix
+	npm run stylelint:fix
+
 lint-integ-tests:
+	set -e
 	cd integration-tests
 	python3 -m venv venv
 	./venv/bin/pip install -q -r requirements.txt
+	./venv/bin/ruff format --check .
 	./venv/bin/ruff check .
+
+.ONESHELL:
+fmt-integ-tests:
+	set -e
+	cd integration-tests
+	python3 -m venv venv
+	./venv/bin/pip install -q -r requirements.txt
+	./venv/bin/ruff format .
+	./venv/bin/ruff check --fix .
 
 lint-local: lint-api lint-app lint-integ-tests
 
@@ -71,6 +94,16 @@ lint: dev
 		-v "$(CURDIR):/zusam:z" \
 		$(DEV_OCI_IMAGE) \
 		make lint-local
+
+fmt-local: fmt-api fmt-app fmt-integ-tests
+
+fmt: dev
+	$(CONTAINER_PGRM) run --rm -it --name "zusam-lint" \
+		$(USERNS) --user $(UID):$(GID) \
+		-e UID=$(UID) -e GID=$(GID) \
+		-v "$(CURDIR):/zusam:z" \
+		$(DEV_OCI_IMAGE) \
+		make fmt-local
 
 unit-tests-local:
 	cd api
@@ -170,4 +203,4 @@ integ-tests: prod
 clean:
 	rm -f Dockerfile
 
-.PHONY: nothing $(TARGETS) lint-local lint-api lint-app lint-integ-tests compile-webapp-local clean unit-tests-local
+.PHONY: nothing $(TARGETS) lint-local lint-api lint-app lint-integ-tests fmt-local fmt-api fmt-app fmt-integ-tests compile-webapp-local clean unit-tests-local
