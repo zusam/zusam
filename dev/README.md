@@ -27,6 +27,27 @@ There are two container images:
 
 Both are built from Dockerfiles in `container/dockerfile/` via the C preprocessor (`cpp`).
 
+The Makefile uses `podman` when it is installed and falls back to `docker`. Override it
+with `make <target> CONTAINER_PGRM=docker`.
+
+### Rootless podman
+
+`container/run.sh` and `container/dev_run.sh` `chown -R` the mounted sources to `$UID:$GID`
+so that files the container writes stay usable on the host. That assumes the developer's
+uid is the same inside and outside the container, which holds for rootful docker but not
+for rootless podman — there the host user is mapped to container uid 0, and container uid
+1000 is an unrelated subuid. Without a correction, `make compile-webapp` cannot read the
+mounted repository and `make start-dev` strips the host user of ownership of the whole
+working tree.
+
+The Makefile therefore detects rootless podman and adds `--userns=keep-id`, which maps the
+host user to the same uid inside the container. Nothing is added for docker. If you ever
+do end up with files stranded on a subuid, reclaim them without root:
+
+```bash
+podman unshare chown -R 0:0 .   # run from the repository root
+```
+
 ## Typical workflows
 
 ### Developing
