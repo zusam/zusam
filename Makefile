@@ -3,6 +3,14 @@
 CONTAINER_PGRM ?= $(shell command -v podman || command -v docker)
 UID := $(shell id -u)
 GID := $(shell id -g)
+# Rootless podman maps the host user to container uid 0, so the hard-coded uid used by
+# run.sh/dev_run.sh would land on an inaccessible subuid (and their chown -R would strip
+# the host user of the whole repository). keep-id maps the host user to the same uid
+# inside the container, which makes those assumptions hold. Empty for docker.
+ROOTLESS := $(shell $(CONTAINER_PGRM) info --format '{{.Host.Security.Rootless}}' 2>/dev/null)
+ifeq ($(ROOTLESS),true)
+USERNS := --userns=keep-id
+endif
 TARGETS := dev prod compile-webapp integ-tests lint unit-tests start-test start-dev
 DEV_OCI_IMAGE := zusam-dev
 PROD_OCI_IMAGE := zusam
@@ -24,12 +32,13 @@ compile-webapp-local:
 	mkdir -p dist
 	npm install --save-dev
 	npm run build
-	rm -rf ../public/*.{js,css,map,png}
+	# no brace expansion here: recipes run under /bin/sh (busybox ash in the container)
+	rm -f ../public/*.js ../public/*.css ../public/*.map ../public/*.png
 	cp -r dist/* ../public/
 
 compile-webapp: dev
 	$(CONTAINER_PGRM) run --rm -it --name "zusam-lint" \
-		--user $(UID):$(GID) \
+		$(USERNS) --user $(UID):$(GID) \
 		-e UID=$(UID) -e GID=$(GID) \
 		-v "$(CURDIR):/zusam:z" \
 		$(DEV_OCI_IMAGE) \
@@ -57,6 +66,7 @@ lint-local: lint-api lint-app lint-integ-tests
 
 lint: dev
 	$(CONTAINER_PGRM) run --rm -it --name "zusam-lint" \
+		$(USERNS) --user $(UID):$(GID) \
 		-e UID=$(UID) -e GID=$(GID) \
 		-v "$(CURDIR):/zusam:z" \
 		$(DEV_OCI_IMAGE) \
@@ -72,6 +82,7 @@ unit-tests-local:
 
 unit-tests: dev
 	$(CONTAINER_PGRM) run --rm -it --name "zusam" \
+		$(USERNS) --user $(UID):$(GID) \
 		-e UID=$(UID) -e GID=$(GID) \
 		-v "$(CURDIR):/zusam:z" \
 		$(DEV_OCI_IMAGE) \
@@ -126,12 +137,14 @@ playwright-ui:
 
 start-dev: dev
 	$(CONTAINER_PGRM) run --rm -it --name "zusam" \
+		$(USERNS) --user 0:0 \
 		-e UID=$(UID) -e GID=$(GID) \
 		-v "$(CURDIR):/zusam:z" \
 		$(DEV_OCI_IMAGE)
 
 start-test: prod
 	$(CONTAINER_PGRM) run --rm -it --name "zusam" \
+		$(USERNS) --user 0:0 \
 		-p 8080:8080 \
 		-e UID=$(UID) -e GID=$(GID) \
 		-v "$(CURDIR)"/translations:/zusam/translations:z \

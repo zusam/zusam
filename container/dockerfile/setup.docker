@@ -1,3 +1,7 @@
+// COPY preserves the modes of the source tree, and a restrictive umask on the build
+// host makes the copied config trees unreadable to anyone but root. run.sh chowns them
+// before dropping privileges, but tooling that does not go through it (make lint,
+// make unit-tests) would otherwise run with a php that loads no extension at all.
 RUN set -xe \\
     && addgroup -g $GID zusam \\
     && adduser -D -G zusam -u $UID zusam \\
@@ -5,4 +9,5 @@ RUN set -xe \\
     && apk add --no-cache --virtual .build-deps tar ca-certificates wget unzip \\
     && rm -rf /zusam/data/data.db \\
     && apk del .build-deps \\
-    && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public /var/tmp/nginx
+    && chmod -R 755 /usr/local/bin /etc/s6.d /var/lib/nginx /zusam/public /var/tmp/nginx \\
+    && chmod -R a+rX /etc/php85 /etc/nginx

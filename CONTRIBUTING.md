@@ -45,7 +45,7 @@ Go into the zusam directory and build the dev version:
 
 You might get an error that it can't find the container that it just built. This is often related to a podman installation. To get around this, run the make command specifically targeting docker before running the start-dev-container script:
 
-`make dev container_pgrm=docker`
+`make dev CONTAINER_PGRM=docker`
 
 You'll now be inside the container, in the zusam directory. `cd app` to get to the front end app directory, then run `npm install --save-dev` to install the npm packages.
 
