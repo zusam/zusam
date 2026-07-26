@@ -12,8 +12,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ConfigShow extends Command
 {
-    private $params;
-
     /**
      * Map of env-var name => Symfony parameter name (from services.yaml).
      *
@@ -96,6 +94,7 @@ class ConfigShow extends Command
      * Variables whose value must never be printed, only whether they are set.
      */
     private const SECRET_VARS = ['APP_SECRET'];
+    private $params;
 
     public function __construct(
         ParameterBagInterface $params,
@@ -113,7 +112,7 @@ class ConfigShow extends Command
                 ."The \"OS Env\" column shows whether the variable exists in the real OS\n"
                 ."environment (via getenv). If it does, it shadows any value in data/config\n"
                 ."for CLI processes -- but FPM workers won't see it (clear_env=yes).\n\n"
-                ."Use --format=json for machine-readable output (useful in tests)."
+                .'Use --format=json for machine-readable output (useful in tests).'
             )
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'Output format: table or json', 'table')
         ;
@@ -184,7 +183,8 @@ class ConfigShow extends Command
     }
 
     /**
-     * Hide secrets: APP_SECRET entirely, passwords embedded in DSN userinfo
+     * Hide secrets: APP_SECRET entirely, passwords embedded in DSN userinfo.
+     *
      * (e.g. smtp://user:pass@host becomes smtp://user:***@host). This output
      * is meant to be pasted into bug reports.
      */

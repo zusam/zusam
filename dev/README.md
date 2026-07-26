@@ -22,6 +22,7 @@ Run `make` with no arguments to see available targets.
 | `make start-test` | Build and start a production container with local sources mounted (for manual testing) |
 | `make compile-webapp` | Install frontend dependencies, build, and copy output to `public/` |
 | `make lint` | Run all linters inside a dev container |
+| `make fmt` | Run all formatters inside a dev container |
 | `make integ-tests` | Build the production image, run integration tests, and tear down containers |
 
 ## Container images
@@ -84,6 +85,13 @@ make compile-webapp
 ```bash
 # Run all linters inside a container (no local tooling needed)
 make lint
+```
+
+### Formatting
+
+```bash
+# Run all formatters inside a container (no local tooling needed)
+make fmt
 ```
 
 ### Running integration tests

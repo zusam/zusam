@@ -68,10 +68,9 @@ def test_example(client: httpxyz.Client, default_group_id: str):
 ```python
 def test_with_auth(auth_client: httpxyz.Client, default_group_id: str):
     # No login needed - auth_client has the API key header set
-    response = auth_client.post("/api/messages", json={
-        "group": default_group_id,
-        "data": {"text": "Hello!"}
-    })
+    response = auth_client.post(
+        "/api/messages", json={"group": default_group_id, "data": {"text": "Hello!"}}
+    )
     assert response.status_code == 201
 ```
 
