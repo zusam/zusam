@@ -115,67 +115,6 @@ class Url
         return true;
     }
 
-    // Uses two different resolution mechanisms, which is intentional:
-    // gethostbynamel() goes through the system resolver (honors /etc/hosts
-    // and NSS), matching what the outbound HTTP client will actually connect
-    // to, but PHP has no equivalent of it for AAAA records, so IPv6 falls
-    // back to dns_get_record(), which queries DNS directly and ignores
-    // /etc/hosts. Either way, this is a point-in-time snapshot: see the
-    // TOCTOU/DNS-rebinding note on isPublicHttpUrl() above.
-    private static function resolveHost(string $host): array
-    {
-        // host is already an IP literal
-        if (false !== filter_var($host, FILTER_VALIDATE_IP)) {
-            return [$host];
-        }
-
-        $ips = [];
-        $ipv4 = gethostbynamel($host);
-        if (is_array($ipv4)) {
-            $ips = $ipv4;
-        }
-
-        $records = @dns_get_record($host, DNS_AAAA);
-        if (is_array($records)) {
-            foreach ($records as $record) {
-                if (!empty($record['ipv6'])) {
-                    $ips[] = $record['ipv6'];
-                }
-            }
-        }
-
-        return $ips;
-    }
-
-    private static function isPublicIp(string $ip): bool
-    {
-        // Reject private and reserved ranges. FILTER_FLAG_NO_RES_RANGE covers
-        // loopback (127.0.0.0/8), link-local (169.254.0.0/16) and other reserved
-        // blocks; FILTER_FLAG_NO_PRIV_RANGE covers 10/8, 172.16/12, 192.168/16,
-        // fc00::/7 and fe80::/10.
-        if (false === filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
-            return false;
-        }
-
-        // Explicitly reject IPv6 loopback and IPv4-mapped IPv6 addresses, which
-        // the reserved-range flags do not always catch.
-        $packed = @inet_pton($ip);
-        if (false === $packed) {
-            return false;
-        }
-        if ('::1' === $ip) {
-            return false;
-        }
-        // IPv4-mapped IPv6 (::ffff:a.b.c.d): re-check the embedded IPv4 address.
-        if (16 === strlen($packed) && 0 === substr_compare($packed, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff", 0, 12)) {
-            $mapped = inet_ntop(substr($packed, 12));
-
-            return false !== $mapped && self::isPublicIp($mapped);
-        }
-
-        return true;
-    }
-
     // taken from https://github.com/guzzle/psr7/blob/089edd38f5b8abba6cb01567c2a8aaa47cec4c72/src/Uri.php#L166
     public static function composeComponents(?string $scheme, ?string $authority, string $path, ?string $query, ?string $fragment): string
     {
@@ -220,6 +159,7 @@ class Url
                 'exception' => 'blocked url',
             ];
         }
+
         try {
             $client = new GuzzleHttp\Client();
             $res = $client->request('GET', 'https://api.instagram.com/oembed/?url='.$url);
@@ -308,5 +248,66 @@ class Url
         }
 
         return $data;
+    }
+
+    // Uses two different resolution mechanisms, which is intentional:
+    // gethostbynamel() goes through the system resolver (honors /etc/hosts
+    // and NSS), matching what the outbound HTTP client will actually connect
+    // to, but PHP has no equivalent of it for AAAA records, so IPv6 falls
+    // back to dns_get_record(), which queries DNS directly and ignores
+    // /etc/hosts. Either way, this is a point-in-time snapshot: see the
+    // TOCTOU/DNS-rebinding note on isPublicHttpUrl() above.
+    private static function resolveHost(string $host): array
+    {
+        // host is already an IP literal
+        if (false !== filter_var($host, FILTER_VALIDATE_IP)) {
+            return [$host];
+        }
+
+        $ips = [];
+        $ipv4 = gethostbynamel($host);
+        if (is_array($ipv4)) {
+            $ips = $ipv4;
+        }
+
+        $records = @dns_get_record($host, DNS_AAAA);
+        if (is_array($records)) {
+            foreach ($records as $record) {
+                if (!empty($record['ipv6'])) {
+                    $ips[] = $record['ipv6'];
+                }
+            }
+        }
+
+        return $ips;
+    }
+
+    private static function isPublicIp(string $ip): bool
+    {
+        // Reject private and reserved ranges. FILTER_FLAG_NO_RES_RANGE covers
+        // loopback (127.0.0.0/8), link-local (169.254.0.0/16) and other reserved
+        // blocks; FILTER_FLAG_NO_PRIV_RANGE covers 10/8, 172.16/12, 192.168/16,
+        // fc00::/7 and fe80::/10.
+        if (false === filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+            return false;
+        }
+
+        // Explicitly reject IPv6 loopback and IPv4-mapped IPv6 addresses, which
+        // the reserved-range flags do not always catch.
+        $packed = @inet_pton($ip);
+        if (false === $packed) {
+            return false;
+        }
+        if ('::1' === $ip) {
+            return false;
+        }
+        // IPv4-mapped IPv6 (::ffff:a.b.c.d): re-check the embedded IPv4 address.
+        if (16 === strlen($packed) && 0 === substr_compare($packed, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff", 0, 12)) {
+            $mapped = inet_ntop(substr($packed, 12));
+
+            return false !== $mapped && self::isPublicIp($mapped);
+        }
+
+        return true;
     }
 }
