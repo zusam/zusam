@@ -16,7 +16,7 @@ jobs:
         # https://github.com/actions/setup-python
         uses: actions/setup-python@v6.2.0
         with:
-          python-version: '3.14'
+          python-version: '3.15'
 
       - name: Run ruff format and lint checks
         run: make lint-integ-tests
